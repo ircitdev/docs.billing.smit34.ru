@@ -33,13 +33,85 @@
     <div class="nav-section">Разделы</div>
     <ul>
       <li><a href="../index.html">Главная</a></li>
-      <li><a href="installation.html">Установка и интеграция</a></li>
-      <li><a href="billing.html">Настройки биллинга</a></li>
-      <li><a href="server.html">Управление сервером</a></li>
-      <li><a href="equipment.html">Интеграция с оборудованием</a></li>
-      <li><a href="sorm.html">Интеграция с СОРМ3</a></li>
-      <li><a href="troubleshooting.html">Решение проблем</a></li>
-      <li><a href="licensing.html">Лицензирование и оплата</a></li>
+      <li class="has-children">
+        <a href="installation.html">Установка и интеграция <span class="arrow">&#9654;</span></a>
+        <ul class="submenu">
+          <li><a href="installation.html#requirements">Системные требования</a></li>
+          <li><a href="installation.html#docker-install">Установка Docker Compose</a></li>
+          <li><a href="installation.html#demo-cleanup">Удаление демо-данных</a></li>
+          <li><a href="installation.html#equip-integration">Интеграция с оборудованием</a></li>
+          <li><a href="installation.html#tariff-setup">Настройка тарифов</a></li>
+          <li><a href="installation.html#add-subscribers">Добавление абонентов</a></li>
+          <li><a href="installation.html#final-test">Финальное тестирование</a></li>
+          <li><a href="installation.html#video">Видеоинструкции</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="billing.html">Настройки биллинга <span class="arrow">&#9654;</span></a>
+        <ul class="submenu">
+          <li><a href="billing.html#general">Общие настройки</a></li>
+          <li><a href="billing.html#subscribers">Работа с абонентами</a></li>
+          <li><a href="billing.html#tariffs">Тарификация и услуги</a></li>
+          <li><a href="billing.html#messaging">Отправка сообщений</a></li>
+          <li><a href="billing.html#payments">Платежи, API, 1С</a></li>
+          <li><a href="billing.html#cabinet">Личный кабинет</a></li>
+          <li><a href="billing.html#oss-bss">OSS.BSS</a></li>
+          <li><a href="billing.html#reports">Отчёты</a></li>
+          <li><a href="billing.html#dictionaries">Справочники</a></li>
+          <li><a href="billing.html#additional">Дополнительные настройки</a></li>
+          <li><a href="billing.html#security">Безопасность</a></li>
+          <li><a href="billing.html#versioning">Версионность</a></li>
+          <li><a href="billing.html#tech-stack">Технологический стек</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="server.html">Управление сервером <span class="arrow">&#9654;</span></a>
+        <ul class="submenu">
+          <li><a href="server.html#server-setup">Настройка сервера</a></li>
+          <li><a href="server.html#maintenance">Сервисное обслуживание</a></li>
+          <li><a href="server.html#modules">Управление модулями</a></li>
+          <li><a href="server.html#remote">Удалённое управление</a></li>
+          <li><a href="server.html#advanced">Дополнительные возможности</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="equipment.html">Интеграция с оборудованием <span class="arrow">&#9654;</span></a>
+        <ul class="submenu">
+          <li><a href="equipment.html#internet">Интернет (NAS/BRAS)</a></li>
+          <li><a href="equipment.html#voip">Телефония</a></li>
+          <li><a href="equipment.html#iptv">IPTV</a></li>
+          <li><a href="equipment.html#cpe">Абонентское оборудование</a></li>
+          <li><a href="equipment.html#rental">Аренда оборудования</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="sorm.html">Интеграция с СОРМ3 <span class="arrow">&#9654;</span></a>
+        <ul class="submenu">
+          <li><a href="sorm.html#principle">Принцип работы</a></li>
+          <li><a href="sorm.html#integrated">Интегрированные решения</a></li>
+          <li><a href="sorm.html#children">Схемы настройки</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="troubleshooting.html">Решение проблем <span class="arrow">&#9654;</span></a>
+        <ul class="submenu">
+          <li><a href="troubleshooting.html#general">Общие вопросы</a></li>
+          <li><a href="troubleshooting.html#auth">Абоненты и авторизация</a></li>
+          <li><a href="troubleshooting.html#billing-payments">Биллинг и платежи</a></li>
+          <li><a href="troubleshooting.html#server-perf">Сервер и производительность</a></li>
+          <li><a href="troubleshooting.html#network">Сеть и доступ</a></li>
+          <li><a href="troubleshooting.html#security">Безопасность</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="licensing.html">Лицензирование и оплата <span class="arrow">&#9654;</span></a>
+        <ul class="submenu">
+          <li><a href="licensing.html#delivery">Порядок поставки ПО</a></li>
+          <li><a href="licensing.html#payment-issues">Не проходит оплата</a></li>
+          <li><a href="licensing.html#reconciliation">Акт сверки</a></li>
+          <li><a href="licensing.html#non-payment">Работа при неоплате</a></li>
+        </ul>
+      </li>
       <li><a href="contacts.html">Контакты</a></li>
     </ul>
   </nav>
@@ -54,7 +126,7 @@
 
   <p>Пошаговое руководство по внедрению системы СмИТ Биллинг 1.0 для операторов связи и сервис-провайдеров.</p>
 
-  <h2>Этап 1. Системные требования</h2>
+  <h2 id="requirements">Этап 1. Системные требования</h2>
   <p>Для развёртывания СмИТ Биллинг 1.0 требуется сервер с поддержкой Docker:</p>
   <table>
     <thead><tr><th>Компонент</th><th>Минимум</th><th>Рекомендуется</th></tr></thead>
@@ -72,7 +144,7 @@
     Если необходимо хранить статистику для СОРМ (netflow, sflow), выделите отдельный диск большого объёма.
   </div>
 
-  <h2>Этап 2. Установка через Docker Compose</h2>
+  <h2 id="docker-install">Этап 2. Установка через Docker Compose</h2>
   <p>Развёртывание системы выполняется через Docker Compose:</p>
   <pre><code># 1. Клонировать репозиторий
 git clone &lt;repository-url&gt; smit-billing
@@ -98,12 +170,12 @@ docker compose exec web python manage.py collectstatic --noinput</code></pre>
     <strong>Сервисы Docker Compose:</strong> db (PostgreSQL 16), redis (Redis 7), web (Django/Gunicorn), celery, celery-beat, freeradius, nginx.
   </div>
 
-  <h2>Этап 3. Удаление демо-данных</h2>
+  <h2 id="demo-cleanup">Этап 3. Удаление демо-данных</h2>
   <p>Удалите демонстрационные тарифы и абонентов через веб-интерфейс (<strong>Настройки &rarr; Очистка базы данных</strong>) или через Django management-команду:</p>
   <pre><code>docker compose exec web python manage.py flush --no-input
 docker compose exec web python manage.py loaddata initial_data</code></pre>
 
-  <h2>Этап 4. Интеграция с оборудованием</h2>
+  <h2 id="equip-integration">Этап 4. Интеграция с оборудованием</h2>
 
   <h3>Интернет</h3>
   <p>Интегрируйте интернет-маршрутизаторы и оборудование NAS, следуя разделу документации по интеграции интернет-оборудования. Доступны руководства быстрой интеграции, включая настройку MikroTik.</p>
@@ -128,18 +200,18 @@ docker compose exec web python manage.py loaddata initial_data</code></pre>
     <li>Настройка услуги IPTV в биллинге</li>
   </ol>
 
-  <h2>Этап 5. Настройка тарифов</h2>
+  <h2 id="tariff-setup">Этап 5. Настройка тарифов</h2>
   <p>Создайте тарифы для интернета, телефонии (местная/междугородняя/международная связь) и телевидения.</p>
 
-  <h2>Этап 6. Добавление абонентов</h2>
+  <h2 id="add-subscribers">Этап 6. Добавление абонентов</h2>
   <p>Создайте абонентские аккаунты, заполните персональные данные и внесите средства на баланс. Для миграции с других систем поддерживается импорт через CSV-файлы.</p>
 
-  <h2>Этап 7. Финальное тестирование</h2>
+  <h2 id="final-test">Этап 7. Финальное тестирование</h2>
   <p>Проверьте полный цикл работы для абонентов и интеграцию оборудования по всем типам услуг.</p>
 
   <!-- ===== Видеоинструкции ===== -->
 
-  <h2>Видеоинструкции</h2>
+  <h2 id="video">Видеоинструкции</h2>
   <p>Видеоуроки по работе с системой СмИТ Биллинг 1.0.</p>
 
   <h3>Установка</h3>
@@ -205,7 +277,7 @@ docker compose exec web python manage.py loaddata initial_data</code></pre>
 
   <!-- ===== Дочерние страницы ===== -->
 
-  <h2>Дочерние страницы</h2>
+  <h2 id="children">Дочерние страницы</h2>
   <ul class="child-pages">
     <li><a>Видео-инструкции</a> <span class="desc">Обучающие видеоматериалы по работе с системой</span></li>
     <li><a>Миграция</a> <span class="desc">Перенос данных из других биллинговых систем</span></li>

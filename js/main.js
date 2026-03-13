@@ -1,4 +1,4 @@
-// СмИТ Биллинг 1.0 Docs — navigation + theme toggle
+// СмИТ Биллинг 1.0 Docs — navigation + theme toggle + submenu
 document.addEventListener('DOMContentLoaded', function () {
   // --- Theme toggle ---
   var html = document.documentElement;
@@ -28,13 +28,60 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // --- Mark active nav link ---
+  // --- Mark active nav link & auto-open submenu ---
   var path = location.pathname;
-  var links = document.querySelectorAll('.sidebar nav a');
-  links.forEach(function (a) {
-    if (path.endsWith(a.getAttribute('href')) ||
-        path.endsWith(a.getAttribute('href').replace('../', ''))) {
-      a.classList.add('active');
+  var hash = location.hash;
+
+  // Normalize: get just the filename part for matching
+  function getFilename(href) {
+    if (!href) return '';
+    var h = href.split('#')[0];
+    // Remove leading ../ or pages/
+    h = h.replace(/^\.\.\//, '').replace(/^pages\//, '');
+    return h;
+  }
+
+  var currentFile = path.split('/').pop() || 'index.html';
+
+  // Mark top-level page links active and open their submenu
+  document.querySelectorAll('.sidebar nav > ul > li').forEach(function (li) {
+    var mainLink = li.querySelector(':scope > a');
+    if (!mainLink) return;
+    var linkFile = getFilename(mainLink.getAttribute('href'));
+
+    if (linkFile === currentFile) {
+      mainLink.classList.add('active');
+      if (li.classList.contains('has-children')) {
+        li.classList.add('open');
+      }
     }
+  });
+
+  // Mark submenu links active if hash matches
+  if (hash) {
+    document.querySelectorAll('.sidebar .submenu a').forEach(function (a) {
+      var href = a.getAttribute('href');
+      if (!href) return;
+      var linkFile = getFilename(href);
+      var linkHash = href.indexOf('#') !== -1 ? '#' + href.split('#')[1] : '';
+      if (linkFile === currentFile && linkHash === hash) {
+        a.classList.add('active');
+      }
+    });
+  }
+
+  // --- Submenu toggle on click ---
+  document.querySelectorAll('.sidebar nav li.has-children > a').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      var li = this.parentElement;
+      var linkFile = getFilename(this.getAttribute('href'));
+
+      // If we're already on this page, just toggle submenu
+      if (linkFile === currentFile) {
+        e.preventDefault();
+        li.classList.toggle('open');
+      }
+      // Otherwise, navigate to the page (default behavior)
+    });
   });
 });

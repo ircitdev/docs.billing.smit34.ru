@@ -29,13 +29,85 @@
     <div class="nav-section">Разделы</div>
     <ul>
       <li><a href="../index.html">Главная</a></li>
-      <li><a href="installation.html">Установка и интеграция</a></li>
-      <li><a href="billing.html">Настройки биллинга</a></li>
-      <li><a href="server.html">Управление сервером</a></li>
-      <li><a href="equipment.html">Интеграция с оборудованием</a></li>
-      <li><a href="sorm.html">Интеграция с СОРМ3</a></li>
-      <li><a href="troubleshooting.html">Решение проблем</a></li>
-      <li><a href="licensing.html">Лицензирование и оплата</a></li>
+      <li class="has-children">
+        <a href="installation.html">Установка и интеграция <span class="arrow">&#9654;</span></a>
+        <ul class="submenu">
+          <li><a href="installation.html#requirements">Системные требования</a></li>
+          <li><a href="installation.html#docker-install">Установка Docker Compose</a></li>
+          <li><a href="installation.html#demo-cleanup">Удаление демо-данных</a></li>
+          <li><a href="installation.html#equip-integration">Интеграция с оборудованием</a></li>
+          <li><a href="installation.html#tariff-setup">Настройка тарифов</a></li>
+          <li><a href="installation.html#add-subscribers">Добавление абонентов</a></li>
+          <li><a href="installation.html#final-test">Финальное тестирование</a></li>
+          <li><a href="installation.html#video">Видеоинструкции</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="billing.html">Настройки биллинга <span class="arrow">&#9654;</span></a>
+        <ul class="submenu">
+          <li><a href="billing.html#general">Общие настройки</a></li>
+          <li><a href="billing.html#subscribers">Работа с абонентами</a></li>
+          <li><a href="billing.html#tariffs">Тарификация и услуги</a></li>
+          <li><a href="billing.html#messaging">Отправка сообщений</a></li>
+          <li><a href="billing.html#payments">Платежи, API, 1С</a></li>
+          <li><a href="billing.html#cabinet">Личный кабинет</a></li>
+          <li><a href="billing.html#oss-bss">OSS.BSS</a></li>
+          <li><a href="billing.html#reports">Отчёты</a></li>
+          <li><a href="billing.html#dictionaries">Справочники</a></li>
+          <li><a href="billing.html#additional">Дополнительные настройки</a></li>
+          <li><a href="billing.html#security">Безопасность</a></li>
+          <li><a href="billing.html#versioning">Версионность</a></li>
+          <li><a href="billing.html#tech-stack">Технологический стек</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="server.html">Управление сервером <span class="arrow">&#9654;</span></a>
+        <ul class="submenu">
+          <li><a href="server.html#server-setup">Настройка сервера</a></li>
+          <li><a href="server.html#maintenance">Сервисное обслуживание</a></li>
+          <li><a href="server.html#modules">Управление модулями</a></li>
+          <li><a href="server.html#remote">Удалённое управление</a></li>
+          <li><a href="server.html#advanced">Дополнительные возможности</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="equipment.html">Интеграция с оборудованием <span class="arrow">&#9654;</span></a>
+        <ul class="submenu">
+          <li><a href="equipment.html#internet">Интернет (NAS/BRAS)</a></li>
+          <li><a href="equipment.html#voip">Телефония</a></li>
+          <li><a href="equipment.html#iptv">IPTV</a></li>
+          <li><a href="equipment.html#cpe">Абонентское оборудование</a></li>
+          <li><a href="equipment.html#rental">Аренда оборудования</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="sorm.html">Интеграция с СОРМ3 <span class="arrow">&#9654;</span></a>
+        <ul class="submenu">
+          <li><a href="sorm.html#principle">Принцип работы</a></li>
+          <li><a href="sorm.html#integrated">Интегрированные решения</a></li>
+          <li><a href="sorm.html#children">Схемы настройки</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="troubleshooting.html">Решение проблем <span class="arrow">&#9654;</span></a>
+        <ul class="submenu">
+          <li><a href="troubleshooting.html#general">Общие вопросы</a></li>
+          <li><a href="troubleshooting.html#auth">Абоненты и авторизация</a></li>
+          <li><a href="troubleshooting.html#billing-payments">Биллинг и платежи</a></li>
+          <li><a href="troubleshooting.html#server-perf">Сервер и производительность</a></li>
+          <li><a href="troubleshooting.html#network">Сеть и доступ</a></li>
+          <li><a href="troubleshooting.html#security">Безопасность</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="licensing.html">Лицензирование и оплата <span class="arrow">&#9654;</span></a>
+        <ul class="submenu">
+          <li><a href="licensing.html#delivery">Порядок поставки ПО</a></li>
+          <li><a href="licensing.html#payment-issues">Не проходит оплата</a></li>
+          <li><a href="licensing.html#reconciliation">Акт сверки</a></li>
+          <li><a href="licensing.html#non-payment">Работа при неоплате</a></li>
+        </ul>
+      </li>
       <li><a href="contacts.html">Контакты</a></li>
     </ul>
   </nav>
@@ -50,7 +122,7 @@
 
   <p>Сборник статей по диагностике и решению типичных проблем при эксплуатации системы СмИТ Биллинг 1.0. Каждый раздел содержит описание симптомов, возможные причины и пошаговые инструкции по устранению.</p>
 
-  <h2>Общие вопросы</h2>
+  <h2 id="general">Общие вопросы</h2>
   <ul class="child-pages">
     <li>
       <a>Вопросы одной строкой</a>
@@ -66,7 +138,7 @@
     </li>
   </ul>
 
-  <h2>Абоненты и авторизация</h2>
+  <h2 id="auth">Абоненты и авторизация</h2>
   <ul class="child-pages">
     <li>
       <a>Абоненты не могут авторизоваться</a>
@@ -86,7 +158,7 @@
     </li>
   </ul>
 
-  <h2>Биллинг и платежи</h2>
+  <h2 id="billing-payments">Биллинг и платежи</h2>
   <ul class="child-pages">
     <li>
       <a>Абонентская плата не списывается!</a>
@@ -110,7 +182,7 @@
     </li>
   </ul>
 
-  <h2>Сервер и производительность</h2>
+  <h2 id="server-perf">Сервер и производительность</h2>
   <ul class="child-pages">
     <li>
       <a>Биллинг медленно работает</a>
@@ -142,7 +214,7 @@
     </li>
   </ul>
 
-  <h2>Сеть и доступ</h2>
+  <h2 id="network">Сеть и доступ</h2>
   <ul class="child-pages">
     <li>
       <a>Не работает интернет</a>
@@ -178,7 +250,7 @@
     </li>
   </ul>
 
-  <h2>Безопасность</h2>
+  <h2 id="security">Безопасность</h2>
   <ul class="child-pages">
     <li>
       <a>Сброс пароля root</a>
@@ -198,7 +270,7 @@
     </li>
   </ul>
 
-  <h2>Прочее</h2>
+  <h2 id="other">Прочее</h2>
   <ul class="child-pages">
     <li>
       <a>Настройка СМС-шлюза Robokassa</a>
