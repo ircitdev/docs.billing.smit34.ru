@@ -123,6 +123,17 @@ a:hover { color: var(--primary-dark); text-decoration: underline; }
   opacity: .85;
 }
 
+.logo-text .logo-main {
+  font-weight: 700;
+  opacity: 1;
+}
+
+.logo-text .logo-main::after {
+  content: '| ';
+  font-weight: 300;
+  opacity: .85;
+}
+
 .menu-toggle {
   display: none;
   background: none;
@@ -523,4 +534,10 @@ pre code {
   .footer { margin-left: 0; padding: 20px 16px; }
   .cards { grid-template-columns: 1fr; }
   .logo-text { font-size: 1rem; }
+  .logo-text .logo-main { display: none; }
+  .logo-text span { font-weight: 600; opacity: 1; }
+  .header { padding: 0 12px; }
+  .header-left { gap: 8px; }
+  .logo { gap: 8px; }
+  .logo-icon { width: 32px; height: 32px; font-size: 1rem; }
 }
