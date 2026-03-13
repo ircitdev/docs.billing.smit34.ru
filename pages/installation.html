@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Установка и интеграция — СмИТ Биллинг 1.0</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .video-container { position: relative; padding-bottom: 56.25%; height: 0; margin: 16px 0; }
+    .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 6px; }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <button class="menu-toggle" aria-label="Меню">&#9776;</button>
+    <div class="logo">
+      <div class="logo-icon">С</div>
+      <div class="logo-text">СмИТ Биллинг 1.0 <span>| Документация</span></div>
+    </div>
+  </div>
+  <div class="header-right">
+    <button class="theme-toggle" aria-label="Переключить тему" title="Светлая / тёмная тема">
+      <span class="icon-sun">&#9788;</span>
+      <span class="icon-moon">&#9790;</span>
+    </button>
+  </div>
+</header>
+
+<aside class="sidebar">
+  <nav>
+    <div class="nav-section">Разделы</div>
+    <ul>
+      <li><a href="../index.html">Главная</a></li>
+      <li><a href="installation.html">Установка и интеграция</a></li>
+      <li><a href="billing.html">Настройки биллинга</a></li>
+      <li><a href="server.html">Управление сервером</a></li>
+      <li><a href="equipment.html">Интеграция с оборудованием</a></li>
+      <li><a href="sorm.html">Интеграция с СОРМ3</a></li>
+      <li><a href="troubleshooting.html">Решение проблем</a></li>
+      <li><a href="licensing.html">Лицензирование и оплата</a></li>
+      <li><a href="contacts.html">Контакты</a></li>
+    </ul>
+  </nav>
+</aside>
+
+<main class="content">
+  <div class="breadcrumb">
+    <a href="../index.html">Документация</a> <span class="sep">/</span> Установка и интеграция
+  </div>
+
+  <h1>Установка и интеграция СмИТ Биллинг 1.0</h1>
+
+  <p>Пошаговое руководство по внедрению системы СмИТ Биллинг 1.0 для операторов связи и сервис-провайдеров.</p>
+
+  <h2>Этап 1. Системные требования</h2>
+  <p>Для развёртывания СмИТ Биллинг 1.0 требуется сервер с поддержкой Docker:</p>
+  <table>
+    <thead><tr><th>Компонент</th><th>Минимум</th><th>Рекомендуется</th></tr></thead>
+    <tbody>
+      <tr><td>CPU</td><td>2 ядра</td><td>4+ ядра</td></tr>
+      <tr><td>RAM</td><td>4 ГБ</td><td>8+ ГБ</td></tr>
+      <tr><td>Диск</td><td>40 ГБ SSD</td><td>100+ ГБ SSD/NVMe</td></tr>
+      <tr><td>ОС</td><td>Linux (Ubuntu 22.04 / Debian 12 / CentOS 9)</td><td>Ubuntu 22.04 LTS</td></tr>
+      <tr><td>Docker</td><td>24.0+</td><td>Последняя стабильная</td></tr>
+      <tr><td>Docker Compose</td><td>2.20+</td><td>Последняя стабильная</td></tr>
+    </tbody>
+  </table>
+  <div class="info-box">
+    Виртуальные машины (KVM, VMware, Hyper-V) полностью поддерживаются.
+    Если необходимо хранить статистику для СОРМ (netflow, sflow), выделите отдельный диск большого объёма.
+  </div>
+
+  <h2>Этап 2. Установка через Docker Compose</h2>
+  <p>Развёртывание системы выполняется через Docker Compose:</p>
+  <pre><code># 1. Клонировать репозиторий
+git clone &lt;repository-url&gt; smit-billing
+cd smit-billing
+
+# 2. Скопировать шаблон переменных окружения
+cp .env.docker .env
+
+# 3. Отредактировать настройки (.env)
+# DB_NAME, DB_USER, DB_PASSWORD, REDIS_URL, SECRET_KEY
+
+# 4. Запустить все сервисы
+docker compose up -d
+
+# 5. Применить миграции и создать суперпользователя
+docker compose exec web python manage.py migrate
+docker compose exec web python manage.py createsuperuser
+
+# 6. Собрать статические файлы
+docker compose exec web python manage.py collectstatic --noinput</code></pre>
+  <p>После запуска веб-интерфейс доступен по адресу <code>http://&lt;ip-сервера&gt;</code>.</p>
+  <div class="info-box">
+    <strong>Сервисы Docker Compose:</strong> db (PostgreSQL 16), redis (Redis 7), web (Django/Gunicorn), celery, celery-beat, freeradius, nginx.
+  </div>
+
+  <h2>Этап 3. Удаление демо-данных</h2>
+  <p>Удалите демонстрационные тарифы и абонентов через веб-интерфейс (<strong>Настройки &rarr; Очистка базы данных</strong>) или через Django management-команду:</p>
+  <pre><code>docker compose exec web python manage.py flush --no-input
+docker compose exec web python manage.py loaddata initial_data</code></pre>
+
+  <h2>Этап 4. Интеграция с оборудованием</h2>
+
+  <h3>Интернет</h3>
+  <p>Интегрируйте интернет-маршрутизаторы и оборудование NAS, следуя разделу документации по интеграции интернет-оборудования. Доступны руководства быстрой интеграции, включая настройку MikroTik.</p>
+
+  <h3>Телефония</h3>
+  <p>Типовой план внедрения VoIP:</p>
+  <ol>
+    <li>Настройте оборудование: сервисы, политики, профили, номера пользователей</li>
+    <li>Настройте передачу CDR в СмИТ Биллинг через IP/порт, RADIUS или FTP</li>
+    <li>Создайте VoIP NAS с IP-адресом АТС</li>
+    <li>Настройте услуги телефонии</li>
+    <li>Настройте пулы телефонных номеров</li>
+    <li>Назначьте услуги и номера абонентам</li>
+    <li>Протестируйте: звонки с положительным балансом, недостаточный баланс, отключение абонента во время звонка, корректность тарификации</li>
+  </ol>
+
+  <h3>IPTV</h3>
+  <p>Трёхэтапный процесс:</p>
+  <ol>
+    <li>Настройка оборудования по выбранной схеме</li>
+    <li>Настройка конкретного сервиса (IPTVPortal, Infomir Ministra, LifeStream, Megogo, TITV, NextTV, 24hTV, MOOVI)</li>
+    <li>Настройка услуги IPTV в биллинге</li>
+  </ol>
+
+  <h2>Этап 5. Настройка тарифов</h2>
+  <p>Создайте тарифы для интернета, телефонии (местная/междугородняя/международная связь) и телевидения.</p>
+
+  <h2>Этап 6. Добавление абонентов</h2>
+  <p>Создайте абонентские аккаунты, заполните персональные данные и внесите средства на баланс. Для миграции с других систем поддерживается импорт через CSV-файлы.</p>
+
+  <h2>Этап 7. Финальное тестирование</h2>
+  <p>Проверьте полный цикл работы для абонентов и интеграцию оборудования по всем типам услуг.</p>
+
+  <!-- ===== Видеоинструкции ===== -->
+
+  <h2>Видеоинструкции</h2>
+  <p>Видеоуроки по работе с системой СмИТ Биллинг 1.0.</p>
+
+  <h3>Установка</h3>
+  <div class="video-container">
+    <iframe src="https://rutube.ru/play/embed/6dc6eee9f04a3c2de662332f1e01378a" frameborder="0" allowfullscreen></iframe>
+  </div>
+  <p>Установка СмИТ Биллинг 1.0</p>
+
+  <h3>Настройка системы</h3>
+  <div class="video-container">
+    <iframe src="https://rutube.ru/play/embed/2cb41602a5c724cfed0f8d0cb56fd7e5" frameborder="0" allowfullscreen></iframe>
+  </div>
+  <p>Создание администратора биллинга</p>
+
+  <h3>Работа с абонентами</h3>
+  <div class="video-container">
+    <iframe src="https://rutube.ru/play/embed/adb95bb1127338b436c9761e18cd9825" frameborder="0" allowfullscreen></iframe>
+  </div>
+  <p>Создание абонента</p>
+
+  <div class="video-container">
+    <iframe src="https://rutube.ru/play/embed/6e027c3a89af2118e82ac1cf7cae1e01" frameborder="0" allowfullscreen></iframe>
+  </div>
+  <p>Миграция абонентов в СмИТ Биллинг 1.0</p>
+
+  <div class="video-container">
+    <iframe src="https://rutube.ru/play/embed/2537e4e338b3ef22e3e296d3b122b2ed" frameborder="0" allowfullscreen></iframe>
+  </div>
+  <p>Заведение юридических лиц в СмИТ Биллинг 1.0</p>
+
+  <div class="video-container">
+    <iframe src="https://rutube.ru/play/embed/302579dfd0c776d34ae04b062714e28b" frameborder="0" allowfullscreen></iframe>
+  </div>
+  <p>ФИАС в СмИТ Биллинг 1.0</p>
+
+  <h3>Тарификация</h3>
+  <div class="video-container">
+    <iframe src="https://rutube.ru/play/embed/67d7f7e98f4bb1eec74e7c51ee96808c" frameborder="0" allowfullscreen></iframe>
+  </div>
+  <p>Создание тарифов и услуг</p>
+
+  <h3>Интеграция</h3>
+  <div class="video-container">
+    <iframe src="https://rutube.ru/play/embed/31e34c51fc23b895adf68ac283e66437" frameborder="0" allowfullscreen></iframe>
+  </div>
+  <p>Интеграция оборудования на примере MikroTik</p>
+
+  <div class="video-container">
+    <iframe src="https://rutube.ru/play/embed/48603bda42c4cfaec57c589483457d5f" frameborder="0" allowfullscreen></iframe>
+  </div>
+  <p>Финансовые операции</p>
+
+  <h3>Дополнительно</h3>
+  <div class="video-container">
+    <iframe src="https://rutube.ru/play/embed/3e38e3644e9ca3494ef26655a4b651ee" frameborder="0" allowfullscreen></iframe>
+  </div>
+  <p>Настройка шаблонов печати</p>
+
+  <div class="video-container">
+    <iframe src="https://rutube.ru/play/embed/fa01fcaa8e301a5150c06c964f7903ec" frameborder="0" allowfullscreen></iframe>
+  </div>
+  <p>Настройка шаблонов сообщений</p>
+
+  <!-- ===== Дочерние страницы ===== -->
+
+  <h2>Дочерние страницы</h2>
+  <ul class="child-pages">
+    <li><a>Видео-инструкции</a> <span class="desc">Обучающие видеоматериалы по работе с системой</span></li>
+    <li><a>Миграция</a> <span class="desc">Перенос данных из других биллинговых систем</span></li>
+    <li><a>Установка</a> <span class="desc">Подробная инструкция по установке</span></li>
+    <li><a>Системные требования</a> <span class="desc">Аппаратные и программные требования</span></li>
+    <li><a>Тестирование СмИТ Биллинг 1.0 на Docker</a> <span class="desc">Быстрый запуск через docker compose up -d</span></li>
+  </ul>
+</main>
+
+<footer class="footer">
+  &copy; 2026 СмИТ — Биллинговая система СмИТ Биллинг 1.0
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

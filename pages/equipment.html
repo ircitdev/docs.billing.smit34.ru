@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Интеграция с оборудованием — СмИТ Биллинг 1.0</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <button class="menu-toggle" aria-label="Меню">&#9776;</button>
+    <div class="logo">
+      <div class="logo-icon">С</div>
+      <div class="logo-text">СмИТ Биллинг 1.0 <span>| Документация</span></div>
+    </div>
+  </div>
+  <div class="header-right">
+    <button class="theme-toggle" aria-label="Переключить тему" title="Светлая / тёмная тема">
+      <span class="icon-sun">&#9788;</span>
+      <span class="icon-moon">&#9790;</span>
+    </button>
+  </div>
+</header>
+
+<aside class="sidebar">
+  <nav>
+    <div class="nav-section">Разделы</div>
+    <ul>
+      <li><a href="../index.html">Главная</a></li>
+      <li><a href="installation.html">Установка и интеграция</a></li>
+      <li><a href="billing.html">Настройки биллинга</a></li>
+      <li><a href="server.html">Управление сервером</a></li>
+      <li><a href="equipment.html">Интеграция с оборудованием</a></li>
+      <li><a href="sorm.html">Интеграция с СОРМ3</a></li>
+      <li><a href="troubleshooting.html">Решение проблем</a></li>
+      <li><a href="licensing.html">Лицензирование и оплата</a></li>
+      <li><a href="contacts.html">Контакты</a></li>
+    </ul>
+  </nav>
+</aside>
+
+<main class="content">
+  <div class="breadcrumb">
+    <a href="../index.html">Документация</a> <span class="sep">/</span> Интеграция с оборудованием
+  </div>
+
+  <h1>Интеграция с оборудованием</h1>
+
+  <p>Раздел описывает интеграцию СмИТ Биллинг 1.0 с сетевым оборудованием: NAS/BRAS-серверами, коммутаторами, VoIP-шлюзами, IPTV-системами и абонентским оборудованием.</p>
+
+  <img src="../img/p50364669_isp_equipment.png" alt="Схема интеграции оборудования ISP" class="content-image">
+
+  <!-- ===== Интернет оборудование ===== -->
+  <h2 id="internet">Интернет оборудование — Пользовательская схема</h2>
+
+  <p>Для интеграции нестандартного NAS-оборудования с СмИТ Биллинг 1.0 используется пользовательская схема. Процесс интеграции состоит из 5 шагов:</p>
+
+  <ol>
+    <li><strong>Добавить NAS</strong> — зарегистрируйте новое NAS-устройство в разделе <em>Оборудование &rarr; NAS</em> веб-интерфейса биллинга. Укажите IP-адрес, тип устройства, RADIUS-secret.</li>
+    <li><strong>Настроить RADIUS</strong> — сконфигурируйте на NAS-устройстве параметры RADIUS-аутентификации: адрес RADIUS-сервера (IP биллинга), порты авторизации (1812) и учёта (1813), shared secret.</li>
+    <li><strong>Создать пользовательский скрипт</strong> — разработайте скрипт управления сессиями для вашего оборудования. Скрипт размещается в каталоге пользовательских бинарных файлов.</li>
+    <li><strong>Перезапустить nas_event_daemon</strong> — после добавления нового NAS перезапустите демон обработки событий для подхвата новой конфигурации.</li>
+    <li><strong>Верификация</strong> — выполните тестовую авторизацию абонента и убедитесь, что сессия корректно создаётся и завершается.</li>
+  </ol>
+
+  <p>Пользовательские скрипты управления NAS размещаются в директории проекта и монтируются в Docker-контейнер FreeRADIUS:</p>
+  <pre><code># Создать пользовательский скрипт NAS
+docker compose exec freeradius bash
+cd /app/radius_python/nas_scripts/
+cp template_session.py my_nas_session.py
+# Отредактировать скрипт под ваше оборудование
+
+# Перезапустить FreeRADIUS
+docker compose restart freeradius</code></pre>
+
+  <div class="info-box">
+    FreeRADIUS работает в отдельном Docker-контейнере с модулем <code>rlm_python3</code>. Три виртуальных сервера: default (интернет, порты 1812/1813), voip (2812/2813), iptv (6812/6813).
+  </div>
+
+  <h3>Поддерживаемое интернет-оборудование</h3>
+  <ul class="child-pages">
+    <li><a>Mikrotik RouterOS</a> <span class="desc">RADIUS-авторизация, PPPoE, Hotspot, DHCP</span></li>
+    <li><a>Cisco IOS / IOS-XE</a> <span class="desc">AAA, PPPoE, IP Subscriber</span></li>
+    <li><a>Juniper JUNOS</a> <span class="desc">AAA, DHCP Subscriber</span></li>
+    <li><a>Huawei (ME60, NE серия)</a> <span class="desc">BRAS, PPPoE, IPoE</span></li>
+    <li><a>Eltex (ESR, MES серия)</a> <span class="desc">RADIUS, DHCP option 82</span></li>
+    <li><a>D-Link (DES, DGS серия)</a> <span class="desc">Option 82, VLAN-based авторизация</span></li>
+    <li><a>Actelis / BDCom / BDCOM</a> <span class="desc">DSLAM, Option 82</span></li>
+    <li><a>Linux (FreeRADIUS + iptables)</a> <span class="desc">Софтроутер на базе Linux</span></li>
+    <li><a>Redback / Ericsson SmartEdge</a> <span class="desc">PPPoE BRAS</span></li>
+    <li><a>UTStarcom / Iskratel</a> <span class="desc">DSLAM, GPON</span></li>
+    <li><a>ZTE (C300/C600)</a> <span class="desc">OLT, GPON, RADIUS</span></li>
+    <li><a>SNR (коммутаторы)</a> <span class="desc">Option 82, VLAN</span></li>
+    <li><a>Прочие (пользовательская схема)</a> <span class="desc">Интеграция любого RADIUS-совместимого оборудования</span></li>
+  </ul>
+
+  <!-- ===== Телефония ===== -->
+  <h2 id="voip">Телефония</h2>
+
+  <p>Типовой план интеграции VoIP-оборудования с СмИТ Биллинг 1.0 занимает <strong>20-30 минут</strong> и состоит из 7 этапов:</p>
+
+  <ol>
+    <li>Настройка OSS-схемы подключения к VoIP-шлюзу/АТС.</li>
+    <li>Настройка парсера CDR-файлов (формат, кодировка, путь).</li>
+    <li>Конфигурация правил нормализации телефонных номеров (E.164).</li>
+    <li>Настройка направлений вызовов (VoIP-направления и категории).</li>
+    <li>Создание тарифных планов телефонии (поминутная, посекундная тарификация).</li>
+    <li>Тестовый вызов и верификация тарификации.</li>
+    <li>Запуск сервиса в эксплуатацию.</li>
+  </ol>
+
+  <h3>Поддерживаемые OSS-схемы</h3>
+  <ul>
+    <li><strong>Unitel TS-004</strong> — цифровая АТС, CDR через файловый обмен.</li>
+    <li><strong>Asterisk</strong> — открытая IP-АТС, CDR через CSV/RADIUS.</li>
+    <li><strong>Eltex SMG-1016M</strong> — медиашлюз, CDR через RADIUS.</li>
+    <li><strong>АТС М-200</strong> — аналоговая АТС, CDR через RS-232/файл.</li>
+    <li><strong>Avaya</strong> — корпоративная АТС, CDR через SFTP.</li>
+  </ul>
+
+  <h3>Поддерживаемые парсеры CDR</h3>
+  <table>
+    <thead>
+      <tr><th>Парсер</th><th>Формат</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>D-Link</td><td>CSV</td></tr>
+      <tr><td>Asterisk</td><td>CSV / RADIUS</td></tr>
+      <tr><td>Cisco</td><td>CDR binary / CSV</td></tr>
+      <tr><td>Mera Networks (MVTS)</td><td>CSV</td></tr>
+      <tr><td>Alterteks</td><td>CSV с разделителем «;»</td></tr>
+      <tr><td>GNU Gk (GnuGatekeeper)</td><td>RADIUS / CSV</td></tr>
+      <tr><td>VoiceCom</td><td>CSV</td></tr>
+      <tr><td>Quintum Tenor</td><td>CSV / RADIUS</td></tr>
+      <tr><td>Unitel TS-004</td><td>Проприетарный формат</td></tr>
+      <tr><td>АТС Iskratel SI3000</td><td>CSV</td></tr>
+      <tr><td>Avaya</td><td>CSV / SFTP</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ===== IPTV ===== -->
+  <h2 id="iptv">IPTV</h2>
+
+  <p>Интеграция с IPTV-платформами выполняется в 3 шага:</p>
+
+  <ol>
+    <li><strong>Настройка OSS-модуля</strong> — выбор и конфигурация схемы подключения к IPTV-платформе (API-ключи, URL-адреса, учётные данные).</li>
+    <li><strong>Привязка услуг</strong> — создание услуг IPTV в биллинге и привязка их к тарифным планам абонентов.</li>
+    <li><strong>Тестирование</strong> — активация услуги для тестового абонента, проверка синхронизации подписок.</li>
+  </ol>
+
+  <h3>Поддерживаемые IPTV-платформы</h3>
+  <ul>
+    <li><strong>IPTVPortal</strong> — облачная платформа интерактивного ТВ.</li>
+    <li><strong>Infomir Ministra (Stalker)</strong> — middleware для STB-приставок.</li>
+    <li><strong>LifeStream</strong> — OTT-платформа IPTV.</li>
+    <li><strong>Megogo</strong> — онлайн-кинотеатр с IPTV-функциями.</li>
+    <li><strong>TITV</strong> — платформа интерактивного телевидения.</li>
+    <li><strong>NextTV</strong> — IPTV-middleware.</li>
+    <li><strong>24hTV</strong> — сервис интернет-телевидения.</li>
+    <li><strong>MOOVI</strong> — OTT/IPTV-платформа.</li>
+    <li><strong>TVIP TMS</strong> — система управления TVIP-приставками.</li>
+  </ul>
+
+  <p>Логи синхронизации с IPTV-платформами:</p>
+  <pre><code>docker compose logs web | grep oss
+docker compose logs celery | grep iptv</code></pre>
+
+  <p>Отключение интеграции с конкретной IPTV-платформой выполняется через настройки в веб-интерфейсе или переменные окружения (<code>.env</code>).</p>
+
+  <!-- ===== Прочее оборудование ===== -->
+  <h2 id="cpe">Абонентское оборудование</h2>
+
+  <p>Управление абонентским оборудованием (CPE): роутеры, модемы, ONT-терминалы. Биллинг поддерживает удалённую настройку оборудования через протокол TR-069 (CWMP). Для каждого устройства хранятся: модель, серийный номер, MAC-адрес, статус подключения, параметры конфигурации.</p>
+
+  <h2 id="cameras">Камеры</h2>
+
+  <p>Интеграция с системами видеонаблюдения, в частности <strong>Flussonic Watcher</strong>. Биллинг управляет подписками абонентов на услуги видеонаблюдения: активация/деактивация доступа к камерам, тарификация просмотра архива, управление правами доступа к группам камер.</p>
+
+  <h2 id="rental">Аренда оборудования</h2>
+
+  <p>Модуль учёта оборудования, предоставляемого абонентам в аренду: Wi-Fi роутеры, STB-приставки, ONT-терминалы. Для каждой единицы оборудования ведётся учёт: привязка к абоненту, дата выдачи/возврата, состояние, начисление арендной платы. При блокировке или расторжении договора формируется уведомление о необходимости возврата оборудования.</p>
+</main>
+
+<footer class="footer">
+  &copy; 2026 СмИТ
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>
