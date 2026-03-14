@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API — СмИТ Биллинг 1.0</title>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="СмИТ Биллинг 1.0 — Документация">
+  <meta property="og:title" content="API — СмИТ Биллинг 1.0">
+  <meta property="og:description" content="REST API v2, SOAP API, обещанный платёж, управление абонентами. Примеры запросов curl и JSON.">
+  <meta property="og:url" content="https://docs.billing.smit34.ru/pages/api.html">
+  <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="ru_RU">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="API — СмИТ Биллинг 1.0">
+  <meta name="twitter:description" content="REST API v2, SOAP API, обещанный платёж, управление абонентами. Примеры запросов curl и JSON.">
+  <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
+  <meta name="description" content="REST API v2, SOAP API, обещанный платёж, управление абонентами. Примеры запросов curl и JSON.">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <button class="menu-toggle" aria-label="Меню">&#9776;</button>
+    <div class="logo">
+      <div class="logo-icon">С</div>
+      <div class="logo-text"><span class="logo-main">СмИТ Биллинг 1.0 </span><span>Документация</span></div>
+    </div>
+  </div>
+  <div class="header-right">
+    <button class="theme-toggle" aria-label="Переключить тему" title="Светлая / тёмная тема">
+      <span class="icon-sun">&#9788;</span>
+      <span class="icon-moon">&#9790;</span>
+    </button>
+  </div>
+</header>
+
+<aside class="sidebar">
+  <nav>
+    <div class="nav-section">Разделы</div>
+    <ul>
+      <li><a href="../index.html">Главная</a></li>
+      <li class="has-children">
+        <a href="installation.html">Установка и интеграция <span class="arrow">&#9654;</span></a>
+        <ul class="submenu">
+          <li><a href="installation.html#requirements">Системные требования</a></li>
+          <li><a href="installation.html#docker-install">Установка Docker Compose</a></li>
+          <li><a href="installation.html#demo-cleanup">Удаление демо-данных</a></li>
+          <li><a href="installation.html#equip-integration">Интеграция с оборудованием</a></li>
+          <li><a href="installation.html#tariff-setup">Настройка тарифов</a></li>
+          <li><a href="installation.html#add-subscribers">Добавление абонентов</a></li>
+          <li><a href="installation.html#final-test">Финальное тестирование</a></li>
+          <li><a href="installation.html#video">Видеоинструкции</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="billing.html">Настройки биллинга <span class="arrow">&#9654;</span></a>
+        <ul class="submenu">
+          <li><a href="billing.html#general">Общие настройки</a></li>
+          <li><a href="billing.html#subscribers">Работа с абонентами</a></li>
+          <li><a href="billing.html#tariffs">Тарификация и услуги</a></li>
+          <li><a href="billing.html#messaging">Отправка сообщений</a></li>
+          <li><a href="billing.html#payments">Платежи, API, 1С</a></li>
+          <li><a href="billing.html#cabinet">Личный кабинет</a></li>
+          <li><a href="billing.html#oss-bss">OSS.BSS</a></li>
+          <li><a href="billing.html#reports">Отчёты</a></li>
+          <li><a href="billing.html#dictionaries">Справочники</a></li>
+          <li><a href="billing.html#additional">Дополнительные настройки</a></li>
+          <li><a href="billing.html#security">Безопасность</a></li>
+          <li><a href="billing.html#versioning">Версионность</a></li>
+          <li><a href="billing.html#tech-stack">Технологический стек</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="server.html">Управление сервером <span class="arrow">&#9654;</span></a>
+        <ul class="submenu">
+          <li><a href="server.html#server-setup">Настройка сервера</a></li>
+          <li><a href="server.html#maintenance">Сервисное обслуживание</a></li>
+          <li><a href="server.html#modules">Управление модулями</a></li>
+          <li><a href="server.html#remote">Удалённое управление</a></li>
+          <li><a href="server.html#advanced">Дополнительные возможности</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="equipment.html">Интеграция с оборудованием <span class="arrow">&#9654;</span></a>
+        <ul class="submenu">
+          <li><a href="equipment.html#internet">Интернет (NAS/BRAS)</a></li>
+          <li><a href="equipment.html#voip">Телефония</a></li>
+          <li><a href="equipment.html#iptv">IPTV</a></li>
+          <li><a href="equipment.html#cpe">Абонентское оборудование</a></li>
+          <li><a href="equipment.html#rental">Аренда оборудования</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="sorm.html">Интеграция с СОРМ3 <span class="arrow">&#9654;</span></a>
+        <ul class="submenu">
+          <li><a href="sorm.html#principle">Принцип работы</a></li>
+          <li><a href="sorm.html#integrated">Интегрированные решения</a></li>
+          <li><a href="sorm.html#children">Схемы настройки</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="api.html">API <span class="arrow">&#9654;</span></a>
+        <ul class="submenu">
+          <li><a href="api.html#overview">Обзор API</a></li>
+          <li><a href="api.html#auth">Аутентификация</a></li>
+          <li><a href="api.html#rest-v2">REST API v2</a></li>
+          <li><a href="api.html#promise-pay">Обещанный платёж</a></li>
+          <li><a href="api.html#soap">SOAP API</a></li>
+          <li><a href="api.html#web-api">Web API</a></li>
+          <li><a href="api.html#ajax">AJAX-эндпоинты</a></li>
+          <li><a href="api.html#errors">Коды ошибок</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="troubleshooting.html">Решение проблем <span class="arrow">&#9654;</span></a>
+        <ul class="submenu">
+          <li><a href="troubleshooting.html#general">Общие вопросы</a></li>
+          <li><a href="troubleshooting.html#auth">Абоненты и авторизация</a></li>
+          <li><a href="troubleshooting.html#billing-payments">Биллинг и платежи</a></li>
+          <li><a href="troubleshooting.html#server-perf">Сервер и производительность</a></li>
+          <li><a href="troubleshooting.html#network">Сеть и доступ</a></li>
+          <li><a href="troubleshooting.html#security">Безопасность</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="licensing.html">Лицензирование и оплата <span class="arrow">&#9654;</span></a>
+        <ul class="submenu">
+          <li><a href="licensing.html#delivery">Порядок поставки ПО</a></li>
+          <li><a href="licensing.html#payment-issues">Не проходит оплата</a></li>
+          <li><a href="licensing.html#reconciliation">Акт сверки</a></li>
+          <li><a href="licensing.html#non-payment">Работа при неоплате</a></li>
+        </ul>
+      </li>
+      <li><a href="contacts.html">Контакты</a></li>
+    </ul>
+  </nav>
+</aside>
+
+<main class="content">
+  <div class="breadcrumb">
+    <a href="../index.html">Документация</a> <span class="sep">/</span> API
+  </div>
+
+  <h1>API</h1>
+  <p>СмИТ Биллинг 1.0 предоставляет несколько типов API для интеграции с внешними системами: платёжными шлюзами, личными кабинетами, 1С, системами мониторинга и другими сервисами.</p>
+
+  <div class="info-box">
+    <strong>Базовый URL:</strong> <code>https://your-billing-server.example.com</code><br>
+    <strong>Авторизация:</strong> Cookie-сессия (Django) или SOAP-хэш<br>
+    <strong>Формат данных:</strong> JSON (REST), XML (SOAP)
+  </div>
+
+  <!-- ============================================ -->
+  <h2 id="overview">Обзор API</h2>
+
+  <table>
+    <thead>
+      <tr><th>Тип</th><th>Протокол</th><th>URL</th><th>Аутентификация</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>REST API v2</td><td>JSON over HTTP</td><td><code>/rest_api/v2/&lt;model&gt;/</code></td><td>Cookie (session)</td></tr>
+      <tr><td>REST API v1</td><td>JSON/XML</td><td><code>/rest_api/</code></td><td>Cookie (session)</td></tr>
+      <tr><td>SOAP API</td><td>XML (Spyne)</td><td><code>/api/</code>, <code>/api/fiscal/</code></td><td>SOAP-хэш</td></tr>
+      <tr><td>System API</td><td>JSON</td><td><code>/system_api/</code></td><td>IP whitelist + пароль</td></tr>
+      <tr><td>Web Admin API</td><td>HTML/JSON</td><td><code>/admin/*</code></td><td>Cookie + CSRF</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ============================================ -->
+  <h2 id="auth">Аутентификация</h2>
+
+  <h3>Логин через Web (получение сессии)</h3>
+  <p>Двухшаговый процесс: получение CSRF-токена, затем POST с логином и паролем.</p>
+
+  <pre><code># Шаг 1: получить CSRF-токен
+curl -s -c cookies.txt "https://billing.example.com/admin/" &gt; /dev/null
+
+# Шаг 2: логин
+CSRF=$(grep csrftoken cookies.txt | awk '{print $NF}')
+curl -s -c cookies.txt -b cookies.txt \
+  -X POST "https://billing.example.com/admin/" \
+  -d "username=admin&amp;password=YOUR_PASSWORD&amp;csrfmiddlewaretoken=$CSRF" \
+  -H "Referer: https://billing.example.com/admin/" \
+  -o /dev/null -w "%{http_code}"
+# 302 = успешный вход</code></pre>
+
+  <h3>API-логин (JSON)</h3>
+  <p>Альтернативный способ — получение сессионного хэша через GET-параметры:</p>
+
+  <pre><code>curl -s "https://billing.example.com/admin/?api=1&amp;username=admin&amp;password=YOUR_PASSWORD&amp;format=json"
+# Ответ: {"hash": "session_hash_hex"}
+# 401 = неверные учётные данные</code></pre>
+
+  <h3>Логаут</h3>
+  <pre><code># Web-логаут
+curl -s -b cookies.txt "https://billing.example.com/admin/logout"
+
+# API-логаут
+curl -s -b cookies.txt -X POST "https://billing.example.com/rest_api/logout"
+# Ответ: {"status": "ok"}</code></pre>
+
+  <!-- ============================================ -->
+  <h2 id="rest-v2">REST API v2</h2>
+
+  <p>Универсальный CRUD-интерфейс для работы с любой моделью биллинга. Поддерживает фильтрацию, сортировку, пагинацию и выбор полей.</p>
+
+  <h3>Список записей</h3>
+  <pre><code># Получить список абонентов (первые 100)
+curl -s -b cookies.txt \
+  "https://billing.example.com/rest_api/v2/Abonents/?limit=100&amp;offset=0"</code></pre>
+
+  <p>Ответ:</p>
+  <pre><code>{
+  "count": 5554,
+  "next": "/rest_api/v2/Abonents/?limit=100&amp;offset=100",
+  "previous": null,
+  "results": [
+    {
+      "id": 1,
+      "name": "Иванов Иван Иванович",
+      "contract_number": "12345",
+      "email": "ivanov@example.com",
+      "enabled": true,
+      ...
+    },
+    ...
+  ]
+}</code></pre>
+
+  <h3>Фильтрация</h3>
+  <pre><code># Абоненты с тарифом ID=131, только активные
+curl -s -b cookies.txt \
+  "https://billing.example.com/rest_api/v2/Abonents/?tarif=131&amp;enabled=true"
+
+# Поиск по имени (частичное совпадение)
+curl -s -b cookies.txt \
+  "https://billing.example.com/rest_api/v2/Abonents/?name__icontains=иванов"</code></pre>
+
+  <h3>Сортировка</h3>
+  <pre><code># Сортировка по имени (А→Я)
+curl -s -b cookies.txt \
+  "https://billing.example.com/rest_api/v2/Abonents/?ordering=name"
+
+# Обратная сортировка по балансу (от большего к меньшему)
+curl -s -b cookies.txt \
+  "https://billing.example.com/rest_api/v2/Abonents/?ordering=-account__ostatok"</code></pre>
+
+  <h3>Выбор полей</h3>
+  <pre><code># Вернуть только id, name и contract_number
+curl -s -b cookies.txt \
+  "https://billing.example.com/rest_api/v2/Abonents/?fields=id,name,contract_number"</code></pre>
+
+  <h3>Получение одной записи</h3>
+  <pre><code>curl -s -b cookies.txt \
+  "https://billing.example.com/rest_api/v2/Abonents/5552/"</code></pre>
+
+  <h3>Создание записи (POST)</h3>
+  <pre><code>curl -s -b cookies.txt -X POST \
+  "https://billing.example.com/rest_api/v2/Abonents/" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Новый абонент",
+    "contract_number": "99999",
+    "email": "new@example.com",
+    "tarif": 131
+  }'
+# Ответ: 201 Created + JSON объекта</code></pre>
+
+  <h3>Обновление записи (PUT)</h3>
+  <pre><code>curl -s -b cookies.txt -X PUT \
+  "https://billing.example.com/rest_api/v2/Abonents/5552/" \
+  -H "Content-Type: application/json" \
+  -d '{"email": "updated@example.com"}'
+# Ответ: 200 OK + обновлённый JSON</code></pre>
+
+  <h3>Удаление записи (DELETE)</h3>
+  <pre><code>curl -s -b cookies.txt -X DELETE \
+  "https://billing.example.com/rest_api/v2/Abonents/5552/"
+# Ответ: 204 No Content</code></pre>
+
+  <h3>Доступные модели</h3>
+  <table>
+    <thead>
+      <tr><th>Модель</th><th>Описание</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>Abonents</code></td><td>Абоненты</td></tr>
+      <tr><td><code>Tarif</code></td><td>Тарифные планы</td></tr>
+      <tr><td><code>Usluga</code></td><td>Услуги</td></tr>
+      <tr><td><code>Users</code></td><td>Учётные записи (логин/пароль/IP)</td></tr>
+      <tr><td><code>Nas</code></td><td>Серверы доступа (NAS/BRAS)</td></tr>
+      <tr><td><code>Switch</code></td><td>Коммутаторы</td></tr>
+      <tr><td><code>Homes</code></td><td>Адреса (дерево: город→улица→дом)</td></tr>
+      <tr><td><code>IpPull</code></td><td>IP-пулы</td></tr>
+      <tr><td><code>FinanceOperations</code></td><td>Финансовые операции</td></tr>
+      <tr><td><code>AdminAccounts</code></td><td>Лицевые счета</td></tr>
+      <tr><td><code>Hdsk</code></td><td>Заявки HelpDesk</td></tr>
+      <tr><td><code>Cards</code></td><td>Карты оплаты</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ============================================ -->
+  <h2 id="promise-pay">Обещанный платёж</h2>
+
+  <p>Специализированный эндпоинт для управления обещанными платежами абонентов.</p>
+
+  <h3>GET — Статус обещанного платежа</h3>
+  <pre><code>curl -s -b cookies.txt \
+  "https://billing.example.com/rest_api/v2/promise_pay/5552/"</code></pre>
+
+  <p>Ответ:</p>
+  <pre><code>{
+  "abonent_id": 5552,
+  "abonent_name": "Иванов Иван Иванович",
+  "promise_pay": "90.00",
+  "promise_date_end": "2026-03-15T12:00:00",
+  "active_promises": [
+    {
+      "id": 3,
+      "usluga_id": -4,
+      "type": "prepay",
+      "limit": "90.00",
+      "end_time": "2026-03-15T12:00:00",
+      "comment": "Обещанный платёж по предоплате до ...",
+      "create_date": "2026-03-12T12:00:00"
+    }
+  ]
+}</code></pre>
+
+  <h3>POST — Добавить обещанный платёж</h3>
+  <pre><code># С параметрами по умолчанию (сумма и срок из настроек)
+curl -s -b cookies.txt -X POST \
+  "https://billing.example.com/rest_api/v2/promise_pay/5552/" \
+  -H "Content-Type: application/json" \
+  -d '{}'
+
+# С явными параметрами
+curl -s -b cookies.txt -X POST \
+  "https://billing.example.com/rest_api/v2/promise_pay/5552/" \
+  -H "Content-Type: application/json" \
+  -d '{"limit": 500, "end_time": "2026-03-31", "postpay": false}'</code></pre>
+
+  <table>
+    <thead>
+      <tr><th>Параметр</th><th>Тип</th><th>По умолчанию</th><th>Описание</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>limit</code></td><td>number</td><td>90</td><td>Сумма обещанного платежа (руб.)</td></tr>
+      <tr><td><code>end_time</code></td><td>string</td><td>+3 дня</td><td>Дата окончания (YYYY-MM-DD или ISO 8601)</td></tr>
+      <tr><td><code>postpay</code></td><td>bool</td><td>false</td><td>true = постоплата, false = предоплата</td></tr>
+    </tbody>
+  </table>
+
+  <p>Ответ (201 Created):</p>
+  <pre><code>{
+  "status": "ok",
+  "promise_id": 3,
+  "abonent_id": 5552,
+  "usluga_id": -4,
+  "type": "prepay",
+  "limit": "90",
+  "end_time": "2026-03-15T12:00:00"
+}</code></pre>
+
+  <h3>DELETE — Удалить обещанный платёж</h3>
+  <pre><code># Удалить предоплату (по умолчанию)
+curl -s -b cookies.txt -X DELETE \
+  "https://billing.example.com/rest_api/v2/promise_pay/5552/"
+
+# Удалить постоплату
+curl -s -b cookies.txt -X DELETE \
+  "https://billing.example.com/rest_api/v2/promise_pay/5552/?postpay=1"</code></pre>
+
+  <p>Ответ (200):</p>
+  <pre><code>{"status": "ok", "abonent_id": 5552, "message": "Promise pay deleted"}</code></pre>
+
+  <div class="info-box">
+    <strong>Настройки по умолчанию</strong> хранятся в таблице <code>Usluga</code>:<br>
+    ID <code>-4</code> (предоплата): сумма 90 руб., срок 3 дня<br>
+    ID <code>-3</code> (постоплата): сумма 90 руб., срок 3 дня
+  </div>
+
+  <!-- ============================================ -->
+  <h2 id="soap">SOAP API</h2>
+
+  <p>SOAP-интерфейс на базе фреймворка <strong>Spyne</strong>. Используется для интеграции с платёжными системами, 1С и кассовым ПО.</p>
+
+  <h3>WSDL</h3>
+  <pre><code># Получить WSDL-описание сервисов
+curl -s "https://billing.example.com/api/?wsdl"
+curl -s "https://billing.example.com/api/fiscal/?wsdl"</code></pre>
+
+  <h3>Эндпоинты</h3>
+  <table>
+    <thead>
+      <tr><th>URL</th><th>Сервис</th><th>Методы</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>/api/</code></td><td>UserService</td><td><code>get_user_hash</code></td></tr>
+      <tr><td><code>/api/v2/</code></td><td>UserService</td><td><code>get_user_hash</code></td></tr>
+      <tr><td><code>/api/1c/</code></td><td>UserService</td><td><code>get_user_hash</code></td></tr>
+      <tr><td><code>/api/userside/</code></td><td>UserService</td><td><code>get_user_hash</code></td></tr>
+      <tr><td><code>/api/collector/</code></td><td>UserService</td><td><code>get_user_hash</code></td></tr>
+      <tr><td><code>/api/cabinet/</code></td><td>UserService</td><td><code>get_user_hash</code></td></tr>
+      <tr><td><code>/api/fiscal/</code></td><td>FiscalService</td><td><code>pay_usr_act2</code>, <code>pay_usr_act_import</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3>get_user_hash — Аутентификация</h3>
+  <pre><code>curl -s -X POST "https://billing.example.com/api/" \
+  -H "Content-Type: text/xml" \
+  -d '&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:tns="billing.users"&gt;
+  &lt;soapenv:Body&gt;
+    &lt;tns:get_user_hash&gt;
+      &lt;tns:username&gt;admin&lt;/tns:username&gt;
+      &lt;tns:hash&gt;sha1_hex_hash&lt;/tns:hash&gt;
+    &lt;/tns:get_user_hash&gt;
+  &lt;/soapenv:Body&gt;
+&lt;/soapenv:Envelope&gt;'</code></pre>
+
+  <table>
+    <thead>
+      <tr><th>Параметр</th><th>Тип</th><th>Описание</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>username</code></td><td>String</td><td>Имя пользователя</td></tr>
+      <tr><td><code>hash</code></td><td>String</td><td>SHA1(MD5(password) + salt)</td></tr>
+    </tbody>
+  </table>
+
+  <p>Ответ: <code>{hash: "32-byte-hex-session-token"}</code> — токен для SSO, хранится 1 час.</p>
+
+  <h3>pay_usr_act2 — Проведение платежа</h3>
+  <pre><code>curl -s -X POST "https://billing.example.com/api/fiscal/" \
+  -H "Content-Type: text/xml" \
+  -d '&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:tns="rpc.view.fiscal"&gt;
+  &lt;soapenv:Body&gt;
+    &lt;tns:pay_usr_act2&gt;
+      &lt;tns:hash_key&gt;session_token&lt;/tns:hash_key&gt;
+      &lt;tns:ACT&gt;PAY&lt;/tns:ACT&gt;
+      &lt;tns:CONTRACT_NUMBER&gt;12345&lt;/tns:CONTRACT_NUMBER&gt;
+      &lt;tns:SUM_IN&gt;100.00&lt;/tns:SUM_IN&gt;
+      &lt;tns:PAY_OPERATOR&gt;Sberbank&lt;/tns:PAY_OPERATOR&gt;
+      &lt;tns:COMMENT_IN&gt;Оплата услуг&lt;/tns:COMMENT_IN&gt;
+    &lt;/tns:pay_usr_act2&gt;
+  &lt;/soapenv:Body&gt;
+&lt;/soapenv:Envelope&gt;'</code></pre>
+
+  <table>
+    <thead>
+      <tr><th>Параметр</th><th>Тип</th><th>Обязательный</th><th>Описание</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>hash_key</code></td><td>String</td><td>Да</td><td>Сессионный токен (из get_user_hash)</td></tr>
+      <tr><td><code>ACT</code></td><td>String</td><td>Да</td><td>Тип операции: PAY, CHECK</td></tr>
+      <tr><td><code>CONTRACT_NUMBER</code></td><td>String</td><td>Да</td><td>Номер договора абонента</td></tr>
+      <tr><td><code>SUM_IN</code></td><td>String</td><td>Да</td><td>Сумма платежа</td></tr>
+      <tr><td><code>PAY_OPERATOR</code></td><td>String</td><td>Да</td><td>Название оператора/платёжной системы</td></tr>
+      <tr><td><code>COMMENT_IN</code></td><td>String</td><td>Нет</td><td>Комментарий к платежу</td></tr>
+      <tr><td><code>PAY_ID_STR</code></td><td>String</td><td>Нет</td><td>Внешний ID платежа</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ============================================ -->
+  <h2 id="web-api">Web API (управление абонентами)</h2>
+
+  <p>Эндпоинты для управления абонентами через HTTP POST. Требуют авторизацию (cookie) и CSRF-токен. Возвращают HTTP 302 (redirect) при успехе.</p>
+
+  <h3>Блокировка абонента</h3>
+  <pre><code>CSRF=$(grep csrftoken cookies.txt | awk '{print $NF}')
+curl -s -b cookies.txt -X POST \
+  "https://billing.example.com/admin/abonents/block/5552/" \
+  -d "csrfmiddlewaretoken=$CSRF" \
+  -H "Referer: https://billing.example.com/admin/Abonents/5552/" \
+  -o /dev/null -w "%{http_code}"
+# 302 = успех</code></pre>
+
+  <h3>Разблокировка абонента</h3>
+  <pre><code>curl -s -b cookies.txt -X POST \
+  "https://billing.example.com/admin/abonents/unblock/5552/" \
+  -d "csrfmiddlewaretoken=$CSRF" \
+  -H "Referer: https://billing.example.com/admin/Abonents/5552/"</code></pre>
+
+  <h3>Отключение / Восстановление</h3>
+  <pre><code># Отключить абонента
+curl -s -b cookies.txt -X POST \
+  "https://billing.example.com/admin/abonents/reconnect/5552/" \
+  -d "csrfmiddlewaretoken=$CSRF" \
+  -H "Referer: https://billing.example.com/admin/Abonents/5552/"
+
+# Восстановить удалённого абонента
+curl -s -b cookies.txt -X POST \
+  "https://billing.example.com/admin/Abonents/restore/5552/" \
+  -d "csrfmiddlewaretoken=$CSRF" \
+  -H "Referer: https://billing.example.com/admin/Abonents/5552/"</code></pre>
+
+  <!-- ============================================ -->
+  <h2 id="ajax">AJAX-эндпоинты</h2>
+
+  <p>JSON-эндпоинты для асинхронных запросов из веб-интерфейса. Требуют авторизацию (cookie).</p>
+
+  <h3>Получить IP из пула</h3>
+  <pre><code># Из любого свободного пула
+curl -s -b cookies.txt "https://billing.example.com/admin/ajax/ippull_get/"
+
+# Из конкретного пула (ID=1)
+curl -s -b cookies.txt "https://billing.example.com/admin/ajax/ippull_get/1/"</code></pre>
+  <p>Ответ: <code>{"msg": "ok", "ip": "10.0.0.5", "mask": "255.255.255.0"}</code></p>
+
+  <h3>Информация о MAC-адресе</h3>
+  <pre><code>curl -s -b cookies.txt \
+  "https://billing.example.com/admin/ajax/user_getinfo/?user_id=123&amp;cmd=GetMac"</code></pre>
+  <p>Ответ: <code>{"msg": "ok", "mac": "AA:BB:CC:DD:EE:FF"}</code></p>
+
+  <h3>Порты коммутатора</h3>
+  <pre><code>curl -s -b cookies.txt \
+  "https://billing.example.com/admin/ajax/user_get_switch_port_list/?user_id=123&amp;switch_id=1"</code></pre>
+  <p>Ответ: <code>[{"pk": 1, "name": "Port 1", "selected": false}, ...]</code></p>
+
+  <h3>Утилиты</h3>
+  <table>
+    <thead>
+      <tr><th>Метод</th><th>URL</th><th>Описание</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>GET</td><td><code>/admin/Abonents/get_bills/&lt;filename&gt;</code></td><td>Скачать файл счёта</td></tr>
+      <tr><td>GET</td><td><code>/admin/Abonents/download_operations/</code></td><td>Скачать отчёт по операциям</td></tr>
+      <tr><td>GET</td><td><code>/admin/getpdf/&lt;abonent_id&gt;/&lt;item_id&gt;/</code></td><td>Генерация PDF-документа</td></tr>
+      <tr><td>GET</td><td><code>/admin/Users/resolve_dns/&lt;ip&gt;/</code></td><td>Обратный DNS-запрос</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ============================================ -->
+  <h2 id="errors">Коды ошибок</h2>
+
+  <table>
+    <thead>
+      <tr><th>HTTP-код</th><th>Описание</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>200</code></td><td>Успех</td></tr>
+      <tr><td><code>201</code></td><td>Создано (POST)</td></tr>
+      <tr><td><code>204</code></td><td>Удалено (DELETE)</td></tr>
+      <tr><td><code>302</code></td><td>Редирект (Web API — успех)</td></tr>
+      <tr><td><code>400</code></td><td>Неверный запрос (ошибка валидации)</td></tr>
+      <tr><td><code>401</code></td><td>Не авторизован</td></tr>
+      <tr><td><code>403</code></td><td>Доступ запрещён (CSRF, READ_ONLY_MODE)</td></tr>
+      <tr><td><code>404</code></td><td>Объект не найден</td></tr>
+      <tr><td><code>500</code></td><td>Внутренняя ошибка сервера</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <strong>READ_ONLY_MODE:</strong> Если в настройках биллинга включён режим «Только чтение» (<code>VpnConst.READ_ONLY_MODE</code>), все POST/PUT/DELETE запросы вернут <code>403 Forbidden</code>.
+  </div>
+
+</main>
+
+<footer class="footer">
+  &copy; 2026 СмИТ
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>
