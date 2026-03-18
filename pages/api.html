@@ -650,7 +650,11 @@ curl -s "https://billing.example.com/mobile-api/v1/account/status" \
   "has_promise_pay": false,
   "promise_pay_end": null,
   "balance_until_date": null,
-  "address": "Волгоград"
+  "address": "Волгоград",
+  "email": "user@example.com",
+  "sms": "+79001234567",
+  "notification": "Уважаемые абоненты! Плановые работы 20.03.",
+  "last_payment": {"amount": "500.00", "date": "19.03.2026"}
 }</code></pre>
 
   <pre><code># Список доступных тарифов
@@ -661,7 +665,23 @@ curl -s "https://billing.example.com/mobile-api/v1/account/tariffs" \
 curl -s -X POST "https://billing.example.com/mobile-api/v1/account/tariff" \
   -H "Authorization: Bearer ACCESS_TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{"tariff_id": 140}'</code></pre>
+  -d '{"tariff_id": 140}'
+
+# Смена пароля
+curl -s -X POST "https://billing.example.com/mobile-api/v1/account/change_password" \
+  -H "Authorization: Bearer ACCESS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"current_password": "old", "new_password": "new123", "confirm_password": "new123"}'
+
+# Добровольная блокировка — статус
+curl -s "https://billing.example.com/mobile-api/v1/account/voluntary_block" \
+  -H "Authorization: Bearer ACCESS_TOKEN"
+
+# Добровольная блокировка — включить/выключить
+curl -s -X POST "https://billing.example.com/mobile-api/v1/account/voluntary_block" \
+  -H "Authorization: Bearer ACCESS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"enable": true}'</code></pre>
 
   <h3>Финансы</h3>
 
@@ -703,7 +723,8 @@ curl -s -X POST "https://billing.example.com/mobile-api/v1/finance/pay" \
   -H "Authorization: Bearer ACCESS_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"amount": "500.00", "system": "yookassa"}'
-# Ответ: {"redirect_url": "https://yookassa.ru/checkout/..."}</code></pre>
+# Ответ (REST API v3): {"redirect_url": "https://yookassa.ru/checkout/..."}
+# Ответ (HTTP-протокол): {"form_post": true, "action": "https://yoomoney.ru/eshop.xml", "fields": {...}}</code></pre>
 
   <h3>Поддержка (FreeScout)</h3>
 
@@ -711,11 +732,21 @@ curl -s -X POST "https://billing.example.com/mobile-api/v1/finance/pay" \
 curl -s "https://billing.example.com/mobile-api/v1/support/tickets" \
   -H "Authorization: Bearer ACCESS_TOKEN"
 
-# Создать тикет
-curl -s -X POST "https://billing.example.com/mobile-api/v1/support/tickets/create" \
+# Создать тикет (POST на тот же URL)
+curl -s -X POST "https://billing.example.com/mobile-api/v1/support/tickets" \
   -H "Authorization: Bearer ACCESS_TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{"subject": "Нет интернета", "body": "Не работает с утра"}'</code></pre>
+  -d '{"subject": "Нет интернета", "body": "Не работает с утра"}'
+
+# Детали тикета + сообщения
+curl -s "https://billing.example.com/mobile-api/v1/support/tickets/59808" \
+  -H "Authorization: Bearer ACCESS_TOKEN"
+
+# Ответ на тикет
+curl -s -X POST "https://billing.example.com/mobile-api/v1/support/tickets/59808" \
+  -H "Authorization: Bearer ACCESS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"body": "Спасибо, проблема решена"}'</code></pre>
 
   <h3>Услуги</h3>
 
@@ -748,12 +779,14 @@ curl -s -X POST "https://billing.example.com/mobile-api/v1/push/register" \
       <tr><td>GET</td><td><code>/account/status</code></td><td>Баланс, тариф, блокировки</td></tr>
       <tr><td>GET</td><td><code>/account/tariffs</code></td><td>Доступные тарифы</td></tr>
       <tr><td>POST</td><td><code>/account/tariff</code></td><td>Смена тарифа</td></tr>
+      <tr><td>POST</td><td><code>/account/change_password</code></td><td>Смена пароля</td></tr>
+      <tr><td>GET/POST</td><td><code>/account/voluntary_block</code></td><td>Добровольная блокировка</td></tr>
       <tr><td>GET</td><td><code>/finance/history</code></td><td>История платежей</td></tr>
       <tr><td>GET</td><td><code>/finance/charges</code></td><td>История начислений</td></tr>
       <tr><td>GET/POST/DELETE</td><td><code>/finance/promise_pay</code></td><td>Обещанный платёж</td></tr>
       <tr><td>POST</td><td><code>/finance/pay</code></td><td>Создание платежа</td></tr>
-      <tr><td>GET</td><td><code>/support/tickets</code></td><td>Список тикетов</td></tr>
-      <tr><td>POST</td><td><code>/support/tickets/create</code></td><td>Создание тикета</td></tr>
+      <tr><td>GET/POST</td><td><code>/support/tickets</code></td><td>Список + создание тикетов</td></tr>
+      <tr><td>GET/POST</td><td><code>/support/tickets/&lt;id&gt;</code></td><td>Детали тикета + ответ</td></tr>
       <tr><td>GET</td><td><code>/services/list</code></td><td>Список услуг</td></tr>
       <tr><td>POST</td><td><code>/services/toggle</code></td><td>Вкл/выкл услуги</td></tr>
       <tr><td>POST</td><td><code>/push/register</code></td><td>Регистрация FCM-токена</td></tr>
