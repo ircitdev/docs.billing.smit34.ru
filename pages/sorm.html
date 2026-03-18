@@ -60,29 +60,44 @@
         <a href="billing.html">&#9881; Настройки биллинга <span class="arrow">&#9654;</span></a>
         <ul class="submenu">
           <li><a href="billing.html#general">1. Общие настройки</a></li>
+          <li class="sub-item"><a href="billing.html#admin-ip">1.1. IP администратора</a></li>
+          <li class="sub-item"><a href="billing.html#global-settings">1.2. Глобальные настройки</a></li>
+          <li class="sub-item"><a href="billing.html#ssl-admin">1.3. SSL-сертификат</a></li>
           <li class="sub-item"><a href="billing.html#user-interfaces">1.4. Интерфейсы пользователей</a></li>
+          <li class="sub-item"><a href="billing.html#db-cleanup">1.5. Очистка БД</a></li>
           <li class="sub-item"><a href="billing.html#access-control">1.6. Права доступа</a></li>
           <li class="sub-item"><a href="billing.html#diagnostic-commands">1.7. Диагностика</a></li>
           <li><a href="billing.html#subscribers">2. Работа с абонентами</a></li>
-          <li class="sub-item"><a href="billing.html#create-subscriber">Создание абонента</a></li>
-          <li class="sub-item"><a href="billing.html#search">Поиск</a></li>
-          <li class="sub-item"><a href="billing.html#finance-operations">Финансовые операции</a></li>
-          <li class="sub-item"><a href="billing.html#block-unblock">Блокировка</a></li>
-          <li class="sub-item"><a href="billing.html#debtors">Должники</a></li>
-          <li class="sub-item"><a href="billing.html#turnover-sheet">Оборотная ведомость</a></li>
-          <li class="sub-item"><a href="billing.html#send-message">Отправка сообщений</a></li>
+          <li class="sub-item"><a href="billing.html#create-subscriber">2.1. Создание абонента</a></li>
+          <li class="sub-item"><a href="billing.html#add-service">2.2. Выбор тарифа</a></li>
+          <li class="sub-item"><a href="billing.html#search">2.3. Поиск</a></li>
+          <li class="sub-item"><a href="billing.html#finance-operations">2.4. Финансовые операции</a></li>
+          <li class="sub-item"><a href="billing.html#block-unblock">2.5. Блокировка</a></li>
+          <li class="sub-item"><a href="billing.html#accounts">2.6. Лицевые счета</a></li>
+          <li class="sub-item"><a href="billing.html#debtors">2.7. Должники</a></li>
+          <li class="sub-item"><a href="billing.html#turnover-sheet">2.8. Оборотная ведомость</a></li>
+          <li class="sub-item"><a href="billing.html#send-message">2.9. Отправка сообщений</a></li>
           <li><a href="billing.html#tariffs">3. Тарификация и услуги</a></li>
           <li class="sub-item"><a href="billing.html#tarif-create">3.1. Тарифы</a></li>
+          <li class="sub-item"><a href="billing.html#payment-cards">3.2. Карты оплаты</a></li>
+          <li class="sub-item"><a href="billing.html#tarif-change">3.3. Смена тарифа</a></li>
           <li class="sub-item"><a href="billing.html#services">3.6. Услуги</a></li>
+          <li class="sub-item"><a href="billing.html#disconnection">3.8. Отключение</a></li>
+          <li class="sub-item"><a href="billing.html#counters">3.12. Счётчики</a></li>
           <li class="sub-item"><a href="billing.html#bonus-system">3.16. Система бонусов</a></li>
           <li><a href="billing.html#messaging">4. Отправка сообщений</a></li>
+          <li class="sub-item"><a href="billing.html#messaging-system">4.2. Система SMS/Email</a></li>
           <li class="sub-item"><a href="billing.html#telegram">4.4. Telegram</a></li>
           <li class="sub-item"><a href="billing.html#smsaero">4.5. SMSAero</a></li>
           <li class="sub-item"><a href="billing.html#email-smtp">4.6. Email (SMTP)</a></li>
           <li><a href="billing.html#payments">5. Платежи, API, 1С</a></li>
+          <li class="sub-item"><a href="billing.html#cashier">5.1. Веб-касса</a></li>
           <li class="sub-item"><a href="billing.html#payment-systems">5.2. Платёжные системы</a></li>
+          <li class="sub-item"><a href="billing.html#1c-integration">5.3. Интеграция с 1С</a></li>
           <li class="sub-item"><a href="billing.html#api">5.4. API</a></li>
+          <li class="sub-item"><a href="billing.html#csv-export">5.6. Импорт из CSV</a></li>
           <li class="sub-item"><a href="billing.html#online-cash">5.7. Онлайн-кассы</a></li>
+          <li class="sub-item"><a href="billing.html#payment-errors">5.9. Коды ошибок</a></li>
           <li><a href="billing.html#cabinet">6. Личный кабинет</a></li>
           <li class="sub-item"><a href="billing.html#lk-auth">6.1. Авторизация</a></li>
           <li class="sub-item"><a href="billing.html#lk-settings">6.2. Настройки (.env)</a></li>
@@ -99,7 +114,11 @@
           <li class="sub-item"><a href="billing.html#audit">8.1. Аудит</a></li>
           <li class="sub-item"><a href="billing.html#payment-log">8.2. Журнал платежей</a></li>
           <li class="sub-item"><a href="billing.html#report-constructor">8.3. Конструктор отчётов</a></li>
+          <li class="sub-item"><a href="billing.html#director-report">8.4. Отчёт для директора</a></li>
           <li><a href="billing.html#dictionaries">9. Справочники</a></li>
+          <li class="sub-item"><a href="billing.html#ip-pools">9.5. Пулы IP-адресов</a></li>
+          <li class="sub-item"><a href="billing.html#houses">9.7. Дома</a></li>
+          <li class="sub-item"><a href="billing.html#requisites">9.6. Реквизиты</a></li>
           <li><a href="billing.html#additional">10. Дополнительные настройки</a></li>
           <li class="sub-item"><a href="billing.html#sorm-access">10.4. СОРМ</a></li>
           <li class="sub-item"><a href="billing.html#print-templates">10.5. Шаблоны печати</a></li>
