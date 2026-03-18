@@ -112,6 +112,7 @@
           <li><a href="api.html#soap">SOAP API</a></li>
           <li><a href="api.html#web-api">Web API</a></li>
           <li><a href="api.html#ajax">AJAX-эндпоинты</a></li>
+          <li><a href="api.html#mobile-api">Mobile API</a></li>
           <li><a href="api.html#errors">Коды ошибок</a></li>
         </ul>
       </li>
@@ -165,6 +166,7 @@
       <tr><td>REST API v2</td><td>JSON over HTTP</td><td><code>/rest_api/v2/&lt;model&gt;/</code></td><td>Cookie (session)</td></tr>
       <tr><td>REST API v1</td><td>JSON/XML</td><td><code>/rest_api/</code></td><td>Cookie (session)</td></tr>
       <tr><td>SOAP API</td><td>XML (Spyne)</td><td><code>/api/</code>, <code>/api/fiscal/</code></td><td>SOAP-хэш</td></tr>
+      <tr><td>Mobile API</td><td>JSON over HTTP</td><td><code>/mobile-api/v1/*</code></td><td>JWT (Bearer token)</td></tr>
       <tr><td>System API</td><td>JSON</td><td><code>/system_api/</code></td><td>IP whitelist + пароль</td></tr>
       <tr><td>Web Admin API</td><td>HTML/JSON</td><td><code>/admin/*</code></td><td>Cookie + CSRF</td></tr>
     </tbody>
@@ -539,6 +541,169 @@ curl -s -b cookies.txt "https://billing.example.com/admin/ajax/ippull_get/1/"</c
   </table>
 
   <!-- ============================================ -->
+  <h2 id="mobile-api">Mobile API</h2>
+
+  <p>REST API для мобильного приложения абонента. Аутентификация через JWT-токены (без cookies/CSRF). Все суммы возвращаются в рублях (деление на 10<sup>10</sup> выполняется на стороне сервера).</p>
+
+  <div class="info-box">
+    <strong>Базовый путь:</strong> <code>/mobile-api/v1/</code><br>
+    <strong>Авторизация:</strong> JWT Bearer token (access = 15 мин, refresh = 30 дней)<br>
+    <strong>Rate limit:</strong> 30 запросов/мин на пользователя<br>
+    <strong>Стек:</strong> Django REST Framework + djangorestframework-simplejwt
+  </div>
+
+  <h3>Аутентификация</h3>
+
+  <pre><code># Логин — получить JWT-токены
+curl -s -X POST "https://billing.example.com/mobile-api/v1/auth/login" \
+  -H "Content-Type: application/json" \
+  -d '{"contract": "0828", "password": "mypassword"}'</code></pre>
+
+  <p>Ответ:</p>
+  <pre><code>{
+  "access": "eyJhbGciOiJIUzI1NiIs...",
+  "refresh": "eyJhbGciOiJIUzI1NiIs..."
+}</code></pre>
+
+  <p>Поле <code>contract</code> принимает номер договора (с ведущим нулём и без) или логин из таблицы Users.</p>
+
+  <pre><code># Обновление access-токена
+curl -s -X POST "https://billing.example.com/mobile-api/v1/auth/refresh" \
+  -H "Content-Type: application/json" \
+  -d '{"refresh": "eyJhbGciOiJIUzI1NiIs..."}'</code></pre>
+
+  <h3>Аккаунт</h3>
+
+  <pre><code># Статус абонента (баланс, тариф, блокировки)
+curl -s "https://billing.example.com/mobile-api/v1/account/status" \
+  -H "Authorization: Bearer ACCESS_TOKEN"</code></pre>
+
+  <p>Ответ:</p>
+  <pre><code>{
+  "abonent_id": 2712,
+  "name": "Богданова Татьяна Петровна",
+  "contract_number": "0114",
+  "balance": "28.29",
+  "tariff_name": "2025_SmIT30new",
+  "tariff_id": 139,
+  "speed_mbit": null,
+  "monthly_cost": "0.00",
+  "is_blocked": false,
+  "block_reason": "",
+  "has_promise_pay": false,
+  "promise_pay_end": null,
+  "balance_until_date": null,
+  "address": "Волгоград"
+}</code></pre>
+
+  <pre><code># Список доступных тарифов
+curl -s "https://billing.example.com/mobile-api/v1/account/tariffs" \
+  -H "Authorization: Bearer ACCESS_TOKEN"
+
+# Смена тарифа
+curl -s -X POST "https://billing.example.com/mobile-api/v1/account/tariff" \
+  -H "Authorization: Bearer ACCESS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"tariff_id": 140}'</code></pre>
+
+  <h3>Финансы</h3>
+
+  <pre><code># История платежей (пагинация + фильтры)
+curl -s "https://billing.example.com/mobile-api/v1/finance/history?period=month&amp;page=1&amp;per_page=25" \
+  -H "Authorization: Bearer ACCESS_TOKEN"
+
+# История начислений (только отрицательные суммы)
+curl -s "https://billing.example.com/mobile-api/v1/finance/charges" \
+  -H "Authorization: Bearer ACCESS_TOKEN"</code></pre>
+
+  <p>Параметры фильтрации <code>/finance/history</code>:</p>
+  <table>
+    <thead>
+      <tr><th>Параметр</th><th>Описание</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>period</code></td><td><code>month</code>, <code>3month</code>, <code>year</code></td></tr>
+      <tr><td><code>from</code>, <code>to</code></td><td>Даты в формате <code>YYYY-MM-DD</code></td></tr>
+      <tr><td><code>page</code></td><td>Номер страницы (по умолчанию 1)</td></tr>
+      <tr><td><code>per_page</code></td><td>Записей на странице (макс. 100, по умолчанию 25)</td></tr>
+    </tbody>
+  </table>
+
+  <pre><code># Обещанный платёж — статус
+curl -s "https://billing.example.com/mobile-api/v1/finance/promise_pay" \
+  -H "Authorization: Bearer ACCESS_TOKEN"
+
+# Обещанный платёж — активировать
+curl -s -X POST "https://billing.example.com/mobile-api/v1/finance/promise_pay" \
+  -H "Authorization: Bearer ACCESS_TOKEN"
+
+# Обещанный платёж — отменить
+curl -s -X DELETE "https://billing.example.com/mobile-api/v1/finance/promise_pay" \
+  -H "Authorization: Bearer ACCESS_TOKEN"
+
+# Создать платёж (YooKassa)
+curl -s -X POST "https://billing.example.com/mobile-api/v1/finance/pay" \
+  -H "Authorization: Bearer ACCESS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"amount": "500.00", "system": "yookassa"}'
+# Ответ: {"redirect_url": "https://yookassa.ru/checkout/..."}</code></pre>
+
+  <h3>Поддержка (FreeScout)</h3>
+
+  <pre><code># Список тикетов
+curl -s "https://billing.example.com/mobile-api/v1/support/tickets" \
+  -H "Authorization: Bearer ACCESS_TOKEN"
+
+# Создать тикет
+curl -s -X POST "https://billing.example.com/mobile-api/v1/support/tickets/create" \
+  -H "Authorization: Bearer ACCESS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"subject": "Нет интернета", "body": "Не работает с утра"}'</code></pre>
+
+  <h3>Услуги</h3>
+
+  <pre><code># Список активных услуг
+curl -s "https://billing.example.com/mobile-api/v1/services/list" \
+  -H "Authorization: Bearer ACCESS_TOKEN"
+
+# Вкл/выкл услугу
+curl -s -X POST "https://billing.example.com/mobile-api/v1/services/toggle" \
+  -H "Authorization: Bearer ACCESS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"service_id": 123, "enable": false}'</code></pre>
+
+  <h3>Push-уведомления</h3>
+
+  <pre><code># Зарегистрировать FCM-токен
+curl -s -X POST "https://billing.example.com/mobile-api/v1/push/register" \
+  -H "Authorization: Bearer ACCESS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"token": "fcm_token_here", "platform": "android"}'</code></pre>
+
+  <h3>Сводная таблица эндпоинтов</h3>
+  <table>
+    <thead>
+      <tr><th>Метод</th><th>Путь</th><th>Описание</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>POST</td><td><code>/auth/login</code></td><td>Логин → JWT-токены</td></tr>
+      <tr><td>POST</td><td><code>/auth/refresh</code></td><td>Обновление access-токена</td></tr>
+      <tr><td>GET</td><td><code>/account/status</code></td><td>Баланс, тариф, блокировки</td></tr>
+      <tr><td>GET</td><td><code>/account/tariffs</code></td><td>Доступные тарифы</td></tr>
+      <tr><td>POST</td><td><code>/account/tariff</code></td><td>Смена тарифа</td></tr>
+      <tr><td>GET</td><td><code>/finance/history</code></td><td>История платежей</td></tr>
+      <tr><td>GET</td><td><code>/finance/charges</code></td><td>История начислений</td></tr>
+      <tr><td>GET/POST/DELETE</td><td><code>/finance/promise_pay</code></td><td>Обещанный платёж</td></tr>
+      <tr><td>POST</td><td><code>/finance/pay</code></td><td>Создание платежа</td></tr>
+      <tr><td>GET</td><td><code>/support/tickets</code></td><td>Список тикетов</td></tr>
+      <tr><td>POST</td><td><code>/support/tickets/create</code></td><td>Создание тикета</td></tr>
+      <tr><td>GET</td><td><code>/services/list</code></td><td>Список услуг</td></tr>
+      <tr><td>POST</td><td><code>/services/toggle</code></td><td>Вкл/выкл услуги</td></tr>
+      <tr><td>POST</td><td><code>/push/register</code></td><td>Регистрация FCM-токена</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ============================================ -->
   <h2 id="errors">Коды ошибок</h2>
 
   <table>
@@ -554,7 +719,9 @@ curl -s -b cookies.txt "https://billing.example.com/admin/ajax/ippull_get/1/"</c
       <tr><td><code>401</code></td><td>Не авторизован</td></tr>
       <tr><td><code>403</code></td><td>Доступ запрещён (CSRF, READ_ONLY_MODE)</td></tr>
       <tr><td><code>404</code></td><td>Объект не найден</td></tr>
+      <tr><td><code>429</code></td><td>Превышен лимит запросов (Mobile API: 30/мин)</td></tr>
       <tr><td><code>500</code></td><td>Внутренняя ошибка сервера</td></tr>
+      <tr><td><code>503</code></td><td>Сервис временно недоступен (платёжная система)</td></tr>
     </tbody>
   </table>
 

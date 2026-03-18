@@ -64,7 +64,17 @@
           <li><a href="billing.html#tariffs">Тарификация и услуги</a></li>
           <li><a href="billing.html#messaging">Отправка сообщений</a></li>
           <li><a href="billing.html#payments">Платежи, API, 1С</a></li>
-          <li><a href="billing.html#cabinet">Личный кабинет</a></li>
+          <li><a href="billing.html#cabinet">Личный кабинет</a>
+            <ul class="submenu">
+              <li><a href="billing.html#lk-auth">Авторизация</a></li>
+              <li><a href="billing.html#lk-settings">Настройки (.env)</a></li>
+              <li><a href="billing.html#lk-telegram">Telegram-бот</a></li>
+              <li><a href="billing.html#lk-payments">YooKassa</a></li>
+              <li><a href="billing.html#lk-support">Поддержка (FreeScout)</a></li>
+              <li><a href="billing.html#lk-profile">Профиль</a></li>
+              <li><a href="billing.html#lk-deploy">Развёртывание и SSL</a></li>
+            </ul>
+          </li>
           <li><a href="billing.html#oss-bss">OSS.BSS</a></li>
           <li><a href="billing.html#reports">Отчёты</a></li>
           <li><a href="billing.html#dictionaries">Справочники</a></li>
@@ -892,13 +902,34 @@ host -t txt yourdomain.ru</code></pre>
   <p>Где <code>admin_msg_id</code> — ID шаблона сообщения, <code>objects_status</code> — статус абонентов-получателей.</p>
 
   <h3 id="telegram">4.4. Отправка уведомлений через Telegram</h3>
-  <ol>
-    <li>Создайте бота через <strong>@BotFather</strong> и получите токен.</li>
-    <li>Укажите токен в настройках биллинга.</li>
-    <li>При необходимости настройте прокси.</li>
-    <li>Перезапустите сервис уведомлений.</li>
-  </ol>
-  <p>Абонент отправляет боту <code>/start</code> и авторизуется по логину или телефону. Система автоматически создаёт реквизит «Telegram ID» для абонента.</p>
+  <p>Для отправки Telegram-уведомлений абонентам используется отдельный бот биллинга (не связанный с ботом FreeScout поддержки).</p>
+  <p><strong>Настройка в <code>.env</code>:</strong></p>
+  <pre><code>LK_TELEGRAM_BOT_TOKEN=&lt;токен бота от @BotFather&gt;
+LK_TELEGRAM_BOT_USERNAME=&lt;username бота&gt;</code></pre>
+  <p><strong>Регистрация webhook:</strong></p>
+  <pre><code>docker compose exec web python manage.py setup_telegram_webhook \
+  --url https://yourdomain.ru/lk/telegram/webhook/</code></pre>
+  <p><strong>Привязка абонента:</strong> абонент открывает Личный кабинет → Профиль → нажимает «Подключить уведомления» → получает deep-link с токеном → пишет боту <code>/start TOKEN</code> → бот сохраняет <code>telegram_chat_id</code>. После этого Celery-задача `process_message_queue` может отправлять сообщения через Telegram.
+
+  <h3 id="smsaero">4.5. Настройка SMSAero</h3>
+  <p>Для отправки SMS через SMSAero укажите в <code>.env</code>:</p>
+  <pre><code>SMS_ENABLED=True
+SMS_GATEWAY=smsaero
+SMS_LOGIN=your@email.com
+SMS_PASSWORD=&lt;API-ключ из личного кабинета SMSAero&gt;
+SMS_SENDER=НАЗВАНИЕ  # имя отправителя (зарегистрированное в SMSAero)</code></pre>
+  <p>API-ключ доступен в личном кабинете <a href="https://smsaero.ru" target="_blank">smsaero.ru</a> → Настройки → API. Используется API v2 с Basic Auth (base64 email:key).</p>
+
+  <h3 id="email-smtp">4.6. Настройка Email (SMTP)</h3>
+  <pre><code>EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
+EMAIL_HOST=mail.yourdomain.ru
+EMAIL_PORT=465
+EMAIL_USE_SSL=True
+EMAIL_HOST_USER=billing@yourdomain.ru
+EMAIL_HOST_PASSWORD=&lt;пароль&gt;
+DEFAULT_FROM_EMAIL=БиллингСмИТ &lt;billing@yourdomain.ru&gt;
+MSG_EMAIL_ENABLED=True</code></pre>
+  <p>Поддерживаются SSL (порт 465) и STARTTLS (порт 587, <code>EMAIL_USE_TLS=True</code>).</p>
 
   <!-- ===== 5. Платёжные системы, web-касса, API, 1С ===== -->
   <h2 id="payments">5. Платёжные системы, web-касса, API, 1С</h2>
@@ -1048,46 +1079,211 @@ host -t txt yourdomain.ru</code></pre>
   </table>
 
   <!-- ===== 6. Личный кабинет ===== -->
-  <h2 id="cabinet">6. Локальный сайт. Личный кабинет</h2>
-  <p>Локальный сайт и личный кабинет абонента — это веб-интерфейс, доступный абонентам для самостоятельного управления своими услугами. ЛК устанавливается на локальный сервер и работает совместно с биллингом.</p>
-
-  <div class="info-box">
-    <strong>Важно:</strong> Техническая поддержка ЛК предоставляется в режиме «как есть». Кастомные изменения в шаблонах — зона ответственности оператора.
-  </div>
+  <h2 id="cabinet">6. Личный кабинет абонента</h2>
+  <p>Личный кабинет (ЛК) — встроенный веб-интерфейс для абонентов. Работает на том же сервере, что и биллинг. URL по умолчанию: <code>/lk/</code>.</p>
 
   <p>Возможности личного кабинета:</p>
   <ul>
-    <li>Просмотр баланса и истории платежей</li>
-    <li>Смена тарифного плана, обещанный платёж</li>
-    <li>Просмотр статистики трафика и сессий</li>
-    <li>Оплата через платёжные системы</li>
-    <li>Изменение персональных данных</li>
-    <li>Подключение/отключение дополнительных услуг</li>
+    <li>Просмотр баланса, истории платежей и начислений</li>
+    <li>Оплата через YooKassa (банковская карта, SberPay, Т-Банк и др.)</li>
+    <li>Смена тарифного плана</li>
+    <li>Обещанный платёж</li>
+    <li>Добровольная блокировка / снятие блокировки</li>
+    <li>Просмотр активных сессий и статистики трафика</li>
+    <li>Обращения в техподдержку через FreeScout (чат, вложения)</li>
+    <li>Изменение профиля (имя, email, пароль)</li>
+    <li>Привязка Telegram-аккаунта для уведомлений</li>
+    <li>Авторизация через Telegram (OAuth)</li>
+    <li>PWA-режим (добавление на рабочий стол смартфона)</li>
   </ul>
 
-  <h3 id="wordpress">6.1. WordPress</h3>
-  <p>Интеграция личного кабинета с сайтом оператора на WordPress. Авторизация и виджеты баланса встраиваются в существующий сайт.</p>
-
-  <h3 id="mobile-lk">6.2. Мобильный личный кабинет</h3>
-  <p>Адаптивная версия ЛК для мобильных устройств. Автоматически подстраивается под размер экрана смартфона/планшета.</p>
-
-  <h3 id="mobile-app">6.3. Мобильное приложение</h3>
-  <p>Нативное мобильное приложение для абонентов (iOS/Android). Позволяет просматривать баланс, оплачивать услуги и управлять тарифом.</p>
-
-  <h3 id="domain-access">6.4. Доступ по доменному имени</h3>
-  <p>Настройка доступа к личному кабинету по собственному доменному имени оператора (вместо IP-адреса).</p>
-
-  <h3 id="hotspot">6.5. Софт HotSpot</h3>
-  <p>Настройка страницы авторизации HotSpot для публичных Wi-Fi сетей. Поддерживается несколько схем:</p>
+  <h3 id="lk-auth">6.1. Авторизация</h3>
+  <p>Поддерживается три способа входа:</p>
   <ul>
-    <li><strong>Выбор страницы регистрации</strong> — настройка внешнего вида и логики страницы</li>
-    <li><strong>Регистрация по звонку</strong> — абонент звонит на номер для авторизации</li>
-    <li><strong>Веб-авторизация в ЛК</strong> — авторизация через личный кабинет</li>
-    <li><strong>Веб-авторизация на оборудовании</strong> — авторизация через Captive Portal оборудования</li>
+    <li><strong>Логин / пароль</strong> — из поля <code>LOGIN</code> / <code>PSW</code> таблицы Users биллинга</li>
+    <li><strong>Telegram OAuth</strong> — кнопка «Войти через Telegram» (Telegram Login Widget). Требует привязанного <code>telegram_chat_id</code> или первичной авторизации через бот</li>
+    <li><strong>VK OAuth</strong> — вход через аккаунт ВКонтакте (требует настройки VK App)</li>
+  </ul>
+  <p>Telegram Login Widget требует регистрации домена в BotFather: <code>/setdomain</code> → укажите домен сайта (например, <code>billing.example.com</code>).</p>
+
+  <h3 id="lk-settings">6.2. Настройки в .env</h3>
+  <p>Все параметры ЛК задаются переменными окружения в файле <code>/opt/carbon-billing/.env</code>:</p>
+  <table>
+    <thead><tr><th>Переменная</th><th>Описание</th><th>Пример</th></tr></thead>
+    <tbody>
+      <tr><td><code>LK_SECRET_KEY</code></td><td>Секретный ключ сессий ЛК (отдельный от Django)</td><td><code>some-random-secret</code></td></tr>
+      <tr><td><code>LK_TELEGRAM_BOT_TOKEN</code></td><td>Токен Telegram-бота для уведомлений и авторизации</td><td><code>8254811343:AAGhCJtx...</code></td></tr>
+      <tr><td><code>LK_TELEGRAM_BOT_USERNAME</code></td><td>Username бота без @</td><td><code>Smit34AIAssistant_bot</code></td></tr>
+      <tr><td><code>LK_TELEGRAM_WEBHOOK_SECRET</code></td><td>Секрет для проверки подписи вебхука</td><td><code>random-hex-32</code></td></tr>
+      <tr><td><code>LK_FREESCOUT_URL</code></td><td>URL FreeScout API</td><td><code>https://help.example.com</code></td></tr>
+      <tr><td><code>LK_FREESCOUT_API_KEY</code></td><td>API ключ FreeScout</td><td><code>ABC123...</code></td></tr>
+      <tr><td><code>LK_FREESCOUT_SYSTEM_USER_ID</code></td><td>ID системного агента FreeScout (для закрытия тикетов)</td><td><code>1</code></td></tr>
+      <tr><td><code>LK_YOOKASSA_SHOP_ID</code></td><td>ID магазина YooKassa</td><td><code>1234567</code></td></tr>
+      <tr><td><code>LK_YOOKASSA_SECRET_KEY</code></td><td>Секретный ключ YooKassa</td><td><code>live_ABC...</code></td></tr>
+      <tr><td><code>LK_VK_APP_ID</code></td><td>ID приложения VK для OAuth</td><td><code>12345678</code></td></tr>
+      <tr><td><code>LK_VK_APP_SECRET</code></td><td>Секрет приложения VK</td><td><code>AbCdEf...</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="lk-telegram">6.3. Telegram-бот для уведомлений</h3>
+  <p>Бот используется для двух целей: OAuth-авторизация в ЛК и push-уведомления абоненту (списание, пополнение, блокировка).</p>
+
+  <p><strong>Создание бота:</strong></p>
+  <ol>
+    <li>Написать <code>@BotFather</code> в Telegram</li>
+    <li><code>/newbot</code> — создать бота, получить токен</li>
+    <li><code>/setdomain</code> → указать домен сайта (для Login Widget)</li>
+    <li>Прописать токен в <code>.env</code>: <code>LK_TELEGRAM_BOT_TOKEN</code>, <code>LK_TELEGRAM_BOT_USERNAME</code></li>
+  </ol>
+
+  <p><strong>Регистрация вебхука:</strong></p>
+  <pre><code>docker compose exec web python manage.py setup_telegram_webhook \
+  --url https://billing.example.com/lk/telegram/webhook/
+
+# Проверка:
+docker compose exec web python manage.py setup_telegram_webhook --info</code></pre>
+
+  <p><strong>Как абонент привязывает Telegram:</strong></p>
+  <ol>
+    <li>В ЛК → Профиль → блок «Уведомления в Telegram» → кнопка «Привязать»</li>
+    <li>ЛК генерирует одноразовый токен (действует 10 минут) и показывает ссылку вида <code>https://t.me/BotName?start=TOKEN</code></li>
+    <li>Абонент переходит в бот, отправляет <code>/start TOKEN</code></li>
+    <li>Бот сохраняет <code>telegram_chat_id</code> в профиль абонента</li>
+    <li>После привязки уведомления отправляются автоматически через Celery-задачи</li>
+  </ol>
+
+  <div class="info-box">
+    <strong>Важно:</strong> Один бот — один вебхук. Если тот же бот используется в FreeScout — необходимо создать отдельного бота специально для биллинга.
+  </div>
+
+  <h3 id="lk-payments">6.4. Оплата через YooKassa</h3>
+  <p>Абоненты могут пополнять счёт банковской картой через YooKassa (бывший ЮMoney Business). Оплата доступна из личного кабинета на сайте и из мобильного приложения.</p>
+
+  <h4>Поддерживаемые протоколы</h4>
+  <p>Система автоматически определяет протокол по формату секретного ключа:</p>
+  <table>
+    <thead><tr><th>Протокол</th><th>Формат ключа</th><th>Описание</th></tr></thead>
+    <tbody>
+      <tr><td><strong>REST API v3</strong> (рекомендуется)</td><td>Начинается с <code>live_</code> или <code>test_</code></td><td>Современный протокол. Создание платежа через JSON API, webhook — JSON.</td></tr>
+      <tr><td><strong>HTTP-протокол</strong> (старый)</td><td>Любой другой (например, <code>SmitSecretKey</code>)</td><td>Старый Yandex.Kassa. Форма POST на <code>yoomoney.ru/eshop.xml</code>, webhook — XML с MD5.</td></tr>
+    </tbody>
+  </table>
+
+  <h4>Настройка через админ-панель</h4>
+  <p>Перейдите в <strong>Настройки → Настройки ЮKassa</strong> (<code>/admin/settings/payment/</code>). На странице можно:</p>
+  <ul>
+    <li>Указать <code>shopId</code>, <code>scid</code> и секретный ключ</li>
+    <li>Задать URL-ы возврата после оплаты (shopSuccessURL, shopFailURL)</li>
+    <li>Скопировать webhook-адрес для настройки в кабинете ЮKassa</li>
+    <li>Проверить подключение кнопкой «Проверить подключение»</li>
   </ul>
 
-  <h3 id="lk-ssl">6.6. Установка SSL-сертификата на локальный сайт</h3>
-  <p>Настройка HTTPS для личного кабинета. Установка SSL-сертификата обеспечивает безопасную передачу данных абонентов.</p>
+  <h4 id="lk-payments-setup">Настройка вручную через .env</h4>
+  <p>Переменные окружения для YooKassa:</p>
+  <table>
+    <thead><tr><th>Переменная</th><th>Описание</th><th>Пример</th></tr></thead>
+    <tbody>
+      <tr><td><code>LK_YOOKASSA_SHOP_ID</code></td><td>ID магазина</td><td><code>267304</code></td></tr>
+      <tr><td><code>LK_YOOKASSA_SECRET_KEY</code></td><td>Секретный ключ (REST API v3) или shopPassword (HTTP)</td><td><code>live_ABC...</code> или <code>SmitSecretKey</code></td></tr>
+      <tr><td><code>LK_YOOKASSA_SCID</code></td><td>Номер витрины (только HTTP-протокол)</td><td><code>2487841</code></td></tr>
+      <tr><td><code>LK_YOOKASSA_SUCCESS_URL</code></td><td>URL после успешной оплаты</td><td><code>https://billing.example.com/lk/payments/result/</code></td></tr>
+      <tr><td><code>LK_YOOKASSA_FAIL_URL</code></td><td>URL при ошибке оплаты</td><td><code>https://billing.example.com/lk/payments/result/?status=failure</code></td></tr>
+    </tbody>
+  </table>
+
+  <h4>Webhook (уведомления об оплате)</h4>
+  <p>В настройках магазина ЮKassa укажите URL для уведомлений:</p>
+  <pre><code># Для обоих протоколов (checkUrl, avisoUrl, HTTP-уведомления):
+https://billing.example.com/lk/payments/webhook/</code></pre>
+
+  <p>Webhook обрабатывает:</p>
+  <ul>
+    <li><strong>HTTP-протокол:</strong> <code>checkOrder</code> (проверка заказа) и <code>paymentAviso</code> (зачисление). Ответ — XML с MD5-подписью.</li>
+    <li><strong>REST API v3:</strong> JSON-уведомление <code>payment.succeeded</code>. Зачисление по <code>metadata.abonent_id</code>.</li>
+  </ul>
+
+  <h4>Как работает зачисление</h4>
+  <ol>
+    <li>ЮKassa отправляет POST на webhook</li>
+    <li>Система проверяет подпись (MD5 или JSON)</li>
+    <li>Находит абонента по <code>customerNumber</code> / <code>metadata.abonent_id</code></li>
+    <li>Увеличивает баланс (<code>account.ostatok</code>)</li>
+    <li>Создаёт запись в истории операций: «Онлайн-оплата (YooKassa)»</li>
+  </ol>
+
+  <div class="info-box">
+    <strong>Важно:</strong> После смены домена или сервера необходимо обновить checkUrl / avisoUrl в кабинете ЮKassa — иначе уведомления об оплате не будут приходить и зачисление не произойдёт.
+  </div>
+
+  <h3 id="lk-mobile-app">6.5. Мобильное приложение</h3>
+  <p>Android-приложение «СмИТ Биллинг» для абонентов. Работает через Mobile API (<code>/mobile-api/v1/</code>).</p>
+
+  <h4>Возможности приложения</h4>
+  <ul>
+    <li><strong>Главная</strong> — баланс, тариф, уведомление от оператора, последний платёж, статус блокировки</li>
+    <li><strong>Финансы</strong> — история операций (фильтр по периоду), итоги (приход/расход), обещанный платёж, оплата через ЮKassa</li>
+    <li><strong>Поддержка</strong> — список обращений (активные/закрытые), создание нового тикета через FreeScout</li>
+    <li><strong>Профиль</strong> — контактные данные, привязка VK/Telegram, выход</li>
+  </ul>
+
+  <h4>Оплата в приложении</h4>
+  <p>При нажатии «Пополнить» приложение вызывает <code>POST /mobile-api/v1/finance/pay</code>. Ответ содержит URL платёжной страницы — приложение открывает его в браузере. После оплаты баланс обновляется автоматически.</p>
+
+  <h4 id="mobile-api-endpoints">Mobile API</h4>
+  <p>Авторизация: JWT (simplejwt). Эндпоинты:</p>
+  <table>
+    <thead><tr><th>Метод</th><th>URL</th><th>Описание</th></tr></thead>
+    <tbody>
+      <tr><td>POST</td><td><code>/mobile-api/v1/auth/login</code></td><td>Авторизация (contract + password → JWT)</td></tr>
+      <tr><td>POST</td><td><code>/mobile-api/v1/auth/refresh</code></td><td>Обновление токена</td></tr>
+      <tr><td>GET</td><td><code>/mobile-api/v1/account/status</code></td><td>Баланс, тариф, блокировки, уведомление, последний платёж</td></tr>
+      <tr><td>GET</td><td><code>/mobile-api/v1/account/tariffs</code></td><td>Доступные тарифы</td></tr>
+      <tr><td>POST</td><td><code>/mobile-api/v1/account/tariff</code></td><td>Смена тарифа</td></tr>
+      <tr><td>GET</td><td><code>/mobile-api/v1/finance/history</code></td><td>История платежей (фильтр, пагинация)</td></tr>
+      <tr><td>POST</td><td><code>/mobile-api/v1/finance/pay</code></td><td>Создание платежа (YooKassa)</td></tr>
+      <tr><td>GET/POST/DELETE</td><td><code>/mobile-api/v1/finance/promise_pay</code></td><td>Обещанный платёж</td></tr>
+      <tr><td>GET/POST</td><td><code>/mobile-api/v1/support/tickets</code></td><td>Тикеты (список + создание)</td></tr>
+      <tr><td>POST</td><td><code>/mobile-api/v1/push/register</code></td><td>Регистрация FCM/APNS токена</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="lk-support">6.6. Поддержка через FreeScout</h3>
+  <p>Абоненты могут создавать обращения и переписываться с операторами прямо из ЛК. Для работы требуется настроенная интеграция с FreeScout (см. раздел 4.3).</p>
+
+  <p>Возможности раздела поддержки в ЛК:</p>
+  <ul>
+    <li>Список обращений с датой последнего обновления («2 часа назад», «вчера» и т.д.)</li>
+    <li>Создание нового обращения с темой, описанием и вложениями (до 20 МБ, форматы: jpg/png/gif/webp/pdf)</li>
+    <li>Переписка в рамках существующего обращения</li>
+    <li>Закрытие обращения из ЛК</li>
+    <li>Оценка качества обслуживания (если выставлена оператором)</li>
+  </ul>
+
+  <div class="info-box">
+    <strong>Требование:</strong> У абонента должен быть указан email в профиле — именно по нему FreeScout идентифицирует клиента.
+  </div>
+
+  <h3 id="lk-profile">6.7. Профиль абонента</h3>
+  <p>В разделе «Профиль» абонент может:</p>
+  <ul>
+    <li>Изменить отображаемое имя и email</li>
+    <li>Сменить пароль</li>
+    <li>Просмотреть активные сессии (IP, время входа, устройство)</li>
+    <li>Завершить все сессии кроме текущей</li>
+    <li>Привязать / отвязать Telegram для уведомлений</li>
+    <li>Настроить вход через Telegram (OAuth) — если домен прописан в BotFather</li>
+  </ul>
+
+  <h3 id="lk-deploy">6.8. Развёртывание и SSL</h3>
+  <p>ЛК входит в тот же Docker Compose проект, что и биллинг — отдельная установка не требуется. Nginx проксирует запросы:</p>
+  <ul>
+    <li><code>/lk/</code> → gunicorn (Django)</li>
+    <li><code>/lk/static/</code> → whitenoise / static files</li>
+  </ul>
+  <p>SSL-сертификат для домена биллинга автоматически покрывает и ЛК. Если ЛК работает на отдельном поддомене — выпустить сертификат через certbot:</p>
+  <pre><code>certbot --nginx -d lk.example.com</code></pre>
+
+  <p>Для PWA-режима обязателен HTTPS. После перехода на HTTPS абоненты могут добавить ЛК на рабочий стол смартфона как приложение.</p>
 
   <!-- ===== 7. OSS.BSS ===== -->
   <h2 id="oss-bss">7. OSS.BSS (HelpDesk, CRM, Учёт оборудования)</h2>
