@@ -266,6 +266,12 @@ a:hover { color: var(--primary-dark); text-decoration: underline; }
 }
 
 /* Sub-items (indented children without nesting) */
+.sidebar nav ul ul.submenu li.sub-item {
+  display: none;
+}
+.sidebar nav ul ul.submenu li.sub-item.visible {
+  display: list-item;
+}
 .sidebar nav ul ul.submenu li.sub-item a {
   padding-left: 52px;
   font-size: .78rem;
