@@ -207,7 +207,7 @@
 
   <p>Раздел описывает работу с абонентами, настройку тарификации, установку и базовую конфигурацию системы СмИТ Биллинг 1.0.</p>
 
-  <img src="../img/p48398389_um2.png" alt="Интерфейс биллинга" class="screenshot">
+  <img src="../img/new_dashboard.png" alt="Интерфейс биллинга — Dashboard" class="screenshot">
 
   <!-- ===== 1. Общие настройки биллинга ===== -->
   <h2 id="general">1. Общие настройки биллинга</h2>
@@ -221,7 +221,7 @@
   <!-- 1.2 Глобальные настройки -->
   <h3 id="global-settings">1.2. Глобальные настройки биллинга и оператора</h3>
   <p>Глобальные настройки фундаментально изменяют поведение системы и обычно настраиваются при первичной интеграции.</p>
-  <img src="../img/p63242421_vpnconst.png" alt="Глобальные настройки" class="screenshot">
+  <img src="../img/new_settings.png" alt="Глобальные настройки" class="screenshot">
 
   <h4>Настройки RADIUS</h4>
   <table>
@@ -356,6 +356,7 @@
   </ul>
 
   <h4 id="interface-settings-ui">Как пользоваться</h4>
+  <img src="../img/new_interface_settings.png" alt="Настройка веб-интерфейсов" class="screenshot">
   <p>Перейдите в <strong>Настройки → Настройка веб-интерфейсов</strong> (<code>/admin/settings/interface_settings/</code>). Страница имеет трёхуровневую навигацию:</p>
   <ol>
     <li><strong>Интерфейс</strong> — выберите тип (Директор, Администратор, Бухгалтер и т.д.)</li>
@@ -406,6 +407,7 @@ docker compose up -d</code></pre>
   </ol>
 
   <h4 id="permission-settings-ui">Настройка прав доступа к моделям</h4>
+  <img src="../img/new_permissions.png" alt="Настройка прав доступа" class="screenshot">
   <p>Перейдите в <strong>Настройки → Настройки прав доступа</strong> (<code>/admin/settings/permission_settings/</code>). На странице:</p>
   <ol>
     <li>Слева — список групп пользователей (вертикальные вкладки)</li>
@@ -722,6 +724,7 @@ docker compose up -d</code></pre>
   <p>Лицевые счета абонентов — финансовые учётные записи для работы с балансом. Каждый абонент имеет один или несколько лицевых счетов. Создание, удаление и редактирование выполняется в карточке абонента.</p>
 
   <h3 id="debtors">Должники</h3>
+  <img src="../img/new_debtors.png" alt="Список должников" class="screenshot">
   <p>Раздел <strong>Абоненты → Должники</strong> (<code>/admin/debtors/</code>) — специализированный список абонентов с отрицательным балансом.</p>
 
   <p><strong>Фильтры:</strong></p>
@@ -1055,7 +1058,7 @@ MSG_EMAIL_ENABLED=True</code></pre>
     Проверить: <code>openssl s_client -connect localhost:443 -tls1_2</code>
   </div>
 
-  <img src="../img/p48398393_um3.png" alt="Настройки платёжных систем" class="screenshot">
+  <img src="../img/new_payment_settings.png" alt="Настройки ЮKassa" class="screenshot">
 
   <h3 id="cashier">5.1. Веб-интерфейс кассира</h3>
   <p>Интерфейс для приёма платежей оператором/кассиром. Доступен по отдельному URL с ограниченным набором функций.</p>
@@ -1204,6 +1207,8 @@ MSG_EMAIL_ENABLED=True</code></pre>
   <h2 id="cabinet">6. Личный кабинет абонента</h2>
   <p>Личный кабинет (ЛК) — встроенный веб-интерфейс для абонентов. Работает на том же сервере, что и биллинг. URL по умолчанию: <code>/lk/</code>.</p>
 
+  <img src="../img/new_lk_dashboard.png" alt="Личный кабинет — Dashboard" class="screenshot" style="max-width:420px">
+
   <p>Возможности личного кабинета:</p>
   <ul>
     <li>Просмотр баланса, истории платежей и начислений</li>
@@ -1280,6 +1285,8 @@ docker compose exec web python manage.py setup_telegram_webhook --info</code></p
 
   <h3 id="lk-payments">6.4. Оплата через YooKassa</h3>
   <p>Абоненты могут пополнять счёт банковской картой через YooKassa (бывший ЮMoney Business). Оплата доступна из личного кабинета на сайте и из мобильного приложения.</p>
+
+  <img src="../img/new_lk_pay.png" alt="Оплата через ЮKassa в ЛК" class="screenshot" style="max-width:420px">
 
   <h4>Поддерживаемые протоколы</h4>
   <p>Система автоматически определяет протокол по формату секретного ключа:</p>
@@ -1481,7 +1488,7 @@ FROM billing_abonents a WHERE a.is_deleted = false;</code></pre>
   <h2 id="dictionaries">9. Справочники</h2>
   <p>Справочники СмИТ Биллинг 1.0 хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
 
-  <img src="../img/p48693355_dictionaries.png" alt="Справочники биллинга" class="screenshot">
+  <img src="../img/new_dictionaries.png" alt="Справочники биллинга" class="screenshot">
 
   <h3 id="phone-pools">9.1. Пулы телефонных номеров</h3>
   <p>Управление пулами номеров для VoIP-услуг. Создание диапазонов, автоматическое выделение номеров абонентам при подключении телефонии.</p>
