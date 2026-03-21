@@ -147,6 +147,10 @@
           <li><a href="equipment.html#internet">1. Интернет (NAS/BRAS)</a></li>
           <li><a href="equipment.html#voip">2. Телефония (VoIP)</a></li>
           <li><a href="equipment.html#iptv">3. IPTV</a></li>
+          <li><a href="equipment.html#iptv-tvip">3.1. TVIP Media</a></li>
+          <li><a href="equipment.html#iptv-lfstream">3.2. LFStream</a></li>
+          <li><a href="equipment.html#iptv-mappings">3.3. Маппинг пакетов</a></li>
+          <li><a href="equipment.html#iptv-sync">3.4. Синхронизация</a></li>
           <li><a href="equipment.html#cpe">4. Абонентское оборудование</a></li>
           <li><a href="equipment.html#rental">5. Аренда оборудования</a></li>
         </ul>
@@ -300,34 +304,115 @@ docker compose restart freeradius</code></pre>
   <!-- ===== IPTV ===== -->
   <h2 id="iptv">IPTV</h2>
 
-  <p>Интеграция с IPTV-платформами выполняется в 3 шага:</p>
+  <p>СмИТ Биллинг 1.0 интегрируется с IPTV-платформами для автоматического управления аккаунтами абонентов, ТВ-пакетами и блокировками. Интеграция работает в двух режимах:</p>
+  <ul>
+    <li><strong>Событийный</strong> — при блокировке/разблокировке абонента или переключении услуги биллинг мгновенно синхронизирует состояние с IPTV-платформой.</li>
+    <li><strong>Периодический</strong> — ежедневная полная сверка через Celery Beat для устранения рассинхронизаций.</li>
+  </ul>
 
-  <ol>
-    <li><strong>Настройка OSS-модуля</strong> — выбор и конфигурация схемы подключения к IPTV-платформе (API-ключи, URL-адреса, учётные данные).</li>
-    <li><strong>Привязка услуг</strong> — создание услуг IPTV в биллинге и привязка их к тарифным планам абонентов.</li>
-    <li><strong>Тестирование</strong> — активация услуги для тестового абонента, проверка синхронизации подписок.</li>
-  </ol>
+  <h3 id="iptv-tvip">TVIP Media (TMS)</h3>
 
-  <h3>Поддерживаемые IPTV-платформы</h3>
+  <p><strong>TVIP TMS</strong> — IPTV/OTT middleware для управления телевизионными услугами, абонентами и STB-приставками. Подключение через REST API с HTTP Basic Auth.</p>
+
+  <img src="../img/new_iptv_tvip_settings.png" alt="Настройки TVIP Media" class="screenshot">
+
+  <p>Настройка: <strong>Настройки &rarr; Интеграции &rarr; TVIP Media</strong></p>
+
+  <table>
+    <thead><tr><th>Параметр</th><th>Описание</th></tr></thead>
+    <tbody>
+      <tr><td>URL панели TVIP</td><td>Адрес панели провайдера (<code>https://my.tvip.media</code>)</td></tr>
+      <tr><td>Логин / Пароль</td><td>Учётные данные для REST API (HTTP Basic Auth)</td></tr>
+      <tr><td>Provider ID</td><td>Идентификатор провайдера в TVIP (узнать в панели)</td></tr>
+      <tr><td>Включить интеграцию</td><td>Глобальный переключатель синхронизации</td></tr>
+    </tbody>
+  </table>
+
+  <p>Возможности интеграции с TVIP Media:</p>
+  <ul>
+    <li>Автоматическое создание аккаунтов абонентов (логин = номер договора)</li>
+    <li>Подписка/отписка от ТВ-пакетов при смене тарифа или переключении услуг</li>
+    <li>Блокировка/разблокировка аккаунта при отрицательном балансе</li>
+    <li>Отправка команд на STB-приставки (обновление каналов, перезагрузка)</li>
+    <li>Получение списка доступных ТВ-пакетов через API</li>
+  </ul>
+
+  <div class="info-box">
+    Документация TVIP REST API: <a href="https://docs.tvip.tv/en/tms/usage/rest_api.html" target="_blank">docs.tvip.tv/en/tms/usage/rest_api.html</a>
+  </div>
+
+  <h3 id="iptv-lfstream">LFStream (Смотрёшка)</h3>
+
+  <p><strong>LFStream</strong> — IPTV-прокси/CDN для доставки телевизионного контента. Управление аккаунтами абонентов и ТВ-пакетами через CMS-панель провайдера.</p>
+
+  <img src="../img/new_iptv_lfstream_settings.png" alt="Настройки LFStream" class="screenshot">
+
+  <p>Настройка: <strong>Настройки &rarr; Интеграции &rarr; LFStream</strong></p>
+
+  <table>
+    <thead><tr><th>Параметр</th><th>Описание</th></tr></thead>
+    <tbody>
+      <tr><td>URL API LFStream</td><td>Адрес панели провайдера (<code>https://smit34.proxy.lfstrm.tv</code>)</td></tr>
+      <tr><td>Логин / Пароль</td><td>Учётные данные для CMS-панели</td></tr>
+      <tr><td>Включить интеграцию</td><td>Глобальный переключатель синхронизации</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="iptv-mappings">Маппинг IPTV-пакетов</h3>
+
+  <p>Для каждого IPTV-провайдера необходимо настроить соответствие между услугами биллинга и пакетами во внешней системе. Настройка: <strong>Настройки &rarr; IPTV-пакеты</strong>.</p>
+
+  <img src="../img/new_iptv_mappings.png" alt="Маппинг IPTV-пакетов" class="screenshot">
+
+  <p>Таблица маппинга содержит:</p>
+  <table>
+    <thead><tr><th>Колонка</th><th>Описание</th></tr></thead>
+    <tbody>
+      <tr><td>Провайдер</td><td>TVIP Media или LFStream</td></tr>
+      <tr><td>Услуга биллинга</td><td>Услуга (Usluga) из справочника биллинга</td></tr>
+      <tr><td>ID пакета</td><td>Идентификатор пакета во внешней IPTV-системе</td></tr>
+      <tr><td>Название пакета</td><td>Наименование пакета (для справки)</td></tr>
+      <tr><td>Вкл</td><td>Включён ли данный маппинг</td></tr>
+    </tbody>
+  </table>
+
+  <p>Кнопка <strong>Загрузить пакеты</strong> запрашивает актуальный список ТВ-пакетов у выбранного провайдера через API и добавляет строки в таблицу.</p>
+
+  <h3 id="iptv-sync">Синхронизация</h3>
+
+  <p>Биллинг синхронизирует данные с IPTV-платформами в следующих случаях:</p>
+
+  <table>
+    <thead><tr><th>Событие</th><th>Действие в IPTV</th></tr></thead>
+    <tbody>
+      <tr><td>Блокировка абонента (отрицательный баланс)</td><td>Блокировка аккаунта в TVIP/LFStream</td></tr>
+      <tr><td>Разблокировка абонента (баланс восстановлен)</td><td>Разблокировка аккаунта</td></tr>
+      <tr><td>Включение IPTV-услуги абоненту</td><td>Подписка на соответствующий ТВ-пакет</td></tr>
+      <tr><td>Отключение IPTV-услуги</td><td>Отписка от ТВ-пакета</td></tr>
+      <tr><td>Ежедневная сверка (Celery Beat)</td><td>Полная проверка аккаунтов, подписок, блокировок</td></tr>
+    </tbody>
+  </table>
+
+  <p>Все API-вызовы логируются в таблице <code>iptv_api_log</code> для мониторинга и отладки.</p>
+
+  <p>Логи синхронизации с IPTV-платформами:</p>
+  <pre><code>docker compose logs celery | grep iptv_sync
+# Просмотр API-логов в Django shell:
+from billing.models.iptv import IptvApiLog
+IptvApiLog.objects.filter(success=False).order_by('-created_at')[:10]</code></pre>
+
+  <h3>Другие поддерживаемые IPTV-платформы</h3>
   <ul>
     <li><strong>IPTVPortal</strong> — облачная платформа интерактивного ТВ.</li>
     <li><strong>Infomir Ministra (Stalker)</strong> — middleware для STB-приставок.</li>
-    <li><strong>LifeStream</strong> — OTT-платформа IPTV.</li>
     <li><strong>Megogo</strong> — онлайн-кинотеатр с IPTV-функциями.</li>
     <li><strong>TITV</strong> — платформа интерактивного телевидения.</li>
     <li><strong>NextTV</strong> — IPTV-middleware.</li>
     <li><strong>24hTV</strong> — сервис интернет-телевидения.</li>
     <li><strong>MOOVI</strong> — OTT/IPTV-платформа.</li>
-    <li><strong>TVIP TMS</strong> — система управления TVIP-приставками.</li>
   </ul>
 
-  <p>Логи синхронизации с IPTV-платформами:</p>
-  <pre><code>docker compose logs web | grep oss
-docker compose logs celery | grep iptv</code></pre>
-
-  <p>Отключение интеграции с конкретной IPTV-платформой выполняется через настройки в веб-интерфейсе или переменные окружения (<code>.env</code>).</p>
-
-  <div class="info-box">Модули IPTV-интеграции доступны в расширенной версии. Для подключения обратитесь в отдел продаж.</div>
+  <div class="info-box">Дополнительные IPTV-модули доступны в расширенной версии. Для подключения обратитесь в отдел продаж.</div>
 
   <!-- ===== Прочее оборудование ===== -->
   <h2 id="cpe">Абонентское оборудование</h2>
