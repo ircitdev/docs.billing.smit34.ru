@@ -100,7 +100,7 @@
           <li class="sub-item"><a href="billing.html#payment-errors">5.7. Коды ошибок</a></li>
           <li><a href="billing.html#cabinet">6. Личный кабинет</a></li>
           <li class="sub-item"><a href="billing.html#lk-auth">6.1. Авторизация</a></li>
-          <li class="sub-item"><a href="billing.html#lk-settings">6.2. Настройки (.env)</a></li>
+          <li class="sub-item"><a href="billing.html#lk-settings">6.2. Настройки интеграций</a></li>
           <li class="sub-item"><a href="billing.html#lk-telegram">6.3. Telegram-бот</a></li>
           <li class="sub-item"><a href="billing.html#lk-payments">6.4. ЮKassa (оплата)</a></li>
           <li class="sub-item"><a href="billing.html#lk-mobile-app">6.5. Мобильное приложение</a></li>
@@ -1298,24 +1298,36 @@ MSG_EMAIL_ENABLED=True</code></pre>
   </ul>
   <p>Telegram Login Widget требует регистрации домена в BotFather: <code>/setdomain</code> → укажите домен сайта (например, <code>billing.example.com</code>).</p>
 
-  <h3 id="lk-settings">6.2. Настройки в .env</h3>
-  <p>Все параметры ЛК задаются переменными окружения в файле <code>/opt/carbon-billing/.env</code>:</p>
+  <h3 id="lk-settings">6.2. Настройки интеграций</h3>
+  <p>Все параметры интеграций настраиваются через <strong>панель управления</strong> без необходимости редактирования файлов.</p>
+
+  <p>Настройки хранятся в базе данных (таблица <code>system_settings</code>) с Redis-кэшированием (5 мин). Изменения применяются <strong>мгновенно</strong> без перезапуска сервера.</p>
+
+  <h4>Страницы настроек</h4>
   <table>
-    <thead><tr><th>Переменная</th><th>Описание</th><th>Пример</th></tr></thead>
+    <thead><tr><th>Раздел</th><th>URL</th><th>Параметры</th></tr></thead>
     <tbody>
-      <tr><td><code>LK_SECRET_KEY</code></td><td>Секретный ключ сессий ЛК (отдельный от Django)</td><td><code>some-random-secret</code></td></tr>
-      <tr><td><code>LK_TELEGRAM_BOT_TOKEN</code></td><td>Токен Telegram-бота для уведомлений и авторизации</td><td><code>8254811343:AAGhCJtx...</code></td></tr>
-      <tr><td><code>LK_TELEGRAM_BOT_USERNAME</code></td><td>Username бота без @</td><td><code>Smit34AIAssistant_bot</code></td></tr>
-      <tr><td><code>LK_TELEGRAM_WEBHOOK_SECRET</code></td><td>Секрет для проверки подписи вебхука</td><td><code>random-hex-32</code></td></tr>
-      <tr><td><code>LK_FREESCOUT_URL</code></td><td>URL FreeScout API</td><td><code>https://help.example.com</code></td></tr>
-      <tr><td><code>LK_FREESCOUT_API_KEY</code></td><td>API ключ FreeScout</td><td><code>ABC123...</code></td></tr>
-      <tr><td><code>LK_FREESCOUT_SYSTEM_USER_ID</code></td><td>ID системного агента FreeScout (для закрытия тикетов)</td><td><code>1</code></td></tr>
-      <tr><td><code>LK_YOOKASSA_SHOP_ID</code></td><td>ID магазина YooKassa</td><td><code>1234567</code></td></tr>
-      <tr><td><code>LK_YOOKASSA_SECRET_KEY</code></td><td>Секретный ключ YooKassa</td><td><code>live_ABC...</code></td></tr>
-      <tr><td><code>LK_VK_APP_ID</code></td><td>ID приложения VK для OAuth</td><td><code>12345678</code></td></tr>
-      <tr><td><code>LK_VK_APP_SECRET</code></td><td>Секрет приложения VK</td><td><code>AbCdEf...</code></td></tr>
+      <tr><td>Telegram</td><td><code>/admin/settings/integrations/?tab=telegram</code></td><td>Bot token, username, webhook secret</td></tr>
+      <tr><td>VK</td><td><code>/admin/settings/integrations/?tab=vk</code></td><td>App ID, secret key, community token</td></tr>
+      <tr><td>FreeScout</td><td><code>/admin/settings/integrations/?tab=freescout</code></td><td>URL, API key, mailbox ID</td></tr>
+      <tr><td>AIDA AI</td><td><code>/admin/settings/integrations/?tab=aida</code></td><td>URL, API key, LK/Mobile/Monitor toggles</td></tr>
+      <tr><td>TVIP Media</td><td><code>/admin/settings/integrations/?tab=tvip</code></td><td>URL, login/password, provider ID</td></tr>
+      <tr><td>LFStream</td><td><code>/admin/settings/integrations/?tab=lfstream</code></td><td>URL, login/password</td></tr>
+      <tr><td>Платежи</td><td><code>/admin/settings/payment/</code></td><td>YooKassa/W1 credentials, commission</td></tr>
+      <tr><td>Email/SMS</td><td><code>/admin/settings/messaging/</code></td><td>SMTP, SMSAero, sender name</td></tr>
+      <tr><td>Firebase</td><td><code>/admin/settings/messaging/?tab=firebase</code></td><td>Firebase credentials path</td></tr>
+      <tr><td>IPTV-пакеты</td><td><code>/admin/settings/iptv_mappings/</code></td><td>Маппинг услуг на ТВ-пакеты</td></tr>
     </tbody>
   </table>
+
+  <h4>Миграция с .env</h4>
+  <p>При обновлении с предыдущей версии выполните одноразовый перенос настроек из <code>.env</code> в базу данных:</p>
+  <pre><code>docker compose exec web python manage.py migrate_env_to_db</code></pre>
+  <p>Команда безопасна для повторного запуска — создаёт только отсутствующие ключи.</p>
+
+  <div class="info-box">
+    Инфраструктурные параметры (<code>DB_*</code>, <code>REDIS_URL</code>, <code>SECRET_KEY</code>, <code>DEBUG</code>) по-прежнему задаются в <code>.env</code> файле. В панель вынесены только настройки интеграций и платежей.
+  </div>
 
   <h3 id="lk-telegram">6.3. Telegram-бот для уведомлений</h3>
   <p>Бот используется для двух целей: OAuth-авторизация в ЛК и push-уведомления абоненту (списание, пополнение, блокировка).</p>
@@ -1325,7 +1337,7 @@ MSG_EMAIL_ENABLED=True</code></pre>
     <li>Написать <code>@BotFather</code> в Telegram</li>
     <li><code>/newbot</code> — создать бота, получить токен</li>
     <li><code>/setdomain</code> → указать домен сайта (для Login Widget)</li>
-    <li>Прописать токен в <code>.env</code>: <code>LK_TELEGRAM_BOT_TOKEN</code>, <code>LK_TELEGRAM_BOT_USERNAME</code></li>
+    <li>Прописать токен в <strong>Настройки &rarr; Интеграции &rarr; Telegram</strong></li>
   </ol>
 
   <p><strong>Регистрация вебхука:</strong></p>
