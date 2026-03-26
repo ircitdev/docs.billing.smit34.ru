@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Основные настройки биллинга — СмИТ Биллинг 1.0</title>
+  <title>Основные настройки биллинга — СмИТ Биллинг v1.0.0 (build 37)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.0 — Документация">
-  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг 1.0">
+  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.0.0 (build 37)">
   <meta property="og:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, отчёты, справочники и технологический стек.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/billing.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг 1.0">
+  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.0.0 (build 37)">
   <meta name="twitter:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, отчёты, справочники и технологический стек.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, отчёты, справочники и технологический стек.">
@@ -105,8 +105,9 @@
           <li class="sub-item"><a href="billing.html#lk-payments">6.4. ЮKassa (оплата)</a></li>
           <li class="sub-item"><a href="billing.html#lk-mobile-app">6.5. Мобильное приложение</a></li>
           <li class="sub-item"><a href="billing.html#lk-support">6.6. Поддержка (FreeScout)</a></li>
-          <li class="sub-item"><a href="billing.html#lk-profile">6.7. Профиль</a></li>
-          <li class="sub-item"><a href="billing.html#lk-deploy">6.8. Развёртывание и SSL</a></li>
+          <li class="sub-item"><a href="billing.html#lk-ai-chat">6.7. AI-ассистент (Claude)</a></li>
+          <li class="sub-item"><a href="billing.html#lk-profile">6.8. Профиль</a></li>
+          <li class="sub-item"><a href="billing.html#lk-deploy">6.9. Развёртывание и SSL</a></li>
           <li><a href="billing.html#oss-bss">7. OSS.BSS</a></li>
           <li class="sub-item"><a href="billing.html#helpdesk">7.1. CRM / HelpDesk</a></li>
           <li class="sub-item"><a href="billing.html#userside">7.2. UserSide</a></li>
@@ -1272,7 +1273,10 @@ MSG_EMAIL_ENABLED=True</code></pre>
   <h2 id="cabinet">6. Личный кабинет абонента</h2>
   <p>Личный кабинет (ЛК) — встроенный веб-интерфейс для абонентов. Работает на том же сервере, что и биллинг. URL по умолчанию: <code>/lk/</code>.</p>
 
-  <img src="../img/new_lk_dashboard.png" alt="Личный кабинет — Dashboard" class="screenshot" style="max-width:420px">
+  <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;margin:16px 0">
+    <img src="../img/new_lk_dashboard.png" alt="Личный кабинет — Главная (десктоп)" class="screenshot" style="max-width:500px">
+    <img src="../img/new_lk_mobile_dashboard.png" alt="Личный кабинет — Главная (мобильная)" class="screenshot" style="max-width:200px;border-radius:16px;border:1px solid #dee2e6">
+  </div>
 
   <p>Возможности личного кабинета:</p>
   <ul>
@@ -1282,11 +1286,13 @@ MSG_EMAIL_ENABLED=True</code></pre>
     <li>Обещанный платёж</li>
     <li>Добровольная блокировка / снятие блокировки</li>
     <li>Просмотр активных сессий и статистики трафика</li>
-    <li>Обращения в техподдержку через FreeScout (чат, вложения)</li>
+    <li>Обращения в техподдержку через FreeScout (вкладки Открытые/Закрытые, статус-точки)</li>
+    <li>AI-ассистент Claude — встроенный чат с поддержкой отправки изображений и PDF</li>
     <li>Изменение профиля (имя, email, пароль)</li>
     <li>Привязка Telegram-аккаунта для уведомлений</li>
     <li>Авторизация через Telegram (OAuth)</li>
     <li>PWA-режим (добавление на рабочий стол смартфона)</li>
+    <li>Полная адаптация под мобильные устройства</li>
   </ul>
 
   <h3 id="lk-auth">6.1. Авторизация</h3>
@@ -1363,7 +1369,10 @@ docker compose exec web python manage.py setup_telegram_webhook --info</code></p
   <h3 id="lk-payments">6.4. Оплата через YooKassa</h3>
   <p>Абоненты могут пополнять счёт банковской картой через YooKassa (бывший ЮMoney Business). Оплата доступна из личного кабинета на сайте и из мобильного приложения.</p>
 
-  <img src="../img/new_lk_pay.png" alt="Оплата через ЮKassa в ЛК" class="screenshot" style="max-width:420px">
+  <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;margin:16px 0">
+    <img src="../img/new_lk_pay.png" alt="Оплата через ЮKassa в ЛК" class="screenshot" style="max-width:500px">
+    <img src="../img/new_lk_mobile_payments.png" alt="Платежи — мобильная версия" class="screenshot" style="max-width:200px;border-radius:16px;border:1px solid #dee2e6">
+  </div>
 
   <h4>Поддерживаемые протоколы</h4>
   <p>Система автоматически определяет протокол по формату секретного ключа:</p>
@@ -1456,20 +1465,55 @@ https://billing.example.com/lk/payments/webhook/</code></pre>
   <h3 id="lk-support">6.6. Поддержка через FreeScout</h3>
   <p>Абоненты могут создавать обращения и переписываться с операторами прямо из ЛК. Для работы требуется настроенная интеграция с FreeScout (см. раздел 4.3).</p>
 
+  <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;margin:16px 0">
+    <img src="../img/new_lk_support.png" alt="Поддержка — Открытые обращения" class="screenshot" style="max-width:500px">
+    <img src="../img/new_lk_mobile_support.png" alt="Поддержка — мобильная версия" class="screenshot" style="max-width:200px;border-radius:16px;border:1px solid #dee2e6">
+  </div>
+
   <p>Возможности раздела поддержки в ЛК:</p>
   <ul>
-    <li>Список обращений с датой последнего обновления («2 часа назад», «вчера» и т.д.)</li>
+    <li><strong>Вкладки «Открытые» и «Закрытые»</strong> — с бейджами-счётчиками количества обращений</li>
+    <li>Даты в формате «5 часов назад», «3 дня назад», «2 недели назад»</li>
+    <li><strong>Статус-точки</strong> на мобильных: <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#dc3545"></span> красная — ждёт ответа оператора, <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#28a745"></span> зелёная — получен ответ, <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#adb5bd"></span> серая — закрыто</li>
     <li>Создание нового обращения с темой, описанием и вложениями (до 20 МБ, форматы: jpg/png/gif/webp/pdf)</li>
     <li>Переписка в рамках существующего обращения</li>
     <li>Закрытие обращения из ЛК</li>
     <li>Оценка качества обслуживания (если выставлена оператором)</li>
   </ul>
 
+  <h3 id="lk-ai-chat">6.7. AI-ассистент (Claude)</h3>
+  <p>Встроенный чат с AI-ассистентом на базе Claude (Anthropic). Отвечает на вопросы абонента о балансе, тарифе, оплате и технических проблемах. При невозможности помочь — автоматически передаёт вопрос оператору.</p>
+
+  <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;margin:16px 0">
+    <img src="../img/new_lk_chat.png" alt="AI-чат (десктоп)" class="screenshot" style="max-width:500px">
+    <img src="../img/new_lk_mobile_chat.png" alt="AI-чат (мобильная версия)" class="screenshot" style="max-width:200px;border-radius:16px;border:1px solid #dee2e6">
+  </div>
+
+  <p>Возможности AI-чата:</p>
+  <ul>
+    <li>Мгновенные ответы на типовые вопросы (баланс, тариф, обещанный платёж)</li>
+    <li>Отправка изображений и PDF-файлов (до 5 файлов, 10 МБ каждый)</li>
+    <li>Превью файлов прямо в чате (миниатюры изображений, иконки PDF)</li>
+    <li>На мобильных устройствах — полноэкранный режим</li>
+    <li>Автоматическая эскалация на оператора при необходимости</li>
+    <li>История переписки сохраняется в течение сессии (24 часа)</li>
+  </ul>
+
+  <div class="info-box">
+    <strong>Настройка:</strong> В <code>.env</code> задайте <code>ANTHROPIC_API_KEY</code>. Claude API-запросы проходят через прокси из настроек Telegram (<code>TELEGRAM_PROXY_HOST/PORT</code>).
+  </div>
+
   <div class="info-box">
     <strong>Требование:</strong> У абонента должен быть указан email в профиле — именно по нему FreeScout идентифицирует клиента.
   </div>
 
-  <h3 id="lk-profile">6.7. Профиль абонента</h3>
+  <h3 id="lk-profile">6.8. Профиль абонента</h3>
+
+  <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;margin:16px 0">
+    <img src="../img/new_lk_profile.png" alt="Профиль абонента" class="screenshot" style="max-width:500px">
+    <img src="../img/new_lk_mobile_profile.png" alt="Профиль — мобильная версия" class="screenshot" style="max-width:200px;border-radius:16px;border:1px solid #dee2e6">
+  </div>
+
   <p>В разделе «Профиль» абонент может:</p>
   <ul>
     <li>Изменить отображаемое имя и email</li>
@@ -1480,7 +1524,7 @@ https://billing.example.com/lk/payments/webhook/</code></pre>
     <li>Настроить вход через Telegram (OAuth) — если домен прописан в BotFather</li>
   </ul>
 
-  <h3 id="lk-deploy">6.8. Развёртывание и SSL</h3>
+  <h3 id="lk-deploy">6.9. Развёртывание и SSL</h3>
   <p>ЛК входит в тот же Docker Compose проект, что и биллинг — отдельная установка не требуется. Nginx проксирует запросы:</p>
   <ul>
     <li><code>/lk/</code> → gunicorn (Django)</li>
@@ -1563,7 +1607,7 @@ FROM billing_abonents a WHERE a.is_deleted = false;</code></pre>
 
   <!-- ===== 9. Справочники ===== -->
   <h2 id="dictionaries">9. Справочники</h2>
-  <p>Справочники СмИТ Биллинг 1.0 хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
+  <p>Справочники СмИТ Биллинг v1.0.0 (build 37) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
 
   <img src="../img/new_dictionaries.png" alt="Справочники биллинга" class="screenshot">
 
@@ -1656,7 +1700,7 @@ ACL_BLOCKED_GROUPS = ACL_DISABLED</code></pre>
 
   <!-- ===== 11. Безопасность ===== -->
   <h2 id="security">11. Обзор безопасности</h2>
-  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг 1.0 включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
+  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.0.0 (build 37) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
 
   <h3>Сетевая изоляция</h3>
   <p><strong>Docker-контейнеризация</strong> — каждый сервис (web, db, redis, celery, nginx, freeradius) работает в изолированном Docker-контейнере с собственной сетью (172.28.0.0/16). Входящие соединения проходят через nginx reverse proxy, что предотвращает прямой доступ к внутренним сервисам.</p>
@@ -1715,12 +1759,56 @@ ACL_BLOCKED_GROUPS = ACL_DISABLED</code></pre>
   </table>
 
   <h3>Формат версии</h3>
-  <p>Номер версии имеет формат <code>1.0.18</code>, где:</p>
+  <p>Номер версии имеет формат <code>1.0.0</code> (build <code>37</code>), где:</p>
   <ul>
     <li><strong>1</strong> — мажорная версия (поколение биллинга)</li>
     <li><strong>0</strong> — минорная версия (функциональный релиз)</li>
-    <li><strong>18</strong> — номер миграции Django (текущее состояние схемы БД)</li>
+    <li><strong>0</strong> — патч-версия</li>
+    <li><strong>build 37</strong> — номер сборки (инкрементируется при каждом деплое)</li>
   </ul>
+  <p>Версия отображается в футере: <strong>СмИТ Биллинг 1.0</strong>. Файл версии: <code>billing/version.py</code>.</p>
+
+  <div class="info-block">
+    <h4>Текущий релиз: v1.0.0 (build 37) — 25.03.2026</h4>
+    <ul>
+      <li>Конструктор отчётов — автокоррекция SQL для PostgreSQL, 29 отчётов работают</li>
+      <li>СОРМ — 13 отчётов в формате СОРМ-3, совместимом с Carbon 4</li>
+      <li>Поиск — по адресу, ФИО, договору, телефону, email в одной строке</li>
+      <li>MoneyField — суммы отображаются в рублях, а не в сыром формате БД</li>
+      <li>Резервное копирование — создание, скачивание, восстановление через UI</li>
+      <li>Прокси для Telegram — настройка в интеграциях</li>
+      <li>Развёртывание NAS — кнопки rtsh работают</li>
+      <li>Выбор тарифа — выпадающий список с поиском вместо popup</li>
+      <li>Шейпер — скорости из EBS перенесены в 142 услуги</li>
+    </ul>
+  </div>
+
+  <h3>Скриншоты v1.0.0 (build 37)</h3>
+  <h4>Десктоп</h4>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(400px,1fr));gap:12px;margin-bottom:20px">
+    <div><img src="../img/v100/dashboard.png" alt="Дашборд" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Дашборд</div></div>
+    <div><img src="../img/v100/abonents_folder.png" alt="Папка абонентов" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Папка абонентов с поиском</div></div>
+    <div><img src="../img/v100/search_address.png" alt="Поиск по адресу" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Глобальный поиск по адресу</div></div>
+    <div><img src="../img/v100/abonent_card.png" alt="Карточка абонента" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Карточка абонента</div></div>
+    <div><img src="../img/v100/abonent_operations.png" alt="Операции" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Финансовые операции (MoneyField)</div></div>
+    <div><img src="../img/v100/reports_list.png" alt="Конструктор отчётов" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Конструктор отчётов</div></div>
+    <div><img src="../img/v100/sorm_reports.png" alt="Отчёты СОРМ" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">13 отчётов СОРМ-3</div></div>
+    <div><img src="../img/v100/backup.png" alt="Резервное копирование" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Система резервного копирования</div></div>
+    <div><img src="../img/v100/integrations_telegram.png" alt="Интеграции Telegram" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Telegram + прокси</div></div>
+    <div><img src="../img/v100/tarifs_list.png" alt="Тарифы" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Тарифы</div></div>
+    <div><img src="../img/v100/payment_settings.png" alt="Платёжные системы" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Настройки платёжных систем</div></div>
+    <div><img src="../img/v100/nas_list.png" alt="NAS" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Оборудование NAS</div></div>
+  </div>
+
+  <h4>Мобильная версия</h4>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:20px">
+    <div><img src="../img/v100/mobile_dashboard.png" alt="Мобильный дашборд" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Дашборд</div></div>
+    <div><img src="../img/v100/mobile_abonents.png" alt="Мобильные абоненты" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Абоненты</div></div>
+    <div><img src="../img/v100/mobile_tarifs.png" alt="Мобильные тарифы" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Тарифы</div></div>
+    <div><img src="../img/v100/mobile_sorm.png" alt="Мобильный СОРМ" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">СОРМ</div></div>
+    <div><img src="../img/v100/mobile_reports.png" alt="Мобильные отчёты" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Отчёты</div></div>
+    <div><img src="../img/v100/mobile_backup.png" alt="Мобильные бэкапы" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Бэкапы</div></div>
+  </div>
 
   <h3>Процесс обновления</h3>
   <p>Обновление выполняется через Docker-образы и Django-миграции:</p>
@@ -1744,7 +1832,7 @@ docker compose up -d</code></pre>
 
   <!-- ===== 13. Стороннее ПО ===== -->
   <h2 id="third-party">13. Стороннее ПО</h2>
-  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг 1.0.</p>
+  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.0.0 (build 37).</p>
 
   <!-- ===== 14. Смена языка ===== -->
   <h2 id="language">14. Смена языка</h2>
@@ -1752,7 +1840,7 @@ docker compose up -d</code></pre>
 
   <!-- ===== 15. Технологический стек ===== -->
   <h2 id="tech-stack">15. Технологический стек</h2>
-  <p>СмИТ Биллинг 1.0 построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
+  <p>СмИТ Биллинг v1.0.0 (build 37) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
 
   <h3>Почему PostgreSQL</h3>
   <p>PostgreSQL 16 выбран в качестве основной СУБД по ряду причин:</p>
@@ -1834,7 +1922,7 @@ docker compose ps
 </main>
 
 <footer class="footer">
-  &copy; 2026 СмИТ — Биллинговая система СмИТ Биллинг 1.0
+  &copy; 2026 СмИТ — Биллинговая система СмИТ Биллинг v1.0.0 (build 37)
 </footer>
 
 <script src="../js/main.js"></script>
