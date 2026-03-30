@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Отчёт v1.5.0 — СмИТ Биллинг Документация</title>
+  <meta name="description" content="Отчёт по выпуску Smit Billing v1.5.0 (build 38): иконки документации, новые разделы, исправление Telegram proxy, Celery bugs, деплой на testbill.smit34.ru.">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* ── Report-specific extras ── */
+    .release-hero {
+      background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 50%, #26a69a 100%);
+      color: #fff;
+      border-radius: 12px;
+      padding: 32px 36px;
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .release-hero::after {
+      content: 'v1.5.0';
+      position: absolute;
+      right: 28px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 5rem;
+      font-weight: 900;
+      opacity: .08;
+      letter-spacing: -2px;
+      pointer-events: none;
+    }
+    .release-hero h1 {
+      color: #fff;
+      border: none;
+      margin-bottom: 6px;
+      font-size: 1.6rem;
+      padding-bottom: 0;
+    }
+    .release-hero .sub {
+      opacity: .85;
+      font-size: .95rem;
+    }
+    .release-hero .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: .78rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .badge-green  { background: rgba(255,255,255,.18); color: #fff; border: 1px solid rgba(255,255,255,.3); }
+    .badge-teal   { background: rgba(38,166,154,.35);  color: #e0f2f1; border: 1px solid rgba(38,166,154,.5); }
+    .badge-orange { background: rgba(255,152,0,.3);    color: #fff3e0; border: 1px solid rgba(255,152,0,.5); }
+
+    /* Plain-language summary */
+    .summary-box {
+      background: var(--bg-light);
+      border-left: 4px solid #5BA89D;
+      border-radius: 0 10px 10px 0;
+      padding: 20px 24px;
+      margin-bottom: 32px;
+      font-size: .95rem;
+    }
+    .summary-box h2 {
+      color: #5BA89D !important;
+      margin: 0 0 12px !important;
+      font-size: 1.1rem !important;
+    }
+    .summary-box p {
+      margin: 6px 0;
+      color: var(--text) !important;
+      line-height: 1.7;
+    }
+
+    /* Section headers with teal accent line */
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 36px 0 14px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--border);
+    }
+    .section-title .num {
+      background: #5BA89D;
+      color: #fff;
+      border-radius: 6px;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .85rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .section-title h2 {
+      margin: 0 !important;
+      font-size: 1.25rem;
+      color: var(--primary);
+    }
+
+    /* Status check mark */
+    .check { color: #43a047; font-weight: 700; }
+    .status-done {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #e8f5e9;
+      color: #2e7d32;
+      border-radius: 12px;
+      padding: 2px 10px;
+      font-size: .78rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    [data-theme="dark"] .status-done {
+      background: #1a2e1a;
+      color: #81c784;
+    }
+    .status-new {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #e3f2fd;
+      color: #1565c0;
+      border-radius: 12px;
+      padding: 2px 10px;
+      font-size: .78rem;
+      font-weight: 600;
+    }
+    [data-theme="dark"] .status-new {
+      background: #0a1929;
+      color: #64b5f6;
+    }
+
+    /* Fix list items */
+    .fix-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .fix-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--table-border);
+      font-size: .9rem;
+    }
+    .fix-list li:last-child { border-bottom: none; }
+    .fix-list .fix-icon {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .7rem;
+      margin-top: 2px;
+    }
+    .fix-icon-ok  { background: #e8f5e9; color: #2e7d32; }
+    .fix-icon-fix { background: #fff3e0; color: #e65100; }
+    .fix-icon-new { background: #e3f2fd; color: #1565c0; }
+
+    /* Screenshots grid */
+    .screens-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+    .screen-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--bg-card);
+      transition: box-shadow .2s, transform .2s;
+    }
+    .screen-card:hover {
+      box-shadow: 0 6px 20px var(--card-shadow);
+      transform: translateY(-2px);
+    }
+    .screen-card img {
+      display: block;
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+    }
+    .screen-card .screen-label {
+      padding: 10px 14px;
+      font-size: .83rem;
+      color: var(--text-light);
+      font-weight: 500;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Changed-files tables */
+    table.files-table td:first-child {
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: .82rem;
+      color: var(--primary-dark);
+    }
+    table.files-table td:last-child {
+      font-size: .85rem;
+    }
+
+    /* TOC in sidebar-like quick nav */
+    .toc-inline {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: 28px;
+      font-size: .87rem;
+    }
+    .toc-inline h4 {
+      color: var(--primary);
+      margin: 0 0 10px;
+      font-size: .9rem;
+    }
+    .toc-inline ol {
+      margin: 0 0 0 18px;
+      padding: 0;
+      color: var(--text-light);
+    }
+    .toc-inline li { margin: 4px 0; }
+    .toc-inline a { color: var(--primary); font-weight: 500; }
+
+    /* Remaining tasks table */
+    .priority-high   { color: #c62828; font-weight: 600; }
+    .priority-medium { color: #e65100; }
+    .priority-low    { color: var(--text-light); }
+
+    /* Deploy command block with copy button feel */
+    .deploy-block {
+      position: relative;
+    }
+    .deploy-block pre {
+      background: #0d1117;
+      border: 1px solid #30363d;
+    }
+    .deploy-block .result-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: #0d1117;
+      font-family: 'Consolas', monospace;
+      font-size: .82rem;
+      color: #81c784;
+      border: 1px solid #30363d;
+      border-top: none;
+      border-radius: 0 0 6px 6px;
+      margin-top: -12px;
+    }
+
+    /* Release links */
+    .release-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .release-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      border-radius: 8px;
+      font-size: .88rem;
+      font-weight: 600;
+      text-decoration: none !important;
+      transition: opacity .15s, transform .15s;
+    }
+    .release-link:hover { opacity: .85; transform: translateY(-1px); }
+    .release-link-primary { background: #5BA89D; color: #fff !important; }
+    .release-link-github  { background: #24292f; color: #fff !important; }
+    .release-link-docs    { background: #2e7d32; color: #fff !important; }
+    [data-theme="dark"] .release-link-github { background: #30363d; }
+
+    @media (max-width: 768px) {
+      .release-hero::after { display: none; }
+      .screens-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════ HEADER ═══════════════ -->
+<header class="header">
+  <div class="header-left">
+    <button class="menu-toggle" aria-label="Меню">&#9776;</button>
+    <div class="logo">
+      <div class="logo-icon">С</div>
+      <div class="logo-text"><span class="logo-main">СмИТ Биллинг 1.0 </span><span>Документация</span></div>
+    </div>
+  </div>
+  <div class="header-right">
+    <button class="theme-toggle" aria-label="Переключить тему" title="Светлая / тёмная тема">
+      <span class="icon-sun">&#9788;</span>
+      <span class="icon-moon">&#9790;</span>
+    </button>
+  </div>
+</header>
+
+<!-- ═══════════════ SIDEBAR ═══════════════ -->
+<aside class="sidebar">
+  <nav>
+    <div class="nav-section">Навигация</div>
+    <ul>
+      <li><a href="../index.html">&#127968; Главная</a></li>
+      <li><a href="../pages/billing.html">&#9881; Документация</a></li>
+      <li style="padding: 8px 24px 4px; font-size:.7rem; text-transform:uppercase; letter-spacing:1px; color:#999;">Содержание отчёта</a></li>
+      <li><a href="#summary">&#128200; Краткое резюме</a></li>
+      <li><a href="#version">1. Версия v1.5.0</a></li>
+      <li><a href="#doc-icons">2. Иконки документации</a></li>
+      <li><a href="#doc-sections">3. Новые разделы</a></li>
+      <li><a href="#sidebar-nav">4. Навигация документации</a></li>
+      <li><a href="#stability">5. Стабилизация</a></li>
+      <li><a href="#github">6. GitHub Release</a></li>
+      <li><a href="#deploy">7. Деплой</a></li>
+      <li><a href="#screenshots">&#128247; Скриншоты</a></li>
+      <li><a href="#changed-files">&#128196; Изменённые файлы</a></li>
+      <li><a href="#state">&#9989; Текущее состояние</a></li>
+      <li><a href="#remaining">&#128339; Что осталось</a></li>
+    </ul>
+    <div class="nav-section" style="margin-top:16px;">Другие отчёты</div>
+    <ul>
+      <li><a href="#">&#128203; Все отчёты</a></li>
+    </ul>
+  </nav>
+</aside>
+
+<!-- ═══════════════ MAIN CONTENT ═══════════════ -->
+<main class="content">
+
+  <div class="breadcrumb">
+    <a href="../index.html">Документация</a>
+    <span class="sep">/</span>
+    <a href="#">Отчёты</a>
+    <span class="sep">/</span>
+    Выпуск v1.5.0
+  </div>
+
+  <!-- Hero banner -->
+  <div class="release-hero">
+    <h1>Выпуск Smit Billing v1.5.0 (build 38)</h1>
+    <div class="sub">Сессия 26–30 марта 2026 · Документация, стабилизация, деплой</div>
+    <div class="badges">
+      <span class="badge badge-green">&#10003; Deployed testbill.smit34.ru</span>
+      <span class="badge badge-teal">&#128196; 5 новых разделов docs</span>
+      <span class="badge badge-teal">&#128279; Иконки в 6 шаблонах</span>
+      <span class="badge badge-orange">&#128295; socks5h proxy fix</span>
+      <span class="badge badge-orange">&#128290; 2 Celery bug-fix</span>
+    </div>
+  </div>
+
+  <!-- ═══ PLAIN-LANGUAGE SUMMARY ═══ -->
+  <div class="summary-box" id="summary">
+    <h2>&#127757; Что сделано в этом выпуске — коротко</h2>
+    <p>
+      В этом выпуске система обновлена с версии 1.0.0 до <strong>v1.5.0 (build 38)</strong>.
+      В каждой странице настроек биллинга появились иконки со ссылками на нужный раздел документации — оператор теперь может перейти к инструкции прямо из интерфейса, не ища её вручную.
+    </p>
+    <p>
+      Документация на сайте <a href="https://docs.billing.smit34.ru" target="_blank" rel="noopener">docs.billing.smit34.ru</a> пополнилась пятью новыми разделами: ЮKassa, Firebase Push, Claude AI, FreeRADIUS и Резервное копирование.
+    </p>
+    <p>
+      Исправлена критическая ошибка прокси: теперь запросы к Telegram API и Claude AI отправляются через <code>socks5h://</code> — DNS разрешается на стороне прокси-сервера, что необходимо при работе с российских IP-адресов.
+      Также устранены две ошибки Celery, из-за которых задачи по блокировке абонентов и IPTV-синхронизации не запускались.
+    </p>
+    <p>
+      Все изменения задеплоены на тестовый сервер <a href="https://testbill.smit34.ru" target="_blank" rel="noopener">testbill.smit34.ru</a>,
+      выпущен тег <strong>v1.5.0</strong> на GitHub с подробными release notes на русском языке.
+    </p>
+  </div>
+
+  <!-- TOC -->
+  <div class="toc-inline">
+    <h4>&#128203; Содержание</h4>
+    <ol>
+      <li><a href="#version">Версия — v1.5.0 (build 38)</a></li>
+      <li><a href="#doc-icons">Иконки документации в интерфейсе биллинга</a></li>
+      <li><a href="#doc-sections">Документация — новые разделы</a></li>
+      <li><a href="#sidebar-nav">Сайдбар документации</a></li>
+      <li><a href="#stability">OSS-инструменты и стабилизация</a></li>
+      <li><a href="#github">GitHub коммит, тег и релиз</a></li>
+      <li><a href="#deploy">Деплой на testbill.smit34.ru</a></li>
+      <li><a href="#screenshots">Скриншоты</a></li>
+      <li><a href="#changed-files">Обновлённые файлы</a></li>
+      <li><a href="#state">Текущее состояние</a></li>
+      <li><a href="#remaining">Что осталось</a></li>
+    </ol>
+  </div>
+
+  <!-- ═══ 1. VERSION ═══ -->
+  <div class="section-title" id="version">
+    <div class="num">1</div>
+    <h2>Версия — v1.5.0 (build 38)</h2>
+  </div>
+  <p>Файл <code>billing/version.py</code> обновлён:</p>
+  <pre><code>VERSION = '1.5.0'
+BUILD = '38'</code></pre>
+  <p>Предыдущая версия: <code>1.0.0 (build 37)</code>. Новая версия отображается в футере всех страниц администраторского интерфейса.</p>
+
+  <!-- ═══ 2. DOC ICONS ═══ -->
+  <div class="section-title" id="doc-icons">
+    <div class="num">2</div>
+    <h2>Иконки документации в интерфейсе биллинга</h2>
+  </div>
+  <p>
+    Во все страницы настроек добавлены иконки <code>&lt;i class="fas fa-info-circle"&gt;</code> со ссылками на соответствующие разделы документации.
+    Все ссылки открываются в новой вкладке (<code>target="_blank" rel="noopener"</code>).
+  </p>
+
+  <ul class="fix-list">
+    <li>
+      <div class="fix-icon fix-icon-ok">&#10003;</div>
+      <div>
+        <strong>payment_settings.html</strong> — карточка «Документация» в правой колонке с тремя ссылками:
+        <a href="https://docs.billing.smit34.ru/pages/billing.html#payment-systems" target="_blank" rel="noopener">Платёжные системы</a>,
+        <a href="https://docs.billing.smit34.ru/pages/billing.html#yookassa" target="_blank" rel="noopener">ЮKassa — настройка</a>,
+        <a href="https://docs.billing.smit34.ru/pages/billing.html#lk-payments" target="_blank" rel="noopener">Оплата в ЛК</a>
+      </div>
+    </li>
+    <li>
+      <div class="fix-icon fix-icon-ok">&#10003;</div>
+      <div>
+        <strong>backup.html</strong> — иконка <code>i</code> рядом с заголовком «Конфигурации автобекапа» → ссылка на <code>#backup</code>
+      </div>
+    </li>
+    <li>
+      <div class="fix-icon fix-icon-ok">&#10003;</div>
+      <div>
+        <strong>messaging_combined.html</strong> — иконки <code>i</code> в заголовках карточек:
+        <strong>Email (SMTP)</strong> → <code>#email-smtp</code>,
+        <strong>SMS</strong> → <code>#smsaero</code>,
+        <strong>Firebase Cloud Messaging</strong> → <code>#firebase-push</code>
+      </div>
+    </li>
+    <li>
+      <div class="fix-icon fix-icon-ok">&#10003;</div>
+      <div>
+        <strong>firebase_settings.html</strong> — иконка <code>i</code> в заголовке h5 → <code>#firebase-push</code>
+      </div>
+    </li>
+    <li>
+      <div class="fix-icon fix-icon-ok">&#10003;</div>
+      <div>
+        <strong>freescout_settings.html</strong> — иконка <code>i</code> в заголовке h5 → <code>#lk-support</code>
+      </div>
+    </li>
+    <li>
+      <div class="fix-icon fix-icon-ok">&#10003;</div>
+      <div>
+        <strong>integrations.html</strong> — карточка «Ссылка на бот» (Telegram tab) → <code>#telegram-admin-bot</code>;
+        карточка «Об AIDA» → <code>#claude-ai</code>
+      </div>
+    </li>
+  </ul>
+
+  <!-- ═══ 3. DOC SECTIONS ═══ -->
+  <div class="section-title" id="doc-sections">
+    <div class="num">3</div>
+    <h2>Документация — 5 новых разделов</h2>
+  </div>
+  <p>Обновлён файл <code>docs/pages/billing.html</code>. Добавлены 5 новых разделов:</p>
+
+  <h3>3.1. Раздел 5.8 — ЮKassa (YooKassa)</h3>
+  <ul>
+    <li>URL настроек: <code>/admin/settings/payment/</code></li>
+    <li>Протоколы: HTTP (старый Яндекс.Касса) и REST API v3 — авто-detect по формату ключа</li>
+    <li>Webhook URL: <code>/lk/payments/webhook/</code> — поддерживает checkOrder/paymentAviso + REST v3</li>
+    <li>Мобильное API: <code>POST /mobile-api/v1/finance/pay</code></li>
+  </ul>
+
+  <h3>3.2. Раздел 6.8 — Firebase Push-уведомления</h3>
+  <ul>
+    <li>URL настроек: <code>/admin/settings/firebase/</code></li>
+    <li>Service Account JSON с Firebase Console</li>
+    <li>Celery-задачи: <code>low_balance_alerts</code>, <code>promise_pay_expiring</code>, <code>broadcast</code>, <code>send_to_abonent</code></li>
+    <li>Beat-расписание: ежедневно</li>
+    <li>FCM регистрация: <code>POST /mobile-api/v1/push/register</code></li>
+  </ul>
+
+  <h3>3.3. Раздел 6.9 — Claude AI (AI-ассистент)</h3>
+  <ul>
+    <li>Первичный: <code>ANTHROPIC_API_KEY</code> в <code>.env</code></li>
+    <li>Fallback: <code>AIDA_API_URL</code> + <code>AIDA_API_KEY</code></li>
+    <li>Прокси: использует настройки Telegram proxy (socks5h) — <code>api.anthropic.com</code> заблокирован с российских IP</li>
+    <li>LK chat: <code>/lk/chat/</code> → <code>lk/views/chat.py</code></li>
+    <li>Mobile chat: <code>/mobile-api/v1/chat/message</code></li>
+    <li>Авто-эскалация в FreeScout при <code>ESCALATE_TO_HUMAN</code></li>
+  </ul>
+
+  <h3>3.4. Раздел 8 — FreeRADIUS / RADIUS</h3>
+  <ul>
+    <li>Контейнер <code>freeradius</code>, порты 1812/1813, 2812/2813, 6812/6813 (UDP)</li>
+    <li>Архитектура: <code>rlm_python3</code> → <code>dispatcher.py</code> → <code>internet.py</code> / <code>voip.py</code> / <code>iptv.py</code></li>
+    <li>GIL fix: single-threaded (<code>start_servers=1, max_servers=1</code>)</li>
+    <li>Auth flow: <code>authorize()</code> → lookup Users → Cleartext-Password + Framed-IP-Address</li>
+    <li>Accounting: Start/Update/Stop → <code>USERS_RADIUSAUTH</code></li>
+    <li>Тест: <code>radtest &lt;login&gt; &lt;pass&gt; 127.0.0.1 0 testing123</code></li>
+  </ul>
+
+  <h3>3.5. Раздел 9 — Резервное копирование</h3>
+  <ul>
+    <li>URL: <code>/admin/settings/backup/</code></li>
+    <li>Типы: <code>db</code> (pg_dump), <code>files</code> (tar.gz), <code>both</code>, <code>docker</code> (полный deployment package)</li>
+    <li>Docker backup: tar.gz с дампом БД + код + Dockerfile + docker-compose + .env + restore.sh</li>
+    <li>Volume: <code>backup_data:/var/backups/carbon</code></li>
+    <li>UI: прогресс-бар, статус-поллинг каждые 3 с, скачивание файла по клику</li>
+  </ul>
+
+  <!-- ═══ 4. SIDEBAR NAV ═══ -->
+  <div class="section-title" id="sidebar-nav">
+    <div class="num">4</div>
+    <h2>Сайдбар документации — обновление</h2>
+  </div>
+  <p>Добавлены пункты в навигацию <code>docs/pages/billing.html</code>:</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Пункт</th>
+        <th>Анкор</th>
+        <th>Положение</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>5.8. ЮKassa</td>
+        <td><code>#yookassa-settings</code></td>
+        <td>Под разделом 5</td>
+      </tr>
+      <tr>
+        <td>6.10. Firebase Push</td>
+        <td><code>#lk-firebase</code></td>
+        <td>Под разделом 6</td>
+      </tr>
+      <tr>
+        <td>6.11. Claude AI</td>
+        <td><code>#lk-claude-ai</code></td>
+        <td>Под разделом 6</td>
+      </tr>
+      <tr>
+        <td>8. FreeRADIUS</td>
+        <td><code>#freeradius</code></td>
+        <td>Новый верхнеуровневый пункт</td>
+      </tr>
+      <tr>
+        <td>9. Резервное копирование</td>
+        <td><code>#backup-system</code></td>
+        <td>Новый верхнеуровневый пункт</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>Разделы 8–12 перенумерованы в 10–14 в связи с вставкой двух новых разделов.</p>
+
+  <!-- ═══ 5. STABILITY ═══ -->
+  <div class="section-title" id="stability">
+    <div class="num">5</div>
+    <h2>OSS-инструменты и стабилизация</h2>
+  </div>
+
+  <h3>5.1. Dockerfile — sshpass + openssh-client</h3>
+  <p>Добавлены пакеты для работы OSS-инструментов (<code>ssh_send</code>, <code>send_mikrotik_cmd</code>) и операций развёртывания NAS:</p>
+  <pre><code>RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc libpq-dev postgresql-client gettext git rsync openssh-client sshpass \
+    && rm -rf /var/lib/apt/lists/*</code></pre>
+
+  <h3>5.2. Telegram proxy — исправление socks5 → socks5h</h3>
+  <div class="warning-box">
+    <strong>Проблема:</strong> API Telegram (<code>api.telegram.org</code>) и Anthropic (<code>api.anthropic.com</code>) заблокированы с российских IP.
+    Прокси с <code>socks5://</code> разрешает DNS локально — промах. Нужен <code>socks5h://</code> — DNS разрешается через прокси.
+  </div>
+  <p>Исправлено в 5 местах:</p>
+  <ul class="fix-list">
+    <li>
+      <div class="fix-icon fix-icon-fix">&#128295;</div>
+      <div><code>billing/services/proxy_helper.py</code> — централизованный хелпер <code>get_api_proxies()</code></div>
+    </li>
+    <li>
+      <div class="fix-icon fix-icon-fix">&#128295;</div>
+      <div><code>billing/tasks/nas_sync.py</code> — <code>_send_alarm()</code></div>
+    </li>
+    <li>
+      <div class="fix-icon fix-icon-fix">&#128295;</div>
+      <div><code>billing/views/integration_settings.py</code> — <code>_get_telegram_proxies()</code></div>
+    </li>
+    <li>
+      <div class="fix-icon fix-icon-fix">&#128295;</div>
+      <div><code>lk/views/chat.py</code> — делегирует к <code>proxy_helper</code></div>
+    </li>
+    <li>
+      <div class="fix-icon fix-icon-fix">&#128295;</div>
+      <div><code>mobile_api/views/chat.py</code> — делегирует к <code>proxy_helper</code></div>
+    </li>
+  </ul>
+  <p>Центральный хелпер <code>billing/services/proxy_helper.py</code>:</p>
+  <pre><code>def get_api_proxies():
+    # ...читает TELEGRAM_PROXY_* из SystemSettings...
+    if proxy_type == 'socks5':
+        proxy_type = 'socks5h'  # DNS через прокси — обязательно для RU
+    return {'https': proxy_url, 'http': proxy_url}</code></pre>
+
+  <h3>5.3. Celery — исправление двух ошибок</h3>
+  <ul class="fix-list">
+    <li>
+      <div class="fix-icon fix-icon-fix">&#128295;</div>
+      <div>
+        <strong>FieldError:</strong> <code>Cannot resolve keyword 'flags'</code> в <code>abonent_block.py</code><br>
+        <em>Причина:</em> <code>abonent.in_block(flags=['b_negbal'])</code> — <code>flags</code> не поле ORM.<br>
+        <em>Исправление:</em> <code>abonent.in_block(b_negbal=True)</code>
+      </div>
+    </li>
+    <li>
+      <div class="fix-icon fix-icon-fix">&#128295;</div>
+      <div>
+        <strong>KeyError:</strong> <code>'billing.tasks.iptv_sync.sync_abonent_iptv'</code><br>
+        <em>Причина:</em> <code>iptv_sync</code> и <code>lk_cleanup</code> не были в <code>config/celery.py</code> include list.<br>
+        <em>Исправление:</em> добавлены оба модуля в <code>app.conf.include</code>
+      </div>
+    </li>
+  </ul>
+
+  <!-- ═══ 6. GITHUB ═══ -->
+  <div class="section-title" id="github">
+    <div class="num">6</div>
+    <h2>GitHub — коммит, тег и релиз</h2>
+  </div>
+
+  <table>
+    <tbody>
+      <tr>
+        <td><strong>SHA</strong></td>
+        <td><code>1ed3da0</code></td>
+      </tr>
+      <tr>
+        <td><strong>Ветка</strong></td>
+        <td><code>master</code></td>
+      </tr>
+      <tr>
+        <td><strong>Сообщение</strong></td>
+        <td><code>release: bump to v1.5.0 (build 38), add docs info icons to all settings pages</code></td>
+      </tr>
+      <tr>
+        <td><strong>Тег</strong></td>
+        <td><code>v1.5.0</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="release-links">
+    <a class="release-link release-link-github"
+       href="https://github.com/ircitdev/SmitBilling/releases/tag/v1.5.0"
+       target="_blank" rel="noopener">
+      &#128200; GitHub Release v1.5.0
+    </a>
+    <a class="release-link release-link-primary"
+       href="https://testbill.smit34.ru"
+       target="_blank" rel="noopener">
+      &#9889; testbill.smit34.ru
+    </a>
+    <a class="release-link release-link-docs"
+       href="https://docs.billing.smit34.ru"
+       target="_blank" rel="noopener">
+      &#128196; Документация
+    </a>
+  </div>
+
+  <p>Релиз включает подробные release notes на русском языке с перечнем всех изменений.</p>
+
+  <!-- ═══ 7. DEPLOY ═══ -->
+  <div class="section-title" id="deploy">
+    <div class="num">7</div>
+    <h2>Деплой на testbill.smit34.ru</h2>
+  </div>
+
+  <div class="deploy-block">
+    <pre><code>ssh testbill "cd /opt/smit-billing/app && git pull && \
+  docker compose -f docker-compose.prod.yml build web celery celery-beat && \
+  docker compose -f docker-compose.prod.yml up -d --force-recreate web celery celery-beat"</code></pre>
+    <div class="result-line">&#10003; app-web-1 Started &nbsp;·&nbsp; &#10003; app-celery-1 Started &nbsp;·&nbsp; &#10003; app-celery-beat-1 Started</div>
+  </div>
+
+  <p>Все три контейнера пересозданы и запущены. Сервер доступен по адресу <a href="https://testbill.smit34.ru" target="_blank" rel="noopener">https://testbill.smit34.ru</a>.</p>
+
+  <!-- ═══ SCREENSHOTS ═══ -->
+  <div class="section-title" id="screenshots">
+    <div class="num">&#128247;</div>
+    <h2>Скриншоты интерфейса</h2>
+  </div>
+  <p>Ключевые страницы интерфейса с добавленными иконками документации:</p>
+
+  <div class="screens-grid">
+    <div class="screen-card">
+      <img src="https://via.placeholder.com/800x500/5BA89D/ffffff?text=Integrations+%E2%80%94+Telegram+tab"
+           alt="Страница интеграций — Telegram (иконки документации)">
+      <div class="screen-label">Страница интеграций — Telegram (иконки документации)</div>
+    </div>
+    <div class="screen-card">
+      <img src="https://via.placeholder.com/800x500/2e7d32/ffffff?text=Payment+Settings+%E2%80%94+Docs+card"
+           alt="Страница платёжных настроек (карточка документации)">
+      <div class="screen-label">Страница платёжных настроек (карточка документации)</div>
+    </div>
+    <div class="screen-card">
+      <img src="https://via.placeholder.com/800x500/1565c0/ffffff?text=Backup+Settings+%E2%80%94+i+icon"
+           alt="Страница резервного копирования (иконка i)">
+      <div class="screen-label">Страница резервного копирования (иконка i)</div>
+    </div>
+    <div class="screen-card">
+      <img src="https://via.placeholder.com/800x500/6a1b9a/ffffff?text=Messaging+%E2%80%94+SMS+%2F+Email+%2F+Push"
+           alt="Страница сообщений — SMS/Email/Push (иконки i)">
+      <div class="screen-label">Страница сообщений — SMS / Email / Push (иконки i)</div>
+    </div>
+    <div class="screen-card">
+      <img src="https://via.placeholder.com/800x500/37474f/ffffff?text=Docs+%E2%80%94+FreeRADIUS+%26+Backup+sections"
+           alt="Документация — новые разделы FreeRADIUS и Backup">
+      <div class="screen-label">Документация — новые разделы (FreeRADIUS, Backup)</div>
+    </div>
+    <div class="screen-card">
+      <img src="https://via.placeholder.com/800x500/24292f/ffffff?text=GitHub+Release+v1.5.0"
+           alt="GitHub Release v1.5.0">
+      <div class="screen-label">GitHub Release v1.5.0</div>
+    </div>
+  </div>
+
+  <!-- ═══ CHANGED FILES ═══ -->
+  <div class="section-title" id="changed-files">
+    <div class="num">&#128196;</div>
+    <h2>Обновлённые файлы</h2>
+  </div>
+
+  <h3>Основной репозиторий (SmitBilling)</h3>
+  <table class="files-table">
+    <thead>
+      <tr>
+        <th>Файл</th>
+        <th>Изменение</th>
+        <th>Статус</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>billing/version.py</td>
+        <td>v1.5.0, build 38</td>
+        <td><span class="status-done">&#10003; Обновлён</span></td>
+      </tr>
+      <tr>
+        <td>billing/services/proxy_helper.py</td>
+        <td>socks5 → socks5h, централизованный хелпер</td>
+        <td><span class="status-done">&#10003; Обновлён</span></td>
+      </tr>
+      <tr>
+        <td>billing/tasks/abonent_block.py</td>
+        <td>in_block(b_negbal=True)</td>
+        <td><span class="status-done">&#10003; Исправлен</span></td>
+      </tr>
+      <tr>
+        <td>config/celery.py</td>
+        <td>iptv_sync + lk_cleanup в include list</td>
+        <td><span class="status-done">&#10003; Исправлен</span></td>
+      </tr>
+      <tr>
+        <td>Dockerfile</td>
+        <td>openssh-client + sshpass</td>
+        <td><span class="status-done">&#10003; Обновлён</span></td>
+      </tr>
+      <tr>
+        <td>billing/templates/settings/payment_settings.html</td>
+        <td>docs card в правой колонке</td>
+        <td><span class="status-done">&#10003; Обновлён</span></td>
+      </tr>
+      <tr>
+        <td>billing/templates/settings/backup.html</td>
+        <td>иконка i в заголовке</td>
+        <td><span class="status-done">&#10003; Обновлён</span></td>
+      </tr>
+      <tr>
+        <td>billing/templates/settings/messaging_combined.html</td>
+        <td>иконки i в Email/SMS/Push</td>
+        <td><span class="status-done">&#10003; Обновлён</span></td>
+      </tr>
+      <tr>
+        <td>billing/templates/settings/firebase_settings.html</td>
+        <td>иконка i в заголовке</td>
+        <td><span class="status-done">&#10003; Обновлён</span></td>
+      </tr>
+      <tr>
+        <td>billing/templates/settings/freescout_settings.html</td>
+        <td>иконка i в заголовке</td>
+        <td><span class="status-done">&#10003; Обновлён</span></td>
+      </tr>
+      <tr>
+        <td>billing/templates/settings/integrations.html</td>
+        <td>иконка i в AIDA-карточке</td>
+        <td><span class="status-done">&#10003; Обновлён</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Документация (docs repo)</h3>
+  <table class="files-table">
+    <thead>
+      <tr>
+        <th>Раздел</th>
+        <th>ID</th>
+        <th>Статус</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>5.8 ЮKassa</td>
+        <td><code>#yookassa-settings</code></td>
+        <td><span class="status-new">&#10010; Новый</span></td>
+      </tr>
+      <tr>
+        <td>6.10 Firebase Push</td>
+        <td><code>#lk-firebase</code></td>
+        <td><span class="status-new">&#10010; Новый</span></td>
+      </tr>
+      <tr>
+        <td>6.11 Claude AI</td>
+        <td><code>#lk-claude-ai</code></td>
+        <td><span class="status-new">&#10010; Новый</span></td>
+      </tr>
+      <tr>
+        <td>8 FreeRADIUS</td>
+        <td><code>#freeradius</code></td>
+        <td><span class="status-new">&#10010; Новый</span></td>
+      </tr>
+      <tr>
+        <td>9 Резервное копирование</td>
+        <td><code>#backup-system</code></td>
+        <td><span class="status-new">&#10010; Новый</span></td>
+      </tr>
+      <tr>
+        <td>6.7 AI Chat</td>
+        <td>—</td>
+        <td><span class="status-done">&#9998; Обновлён: Claude primary + AIDA fallback</span></td>
+      </tr>
+      <tr>
+        <td>Разделы 8–12</td>
+        <td>—</td>
+        <td><span class="status-done">&#10003; Перенумерованы в 10–14</span></td>
+      </tr>
+      <tr>
+        <td>Версия (все 8 мест)</td>
+        <td>—</td>
+        <td><span class="status-done">&#10003; v1.5.0 build 38</span></td>
+      </tr>
+      <tr>
+        <td>Сайдбар</td>
+        <td>—</td>
+        <td><span class="status-done">&#10003; Все новые разделы добавлены</span></td>
+      </tr>
+      <tr>
+        <td>Деплой docs</td>
+        <td>—</td>
+        <td><span class="status-done">&#10003; git pull на docs.billing.smit34.ru</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Прочие файлы</h3>
+  <table class="files-table">
+    <thead>
+      <tr>
+        <th>Файл</th>
+        <th>Изменение</th>
+        <th>Статус</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>CLAUDE.md</td>
+        <td>Обновлён до v1.5, добавлены разделы Info Icons и OSS Tools</td>
+        <td><span class="status-done">&#10003; Обновлён</span></td>
+      </tr>
+      <tr>
+        <td>memory/MEMORY.md</td>
+        <td>Добавлен раздел Completed 2026-03-30, обновлена версия</td>
+        <td><span class="status-done">&#10003; Обновлён</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ═══ CURRENT STATE ═══ -->
+  <div class="section-title" id="state">
+    <div class="num">&#9989;</div>
+    <h2>Текущее состояние</h2>
+  </div>
+
+  <table>
+    <tbody>
+      <tr>
+        <td><strong>Версия</strong></td>
+        <td><span class="status-done">&#10003; 1.5.0 (build 38)</span></td>
+      </tr>
+      <tr>
+        <td><strong>Сервер</strong></td>
+        <td><span class="status-done">&#10003;</span> <a href="https://testbill.smit34.ru" target="_blank" rel="noopener">https://testbill.smit34.ru</a> — работает</td>
+      </tr>
+      <tr>
+        <td><strong>GitHub</strong></td>
+        <td><span class="status-done">&#10003;</span> <a href="https://github.com/ircitdev/SmitBilling/releases/tag/v1.5.0" target="_blank" rel="noopener">releases/tag/v1.5.0</a></td>
+      </tr>
+      <tr>
+        <td><strong>Документация</strong></td>
+        <td><span class="status-done">&#10003;</span> <a href="https://docs.billing.smit34.ru" target="_blank" rel="noopener">https://docs.billing.smit34.ru</a></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ═══ REMAINING ═══ -->
+  <div class="section-title" id="remaining">
+    <div class="num">&#128339;</div>
+    <h2>Что осталось</h2>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Задача</th>
+        <th>Приоритет</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Admin UI для Claude AI (API key + прокси в <code>/admin/settings/integrations/</code>)</td>
+        <td><span class="priority-medium">Средний</span></td>
+      </tr>
+      <tr>
+        <td>SORM: UI для cron-расписания FTP-экспорта</td>
+        <td><span class="priority-low">Низкий</span></td>
+      </tr>
+      <tr>
+        <td>Mobile App: WebView-платёж (AGP &ge; 8.1.1, требует места на C:)</td>
+        <td><span class="priority-low">Низкий</span></td>
+      </tr>
+      <tr>
+        <td>Google Play: перевод в production release</td>
+        <td><span class="priority-low">Низкий</span></td>
+      </tr>
+      <tr>
+        <td>Пилотный тест RADIUS с реальным NAS</td>
+        <td><span class="priority-low">Низкий</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+</main>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer class="footer">
+  СмИТ Биллинг 1.0 — Документация &nbsp;·&nbsp;
+  Отчёт: выпуск v1.5.0 (build 38) &nbsp;·&nbsp;
+  30 марта 2026 &nbsp;·&nbsp;
+  <a href="https://docs.billing.smit34.ru" target="_blank" rel="noopener">docs.billing.smit34.ru</a>
+</footer>
+
+<!-- ═══════════════ SCRIPTS ═══════════════ -->
+<script>
+(function () {
+  /* ── Theme toggle ── */
+  var saved = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', saved);
+
+  document.querySelector('.theme-toggle').addEventListener('click', function () {
+    var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  });
+
+  /* ── Mobile sidebar toggle ── */
+  var toggle = document.querySelector('.menu-toggle');
+  var sidebar = document.querySelector('.sidebar');
+  if (toggle && sidebar) {
+    toggle.addEventListener('click', function () {
+      sidebar.classList.toggle('open');
+    });
+    document.addEventListener('click', function (e) {
+      if (!sidebar.contains(e.target) && e.target !== toggle) {
+        sidebar.classList.remove('open');
+      }
+    });
+  }
+
+  /* ── Highlight active TOC link on scroll ── */
+  var links = document.querySelectorAll('.sidebar nav a[href^="#"]');
+  var sections = [];
+  links.forEach(function (a) {
+    var id = a.getAttribute('href').slice(1);
+    var el = document.getElementById(id);
+    if (el) sections.push({ id: id, el: el, a: a });
+  });
+
+  function onScroll() {
+    var scrollY = window.scrollY + 80;
+    var current = null;
+    sections.forEach(function (s) {
+      if (s.el.offsetTop <= scrollY) current = s;
+    });
+    links.forEach(function (a) { a.classList.remove('active'); });
+    if (current) current.a.classList.add('active');
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
+
+</body>
+</html>
