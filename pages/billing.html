@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Основные настройки биллинга — СмИТ Биллинг v1.0.0 (build 37)</title>
+  <title>Основные настройки биллинга — СмИТ Биллинг v1.5.0 (build 38)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.0 — Документация">
-  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.0.0 (build 37)">
-  <meta property="og:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, отчёты, справочники и технологический стек.">
+  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.5.0 (build 38)">
+  <meta property="og:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/billing.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.0.0 (build 37)">
-  <meta name="twitter:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, отчёты, справочники и технологический стек.">
+  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.5.0 (build 38)">
+  <meta name="twitter:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
-  <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, отчёты, справочники и технологический стек.">
+  <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
@@ -98,6 +98,7 @@
           <li class="sub-item"><a href="billing.html#csv-export">5.5. Импорт из CSV</a></li>
           <li class="sub-item"><a href="billing.html#online-cash">5.6. Онлайн-кассы</a></li>
           <li class="sub-item"><a href="billing.html#payment-errors">5.7. Коды ошибок</a></li>
+          <li class="sub-item"><a href="billing.html#yookassa-settings">5.8. ЮKassa</a></li>
           <li><a href="billing.html#cabinet">6. Личный кабинет</a></li>
           <li class="sub-item"><a href="billing.html#lk-auth">6.1. Авторизация</a></li>
           <li class="sub-item"><a href="billing.html#lk-settings">6.2. Настройки интеграций</a></li>
@@ -109,6 +110,8 @@
           <li class="sub-item"><a href="billing.html#lk-ai-chat">6.7. AI-ассистент (Claude)</a></li>
           <li class="sub-item"><a href="billing.html#lk-profile">6.8. Профиль</a></li>
           <li class="sub-item"><a href="billing.html#lk-deploy">6.9. Развёртывание и SSL</a></li>
+          <li class="sub-item"><a href="billing.html#lk-firebase">6.10. Firebase Push</a></li>
+          <li class="sub-item"><a href="billing.html#lk-claude-ai">6.11. Claude AI</a></li>
           <li><a href="billing.html#oss-bss">7. OSS.BSS / NAS</a></li>
           <li class="sub-item"><a href="billing.html#rtsh">7.1. rtsh</a></li>
           <li class="sub-item"><a href="billing.html#oss-commands">7.2. Команды OSS</a></li>
@@ -118,20 +121,30 @@
           <li class="sub-item"><a href="billing.html#firewall-service">7.6. FirewallService</a></li>
           <li class="sub-item"><a href="billing.html#helpdesk">7.7. CRM / HelpDesk</a></li>
           <li class="sub-item"><a href="billing.html#userside">7.8. UserSide</a></li>
-          <li><a href="billing.html#reports">8. Отчёты</a></li>
-          <li class="sub-item"><a href="billing.html#audit">8.1. Аудит</a></li>
-          <li class="sub-item"><a href="billing.html#payment-log">8.2. Журнал платежей</a></li>
-          <li class="sub-item"><a href="billing.html#report-constructor">8.3. Конструктор отчётов</a></li>
-          <li class="sub-item"><a href="billing.html#director-report">8.4. Отчёт для директора</a></li>
-          <li><a href="billing.html#dictionaries">9. Справочники</a></li>
-          <li class="sub-item"><a href="billing.html#ip-pools">9.1. Пулы IP-адресов</a></li>
-          <li class="sub-item"><a href="billing.html#requisites">9.2. Реквизиты</a></li>
-          <li class="sub-item"><a href="billing.html#houses">9.3. Дома</a></li>
-          <li><a href="billing.html#additional">10. Дополнительные настройки</a></li>
-          <li class="sub-item"><a href="billing.html#sorm-access">10.1. СОРМ</a></li>
-          <li class="sub-item"><a href="billing.html#print-templates">10.2. Шаблоны печати</a></li>
-          <li><a href="billing.html#security">11. Безопасность</a></li>
-          <li><a href="billing.html#versioning">12. Версионность</a></li>
+          <li><a href="billing.html#freeradius">8. FreeRADIUS</a></li>
+          <li class="sub-item"><a href="billing.html#radius-arch">8.1. Архитектура</a></li>
+          <li class="sub-item"><a href="billing.html#radius-auth">8.2. Авторизация</a></li>
+          <li class="sub-item"><a href="billing.html#radius-accounting">8.3. Аккаунтинг</a></li>
+          <li class="sub-item"><a href="billing.html#radius-clients">8.4. Клиенты (NAS)</a></li>
+          <li class="sub-item"><a href="billing.html#radius-test">8.5. Тестирование</a></li>
+          <li><a href="billing.html#backup-system">9. Резервное копирование</a></li>
+          <li class="sub-item"><a href="billing.html#backup-config">9.1. Настройка</a></li>
+          <li class="sub-item"><a href="billing.html#backup-types">9.2. Типы резервных копий</a></li>
+          <li class="sub-item"><a href="billing.html#backup-restore">9.3. Восстановление</a></li>
+          <li><a href="billing.html#reports">10. Отчёты</a></li>
+          <li class="sub-item"><a href="billing.html#audit">10.1. Аудит</a></li>
+          <li class="sub-item"><a href="billing.html#payment-log">10.2. Журнал платежей</a></li>
+          <li class="sub-item"><a href="billing.html#report-constructor">10.3. Конструктор отчётов</a></li>
+          <li class="sub-item"><a href="billing.html#director-report">10.4. Отчёт для директора</a></li>
+          <li><a href="billing.html#dictionaries">11. Справочники</a></li>
+          <li class="sub-item"><a href="billing.html#ip-pools">11.1. Пулы IP-адресов</a></li>
+          <li class="sub-item"><a href="billing.html#requisites">11.2. Реквизиты</a></li>
+          <li class="sub-item"><a href="billing.html#houses">11.3. Дома</a></li>
+          <li><a href="billing.html#additional">12. Дополнительные настройки</a></li>
+          <li class="sub-item"><a href="billing.html#sorm-access">12.1. СОРМ</a></li>
+          <li class="sub-item"><a href="billing.html#print-templates">12.2. Шаблоны печати</a></li>
+          <li><a href="billing.html#security">13. Безопасность</a></li>
+          <li><a href="billing.html#versioning">14. Версионность</a></li>
           <li><a href="billing.html#tech-stack">15. Технологический стек</a></li>
         </ul>
       </li>
@@ -1276,6 +1289,59 @@ MSG_EMAIL_ENABLED=True</code></pre>
     </tbody>
   </table>
 
+  <!-- ===== 5.10 ЮKassa настройки ===== -->
+  <h3 id="yookassa-settings">5.8. ЮKassa — настройки платёжной системы</h3>
+  <p>Административная страница настроек: <strong>Настройки → Платёжные системы → ЮKassa</strong> (<code>/admin/settings/payment/</code>).</p>
+
+  <h4>Параметры подключения</h4>
+  <table>
+    <thead><tr><th>Параметр</th><th>Переменная .env</th><th>Описание</th></tr></thead>
+    <tbody>
+      <tr><td>shopId</td><td><code>LK_YOOKASSA_SHOP_ID</code></td><td>Идентификатор магазина в ЮKassa</td></tr>
+      <tr><td>scid</td><td><code>LK_YOOKASSA_SCID</code></td><td>Номер витрины (для HTTP-протокола)</td></tr>
+      <tr><td>Секретный ключ</td><td><code>LK_YOOKASSA_SECRET_KEY</code></td><td>Пароль магазина (HTTP) или секретный ключ REST API v3</td></tr>
+    </tbody>
+  </table>
+
+  <h4>Автовыбор протокола</h4>
+  <p>Система автоматически выбирает протокол на основе формата секретного ключа:</p>
+  <ul>
+    <li><strong>HTTP-протокол</strong> (старый Yandex.Kassa) — если ключ не начинается с <code>live_</code> или <code>test_</code>. Используется в большинстве действующих подключений.</li>
+    <li><strong>REST API v3</strong> — если ключ начинается с <code>live_</code> или <code>test_</code>. Современный протокол, возвращает <code>redirect_url</code> для оплаты.</li>
+  </ul>
+
+  <h4>Webhook-обработчик</h4>
+  <p>URL для получения уведомлений от ЮKassa: <code>/lk/payments/webhook/</code></p>
+  <p>Поддерживаемые форматы:</p>
+  <ul>
+    <li><strong>checkOrder / paymentAviso</strong> — XML + MD5-подпись (HTTP-протокол)</li>
+    <li><strong>JSON-события</strong> — <code>payment.succeeded</code> и <code>payment.canceled</code> (REST API v3)</li>
+  </ul>
+  <div class="info-box">
+    <strong>Важно:</strong> После смены домена или адреса биллинга необходимо обновить <code>checkUrl</code> и <code>avisoUrl</code> в личном кабинете ЮKassa (раздел «Настройки магазина»).
+  </div>
+
+  <h4>Mobile API</h4>
+  <p>Мобильное приложение инициирует оплату через эндпоинт:</p>
+  <pre><code>POST /mobile-api/v1/finance/pay</code></pre>
+  <p>Ответ зависит от протокола:</p>
+  <table>
+    <thead><tr><th>Протокол</th><th>Поле в ответе</th><th>Описание</th></tr></thead>
+    <tbody>
+      <tr><td>REST API v3</td><td><code>redirect_url</code></td><td>URL для открытия в браузере / WebView</td></tr>
+      <tr><td>HTTP-протокол</td><td><code>form_post</code></td><td>Словарь полей для POST-формы на сайт ЮKassa</td></tr>
+    </tbody>
+  </table>
+
+  <h4>Зачисление платежей</h4>
+  <p>При получении подтверждённого платежа webhook вызывает <code>_credit_abonent()</code>:</p>
+  <ol>
+    <li>Находит абонента по номеру договора / лицевому счёту</li>
+    <li>Увеличивает <code>account.ostatok</code> на сумму × 10<sup>10</sup> (денежный коэффициент)</li>
+    <li>Создаёт запись в <code>FinanceOperations</code></li>
+    <li>Записывает в <code>PayLog</code> для журнала платежей</li>
+  </ol>
+
   <!-- ===== 6. Личный кабинет ===== -->
   <h2 id="cabinet">6. Личный кабинет абонента</h2>
   <p>Личный кабинет (ЛК) — встроенный веб-интерфейс для абонентов. Работает на том же сервере, что и биллинг. URL по умолчанию: <code>/lk/</code>.</p>
@@ -1568,8 +1634,8 @@ https://billing.example.com/lk/payments/webhook/</code></pre>
     <li>Оценка качества обслуживания (если выставлена оператором)</li>
   </ul>
 
-  <h3 id="lk-ai-chat">6.7. AI-ассистент (Claude)</h3>
-  <p>Встроенный чат с AI-ассистентом на базе Claude (Anthropic). Отвечает на вопросы абонента о балансе, тарифе, оплате и технических проблемах. При невозможности помочь — автоматически передаёт вопрос оператору.</p>
+  <h3 id="lk-ai-chat">6.7. AI-ассистент (Claude / AIDA)</h3>
+  <p>Встроенный чат с AI-ассистентом. Основной провайдер — <strong>Claude (Anthropic)</strong>; при отсутствии ключа автоматически используется резервный провайдер <strong>AIDA</strong>. Отвечает на вопросы абонента о балансе, тарифе, оплате и технических проблемах. При невозможности помочь — автоматически передаёт вопрос оператору.</p>
 
   <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;margin:16px 0">
     <img src="../img/new_lk_chat.png" alt="AI-чат (десктоп)" class="screenshot" style="max-width:500px">
@@ -1582,12 +1648,20 @@ https://billing.example.com/lk/payments/webhook/</code></pre>
     <li>Отправка изображений и PDF-файлов (до 5 файлов, 10 МБ каждый)</li>
     <li>Превью файлов прямо в чате (миниатюры изображений, иконки PDF)</li>
     <li>На мобильных устройствах — полноэкранный режим</li>
-    <li>Автоматическая эскалация на оператора при необходимости</li>
+    <li>Автоматическая эскалация на оператора при необходимости (код <code>ESCALATE_TO_HUMAN</code>)</li>
     <li>История переписки сохраняется в течение сессии (24 часа)</li>
   </ul>
 
+  <table>
+    <thead><tr><th>Провайдер</th><th>Переменная .env</th><th>Условие</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Claude (Anthropic)</strong></td><td><code>ANTHROPIC_API_KEY</code></td><td>Используется при наличии ключа (основной)</td></tr>
+      <tr><td><strong>AIDA</strong></td><td><code>AIDA_API_URL</code> + <code>AIDA_API_KEY</code></td><td>Резервный — при отсутствии Claude-ключа</td></tr>
+    </tbody>
+  </table>
+
   <div class="info-box">
-    <strong>Настройка:</strong> В <code>.env</code> задайте <code>ANTHROPIC_API_KEY</code>. Claude API-запросы проходят через прокси из настроек Telegram (<code>TELEGRAM_PROXY_HOST/PORT</code>).
+    <strong>Настройка:</strong> В <code>.env</code> задайте <code>ANTHROPIC_API_KEY</code>. Claude API-запросы проходят через прокси из настроек Telegram (<code>TELEGRAM_PROXY_HOST/PORT</code>) — это необходимо, так как <code>api.anthropic.com</code> заблокирован с российских IP-адресов.
   </div>
 
   <div class="info-box">
@@ -1621,6 +1695,102 @@ https://billing.example.com/lk/payments/webhook/</code></pre>
   <pre><code>certbot --nginx -d lk.example.com</code></pre>
 
   <p>Для PWA-режима обязателен HTTPS. После перехода на HTTPS абоненты могут добавить ЛК на рабочий стол смартфона как приложение.</p>
+
+  <!-- ===== 6.10 Firebase Push-уведомления ===== -->
+  <h3 id="lk-firebase">6.10. Firebase Push-уведомления</h3>
+  <p>Push-уведомления для мобильного приложения (Android и iOS) реализованы через Firebase Cloud Messaging (FCM). Настройка в административном разделе <strong>Настройки → Интеграции → Firebase</strong> (<code>/admin/settings/firebase/</code>).</p>
+
+  <h4>Настройка Firebase</h4>
+  <ol>
+    <li>Откройте <a href="https://console.firebase.google.com/" target="_blank" rel="noopener">Firebase Console</a> → «Настройки проекта» → «Аккаунты служб»</li>
+    <li>Нажмите «Создать закрытый ключ» — скачается JSON-файл сервисного аккаунта</li>
+    <li>Укажите путь к этому файлу в поле <strong>Service Account JSON</strong></li>
+  </ol>
+
+  <h4>Регистрация токена (Mobile API)</h4>
+  <p>Мобильное приложение регистрирует FCM/APNS-токен при запуске:</p>
+  <pre><code>POST /mobile-api/v1/push/register
+Content-Type: application/json
+
+{
+  "token": "fcm_device_token_here",
+  "platform": "android"   // или "ios"
+}</code></pre>
+
+  <h4>Автоматические задачи (Celery beat)</h4>
+  <table>
+    <thead><tr><th>Задача</th><th>Расписание</th><th>Описание</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code>push-low-balance</code></td>
+        <td>Ежедневно</td>
+        <td>Уведомляет абонентов с низким балансом (<code>low_balance_alerts</code>)</td>
+      </tr>
+      <tr>
+        <td><code>push-promise-expiring</code></td>
+        <td>Ежедневно</td>
+        <td>Напоминает об истечении обещанного платежа (<code>promise_pay_expiring</code>)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>Ручная отправка</h4>
+  <p>Доступны также функции разовой отправки:</p>
+  <ul>
+    <li><code>broadcast</code> — массовая рассылка всем активным абонентам с токенами</li>
+    <li><code>send_to_abonent</code> — отправка конкретному абоненту (из карточки абонента через форму «Отправить сообщение»)</li>
+  </ul>
+  <p>Исходный код задач: <code>billing/tasks/push_notifications.py</code></p>
+
+  <div class="info-box">
+    <strong>Тестирование:</strong> Откройте карточку абонента → раздел «Отпр. сообщения» → установите флажок «Push-уведомление» → введите текст → «Отправить».
+  </div>
+
+  <!-- ===== 6.11 Claude AI ===== -->
+  <h3 id="lk-claude-ai">6.11. Claude AI — конфигурация AI-ассистента</h3>
+  <p>Управление параметрами AI-ассистента: <strong>Настройки → Интеграции</strong> (<code>/admin/settings/integrations/</code>) — вкладка <strong>AIDA / AI</strong>.</p>
+
+  <h4>Переменные окружения (.env)</h4>
+  <table>
+    <thead><tr><th>Переменная</th><th>Описание</th></tr></thead>
+    <tbody>
+      <tr><td><code>ANTHROPIC_API_KEY</code></td><td>API-ключ Claude (Anthropic). При наличии — используется как основной провайдер.</td></tr>
+      <tr><td><code>AIDA_API_URL</code></td><td>URL эндпоинта AIDA (резервный провайдер)</td></tr>
+      <tr><td><code>AIDA_API_KEY</code></td><td>API-ключ AIDA</td></tr>
+      <tr><td><code>TELEGRAM_PROXY_HOST</code></td><td>Хост прокси-сервера для Claude API</td></tr>
+      <tr><td><code>TELEGRAM_PROXY_PORT</code></td><td>Порт прокси-сервера</td></tr>
+      <tr><td><code>TELEGRAM_PROXY_LOGIN</code></td><td>Логин прокси (если требует аутентификации)</td></tr>
+      <tr><td><code>TELEGRAM_PROXY_PASSWORD</code></td><td>Пароль прокси</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <strong>Почему нужен прокси?</strong> Домен <code>api.anthropic.com</code> не имеет IPv4-записей и недоступен из России напрямую. Docker-контейнер не может маршрутизировать IPv6-трафик без настройки. Прокси (например, Telegram-прокси) решает эту проблему.
+  </div>
+
+  <h4>Переключатели в панели управления</h4>
+  <table>
+    <thead><tr><th>Настройка</th><th>Описание</th></tr></thead>
+    <tbody>
+      <tr><td>AI в личном кабинете</td><td>Включить/выключить AI-чат на странице <code>/lk/chat/</code></td></tr>
+      <tr><td>AI в мобильном приложении</td><td>Включить/выключить чат в Mobile API (<code>/mobile-api/v1/chat/message</code>)</td></tr>
+      <tr><td>Мониторинг биллинга</td><td>Разрешить AIDA/Claude обращаться к данным абонентов через REST API</td></tr>
+    </tbody>
+  </table>
+
+  <h4>Эндпоинты чата</h4>
+  <table>
+    <thead><tr><th>URL</th><th>Описание</th></tr></thead>
+    <tbody>
+      <tr><td><code>GET /lk/chat/</code></td><td>Страница чата в личном кабинете</td></tr>
+      <tr><td><code>POST /mobile-api/v1/chat/message</code></td><td>Отправить сообщение AI (Mobile API)</td></tr>
+      <tr><td><code>POST /mobile-api/v1/chat/escalate</code></td><td>Передать переписку оператору FreeScout</td></tr>
+      <tr><td><code>GET /mobile-api/v1/chat/status</code></td><td>Проверить доступность AI</td></tr>
+    </tbody>
+  </table>
+
+  <h4>Логирование</h4>
+  <p>Модуль <code>billing/services/claude_logger.py</code> записывает диалоги в FreeScout (отдельная база MySQL на сервере поддержки). Если сервер FreeScout недоступен — логирование пропускается без ошибки.</p>
 
   <!-- ===== 7. OSS.BSS + NAS Management ===== -->
   <h2 id="oss-bss">7. OSS.BSS — управление NAS и развёртывание</h2>
@@ -1891,14 +2061,210 @@ FirewallService.unblock_ip(nas, '10.0.0.1')</code></pre>
     <li>Авторизация по API-ключу (Bearer token)</li>
   </ul>
 
-  <!-- ===== 8. Отчёты ===== -->
-  <h2 id="reports">8. Отчёты</h2>
+  <!-- ===== 8. FreeRADIUS ===== -->
+  <h2 id="freeradius">8. FreeRADIUS / RADIUS</h2>
+  <p>СмИТ Биллинг 1.0 включает встроенный сервер FreeRADIUS для авторизации и аккаунтинга абонентов интернета, VoIP и IPTV. Сервис работает как отдельный Docker-контейнер в составе стека.</p>
+
+  <h3 id="radius-arch">8.1. Архитектура</h3>
+  <p>Контейнер <code>freeradius</code> запускается на основе образа FreeRADIUS 3.2.3 с поддержкой <code>rlm_python3</code>.</p>
+
+  <h4>Порты (UDP)</h4>
+  <table>
+    <thead><tr><th>Порты</th><th>Сервис</th></tr></thead>
+    <tbody>
+      <tr><td>1812 / 1813</td><td>Интернет (Auth / Accounting)</td></tr>
+      <tr><td>2812 / 2813</td><td>VoIP (Auth / Accounting)</td></tr>
+      <tr><td>6812 / 6813</td><td>IPTV (Auth / Accounting)</td></tr>
+    </tbody>
+  </table>
+
+  <h4>Диспетчер запросов</h4>
+  <p>Единственный модуль <code>rlm_python3</code> направляет все пакеты через <code>radius_python/dispatcher.py</code>, который маршрутизирует по атрибуту <code>Tmp-String-0</code>:</p>
+  <ul>
+    <li><code>internet</code> → <code>radius_python/internet.py</code></li>
+    <li><code>voip</code> → <code>radius_python/voip.py</code></li>
+    <li><code>iptv</code> → <code>radius_python/iptv.py</code></li>
+  </ul>
+
+  <div class="info-box">
+    <strong>Важно:</strong> В FreeRADIUS 3.x допускается только <strong>один</strong> модуль <code>python3</code>. Не создавайте отдельные модули <code>python3_voip</code>, <code>python3_iptv</code> — это приведёт к ошибке.
+  </div>
+
+  <h4>Исправление GIL</h4>
+  <p>FreeRADIUS пропатчен для работы в однопоточном режиме (<code>start_servers=1, max_servers=1</code>), что предотвращает краш с ошибкой <code>drop_gil</code> при использовании rlm_python3.</p>
+
+  <h3 id="radius-auth">8.2. Авторизация</h3>
+  <p>Функция <code>internet.py:authorize()</code> выполняется при каждом запросе авторизации:</p>
+  <ol>
+    <li>Ищет пользователя в таблице <code>Users</code> по полю <code>LOGIN</code></li>
+    <li>Устанавливает атрибут <code>Cleartext-Password</code> для проверки пароля</li>
+    <li>Устанавливает <code>Framed-IP-Address</code> из IP-плана абонента</li>
+    <li>Применяет параметры из <code>NasRadiusParams</code> (специфичные для оборудования)</li>
+    <li>Применяет параметры из <code>TarifRadiusParams</code> (ограничения тарифа: скорость, CoS)</li>
+  </ol>
+
+  <h4>Django-инициализация</h4>
+  <p>При старте FreeRADIUS функция <code>internet.py:_setup_django()</code> инициализирует Django ORM. Файл лога <code>/var/log/django/error.log</code> создаётся до вызова <code>django.setup()</code> — FreeRADIUS работает от пользователя <code>freerad</code>.</p>
+
+  <h3 id="radius-accounting">8.3. Аккаунтинг</h3>
+  <p>Функция <code>internet.py:accounting()</code> обрабатывает пакеты Start / Interim-Update / Stop:</p>
+  <table>
+    <thead><tr><th>Тип пакета</th><th>Действие</th></tr></thead>
+    <tbody>
+      <tr><td>Start</td><td>Создаёт запись сессии в <code>USERS_RADIUSAUTH</code> (<code>logged=true</code>)</td></tr>
+      <tr><td>Interim-Update</td><td>Обновляет счётчики трафика (<code>octets</code>)</td></tr>
+      <tr><td>Stop</td><td>Закрывает сессию, фиксирует итоговый трафик и время</td></tr>
+    </tbody>
+  </table>
+  <p>После обработки аккаунтинга отправляется Celery-задача <code>update_nas_stats</code> для обновления статистики NAS.</p>
+
+  <h3 id="radius-clients">8.4. Клиенты (NAS)</h3>
+  <p>Список RADIUS-клиентов генерируется автоматически при старте контейнера скриптом <code>docker/freeradius/entrypoint.sh</code> из таблицы <code>nas</code> базы данных биллинга.</p>
+  <table>
+    <thead><tr><th>Параметр</th><th>Значение</th></tr></thead>
+    <tbody>
+      <tr><td>Секрет всех NAS</td><td><code>smitsecretkey</code></td></tr>
+      <tr><td>Wildcard-клиент</td><td><code>0.0.0.0/0</code>, секрет <code>smitsecretkey</code></td></tr>
+      <tr><td>Localhost</td><td><code>127.0.0.1</code>, секрет <code>testing123</code></td></tr>
+    </tbody>
+  </table>
+  <p>Не-ASCII символы в именах NAS автоматически удаляются при генерации <code>clients.conf</code>.</p>
+
+  <h4>Модели Django</h4>
+  <p>Связанные модели (без миграций, managed=False):</p>
+  <ul>
+    <li><code>UsersRadiusauth</code> — таблица <code>USERS_RADIUSAUTH</code> (5500+ записей)</li>
+    <li><code>NasRadiusParams</code> — параметры RADIUS для каждого NAS</li>
+    <li><code>TarifRadiusParams</code> — ограничения скорости/трафика по тарифу</li>
+  </ul>
+  <p>Все три модели находятся в <code>billing/models/stubs.py</code>.</p>
+
+  <h3 id="radius-test">8.5. Тестирование</h3>
+  <p>Проверка авторизации из Docker-контейнера FreeRADIUS:</p>
+  <pre><code># Войти в контейнер
+docker compose exec freeradius bash
+
+# Тестовый запрос авторизации
+radtest &lt;LOGIN&gt; &lt;PASSWORD&gt; 127.0.0.1 0 testing123
+
+# Пример успешного ответа:
+# Received Access-Accept Id 0 from 127.0.0.1:1812
+# Framed-IP-Address = 10.0.0.100</code></pre>
+  <p>Лог ошибок Django внутри контейнера: <code>/var/log/django/error.log</code></p>
+
+  <!-- ===== 9. Резервное копирование ===== -->
+  <h2 id="backup-system">9. Резервное копирование</h2>
+  <p>Встроенная система резервного копирования позволяет создавать, планировать и восстанавливать резервные копии базы данных и файлов приложения. Доступна через <strong>Настройки → Резервные копии</strong> (<code>/admin/settings/backup/</code>).</p>
+
+  <h3 id="backup-config">9.1. Настройка резервного копирования</h3>
+  <h4>Модели данных</h4>
+  <table>
+    <thead><tr><th>Модель</th><th>Поля</th><th>Описание</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code>BackupConfig</code></td>
+        <td>name, type, schedule, keep_copies, is_active</td>
+        <td>Конфигурация задания резервного копирования</td>
+      </tr>
+      <tr>
+        <td><code>BackupRecord</code></td>
+        <td>status, path, size, created_at</td>
+        <td>Запись о выполненном бекапе (успех/ошибка, путь к файлу)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>Расписание</h4>
+  <p>Доступные интервалы через Celery beat:</p>
+  <ul>
+    <li>Ежечасно</li>
+    <li>Ежедневно</li>
+    <li>Еженедельно</li>
+    <li>Ежемесячно</li>
+  </ul>
+
+  <h4>Хранение файлов</h4>
+  <p>Резервные копии сохраняются в Docker-томе <code>backup_data</code>, монтируемом как <code>/var/backups/carbon</code>. Том разделяется между контейнерами <code>web</code> и <code>celery</code> и сохраняется при перезапуске.</p>
+
+  <h4>Параметр «хранить копий»</h4>
+  <p>Поле <code>keep_copies</code> определяет, сколько последних резервных копий хранить. Старые файлы удаляются автоматически после создания новой.</p>
+
+  <h3 id="backup-types">9.2. Типы резервных копий</h3>
+  <table>
+    <thead><tr><th>Тип</th><th>Описание</th><th>Инструмент</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code>db</code></td>
+        <td>Дамп базы данных PostgreSQL</td>
+        <td><code>pg_dump -Fc</code></td>
+      </tr>
+      <tr>
+        <td><code>files</code></td>
+        <td>Файлы приложения (медиа, загрузки)</td>
+        <td><code>tar.gz</code></td>
+      </tr>
+      <tr>
+        <td><code>both</code></td>
+        <td>БД + файлы в одном архиве</td>
+        <td>pg_dump + tar</td>
+      </tr>
+      <tr>
+        <td><code>docker</code> <span class="badge badge-success">Docker</span></td>
+        <td>Полный пакет развёртывания</td>
+        <td>tar.gz (см. ниже)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>Docker-бекап (полный пакет)</h4>
+  <p>Тип <code>docker</code> создаёт самодостаточный архив для развёртывания на новом сервере. В архив включается:</p>
+  <ul>
+    <li>Дамп базы данных (<code>pg_dump -Fc</code>)</li>
+    <li>Исходный код приложения</li>
+    <li><code>Dockerfile</code> и <code>docker-compose.yml</code></li>
+    <li>Файл <code>.env</code> с настройками</li>
+    <li>Медиафайлы</li>
+    <li>Скрипт <code>restore.sh</code> для автоматического восстановления</li>
+  </ul>
+
+  <h4>Интерфейс</h4>
+  <ul>
+    <li>Прогресс-бар с анимацией при выполнении</li>
+    <li>Кнопка запуска меняется на спиннер во время работы</li>
+    <li>Автоматическое обновление статуса каждые 3 секунды</li>
+    <li>Нажатие на имя файла скачивает архив</li>
+  </ul>
+
+  <h3 id="backup-restore">9.3. Восстановление</h3>
+  <p>Модальное окно восстановления предлагает три варианта:</p>
+  <table>
+    <thead><tr><th>Вариант</th><th>Описание</th></tr></thead>
+    <tbody>
+      <tr><td>Только БД</td><td>Восстановить базу данных (pg_restore)</td></tr>
+      <tr><td>Только файлы</td><td>Восстановить медиафайлы и загрузки</td></tr>
+      <tr><td>Полное восстановление</td><td>БД + файлы одновременно</td></tr>
+    </tbody>
+  </table>
+  <p>Для Docker-бекапа: скачайте архив, распакуйте на новом сервере и запустите <code>restore.sh</code>.</p>
+
+  <pre><code># Пример восстановления Docker-бекапа
+tar -xzf smit_billing_backup_2026-03-30.tar.gz
+cd smit_billing_backup/
+chmod +x restore.sh
+./restore.sh</code></pre>
+
+  <div class="info-box">
+    <strong>Совет:</strong> Тип <code>docker</code> рекомендуется для переноса инсталляции на новый сервер или для создания контрольных точек перед крупными обновлениями.
+  </div>
+
+  <!-- ===== 10. Отчёты ===== -->
+  <h2 id="reports">10. Отчёты</h2>
   <p>Финансовые и статистические отчёты для анализа деятельности оператора связи.</p>
 
-  <h3 id="audit">8.1. Аудит</h3>
+  <h3 id="audit">10.1. Аудит</h3>
   <p>Журнал действий пользователей. Доступен в разделе «Отчёты» (общий аудит) и на вкладке «Аудит» в карточке абонента (персональный). Фильтрация по дате, типу действия, тексту. Записи в обратном хронологическом порядке. Отслеживание блокировок и перерасчётов.</p>
 
-  <h3 id="payment-log">8.2. Журнал платежей</h3>
+  <h3 id="payment-log">10.2. Журнал платежей</h3>
   <p>Журнал транзакций из платёжных систем, CSV-загрузок и веб-кассы. Типы результатов:</p>
   <ul>
     <li><strong>Created</strong> — платёж создан</li>
@@ -1907,7 +2273,7 @@ FirewallService.unblock_ip(nas, '10.0.0.1')</code></pre>
   </ul>
   <p>Поддерживает поиск и фильтрацию. Экспорт в CSV.</p>
 
-  <h3 id="report-constructor">8.3. Конструктор отчётов</h3>
+  <h3 id="report-constructor">10.3. Конструктор отчётов</h3>
   <p>Выполнение прямых SQL-запросов к базе данных PostgreSQL. Фильтры: дата, выбор из списка, свободный текст.</p>
   <p><strong>Запуск из консоли:</strong></p>
   <pre><code>docker compose exec web python manage.py make_reports</code></pre>
@@ -1919,7 +2285,7 @@ FROM billing_abonents a WHERE a.is_deleted = false;</code></pre>
   <p>Примеры отчётов: список абонентов, должники, распределение IP, трафик по тарифам, выручка.</p>
   <p>Для отладки используется режим с отображением SQL и времени выполнения. PostgreSQL предоставляет <code>EXPLAIN ANALYZE</code> для анализа производительности запросов.</p>
 
-  <h3 id="director-report">8.4. Отчёт для директора</h3>
+  <h3 id="director-report">10.4. Отчёт для директора</h3>
   <p>Сводный отчёт с ключевыми KPI:</p>
   <ul>
     <li><strong>Популярность тарифов</strong> — распределение абонентов по тарифам</li>
@@ -1930,12 +2296,12 @@ FROM billing_abonents a WHERE a.is_deleted = false;</code></pre>
     <li><strong>Новые абоненты</strong> — количество подключений</li>
   </ul>
 
-  <h3 id="audit-report">8.5. Формирование отчёта по аудитам</h3>
+  <h3 id="audit-report">10.5. Формирование отчёта по аудитам</h3>
   <p>Генерация детальных отчётов по журналу аудита: действия конкретного администратора, изменения конкретного абонента за период.</p>
 
   <!-- ===== 9. Справочники ===== -->
-  <h2 id="dictionaries">9. Справочники</h2>
-  <p>Справочники СмИТ Биллинг v1.0.0 (build 37) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
+  <h2 id="dictionaries">11. Справочники</h2>
+  <p>Справочники СмИТ Биллинг v1.5.0 (build 38) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
 
   <img src="../img/new_dictionaries.png" alt="Справочники биллинга" class="screenshot">
 
@@ -1990,7 +2356,7 @@ ACL_BLOCKED_GROUPS = ACL_DISABLED</code></pre>
   <p>Управление подсетями и сетевой адресацией. Используется для правил тарификации трафика и распределения IP-адресов.</p>
 
   <!-- ===== 10. Дополнительные настройки ===== -->
-  <h2 id="additional">10. Дополнительные настройки</h2>
+  <h2 id="additional">12. Дополнительные настройки</h2>
   <p>Расширенные параметры конфигурации для специализированных сценариев использования.</p>
 
   <h3 id="agent-schemes">10.1. Агентские схемы и ведение филиалов</h3>
@@ -2026,9 +2392,9 @@ ACL_BLOCKED_GROUPS = ACL_DISABLED</code></pre>
   </table>
   <p>Рендеринг: WeasyPrint (HTML &rarr; PDF с полной поддержкой CSS). Также поддерживаются шаблоны DOCX через docxtpl. Быстрая печать по горячей клавише и формат PDF.</p>
 
-  <!-- ===== 11. Безопасность ===== -->
-  <h2 id="security">11. Обзор безопасности</h2>
-  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.0.0 (build 37) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
+  <!-- ===== 13. Безопасность ===== -->
+  <h2 id="security">13. Обзор безопасности</h2>
+  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.5.0 (build 38) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
 
   <h3>Сетевая изоляция</h3>
   <p><strong>Docker-контейнеризация</strong> — каждый сервис (web, db, redis, celery, nginx, freeradius) работает в изолированном Docker-контейнере с собственной сетью (172.28.0.0/16). Входящие соединения проходят через nginx reverse proxy, что предотвращает прямой доступ к внутренним сервисам.</p>
@@ -2056,7 +2422,7 @@ ACL_BLOCKED_GROUPS = ACL_DISABLED</code></pre>
   <p>Сервер биллинга должен находиться в защищённом помещении с контролем доступа. Рекомендуется использование ИБП (UPS) и резервного канала связи.</p>
 
   <!-- ===== 12. Версионность и обновления ===== -->
-  <h2 id="versioning">12. Версионность и обновления</h2>
+  <h2 id="versioning">14. Версионность и обновления</h2>
   <p>СмИТ Биллинг 1.0 использует систему веток для управления стабильностью и обновлениями.</p>
 
   <table class="data-table">
@@ -2097,7 +2463,7 @@ ACL_BLOCKED_GROUPS = ACL_DISABLED</code></pre>
   <p>Версия отображается в футере: <strong>СмИТ Биллинг 1.0</strong>. Файл версии: <code>billing/version.py</code>.</p>
 
   <div class="info-block">
-    <h4>Текущий релиз: v1.0.0 (build 37) — 25.03.2026</h4>
+    <h4>Текущий релиз: v1.5.0 (build 38) — 30.03.2026</h4>
     <ul>
       <li>Конструктор отчётов — автокоррекция SQL для PostgreSQL, 29 отчётов работают</li>
       <li>СОРМ — 13 отчётов в формате СОРМ-3, совместимом с Carbon 4</li>
@@ -2160,7 +2526,7 @@ docker compose up -d</code></pre>
 
   <!-- ===== 13. Стороннее ПО ===== -->
   <h2 id="third-party">13. Стороннее ПО</h2>
-  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.0.0 (build 37).</p>
+  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.5.0 (build 38).</p>
 
   <!-- ===== 14. Смена языка ===== -->
   <h2 id="language">14. Смена языка</h2>
@@ -2168,7 +2534,7 @@ docker compose up -d</code></pre>
 
   <!-- ===== 15. Технологический стек ===== -->
   <h2 id="tech-stack">15. Технологический стек</h2>
-  <p>СмИТ Биллинг v1.0.0 (build 37) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
+  <p>СмИТ Биллинг v1.5.0 (build 38) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
 
   <h3>Почему PostgreSQL</h3>
   <p>PostgreSQL 16 выбран в качестве основной СУБД по ряду причин:</p>
@@ -2250,7 +2616,7 @@ docker compose ps
 </main>
 
 <footer class="footer">
-  &copy; 2026 СмИТ — Биллинговая система СмИТ Биллинг v1.0.0 (build 37)
+  &copy; 2026 СмИТ — Биллинговая система СмИТ Биллинг v1.5.0 (build 38)
 </footer>
 
 <script src="../js/main.js"></script>
