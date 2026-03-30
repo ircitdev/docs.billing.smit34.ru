@@ -102,15 +102,22 @@
           <li class="sub-item"><a href="billing.html#lk-auth">6.1. Авторизация</a></li>
           <li class="sub-item"><a href="billing.html#lk-settings">6.2. Настройки интеграций</a></li>
           <li class="sub-item"><a href="billing.html#lk-telegram">6.3. Telegram-бот</a></li>
+          <li class="sub-item"><a href="billing.html#telegram-admin-bot">6.5. Telegram-бот администратора</a></li>
           <li class="sub-item"><a href="billing.html#lk-payments">6.4. ЮKassa (оплата)</a></li>
           <li class="sub-item"><a href="billing.html#lk-mobile-app">6.5. Мобильное приложение</a></li>
           <li class="sub-item"><a href="billing.html#lk-support">6.6. Поддержка (FreeScout)</a></li>
           <li class="sub-item"><a href="billing.html#lk-ai-chat">6.7. AI-ассистент (Claude)</a></li>
           <li class="sub-item"><a href="billing.html#lk-profile">6.8. Профиль</a></li>
           <li class="sub-item"><a href="billing.html#lk-deploy">6.9. Развёртывание и SSL</a></li>
-          <li><a href="billing.html#oss-bss">7. OSS.BSS</a></li>
-          <li class="sub-item"><a href="billing.html#helpdesk">7.1. CRM / HelpDesk</a></li>
-          <li class="sub-item"><a href="billing.html#userside">7.2. UserSide</a></li>
+          <li><a href="billing.html#oss-bss">7. OSS.BSS / NAS</a></li>
+          <li class="sub-item"><a href="billing.html#rtsh">7.1. rtsh</a></li>
+          <li class="sub-item"><a href="billing.html#oss-commands">7.2. Команды OSS</a></li>
+          <li class="sub-item"><a href="billing.html#oss-schemes">7.3. Схемы оборудования</a></li>
+          <li class="sub-item"><a href="billing.html#nas-controller">7.4. NasController API</a></li>
+          <li class="sub-item"><a href="billing.html#nas-tasks">7.5. Celery NAS-задачи</a></li>
+          <li class="sub-item"><a href="billing.html#firewall-service">7.6. FirewallService</a></li>
+          <li class="sub-item"><a href="billing.html#helpdesk">7.7. CRM / HelpDesk</a></li>
+          <li class="sub-item"><a href="billing.html#userside">7.8. UserSide</a></li>
           <li><a href="billing.html#reports">8. Отчёты</a></li>
           <li class="sub-item"><a href="billing.html#audit">8.1. Аудит</a></li>
           <li class="sub-item"><a href="billing.html#payment-log">8.2. Журнал платежей</a></li>
@@ -1366,6 +1373,86 @@ docker compose exec web python manage.py setup_telegram_webhook --info</code></p
     <strong>Важно:</strong> Один бот — один вебхук. Если тот же бот используется в FreeScout — необходимо создать отдельного бота специально для биллинга.
   </div>
 
+  <h3 id="telegram-admin-bot">6.5. Telegram-бот для операторов (admin bot)</h3>
+  <p>Отдельный бот для технического персонала оператора. Позволяет управлять абонентами, мониторить NAS и выполнять экстренные операции прямо из Telegram — без доступа к веб-интерфейсу.</p>
+
+  <div class="info-box">
+    <strong>Безопасность:</strong> Все команды доступны <strong>только</strong> пользователям из списка <em>Администраторы бота (Telegram user IDs)</em>. Настройка: <strong>Настройки → Интеграции → Telegram</strong>.
+  </div>
+
+  <h4>Настройка</h4>
+  <ol>
+    <li>Создать бота через <code>@BotFather</code> → <code>/newbot</code></li>
+    <li>Прописать токен в <strong>Настройки → Интеграции → Telegram</strong></li>
+    <li>Добавить Telegram user ID администратора в поле <em>Администраторы бота</em></li>
+    <li>Указать Chat ID и Thread ID (топик) супергруппы для алармов</li>
+    <li>Зарегистрировать webhook кнопкой «Зарег. webhook» или командой:<br>
+      <code>docker compose exec web python manage.py setup_telegram_webhook --url https://yourdomain.ru/lk/telegram/webhook/</code></li>
+  </ol>
+
+  <h4>Команды диагностики</h4>
+  <table>
+    <thead><tr><th style="width:35%">Команда</th><th>Описание</th></tr></thead>
+    <tbody>
+      <tr><td><code>/billdiag</code></td><td>Полный диагностический отчёт: состояние сервисов (PostgreSQL, Redis, FreeRADIUS, Celery), метрики БД (размер, соединения, медленные запросы), NAS (онлайн/оффлайн), абоненты (активные, RADIUS-ready, онлайн)</td></tr>
+      <tr><td><code>/stats</code></td><td>Сводная статистика: всего абонентов, активных, онлайн, тарифов, NAS, должников</td></tr>
+      <tr><td><code>/debtors</code></td><td>Должники: количество абонентов с отрицательным балансом и суммарный долг</td></tr>
+      <tr><td><code>/revenue [today|week|month]</code></td><td>Выручка за период (сумма входящих платежей). Без параметра — за текущий месяц</td></tr>
+    </tbody>
+  </table>
+
+  <h4>Управление абонентами</h4>
+  <table>
+    <thead><tr><th style="width:35%">Команда</th><th>Описание</th></tr></thead>
+    <tbody>
+      <tr><td><code>/find &lt;запрос&gt;</code></td><td>Поиск абонента по имени, логину, номеру договора или IP-адресу. Возвращает до 5 результатов с ID, именем, балансом и статусом</td></tr>
+      <tr><td><code>/balance &lt;id&gt;</code></td><td>Детальная карточка абонента: баланс, тариф, статус (активен/заблокирован), логин, IP</td></tr>
+      <tr><td><code>/block &lt;id&gt; [причина]</code></td><td>Заблокировать абонента (устанавливает флаг <code>b_admin</code>). Причина блокировки сохраняется в комментарии</td></tr>
+      <tr><td><code>/unblock &lt;id&gt;</code></td><td>Разблокировать абонента (снимает все административные блокировки)</td></tr>
+      <tr><td><code>/disconnect &lt;id&gt;</code></td><td>Принудительно отключить активную сессию абонента: сначала через RADIUS CoA Disconnect-Request, при неудаче — через SSH (для MikroTik)</td></tr>
+      <tr><td><code>/pay &lt;id&gt; &lt;сумма&gt;</code></td><td>Зачислить платёж на счёт абонента. Создаёт запись в <code>FinanceOperations</code> и обновляет баланс</td></tr>
+    </tbody>
+  </table>
+
+  <h4>Мониторинг NAS / Сеть</h4>
+  <table>
+    <thead><tr><th style="width:35%">Команда</th><th>Описание</th></tr></thead>
+    <tbody>
+      <tr><td><code>/nas</code></td><td>Список всех NAS с IP-адресами и количеством онлайн-абонентов из биллинга (<code>USERS_RADIUSAUTH</code>)</td></tr>
+      <tr><td><code>/sessions &lt;nas_id&gt;</code></td><td>Активные PPPoE сессии на конкретном NAS (через SSH или MikroTik API): логин, IP, uptime</td></tr>
+      <tr><td><code>/sync &lt;nas_id&gt;</code></td><td>Принудительная синхронизация сессий NAS ↔ биллинг: сравнивает онлайн-пользователей, отключает «призраков», обновляет статусы</td></tr>
+    </tbody>
+  </table>
+
+  <h4>Экстренные операции</h4>
+  <table>
+    <thead><tr><th style="width:35%">Команда</th><th>Описание</th></tr></thead>
+    <tbody>
+      <tr><td><code>/logs &lt;service&gt; [N]</code></td><td>Последние N строк лога контейнера. Сервисы: <code>web</code>, <code>celery</code>, <code>radius</code>, <code>beat</code>, <code>db</code>. По умолчанию 20 строк</td></tr>
+      <tr><td><code>/restart radius</code></td><td>Перезапуск контейнера <code>app-freeradius-1</code> (регенерация <code>clients.conf</code> из таблицы NAS)</td></tr>
+      <tr><td><code>/restart celery</code></td><td>Перезапуск Celery workers (<code>app-celery-1</code>)</td></tr>
+      <tr><td><code>/broadcast "&lt;текст&gt;"</code></td><td>Массовая рассылка сообщения всем активным абонентам через все доступные каналы (SMS, Email, Telegram)</td></tr>
+    </tbody>
+  </table>
+
+  <h4>Алармы (автоматические уведомления)</h4>
+  <p>Система автоматически отправляет алармы в супергруппу (Chat ID + Thread ID) при следующих событиях:</p>
+  <table>
+    <thead><tr><th>Событие</th><th>Триггер</th><th>Настройка</th></tr></thead>
+    <tbody>
+      <tr><td>NAS offline</td><td>NAS не отвечает на ping (TCP-connect)</td><td><em>NAS offline</em> ✓</td></tr>
+      <tr><td>RADIUS ошибка</td><td>Исключение в <code>authorize()</code> или <code>accounting()</code></td><td><em>RADIUS</em> ✓</td></tr>
+      <tr><td>Медленные запросы БД</td><td>PostgreSQL: запрос выполняется &gt;10 сек</td><td><em>SQL</em> ✓</td></tr>
+      <tr><td>Сервис упал</td><td>PostgreSQL / Redis недоступны</td><td><em>Сервисы</em> ✓</td></tr>
+      <tr><td>Проблемы синхронизации</td><td>Много «призраков» или рассинхрон &gt;порога</td><td><em>NAS sync</em> ✓</td></tr>
+    </tbody>
+  </table>
+
+  <h4>Прокси для Telegram</h4>
+  <p>Если сервер находится в России, прямой доступ к <code>api.telegram.org</code> может быть заблокирован. Настройте SOCKS5-прокси в <strong>Настройки → Интеграции → Telegram → Прокси</strong>. Система использует <code>socks5h</code> (DNS через прокси) для корректной работы.</p>
+  <pre><code># Проверка прокси вручную
+curl -x socks5h://user:pass@proxy_host:port https://api.telegram.org</code></pre>
+
   <h3 id="lk-payments">6.4. Оплата через YooKassa</h3>
   <p>Абоненты могут пополнять счёт банковской картой через YooKassa (бывший ЮMoney Business). Оплата доступна из личного кабинета на сайте и из мобильного приложения.</p>
 
@@ -1535,33 +1622,274 @@ https://billing.example.com/lk/payments/webhook/</code></pre>
 
   <p>Для PWA-режима обязателен HTTPS. После перехода на HTTPS абоненты могут добавить ЛК на рабочий стол смартфона как приложение.</p>
 
-  <!-- ===== 7. OSS.BSS ===== -->
-  <h2 id="oss-bss">7. OSS.BSS (HelpDesk, CRM, Учёт оборудования)</h2>
-  <p>Интеграция с системами операционной и бизнес-поддержки для управления заявками, клиентскими обращениями и учётом оборудования.</p>
+  <!-- ===== 7. OSS.BSS + NAS Management ===== -->
+  <h2 id="oss-bss">7. OSS.BSS — управление NAS и развёртывание</h2>
+  <p>Инструменты для автоматизированного развёртывания, настройки и мониторинга NAS-оборудования. Все утилиты доступны в разделе <strong>Оборудование → NAS → вкладка «Развёртывание»</strong> или через CLI внутри Docker-контейнера.</p>
 
-  <h3 id="helpdesk">7.1. CRM / HelpDesk</h3>
-  <p>Встроенная система учёта заявок и обращений абонентов.</p>
-  <p><strong>Создание заявок:</strong></p>
+  <!-- 7.1 rtsh -->
+  <h3 id="rtsh">7.1. rtsh — диспетчер OSS-команд</h3>
+  <p><code>rtsh</code> — основной исполнитель команд. Ищет команду последовательно в <code>./ubin/</code>, <code>./bin/</code>, <code>/usr/local/bin/oss/</code>, что позволяет переопределять стандартные команды для конкретного NAS.</p>
+  <pre><code>rtsh list                      # список всех NAS в /var/oss/
+rtsh list scheme               # список доступных OSS-схем
+rtsh cfg init mikrotik6_pcq    # инициализировать новый NAS из схемы
+rtsh cfg make                  # сгенерировать конфиг из шаблонов + .ini
+rtsh cfg upload                # загрузить конфиг на устройство
+rtsh cfg diff                  # показать изменения (git diff)
+rtsh cfg save "комментарий"    # сохранить в git (git commit)
+rtsh session 10.0.0.1 add      # добавить сессию абонента
+rtsh cfg show                  # скачать текущий конфиг с устройства</code></pre>
+  <p>Рабочая директория: <code>/var/oss/</code>. Структура: <code>access/</code>, <code>core/</code>, <code>distrib/</code>.</p>
+
+  <!-- 7.2 OSS команды -->
+  <h3 id="oss-commands">7.2. Команды OSS</h3>
+  <p>Полный список исполняемых файлов из <code>/usr/local/bin/oss/</code>:</p>
+
+  <table>
+    <thead><tr><th style="width:22%">Команда</th><th>Назначение</th><th>Пример</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code>cfg_init</code></td>
+        <td>Инициализировать новую OSS-директорию для NAS из указанной схемы. Создаёт структуру папок, копирует шаблоны, инициализирует git-репозиторий в <code>/var/oss/</code></td>
+        <td><code>rtsh cfg init mikrotik6_pcq_v1</code></td>
+      </tr>
+      <tr>
+        <td><code>cfg_fill</code></td>
+        <td>Заполнить <code>.ini</code>-файлы данными из базы данных биллинга. Читает абонентов, тарифы, IP-адреса из PostgreSQL и подставляет в конфигурационные файлы</td>
+        <td><code>rtsh cfg fill</code></td>
+      </tr>
+      <tr>
+        <td><code>cfg_make</code></td>
+        <td>Сгенерировать итоговый конфиг оборудования из <code>*.ini</code> файлов и <code>tmplt/*.tmplt</code> шаблонов Jinja2. Результат сохраняется в <code>output/</code></td>
+        <td><code>rtsh cfg make</code></td>
+      </tr>
+      <tr>
+        <td><code>cfg_render</code></td>
+        <td>Рендеринг Jinja2-шаблонов с подстановкой переменных. Используется внутри <code>cfg_make</code> для каждого шаблона</td>
+        <td><code>cfg_render template.tmplt vars.ini</code></td>
+      </tr>
+      <tr>
+        <td><code>cfg_upload</code></td>
+        <td>Загрузить сгенерированный конфиг (<code>output/*.rtsh</code>) на устройство. Список файлов для загрузки задаётся в <code>main.ini</code> → <code>upload_list</code></td>
+        <td><code>rtsh cfg upload</code></td>
+      </tr>
+      <tr>
+        <td><code>cfg_download</code></td>
+        <td>Скачать текущий конфиг с устройства в <code>cur/current.cfg</code> для сравнения с шаблоном</td>
+        <td><code>rtsh cfg download</code></td>
+      </tr>
+      <tr>
+        <td><code>cfg_diff</code></td>
+        <td>Показать изменения в конфигурации (обёртка над <code>git diff</code>). Полезно перед загрузкой конфига на устройство</td>
+        <td><code>rtsh cfg diff</code></td>
+      </tr>
+      <tr>
+        <td><code>cfg_save</code></td>
+        <td>Сохранить текущее состояние конфигурации в git (<code>git add . &amp;&amp; git commit</code>). Требует указания автора и комментария</td>
+        <td><code>rtsh cfg save admin "update pcq"</code></td>
+      </tr>
+      <tr>
+        <td><code>cfg_status</code></td>
+        <td>Показать статус git-репозитория (<code>git status</code>): изменённые файлы, неотслеживаемые файлы</td>
+        <td><code>rtsh cfg status</code></td>
+      </tr>
+      <tr>
+        <td><code>cfg_log</code></td>
+        <td>История изменений конфигурации (<code>git log</code>). Показывает кто и когда менял конфиг NAS</td>
+        <td><code>rtsh cfg log --oneline -10</code></td>
+      </tr>
+      <tr>
+        <td><code>acl_fill</code></td>
+        <td>Заполнить ACL-списки (Access Control Lists) из базы данных. Выгружает IP-адреса и группы ACL из таблицы <code>acl</code>, разрешает DNS-имена</td>
+        <td><code>rtsh acl fill</code></td>
+      </tr>
+      <tr>
+        <td><code>daemon</code></td>
+        <td>Управление демонами OSS (start/stop/status/restart). Проверяет работоспособность OSS-сервисов</td>
+        <td><code>rtsh daemon status</code></td>
+      </tr>
+      <tr>
+        <td><code>list</code></td>
+        <td>Список NAS в <code>/var/oss/</code> (access/, core/, distrib/). С параметром <code>scheme</code> — список доступных OSS-схем из <code>/usr/local/share/oss/</code></td>
+        <td><code>rtsh list scheme</code></td>
+      </tr>
+      <tr>
+        <td><code>session</code></td>
+        <td>Управление сессиями абонента на устройстве (add/remove/redirect). Реализация зависит от схемы NAS</td>
+        <td><code>rtsh session 10.0.0.1 add</code></td>
+      </tr>
+      <tr>
+        <td><code>cfgparse.py</code></td>
+        <td>Парсер <code>.ini</code>-файлов конфигурации. Используется внутри <code>cfg_fill</code> и <code>cfg_make</code> для чтения параметров NAS</td>
+        <td>Библиотека, вызывается из cfg_fill</td>
+      </tr>
+      <tr>
+        <td><code>ini_generator.py</code></td>
+        <td>Генератор <code>.ini</code>-файлов из данных биллинга. Формирует секции с абонентами, тарифами, IP-пулами</td>
+        <td>Библиотека, вызывается из cfg_fill</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 7.3 OSS-схемы -->
+  <h3 id="oss-schemes">7.3. OSS-схемы оборудования</h3>
+  <p>Схема определяет тип оборудования и набор команд для него. Хранятся в <code>/usr/local/share/oss/</code>.</p>
+
+  <h4>Интернет (PPPoE / IPoE)</h4>
+  <table>
+    <thead><tr><th style="width:30%">Схема</th><th>Оборудование</th><th>Протокол</th></tr></thead>
+    <tbody>
+      <tr><td><code>mikrotik6_pcq_v1</code></td><td>MikroTik RouterOS 6.x</td><td>PPPoE + PCQ (очереди)</td></tr>
+      <tr><td><code>mikrotik5_pcq_v1</code></td><td>MikroTik RouterOS 5.x</td><td>PPPoE + PCQ</td></tr>
+      <tr><td><code>mikrotik_simple_v1</code></td><td>MikroTik (простая)</td><td>PPPoE без PCQ</td></tr>
+      <tr><td><code>mikrotik_simple_ipv6_dual_stack_v1</code></td><td>MikroTik IPv6</td><td>PPPoE dual-stack IPv4+IPv6</td></tr>
+      <tr><td><code>mikrotik_hotspot_simple_v1</code></td><td>MikroTik Hotspot</td><td>Hotspot (captive portal)</td></tr>
+      <tr><td><code>cisco_isg_v1</code></td><td>Cisco ISG (ASR/7600)</td><td>IPoE dynamic</td></tr>
+      <tr><td><code>cisco_isg_hotspot_v1</code></td><td>Cisco ISG Hotspot</td><td>Hotspot/Guest</td></tr>
+      <tr><td><code>cisco_isg_hwserial_v1</code></td><td>Cisco ISG HW serial</td><td>IPoE static по серийному номеру</td></tr>
+      <tr><td><code>cisco_isg_noshape_v1</code></td><td>Cisco ISG без шейпинга</td><td>IPoE без ограничений скорости</td></tr>
+      <tr><td><code>cisco_bng_pppoe_v1</code></td><td>Cisco BNG</td><td>PPPoE</td></tr>
+      <tr><td><code>cisco_bng_ipoe_v1</code></td><td>Cisco BNG</td><td>IPoE dynamic</td></tr>
+      <tr><td><code>cisco_bng_ipoe_static_v1</code></td><td>Cisco BNG</td><td>IPoE static</td></tr>
+      <tr><td><code>cisco2600_v1</code></td><td>Cisco 2600 series</td><td>PPPoE legacy</td></tr>
+      <tr><td><code>redback_v1</code></td><td>Ericsson Redback SmartEdge</td><td>PPPoE/IPoE</td></tr>
+      <tr><td><code>eltex_v1</code></td><td>Eltex RG/ESR</td><td>PPPoE/IPoE</td></tr>
+      <tr><td><code>default_v1</code></td><td>Generic RADIUS NAS</td><td>Базовая RADIUS auth</td></tr>
+    </tbody>
+  </table>
+
+  <h4>Телефония (VoIP)</h4>
+  <table>
+    <thead><tr><th style="width:30%">Схема</th><th>Оборудование</th><th>Протокол</th></tr></thead>
+    <tbody>
+      <tr><td><code>asterisk_v1</code></td><td>Asterisk PBX</td><td>SIP / IAX2</td></tr>
+      <tr><td><code>m200_pbx_v1</code></td><td>М200 АТС (Eltex)</td><td>SIP</td></tr>
+      <tr><td><code>avaya_definity_s8500_v1</code></td><td>Avaya Definity S8500</td><td>H.323 / SIP</td></tr>
+      <tr><td><code>unit_pbx_v1</code></td><td>UNIT АТС</td><td>SIP, CDR через Telnet</td></tr>
+      <tr><td><code>smg_1016m_v1</code></td><td>Eltex SMG-1016M шлюз</td><td>SIP + учёт звонков</td></tr>
+    </tbody>
+  </table>
+
+  <h4>IPTV</h4>
+  <table>
+    <thead><tr><th style="width:30%">Схема</th><th>Платформа</th><th>Протокол</th></tr></thead>
+    <tbody>
+      <tr><td><code>iptvportal_v1</code></td><td>IPTV Portal</td><td>XML API</td></tr>
+      <tr><td><code>tvip_tms_v1</code></td><td>TVIP TMS</td><td>REST API</td></tr>
+      <tr><td><code>flussonic_v1</code></td><td>Flussonic Media Server v1</td><td>REST API</td></tr>
+      <tr><td><code>flussonic_v2</code></td><td>Flussonic Media Server v2</td><td>REST API v2</td></tr>
+      <tr><td><code>lifestream_v1</code></td><td>LFStream v1</td><td>REST API</td></tr>
+      <tr><td><code>lifestream_v2</code></td><td>LFStream v2</td><td>REST API v2</td></tr>
+      <tr><td><code>stalker_v1</code></td><td>Stalker Middleware</td><td>REST API</td></tr>
+      <tr><td><code>24tv_v1</code></td><td>24ТВ платформа</td><td>REST API + синхронизация</td></tr>
+      <tr><td><code>megogo_v1</code></td><td>Megogo OTT</td><td>REST API</td></tr>
+      <tr><td><code>nexttv_v1</code></td><td>NextTV</td><td>REST API</td></tr>
+      <tr><td><code>titv_v1</code></td><td>TiTv IPTV</td><td>REST API</td></tr>
+      <tr><td><code>ufanet_v1</code></td><td>Уфанет Smart House v1</td><td>REST API</td></tr>
+      <tr><td><code>ufanet_v2</code></td><td>Уфанет Smart House v2</td><td>REST API v2</td></tr>
+      <tr><td><code>wcs_v1</code></td><td>WCS (Web Call Server)</td><td>REST API</td></tr>
+    </tbody>
+  </table>
+
+  <h4>Специальные</h4>
+  <table>
+    <thead><tr><th style="width:30%">Схема</th><th>Назначение</th></tr></thead>
+    <tbody>
+      <tr><td><code>default_sensor_v1</code></td><td>Датчики (IoT/SCADA) — базовая схема</td></tr>
+      <tr><td><code>wialon_v1</code></td><td>Wialon GPS-мониторинг (транспорт)</td></tr>
+      <tr><td><code>iptv_oss</code></td><td>Базовые OSS-скрипты для IPTV</td></tr>
+      <tr><td><code>oss</code></td><td>Базовые OSS-утилиты (корневая схема)</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 7.4 NasController API -->
+  <h3 id="nas-controller">7.4. NasController — программный API управления NAS</h3>
+  <p>Python-класс в <code>billing/services/nas_control.py</code> для управления NAS из кода (Celery-задачи, API, вебхуки).</p>
+  <pre><code>from billing.services.nas_control import NasController
+from billing.models import Nas
+
+nas = Nas.objects.get(pk=1)
+ctl = NasController(nas)
+
+# Проверить доступность
+alive = ctl.ping()
+
+# SSH-команда (с sshpass)
+stdout, stderr, code = ctl.ssh_exec('/ip route print')
+
+# MikroTik RouterOS команда (login+ct для чистого вывода)
+output = ctl.mikrotik_exec('/ppp active print terse')
+
+# Получить активные сессии (MikroTik)
+sessions = ctl.get_active_sessions_mikrotik()
+# → [{'username': 'user1', 'address': '10.0.0.1', 'uptime': '1d2h', ...}]
+
+# Отключить пользователя (CoA → SSH fallback)
+ok, msg = ctl.disconnect_user('user1', session_id='ABC123')
+
+# Синхронизировать сессии NAS ↔ биллинг
+result = ctl.sync_sessions()
+# → {'to_disconnect': [...], 'synced': 42, ...}</code></pre>
+
+  <h4>Подключение: параметры NAS</h4>
+  <table>
+    <thead><tr><th>Поле NAS</th><th>Используется как</th></tr></thead>
+    <tbody>
+      <tr><td><code>telnet_ip</code> / <code>ip</code></td><td>IP-адрес для SSH/Telnet (приоритет у telnet_ip)</td></tr>
+      <tr><td><code>telnet_port</code></td><td>SSH-порт (по умолчанию 22)</td></tr>
+      <tr><td><code>telnet_login</code></td><td>Логин SSH (суффикс <code>+ct</code> для MikroTik clean terminal)</td></tr>
+      <tr><td><code>telnet_password</code></td><td>Пароль SSH (передаётся через <code>sshpass</code>)</td></tr>
+      <tr><td><code>radius_secret</code></td><td>Секрет для RADIUS CoA Disconnect-Request</td></tr>
+      <tr><td><code>coa_port</code></td><td>Порт для CoA (по умолчанию 3799)</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 7.5 Celery NAS tasks -->
+  <h3 id="nas-tasks">7.5. Celery-задачи мониторинга NAS</h3>
+  <p>Задачи в <code>billing/tasks/nas_sync.py</code> выполняются автоматически по расписанию Celery Beat:</p>
+  <table>
+    <thead><tr><th style="width:35%">Задача</th><th>Период</th><th>Действие</th></tr></thead>
+    <tbody>
+      <tr><td><code>nas-sync-sessions</code></td><td>каждые 10 мин</td><td>Синхронизация сессий всех NAS с биллингом. Отключает «призраков» (онлайн в NAS, но выключены в биллинге)</td></tr>
+      <tr><td><code>nas-check-alive</code></td><td>каждые 5 мин</td><td>Проверка доступности NAS через TCP-connect. При недоступности — аларм в Telegram</td></tr>
+      <tr><td><code>monitoring-services</code></td><td>каждые 3 мин</td><td>Мониторинг PostgreSQL, Redis, FreeRADIUS, Celery. Аларм при падении сервиса</td></tr>
+      <tr><td><code>monitoring-db</code></td><td>каждые 10 мин</td><td>Мониторинг БД: размер, количество соединений, медленные запросы (&gt;10 сек)</td></tr>
+      <tr><td><code>firewall-sync-address-lists</code></td><td>по запросу</td><td>Синхронизация IP-листов заблокированных абонентов в MikroTik Address Lists</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 7.6 FirewallService -->
+  <h3 id="firewall-service">7.6. FirewallService — управление IP-листами</h3>
+  <p>Сервис в <code>billing/services/firewall.py</code> для синхронизации заблокированных IP-адресов в NAS (MikroTik Address Lists).</p>
+  <pre><code>from billing.services.firewall import FirewallService
+
+# Синхронизировать все NAS
+FirewallService.sync_address_lists()
+
+# Синхронизировать конкретный NAS
+FirewallService.sync_address_lists(nas_id=5)
+
+# Добавить IP в блок-лист NAS
+FirewallService.block_ip(nas, '10.0.0.1')
+
+# Снять IP с блок-листа
+FirewallService.unblock_ip(nas, '10.0.0.1')</code></pre>
+
+  <!-- 7.7 OSS.BSS legacy -->
+  <h3 id="helpdesk">7.7. CRM / HelpDesk (FreeScout)</h3>
+  <p>Интеграция с FreeScout для обработки обращений абонентов.</p>
   <ul>
     <li>Из административного интерфейса — оператор создаёт тикет вручную</li>
-    <li>Из личного кабинета — абонент отправляет обращение через форму</li>
+    <li>Из личного кабинета — абонент отправляет обращение через форму поддержки</li>
+    <li>Через API — автоматическое создание тикетов из внешних систем</li>
   </ul>
-  <p><strong>Настройка уведомлений о комментариях (3 шага):</strong></p>
-  <ol>
-    <li>Настроить групповые уведомления для очереди заявок</li>
-    <li>Указать контактные данные администраторов (email, Telegram)</li>
-    <li>Создать шаблоны сообщений для типов событий</li>
-  </ol>
+  <p>Настройка FreeScout URL и API-ключа: <strong>Настройки → Интеграции → FreeScout</strong>.</p>
 
-  <h3 id="userside">7.2. UserSide</h3>
-  <p>Интеграция с системой UserSide (ERP для управления сетью) через API биллинга.</p>
-  <p><strong>Настройка:</strong></p>
+  <h3 id="userside">7.8. UserSide</h3>
+  <p>Интеграция с UserSide (ERP для управления сетью) через REST API биллинга (<code>/rest_api/v2/</code>).</p>
   <ul>
-    <li>Включить авторизацию по IP для API</li>
-    <li>Выбрать формат улиц для совместимости</li>
-    <li>Настроить синхронизацию данных (абоненты, адреса, оборудование)</li>
+    <li>Синхронизация абонентов, адресов, оборудования</li>
+    <li>Авторизация по API-ключу (Bearer token)</li>
   </ul>
-  <p>Для отладки используйте тестовые bash-команды для каждого метода API (user_list, house_list, street_list, tariff_list).</p>
 
   <!-- ===== 8. Отчёты ===== -->
   <h2 id="reports">8. Отчёты</h2>
