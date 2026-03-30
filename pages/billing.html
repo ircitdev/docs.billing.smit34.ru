@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Основные настройки биллинга — СмИТ Биллинг v1.5.0 (build 38)</title>
+  <title>Основные настройки биллинга — СмИТ Биллинг v1.5.0 (build 39)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.0 — Документация">
-  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.5.0 (build 38)">
+  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.5.0 (build 39)">
   <meta property="og:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/billing.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.5.0 (build 38)">
+  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.5.0 (build 39)">
   <meta name="twitter:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
@@ -121,6 +121,9 @@
           <li class="sub-item"><a href="billing.html#firewall-service">7.6. FirewallService</a></li>
           <li class="sub-item"><a href="billing.html#helpdesk">7.7. CRM / HelpDesk</a></li>
           <li class="sub-item"><a href="billing.html#userside">7.8. UserSide</a></li>
+          <li class="sub-item"><a href="billing.html#shell-exec">7.9. Выполнение shell-команд</a></li>
+          <li class="sub-item"><a href="billing.html#nas-management-api">7.10. NAS Management API</a></li>
+          <li class="sub-item"><a href="billing.html#ip-allocation">7.11. Выделение IP из пула</a></li>
           <li><a href="billing.html#freeradius">8. FreeRADIUS</a></li>
           <li class="sub-item"><a href="billing.html#radius-arch">8.1. Архитектура</a></li>
           <li class="sub-item"><a href="billing.html#radius-auth">8.2. Авторизация</a></li>
@@ -136,6 +139,8 @@
           <li class="sub-item"><a href="billing.html#payment-log">10.2. Журнал платежей</a></li>
           <li class="sub-item"><a href="billing.html#report-constructor">10.3. Конструктор отчётов</a></li>
           <li class="sub-item"><a href="billing.html#director-report">10.4. Отчёт для директора</a></li>
+          <li class="sub-item"><a href="billing.html#audit-report">10.5. Аудит (отчёт)</a></li>
+          <li class="sub-item"><a href="billing.html#dev-reports">10.6. Разработка и логи</a></li>
           <li><a href="billing.html#dictionaries">11. Справочники</a></li>
           <li class="sub-item"><a href="billing.html#ip-pools">11.1. Пулы IP-адресов</a></li>
           <li class="sub-item"><a href="billing.html#requisites">11.2. Реквизиты</a></li>
@@ -2061,6 +2066,91 @@ FirewallService.unblock_ip(nas, '10.0.0.1')</code></pre>
     <li>Авторизация по API-ключу (Bearer token)</li>
   </ul>
 
+  <!-- 7.9 Shell command execution -->
+  <h3 id="shell-exec">7.9. Выполнение shell-команд</h3>
+  <p>Веб-интерфейс вкладки «Развёртывание» выполняет OSS-команды через эндпоинт <code>/run_script/</code>. Результат отображается в модальном окне терминального стиля (чёрный фон, зелёный текст моноширинным шрифтом).</p>
+
+  <h4>Протокол взаимодействия</h4>
+  <table>
+    <thead><tr><th style="width:30%">Запрос</th><th>Описание</th></tr></thead>
+    <tbody>
+      <tr><td><code>POST /run_script/</code></td><td>Запускает команду. Параметры: <code>command</code> (строка команды), <code>shell_dir</code> (рабочая директория NAS в <code>/var/oss/</code>). Возвращает <code>{"id": "..."}</code> — идентификатор процесса</td></tr>
+      <tr><td><code>GET /run_script/?id=...&amp;offset=N</code></td><td>Получение вывода процесса с позиции <code>offset</code>. Возвращает <code>{"output": "...", "offset": M, "running": true/false}</code>. Клиент опрашивает каждые 500 мс до <code>running=false</code></td></tr>
+    </tbody>
+  </table>
+
+  <h4>Переменные окружения</h4>
+  <p>При запуске subprocess передаётся переменная <code>PWD</code>, равная <code>shell_dir</code>. Это необходимо для команды <code>cfg_fill</code>, которая определяет путь к NAS-конфигурации через <code>os.environ['PWD']</code>.</p>
+
+  <h4>ssh_send — SSH/Telnet для оборудования</h4>
+  <p>Для загрузки конфигов (<code>cfg_upload</code>) и получения текущей конфигурации (<code>cfg_download</code>) используется expect-скрипт <code>ssh_send</code>. Скрипт выполняет подключение к оборудованию по SSH или Telnet с автоматическим вводом пароля.</p>
+
+  <h4>SSH legacy-алгоритмы для MikroTik</h4>
+  <p>MikroTik RouterOS 6.x не поддерживает современные алгоритмы ключевого обмена. Для совместимости SSH-подключения выполняются с принудительными параметрами:</p>
+  <pre><code>ssh -o HostKeyAlgorithms=+ssh-rsa \
+    -o PubkeyAcceptedAlgorithms=+ssh-rsa \
+    -o KexAlgorithms=+diffie-hellman-group14-sha1 \
+    -o StrictHostKeyChecking=no \
+    admin+ct@10.0.0.1</code></pre>
+  <p>Суффикс <code>+ct</code> в логине — специальный режим MikroTik «clean terminal» (без escape-последовательностей и цветов), упрощающий парсинг вывода.</p>
+
+  <!-- 7.10 NAS Management API -->
+  <h3 id="nas-management-api">7.10. NAS Management API</h3>
+  <p>HTTP API для управления NAS-оборудованием из веб-интерфейса. Все эндпоинты требуют авторизации администратора (Django session).</p>
+
+  <table>
+    <thead><tr><th style="width:42%">Эндпоинт</th><th>Описание</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code>POST /admin/nas_api/{id}/ping/</code></td>
+        <td>Проверка связи с NAS. Выполняет TCP-connect к управляющему IP (<code>telnet_ip</code>) и порту (<code>telnet_port</code>). Возвращает <code>{"status": "ok", "latency_ms": 12}</code> или <code>{"status": "error", "message": "..."}</code></td>
+      </tr>
+      <tr>
+        <td><code>POST /admin/nas_api/{id}/sync/</code></td>
+        <td>Синхронизация сессий NAS с биллингом. Запрашивает активные PPPoE/IPoE-сессии с оборудования, сравнивает с <code>USERS_RADIUSAUTH</code>, отключает «призраков». Возвращает <code>{"synced": N, "disconnected": M}</code></td>
+      </tr>
+      <tr>
+        <td><code>POST /admin/nas_api/restart-radius/</code></td>
+        <td>Перезапуск контейнера FreeRADIUS. Выполняет <code>docker restart freeradius</code> через subprocess. Используется после изменения настроек RADIUS или обновления клиентов NAS</td>
+      </tr>
+      <tr>
+        <td><code>POST /admin/nas_api/allocate-ip/{user_id}/</code></td>
+        <td>Выделение свободного IP-адреса из пула для указанного пользователя. Подробнее — см. <a href="#ip-allocation">раздел 7.11</a></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 7.11 IP Allocation from Pool -->
+  <h3 id="ip-allocation">7.11. Выделение IP из пула</h3>
+  <p>Механизм автоматического выделения свободного IP-адреса из пула, привязанного к NAS.</p>
+
+  <h4>Кнопка в форме Users</h4>
+  <p>На форме редактирования учётной записи (Users) рядом с полем <strong>IPv4</strong> отображается кнопка <strong>«Выделить IP»</strong>. При нажатии:</p>
+  <ol>
+    <li>Открывается диалог выбора IP-пула из списка пулов, привязанных к NAS данного пользователя</li>
+    <li>Система определяет диапазон адресов пула (<code>ip_from</code> — <code>ip_to</code>)</li>
+    <li>Находит первый свободный IP-адрес в диапазоне (не занятый другими пользователями)</li>
+    <li>Заполняет поле IPv4 найденным адресом</li>
+  </ol>
+
+  <h4>SQL-запрос для поиска свободного IP</h4>
+  <p>Поиск свободного адреса выполняется через <strong>raw SQL</strong>, а не через Django ORM. Это связано с тем, что <code>GenericIPAddressField</code> в Django не поддерживает арифметические операции над IP-адресами (инкремент, сравнение диапазонов). PostgreSQL позволяет работать с <code>inet</code>-типом напрямую:</p>
+  <pre><code>-- Генерация всех IP в диапазоне пула и исключение занятых
+SELECT ip FROM generate_series(
+    inet '{ip_from}',
+    inet '{ip_to}'
+) AS ip
+WHERE ip NOT IN (
+    SELECT "IP"::inet FROM "USERS"
+    WHERE "IP" IS NOT NULL AND "IP" != ''
+)
+ORDER BY ip
+LIMIT 1;</code></pre>
+
+  <div class="info-box">
+    <strong>Примечание:</strong> Функция <code>generate_series</code> для типа <code>inet</code> доступна в PostgreSQL 10+. Для больших пулов (/16 и более) запрос может занять несколько секунд.
+  </div>
+
   <!-- ===== 8. FreeRADIUS ===== -->
   <h2 id="freeradius">8. FreeRADIUS / RADIUS</h2>
   <p>СмИТ Биллинг 1.0 включает встроенный сервер FreeRADIUS для авторизации и аккаунтинга абонентов интернета, VoIP и IPTV. Сервис работает как отдельный Docker-контейнер в составе стека.</p>
@@ -2299,9 +2389,34 @@ FROM billing_abonents a WHERE a.is_deleted = false;</code></pre>
   <h3 id="audit-report">10.5. Формирование отчёта по аудитам</h3>
   <p>Генерация детальных отчётов по журналу аудита: действия конкретного администратора, изменения конкретного абонента за период.</p>
 
+  <h3 id="dev-reports">10.6. Разработка и логи</h3>
+  <p>Специальный раздел для администраторов-разработчиков. Доступен только пользователям с правами superuser или группой <strong>root</strong>. URL: <code>/admin/reports/dev/</code></p>
+
+  <h4>Вкладка «Отчёты разработки»</h4>
+  <p>Просмотр Markdown-документов проекта (планы, отчёты, архитектура, API) прямо в браузере. Файлы хранятся в папке <code>dev_reports/</code> репозитория и загружаются автоматически.</p>
+  <ul>
+    <li><strong>Категории (папки)</strong> — файлы группируются по папкам. Двойной клик на заголовке папки — переименование</li>
+    <li><strong>Перетаскивание</strong> — drag &amp; drop для сортировки файлов внутри папки и перемещения между папками (перетащить на заголовок папки)</li>
+    <li><strong>Переименование</strong> — кнопка карандаш в правой панели меняет отображаемое имя файла</li>
+    <li><strong>Удаление папки</strong> — кнопка 🗑 на заголовке. Файлы перемещаются в «Без категории»</li>
+    <li><strong>Сортировка</strong> — вручную (drag), по дате изменения, по имени</li>
+    <li><strong>Markdown рендеринг</strong> — заголовки, таблицы, блоки кода, списки, ссылки</li>
+  </ul>
+  <p>Файлы можно добавлять вручную в папку <code>dev_reports/</code> репозитория — они появятся автоматически при следующем открытии страницы (sync при загрузке).</p>
+
+  <h4>Вкладка «Серверные логи»</h4>
+  <p>Просмотр серверных логов в реальном времени (последние 500 строк):</p>
+  <ul>
+    <li><strong>Django errors</strong> — ошибки приложения</li>
+    <li><strong>Gunicorn access / errors</strong> — HTTP-запросы и ошибки веб-сервера</li>
+    <li><strong>Celery worker / beat</strong> — задачи и планировщик</li>
+  </ul>
+  <p>Кнопка «Обновить» перечитывает лог без перезагрузки страницы.</p>
+  <p><strong>Модель БД:</strong> <code>DevReportFile</code> (таблица <code>dev_report_file</code>) — хранит отображаемое имя, категорию и порядок сортировки для каждого файла.</p>
+
   <!-- ===== 9. Справочники ===== -->
   <h2 id="dictionaries">11. Справочники</h2>
-  <p>Справочники СмИТ Биллинг v1.5.0 (build 38) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
+  <p>Справочники СмИТ Биллинг v1.5.0 (build 39) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
 
   <img src="../img/new_dictionaries.png" alt="Справочники биллинга" class="screenshot">
 
@@ -2394,7 +2509,7 @@ ACL_BLOCKED_GROUPS = ACL_DISABLED</code></pre>
 
   <!-- ===== 13. Безопасность ===== -->
   <h2 id="security">13. Обзор безопасности</h2>
-  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.5.0 (build 38) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
+  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.5.0 (build 39) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
 
   <h3>Сетевая изоляция</h3>
   <p><strong>Docker-контейнеризация</strong> — каждый сервис (web, db, redis, celery, nginx, freeradius) работает в изолированном Docker-контейнере с собственной сетью (172.28.0.0/16). Входящие соединения проходят через nginx reverse proxy, что предотвращает прямой доступ к внутренним сервисам.</p>
@@ -2463,7 +2578,7 @@ ACL_BLOCKED_GROUPS = ACL_DISABLED</code></pre>
   <p>Версия отображается в футере: <strong>СмИТ Биллинг 1.0</strong>. Файл версии: <code>billing/version.py</code>.</p>
 
   <div class="info-block">
-    <h4>Текущий релиз: v1.5.0 (build 38) — 30.03.2026</h4>
+    <h4>Текущий релиз: v1.5.0 (build 39) — 30.03.2026</h4>
     <ul>
       <li>Конструктор отчётов — автокоррекция SQL для PostgreSQL, 29 отчётов работают</li>
       <li>СОРМ — 13 отчётов в формате СОРМ-3, совместимом с Carbon 4</li>
@@ -2526,7 +2641,7 @@ docker compose up -d</code></pre>
 
   <!-- ===== 13. Стороннее ПО ===== -->
   <h2 id="third-party">13. Стороннее ПО</h2>
-  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.5.0 (build 38).</p>
+  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.5.0 (build 39).</p>
 
   <!-- ===== 14. Смена языка ===== -->
   <h2 id="language">14. Смена языка</h2>
@@ -2534,7 +2649,7 @@ docker compose up -d</code></pre>
 
   <!-- ===== 15. Технологический стек ===== -->
   <h2 id="tech-stack">15. Технологический стек</h2>
-  <p>СмИТ Биллинг v1.5.0 (build 38) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
+  <p>СмИТ Биллинг v1.5.0 (build 39) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
 
   <h3>Почему PostgreSQL</h3>
   <p>PostgreSQL 16 выбран в качестве основной СУБД по ряду причин:</p>
@@ -2616,7 +2731,7 @@ docker compose ps
 </main>
 
 <footer class="footer">
-  &copy; 2026 СмИТ — Биллинговая система СмИТ Биллинг v1.5.0 (build 38)
+  &copy; 2026 СмИТ — Биллинговая система СмИТ Биллинг v1.5.0 (build 39)
 </footer>
 
 <script src="../js/main.js"></script>
