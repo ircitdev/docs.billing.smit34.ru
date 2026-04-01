@@ -1521,6 +1521,14 @@ docker compose exec web python manage.py setup_telegram_webhook --info</code></p
     </tbody>
   </table>
 
+  <h4>Уведомления о документах разработки</h4>
+  <p>Бот автоматически отправляет уведомления в настроенные чаты при появлении новых <code>.md</code>-файлов в папке <code>dev_reports/</code>. Настройка выполняется в <strong>Настройки → Интеграции → Telegram</strong> (<code>/admin/settings/integrations/?tab=telegram</code>):</p>
+  <ul>
+    <li><strong>Per-chat</strong> — для каждого чата (супергруппа или личный чат) можно включить/выключить уведомления о документах</li>
+    <li><strong>Per-folder</strong> — выбор папок (Документация, Отчёты, Планы, пользовательские), о новых файлах в которых будет приходить уведомление</li>
+    <li><strong>Ответы на комментарии</strong> — если у пользователя привязан <code>telegram_chat_id</code>, он получит уведомление в личный Telegram при ответе на его комментарий в разделе <a href="#dev-reports">Разработка и логи</a></li>
+  </ul>
+
   <h4>Прокси для Telegram</h4>
   <p>Если сервер находится в России, прямой доступ к <code>api.telegram.org</code> может быть заблокирован. Настройте SOCKS5-прокси в <strong>Настройки → Интеграции → Telegram → Прокси</strong>. Система использует <code>socks5h</code> (DNS через прокси) для корректной работы.</p>
   <pre><code># Проверка прокси вручную
@@ -2426,14 +2434,37 @@ FROM billing_abonents a WHERE a.is_deleted = false;</code></pre>
     <li><strong>Markdown рендеринг</strong> — заголовки h1-h6, таблицы, блоки кода с подсветкой, списки, цитаты, ссылки</li>
   </ul>
 
+  <h4>Система комментариев</h4>
+  <p>Под каждым документом расположен аккордеон «Комментарии», позволяющий вести обсуждение прямо на странице документа. Поддерживается древовидная структура (threading) — ответы на комментарии отображаются с отступом.</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/screenshots/comments/comments_doc.png" alt="Комментарии к документу" style="max-width:100%;border-radius:6px;margin:10px 0;box-shadow:0 2px 8px rgba(0,0,0,.1)">
+  <ul>
+    <li><strong>Аватары</strong> — у каждого комментария отображается аватар автора (инициалы или Gravatar)</li>
+    <li><strong>Бейджи в списке файлов</strong> — рядом с именем файла отображается зелёный кружок с количеством комментариев</li>
+    <li><strong>Сортировка по комментариям</strong> — в переключателе сортировки доступен вариант «По комментариям» (файлы с наибольшим числом комментариев вверху)</li>
+    <li><strong>Deep link</strong> — URL вида <code>?file=REPORT_2026-03-30.md&amp;comment=42</code> открывает документ, раскрывает аккордеон комментариев и подсвечивает нужный комментарий</li>
+  </ul>
+
+  <h4>Уведомления в Telegram</h4>
+  <p>При появлении новых <code>.md</code>-файлов в папке <code>dev_reports/</code> система автоматически отправляет уведомление в настроенные Telegram-чаты. Уведомления настраиваются per-chat и per-folder (какие папки мониторить для какого чата). Подробнее — в разделе <a href="#telegram-admin-bot">Интеграция с Telegram</a>.</p>
+  <p>При ответе на комментарий пользователя — уведомление приходит в его личный Telegram (если привязан <code>telegram_chat_id</code>).</p>
+
+  <h4>Интеграция с профилем</h4>
+  <p>В профиле пользователя (верхнее меню → имя пользователя) появляется блок <strong>«Ответы на мои комментарии»</strong> — список последних ответов на комментарии текущего пользователя с ссылками на документы.</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/screenshots/comments/comments_profile.png" alt="Ответы на мои комментарии в профиле" style="max-width:100%;border-radius:6px;margin:10px 0;box-shadow:0 2px 8px rgba(0,0,0,.1)">
+
+  <h4>Список файлов</h4>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/screenshots/comments/dev_reports_list.png" alt="Список файлов разработки" style="max-width:100%;border-radius:6px;margin:10px 0;box-shadow:0 2px 8px rgba(0,0,0,.1)">
+
   <h4>Вкладка «Серверные логи»</h4>
   <p>Просмотр серверных логов в реальном времени (последние 500 строк):</p>
   <ul>
     <li><strong>Django errors</strong> — ошибки приложения</li>
     <li><strong>Gunicorn access / errors</strong> — HTTP-запросы и ошибки веб-сервера</li>
     <li><strong>Celery worker / beat</strong> — задачи и планировщик</li>
+    <li><strong>FreeRADIUS</strong> — логи RADIUS-сервера (авторизация, аккаунтинг, ошибки)</li>
   </ul>
   <p>Кнопка «Обновить» перечитывает лог без перезагрузки страницы.</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/screenshots/comments/logs_radius.png" alt="Серверные логи — RADIUS" style="max-width:100%;border-radius:6px;margin:10px 0;box-shadow:0 2px 8px rgba(0,0,0,.1)">
   <p><strong>Модель БД:</strong> <code>DevReportFile</code> (таблица <code>dev_report_file</code>) — хранит отображаемое имя, категорию и порядок сортировки для каждого файла.</p>
 
   <!-- ===== 10.7. Улучшения раздела Отчёты ===== -->
