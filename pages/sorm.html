@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Интеграция с СОРМ3 — СмИТ Биллинг 1.0</title>
+  <title>Интеграция с СОРМ3 — СмИТ Биллинг v1.0.0 (build 37)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.0 — Документация">
-  <meta property="og:title" content="Интеграция с СОРМ3 — СмИТ Биллинг 1.0">
+  <meta property="og:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v1.0.0 (build 37)">
   <meta property="og:description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/sorm.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Интеграция с СОРМ3 — СмИТ Биллинг 1.0">
+  <meta name="twitter:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v1.0.0 (build 37)">
   <meta name="twitter:description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
@@ -121,6 +121,9 @@
           <li class="sub-item"><a href="billing.html#houses">9.3. Дома</a></li>
           <li><a href="billing.html#additional">10. Дополнительные настройки</a></li>
           <li class="sub-item"><a href="billing.html#sorm-access">10.1. СОРМ</a></li>
+          <li class="sub-item" style="padding-left:2.4em"><a href="billing.html#sorm-settings">Настройки СОРМ</a></li>
+          <li class="sub-item" style="padding-left:2.4em"><a href="billing.html#sorm-ftp">FTP-подключение</a></li>
+          <li class="sub-item" style="padding-left:2.4em"><a href="billing.html#sorm-reports">Отчёты СОРМ-3</a></li>
           <li class="sub-item"><a href="billing.html#print-templates">10.2. Шаблоны печати</a></li>
           <li><a href="billing.html#security">11. Безопасность</a></li>
           <li><a href="billing.html#versioning">12. Версионность</a></li>
@@ -278,6 +281,35 @@
 
   <div class="info-box">
     SQL-запрос выполняется с правами приложения. Допускаются только SELECT-запросы к таблицам биллинга. Можно использовать JOIN, подзапросы и функции PostgreSQL.
+  </div>
+
+  <h3>Стандартные отчёты СОРМ-3 (build 37)</h3>
+  <p>При нажатии кнопки <strong>«Первоначальная настройка отчётов»</strong> создаются 13 стандартных отчётов в формате, совместимом с Carbon 4:</p>
+  <table class="data-table">
+    <thead><tr><th>Префикс файла</th><th>Описание</th><th>Формат</th></tr></thead>
+    <tbody>
+      <tr><td><code>ABONENT</code></td><td>Абоненты (ФИО, договор, статус, тип)</td><td>SORM-3: IDENT, ACTUAL_NAME, STATUS, NETWORK_TYPE</td></tr>
+      <tr><td><code>ABONENT_IDENT</code></td><td>Идентификаторы (логин, IP, MAC)</td><td>IP в hex (uf_ip2hex), маска FFFFFFFF</td></tr>
+      <tr><td><code>ABONENT_SRV</code></td><td>Услуги абонентов</td><td>ID услуги, дата начала, договор</td></tr>
+      <tr><td><code>ABONENT_USER</code></td><td>Учётные записи</td><td>USER_NUMBER, USER_NAME</td></tr>
+      <tr><td><code>ABONENT_ADDR</code></td><td>Адреса подключений</td><td>CITY, STREET, BUILDING, APARTMENT</td></tr>
+      <tr><td><code>PAYMENT</code></td><td>Платежи</td><td>Сумма, телефон, адрес, тип</td></tr>
+      <tr><td><code>SUPPLEMENTARY_SERVICE</code></td><td>Каталог услуг</td><td>MNEMONIC, скорость в описании</td></tr>
+      <tr><td><code>REGIONS</code></td><td>Регионы</td><td>ID=3, ООО "СМИТ"</td></tr>
+      <tr><td><code>DOC_TYPES</code></td><td>Типы документов</td><td>Из USER_ATTRIBUTES</td></tr>
+      <tr><td><code>PAY_TYPES</code></td><td>Типы оплаты</td><td>ЮKassa, Wallet One, SberPay, Касса, QIWI</td></tr>
+      <tr><td><code>IP_PLAN</code></td><td>IP-план</td><td>IP в hex, маска в hex, REGION_ID=3</td></tr>
+      <tr><td><code>IP_GATEWAY</code></td><td>IP шлюзов</td><td>GATE_ID, IP hex, порт</td></tr>
+      <tr><td><code>GATEWAY</code></td><td>Шлюзы (NAS)</td><td>GATE_ID, описание, тип=7</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <strong>PostgreSQL-функции для СОРМ:</strong>
+    <code>uf_ip2hex(text)</code> — IP в шестнадцатеричный формат,
+    <code>uf_mask2hex(int)</code> — маска сети в hex,
+    <code>uf_date2sorm(timestamp)</code> — дата в формате YYYY-MM-DD HH:MI:SS.
+    Разделитель полей: <code>;</code> (точка с запятой).
   </div>
 
   <h2 id="schedule">Расписание автоматической выгрузки</h2>

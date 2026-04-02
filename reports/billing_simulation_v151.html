@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Симуляция биллинга — подготовка к 1 апреля 2026</title>
+<meta name="description" content="Отчёт о подготовке биллинговой системы Smit Billing к ежемесячному списанию 1 апреля 2026. Исправление 3 критических багов, dry-run симуляция на 237 972 руб, инструменты мониторинга.">
+<meta name="author" content="Smit Billing Team">
+<meta property="og:title" content="Симуляция биллинга — подготовка к 1 апреля 2026">
+<meta property="og:description" content="3 critical bugs fixed, 8 034 services prepared, 237 972 RUB expected charge. Dry-run simulation, preflight checks, real-time monitoring tools.">
+<meta property="og:image" content="https://docs.billing.smit34.ru/reports/billing_simulation_img/results.png">
+<meta property="og:url" content="https://docs.billing.smit34.ru/reports/billing_simulation_v151.html">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+:root{--bg:#fff;--fg:#1a1a2e;--accent:#5BA89D;--border:#dee2e6;--code-bg:#1e1e2e;--card-bg:#fafbfc;--warn:#e65100;--err:#c62828;--ok:#2e7d32}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--fg);background:var(--bg);line-height:1.65}
+.container{max-width:1140px;margin:0 auto;padding:40px 32px 60px}
+h1{font-size:2em;color:var(--accent);border-bottom:3px solid var(--accent);padding-bottom:10px;margin:0 0 8px}
+h2{font-size:1.35em;color:#2c3e50;border-bottom:1px solid var(--border);padding-bottom:6px;margin:36px 0 16px}
+h3{font-size:1.05em;color:#37474f;margin:20px 0 10px}
+p{margin:0 0 12px}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+code{font-family:'Cascadia Code','Fira Code',monospace;background:#f4f5f7;padding:1px 5px;border-radius:3px;font-size:.88em}
+ul,ol{margin:0 0 12px 24px}li{margin-bottom:4px}
+.sub{color:#666;font-size:.92em;margin-bottom:24px}
+
+/* TOC */
+.toc{background:linear-gradient(135deg,#e0f2f1,#f1f8e9);border:1px solid #b2dfdb;border-radius:8px;padding:18px 24px;margin:20px 0 32px}
+.toc h3{margin:0 0 10px;color:var(--accent)}
+.toc ol{margin:0 0 0 20px}.toc li{margin-bottom:3px;font-size:.92em}
+
+/* Badges */
+.badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.78em;font-weight:600;margin-right:4px}
+.badge-ok{background:#e8f5e9;color:var(--ok)}.badge-warn{background:#fff3e0;color:var(--warn)}
+.badge-err{background:#ffebee;color:var(--err)}.badge-info{background:#e3f2fd;color:#1565c0}
+
+/* KPI grid */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:20px 0}
+.kpi{background:var(--card-bg);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center}
+.kpi .val{font-size:1.8em;font-weight:700;color:#1565c0}.kpi .lbl{font-size:.82em;color:#888;margin-top:2px}
+.kpi .val.ok{color:var(--ok)}.kpi .val.err{color:var(--err)}
+
+/* Cards */
+.card{background:var(--card-bg);border:1px solid var(--border);border-radius:8px;padding:18px 22px;margin:14px 0}
+.card h4{margin:0 0 8px;font-size:1em}
+.fix-card{border:1px solid #ffe0b2;border-left:5px solid var(--warn);background:#fffde7;border-radius:0 8px 8px 0;padding:20px 24px;margin:16px 0}
+.fix-card.crit{border-color:#ef9a9a;border-left-color:var(--err);background:#fff8f8}
+.fix-card h4{margin:0 0 12px;font-size:1.05em;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.fix-card p{margin:0 0 8px;line-height:1.6}
+.fix-card p:last-child{margin-bottom:0}
+.fix-card code{background:rgba(0,0,0,.06);padding:2px 7px;border-radius:3px;font-size:.87em;word-break:break-all}
+.fix-card .terminal{margin:8px 0 12px;max-height:none}
+.fix-card p+.terminal:last-child{margin-bottom:0}
+.intro{background:#f0f7f4;border-color:#b2dfdb}
+
+/* Terminal */
+.terminal{background:var(--code-bg);color:#c9d1d9;font-family:'Cascadia Code','Courier New',monospace;
+  font-size:12.5px;line-height:1.55;padding:14px 18px;border-radius:6px;overflow-x:auto;white-space:pre-wrap;margin:14px 0;max-height:480px;overflow-y:auto}
+.terminal .c{color:#79c0ff}.terminal .w{color:#ffa657}.terminal .e{color:#ff7b72}.terminal .g{color:#7ee787}
+
+/* Tables */
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.9em}
+th{background:var(--accent);color:#fff;padding:9px 12px;text-align:left}
+td{padding:8px 12px;border-bottom:1px solid #eee}
+tr:nth-child(even){background:#f9fafb}
+.r{text-align:right;font-variant-numeric:tabular-nums}
+
+/* Images */
+.img-row{display:flex;gap:14px;flex-wrap:wrap;margin:16px 0}
+.img-card{flex:1;min-width:280px;max-width:540px;cursor:pointer;transition:.2s}
+.img-card:hover{transform:scale(1.02)}
+.img-card img{width:100%;border-radius:6px;border:1px solid var(--border);box-shadow:0 2px 6px rgba(0,0,0,.08)}
+.img-card .cap{font-size:.82em;color:#888;text-align:center;margin-top:4px}
+
+/* Lightbox */
+.lb{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:9999;align-items:center;justify-content:center}
+.lb.on{display:flex}
+.lb img{max-width:95%;max-height:92vh;border-radius:6px}
+.lb-x{position:fixed;top:16px;right:24px;color:#fff;font-size:2em;cursor:pointer;z-index:10000}
+
+/* Flow */
+.flow{background:#f4f5f7;border:1px solid var(--border);border-radius:6px;padding:16px 20px;margin:14px 0;font-family:monospace;font-size:12.5px;line-height:1.6;white-space:pre-wrap}
+
+.footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--border);color:#999;font-size:.82em;text-align:center}
+</style>
+</head>
+<body>
+
+<!-- Lightbox -->
+<div class="lb" id="lb" onclick="this.classList.remove('on')">
+<span class="lb-x">&times;</span>
+<img id="lb-img" src="" alt="">
+</div>
+<script>
+function lbOpen(src){var l=document.getElementById('lb');document.getElementById('lb-img').src=src;l.classList.add('on')}
+</script>
+
+<div class="container">
+
+<h1>Симуляция биллинга: подготовка к 1 апреля 2026</h1>
+<p class="sub">Smit Billing v1.5.0 (build 39) &bull; testbill.smit34.ru &bull; 30 марта 2026</p>
+
+<div class="card intro">
+<p>Каждый месяц биллинг автоматически списывает абонентскую плату с лицевых счетов абонентов &mdash;
+за интернет, ТВ-пакеты, статические IP-адреса и другие услуги. Это ключевая операция,
+от которой зависит финансовая корректность всей системы.</p>
+
+<p>Перед первым реальным списанием в новом биллинге (1 апреля 2026) мы провели <strong>полную симуляцию</strong> &mdash;
+проверили, что система правильно считает суммы, корректно обрабатывает каждого абонента
+и не допускает ошибок. В процессе обнаружили и исправили <strong>3 серьёзных бага</strong>,
+которые полностью блокировали списание.</p>
+
+<p><strong>Результат:</strong> система готова к работе. Мы точно знаем, сколько будет списано (237 972 руб с 783 абонентов),
+кто уйдёт в минус (384 абонента), и имеем инструменты для наблюдения за процессом в реальном времени.</p>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+<h3>Содержание</h3>
+<ol>
+  <li><a href="#summary">Сводка</a></li>
+  <li><a href="#bugs">Исправление критических багов</a></li>
+  <li><a href="#data">Подготовка данных</a></li>
+  <li><a href="#preflight">Preflight-проверка</a></li>
+  <li><a href="#simulation">Dry-run симуляция</a></li>
+  <li><a href="#architecture">Архитектура списания</a></li>
+  <li><a href="#tools">Инструменты мониторинга</a></li>
+  <li><a href="#charges">Сводная таблица списаний</a></li>
+  <li><a href="#plan">План на 1 апреля</a></li>
+</ol>
+</div>
+
+<!-- 1. Summary -->
+<h2 id="summary">1. Сводка</h2>
+
+<p>Проведена полная подготовка к ежемесячному списанию абонентской платы 1 апреля 2026.
+Обнаружены и исправлены <span class="badge badge-err">3 critical bugs</span> в модуле списания,
+подготовлены данные для 8 034 услуг, проведена dry-run симуляция и созданы инструменты мониторинга.</p>
+
+<div class="kpi-grid">
+  <div class="kpi"><div class="val">8 034</div><div class="lbl">Услуг к обработке</div></div>
+  <div class="kpi"><div class="val">783</div><div class="lbl">Абонентов к списанию</div></div>
+  <div class="kpi"><div class="val ok">237 972 &#8381;</div><div class="lbl">Ожидаемая сумма</div></div>
+  <div class="kpi"><div class="val err">384</div><div class="lbl">Уйдут в минус</div></div>
+  <div class="kpi"><div class="val">501</div><div class="lbl">Пропущены (блок)</div></div>
+  <div class="kpi"><div class="val">~85 мин</div><div class="lbl">Время обработки</div></div>
+</div>
+
+<div class="img-row">
+  <div class="img-card" onclick="lbOpen('billing_simulation_img/results.png')">
+    <img src="billing_simulation_img/results.png" alt="Результаты симуляции">
+    <div class="cap">Результаты симуляции</div>
+  </div>
+  <div class="img-card" onclick="lbOpen('billing_simulation_img/dashboard.png')">
+    <img src="billing_simulation_img/dashboard.png" alt="Dashboard мониторинга">
+    <div class="cap">Dashboard мониторинга</div>
+  </div>
+</div>
+
+<!-- 2. Bug fixes -->
+<h2 id="bugs">2. Исправление критических багов</h2>
+
+<p>Файл: <code>billing/tasks/billing_worker.py</code> &mdash; основной модуль списания абонплаты.</p>
+
+<div class="img-row">
+  <div class="img-card" onclick="lbOpen('billing_simulation_img/bugfixes.png')">
+    <img src="billing_simulation_img/bugfixes.png" alt="До и после исправления багов">
+    <div class="cap">До / После: 3 критических исправления</div>
+  </div>
+</div>
+
+<div class="fix-card crit">
+  <h4><span class="badge badge-err">SHOWSTOPPER</span> Bug #1</h4>
+  <p><strong>Было:</strong></p>
+  <div class="terminal" >abonent.in_block(<span class="e">flags=['b_negbal']</span>)  # FieldError &mdash; flags не поле ORM</div>
+  <p>Параметр <code>flags</code> не является полем модели <code>AbonentsBlock</code>. Django выбрасывает <code>FieldError</code>,
+  который ловится <code>except&nbsp;Exception</code> &mdash; в итоге <strong>ни один абонент не списывается</strong>.</p>
+  <p><strong>Стало:</strong></p>
+  <div class="terminal" >abonent.in_block(<span class="g">b_negbal=True</span>)  # OK &mdash; фильтр по полю модели</div>
+</div>
+
+<div class="fix-card crit">
+  <h4><span class="badge badge-err">CRITICAL</span> Bug #2 &mdash; Race condition</h4>
+  <p><strong>Было:</strong></p>
+  <div class="terminal" ><span class="e">account.ostatok = (account.ostatok or 0) - summa</span>
+<span class="e">account.save(update_fields=['ostatok', 'debit'])</span>
+# read-modify-write &mdash; при concurrency=4 два воркера перезаписывают баланс</div>
+  <p><strong>Стало:</strong></p>
+  <div class="terminal" ><span class="g">AdminAccounts.objects.filter(pk=account.pk).update(</span>
+<span class="g">    ostatok=F('ostatok') - summa,</span>
+<span class="g">    debit=F('debit') + summa,</span>
+<span class="g">)</span>
+# атомарная операция на уровне SQL &mdash; race condition невозможен</div>
+</div>
+
+<div class="fix-card">
+  <h4><span class="badge badge-warn">HIGH</span> Bug #3 &mdash; Двойное списание при crash</h4>
+  <p><strong>Было:</strong></p>
+  <div class="terminal" ><span class="e">services = UsersUsluga.objects.filter(...)</span>  # без блокировки
+# crash после FinanceOperations.create() но до sched_date update &rarr; повтор</div>
+  <p><strong>Стало:</strong></p>
+  <div class="terminal" ><span class="g">services = UsersUsluga.objects.select_for_update(skip_locked=True).filter(...)</span>
+# + re-fetch with lock внутри transaction.atomic()
+# + проверка sched_date &lt;= now перед обработкой</div>
+</div>
+
+<!-- 3. Data -->
+<h2 id="data">3. Подготовка данных</h2>
+
+<h3>Проблема: sched_date = NULL у всех услуг</h3>
+<p>При первичной проверке: <strong>все 8 910 активных услуг</strong> имели <code>sched_date = NULL</code>.
+Ни одна услуга не была бы обработана биллинг-воркером.</p>
+
+<div class="terminal">
+<span class="c">$ python manage.py billing_preflight --date 2026-04-01</span>
+
+Pending services: <span class="e">0</span>
+
+<span class="w">NO SERVICES TO PROCESS! Check sched_dates.</span>
+Active services total: 8910
+With sched_date=NULL: <span class="e">8910</span>
+Periodic with NULL sched_date: <span class="e">5522</span>
+<span class="w">These 5522 services will NEVER be charged!</span>
+</div>
+
+<h3>Решение</h3>
+<p>Установлены <code>sched_date = 2026-04-01</code>:</p>
+<ul>
+  <li><strong>2 512</strong> платных услуг (summa &gt; 0): ТВ-пакеты, статические IP, комиссии</li>
+  <li><strong>5 522</strong> periodic-услуг (тарифный трафик, summa = 0)</li>
+</ul>
+
+<h3>Обновление типов услуг</h3>
+<p>По файлу <code>Услуги.xlsx</code> (5 вкладок, 486 услуг) обновлены типы списания.
+<strong>325 услуг</strong> исправлены (Разово &rarr; Ежемесячно).</p>
+
+<!-- 4. Preflight -->
+<h2 id="preflight">4. Preflight-проверка</h2>
+
+<p>Команда <code>python manage.py billing_preflight --date 2026-04-01</code> &mdash;
+read-only валидация данных перед списанием.</p>
+
+<div class="terminal">
+<span class="c">$ python manage.py billing_preflight --date 2026-04-01</span>
+
+=== BILLING PREFLIGHT CHECK &mdash; target: 2026-04-01 ===
+
+<span class="g">1. Pending services (sched_date &lt;= 2026-04-01): 8034</span>
+
+2. Expected charges by service:
+   Коммиссия за ОП через оператора ТП (90)   x1100    90.00 руб  (Разово)
+   Коммиссия за ОП через Оператора ТП (50)   x 521    50.00 руб  (Разово)
+   2020 ТВ - Стандарт                         x 218   199.00 руб  (Ежемесячно)
+   Подключение статического IP                x 114   350.00 руб  (Разово)
+   Турбокнопка                                x 107    50.00 руб  (Разово)
+   Статический IP адресс                      x  85   150.00 руб  (Ежемесячно)
+   ...
+
+   <span class="g">ИТОГО: 238 294.00 руб</span>
+
+3. Batch estimate: 17 batches x 5 min = <span class="w">85 min</span>
+
+4. Balance analysis:
+   Abonents to charge: 5522
+   Already negative: <span class="w">1587</span>
+   Will go negative: <span class="e">384</span>
+
+5. Data integrity:
+   Periodic with NULL sched_date: <span class="g">0</span>
+   Blocked (b_negbal): 1872
+   Blocked with pending: 2088 (SKIPPED)
+</div>
+
+<!-- 5. Simulation -->
+<h2 id="simulation">5. Dry-run симуляция</h2>
+
+<p>Команда <code>python manage.py billing_simulate --date 2026-04-01</code> &mdash;
+полная симуляция <strong>без записи в БД</strong>.</p>
+
+<div class="terminal">
+<span class="c">$ python manage.py billing_simulate --date 2026-04-01</span>
+
+=== BILLING SIMULATION (DRY-RUN) &mdash; 2026-04-01 ===
+Services scanned: 8034
+Skipped (blocked): 501
+Skipped (zero summa): 5522
+<span class="g">Abonents to charge: 783</span>
+<span class="g">Total charge: 237 972.00 руб</span>
+Will go negative: <span class="e">384</span>
+
+--- Top 10 charges ---
+  #6369 Мелимеров В.Д.     <span class="e">5 380</span> руб  (0.59 &rarr; -5 379.41)
+  #5654 Бельтскова М.В.    <span class="e">5 320</span> руб  (1.42 &rarr; -5 318.58)
+  #3593 Голубев С.Ю.       <span class="e">4 620</span> руб  (81.15 &rarr; -4 538.85)
+  #6846 Юренко М.Е.        <span class="e">4 200</span> руб  (64.12 &rarr; -4 135.88)
+  #6700 Абельчикова Ю.А.   <span class="e">4 019</span> руб  (15.50 &rarr; -4 003.50)
+  #6645 Бобков Р.Г.        <span class="e">2 149</span> руб  (3.24 &rarr; -2 145.76)
+  #4149 Паршина Е.В.       <span class="e">2 110</span> руб  (92.04 &rarr; -2 017.96)
+  #6321 Николаенко Н.Е.    <span class="e">1 870</span> руб  (24.01 &rarr; -1 845.99)
+  #4687 Мамедов Б.Ш.       <span class="e">1 830</span> руб  (4.98 &rarr; -1 825.02)
+  #6792 Попов И.И.          <span class="e">1 769</span> руб  (293.80 &rarr; -1 475.20)
+</div>
+
+<!-- 6. Architecture -->
+<h2 id="architecture">6. Архитектура списания</h2>
+
+<div class="img-row">
+  <div class="img-card" onclick="lbOpen('billing_simulation_img/architecture.png')">
+    <img src="billing_simulation_img/architecture.png" alt="Архитектура биллинга">
+    <div class="cap">Архитектура: Celery Beat &rarr; process_billing() &rarr; FinanceOperations</div>
+  </div>
+  <div class="img-card" onclick="lbOpen('billing_simulation_img/flowchart.png')">
+    <img src="billing_simulation_img/flowchart.png" alt="Процесс списания">
+    <div class="cap">Flowchart процесса списания</div>
+  </div>
+</div>
+
+<div class="flow">
+CELERY BEAT (каждые 5 минут):
+&boxv;
+&boxur;&rarr; process_billing()
+&boxv;   &boxur;&rarr; UsersUsluga.filter(sched_date &lt;= now)  [:500]
+&boxv;   &boxv;   select_for_update(skip_locked=True)
+&boxv;   &boxv;
+&boxv;   &boxur;&rarr; FOR each service:
+&boxv;       &boxur; Check time window
+&boxv;       &boxur; Check NOT in_block(b_negbal=True)
+&boxv;       &boxur; IF summa &gt; 0:
+&boxv;       &boxv;   &boxur; FinanceOperations.create(op_summa = -summa)
+&boxv;       &boxv;   &boxur; AdminAccounts.update(ostatok=F('ostatok')-summa)
+&boxv;       &boxur; Update sched_date:
+&boxv;           &boxur; every_day  &rarr; +1 day
+&boxv;           &boxur; is_periodic &rarr; +30 days
+&boxv;           &boxur; else       &rarr; NULL
+&boxv;
+&boxur;&rarr; process_blocks() [5 мин]
+&boxv;   &boxur; ostatok &lt; -limit &rarr; BLOCK
+&boxv;   &boxur; ostatok &ge; 0     &rarr; UNBLOCK
+&boxv;
+&boxur;&rarr; check_expired_promises() [15 мин]
+    &boxur; promise_date_end &lt; now &rarr; del_promise_pay()
+</div>
+
+<!-- 7. Tools -->
+<h2 id="tools">7. Инструменты мониторинга</h2>
+
+<div class="img-row">
+  <div class="img-card" onclick="lbOpen('billing_simulation_img/monitoring.png')">
+    <img src="billing_simulation_img/monitoring.png" alt="Мониторинг биллинга">
+    <div class="cap">Real-time мониторинг процесса списания</div>
+  </div>
+</div>
+
+<table>
+<thead><tr><th>Команда</th><th>Назначение</th><th>Когда</th></tr></thead>
+<tbody>
+<tr><td><code>billing_preflight</code></td><td>Валидация данных (read-only)</td><td>За день до списания</td></tr>
+<tr><td><code>billing_simulate</code></td><td>Dry-run без записи в БД</td><td>Перед первым запуском</td></tr>
+<tr><td><code>billing_monitor</code></td><td>Real-time dashboard (10 сек)</td><td>Во время списания</td></tr>
+</tbody>
+</table>
+
+<div class="terminal">
+<span class="c">$ python manage.py billing_monitor --interval 10</span>
+
+[00:05:10] Pending:  7534 | Charged:   500 (  89 150 руб) | Blocked:  1920
+[00:10:20] Pending:  7034 | Charged:  1000 ( 165 280 руб) | Blocked:  1985
+[00:15:30] Pending:  6534 | Charged:  1500 ( 201 440 руб) | Blocked:  2045
+...
+[01:25:00] Pending:     0 | Charged:  8034 ( 237 972 руб) | Blocked:  2256
+<span class="g">
+Billing complete.</span>
+</div>
+
+<!-- 8. Charges -->
+<h2 id="charges">8. Сводная таблица списаний</h2>
+
+<table>
+<thead><tr><th>Тип услуги</th><th>Кол-во</th><th class="r">Сумма</th><th>Тип</th></tr></thead>
+<tbody>
+<tr><td>Комиссия за ОП (90 руб)</td><td>1 100</td><td class="r">99 000 &#8381;</td><td><span class="badge badge-warn">Разово</span></td></tr>
+<tr><td>Комиссия за ОП (50 руб)</td><td>521</td><td class="r">26 050 &#8381;</td><td><span class="badge badge-warn">Разово</span></td></tr>
+<tr><td>2020 ТВ &mdash; Стандарт</td><td>218</td><td class="r">43 382 &#8381;</td><td><span class="badge badge-info">Ежемесячно</span></td></tr>
+<tr><td>Подключение статического IP</td><td>114</td><td class="r">39 900 &#8381;</td><td><span class="badge badge-warn">Разово</span></td></tr>
+<tr><td>Статический IP</td><td>85</td><td class="r">12 750 &#8381;</td><td><span class="badge badge-info">Ежемесячно</span></td></tr>
+<tr><td>Турбокнопка</td><td>107</td><td class="r">5 350 &#8381;</td><td><span class="badge badge-warn">Разово</span></td></tr>
+<tr><td>ТВ-пакеты (разные)</td><td>~200</td><td class="r">~11 540 &#8381;</td><td><span class="badge badge-info">Ежемесячно</span></td></tr>
+<tr style="font-weight:700;background:#e8f5e9"><td>ИТОГО</td><td>~2 512</td><td class="r">237 972 &#8381;</td><td></td></tr>
+</tbody>
+</table>
+
+<!-- 9. Plan -->
+<h2 id="plan">9. План на 1 апреля</h2>
+
+<div class="card intro">
+<p>Списание происходит автоматически: Celery Beat каждые 5 минут запускает задачу <code>process_billing()</code>,
+которая обрабатывает по 500 услуг за раз. На полную обработку всех 8 034 услуг потребуется примерно 85 минут (17 батчей).</p>
+
+<p>Ниже &mdash; пошаговый план действий на ночь с 31 марта на 1 апреля.
+Мы делаем резервную копию базы <em>до</em> списания, запускаем проверку, наблюдаем за процессом
+через мониторинг и после завершения сверяем результаты с dry-run симуляцией.
+Если что-то пойдёт не так &mdash; восстанавливаем базу из снэпшота.</p>
+</div>
+
+<table>
+<thead><tr><th>Время</th><th>Действие</th><th>Команда</th></tr></thead>
+<tbody>
+<tr><td>23:50 (31.03)</td><td>Снэпшот БД</td><td><code>pg_dump -Fc carbon &gt; backup.dump</code></td></tr>
+<tr><td>23:55</td><td>Preflight проверка</td><td><code>python manage.py billing_preflight</code></td></tr>
+<tr><td>00:00 (01.04)</td><td>Celery-beat запускает billing</td><td>Автоматически</td></tr>
+<tr><td>00:01</td><td>Запуск мониторинга</td><td><code>python manage.py billing_monitor</code></td></tr>
+<tr><td>~01:30</td><td>Ожидаемое завершение</td><td>85 минут, 17 батчей</td></tr>
+<tr><td>01:30+</td><td>Верификация</td><td>Сверка с dry-run, проверка балансов</td></tr>
+</tbody>
+</table>
+
+<!-- Footer -->
+<div class="footer">
+  <p>Отчёт: 30 марта 2026 &bull; Smit Billing v1.5.0 (build 39) &bull;
+  <a href="https://docs.billing.smit34.ru">docs.billing.smit34.ru</a></p>
+</div>
+
+</div>
+</body>
+</html>

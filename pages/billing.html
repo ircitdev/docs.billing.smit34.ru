@@ -2436,7 +2436,7 @@ FROM billing_abonents a WHERE a.is_deleted = false;</code></pre>
 
   <h4>Система комментариев</h4>
   <p>Под каждым документом расположен аккордеон «Комментарии», позволяющий вести обсуждение прямо на странице документа. Поддерживается древовидная структура (threading) — ответы на комментарии отображаются с отступом.</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/screenshots/comments/comments_doc.png" alt="Комментарии к документу" style="max-width:100%;border-radius:6px;margin:10px 0;box-shadow:0 2px 8px rgba(0,0,0,.1)">
+  <img src="../img/comments/comments_doc.png" alt="Комментарии к документу" style="max-width:100%;border-radius:6px;margin:10px 0;box-shadow:0 2px 8px rgba(0,0,0,.1)">
   <ul>
     <li><strong>Аватары</strong> — у каждого комментария отображается аватар автора (инициалы или Gravatar)</li>
     <li><strong>Бейджи в списке файлов</strong> — рядом с именем файла отображается зелёный кружок с количеством комментариев</li>
@@ -2450,10 +2450,10 @@ FROM billing_abonents a WHERE a.is_deleted = false;</code></pre>
 
   <h4>Интеграция с профилем</h4>
   <p>В профиле пользователя (верхнее меню → имя пользователя) появляется блок <strong>«Ответы на мои комментарии»</strong> — список последних ответов на комментарии текущего пользователя с ссылками на документы.</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/screenshots/comments/comments_profile.png" alt="Ответы на мои комментарии в профиле" style="max-width:100%;border-radius:6px;margin:10px 0;box-shadow:0 2px 8px rgba(0,0,0,.1)">
+  <img src="../img/comments/comments_profile.png" alt="Ответы на мои комментарии в профиле" style="max-width:100%;border-radius:6px;margin:10px 0;box-shadow:0 2px 8px rgba(0,0,0,.1)">
 
   <h4>Список файлов</h4>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/screenshots/comments/dev_reports_list.png" alt="Список файлов разработки" style="max-width:100%;border-radius:6px;margin:10px 0;box-shadow:0 2px 8px rgba(0,0,0,.1)">
+  <img src="../img/comments/dev_reports_list.png" alt="Список файлов разработки" style="max-width:100%;border-radius:6px;margin:10px 0;box-shadow:0 2px 8px rgba(0,0,0,.1)">
 
   <h4>Вкладка «Серверные логи»</h4>
   <p>Просмотр серверных логов в реальном времени (последние 500 строк):</p>
@@ -2464,7 +2464,7 @@ FROM billing_abonents a WHERE a.is_deleted = false;</code></pre>
     <li><strong>FreeRADIUS</strong> — логи RADIUS-сервера (авторизация, аккаунтинг, ошибки)</li>
   </ul>
   <p>Кнопка «Обновить» перечитывает лог без перезагрузки страницы.</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/screenshots/comments/logs_radius.png" alt="Серверные логи — RADIUS" style="max-width:100%;border-radius:6px;margin:10px 0;box-shadow:0 2px 8px rgba(0,0,0,.1)">
+  <img src="../img/comments/logs_radius.png" alt="Серверные логи — RADIUS" style="max-width:100%;border-radius:6px;margin:10px 0;box-shadow:0 2px 8px rgba(0,0,0,.1)">
   <p><strong>Модель БД:</strong> <code>DevReportFile</code> (таблица <code>dev_report_file</code>) — хранит отображаемое имя, категорию и порядок сортировки для каждого файла.</p>
 
   <!-- ===== 10.7. Улучшения раздела Отчёты ===== -->
@@ -2608,8 +2608,56 @@ ACL_BLOCKED_GROUPS = ACL_DISABLED</code></pre>
   <h3 id="data-retention">10.3. Настройка периода хранения исторических данных</h3>
   <p>Конфигурация сроков хранения данных в базе. Старые данные могут быть перенесены в архив или удалены при закрытии периода.</p>
 
-  <h3 id="sorm-access">10.4. СОРМ. Доступ для правоохранительных органов</h3>
-  <p>Настройка доступа для сотрудников правоохранительных органов к данным абонентов в соответствии с законодательством. Отдельный интерфейс с ограниченным набором функций.</p>
+  <h3 id="sorm-access">10.4. СОРМ — выгрузка данных</h3>
+
+  <h4 id="sorm-settings">Настройки СОРМ</h4>
+  <p>Страница <strong>Настройки &rarr; СОРМ</strong> (<code>/admin/settings/sorm/</code>) позволяет настроить FTP-подключение и формат выгрузки отчётов СОРМ-3.</p>
+
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/screenshots/sorm_settings.png" alt="Страница настроек СОРМ" style="max-width:100%;border-radius:8px;border:1px solid #dee2e6;margin:12px 0">
+
+  <h4 id="sorm-ftp">FTP-подключение</h4>
+  <table>
+    <thead><tr><th>Параметр</th><th>Описание</th></tr></thead>
+    <tbody>
+      <tr><td><strong>FTP хост</strong></td><td>IP-адрес или домен FTP-сервера СОРМ-оборудования</td></tr>
+      <tr><td><strong>Порт</strong></td><td>Порт FTP (по умолчанию 21)</td></tr>
+      <tr><td><strong>Пользователь / Пароль</strong></td><td>Учётные данные для подключения к FTP</td></tr>
+      <tr><td><strong>Путь выгрузки</strong></td><td>Директория на FTP-сервере. <code>/</code> &mdash; корень. Отчёты выгружаются в указанную папку</td></tr>
+      <tr><td><strong>Active mode</strong></td><td>Активный режим FTP (вместо пассивного). Требуется для некоторых СОРМ-шлюзов</td></tr>
+    </tbody>
+  </table>
+  <p>Кнопка <strong>Проверить FTP</strong> выполняет тестовое подключение и выводит приветствие сервера и список файлов.</p>
+
+  <h4 id="sorm-format">Формат выгрузки</h4>
+  <ul>
+    <li><strong>Формат файлов</strong>: CSV-содержимое (разделитель <code>;</code>) с расширением <code>.txt</code></li>
+    <li><strong>Кодировка</strong>: UTF-8 или Windows-1251 (зависит от требований оборудования)</li>
+    <li><strong>Разделитель</strong>: по умолчанию <code>;</code> (точка с запятой)</li>
+    <li><strong>Формат даты</strong>: <code>%Y-%m-%d %H:%M:%S</code></li>
+  </ul>
+
+  <h4 id="sorm-reports">Отчёты СОРМ-3</h4>
+  <p>13 стандартных отчётов в формате СОРМ-3:</p>
+  <table>
+    <thead><tr><th>Префикс файла</th><th>Описание</th></tr></thead>
+    <tbody>
+      <tr><td><code>ABONENT</code></td><td>Данные абонентов</td></tr>
+      <tr><td><code>ABONENT_IDENT</code></td><td>Идентификаторы абонентов (паспорт, ИНН)</td></tr>
+      <tr><td><code>ABONENT_SRV</code></td><td>Услуги абонентов</td></tr>
+      <tr><td><code>ABONENT_USER</code></td><td>Учётные записи абонентов</td></tr>
+      <tr><td><code>ABONENT_ADDR</code></td><td>Адреса абонентов</td></tr>
+      <tr><td><code>PAYMENT</code></td><td>Платежи</td></tr>
+      <tr><td><code>SUPPLEMENTARY_SERVICE</code></td><td>Дополнительные услуги</td></tr>
+      <tr><td><code>REGIONS</code></td><td>Регионы</td></tr>
+      <tr><td><code>DOC_TYPES</code></td><td>Типы документов</td></tr>
+      <tr><td><code>PAY_TYPES</code></td><td>Типы платежей</td></tr>
+      <tr><td><code>IP_PLAN</code></td><td>Планы IP-адресации</td></tr>
+      <tr><td><code>IP_GATEWAY</code></td><td>IP-шлюзы</td></tr>
+      <tr><td><code>GATEWAY</code></td><td>Шлюзы доступа</td></tr>
+    </tbody>
+  </table>
+  <p>Каждый отчёт генерирует файл вида <code>ABONENT_20260402_120000.txt</code> и выгружает его на FTP-сервер.</p>
+  <p>Управление отчётами (SQL-запросы, периодичность): <strong>Оборудование &rarr; Настройки СОРМ</strong> (<code>/admin/equipment/sorm_list/</code>).</p>
 
   <h3 id="print-templates">10.5. Шаблоны документов для печати</h3>
   <p>Создание и редактирование шаблонов для печатных форм. Привязка к моделям: Abonents, FinanceOperations, CardSeries, Hdsk.</p>
