@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>API — СмИТ Биллинг v1.0.0 (build 37)</title>
+  <title>API — СмИТ Биллинг v1.5.0 (build 79)</title>
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="СмИТ Биллинг 1.0 — Документация">
-  <meta property="og:title" content="API — СмИТ Биллинг v1.0.0 (build 37)">
+  <meta property="og:site_name" content="СмИТ Биллинг 1.5 — Документация">
+  <meta property="og:title" content="API — СмИТ Биллинг v1.5.0 (build 79)">
   <meta property="og:description" content="REST API v2, SOAP API, обещанный платёж, управление абонентами. Примеры запросов curl и JSON.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/api.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
@@ -14,10 +14,11 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="API — СмИТ Биллинг v1.0.0 (build 37)">
+  <meta name="twitter:title" content="API — СмИТ Биллинг v1.5.0 (build 79)">
   <meta name="twitter:description" content="REST API v2, SOAP API, обещанный платёж, управление абонентами. Примеры запросов curl и JSON.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="REST API v2, SOAP API, обещанный платёж, управление абонентами. Примеры запросов curl и JSON.">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
@@ -27,7 +28,7 @@
     <button class="menu-toggle" aria-label="Меню">&#9776;</button>
     <div class="logo">
       <div class="logo-icon">С</div>
-      <div class="logo-text"><span class="logo-main">СмИТ Биллинг 1.0 </span><span>Документация</span></div>
+      <div class="logo-text"><span class="logo-main">СмИТ Биллинг 1.5 </span><span>Документация</span></div>
     </div>
   </div>
   <div class="header-right">
@@ -53,7 +54,6 @@
           <li><a href="installation.html#tariff-setup">5. Настройка тарифов</a></li>
           <li><a href="installation.html#add-subscribers">6. Добавление абонентов</a></li>
           <li><a href="installation.html#final-test">7. Финальное тестирование</a></li>
-          <li><a href="installation.html#video">8. Видеоинструкции</a></li>
         </ul>
       </li>
       <li class="has-children">
@@ -62,68 +62,70 @@
           <li><a href="billing.html#general">1. Общие настройки</a></li>
           <li class="sub-item"><a href="billing.html#admin-ip">1.1. IP администратора</a></li>
           <li class="sub-item"><a href="billing.html#global-settings">1.2. Глобальные настройки</a></li>
-          <li class="sub-item"><a href="billing.html#ssl-admin">1.3. SSL-сертификат</a></li>
-          <li class="sub-item"><a href="billing.html#user-interfaces">1.4. Интерфейсы пользователей</a></li>
-          <li class="sub-item"><a href="billing.html#db-cleanup">1.5. Очистка БД</a></li>
+          <li class="sub-item"><a href="billing.html#user-interfaces">1.4. Интерфейсы</a></li>
           <li class="sub-item"><a href="billing.html#access-control">1.6. Права доступа</a></li>
-          <li class="sub-item"><a href="billing.html#diagnostic-commands">1.7. Диагностика</a></li>
           <li><a href="billing.html#subscribers">2. Работа с абонентами</a></li>
           <li class="sub-item"><a href="billing.html#create-subscriber">2.1. Создание абонента</a></li>
-          <li class="sub-item"><a href="billing.html#add-service">2.2. Выбор тарифа</a></li>
-          <li class="sub-item"><a href="billing.html#search">2.3. Поиск</a></li>
-          <li class="sub-item"><a href="billing.html#finance-operations">2.4. Финансовые операции</a></li>
-          <li class="sub-item"><a href="billing.html#block-unblock">2.5. Блокировка</a></li>
-          <li class="sub-item"><a href="billing.html#accounts">2.6. Лицевые счета</a></li>
-          <li class="sub-item"><a href="billing.html#debtors">2.7. Должники</a></li>
-          <li class="sub-item"><a href="billing.html#turnover-sheet">2.8. Оборотная ведомость</a></li>
-          <li class="sub-item"><a href="billing.html#send-message">2.9. Отправка сообщений</a></li>
+          <li class="sub-item"><a href="billing.html#search">2.2. Поиск</a></li>
+          <li class="sub-item"><a href="billing.html#finance-operations">2.3. Финансовые операции</a></li>
+          <li class="sub-item"><a href="billing.html#block-unblock">2.4. Блокировка</a></li>
+          <li class="sub-item"><a href="billing.html#accounts">2.5. Лицевые счета</a></li>
+          <li class="sub-item"><a href="billing.html#debtors">2.6. Должники</a></li>
+          <li class="sub-item"><a href="billing.html#send-message">2.7. Отправка сообщений</a></li>
           <li><a href="billing.html#tariffs">3. Тарификация и услуги</a></li>
           <li class="sub-item"><a href="billing.html#tarif-create">3.1. Тарифы</a></li>
-          <li class="sub-item"><a href="billing.html#payment-cards">3.2. Карты оплаты</a></li>
-          <li class="sub-item"><a href="billing.html#tarif-change">3.3. Смена тарифа</a></li>
-          <li class="sub-item"><a href="billing.html#services">3.4. Услуги</a></li>
-          <li class="sub-item"><a href="billing.html#disconnection">3.5. Отключение</a></li>
-          <li class="sub-item"><a href="billing.html#counters">3.6. Счётчики</a></li>
-          <li class="sub-item"><a href="billing.html#bonus-system">3.7. Система бонусов</a></li>
+          <li class="sub-item"><a href="billing.html#services">3.6. Услуги</a></li>
+          <li class="sub-item"><a href="billing.html#bonus-system">3.16. Бонусы</a></li>
           <li><a href="billing.html#messaging">4. Отправка сообщений</a></li>
-          <li class="sub-item"><a href="billing.html#messaging-system">4.1. Система SMS/Email</a></li>
-          <li class="sub-item"><a href="billing.html#telegram">4.2. Telegram</a></li>
-          <li class="sub-item"><a href="billing.html#smsaero">4.3. SMSAero</a></li>
-          <li class="sub-item"><a href="billing.html#email-smtp">4.4. Email (SMTP)</a></li>
+          <li class="sub-item"><a href="billing.html#telegram">4.4. Telegram</a></li>
+          <li class="sub-item"><a href="billing.html#smsaero">4.5. SMSAero</a></li>
+          <li class="sub-item"><a href="billing.html#email-smtp">4.6. Email (SMTP)</a></li>
           <li><a href="billing.html#payments">5. Платежи, API, 1С</a></li>
-          <li class="sub-item"><a href="billing.html#cashier">5.1. Веб-касса</a></li>
           <li class="sub-item"><a href="billing.html#payment-systems">5.2. Платёжные системы</a></li>
-          <li class="sub-item"><a href="billing.html#1c-integration">5.3. Интеграция с 1С</a></li>
-          <li class="sub-item"><a href="billing.html#api">5.4. API</a></li>
-          <li class="sub-item"><a href="billing.html#csv-export">5.5. Импорт из CSV</a></li>
-          <li class="sub-item"><a href="billing.html#online-cash">5.6. Онлайн-кассы</a></li>
-          <li class="sub-item"><a href="billing.html#payment-errors">5.7. Коды ошибок</a></li>
+          <li class="sub-item"><a href="billing.html#yookassa-settings">5.8. ЮKassa</a></li>
+          <li class="sub-item"><a href="billing.html#online-cash">5.7. Онлайн-кассы (54-ФЗ)</a></li>
           <li><a href="billing.html#cabinet">6. Личный кабинет</a></li>
           <li class="sub-item"><a href="billing.html#lk-auth">6.1. Авторизация</a></li>
           <li class="sub-item"><a href="billing.html#lk-settings">6.2. Настройки интеграций</a></li>
-          <li class="sub-item"><a href="billing.html#lk-telegram">6.3. Telegram-бот</a></li>
-          <li class="sub-item"><a href="billing.html#lk-payments">6.4. ЮKassa (оплата)</a></li>
-          <li class="sub-item"><a href="billing.html#lk-mobile-app">6.5. Мобильное приложение</a></li>
-          <li class="sub-item"><a href="billing.html#lk-support">6.6. Поддержка (FreeScout)</a></li>
-          <li class="sub-item"><a href="billing.html#lk-profile">6.7. Профиль</a></li>
-          <li class="sub-item"><a href="billing.html#lk-deploy">6.8. Развёртывание и SSL</a></li>
-          <li><a href="billing.html#oss-bss">7. OSS.BSS</a></li>
-          <li class="sub-item"><a href="billing.html#helpdesk">7.1. CRM / HelpDesk</a></li>
-          <li class="sub-item"><a href="billing.html#userside">7.2. UserSide</a></li>
-          <li><a href="billing.html#reports">8. Отчёты</a></li>
-          <li class="sub-item"><a href="billing.html#audit">8.1. Аудит</a></li>
-          <li class="sub-item"><a href="billing.html#payment-log">8.2. Журнал платежей</a></li>
-          <li class="sub-item"><a href="billing.html#report-constructor">8.3. Конструктор отчётов</a></li>
-          <li class="sub-item"><a href="billing.html#director-report">8.4. Отчёт для директора</a></li>
-          <li><a href="billing.html#dictionaries">9. Справочники</a></li>
-          <li class="sub-item"><a href="billing.html#ip-pools">9.1. Пулы IP-адресов</a></li>
-          <li class="sub-item"><a href="billing.html#requisites">9.2. Реквизиты</a></li>
-          <li class="sub-item"><a href="billing.html#houses">9.3. Дома</a></li>
-          <li><a href="billing.html#additional">10. Дополнительные настройки</a></li>
-          <li class="sub-item"><a href="billing.html#sorm-access">10.1. СОРМ</a></li>
-          <li class="sub-item"><a href="billing.html#print-templates">10.2. Шаблоны печати</a></li>
-          <li><a href="billing.html#security">11. Безопасность</a></li>
-          <li><a href="billing.html#versioning">12. Версионность</a></li>
+          <li class="sub-item"><a href="billing.html#lk-telegram">6.3. Telegram-бот уведомлений</a></li>
+          <li class="sub-item"><a href="billing.html#lk-payments">6.4. Оплата (ЮKassa)</a></li>
+          <li class="sub-item"><a href="billing.html#telegram-admin-bot">6.5. Telegram-бот оператора</a></li>
+          <li class="sub-item"><a href="billing.html#lk-mobile-app">6.6. Мобильное приложение</a></li>
+          <li class="sub-item"><a href="billing.html#lk-support">6.7. Поддержка (FreeScout)</a></li>
+          <li class="sub-item"><a href="billing.html#lk-ai-chat">6.8. AI-ассистент</a></li>
+          <li class="sub-item"><a href="billing.html#lk-profile">6.9. Профиль абонента</a></li>
+          <li class="sub-item"><a href="billing.html#lk-firebase">6.10. Push-уведомления</a></li>
+          <li class="sub-item"><a href="billing.html#lk-deploy">6.11. Развёртывание и SSL</a></li>
+          <li><a href="billing.html#oss-bss">7. OSS.BSS / NAS</a></li>
+          <li class="sub-item"><a href="billing.html#rtsh">7.1. rtsh — команды</a></li>
+          <li class="sub-item"><a href="billing.html#nas-deploy">7.3. NAS развёртывание</a></li>
+          <li class="sub-item"><a href="billing.html#helpdesk">7.7. CRM / HelpDesk</a></li>
+          <li class="sub-item"><a href="billing.html#shell-exec">7.9. Shell-команды</a></li>
+          <li class="sub-item"><a href="billing.html#nas-management-api">7.10. NAS API</a></li>
+          <li><a href="billing.html#freeradius">8. FreeRADIUS</a></li>
+          <li class="sub-item"><a href="billing.html#radius-arch">8.1. Архитектура</a></li>
+          <li class="sub-item"><a href="billing.html#radius-auth">8.2. Авторизация</a></li>
+          <li class="sub-item"><a href="billing.html#radius-clients">8.4. Клиенты (NAS)</a></li>
+          <li class="sub-item"><a href="billing.html#radius-test">8.5. Тестирование</a></li>
+          <li><a href="billing.html#backup-system">9. Резервное копирование</a></li>
+          <li class="sub-item"><a href="billing.html#backup-config">9.1. Настройка</a></li>
+          <li class="sub-item"><a href="billing.html#backup-types">9.2. Типы бекапов</a></li>
+          <li class="sub-item"><a href="billing.html#backup-restore">9.3. Восстановление</a></li>
+          <li><a href="billing.html#reports">10. Отчёты</a></li>
+          <li class="sub-item"><a href="billing.html#audit">10.1. Аудит</a></li>
+          <li class="sub-item"><a href="billing.html#payment-log">10.2. Журнал платежей</a></li>
+          <li class="sub-item"><a href="billing.html#report-constructor">10.3. Конструктор отчётов</a></li>
+          <li class="sub-item"><a href="billing.html#director-report">10.4. Панель директора</a></li>
+          <li class="sub-item"><a href="billing.html#dev-reports">10.6. Разработка и логи</a></li>
+          <li class="sub-item"><a href="billing.html#monthly-billing">10.8. Месячное списание</a></li>
+          <li><a href="billing.html#dictionaries">11. Справочники</a></li>
+          <li class="sub-item"><a href="billing.html#ip-pools">11.5. Пулы IP-адресов</a></li>
+          <li class="sub-item"><a href="billing.html#houses">11.7. Дома</a></li>
+          <li><a href="billing.html#additional">12. Дополнительные настройки</a></li>
+          <li class="sub-item"><a href="billing.html#sorm-access">12.4. СОРМ</a></li>
+          <li class="sub-item"><a href="billing.html#print-templates">12.5. Шаблоны печати</a></li>
+          <li><a href="billing.html#security">13. Безопасность</a></li>
+          <li><a href="billing.html#versioning">14. Версионность</a></li>
           <li><a href="billing.html#tech-stack">15. Технологический стек</a></li>
         </ul>
       </li>
@@ -136,22 +138,19 @@
           <li class="sub-item"><a href="server.html#backup-ui">2.2. Бекапы (веб-интерфейс)</a></li>
           <li><a href="server.html#modules">3. Управление модулями</a></li>
           <li><a href="server.html#remote">4. Удалённое управление</a></li>
-          <li><a href="server.html#advanced">5. Дополнительные возможности</a></li>
-          <li class="sub-item"><a href="server.html#db-failover">5.1. Отказоустойчивость БД</a></li>
-          <li class="sub-item"><a href="server.html#monitoring">5.2. Мониторинг</a></li>
         </ul>
       </li>
       <li class="has-children">
         <a href="equipment.html">&#128225; Интеграция с оборудованием <span class="arrow">&#9654;</span></a>
         <ul class="submenu">
           <li><a href="equipment.html#internet">1. Интернет (NAS/BRAS)</a></li>
+          <li class="sub-item"><a href="equipment.html#switch-types">1.1. Типы коммутаторов</a></li>
           <li><a href="equipment.html#voip">2. Телефония (VoIP)</a></li>
           <li><a href="equipment.html#iptv">3. IPTV</a></li>
           <li class="sub-item"><a href="equipment.html#iptv-tvip">3.1. TVIP Media</a></li>
           <li class="sub-item"><a href="equipment.html#iptv-lfstream">3.2. LFStream</a></li>
           <li class="sub-item"><a href="equipment.html#iptv-mappings">3.3. Маппинг пакетов</a></li>
           <li><a href="equipment.html#cpe">4. Абонентское оборудование</a></li>
-          <li><a href="equipment.html#rental">5. Аренда оборудования</a></li>
         </ul>
       </li>
       <li class="has-children">
@@ -170,10 +169,7 @@
           <li><a href="api.html#rest-v2">3. REST API v2</a></li>
           <li><a href="api.html#promise-pay">4. Обещанный платёж</a></li>
           <li><a href="api.html#soap">5. SOAP API</a></li>
-          <li><a href="api.html#web-api">6. Web API</a></li>
           <li><a href="api.html#mobile-api">7. Mobile API</a></li>
-          <li><a href="api.html#ajax">8. AJAX-эндпоинты</a></li>
-          <li><a href="api.html#errors">9. Коды ошибок</a></li>
         </ul>
       </li>
       <li class="has-children">
@@ -183,17 +179,13 @@
           <li><a href="troubleshooting.html#auth">2. Абоненты и авторизация</a></li>
           <li><a href="troubleshooting.html#billing-payments">3. Биллинг и платежи</a></li>
           <li><a href="troubleshooting.html#server-perf">4. Сервер и производительность</a></li>
-          <li><a href="troubleshooting.html#network">5. Сеть и доступ</a></li>
-          <li><a href="troubleshooting.html#security">6. Безопасность</a></li>
         </ul>
       </li>
       <li class="has-children">
-        <a href="licensing.html">&#128196; Лицензирование и оплата <span class="arrow">&#9654;</span></a>
+        <a href="licensing.html">&#128196; Лицензирование <span class="arrow">&#9654;</span></a>
         <ul class="submenu">
           <li><a href="licensing.html#delivery">1. Порядок поставки ПО</a></li>
           <li><a href="licensing.html#payment-issues">2. Не проходит оплата</a></li>
-          <li><a href="licensing.html#reconciliation">3. Акт сверки</a></li>
-          <li><a href="licensing.html#non-payment">4. Работа при неоплате</a></li>
         </ul>
       </li>
       <li><a href="contacts.html">&#128222; Контакты</a></li>
@@ -207,7 +199,7 @@
   </div>
 
   <h1>API</h1>
-  <p>СмИТ Биллинг 1.0 предоставляет несколько типов API для интеграции с внешними системами: платёжными шлюзами, личными кабинетами, 1С, системами мониторинга и другими сервисами.</p>
+  <p>СмИТ Биллинг 1.5 предоставляет несколько типов API для интеграции с внешними системами: платёжными шлюзами, личными кабинетами, 1С, системами мониторинга и другими сервисами.</p>
 
   <div class="info-box">
     <strong>Базовый URL:</strong> <code>https://your-billing-server.example.com</code><br>

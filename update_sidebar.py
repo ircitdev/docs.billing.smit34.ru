@@ -1,45 +1,7 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>СмИТ Биллинг 1.5 — Документация</title>
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="СмИТ Биллинг 1.5 — Документация">
-  <meta property="og:title" content="СмИТ Биллинг 1.5 — Документация">
-  <meta property="og:description" content="Документация биллинговой платформы СмИТ Биллинг 1.5 для операторов связи и сервис-провайдеров. Python 3.11, Django 4.2, PostgreSQL 16, Docker Compose.">
-  <meta property="og:url" content="https://docs.billing.smit34.ru/">
-  <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:locale" content="ru_RU">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="СмИТ Биллинг 1.5 — Документация">
-  <meta name="twitter:description" content="Документация биллинговой платформы СмИТ Биллинг 1.5 для операторов связи и сервис-провайдеров. Python 3.11, Django 4.2, PostgreSQL 16, Docker Compose.">
-  <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
-  <meta name="description" content="Документация биллинговой платформы СмИТ Биллинг 1.5 для операторов связи и сервис-провайдеров. Python 3.11, Django 4.2, PostgreSQL 16, Docker Compose.">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
+"""Replace sidebar in all docs HTML files with comprehensive 3-level menu."""
+import re, glob
 
-<header class="header">
-  <div class="header-left">
-    <button class="menu-toggle" aria-label="Меню">&#9776;</button>
-    <div class="logo">
-      <div class="logo-icon">С</div>
-      <div class="logo-text"><span class="logo-main">СмИТ Биллинг 1.5 </span><span>Документация</span></div>
-    </div>
-  </div>
-  <div class="header-right">
-    <button class="theme-toggle" aria-label="Переключить тему" title="Светлая / тёмная тема">
-      <span class="icon-sun">&#9788;</span>
-      <span class="icon-moon">&#9790;</span>
-    </button>
-  </div>
-</header>
-
-<aside class="sidebar">
+NEW_SIDEBAR = '''<aside class="sidebar">
   <nav>
     <div class="nav-section">Разделы</div>
     <ul>
@@ -191,82 +153,31 @@
       <li><a href="pages/contacts.html">&#128222; Контакты</a></li>
     </ul>
   </nav>
-</aside>
+</aside>'''
 
-<main class="content">
-  <div class="breadcrumb">
-    <a href="index.html">Документация</a>
-  </div>
+files = ['index.html'] + glob.glob('pages/*.html')
+for f in files:
+    with open(f, 'r', encoding='utf-8') as fh:
+        content = fh.read()
 
-  <h1>Документация СмИТ Биллинг 1.5</h1>
-  <p>Добро пожаловать в документацию системы <strong>СмИТ Биллинг 1.5</strong> — биллинговой платформы для операторов связи и сервис-провайдеров.</p>
+    # For index.html: links use "pages/billing.html"
+    # For pages/*.html: links use "billing.html" (same dir) and "../index.html" for home
+    sidebar = NEW_SIDEBAR
+    is_subpage = f.startswith('pages')
+    if is_subpage:
+        sidebar = sidebar.replace('href="pages/', 'href="')
+        sidebar = sidebar.replace('href="index.html"', 'href="../index.html"')
+        sidebar = sidebar.replace('src="../img/', 'src="../img/')  # keep as-is
 
-  <div class="info-box">
-    <strong>Веб-интерфейс биллинга:</strong> <a href="http://billing.smit34.ru" target="_blank">billing.smit34.ru</a><br>
-    <strong>Технологический стек:</strong> Python 3.11, Django 4.2 LTS, PostgreSQL 16, Redis 7, Celery 5, FreeRADIUS 3.2.3, Docker Compose, Gunicorn, Nginx, AdminLTE 3 + Bootstrap 5.3.
-  </div>
-
-  <div class="cards">
-    <a href="pages/installation.html" class="card">
-      <div class="icon">&#128187;</div>
-      <h3>Установка и интеграция</h3>
-      <p>Docker Compose развёртывание, системные требования, миграция данных, видео-инструкции.</p>
-    </a>
-
-    <a href="pages/billing.html" class="card">
-      <div class="icon">&#9881;</div>
-      <h3>Основные настройки биллинга</h3>
-      <p>Управление абонентами, тарификация, платёжные системы, личный кабинет, отчёты.</p>
-    </a>
-
-    <a href="pages/server.html" class="card">
-      <div class="icon">&#128421;</div>
-      <h3>Управление сервером</h3>
-      <p>Docker-контейнеры, PostgreSQL, Celery, обслуживание, удалённое управление.</p>
-    </a>
-
-    <a href="pages/equipment.html" class="card">
-      <div class="icon">&#128268;</div>
-      <h3>Интеграция с оборудованием</h3>
-      <p>NAS/BRAS, коммутаторы, VoIP-шлюзы, IPTV, абонентское оборудование.</p>
-    </a>
-
-    <a href="pages/sorm.html" class="card">
-      <div class="icon">&#128274;</div>
-      <h3>Интеграция с СОРМ3</h3>
-      <p>Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ.</p>
-    </a>
-
-    <a href="pages/troubleshooting.html" class="card">
-      <div class="icon">&#128295;</div>
-      <h3>Решение проблем</h3>
-      <p>FAQ, диагностика авторизации, сети, платежей, мониторинг сервера.</p>
-    </a>
-
-    <a href="pages/licensing.html" class="card">
-      <div class="icon">&#128196;</div>
-      <h3>Лицензирование и оплата</h3>
-      <p>Порядок поставки ПО, решение проблем с оплатой, акты сверки.</p>
-    </a>
-
-    <a href="pages/api.html" class="card">
-      <div class="icon">&#128268;</div>
-      <h3>API</h3>
-      <p>REST API v2, SOAP, Mobile API (JWT), обещанный платёж, управление абонентами. Примеры curl и JSON.</p>
-    </a>
-
-    <a href="pages/contacts.html" class="card">
-      <div class="icon">&#128222;</div>
-      <h3>Контакты</h3>
-      <p>Отдел продаж, техническая поддержка, партнёрство.</p>
-    </a>
-  </div>
-</main>
-
-<footer class="footer">
-  &copy; 2026 СмИТ — СмИТ Биллинг v1.5.0 (build 79)
-</footer>
-
-<script src="js/main.js"></script>
-</body>
-</html>
+    new_content = re.sub(
+        r'<aside class="sidebar">.*?</aside>',
+        sidebar,
+        content,
+        flags=re.DOTALL
+    )
+    if new_content != content:
+        with open(f, 'w', encoding='utf-8') as fh:
+            fh.write(new_content)
+        print(f'Updated: {f}')
+    else:
+        print(f'No change: {f}')
