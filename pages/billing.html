@@ -1507,8 +1507,19 @@ MSG_EMAIL_ENABLED=True</code></pre>
       <tr><td>Email/SMS</td><td><code>/admin/settings/messaging/</code></td><td>SMTP, SMSAero, sender name</td></tr>
       <tr><td>Firebase</td><td><code>/admin/settings/messaging/?tab=firebase</code></td><td>Firebase credentials path</td></tr>
       <tr><td>IPTV-пакеты</td><td><code>/admin/settings/iptv_mappings/</code></td><td>Маппинг услуг на ТВ-пакеты</td></tr>
+      <tr><td><strong>API Адреса</strong></td><td><code>/admin/settings/integrations/?tab=address_api</code></td><td>Публичный API автоподсказок и проверки покрытия</td></tr>
     </tbody>
   </table>
+
+  <h4 id="address-api">API проверки адреса (build 95+)</h4>
+  <p>Публичный API для сайта провайдера &mdash; автоподсказки адресов и проверка возможности подключения. Не требует авторизации, поддерживает CORS.</p>
+  <ul>
+    <li><code>GET /api/address/suggest/?q=Ленина</code> &mdash; возвращает до 15 совпадений из базы адресов</li>
+    <li><code>GET /api/address/check/?id=855</code> или <code>?q=текст</code> &mdash; проверка покрытия: <code>connected</code> / <code>coverage</code> / <code>unknown</code></li>
+  </ul>
+  <p>Настройки: вкладка <strong>API Адреса</strong> на странице интеграций. Включает: лимит результатов, разрешённые домены CORS, настройки AI-ассистента для автоматической проверки адресов.</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/screenshots/0408_address_api_settings.png" alt="Настройки API адресов (build 95)" style="max-width:100%;border-radius:8px;border:1px solid #dee2e6;margin:12px 0">
+  <p>JS-виджет для подключения на сайте: <code>/static/js/address_widget.js</code>. Подробная документация: <strong>Разработка &rarr; Документация &rarr; API адреса интеграция</strong>.</p>
 
   <h4>Миграция с .env</h4>
   <p>При обновлении с предыдущей версии выполните одноразовый перенос настроек из <code>.env</code> в базу данных:</p>
