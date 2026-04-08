@@ -120,7 +120,7 @@
           <li class="sub-item"><a href="billing.html#monthly-billing">10.8. Месячное списание</a></li>
           <li><a href="billing.html#dictionaries">11. Справочники</a></li>
           <li class="sub-item"><a href="billing.html#ip-pools">11.5. Пулы IP-адресов</a></li>
-          <li class="sub-item"><a href="billing.html#houses">11.7. Дома</a></li>
+          <li class="sub-item"><a href="billing.html#houses">11.7. Адреса</a></li>
           <li><a href="billing.html#additional">12. Дополнительные настройки</a></li>
           <li class="sub-item"><a href="billing.html#sorm-access">12.4. СОРМ</a></li>
           <li class="sub-item"><a href="billing.html#print-templates">12.5. Шаблоны печати</a></li>
@@ -2786,7 +2786,7 @@ FROM billing_abonents a WHERE a.is_deleted = false;</code></pre>
     <li><a href="#vlan-pools">9.4. Пулы VLAN</a></li>
     <li><a href="#ip-pools">9.5. Пулы IP-адресов</a></li>
     <li><a href="#requisites">9.6. Реквизиты</a></li>
-    <li><a href="#houses">9.7. Дома</a></li>
+    <li><a href="#houses">9.7. Адреса</a></li>
     <li><a href="#greetings">9.8. Поздравления</a></li>
     <li><a href="#acl">9.9. ACL группы и списки</a></li>
     <li><a href="#periods">9.10. Периоды</a></li>
@@ -2825,9 +2825,9 @@ FROM billing_abonents a WHERE a.is_deleted = false;</code></pre>
   <h3 id="requisites">9.6. Реквизиты</h3>
   <p>Банковские и юридические реквизиты оператора для формирования договоров, счетов и актов. ИНН, КПП, расчётный счёт, БИК, юридический адрес.</p>
 
-  <h3 id="houses">9.7. Дома</h3>
-  <p>Справочник домов и адресов. Иерархическая структура: корень &rarr; город &rarr; улица &rarr; дом.</p>
-  <p>Представления: дерево и список. Поддерживает импорт из ФИАС, поиск с подсказками. Каждый дом имеет вкладки: информация, дополнительно, оборудование, учётные записи. Возможна привязка пула IP к дому.</p>
+  <h3 id="houses">9.7. Адреса</h3>
+  <p>Справочник адресов подключения. Иерархическая структура: корень &rarr; город &rarr; улица &rarr; дом. Путь: <code>/admin/dictionary/Homes/</code>.</p>
+  <p>Кастомный список с фильтрами: поиск по адресу/улице/дому, выбор города (dropdown с количеством), выбор улицы (зависит от города), фильтр по дате подключения. Колонки: название, полный адрес, город, улица, дом, индекс, дата подключения. Адаптивность: на мобильных скрываются колонки, компактный адрес под названием.</p>
 
   <h3 id="greetings">9.8. Поздравления</h3>
   <p>Шаблоны поздравительных сообщений для автоматической рассылки (день рождения и др.).</p>
