@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Основные настройки биллинга — СмИТ Биллинг v1.5.0 (build 79)</title>
+  <title>Основные настройки биллинга — СмИТ Биллинг v1.5.0 (build 100)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.5 — Документация">
-  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.5.0 (build 79)">
+  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.5.0 (build 100)">
   <meta property="og:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/billing.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.5.0 (build 79)">
+  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.5.0 (build 100)">
   <meta name="twitter:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
@@ -120,7 +120,7 @@
           <li class="sub-item"><a href="billing.html#monthly-billing">10.8. Месячное списание</a></li>
           <li><a href="billing.html#dictionaries">11. Справочники</a></li>
           <li class="sub-item"><a href="billing.html#ip-pools">11.5. Пулы IP-адресов</a></li>
-          <li class="sub-item"><a href="billing.html#houses">11.7. Адреса</a></li>
+          <li class="sub-item"><a href="billing.html#houses">11.7. Дома</a></li>
           <li><a href="billing.html#additional">12. Дополнительные настройки</a></li>
           <li class="sub-item"><a href="billing.html#sorm-access">12.4. СОРМ</a></li>
           <li class="sub-item"><a href="billing.html#print-templates">12.5. Шаблоны печати</a></li>
@@ -168,7 +168,14 @@
           <li><a href="api.html#auth">2. Аутентификация</a></li>
           <li><a href="api.html#rest-v2">3. REST API v2</a></li>
           <li><a href="api.html#promise-pay">4. Обещанный платёж</a></li>
-          <li><a href="api.html#soap">5. SOAP API</a></li>
+          <li><a href="api.html#payments-api">5. Платёжные API (ЮKassa, W1)</a></li>
+          <li class="sub-item"><a href="api.html#payments-endpoints">5.0. Список endpoint</a></li>
+          <li class="sub-item"><a href="api.html#payments-flow">5.1. Схема платежа</a></li>
+          <li class="sub-item"><a href="api.html#yookassa-rest">5.2. ЮKassa REST v3</a></li>
+          <li class="sub-item"><a href="api.html#yookassa-http">5.3. ЮKassa HTTP</a></li>
+          <li class="sub-item"><a href="api.html#w1-api">5.4. Wallet One</a></li>
+          <li class="sub-item"><a href="api.html#payments-settings">5.5. Настройки</a></li>
+          <li><a href="api.html#soap">6. SOAP API</a></li>
           <li><a href="api.html#mobile-api">7. Mobile API</a></li>
         </ul>
       </li>
@@ -2618,18 +2625,55 @@ chmod +x restore.sh
   <p>Поддерживает поиск и фильтрацию. Экспорт в CSV.</p>
 
   <h3 id="report-constructor">10.3. Конструктор отчётов</h3>
-  <p>Выполнение прямых SQL-запросов к базе данных PostgreSQL. Фильтры: дата, выбор из списка, свободный текст.</p>
-  <img src="../img/section_custom_reports.png" alt="Конструктор отчётов" class="screenshot">
+  <p>Раздел <code>/admin/reports/AdminCustomReports/</code> — 63 SQL-отчёта для оперативной работы оператора. Каждый отчёт имеет краткое описание, тип (категорию) и может быть добавлен в избранное.</p>
+  <img src="../img/v100/reports_constructor_list.png" alt="Конструктор отчётов — список" class="screenshot">
 
-  <p><strong>Запуск из консоли:</strong></p>
-  <pre><code>docker compose exec web python manage.py make_reports</code></pre>
-  <p><strong>Прямой SQL-доступ к PostgreSQL:</strong></p>
-  <pre><code>docker compose exec db psql -U carbon carbon
--- Пример: список активных абонентов
-SELECT a.id, a.fio, a.contract_number, a.balance
-FROM billing_abonents a WHERE a.is_deleted = false;</code></pre>
-  <p>Примеры отчётов: список абонентов, должники, распределение IP, трафик по тарифам, выручка.</p>
-  <p>Для отладки используется режим с отображением SQL и времени выполнения. PostgreSQL предоставляет <code>EXPLAIN ANALYZE</code> для анализа производительности запросов.</p>
+  <h4>Описания отчётов</h4>
+  <p>Колонка «SQL-запрос» заменена на «Описание» — краткий текст о содержимом отчёта. SQL по-прежнему доступен в модальном окне редактирования. Описания написаны для всех 63 отчётов.</p>
+
+  <h4>Избранное</h4>
+  <p>Каждый сотрудник может добавить отчёты в избранное (★). Кнопка-фильтр над таблицей показывает только избранные. Избранное привязано к текущему пользователю — каждый видит своё.</p>
+  <img src="../img/v100/reports_constructor_fav.png" alt="Избранные отчёты" class="screenshot">
+
+  <h4>Категории отчётов</h4>
+  <p>Все 63 отчёта распределены по 7 типам:</p>
+  <ul>
+    <li><strong>Бухгалтерия</strong> (17) — платежи, выручка, баланс, должники, проводки</li>
+    <li><strong>ЦОК</strong> (14) — абоненты, договора, услуги, контакты</li>
+    <li><strong>Техсервис</strong> (12) — IP-пулы, MAC, RADIUS-аудит, NAS, трафик</li>
+    <li><strong>Телефония</strong> (11) — VoIP звонки, Мегафон, взаиморасчёты</li>
+    <li><strong>Руководство</strong> (4) — активные договора, покрытие, аналитика</li>
+    <li><strong>ЦУС</strong> (4) — СОРМ, PPPoE сессии</li>
+    <li><strong>Техподдержка</strong> (1) — поиск по номеру</li>
+  </ul>
+
+  <h4>Модальное окно редактирования</h4>
+  <p>Создание и редактирование отчётов — в модальном окне (modal-xl). Поля: название, описание, тип, SQL-запрос (со счётчиком строк), шаблон, разрешение ЛК.</p>
+  <img src="../img/v100/reports_constructor_modal.png" alt="Модальное окно редактирования" class="screenshot">
+
+  <h4>Параметры с календарём</h4>
+  <p>Поля ввода дат (Начало/Конец периода) автоматически получают нативный календарь браузера. Распознаются по label-у и имени поля.</p>
+  <img src="../img/v100/reports_constructor_datepicker.png" alt="Календарь в параметрах" class="screenshot">
+
+  <h4>Новые отчёты (build 101)</h4>
+  <p>10 новых SQL-отчётов:</p>
+  <table class="table table-sm">
+    <thead><tr><th>Отчёт</th><th>Тип</th><th>Описание</th></tr></thead>
+    <tbody>
+      <tr><td>Выручка по тарифам за период</td><td>Бухгалтерия</td><td>Сумма начислений и кол-во абонентов по тарифу</td></tr>
+      <tr><td>Баланс абонентов — сводка</td><td>Бухгалтерия</td><td>Положительный / нулевой / отрицательный баланс</td></tr>
+      <tr><td>Топ-50 должников</td><td>Бухгалтерия</td><td>Наибольшая задолженность с адресом и контактами</td></tr>
+      <tr><td>Загрузка IP-пулов</td><td>Техсервис</td><td>Занято / свободно / % по каждому пулу</td></tr>
+      <tr><td>Топ-50 по трафику</td><td>Техсервис</td><td>Наибольший трафик текущей RADIUS-сессии</td></tr>
+      <tr><td>Загрузка NAS</td><td>Техсервис</td><td>Online-сессий и трафик по каждому NAS</td></tr>
+      <tr><td>Новые подключения за период</td><td>Руководство</td><td>Договоры, созданные за период</td></tr>
+      <tr><td>Абоненты без услуг</td><td>ЦОК</td><td>Договор есть, услуги не подключены</td></tr>
+      <tr><td>Абоненты без учётной записи</td><td>ЦОК</td><td>Договор есть, Users нет</td></tr>
+      <tr><td>Покрытие по улицам</td><td>Руководство</td><td>Кол-во абонентов по каждой улице/дому</td></tr>
+    </tbody>
+  </table>
+  <img src="../img/v100/reports_constructor_balance.png" alt="Баланс по тарифам" class="screenshot">
+  <img src="../img/v100/reports_constructor_ippools.png" alt="Загрузка IP-пулов" class="screenshot">
 
   <h3 id="director-report">10.4. Отчёт для директора</h3>
   <p>Сводный отчёт с ключевыми KPI:</p>
@@ -2725,33 +2769,71 @@ FROM billing_abonents a WHERE a.is_deleted = false;</code></pre>
     <li><strong>Фильтры по периоду</strong> — быстрые кнопки: месяц, квартал, год, произвольный диапазон дат</li>
     <li><strong>Адаптивность</strong> — на мобильных устройствах графики выстраиваются в одну колонку</li>
   </ul>
-  <img src="../img/new_reports_dashboard.png" alt="Панель директора — графики" class="screenshot">
+  <img src="../img/v100/reports_dashboard.png" alt="Панель директора — графики" class="screenshot">
 
   <h4>Журнал платежей (PayLog)</h4>
   <p>Страница <code>/admin/reports/PayLog/</code> — таблица платежей с улучшенным интерфейсом:</p>
   <ul>
-    <li><strong>Быстрые кнопки периода</strong> — «Сегодня», «Вчера», «Неделя», «Месяц» для мгновенной фильтрации</li>
-    <li><strong>Улучшенный jqGrid</strong> — оптимизированная загрузка, форматирование сумм и дат</li>
+    <li><strong>Быстрые кнопки периода</strong> — «Сегодня», «Вчера», «Неделя», «Месяц», «Квартал», «Год» для мгновенной фильтрации</li>
+    <li><strong>Выбор количества строк</strong> — 20 / 50 / 100 / 200 строк на страницу</li>
+    <li><strong>Тёмная тема</strong> — полная совместимость jqGrid с тёмным режимом</li>
   </ul>
-  <img src="../img/new_paylog.png" alt="Журнал платежей" class="screenshot">
+  <img src="../img/v100/reports_paylog.png" alt="Журнал платежей" class="screenshot">
 
-  <h4>Аудит (Audit)</h4>
+  <h4>Аудит (AuditOperations)</h4>
   <p>Страница <code>/admin/reports/AuditOperations/</code> — журнал действий пользователей:</p>
   <ul>
-    <li><strong>Bootstrap 5 фильтр</strong> — фильтрация по пользователю, типу действия, дате</li>
-    <li><strong>Цветные бейджи</strong> — типы операций (создание, изменение, удаление) выделены цветом</li>
-    <li><strong>Адаптивная таблица</strong> — корректное отображение на мобильных устройствах</li>
+    <li><strong>Bootstrap 5 фильтр-панель</strong> — фильтрация по пользователю, типу действия, дате</li>
+    <li><strong>Цветные бейджи</strong> — типы операций (создание, изменение, удаление, права) выделены разными цветами</li>
+    <li><strong>Прилипающий заголовок</strong> — шапка таблицы остаётся видна при прокрутке</li>
+    <li><strong>Карточки на мобильных</strong> — на узких экранах каждая запись отображается как карточка</li>
   </ul>
-  <img src="../img/new_audit.png" alt="Аудит операций" class="screenshot">
+  <img src="../img/v100/reports_audit.png" alt="Аудит операций" class="screenshot">
 
-  <h4>Конструктор отчётов (Custom Reports)</h4>
-  <p>Страница <code>/admin/reports/AdminCustomReports/</code> — запуск SQL-отчётов:</p>
+  <h4>Конструктор отчётов (Custom Reports) — build 101</h4>
+  <p>Страница <code>/admin/reports/AdminCustomReports/</code> — полная переработка:</p>
   <ul>
-    <li><strong>Кнопка «Выполнить»</strong> — запуск отчёта прямо из списка</li>
-    <li><strong>Автоматическая коррекция SQL</strong> — метод <code>_fix_sql_column_case()</code> исправляет регистр колонок (Firebird <code>"ID"</code> vs PostgreSQL <code>id</code>)</li>
-    <li><strong>Команда исправления</strong> — <code>manage.py fix_reports_sql</code> исправляет SQL-запросы всех отчётов для совместимости с PostgreSQL</li>
-    <li><strong>Результат</strong> — все 16 ранее сломанных отчётов исправлены и работают корректно (из 29 параметризованных проверены все)</li>
+    <li><strong>Описания</strong> — колонка «SQL» заменена на «Описание», написаны тексты для всех 63 отчётов</li>
+    <li><strong>Избранное</strong> — звёздочка ★ на каждом отчёте, фильтр показывает только избранные (привязка к пользователю)</li>
+    <li><strong>10 новых отчётов</strong> — выручка по тарифам, баланс, должники, IP-пулы, NAS, трафик, покрытие по улицам</li>
+    <li><strong>Распределение по типам</strong> — 63 отчёта по 7 категориям (Бухгалтерия, ЦОК, Техсервис, Телефония, Руководство, ЦУС, Техподдержка)</li>
+    <li><strong>Календарь в параметрах</strong> — поля Начало/Конец периода получают нативный date picker</li>
+    <li><strong>Модальное окно</strong> — редактирование с полем «Описание», убраны лишние кнопки верхней панели</li>
   </ul>
+  <img src="../img/v100/reports_constructor_list.png" alt="Конструктор отчётов — обновлённый список" class="screenshot">
+
+  <h4>RADIUS-сессии (UsersRadiusauth) — build 101</h4>
+  <p>Новая страница <code>/admin/Abonents/UsersRadiusauth/</code> — кастомный список 5500+ RADIUS-сессий:</p>
+  <ul>
+    <li><strong>Поиск</strong> — по логину, IP, session ID</li>
+    <li><strong>Фильтр «online»</strong> — показать только активные сессии</li>
+    <li><strong>Трафик</strong> — человекочитаемый формат (bytes → KB/MB/GB)</li>
+    <li><strong>Модальное окно</strong> — детали сессии, редактирование logged/session_id, кнопка «Сбросить сессию»</li>
+    <li><strong>Адаптивность</strong> — сессия/даты/трафик скрываются на мобильных</li>
+    <li><strong>select_related</strong> через <code>hint_select_related</code> — без N+1 запросов</li>
+  </ul>
+  <img src="../img/v100/radiusauth_list.png" alt="RADIUS-сессии" class="screenshot">
+
+  <h4>Блок «Аккаунты / Скорость» на карточке абонента — build 101</h4>
+  <p>Блок учётных записей на вкладке «Информация» карточки абонента переоформлен:</p>
+  <ul>
+    <li><strong>Карточка</strong> — выделенный блок с голубой рамкой и иконкой сети</li>
+    <li><strong>Логин</strong> — ссылка на учётную запись</li>
+    <li><strong>IP</strong> — в <code>code</code>-блоке с фоновой подсветкой</li>
+    <li><strong>Скорость</strong> — бейдж «N Мбит/сек» (из Mikrotik-Rate-Limit тарифа)</li>
+    <li><strong>Online-индикатор</strong> — зелёный бейдж для сессий с <code>LOGGED=1</code></li>
+  </ul>
+  <img src="../img/v100/abonent_accounts_speed.png" alt="Аккаунты / Скорость" class="screenshot">
+
+  <h4>Вкладка «Финансовые операции» абонента (build 100)</h4>
+  <p>Вкладка «Операции» в карточке абонента получила фильтрацию по периоду:</p>
+  <ul>
+    <li><strong>Быстрые кнопки</strong> — «Сегодня», «Неделя», «Месяц», «3 мес», «Год», «Все»</li>
+    <li><strong>Сводка</strong> — суммы прихода и расхода за выбранный период</li>
+    <li><strong>Диапазон дат</strong> — произвольный выбор дат через поля ввода</li>
+    <li><strong>Производительность</strong> — агрегация рассчитывается отдельным запросом, не нагружает gunicorn</li>
+  </ul>
+  <img src="../img/v100/abonent_ops.png" alt="Финансовые операции абонента" class="screenshot">
 
   <!-- ===== 10.8. Месячное списание ===== -->
   <h3 id="monthly-billing">10.8. Месячное списание</h3>
@@ -2786,7 +2868,7 @@ FROM billing_abonents a WHERE a.is_deleted = false;</code></pre>
 
   <!-- ===== 9. Справочники ===== -->
   <h2 id="dictionaries">11. Справочники</h2>
-  <p>Справочники СмИТ Биллинг v1.5.0 (build 79) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
+  <p>Справочники СмИТ Биллинг v1.5.0 (build 100) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
   <div class="section-toc">
   <details open>
     <summary><strong>Содержание раздела</strong></summary>
@@ -2838,7 +2920,20 @@ FROM billing_abonents a WHERE a.is_deleted = false;</code></pre>
 
   <h3 id="houses">9.7. Адреса</h3>
   <p>Справочник адресов подключения. Иерархическая структура: корень &rarr; город &rarr; улица &rarr; дом. Путь: <code>/admin/dictionary/Homes/</code>.</p>
-  <p>Кастомный список с фильтрами: поиск по адресу/улице/дому, выбор города (dropdown с количеством), выбор улицы (зависит от города), фильтр по дате подключения. Колонки: название, полный адрес, город, улица, дом, индекс, дата подключения. Адаптивность: на мобильных скрываются колонки, компактный адрес под названием.</p>
+  <p>Начиная с build 100, список использует <strong>динамическую загрузку</strong> — все записи загружаются одним AJAX-запросом (<code>/admin/dictionary/homes_json/</code>), фильтрация происходит на стороне клиента. Это позволяет корректно работать с большими справочниками (4000+ записей) без погрешностей пагинации.</p>
+  <img src="../img/v100/homes_list.png" alt="Справочник адресов" class="screenshot">
+  <p>Фильтры и возможности:</p>
+  <ul>
+    <li><strong>Город</strong> — dropdown с количеством адресов в каждом городе</li>
+    <li><strong>Район</strong> — фильтр по административному району (появился в build 100)</li>
+    <li><strong>Улица</strong> — зависит от выбранного города</li>
+    <li><strong>Дата подключения</strong> — диапазон дат</li>
+    <li><strong>Текстовый поиск</strong> — по адресу, улице, дому</li>
+    <li><strong>Сортировка</strong> — клик по заголовку колонки (▲▼)</li>
+    <li><strong>Счётчик</strong> — показывает N/всего отфильтрованных записей</li>
+    <li><strong>CSV-экспорт</strong> — выгрузка с учётом текущих фильтров, включая колонку Район</li>
+  </ul>
+  <p>Колонки: название, полный адрес, город, <strong>район</strong>, улица, дом, индекс, дата подключения. На мобильных устройствах второстепенные колонки скрываются.</p>
 
   <h3 id="greetings">9.8. Поздравления</h3>
   <p>Шаблоны поздравительных сообщений для автоматической рассылки (день рождения и др.).</p>
@@ -2982,7 +3077,7 @@ ACL_BLOCKED_GROUPS = ACL_DISABLED</code></pre>
 
   <!-- ===== 13. Безопасность ===== -->
   <h2 id="security">13. Обзор безопасности</h2>
-  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.5.0 (build 79) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
+  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.5.0 (build 100) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
 
   <h3>Сетевая изоляция</h3>
   <p><strong>Docker-контейнеризация</strong> — каждый сервис (web, db, redis, celery, nginx, freeradius) работает в изолированном Docker-контейнере с собственной сетью (172.28.0.0/16). Входящие соединения проходят через nginx reverse proxy, что предотвращает прямой доступ к внутренним сервисам.</p>
@@ -3046,37 +3141,38 @@ ACL_BLOCKED_GROUPS = ACL_DISABLED</code></pre>
     <li><strong>1</strong> — мажорная версия (поколение биллинга)</li>
     <li><strong>0</strong> — минорная версия (функциональный релиз)</li>
     <li><strong>0</strong> — патч-версия</li>
-    <li><strong>build 79</strong> — номер сборки (инкрементируется при каждом деплое)</li>
+    <li><strong>build 100</strong> — номер сборки (инкрементируется при каждом деплое)</li>
   </ul>
   <p>Версия отображается в футере: <strong>СмИТ Биллинг 1.5</strong>. Файл версии: <code>billing/version.py</code>.</p>
 
   <div class="info-block">
-    <h4>Текущий релиз: v1.5.0 (build 79) — 30.03.2026</h4>
+    <h4>Текущий релиз: v1.5.0 (build 100) — 08.04.2026</h4>
     <ul>
-      <li>Конструктор отчётов — автокоррекция SQL для PostgreSQL, 29 отчётов работают</li>
-      <li>СОРМ — 13 отчётов в формате СОРМ-3, совместимом с Carbon 4</li>
-      <li>Поиск — по адресу, ФИО, договору, телефону, email в одной строке</li>
-      <li>MoneyField — суммы отображаются в рублях, а не в сыром формате БД</li>
-      <li>Резервное копирование — создание, скачивание, восстановление через UI</li>
-      <li>Прокси для Telegram — настройка в интеграциях</li>
-      <li>Развёртывание NAS — кнопки rtsh работают</li>
-      <li>Выбор тарифа — выпадающий список с поиском вместо popup</li>
-      <li>Шейпер — скорости из EBS перенесены в 142 услуги</li>
+      <li>Справочник адресов — динамическая загрузка, фильтр по Району, клиентская сортировка и CSV</li>
+      <li>Финансовые операции — фильтр по периоду, сводка прихода/расхода прямо во вкладке</li>
+      <li>Отчёт PayLog — кнопки периода (Сегодня/Неделя/Месяц/Квартал/Год), выбор строк 20/50/100/200</li>
+      <li>Аудит операций — BS5 фильтр-панель, цветные бейджи, прилипающий заголовок</li>
+      <li>11 кастомных списков — Switch, SwitchType, IpPull, UserAttributes, UsersUsluga, Users, AdminAccounts, Homes, AdminCustomReports, SORM, AuditOperations</li>
+      <li>API адреса — публичный эндпоинт подсказки и проверки покрытия</li>
+      <li>FreeScout CRM — вкладка HelpDesk в карточке абонента, синхронизация</li>
+      <li>ⓘ Иконки документации — добавлены во все недостающие разделы настроек</li>
     </ul>
   </div>
 
-  <h3>Скриншоты v1.5.0 (build 79)</h3>
+  <h3>Скриншоты v1.5.0 (build 100)</h3>
   <h4>Десктоп</h4>
   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(400px,1fr));gap:12px;margin-bottom:20px">
-    <div><img src="../img/v100/dashboard.png" alt="Дашборд" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Дашборд</div></div>
     <div><img src="../img/v100/abonents_folder.png" alt="Папка абонентов" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Папка абонентов с поиском</div></div>
-    <div><img src="../img/v100/search_address.png" alt="Поиск по адресу" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Глобальный поиск по адресу</div></div>
     <div><img src="../img/v100/abonent_card.png" alt="Карточка абонента" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Карточка абонента</div></div>
-    <div><img src="../img/v100/abonent_operations.png" alt="Операции" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Финансовые операции (MoneyField)</div></div>
-    <div><img src="../img/v100/reports_list.png" alt="Конструктор отчётов" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Конструктор отчётов</div></div>
-    <div><img src="../img/v100/sorm_reports.png" alt="Отчёты СОРМ" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">13 отчётов СОРМ-3</div></div>
-    <div><img src="../img/v100/backup.png" alt="Резервное копирование" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Система резервного копирования</div></div>
-    <div><img src="../img/v100/integrations_telegram.png" alt="Интеграции Telegram" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Telegram + прокси</div></div>
+    <div><img src="../img/v100/abonent_ops.png" alt="Операции абонента" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Финансовые операции с фильтром</div></div>
+    <div><img src="../img/v100/homes_list.png" alt="Справочник адресов" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Справочник адресов с Районом</div></div>
+    <div><img src="../img/v100/reports_paylog.png" alt="Журнал платежей" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Журнал платежей</div></div>
+    <div><img src="../img/v100/reports_audit.png" alt="Аудит" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Аудит операций</div></div>
+    <div><img src="../img/v100/reports_custom.png" alt="Конструктор отчётов" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Конструктор отчётов</div></div>
+    <div><img src="../img/v100/reports_dashboard.png" alt="Панель директора" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Панель директора</div></div>
+    <div><img src="../img/v100/interface_settings.png" alt="Настройки интерфейса" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Настройки интерфейса</div></div>
+    <div><img src="../img/v100/permission_settings.png" alt="Права доступа" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Права доступа</div></div>
+    <div><img src="../img/v100/integrations_aida.png" alt="AIDA интеграция" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">AI-интеграции</div></div>
     <div><img src="../img/v100/tarifs_list.png" alt="Тарифы" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Тарифы</div></div>
     <div><img src="../img/v100/payment_settings.png" alt="Платёжные системы" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Настройки платёжных систем</div></div>
     <div><img src="../img/v100/nas_list.png" alt="NAS" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Оборудование NAS</div></div>
@@ -3112,9 +3208,108 @@ docker compose up -d</code></pre>
 
   <img src="../img/p67109109_version-branch.png" alt="Схема версионности и веток" class="screenshot">
 
+  <!-- ===== 12А. Модальные окна и карточки редактирования ===== -->
+  <h2 id="modal-dialogs">12А. Модальные окна и карточки редактирования</h2>
+  <p>В СмИТ Биллинг v1.5 модальные окна используются для быстрого создания и редактирования записей без перехода между страницами. Каждый модал имеет единый стиль: шапка с иконкой, табы (если требуется), валидация на клиенте и сервере, сохранение через AJAX.</p>
+
+  <div class="section-toc">
+  <details open>
+    <summary><strong>Содержание раздела</strong></summary>
+    <ul>
+      <li><a href="#modal-finops">12А.1. Финансовые операции — список и модал создания</a></li>
+      <li><a href="#modal-users">12А.2. Учётная запись — модал с вкладками</a></li>
+      <li><a href="#modal-service-edit">12А.3. Редактирование услуги</a></li>
+      <li><a href="#modal-service-add">12А.4. Добавление услуги</a></li>
+    </ul>
+  </details>
+  </div>
+
+  <!-- 12А.1. Финансовые операции -->
+  <h3 id="modal-finops">12А.1. Финансовые операции — список и модал</h3>
+  <p>Раздел <strong>Абоненты → Финансовые операции</strong> (<code>/admin/Abonents/FinanceOperations/</code>) переработан в v1.5 build 100: серверная пагинация под ~400 тыс. записей, фильтры, модальное добавление.</p>
+  <ul>
+    <li><strong>Фильтры</strong> — поиск по абоненту / описанию / номеру, тип операции (dropdown), диапазон дат «с … по». По умолчанию — текущий месяц.</li>
+    <li><strong>Цветовые бейджи</strong> — зелёный для прихода, красный для расхода, серый для нулевой суммы. Строки сторнированных операций — зачёркнуты.</li>
+    <li><strong>Модальное добавление</strong> — абонент выбирается через Select2 (AJAX-поиск), тип операции — статический dropdown, дата, сумма, описание, номер. Ссылка «Открыть полную форму» ведёт на классическую форму для сложных случаев (услуга, связанная операция).</li>
+    <li><strong>Удаление</strong> — прямо из модалки с подтверждением. Баланс абонента откатывается через существующий механизм <code>DeleteObjectFormMixin</code>.</li>
+    <li><strong>Адаптивность</strong> — колонки «Тип / Описание / Номер» скрываются на мобильных (&lt; 768 px).</li>
+  </ul>
+  <img src="../img/v100/finops_list.png" alt="Финансовые операции — список с фильтрами" class="screenshot">
+
+  <!-- 12А.2. Учётная запись -->
+  <h3 id="modal-users">12А.2. Учётная запись — модал с вкладками</h3>
+  <p>На вкладке «Аккаунты» карточки абонента кнопка-карандаш открывает модал учётной записи. Модал разбит на 4 вкладки, чтобы уместить сетевые параметры без прокрутки.</p>
+  <h4>Вкладки модала</h4>
+  <ul>
+    <li><strong>Основные</strong> — Логин, Тип авторизации, Пароль (+ кнопка генерации 8-символьной случайной строки), MAC (+ кнопка «Получить» через NAS API), признак «Активна», комментарий.</li>
+    <li><strong>Сеть</strong> — Пул IP адресов, IPv4 (+ кнопка случайного свободного IP из пула), NAS, SWITCH (Select2 AJAX), PORT, VLAN.</li>
+    <li><strong>Адрес</strong> — Дом (Select2 AJAX по <code>/rest_api/v2/Homes/</code>), номер квартиры.</li>
+    <li><strong>RADIUS</strong> — read-only таблица последних 20 записей из <code>UsersRadiusauth</code>: NAS, IP, session, входящий/исходящий трафик (форматированный: Б/КБ/МБ/ГБ), время обновления, индикатор online.</li>
+  </ul>
+  <img src="../img/v100/users_modal_main.png" alt="Модал учётной записи — вкладка Основные" class="screenshot">
+  <img src="../img/v100/users_modal_radius.png" alt="Модал учётной записи — вкладка RADIUS" class="screenshot">
+
+  <h4>AJAX-эндпоинты</h4>
+  <ul>
+    <li><code>GET /admin/users_api/{id}/</code> — данные учётной записи (JSON)</li>
+    <li><code>POST /admin/users_api/{id}/</code> — сохранение (поля: login, psw, ip, mac, pull_id, auth_type_id, nas_id, switch_id, switch_p, router_vlan, home_id, a_home_number, enabled, comment)</li>
+    <li><code>POST /admin/users_api/{id}/</code> с <code>_delete=1</code> — удаление</li>
+    <li><code>POST /admin/users_api/</code> — создание (с <code>abonent_id</code>)</li>
+    <li><code>GET /admin/users_radius/{id}/</code> — последние RADIUS-сессии</li>
+  </ul>
+
+  <!-- 12А.3. Редактирование услуги -->
+  <h3 id="modal-service-edit">12А.3. Редактирование услуги</h3>
+  <p>На вкладке «Услуги» (или «Бонусы») карточки абонента кнопка-карандаш открывает модал редактирования <code>UsersUsluga</code>. В v1.5 build 101+ модал расширен: все поля услуги редактируемы, включая индивидуальную цену.</p>
+
+  <h4>Поля</h4>
+  <ul>
+    <li><strong>Услуга</strong> — Select2 с AJAX-поиском по <code>/rest_api/v2/Usluga/?name__icontains=...</code>. Текущая услуга предвыбрана. Можно изменить назначение услуги без удаления записи (валидация на backend: новая услуга должна существовать в справочнике).</li>
+    <li><strong>Индивидуальная сумма (₽)</strong> — поле <code>UsersUsluga.summ</code> (хранится как целое × 10<sup>10</sup>). Плейсхолдер показывает цену из шаблона услуги (<code>Usluga.summa</code> или <code>Usluga.price</code>). Подсказка под полем: «Эффективная: X ₽ / Источник: индивидуальная &rarr; шаблон (summa) &rarr; шаблон (price) &rarr; не задана». Пустое поле = сброс в <code>NULL</code> (возврат к каскаду шаблона).</li>
+    <li><strong>Скидка (%)</strong> — поле <code>UsersUsluga.discount</code>.</li>
+    <li><strong>Кол-во</strong> — поле <code>UsersUsluga.countt</code> (число списаний).</li>
+    <li><strong>Дата начала</strong> (<code>enable_date</code>), <strong>След. списание</strong> (<code>sched_date</code>, используется <code>billing_worker</code>), <strong>Дата окончания</strong> (<code>end_time</code>).</li>
+    <li><strong>Примечание</strong>, <strong>Услуга включена</strong>.</li>
+  </ul>
+
+  <h4>Каскад цен (см. также <a href="#monthly-billing">10.8</a>)</h4>
+  <p>Модал визуализирует применяемый <code>billing_worker</code> каскад: <code>UsersUsluga.summ</code> &rarr; <code>Usluga.summa</code> &rarr; <code>Usluga.price</code>. Источник итоговой суммы отображается отдельной строкой. Это особенно важно для бонусных услуг, где шаблон обычно имеет <code>summa=0</code>, а реальная сумма задаётся индивидуально.</p>
+
+  <img src="../img/v100/service_edit_modal.png" alt="Модал редактирования услуги" class="screenshot">
+
+  <h4>AJAX-эндпоинт</h4>
+  <ul>
+    <li><code>GET /admin/Abonents/{abonent_id}/uslugi_edit/{uu_id}/</code> — данные услуги</li>
+    <li><code>POST /admin/Abonents/{abonent_id}/uslugi_edit/{uu_id}/</code> — сохранение (поля: usluga_id, enabled, comment, end_time, enable_date_edit, sched_date, summ_rub, discount, count_month)</li>
+  </ul>
+
+  <!-- 12А.4. Добавление услуги -->
+  <h3 id="modal-service-add">12А.4. Добавление услуги</h3>
+  <p>Модал добавления услуги вызывается кнопкой «+ Добавить» на вкладке «Услуги». Поддерживает как обычные услуги, так и обещанные платежи (с дополнительной логикой блокировки баланса).</p>
+
+  <h4>Поля</h4>
+  <ul>
+    <li><strong>Категория</strong> — группировка услуг по <code>Usluga.system_type</code> (Стандартный, Трафик, Обещанный платёж, …). Отображается счётчик доступных услуг в каждой категории.</li>
+    <li><strong>Услуга</strong> — <code>&lt;select size=7&gt;</code> с текстовым поиском по названию и ценой в скобках (для услуг с положительной ценой). Услуги с отрицательной <code>summa</code> (бонусы) из списка исключены — см. раздел «Бонусы».</li>
+    <li><strong>Индивидуальная сумма, Скидка, Кол-во месяцев</strong> — аналогично модалу редактирования, опциональны. Если оставить пустыми, создаётся <code>UsersUsluga</code> с <code>summ=NULL</code> и ценой из шаблона.</li>
+    <li><strong>Дата начала / След. списание / Дата окончания</strong> — опциональны. Если не указаны, <code>create_date = next_date = now()</code>.</li>
+    <li><strong>Активна</strong>, <strong>Примечание</strong>.</li>
+  </ul>
+
+  <p><strong>Обещанный платёж (system_type=11):</strong> при выборе активируются дополнительные проверки — баланс &lt; 0 и долг не превышает лимит обещанного платежа (= месячная стоимость тарифа). При успешном создании: на баланс зачисляется сумма лимита, устанавливаются <code>abonent.promise_pay</code> / <code>promise_date_end</code>, снимается блокировка за отрицательный баланс, отправляется уведомление абоненту.</p>
+
+  <img src="../img/v100/service_add_modal.png" alt="Модал добавления услуги" class="screenshot">
+
+  <h4>AJAX-эндпоинты</h4>
+  <ul>
+    <li><code>GET /admin/Abonents/{abonent_id}/uslugi_ajax/</code> — список категорий (<code>system_type</code>) с количеством услуг</li>
+    <li><code>GET /admin/Abonents/{abonent_id}/uslugi_ajax/?cat_id=N</code> — услуги в категории</li>
+    <li><code>POST /admin/Abonents/{abonent_id}/uslugi_ajax/</code> — создание услуги</li>
+  </ul>
+
   <!-- ===== 13. Стороннее ПО ===== -->
   <h2 id="third-party">13. Стороннее ПО</h2>
-  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.5.0 (build 79).</p>
+  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.5.0 (build 100).</p>
 
   <!-- ===== 14. Смена языка ===== -->
   <h2 id="language">14. Смена языка</h2>
@@ -3122,7 +3317,7 @@ docker compose up -d</code></pre>
 
   <!-- ===== 15. Технологический стек ===== -->
   <h2 id="tech-stack">15. Технологический стек</h2>
-  <p>СмИТ Биллинг v1.5.0 (build 79) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
+  <p>СмИТ Биллинг v1.5.0 (build 100) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
 
   <h3>Почему PostgreSQL</h3>
   <p>PostgreSQL 16 выбран в качестве основной СУБД по ряду причин:</p>
@@ -3204,7 +3399,7 @@ docker compose ps
 </main>
 
 <footer class="footer">
-  &copy; 2026 СмИТ — Биллинговая система СмИТ Биллинг v1.5.0 (build 79)
+  &copy; 2026 СмИТ — Биллинговая система СмИТ Биллинг v1.5.0 (build 100)
 </footer>
 
 <script src="../js/main.js"></script>

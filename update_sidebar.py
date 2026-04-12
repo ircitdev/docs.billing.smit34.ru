@@ -130,7 +130,14 @@ NEW_SIDEBAR = '''<aside class="sidebar">
           <li><a href="pages/api.html#auth">2. Аутентификация</a></li>
           <li><a href="pages/api.html#rest-v2">3. REST API v2</a></li>
           <li><a href="pages/api.html#promise-pay">4. Обещанный платёж</a></li>
-          <li><a href="pages/api.html#soap">5. SOAP API</a></li>
+          <li><a href="pages/api.html#payments-api">5. Платёжные API (ЮKassa, W1)</a></li>
+          <li class="sub-item"><a href="pages/api.html#payments-endpoints">5.0. Список endpoint</a></li>
+          <li class="sub-item"><a href="pages/api.html#payments-flow">5.1. Схема платежа</a></li>
+          <li class="sub-item"><a href="pages/api.html#yookassa-rest">5.2. ЮKassa REST v3</a></li>
+          <li class="sub-item"><a href="pages/api.html#yookassa-http">5.3. ЮKassa HTTP</a></li>
+          <li class="sub-item"><a href="pages/api.html#w1-api">5.4. Wallet One</a></li>
+          <li class="sub-item"><a href="pages/api.html#payments-settings">5.5. Настройки</a></li>
+          <li><a href="pages/api.html#soap">6. SOAP API</a></li>
           <li><a href="pages/api.html#mobile-api">7. Mobile API</a></li>
         </ul>
       </li>

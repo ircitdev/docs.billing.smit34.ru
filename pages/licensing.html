@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Лицензирование и оплата — СмИТ Биллинг v1.5.0 (build 79)</title>
+  <title>Лицензирование — СмИТ Биллинг v1.5.0</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.5 — Документация">
-  <meta property="og:title" content="Лицензирование и оплата — СмИТ Биллинг v1.5.0 (build 79)">
-  <meta property="og:description" content="Порядок поставки ПО, решение проблем с оплатой, акты сверки, работа системы при неоплате.">
+  <meta property="og:title" content="Лицензирование — СмИТ Биллинг v1.5.0">
+  <meta property="og:description" content="Сервер лицензий, выдача и активация ключей, управление лицензиями через Django admin, API проверки.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/licensing.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta property="og:image:width" content="1200">
@@ -168,7 +168,14 @@
           <li><a href="api.html#auth">2. Аутентификация</a></li>
           <li><a href="api.html#rest-v2">3. REST API v2</a></li>
           <li><a href="api.html#promise-pay">4. Обещанный платёж</a></li>
-          <li><a href="api.html#soap">5. SOAP API</a></li>
+          <li><a href="api.html#payments-api">5. Платёжные API (ЮKassa, W1)</a></li>
+          <li class="sub-item"><a href="api.html#payments-endpoints">5.0. Список endpoint</a></li>
+          <li class="sub-item"><a href="api.html#payments-flow">5.1. Схема платежа</a></li>
+          <li class="sub-item"><a href="api.html#yookassa-rest">5.2. ЮKassa REST v3</a></li>
+          <li class="sub-item"><a href="api.html#yookassa-http">5.3. ЮKassa HTTP</a></li>
+          <li class="sub-item"><a href="api.html#w1-api">5.4. Wallet One</a></li>
+          <li class="sub-item"><a href="api.html#payments-settings">5.5. Настройки</a></li>
+          <li><a href="api.html#soap">6. SOAP API</a></li>
           <li><a href="api.html#mobile-api">7. Mobile API</a></li>
         </ul>
       </li>
@@ -198,101 +205,142 @@
     <a href="../index.html">Документация</a> <span class="sep">/</span> Лицензирование и оплата
   </div>
 
-  <h1>Вопросы лицензирования и оплаты</h1>
+  <h1>Лицензирование Smit Billing</h1>
 
-  <p>Информация о лицензировании, порядке оплаты и решении связанных проблем в системе СмИТ Биллинг v1.5.0 (build 79). Лицензия определяет максимальное количество абонентов и набор доступных модулей.</p>
-
-  <div class="info-box">
-    Лицензия СмИТ Биллинг v1.5.0 (build 79) привязана к аппаратному идентификатору сервера. При замене оборудования требуется повторная активация. Подробности в разделе <a href="server.html#reactivation">Повторная активация</a>.
-  </div>
-
-  <h2 id="delivery">Порядок поставки и учёта программного обеспечения</h2>
-
-  <p>Процедура приобретения и получения СмИТ Биллинг v1.5.0 (build 79):</p>
-
-  <ol>
-    <li><strong>Заявка</strong> — отправьте запрос на приобретение на адрес <a href="mailto:sales@smit34.ru">sales@smit34.ru</a> с указанием планируемого количества абонентов и необходимых модулей.</li>
-    <li><strong>Коммерческое предложение</strong> — менеджер подготовит КП с указанием стоимости лицензии, ежегодной платы за поддержку и обновления.</li>
-    <li><strong>Договор и оплата</strong> — после согласования условий заключается договор поставки ПО. Оплата по безналичному расчёту (для юридических лиц).</li>
-    <li><strong>Поставка</strong> — после оплаты предоставляется: Docker-образы системы, лицензионный ключ, документация, доступ к порталу обновлений.</li>
-    <li><strong>Активация</strong> — при первом запуске система генерирует аппаратный идентификатор, который привязывается к лицензионному ключу.</li>
-    <li><strong>Учёт</strong> — лицензия регистрируется в реестре ПО. Поставляется акт приёма-передачи неисключительных прав на программное обеспечение.</li>
-  </ol>
-
-  <p>Комплект поставки включает:</p>
-  <ul>
-    <li>Лицензионный ключ (электронный).</li>
-    <li>Установочный образ системы (ISO).</li>
-    <li>Документация (электронная).</li>
-    <li>Акт приёма-передачи прав.</li>
-    <li>Счёт-фактура и акт выполненных работ.</li>
-  </ul>
-
-  <h2 id="payment-issues">Не проходит оплата</h2>
-
-  <p>Если возникли проблемы с проведением оплаты за лицензию или продление поддержки:</p>
-
-  <ul>
-    <li><strong>Ошибка в реквизитах</strong> — проверьте корректность банковских реквизитов в счёте. Актуальные реквизиты можно запросить у менеджера.</li>
-    <li><strong>Платёж не зачислен</strong> — зачисление платежа может занимать до 3 рабочих дней. Если по истечении этого срока оплата не отражена, направьте платёжное поручение с отметкой банка на адрес <a href="mailto:sales@smit34.ru">sales@smit34.ru</a>.</li>
-    <li><strong>Нужна корректировка счёта</strong> — если необходимо изменить плательщика, сумму или другие реквизиты счёта, обратитесь к менеджеру для выставления нового счёта.</li>
-    <li><strong>Оплата из-за рубежа</strong> — для оплаты от иностранных компаний используется отдельная процедура. Обратитесь в отдел продаж для получения инвойса.</li>
-  </ul>
-
-  <h2 id="reconciliation">Неверный акт сверки</h2>
-
-  <p>Если вы обнаружили расхождения в акте сверки взаиморасчётов:</p>
-
-  <ol>
-    <li>Сверьте перечень оплаченных счетов и периоды обслуживания.</li>
-    <li>Проверьте, все ли платежи были корректно зачислены (в том числе с учётом задержки банковских переводов).</li>
-    <li>Направьте свой вариант акта сверки с пометками о расхождениях на адрес <a href="mailto:sales@smit34.ru">sales@smit34.ru</a>.</li>
-    <li>Бухгалтерия подготовит скорректированный акт в течение 5 рабочих дней.</li>
-  </ol>
+  <p>Система лицензирования СмИТ Биллинг v1.5.0 состоит из двух компонентов: центрального сервера лицензий и раздела «Лицензия» в каждой инсталляции биллинга. Лицензия привязана к домену инсталляции и проверяется онлайн.</p>
 
   <div class="info-box">
-    Акт сверки формируется по состоянию на запрошенную дату. Убедитесь, что запрашиваете сверку за корректный период.
+    <strong>Архитектура:</strong> биллинг пингует <code>https://license.billing.smit34.ru/api/verify/</code>, передавая ключ и домен. Сервер возвращает данные лицензиата. Ответ кешируется на 1 час — кратковременная недоступность сервера не влияет на работу системы.
   </div>
 
-  <h2 id="non-payment">Как работает СмИТ Биллинг v1.5.0 (build 79) при неоплате</h2>
-
-  <p>При отсутствии оплаты за продление лицензии система продолжает работать, но с ограничениями:</p>
+  <!-- ═══ 1. Сервер лицензий ═══ -->
+  <h2 id="license-server">1. Сервер лицензий</h2>
 
   <table>
-    <thead>
-      <tr><th>Период</th><th>Состояние системы</th></tr>
-    </thead>
+    <thead><tr><th>Параметр</th><th>Значение</th></tr></thead>
     <tbody>
-      <tr>
-        <td>0-30 дней после окончания лицензии</td>
-        <td>Система работает в полном объёме. Отображается предупреждение о необходимости продления в интерфейсе администратора.</td>
-      </tr>
-      <tr>
-        <td>30-60 дней</td>
-        <td>Система продолжает работать. Предупреждение отображается при каждом входе. Обновления недоступны. Техническая поддержка ограничена.</td>
-      </tr>
-      <tr>
-        <td>60-90 дней</td>
-        <td>Система работает в режиме «только чтение»: авторизация абонентов продолжается, но внесение изменений в конфигурацию заблокировано. Добавление новых абонентов невозможно.</td>
-      </tr>
-      <tr>
-        <td>Более 90 дней</td>
-        <td>Система полностью блокируется. Для восстановления работы необходимо погасить задолженность и выполнить повторную активацию.</td>
-      </tr>
+      <tr><td>URL</td><td><a href="https://license.billing.smit34.ru" target="_blank">https://license.billing.smit34.ru</a></td></tr>
+      <tr><td>Админка</td><td><a href="https://license.billing.smit34.ru/admin/" target="_blank">https://license.billing.smit34.ru/admin/</a></td></tr>
+      <tr><td>Логин</td><td>admin / admin</td></tr>
+      <tr><td>Хостинг</td><td>31.44.7.144 — Docker (PostgreSQL + gunicorn:8878), Nginx + SSL</td></tr>
+      <tr><td>API info</td><td><a href="https://license.billing.smit34.ru/api/info/" target="_blank">/api/info/</a></td></tr>
     </tbody>
   </table>
 
-  <p><strong>Что делать при блокировке:</strong></p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/docs/licenses/license_04_license_list.png"
+       alt="Список лицензий в Django admin" style="max-width:100%;border-radius:8px;border:1px solid #dee2e6;margin:12px 0">
+
+  <!-- ═══ 2. Выдача лицензии ═══ -->
+  <h2 id="issue-license">2. Выдача новой лицензии</h2>
+
   <ol>
-    <li>Обратитесь в отдел продаж: <a href="mailto:sales@smit34.ru">sales@smit34.ru</a> или по телефону +7 922-037-68-12.</li>
-    <li>Оплатите задолженность за прошедший период и текущий год обслуживания.</li>
-    <li>После подтверждения оплаты вам будет выслан новый лицензионный ключ.</li>
-    <li>Активируйте ключ через интерфейс управления или обратитесь в техподдержку для удалённой активации.</li>
+    <li>Открыть <a href="https://license.billing.smit34.ru/admin/licenses/installation/add/" target="_blank">Добавить лицензию</a></li>
+    <li>Заполнить поля:</li>
   </ol>
 
+  <table>
+    <thead><tr><th>Поле</th><th>Описание</th><th>Пример</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Домен</strong></td><td>FQDN инсталляции (без https://)</td><td><code>client.billing.smit34.ru</code></td></tr>
+      <tr><td><strong>Организация</strong></td><td>Полное юридическое наименование</td><td>ООО СМИТ</td></tr>
+      <tr><td><strong>ИНН</strong></td><td>10 или 12 цифр</td><td>3461009378</td></tr>
+      <tr><td><strong>КПП</strong></td><td>9 цифр</td><td>346101001</td></tr>
+      <tr><td><strong>Юридический адрес</strong></td><td>Полный почтовый адрес</td><td>400080, г. Волгоград, ул. 40 лет ВЛКСМ, д. 80, оф.1</td></tr>
+      <tr><td><strong>Контактное лицо</strong></td><td>Должность и ФИО</td><td>Генеральный директор П.Е. Письменный</td></tr>
+      <tr><td><strong>Действует до</strong></td><td>Дата окончания или пусто</td><td>пусто = бессрочно</td></tr>
+      <tr><td><strong>Макс. абонентов</strong></td><td>Лимит или 0</td><td>0 = без ограничений</td></tr>
+    </tbody>
+  </table>
+
+  <p>После сохранения ключ генерируется автоматически в формате <code>SMIT-XXXXXXXX-XXXXXXXX-XXXXXXXX</code> и отображается в карточке с кнопкой «Копировать».</p>
+
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/docs/licenses/license_05_license_detail.png"
+       alt="Карточка лицензии — лицензионный ключ" style="max-width:100%;border-radius:8px;border:1px solid #dee2e6;margin:12px 0">
+
+  <!-- ═══ 3. Активация ═══ -->
+  <h2 id="activate">3. Активация лицензии в биллинге</h2>
+
+  <p>Клиент открывает <strong>Настройки → Лицензия</strong> (<code>/admin/settings/license/</code>):</p>
+
+  <ol>
+    <li>Ввести полученный ключ в поле <strong>«Лицензионный ключ»</strong> (кнопка 👁 показывает введённое значение)</li>
+    <li>URL сервера лицензий уже заполнен: <code>https://license.billing.smit34.ru</code></li>
+    <li>Нажать <strong>«Сохранить и проверить»</strong></li>
+    <li>Страница обновится — статус изменится на <strong>✅ Лицензия действующая</strong></li>
+  </ol>
+
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/docs/licenses/license_01_billing_page.png"
+       alt="Страница лицензии в настройках биллинга" style="max-width:100%;border-radius:8px;border:1px solid #dee2e6;margin:12px 0">
+
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/docs/licenses/license_02_billing_full.png"
+       alt="Активированная лицензия — данные лицензиата" style="max-width:100%;border-radius:8px;border:1px solid #dee2e6;margin:12px 0">
+
+  <!-- ═══ 4. Управление ═══ -->
+  <h2 id="manage">4. Управление лицензиями</h2>
+
+  <table>
+    <thead><tr><th>Действие</th><th>Как выполнить</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Деактивировать</strong></td><td>Снять галочку «Активна» в карточке или выбрать действие «Деактивировать» в списке</td></tr>
+      <tr><td><strong>Продлить</strong></td><td>Изменить поле «Действует до» в карточке</td></tr>
+      <tr><td><strong>Сменить ключ</strong></td><td>Действие «Сгенерировать новый ключ» в списке (старый немедленно перестаёт работать)</td></tr>
+      <tr><td><strong>Просмотр статистики</strong></td><td>Поля «Последняя проверка» и «Проверок» — показывают активность инсталляции</td></tr>
+    </tbody>
+  </table>
+
   <div class="warning-box">
-    Блокировка системы не приводит к потере данных. Все данные абонентов, финансовая информация и конфигурация сохраняются. После продления лицензии система возвращается в рабочее состояние.
+    Смена ключа через действие «Сгенерировать новый ключ» немедленно инвалидирует старый. Клиент не сможет войти в раздел «Лицензия» до ввода нового ключа. Заранее уведомите клиента.
   </div>
+
+  <!-- ═══ 5. API ═══ -->
+  <h2 id="api">5. API проверки лицензии</h2>
+
+  <p>Лицензию можно проверить напрямую через браузер или curl:</p>
+
+  <pre><code>GET https://license.billing.smit34.ru/api/verify/?key=SMIT-XXXX-XXXX-XXXX&amp;domain=client.smit34.ru</code></pre>
+
+  <p>Ответ при действующей лицензии:</p>
+
+  <pre><code>{
+  "valid": true,
+  "status": "Действующая",
+  "product": "Smit Billing",
+  "company": "ООО СМИТ",
+  "inn": "3461009378",
+  "kpp": "346101001",
+  "domain": "testbill.smit34.ru",
+  "issued_at": "2026-04-08",
+  "expires_at": null,
+  "max_abonents": 0
+}</code></pre>
+
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/docs/licenses/license_06_api_response.png"
+       alt="API ответ сервера лицензий" style="max-width:100%;border-radius:8px;border:1px solid #dee2e6;margin:12px 0">
+
+  <p><code>expires_at: null</code> означает бессрочную лицензию. При <code>valid: false</code> поле <code>error</code> содержит причину отказа.</p>
+
+  <!-- ═══ 6. Порядок поставки ═══ -->
+  <h2 id="delivery">6. Порядок поставки и учёта программного обеспечения</h2>
+
+  <p>Процедура приобретения СмИТ Биллинг v1.5.0:</p>
+
+  <ol>
+    <li><strong>Заявка</strong> — отправьте запрос на <a href="mailto:sales@smit34.ru">sales@smit34.ru</a> с указанием домена инсталляции, планируемого числа абонентов и необходимых модулей.</li>
+    <li><strong>Коммерческое предложение</strong> — менеджер подготовит КП со стоимостью лицензии и ежегодной платой за поддержку.</li>
+    <li><strong>Договор и оплата</strong> — заключается договор поставки ПО. Оплата по безналичному расчёту.</li>
+    <li><strong>Поставка</strong> — после оплаты предоставляется: лицензионный ключ, Docker-образы, документация, доступ к обновлениям.</li>
+    <li><strong>Активация</strong> — клиент вводит ключ в Настройки → Лицензия. Система онлайн проверяет ключ на сервере лицензий.</li>
+    <li><strong>Учёт</strong> — лицензия регистрируется в реестре ПО. Поставляется акт приёма-передачи неисключительных прав.</li>
+  </ol>
+
+  <!-- ═══ 7. Проблемы с оплатой ═══ -->
+  <h2 id="payment-issues">7. Не проходит оплата</h2>
+
+  <ul>
+    <li><strong>Ошибка в реквизитах</strong> — запросите актуальные реквизиты у менеджера.</li>
+    <li><strong>Платёж не зачислен</strong> — зачисление до 3 рабочих дней. По истечении — направьте платёжное поручение с отметкой банка на <a href="mailto:sales@smit34.ru">sales@smit34.ru</a>.</li>
+    <li><strong>Нужна корректировка счёта</strong> — обратитесь к менеджеру для выставления нового счёта.</li>
+  </ul>
 </main>
 
 <footer class="footer">

@@ -168,7 +168,14 @@
           <li><a href="api.html#auth">2. Аутентификация</a></li>
           <li><a href="api.html#rest-v2">3. REST API v2</a></li>
           <li><a href="api.html#promise-pay">4. Обещанный платёж</a></li>
-          <li><a href="api.html#soap">5. SOAP API</a></li>
+          <li><a href="api.html#payments-api">5. Платёжные API (ЮKassa, W1)</a></li>
+          <li class="sub-item"><a href="api.html#payments-endpoints">5.0. Список endpoint</a></li>
+          <li class="sub-item"><a href="api.html#payments-flow">5.1. Схема платежа</a></li>
+          <li class="sub-item"><a href="api.html#yookassa-rest">5.2. ЮKassa REST v3</a></li>
+          <li class="sub-item"><a href="api.html#yookassa-http">5.3. ЮKassa HTTP</a></li>
+          <li class="sub-item"><a href="api.html#w1-api">5.4. Wallet One</a></li>
+          <li class="sub-item"><a href="api.html#payments-settings">5.5. Настройки</a></li>
+          <li><a href="api.html#soap">6. SOAP API</a></li>
           <li><a href="api.html#mobile-api">7. Mobile API</a></li>
         </ul>
       </li>
@@ -437,6 +444,276 @@ curl -s -b cookies.txt -X DELETE \
     ID <code>-4</code> (предоплата): сумма 90 руб., срок 3 дня<br>
     ID <code>-3</code> (постоплата): сумма 90 руб., срок 3 дня
   </div>
+
+  <!-- ============================================ -->
+  <h2 id="payments-api">Платёжные API (ЮKassa и Wallet One)</h2>
+
+  <p>Биллинг поддерживает две платёжные системы: <strong>ЮKassa</strong> (REST API v3 и HTTP-протокол «старой» Yandex.Kassa) и <strong>Wallet One (W1)</strong>. Все платежи проходят через единый сервис <code>lk/services/payment.py</code>.</p>
+
+  <div class="info-box">
+    <strong>Единый webhook:</strong> <code>POST /lk/payments/webhook/</code> — автоматически определяет систему по полям запроса (<code>WMI_MERCHANT_ID</code> → W1, <code>action=checkOrder|paymentAviso</code> → ЮKassa HTTP, <code>Content-Type: application/json</code> → ЮKassa REST v3).<br>
+    <strong>Единый инициатор:</strong> <code>GET/POST /lk/payments/pay/</code> — создаёт платёж в активной системе (<code>LK_PAYMENT_SYSTEM = yookassa | w1</code>).<br>
+    <strong>Mobile:</strong> <code>POST /mobile-api/v1/finance/pay</code> — возвращает <code>redirect_url</code> (REST v3) или <code>form_post</code> (HTTP-протокол).<br>
+    <strong>Деньги в БД:</strong> хранятся как <code>amount × 10<sup>10</sup></code> (поле <code>DB_MONEY_KOEF</code>).
+  </div>
+
+  <h3 id="payments-endpoints">Полный список endpoint</h3>
+
+  <table>
+    <thead><tr><th>Метод</th><th>URL</th><th>Назначение</th><th>Аутентификация</th></tr></thead>
+    <tbody>
+      <tr><td colspan="4"><strong>Инициация платежа</strong></td></tr>
+      <tr><td>GET</td><td><code>/lk/payments/pay/?amount=&lt;N&gt;</code></td><td>Страница оплаты (редирект/форма)</td><td>Cookie (LK-сессия)</td></tr>
+      <tr><td>POST</td><td><code>/lk/payments/pay/</code></td><td>Создание платежа (<code>amount</code>, опц. <code>system</code>)</td><td>Cookie + CSRF</td></tr>
+      <tr><td>POST</td><td><code>/mobile-api/v1/finance/pay</code></td><td>Создание платежа (JSON) — возвращает <code>redirect_url</code> или <code>form_post</code></td><td>JWT Bearer</td></tr>
+      <tr><td colspan="4"><strong>Webhook (единая точка для всех ПС)</strong></td></tr>
+      <tr><td>POST</td><td><code>/lk/payments/webhook/</code></td><td>ЮKassa REST v3 (JSON) — <code>event: payment.succeeded</code></td><td>Подпись metadata (shop)</td></tr>
+      <tr><td>POST</td><td><code>/lk/payments/webhook/</code></td><td>ЮKassa HTTP — <code>action=checkOrder</code></td><td>MD5 (shopPassword)</td></tr>
+      <tr><td>POST</td><td><code>/lk/payments/webhook/</code></td><td>ЮKassa HTTP — <code>action=paymentAviso</code></td><td>MD5 (shopPassword)</td></tr>
+      <tr><td>POST</td><td><code>/lk/payments/webhook/</code></td><td>Wallet One — <code>WMI_MERCHANT_ID</code>+<code>WMI_SIGNATURE</code></td><td>base64(md5) (W1 secret)</td></tr>
+      <tr><td colspan="4"><strong>Возврат клиента после оплаты</strong></td></tr>
+      <tr><td>GET</td><td><code>/lk/payments/result/</code></td><td>Success/Fail landing для LK</td><td>Cookie (опционально)</td></tr>
+      <tr><td>GET</td><td><code>/lk/payments/</code></td><td>История платежей абонента</td><td>Cookie</td></tr>
+      <tr><td colspan="4"><strong>Админ-настройки</strong></td></tr>
+      <tr><td>GET/POST</td><td><code>/admin/settings/payment/</code></td><td>Форма настроек ЮKassa/W1, кнопка «Проверить подключение»</td><td>Admin cookie + CSRF</td></tr>
+      <tr><td colspan="4"><strong>Внешние API (сервер биллинга → платёжная система)</strong></td></tr>
+      <tr><td>POST</td><td><code>https://api.yookassa.ru/v3/payments</code></td><td>Создание платежа в ЮKassa REST v3</td><td>Basic(shopId:secretKey) + Idempotence-Key</td></tr>
+      <tr><td>POST</td><td><code>https://yoomoney.ru/eshop.xml</code></td><td>Форма ЮKassa HTTP-протокол (браузер)</td><td>—</td></tr>
+      <tr><td>POST</td><td><code>https://wl.walletone.com/checkout/checkout/Index</code></td><td>Форма Wallet One (браузер)</td><td>WMI_SIGNATURE</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <strong>Единая точка webhook.</strong> Функция <code>process_webhook(request)</code> в <code>lk/services/payment.py</code> определяет источник по полям запроса:
+    <ul>
+      <li><code>WMI_MERCHANT_ID</code> в POST → Wallet One</li>
+      <li><code>action ∈ {checkOrder, paymentAviso}</code> → ЮKassa HTTP-протокол</li>
+      <li><code>Content-Type: application/json</code> → ЮKassa REST v3</li>
+    </ul>
+  </div>
+
+  <h3 id="payments-flow">Схема прохождения платежа</h3>
+  <ol>
+    <li>Абонент вводит сумму на <code>/lk/payments/pay/</code> или в мобильном приложении.</li>
+    <li>Сервис рассчитывает <em>сумму к оплате</em> = <code>amount × (1 + commission_rate)</code>. По умолчанию комиссия <code>0.045</code> (4.5 %), настраивается в <code>LK_PAYMENT_COMMISSION</code>.</li>
+    <li>Для ЮKassa REST / W1 — редирект на форму оплаты; для ЮKassa HTTP — форма <code>POST</code> на <code>yoomoney.ru/eshop.xml</code>.</li>
+    <li>После успешной оплаты платёжная система вызывает <code>/lk/payments/webhook/</code>.</li>
+    <li>Webhook проверяет подпись, извлекает <code>credit_amount</code> (из metadata / кэша / расчёта), вызывает <code>_credit_abonent()</code>: <code>account.ostatok += credit_amount × 10<sup>10</sup></code> и создаёт запись в <code>FinanceOperations</code>.</li>
+  </ol>
+
+  <h3 id="payments-create">Инициация платежа</h3>
+  <pre><code># LK — через форму (редирект для REST, или автосабмит form_post)
+GET  /lk/payments/pay/?amount=500
+POST /lk/payments/pay/         # amount=500&amp;system=yookassa|w1
+
+# Mobile API
+curl -X POST "https://billing.example.com/mobile-api/v1/finance/pay" \
+  -H "Authorization: Bearer ACCESS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"amount": 500, "return_url": "https://app/return"}'</code></pre>
+
+  <p>Ответ Mobile API (ЮKassa REST v3):</p>
+  <pre><code>{
+  "status": "ok",
+  "redirect_url": "https://yoomoney.ru/checkout/payments/v2/contract?orderId=..."
+}</code></pre>
+
+  <p>Ответ Mobile API (HTTP-протокол — авто-сабмит формы на клиенте):</p>
+  <pre><code>{
+  "status": "ok",
+  "form_post": {
+    "action": "https://yoomoney.ru/eshop.xml",
+    "fields": {"shopId": "267304", "scid": "2487841", "sum": "522.50", ...}
+  }
+}</code></pre>
+
+  <!-- ============================================ -->
+  <h3 id="yookassa-rest">ЮKassa — REST API v3</h3>
+
+  <p>Используется, если <code>LK_YOOKASSA_SECRET_KEY</code> начинается с <code>live_</code> / <code>test_</code> или длиннее 30 символов. Документация: <a href="https://yookassa.ru/developers/api" target="_blank" rel="noopener">yookassa.ru/developers/api</a>.</p>
+
+  <h4>Создание платежа (сервер → ЮKassa)</h4>
+  <pre><code>POST https://api.yookassa.ru/v3/payments
+Authorization: Basic base64(shopId:secretKey)
+Idempotence-Key: &lt;uuid4&gt;
+Content-Type: application/json
+
+{
+  "amount": { "value": "522.50", "currency": "RUB" },
+  "confirmation": { "type": "redirect", "return_url": "https://app/return" },
+  "capture": true,
+  "description": "Пополнение баланса. Договор: 0114",
+  "metadata": {
+    "abonent_id": 2712,
+    "credit_amount": "500.00",
+    "commission": "22.50"
+  }
+}</code></pre>
+  <p>Ответ содержит <code>confirmation.confirmation_url</code>, куда нужно направить абонента.</p>
+
+  <h4>Webhook (ЮKassa → биллинг)</h4>
+  <pre><code>POST /lk/payments/webhook/
+Content-Type: application/json
+
+{
+  "event": "payment.succeeded",
+  "object": {
+    "id": "2b3f3a7b-000f-5000-9000-1a8a0b7e1c43",
+    "status": "succeeded",
+    "amount": { "value": "522.50", "currency": "RUB" },
+    "metadata": {
+      "abonent_id": "2712",
+      "credit_amount": "500.00",
+      "commission": "22.50"
+    }
+  }
+}</code></pre>
+  <p>Биллинг обрабатывает только <code>event = payment.succeeded</code>. Остальные события (<code>payment.canceled</code>, <code>refund.succeeded</code>) принимаются с HTTP 200, но действий не выполняется. Сумма к зачислению берётся из <code>metadata.credit_amount</code>; если её нет — вычисляется как <code>paid_amount / (1 + commission_rate)</code>.</p>
+
+  <!-- ============================================ -->
+  <h3 id="yookassa-http">ЮKassa — HTTP-протокол (Yandex.Kassa legacy)</h3>
+
+  <p>Используется, если настроен только <code>shopId</code> + <code>scid</code> + <code>shopPassword</code> (без API-ключа). Подробнее: <a href="https://yoomoney.ru/docs/payment-buttons/using-api/forms" target="_blank" rel="noopener">yoomoney.ru — HTTP-протокол</a>.</p>
+
+  <h4>Форма оплаты (браузер → ЮKassa)</h4>
+  <pre><code>POST https://yoomoney.ru/eshop.xml
+Content-Type: application/x-www-form-urlencoded
+
+shopId=267304
+&amp;scid=2487841
+&amp;sum=522.50
+&amp;customerNumber=2712
+&amp;orderNumber=2712-a4f90b12
+&amp;shopSuccessURL=https://billing.example.com/lk/payments/success/
+&amp;shopFailURL=https://billing.example.com/lk/payments/fail/
+&amp;cps_email=user@example.com
+&amp;cps_phone=+79991234567
+&amp;paymentType=</code></pre>
+
+  <h4>Webhook checkOrder (проверка заказа)</h4>
+  <pre><code>POST /lk/payments/webhook/
+Content-Type: application/x-www-form-urlencoded
+
+action=checkOrder
+&amp;orderSumAmount=522.50
+&amp;orderSumCurrencyPaycash=643
+&amp;orderSumBankPaycash=1001
+&amp;shopId=267304
+&amp;invoiceId=2190485900123
+&amp;customerNumber=2712
+&amp;md5=&lt;UPPERCASE_MD5&gt;</code></pre>
+
+  <p>MD5 считается по строке, склеенной через <code>;</code>:</p>
+  <pre><code>md5 = UPPER(md5(
+  action + ";" +
+  orderSumAmount + ";" +
+  orderSumCurrencyPaycash + ";" +
+  orderSumBankPaycash + ";" +
+  shopId + ";" +
+  invoiceId + ";" +
+  customerNumber + ";" +
+  shopPassword
+))</code></pre>
+
+  <p>Ответ на <code>checkOrder</code>:</p>
+  <pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;checkOrderResponse performedDatetime="2026-04-12T10:00:00"
+   code="0" invoiceId="2190485900123" shopId="267304"/&gt;</code></pre>
+
+  <h4>Webhook paymentAviso (подтверждение оплаты)</h4>
+  <p>Аналогичный запрос с <code>action=paymentAviso</code>. После проверки MD5 биллинг зачисляет <code>credit_amount = orderSumAmount / (1 + commission_rate)</code> на <code>customerNumber</code>. Ответ:</p>
+  <pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;paymentAvisoResponse performedDatetime="2026-04-12T10:00:00"
+   code="0" invoiceId="2190485900123" shopId="267304"/&gt;</code></pre>
+
+  <table>
+    <thead><tr><th>code</th><th>Значение</th></tr></thead>
+    <tbody>
+      <tr><td><code>0</code></td><td>Успех — продолжить</td></tr>
+      <tr><td><code>1</code></td><td>MD5 не совпал — остановить обработку</td></tr>
+      <tr><td><code>100</code></td><td>Зачисление не удалось — ЮKassa повторит запрос</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ============================================ -->
+  <h3 id="w1-api">Wallet One (W1)</h3>
+
+  <p>Платёжная система <a href="https://www.walletone.com/" target="_blank" rel="noopener">walletone.com</a>. URL формы: <code>https://wl.walletone.com/checkout/checkout/Index</code>.</p>
+
+  <h4>Форма оплаты (браузер → W1)</h4>
+  <pre><code>POST https://wl.walletone.com/checkout/checkout/Index
+Content-Type: application/x-www-form-urlencoded
+
+WMI_MERCHANT_ID=123456
+&amp;WMI_PAYMENT_AMOUNT=522.50
+&amp;WMI_CURRENCY_ID=643
+&amp;WMI_DESCRIPTION=BASE64:0J/QvtC/0L7Qu9C90LXQvdC40LUg...
+&amp;WMI_PAYMENT_NO=2712-a4f90b12
+&amp;WMI_SUCCESS_URL=https://billing.example.com/lk/payments/success/
+&amp;WMI_FAIL_URL=https://billing.example.com/lk/payments/fail/
+&amp;WMI_CUSTOMER_EMAIL=user@example.com
+&amp;WMI_SIGNATURE=&lt;base64_md5&gt;</code></pre>
+
+  <p><strong>Подпись W1:</strong> берутся все поля, начинающиеся с <code>WMI_</code> (кроме <code>WMI_SIGNATURE</code>), сортируются по ключу, значения конкатенируются (list-значения сортируются и склеиваются), в конец добавляется <code>secret_key</code>. Результат: <code>base64(md5_raw(values + secret_key))</code>.</p>
+
+  <h4>Webhook (W1 → биллинг)</h4>
+  <pre><code>POST /lk/payments/webhook/
+Content-Type: application/x-www-form-urlencoded
+
+WMI_MERCHANT_ID=123456
+&amp;WMI_PAYMENT_AMOUNT=522.50
+&amp;WMI_PAYMENT_NO=2712-a4f90b12
+&amp;WMI_ORDER_STATE=Accepted
+&amp;WMI_SIGNATURE=&lt;base64_md5&gt;</code></pre>
+
+  <p>Биллинг зачисляет сумму только при <code>WMI_ORDER_STATE = Accepted</code>. Ответы (plain text, без XML):</p>
+  <table>
+    <thead><tr><th>Ответ</th><th>Смысл</th></tr></thead>
+    <tbody>
+      <tr><td><code>WMI_RESULT=OK</code></td><td>Успешно обработано (W1 не повторит)</td></tr>
+      <tr><td><code>WMI_RESULT=RETRY&amp;WMI_DESCRIPTION=...</code></td><td>Ошибка — W1 повторит попытку</td></tr>
+    </tbody>
+  </table>
+
+  <p>Сумма зачисления (<code>credit_amount</code>) берётся из кеша (<code>w1_order:{WMI_PAYMENT_NO}</code>, TTL 24 ч), куда была записана при создании платежа. Если кеш пуст — вычисляется как <code>paid_amount / (1 + commission_rate)</code>.</p>
+
+  <!-- ============================================ -->
+  <h3 id="payments-settings">Настройки (<code>.env</code> или БД через админ-панель)</h3>
+
+  <table>
+    <thead><tr><th>Ключ</th><th>Описание</th></tr></thead>
+    <tbody>
+      <tr><td><code>LK_PAYMENT_SYSTEM</code></td><td>Активная система: <code>yookassa</code> или <code>w1</code></td></tr>
+      <tr><td><code>LK_PAYMENT_COMMISSION</code></td><td>Комиссия (по умолчанию <code>0.045</code>)</td></tr>
+      <tr><td><code>LK_YOOKASSA_SHOP_ID</code></td><td>shopId (напр. <code>267304</code>)</td></tr>
+      <tr><td><code>LK_YOOKASSA_SECRET_KEY</code></td><td>REST-ключ (<code>live_*</code> / <code>test_*</code>) или <code>shopPassword</code> для HTTP-протокола</td></tr>
+      <tr><td><code>LK_YOOKASSA_SCID</code></td><td>scid для HTTP-протокола (напр. <code>2487841</code>)</td></tr>
+      <tr><td><code>LK_YOOKASSA_SUCCESS_URL</code> / <code>..._FAIL_URL</code></td><td>Страницы возврата</td></tr>
+      <tr><td><code>LK_W1_MERCHANT_ID</code></td><td>ID магазина в W1</td></tr>
+      <tr><td><code>LK_W1_SECRET_KEY</code></td><td>Секретный ключ для подписи</td></tr>
+      <tr><td><code>LK_W1_CURRENCY</code></td><td>ISO 4217 числовой код (<code>643</code> = RUB)</td></tr>
+      <tr><td><code>LK_W1_SUCCESS_URL</code> / <code>..._FAIL_URL</code></td><td>Страницы возврата</td></tr>
+    </tbody>
+  </table>
+
+  <p>UI настроек: <code>/admin/settings/payment/</code> — кнопки «Проверить подключение» для обеих систем.</p>
+
+  <!-- ============================================ -->
+  <h3 id="payments-finops">Запись в FinanceOperations</h3>
+
+  <p>После успешного зачисления создаётся запись в <code>FinanceOperations</code>:</p>
+  <table>
+    <thead><tr><th>Поле</th><th>Значение</th></tr></thead>
+    <tbody>
+      <tr><td><code>op_type_id</code></td><td><code>23</code> — ЮKassa / ЮKassa-HTTP; <code>24</code> — W1 (тип «Оплата через платёжные системы»)</td></tr>
+      <tr><td><code>op_summa</code></td><td><code>credit_amount × 10<sup>10</sup></code> (положительное число)</td></tr>
+      <tr><td><code>abonent_id</code></td><td>ID абонента из <code>metadata</code> / <code>customerNumber</code> / <code>WMI_PAYMENT_NO</code></td></tr>
+      <tr><td><code>descr</code></td><td>«Онлайн-оплата (YooKassa/W1). Оплачено: X.XX, комиссия: Y.YY»</td></tr>
+      <tr><td><code>op_date</code></td><td><code>timezone.now()</code></td></tr>
+    </tbody>
+  </table>
+
+  <p>Параллельно <code>account.ostatok</code> увеличивается на <code>credit_amount × 10<sup>10</sup></code>. Операция выполняется в транзакции (<code>@transaction.atomic</code>).</p>
 
   <!-- ============================================ -->
   <h2 id="soap">SOAP API</h2>
