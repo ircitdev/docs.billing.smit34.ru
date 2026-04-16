@@ -20,6 +20,7 @@
   <meta name="description" content="Документация биллинговой платформы СмИТ Биллинг 1.5 для операторов связи и сервис-провайдеров. Python 3.11, Django 4.2, PostgreSQL 16, Docker Compose.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/search.css">
 </head>
 <body>
 
@@ -31,6 +32,7 @@
       <div class="logo-text"><span class="logo-main">СмИТ Биллинг 1.5 </span><span>Документация</span></div>
     </div>
   </div>
+  <div class="header-search"><div class="docs-search-wrap"><input type="search" id="docsSearch" class="docs-search-input" placeholder="Поиск по документации..." autocomplete="off"><span class="docs-search-icon">&#128269;</span><div class="docs-search-results" id="docsSearchResults"></div></div></div>
   <div class="header-right">
     <button class="theme-toggle" aria-label="Переключить тему" title="Светлая / тёмная тема">
       <span class="icon-sun">&#9788;</span>
@@ -275,5 +277,6 @@
 </footer>
 
 <script src="js/main.js"></script>
+<script src="js/search.js"></script>
 </body>
 </html>

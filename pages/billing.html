@@ -20,42 +20,7 @@
   <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../css/style.css">
-  <style>
-  .header-search { flex: 0 1 360px; margin: 0 16px; }
-  .docs-search-wrap { position: relative; }
-  .docs-search-input {
-    width: 100%; padding: 6px 12px 6px 32px; border: 1px solid rgba(255,255,255,.25);
-    border-radius: 20px; background: rgba(255,255,255,.12); color: #fff;
-    font-size: .85rem; outline: none; transition: all .2s;
-  }
-  .docs-search-input::placeholder { color: rgba(255,255,255,.5); }
-  .docs-search-input:focus { background: rgba(255,255,255,.2); border-color: rgba(255,255,255,.4); }
-  .docs-search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: .8rem; opacity: .6; pointer-events: none; }
-  .docs-search-results {
-    display: none; position: absolute; top: 100%; left: 0; right: 0; margin-top: 4px;
-    background: #fff; border: 1px solid #dee2e6; border-radius: 8px;
-    box-shadow: 0 8px 24px rgba(0,0,0,.15); max-height: 400px; overflow-y: auto; z-index: 200;
-  }
-  .docs-search-results.show { display: block; }
-  .docs-sr-item {
-    display: block; padding: 8px 14px; text-decoration: none; color: #333;
-    border-bottom: 1px solid #f0f0f0; font-size: .84rem; line-height: 1.4;
-  }
-  .docs-sr-item:hover { background: #f0faf5; }
-  .docs-sr-item:last-child { border-bottom: none; }
-  .docs-sr-section { font-size: .7rem; color: #6c757d; text-transform: uppercase; letter-spacing: .03em; }
-  .docs-sr-title { font-weight: 600; color: #1b5e20; }
-  .docs-sr-ctx { font-size: .78rem; color: #888; margin-top: 2px; }
-  .docs-sr-ctx mark { background: #fff3a3; padding: 0 1px; border-radius: 2px; }
-  .docs-sr-empty { padding: 16px; text-align: center; color: #999; font-size: .85rem; }
-  [data-theme="dark"] .docs-search-results { background: #1e293b; border-color: #334155; }
-  [data-theme="dark"] .docs-sr-item { color: #e2e8f0; border-color: #334155; }
-  [data-theme="dark"] .docs-sr-item:hover { background: rgba(91,168,157,.1); }
-  [data-theme="dark"] .docs-sr-title { color: #5BA89D; }
-  [data-theme="dark"] .docs-sr-ctx { color: #64748b; }
-  @media (max-width: 767px) { .header-search { flex: 0 1 200px; margin: 0 8px; } }
-  @media (max-width: 480px) { .header-search { display: none; } }
-  </style>
+  <link rel="stylesheet" href="../css/search.css">
 </head>
 <body>
 
@@ -3556,100 +3521,6 @@ docker compose ps
 </footer>
 
 <script src="../js/main.js"></script>
-<script>
-(function(){
-  var input = document.getElementById('docsSearch');
-  var results = document.getElementById('docsSearchResults');
-  if (!input || !results) return;
-
-  var index = [];
-  document.querySelectorAll('h2[id], h3[id], h4').forEach(function(el) {
-    var section = '';
-    var parent = el.closest('section') || el.parentElement;
-    var h2 = el.tagName === 'H2' ? el : parent ? parent.querySelector('h2') : null;
-    if (!h2) {
-      var prev = el;
-      while (prev = prev.previousElementSibling) {
-        if (prev.tagName === 'H2') { h2 = prev; break; }
-      }
-    }
-    if (h2) section = h2.textContent.trim();
-
-    var next = el.nextElementSibling;
-    var ctx = '';
-    while (next && !['H2','H3','H4'].includes(next.tagName)) {
-      ctx += ' ' + (next.textContent || '');
-      if (ctx.length > 300) break;
-      next = next.nextElementSibling;
-    }
-    index.push({
-      title: el.textContent.trim(),
-      id: el.id || '',
-      section: section,
-      tag: el.tagName,
-      ctx: ctx.trim().substring(0, 200)
-    });
-  });
-
-  var timer = null;
-  input.addEventListener('input', function() {
-    clearTimeout(timer);
-    timer = setTimeout(doSearch, 200);
-  });
-
-  input.addEventListener('focus', function() {
-    if (input.value.trim().length >= 2) doSearch();
-  });
-
-  document.addEventListener('click', function(e) {
-    if (!e.target.closest('.docs-search-wrap')) results.classList.remove('show');
-  });
-
-  function doSearch() {
-    var q = input.value.trim().toLowerCase();
-    if (q.length < 2) { results.classList.remove('show'); return; }
-    var found = [];
-    for (var i = 0; i < index.length && found.length < 15; i++) {
-      var item = index[i];
-      var inTitle = item.title.toLowerCase().indexOf(q) >= 0;
-      var inCtx = item.ctx.toLowerCase().indexOf(q) >= 0;
-      if (inTitle || inCtx) {
-        found.push({ item: item, inTitle: inTitle, inCtx: inCtx });
-      }
-    }
-    if (!found.length) {
-      results.innerHTML = '<div class="docs-sr-empty">Ничего не найдено</div>';
-      results.classList.add('show');
-      return;
-    }
-    var html = '';
-    for (var j = 0; j < found.length; j++) {
-      var f = found[j];
-      var href = f.item.id ? '#' + f.item.id : '#';
-      var ctxHtml = '';
-      if (f.inCtx && f.item.ctx) {
-        var ci = f.item.ctx.toLowerCase().indexOf(q);
-        var start = Math.max(0, ci - 40);
-        var end = Math.min(f.item.ctx.length, ci + q.length + 40);
-        var snippet = (start > 0 ? '...' : '') + f.item.ctx.substring(start, end) + (end < f.item.ctx.length ? '...' : '');
-        snippet = snippet.replace(new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi'), '<mark>$1</mark>');
-        ctxHtml = '<div class="docs-sr-ctx">' + snippet + '</div>';
-      }
-      html += '<a href="' + href + '" class="docs-sr-item" onclick="document.getElementById(\'docsSearchResults\').classList.remove(\'show\')">'
-        + '<div class="docs-sr-section">' + escH(f.item.section) + '</div>'
-        + '<div class="docs-sr-title">' + escH(f.item.title) + '</div>'
-        + ctxHtml + '</a>';
-    }
-    results.innerHTML = html;
-    results.classList.add('show');
-  }
-
-  function escH(s) {
-    var d = document.createElement('div');
-    d.textContent = s;
-    return d.innerHTML;
-  }
-})();
-</script>
+<script src="../js/search.js"></script>
 </body>
 </html>
