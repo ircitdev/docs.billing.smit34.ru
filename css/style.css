@@ -66,7 +66,8 @@
   line-height: 1;
 }
 /* Sidebar icons */
-.sidebar nav ul > li > a > .bi {
+.sidebar nav ul > li > a > .bi,
+.sidebar nav ul > li > a > .ti {
   font-size: 1.05rem;
   width: 1.25rem;
   text-align: center;
@@ -75,6 +76,8 @@
   opacity: .85;
 }
 .sidebar nav ul > li > a:hover > .bi,
+.sidebar nav ul > li > a:hover > .ti,
+.sidebar nav ul > li > a.active > .ti,
 .sidebar nav ul > li > a.active > .bi { opacity: 1; }
 .sidebar nav ul li a .arrow .bi { font-size: .65rem; margin: 0; opacity: .6; }
 /* Header icons */
@@ -110,7 +113,7 @@ a:hover { color: var(--primary-dark); text-decoration: underline; }
   align-items: center;
   padding: 0 20px;
   z-index: 100;
-  box-shadow: 0 2px 4px var(--shadow);
+  box-shadow: 0 1px 3px rgba(15,23,42,.06), 0 4px 12px rgba(15,23,42,.08);
 }
 
 [data-theme="dark"] .header {
@@ -894,24 +897,6 @@ pre code {
 .screenshot { max-width: 720px; }
 .content-image { max-width: 840px; }
 
-/* Hero illustration — decorative image on landing pages (index, troubleshooting, …) */
-.hero-illustration {
-  display: block;
-  max-width: 480px;
-  width: auto;
-  height: auto;
-  margin: 20px auto 28px;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,.08);
-}
-[data-theme="dark"] .hero-illustration {
-  box-shadow: 0 4px 20px rgba(0,0,0,.4);
-  opacity: .92;
-}
-
-/* Safety net: any raw <img> inside main content stays responsive */
-main.content img { max-width: 100%; height: auto; }
-
 /* Section TOC */
 .section-toc {
   background: var(--bg-card);
@@ -1110,14 +1095,6 @@ main.content img { max-width: 100%; height: auto; }
   /* Screenshots adapt */
   .screenshot, .content-image { max-width: 100%; width: 100%; }
 
-  /* Hero illustration — compact on mobile */
-  .hero-illustration {
-    max-width: 260px;
-    width: 60%;
-    margin: 12px auto 16px;
-    border-radius: 10px;
-  }
-
   /* Tables: allow horizontal scroll on narrow screens */
   .content table {
     display: block;
@@ -1145,20 +1122,6 @@ main.content img { max-width: 100%; height: auto; }
   .content h1 { font-size: 1.4rem; }
   .content h2 { font-size: 1.15rem; padding-left: 10px; }
   .content h3 { font-size: 1rem; }
-
-  /* Sidebar menu: larger green icons with more spacing on mobile */
-  .sidebar nav ul > li > a > .bi {
-    font-size: 1.5rem;
-    width: 1.75rem;
-    margin-right: 16px;
-    color: var(--primary);
-    opacity: 1;
-  }
-  .sidebar nav ul > li > a.active > .bi,
-  .sidebar nav ul > li > a:hover > .bi {
-    color: var(--primary);
-  }
-  .sidebar nav ul li a { padding: 12px 24px; }
 }
 
 /* Sidebar: always left-aligned, single-line truncation */
@@ -1200,3 +1163,301 @@ main.content img { max-width: 100%; height: auto; }
   }
   .sidebar nav ul li a[data-short] > .bi:first-child { order: 1; }
 }
+
+/* ═══ No horizontal overflow on mobile (v214 fix) ═══ */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Content block — never wider than viewport */
+.content {
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+@media (max-width: 768px) {
+  .content {
+    padding-left: 14px;
+    padding-right: 14px;
+    max-width: 100vw;
+    box-sizing: border-box;
+  }
+  /* Images inside content */
+  .content img,
+  .content .screenshot,
+  .content .content-image {
+    max-width: 100%;
+    height: auto;
+  }
+  /* Code blocks — wrap or scroll but don't overflow parent */
+  .content pre,
+  .content code {
+    max-width: 100%;
+    word-break: break-word;
+    white-space: pre-wrap;
+  }
+  .content pre {
+    overflow-x: auto;
+    white-space: pre;
+  }
+  /* Inline code — allow break */
+  .content p code,
+  .content li code,
+  .content td code {
+    word-break: break-all;
+  }
+  /* Tables wrap in scrollable container with visible border */
+  .content table {
+    display: block;
+    max-width: 100vw;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* ═══ Content width — center on wide screens (build 214) ═══ */
+/* На широких мониторах не тянем контент до края, а центрируем
+   с учётом sidebar. Ширина текста 960px, плюс запас по бокам. */
+@media (min-width: 1280px) {
+  .content {
+    max-width: 960px;
+    /* Начиная от правого края sidebar, но не дальше чем центр окна - 480px */
+    margin-left: max(var(--sidebar-width), calc(50% - 480px)) !important;
+    margin-right: auto !important;
+  }
+}
+
+/* ═══ Mindmap на главной ═══ */
+.mindmap-section {
+  margin: 28px 0 32px;
+  padding: 20px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(91,168,157,.05), transparent 60%);
+  border: 1px solid var(--table-border);
+}
+.mindmap-title {
+  margin: 0 0 4px;
+  font-size: 1.4rem;
+}
+.mindmap-hint {
+  margin: 0 0 16px;
+  color: var(--text-light);
+  font-size: .9rem;
+}
+.mindmap-wrap {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 20px;
+  align-items: center;
+}
+.mindmap-svg {
+  width: 100%;
+  height: auto;
+  max-height: 520px;
+}
+.mindmap-panel {
+  min-height: 180px;
+  padding: 16px 18px;
+  background: var(--bg-card);
+  border: 1px solid var(--table-border);
+  border-radius: 10px;
+  font-size: .95rem;
+  line-height: 1.55;
+  transition: border-color .2s;
+}
+.mindmap-panel:has(.mm-panel-title) {
+  border-color: #5BA89D;
+  box-shadow: 0 2px 12px rgba(91,168,157,.15);
+}
+.mm-panel-title { font-weight: 700; color: #5BA89D; margin-bottom: 6px; font-size: 1.05rem; }
+.mm-panel-desc  { color: var(--text-light); margin-bottom: 10px; }
+.mm-panel-link  { color: #5BA89D; font-weight: 600; text-decoration: none; font-size: .9rem; }
+.mm-panel-link:hover { text-decoration: underline; }
+.mindmap-hint-inline { color: var(--text-light); font-style: italic; font-size: .9rem; }
+
+.mm-node { cursor: pointer; }
+.mm-node-bg {
+  fill: var(--bg-card);
+  stroke: #5BA89D;
+  stroke-width: 2;
+  transition: fill .2s, transform .2s;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+.mm-node-label {
+  fill: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  pointer-events: none;
+  user-select: none;
+}
+.mm-node:hover .mm-node-bg,
+.mm-node.mm-active .mm-node-bg {
+  fill: #5BA89D;
+  filter: drop-shadow(0 4px 12px rgba(91,168,157,.45));
+}
+.mm-node:hover .mm-node-label,
+.mm-node.mm-active .mm-node-label {
+  fill: #fff;
+}
+#mm-lines line { transition: stroke-opacity .2s, stroke-width .2s; }
+#mm-lines line.mm-line-active {
+  stroke: #5BA89D;
+  stroke-opacity: 1;
+  stroke-width: 3;
+}
+
+@media (max-width: 768px) {
+  .mindmap-wrap {
+    grid-template-columns: 1fr;
+  }
+  .mindmap-panel {
+    min-height: 100px;
+    order: -1;
+  }
+  .mm-node-label { font-size: 12px; }
+}
+
+/* Welcome image on index page */
+.welcome-image {
+  margin: 20px 0 28px;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(15,23,42,.12);
+  max-width: 100%;
+}
+.welcome-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 420px;
+  object-fit: cover;
+}
+
+/* ═══ Mobile polish (build 214) ═══ */
+@media (max-width: 768px) {
+  /* Welcome-image / problems hero — compact on mobile */
+  .welcome-image {
+    max-width: 280px;
+    margin: 14px auto 18px;
+    border-radius: 10px;
+  }
+  .welcome-image img {
+    max-height: none;
+    height: auto;
+    width: 100%;
+    object-fit: contain;
+  }
+
+  /* Mindmap — stack vertically on mobile */
+  .mindmap-wrap {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .mindmap-svg {
+    max-width: 100%;
+  }
+  .mindmap-panel {
+    order: 2;
+    min-height: 120px;
+  }
+  .mindmap-section {
+    padding: 14px;
+  }
+
+  /* Tables — no horizontal scroll, stack as blocks with labels */
+  .content table {
+    display: block;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: visible;
+    font-size: .82rem;
+  }
+  .content table thead {
+    display: none;
+  }
+  .content table tbody,
+  .content table tr {
+    display: block;
+    width: 100%;
+  }
+  .content table tr {
+    border: 1px solid var(--table-border);
+    border-radius: 6px;
+    margin-bottom: 10px;
+    padding: 8px 10px;
+    background: var(--bg-card);
+  }
+  .content table td {
+    display: block;
+    padding: 4px 0;
+    border: none;
+    white-space: normal;
+    word-break: break-word;
+  }
+  .content table td:first-child {
+    font-weight: 600;
+    color: var(--primary);
+    white-space: normal;
+  }
+  .content table td:first-child::after {
+    content: '';
+  }
+
+  /* Sidebar icons on mobile — bigger, teal, more gap */
+  .sidebar nav ul > li > a > .bi,
+  .sidebar nav ul > li > a > .ti {
+    font-size: 1.35rem;
+    width: 1.6rem;
+    margin-right: 14px;
+    color: #5BA89D;
+    opacity: 1;
+  }
+  .sidebar nav ul > li > a {
+    padding: 12px 14px;
+    font-size: 1rem;
+  }
+}
+
+/* Mobile: search in header, theme moved to sidebar bottom */
+@media (max-width: 768px) {
+  .header .theme-toggle { display: none !important; }
+  .mobile-search-btn { display: inline-flex !important; }
+}
+@media (min-width: 769px) {
+  .sidebar-theme-toggle { display: none; }
+}
+
+.sidebar-theme-toggle {
+  margin: 16px 14px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: calc(100% - 28px);
+  background: transparent;
+  border: 1px solid var(--table-border);
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--text);
+  font-size: .95rem;
+  transition: background .15s, border-color .15s;
+}
+.sidebar-theme-toggle:hover,
+.sidebar-theme-toggle:active {
+  background: rgba(91,168,157,.08);
+  border-color: #5BA89D;
+}
+.sidebar-theme-toggle .icon-sun,
+.sidebar-theme-toggle .icon-moon {
+  color: #5BA89D;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+[data-theme="light"] .sidebar-theme-toggle .icon-moon,
+[data-theme="dark"] .sidebar-theme-toggle .icon-sun { display: inline-flex; }
+[data-theme="light"] .sidebar-theme-toggle .icon-sun,
+[data-theme="dark"] .sidebar-theme-toggle .icon-moon { display: none; }
+.sidebar-theme-label { flex: 1; text-align: left; }

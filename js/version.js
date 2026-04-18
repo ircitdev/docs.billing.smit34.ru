@@ -1,0 +1,57 @@
+/**
+ * Single source of truth for the docs version/build/update date.
+ * Update here — values are injected into every <span data-smit="..."> placeholder.
+ */
+(function () {
+  window.SMIT_DOC = {
+    version: '1.6.0',
+    build: '214',
+    updated: '18.04.2026',
+    year: '2026',
+    company: 'ООО «СмИТ»',
+  };
+  var v = window.SMIT_DOC;
+
+  // Computed forms
+  var forms = {
+    version:        v.version,                                                // "1.6.0"
+    vversion:       'v' + v.version,                                          // "v1.6.0"
+    build:          v.build,                                                  // "170"
+    vbuild:         'build ' + v.build,                                       // "build 170"
+    full:           'v' + v.version + ' (build ' + v.build + ')',             // "v1.6.0 (build 170)"
+    short:          v.version,                                                // "1.6.0" (alias of version)
+    brand:          'СмИТ Биллинг ' + v.version,                              // "СмИТ Биллинг 1.6.0"
+    'brand-short':  'СмИТ Биллинг ' + v.version.replace(/\.0$/, ''),          // "СмИТ Биллинг 1.6"
+    updated:        v.updated,
+    year:           v.year,
+    company:        v.company,
+  };
+
+  function apply() {
+    document.querySelectorAll('[data-smit]').forEach(function (el) {
+      var key = el.getAttribute('data-smit');
+      if (forms.hasOwnProperty(key)) {
+        el.textContent = forms[key];
+      }
+    });
+    // Also allow meta tags to use data-smit-content="full" style
+    document.querySelectorAll('meta[data-smit-content]').forEach(function (el) {
+      var key = el.getAttribute('data-smit-content');
+      if (forms.hasOwnProperty(key)) {
+        el.setAttribute('content', (el.getAttribute('content') || '').replace(/\{SMIT\}/g, forms[key]));
+      }
+    });
+    // <title> template support: if contains "{SMIT:full}" etc, replace
+    if (document.title && /\{SMIT:[a-z-]+\}/.test(document.title)) {
+      document.title = document.title.replace(/\{SMIT:([a-z-]+)\}/g, function (_, k) {
+        return forms[k] || '';
+      });
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', apply);
+  } else {
+    apply();
+  }
+})();

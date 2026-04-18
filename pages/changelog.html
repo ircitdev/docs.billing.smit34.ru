@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Журнал изменений — СмИТ Биллинг 1.0</title>
+  <link rel="stylesheet" href="../css/style.css?v=220">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <button class="menu-toggle" aria-label="Меню">&#9776;</button>
+    <div class="logo">
+      <div class="logo-icon">С</div>
+      <div class="logo-text"><span class="logo-main">СмИТ Биллинг 1.0 </span><span>Документация</span></div>
+    </div>
+  </div>
+  <div class="header-right">
+    <button class="theme-toggle" aria-label="Переключить тему" title="Светлая / тёмная тема">
+      <span class="icon-sun">&#9788;</span>
+      <span class="icon-moon">&#9790;</span>
+    </button>
+  </div>
+</header>
+
+<aside class="sidebar">
+  <nav>
+    <div class="nav-section">Разделы</div>
+    <ul>
+      <li><a href="../index.html">&#127968; Главная</a></li>
+      <li><a href="installation.html">&#128268; Установка и интеграция</a></li>
+      <li><a href="billing.html">&#9881; Настройки биллинга</a></li>
+      <li><a href="server.html">&#128421; Управление сервером</a></li>
+      <li><a href="equipment.html">&#128268; Интеграция с оборудованием</a></li>
+      <li><a href="sorm.html">&#128274; Интеграция с СОРМ3</a></li>
+      <li><a href="api.html">&#128279; API</a></li>
+      <li><a href="troubleshooting.html">&#128295; Решение проблем</a></li>
+      <li><a href="licensing.html">&#128196; Лицензирование</a></li>
+      <li class="has-children">
+        <a href="changelog.html" class="active">&#128240; Журнал изменений <span class="arrow">&#9654;</span></a>
+        <ul class="submenu" style="display:block">
+          <li><a href="#v1-0-0-b37">v1.0.0 (build 37) — 29.03.2026</a></li>
+          <li><a href="#nas-deploy">NAS Развёртывание</a></li>
+          <li><a href="#oss-tools">OSS утилиты</a></li>
+          <li><a href="#forms-audit">Аудит форм</a></li>
+          <li><a href="#fixes-25tasks">Исправления (25 задач)</a></li>
+        </ul>
+      </li>
+      <li><a href="contacts.html">&#128222; Контакты</a></li>
+    </ul>
+  </nav>
+</aside>
+
+<main class="content">
+  <div class="breadcrumb">
+    <a href="../index.html">Документация</a> &rsaquo; Журнал изменений
+  </div>
+
+  <h1>Журнал изменений</h1>
+
+  <!-- ═══════════ v1.0.0 build 37 ═══════════ -->
+  <h2 id="v1-0-0-b37">v1.0.0 (build 37) — 29 марта 2026</h2>
+
+  <div class="info-box">
+    <strong>Сервер:</strong> <a href="https://testbill.smit34.ru" target="_blank">testbill.smit34.ru</a> (admin/admin)<br>
+    <strong>Отчёт по задачам:</strong> <a href="/reports/chat_tasks_29mart.html">25 задач из Telegram-чата</a><br>
+    <strong>Детальный лог сессии:</strong> <a href="/reports/session_29mart.html">session_29mart.html</a>
+  </div>
+
+  <!-- ─── NAS Развёртывание ─── -->
+  <h2 id="nas-deploy">NAS Развёртывание (OSS)</h2>
+
+  <p>Вкладка <strong>«Развёртывание»</strong> в карточке NAS позволяет управлять конфигурацией MikroTik и другого оборудования. Полностью воспроизводит функционал Carbon Billing 4.</p>
+
+  <h3>Общая схема работы</h3>
+  <pre><code>1. Инициализация    → rtsh cfg init &lt;scheme&gt;   → создаёт структуру каталогов
+2. Заполнение данных → rtsh cfg fill &lt;ip&gt;       → заполняет .ini из биллинга
+3. Скачать текущую   → rtsh cfg download        → загружает конфиг с оборудования
+4. Генерация новой   → rtsh cfg make            → генерирует .cfg из .ini + .tmplt
+5. Загрузка          → rtsh cfg upload          → загружает конфигурацию на NAS
+6. Сохранение        → rtsh cfg save            → коммит в git-историю</code></pre>
+
+  <h3>Под-вкладки</h3>
+
+  <h4>Управление</h4>
+  <p>5 шагов развёртывания + дополнительные команды (status, diff, log, acl upload).</p>
+  <img src="../img/nas_deploy_manage.png" alt="Вкладка Управление" style="max-width:100%;border:1px solid #dee2e6;border-radius:8px;margin:10px 0">
+
+  <h4>Настройка (INI файлы)</h4>
+  <p>Редактирование .ini файлов конфигурации: <code>main.ini</code>, <code>firewall.ini</code>, <code>netflow.ini</code>, <code>pppoe.ini</code>. Ссылка «Отобразить доступные параметры» показывает все поддерживаемые ключи.</p>
+  <img src="../img/nas_deploy_config.png" alt="Вкладка Настройка" style="max-width:100%;border:1px solid #dee2e6;border-radius:8px;margin:10px 0">
+
+  <h4>Шаблоны (.tmplt)</h4>
+  <p>Редактирование Jinja2-шаблонов для генерации конфигурации: <code>firewall_address_list.cfg.tmplt</code>, <code>firewall_filter.cfg.tmplt</code>, <code>firewall_nat.cfg.tmplt</code>, <code>netflow.cfg.tmplt</code>, <code>pppoe.cfg.tmplt</code>.</p>
+  <img src="../img/nas_deploy_templates.png" alt="Вкладка Шаблоны" style="max-width:100%;border:1px solid #dee2e6;border-radius:8px;margin:10px 0">
+
+  <h4>Upload cfg</h4>
+  <p>Файлы сгенерированной конфигурации для загрузки на NAS. Появляются после <code>rtsh cfg make</code>.</p>
+
+  <h4>Download cfg</h4>
+  <p>Файлы текущей конфигурации, скачанные с оборудования через <code>rtsh cfg download</code>. Только для просмотра.</p>
+
+  <h3>Модальное окно вывода команд</h3>
+  <p>При нажатии на любую кнопку (rtsh cfg init, fill, make и др.) открывается модальное окно с выводом команды в реальном времени. Кнопки «Скачать вывод» и «Закрыть».</p>
+  <img src="../img/nas_shell_modal.png" alt="Вывод команды" style="max-width:100%;border:1px solid #dee2e6;border-radius:8px;margin:10px 0">
+
+  <!-- ─── OSS утилиты ─── -->
+  <h2 id="oss-tools">OSS утилиты</h2>
+
+  <p>Утилиты для управления конфигурациями NAS-устройств, перенесённые из Carbon Billing 4.</p>
+
+  <h3>rtsh — главная утилита</h3>
+  <p>Расположение: <code>/usr/local/bin/rtsh</code> (bash-скрипт).</p>
+  <pre><code>rtsh cfg init &lt;scheme_name&gt;  — инициализировать каталог управления
+rtsh cfg fill &lt;ip&gt;          — заполнить .ini данными из биллинга
+rtsh cfg make               — сгенерировать конфигурацию из .ini + .tmplt
+rtsh cfg upload             — загрузить конфигурацию в оборудование
+rtsh cfg download           — скачать конфигурацию с оборудования в ./cur/
+rtsh cfg save &lt;comment&gt;     — сохранить в git-историю
+rtsh cfg diff [ref]         — показать изменения
+rtsh cfg status             — текущее состояние
+rtsh cfg log                — журнал изменений
+rtsh acl upload             — загрузить ACL-листы на оборудование
+rtsh list scheme            — список доступных схем</code></pre>
+
+  <h3>OSS команды</h3>
+  <p>18 скриптов в <code>/usr/local/bin/oss/</code>:</p>
+  <table>
+    <tr><th>Команда</th><th>Описание</th></tr>
+    <tr><td>cfg_init</td><td>Инициализация каталога (создаёт структуру из схемы)</td></tr>
+    <tr><td>cfg_fill</td><td>Заполнение .ini данными из биллинга (IP, пароли, интерфейсы)</td></tr>
+    <tr><td>cfg_make</td><td>Генерация .cfg из .ini + .tmplt (Jinja2)</td></tr>
+    <tr><td>cfg_upload</td><td>Загрузка конфигурации на NAS (SSH/Telnet)</td></tr>
+    <tr><td>cfg_download</td><td>Скачивание текущей конфигурации с NAS</td></tr>
+    <tr><td>cfg_save</td><td>Git commit (сохранение в историю)</td></tr>
+    <tr><td>cfg_diff</td><td>Git diff (показать изменения)</td></tr>
+    <tr><td>cfg_status</td><td>Git status</td></tr>
+    <tr><td>cfg_log</td><td>Git log</td></tr>
+    <tr><td>cfg_render</td><td>Рендеринг одного шаблона</td></tr>
+    <tr><td>acl_fill</td><td>Генерация ACL-листов</td></tr>
+    <tr><td>list</td><td>Список NAS/схем</td></tr>
+    <tr><td>session</td><td>Управление сессиями (add/redirect)</td></tr>
+    <tr><td>daemon</td><td>Фоновый процесс</td></tr>
+    <tr><td>ini_generator.py</td><td>Генерация .ini по шаблону</td></tr>
+    <tr><td>cfgparse.py</td><td>Парсер конфигураций</td></tr>
+  </table>
+
+  <h3>OSS схемы (44 шт.)</h3>
+  <p>Расположение: <code>/usr/local/share/oss/</code>. Каждая схема содержит набор .ini шаблонов, .tmplt шаблонов и скриптов для конкретного типа оборудования.</p>
+  <table>
+    <tr><th>Схема</th><th>Описание</th></tr>
+    <tr><td><strong>mikrotik_simple_v1</strong></td><td>Рекомендуемая схема для MikroTik 6 (PPPoE/VPN)</td></tr>
+    <tr><td>mikrotik6_pcq</td><td>MikroTik 6 с PCQ (для знающих)</td></tr>
+    <tr><td>mikrotik5_pcq</td><td>MikroTik 5 с PCQ</td></tr>
+    <tr><td>mikrotik_simple_ipv6_dual_stack_v1</td><td>MikroTik 6 + IPv6 dual stack</td></tr>
+    <tr><td>mikrotik_hotspot_simple</td><td>Hotspot на MikroTik</td></tr>
+    <tr><td>cisco_isg</td><td>Cisco ISG (IPoE/PPPoE)</td></tr>
+    <tr><td>cisco_bng_pppoe</td><td>Cisco BNG PPPoE</td></tr>
+    <tr><td>redback</td><td>Redback IPoE/PPPoE</td></tr>
+    <tr><td>asterisk_v1</td><td>Asterisk VoIP</td></tr>
+    <tr><td>eltex</td><td>Eltex IPTV</td></tr>
+    <tr><td>flussonic</td><td>Flussonic Watcher</td></tr>
+    <tr><td colspan="2"><em>... и 33 другие схемы</em></td></tr>
+  </table>
+
+  <h3>Структура каталогов NAS</h3>
+  <pre><code>/var/oss/&lt;nas_name&gt;/
+├── main.ini             ← основной конфиг (IP, секрет, порты)
+├── firewall.ini         ← настройки файрвола
+├── netflow.ini          ← настройки NetFlow
+├── pppoe.ini            ← настройки PPPoE
+├── tmplt/               ← Jinja2 шаблоны
+│   ├── firewall_address_list.cfg.tmplt
+│   ├── firewall_filter.cfg.tmplt
+│   ├── firewall_nat.cfg.tmplt
+│   ├── netflow.cfg.tmplt
+│   └── pppoe.cfg.tmplt
+├── upload/              ← сгенерированные .cfg (после cfg make)
+├── cur/                 ← текущий конфиг с NAS (после cfg download)
+├── bin/                 ← скрипты схемы
+├── ubin/                ← пользовательские скрипты
+├── utmplt/              ← пользовательские шаблоны
+├── uinit.d/             ← пользовательские init-скрипты
+└── .git/                ← история изменений</code></pre>
+
+  <h3>Docker конфигурация</h3>
+  <ul>
+    <li><strong>Dockerfile</strong> — <code>COPY oss_tools/</code> (rtsh, oss_bin, oss_share) + <code>apt install git rsync</code></li>
+    <li><strong>Volume</strong> <code>oss_data:/var/oss</code> — данные сохраняются между перезапусками</li>
+    <li><strong>/run_script/</strong> — endpoint для выполнения команд (POST → start, GET → stream stdout)</li>
+    <li><strong>Gunicorn</strong> — <code>WORKERS=1, THREADS=8</code> (для корректной работы /run_script/)</li>
+  </ul>
+
+  <!-- ─── Аудит форм ─── -->
+  <h2 id="forms-audit">Аудит форм — Select2 и AJAX</h2>
+
+  <p>Все FK-поля всех форм биллинга проверены и оптимизированы:</p>
+  <ul>
+    <li><strong>Select2</strong> — для справочников до 100 записей (NAS, типы авторизации, IP-пулы)</li>
+    <li><strong>AJAX Select2</strong> — для больших справочников (Homes: 4270 записей — поиск по адресу)</li>
+    <li><strong>Popup-select</strong> — для таблиц &gt; 500 записей (абоненты, пользователи)</li>
+    <li><strong>HEAVY_FK_FIELDS</strong> — ограничение queryset для таблиц &gt; 1000 записей</li>
+  </ul>
+  <img src="../img/users_card.png" alt="Карточка Users с Select2" style="max-width:100%;border:1px solid #dee2e6;border-radius:8px;margin:10px 0">
+
+  <!-- ─── 25 задач ─── -->
+  <h2 id="fixes-25tasks">Исправления из Telegram-чата (25 задач)</h2>
+  <p>Полный отчёт: <a href="/reports/chat_tasks_29mart.html">chat_tasks_29mart.html</a></p>
+  <table>
+    <tr><th>#</th><th>Задача</th><th>Статус</th></tr>
+    <tr><td>1</td><td>Шейпер — скорости тарифных услуг</td><td>&#9989;</td></tr>
+    <tr><td>2</td><td>Поиск по адресам</td><td>&#9989;</td></tr>
+    <tr><td>3-4</td><td>СОРМ — верстка + 13 отчётов + CSV</td><td>&#9989;</td></tr>
+    <tr><td>5</td><td>Актуализация балансов</td><td>&#9989;</td></tr>
+    <tr><td>6-10</td><td>Ошибки 500, пароли, NAS развёртывание, RADIUS</td><td>&#9989;</td></tr>
+    <tr><td>11</td><td><strong>Users — сохранение IP/NAS (блокер RADIUS)</strong></td><td>&#9989;</td></tr>
+    <tr><td>12-25</td><td>Списание, обещ. платеж, popup, операции, блок, комментарии, юр.лицо, тема, учётки, CSV, цены</td><td>&#9989;</td></tr>
+  </table>
+
+</main>
+
+<footer class="footer">
+  &copy; 2026 СмИТ — СмИТ Биллинг v1.0.0 (build 37)
+</footer>
+
+<script src="../js/main.js?v=220"></script>
+</body>
+</html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Сессия 29 марта 2026 — СмИТ Биллинг</title>
+<style>
+:root{--bg:#fff;--fg:#1a1a2e;--accent:#5BA89D;--border:#dee2e6;--code-bg:#f4f5f7;--card-bg:#fafbfc}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;line-height:1.6;color:var(--fg);background:var(--bg);max-width:1100px;margin:0 auto;padding:20px 40px 60px}
+h1{font-size:2em;color:var(--accent);border-bottom:3px solid var(--accent);padding-bottom:10px;margin:30px 0 20px}
+h2{font-size:1.5em;color:#2c3e50;border-bottom:1px solid var(--border);padding-bottom:8px;margin:35px 0 15px}
+h3{font-size:1.15em;color:#34495e;margin:20px 0 8px}
+a{color:var(--accent)}
+code{background:var(--code-bg);padding:2px 6px;border-radius:3px;font-family:'Cascadia Code',monospace;font-size:.9em}
+pre{background:#1e1e2e;color:#cdd6f4;padding:16px;border-radius:8px;overflow-x:auto;font-size:.85em;margin:12px 0}
+pre code{background:none;padding:0;color:inherit}
+table{border-collapse:collapse;width:100%;margin:12px 0}
+th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;font-size:.9em}
+th{background:var(--accent);color:#fff;font-weight:600}
+tr:nth-child(even){background:var(--card-bg)}
+.b{display:inline-block;padding:2px 10px;border-radius:4px;font-size:.8em;font-weight:600;color:#fff}
+.done{background:#27ae60}.fix{background:#2980b9}.new{background:#8e44ad}
+.card{background:var(--card-bg);border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin:12px 0}
+.files{background:#e3f2fd;border:1px solid #90caf9;border-radius:6px;padding:10px 16px;margin:10px 0;font-size:.9em}
+.nav-top{display:flex;gap:20px;margin-bottom:20px;padding:10px 0;border-bottom:1px solid var(--border)}
+.nav-top a{color:var(--accent);text-decoration:none;font-weight:600}
+.nav-top a:hover{text-decoration:underline}
+.footer{margin-top:40px;padding-top:15px;border-top:1px solid var(--border);color:#888;font-size:.85em;text-align:center}
+</style>
+</head>
+<body>
+
+<div class="nav-top">
+  <a href="/">Документация</a>
+  <a href="/reports/chat_tasks_29mart.html">Отчёт по задачам из чата</a>
+  <a href="/reports/radius.html">RADIUS отчёт</a>
+</div>
+
+<h1>Сессия 29 марта 2026 — Журнал изменений</h1>
+<p><strong>Сервер:</strong> <a href="https://testbill.smit34.ru" target="_blank">testbill.smit34.ru</a> &nbsp;|&nbsp; <strong>Версия:</strong> v1.0.0 (build 37)</p>
+
+<!-- ════════════════════════════════════════════ -->
+<h2>1. Исправления из Telegram-чата (25 задач)</h2>
+<p>Полный отчёт: <a href="/reports/chat_tasks_29mart.html">chat_tasks_29mart.html</a></p>
+
+<table>
+<tr><th>Категория</th><th>Кол-во</th><th>Статус</th></tr>
+<tr><td>Ранее решено (25-26.03)</td><td>10</td><td><span class="b done">Сделано</span></td></tr>
+<tr><td>Исправлено 29.03</td><td>15</td><td><span class="b fix">Исправлено</span></td></tr>
+</table>
+
+<p>Ключевые исправления: сохранение IP/NAS на карточке Users (блокер RADIUS), шейпер, СОРМ 13 отчётов + CSV, поиск по адресам, операции (зависание), блокировка, комментарии, юр.лицо, пароли, тёмная тема.</p>
+
+<!-- ════════════════════════════════════════════ -->
+<h2>2. Формы — Select2 vs Popup-select</h2>
+
+<p>Проведён аудит всех FK-полей во всех формах биллинга. Для каждого поля выбран оптимальный виджет.</p>
+
+<h3>Критерии</h3>
+<table>
+<tr><th>Записей в таблице</th><th>Виджет</th></tr>
+<tr><td>&lt; 100</td><td>Select2 (обычный <code>&lt;select&gt;</code> с поиском по буквам)</td></tr>
+<tr><td>100-500</td><td>Select2 или Popup-select (зависит от контекста)</td></tr>
+<tr><td>&gt; 500</td><td>Popup-select (лупа, всплывающее окно)</td></tr>
+<tr><td>&gt; 1000</td><td>Popup + HEAVY_FK_FIELDS (ограничение queryset)</td></tr>
+</table>
+
+<h3>Изменения по моделям</h3>
+
+<div class="card">
+<h3>Users (/admin/Users/&lt;id&gt;/)</h3>
+<table>
+<tr><th>Поле</th><th>Было</th><th>Стало</th><th>Записей</th></tr>
+<tr><td>pull, host_pull, snat_pull</td><td>Popup (лупа)</td><td>Select2</td><td>26</td></tr>
+<tr><td>phone</td><td>Popup</td><td>Select2</td><td>0</td></tr>
+<tr><td>home</td><td>Обычный select</td><td><strong>AJAX Select2</strong> (поиск по адресу)</td><td>4270</td></tr>
+<tr><td>nas</td><td>Select (без S2)</td><td>Select2</td><td>13</td></tr>
+<tr><td>auth_type</td><td>Select (без S2)</td><td>Select2</td><td>9</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Abonents (/admin/Abonents/&lt;id&gt;/)</h3>
+<table>
+<tr><th>Поле</th><th>Было</th><th>Стало</th><th>Записей</th></tr>
+<tr><td>operator</td><td>Обычный select</td><td>Popup</td><td>5578</td></tr>
+<tr><td>tarif</td><td>Select2</td><td>Select2</td><td>144</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Tarif (/admin/tarifs/Tarif/&lt;id&gt;/)</h3>
+<table>
+<tr><th>Поле</th><th>Было</th><th>Стало</th><th>Записей</th></tr>
+<tr><td>promo_next, inactive_tarif</td><td>Popup</td><td>Select2</td><td>144</td></tr>
+<tr><td>operator</td><td>Popup</td><td>Popup</td><td>5578</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>NAS (/admin/equipment/Nas/&lt;id&gt;/)</h3>
+<table>
+<tr><th>Поле</th><th>Было</th><th>Стало</th><th>Записей</th></tr>
+<tr><td>home</td><td>Обычный select</td><td>Popup + AJAX Select2</td><td>4270</td></tr>
+<tr><td>pull, nat_pull, white_pull и др.</td><td>Select</td><td>Select2</td><td>26</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Usluga (/admin/tarifs/Usluga/&lt;id&gt;/)</h3>
+<table>
+<tr><th>Поле</th><th>Было</th><th>Стало</th><th>Записей</th></tr>
+<tr><td>operator, voip_operator</td><td>Select</td><td>Popup</td><td>5578</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>FinanceOperations (добавление)</h3>
+<p>Время загрузки формы: <strong>бесконечность → 1.1 секунды</strong></p>
+<p>Причина: FK-поля (abonent, users, owner) грузили все 5000+ записей в <code>&lt;select&gt;</code>.</p>
+<p>Решение: <code>HEAVY_FK_FIELDS</code> + <code>_limit_edit_fk_querysets()</code></p>
+</div>
+
+<h3>HEAVY_FK_FIELDS (form.py)</h3>
+<p>Список полей, для которых queryset ограничивается (popup-select вместо полного <code>&lt;select&gt;</code>):</p>
+<pre><code>HEAVY_FK_FIELDS = ('master', 'operator', 'parent', 'home', 'account', 'abonent',
+                   'tarif_next', 'manager', 'fin_op', 'related_operation',
+                   'counters', 'child_operation', 'related_fin_operation',
+                   'owner', 'users', 'caretaker', 'managment_company')</code></pre>
+<p>Убраны: <code>loyalty</code> (6 записей), <code>usluga_range_type</code> (6), <code>atol_config</code> (0), <code>nas</code> (13), <code>tarif</code> (144).</p>
+
+<div class="files"><strong>Файлы:</strong> <code>billing/views/form.py</code>, <code>billing/safe_globals.py</code>, <code>billing/static/css/style_select.css</code>, <code>billing/templates/ajax_fields/home_select2.html</code></div>
+
+<!-- ════════════════════════════════════════════ -->
+<h2>3. Цены — MoneyField</h2>
+
+<p>Поля с ценами отображали сырые значения из БД (×10<sup>10</sup>): <code>12990000000000</code> вместо <code>1299.00</code>.</p>
+
+<table>
+<tr><th>Модель</th><th>Поля</th><th>Было</th><th>Стало</th></tr>
+<tr><td>Usluga</td><td>price</td><td>FloatField</td><td>MoneyField</td></tr>
+<tr><td>Usluga</td><td>voip_overpay, voip_callpay</td><td>DecimalField</td><td>MoneyField</td></tr>
+<tr><td>Tarif</td><td>limit, users_limit, users_limit_warning, allow_limit</td><td>DecimalField</td><td>MoneyField</td></tr>
+<tr><td>Tarif</td><td>change_cost, promise_maxpay, own_disabled_cost</td><td>DecimalField</td><td>MoneyField</td></tr>
+</table>
+
+<div class="files"><strong>Файлы:</strong> <code>billing/models/usluga.py</code>, <code>billing/models/tariff.py</code></div>
+
+<!-- ════════════════════════════════════════════ -->
+<h2>4. Смена пароля — модальное окно</h2>
+
+<p>Вкладка «Смена пароля» на карточке Users заменена на модальное окно Bootstrap 5.</p>
+
+<ul>
+<li>Кнопка «Сменить пароль» рядом с полем gen_pwd → открывает модалку</li>
+<li>AJAX-сохранение без перезагрузки страницы</li>
+<li>Валидация (совпадение паролей, непустой ввод)</li>
+<li>Поле gen_pwd обновляется после сохранения</li>
+</ul>
+
+<div class="files"><strong>Файлы:</strong> <code>billing/templates/auth_edit_one.html</code>, <code>billing/views/auth.py</code></div>
+
+<!-- ════════════════════════════════════════════ -->
+<h2>5. Вкладки Users — 500 ошибки</h2>
+
+<h3>Проблема</h3>
+<p>Вкладки «История», «Подсети пользователей», «Компактные события» давали ошибку 500. Причина: 19 таблиц из миграции 0049 (managed=False, fake-applied) не были созданы в БД.</p>
+
+<h3>Решение</h3>
+<ol>
+<li><strong>Созданы 19 таблиц</strong> через Django <code>schema_editor.create_model()</code>:
+<code>AccountStackType, AuditEvents, ContractNumberPrefixes, CrmTaskType, IptvType, News, VoipType, AdminUsersProfile, AccountStack, CategoryDirections, Discounts, EventsStackCompact, SensorsCounters, SensorsLog, TarifPlanset, TarifUsersUslugaAllow, UserSubnets, UslugaParent, UslugaRangeUsluga</code></li>
+<li><strong>Защита от 500</strong>: <code>try/except</code> в <code>_limit_edit_fk_querysets()</code></li>
+<li><strong>Убраны ненужные вкладки</strong>: <code>EventsStackCompact</code>, <code>UserSubnets</code> добавлены в <code>_EXCLUDE_FORMS['Users']</code></li>
+<li><strong>Переименована</strong> группа «Неопределено» → «Прочее»</li>
+</ol>
+
+<p><strong>Результат:</strong> 3 вкладки (было 11, из них 3 с 500 и 7 пустых)</p>
+
+<div class="files"><strong>Файлы:</strong> <code>billing/model/procs.py</code>, <code>billing/views/form.py</code></div>
+
+<!-- ════════════════════════════════════════════ -->
+<h2>6. Popup-select окно — стилизация</h2>
+
+<ul>
+<li>Размер окна увеличен: 700×750 → 900×700</li>
+<li>Таблица: зелёный header, hover подсветка, компактный шрифт</li>
+<li>Sidebar/navbar скрыты в popup</li>
+<li>Колонки 4+ скрыты для компактности</li>
+<li>Ошибка 500 на <code>/admin/select/Homes/</code> — исправлена (<code>getattr(settings, 'search_number', None)</code>)</li>
+</ul>
+
+<div class="files"><strong>Файлы:</strong> <code>billing/static/css/style_select.css</code>, <code>billing/static/js/script.js</code>, <code>billing/views/form.py</code></div>
+
+<!-- ════════════════════════════════════════════ -->
+<h2>7. NAS Развёртывание — OSS утилиты</h2>
+
+<h3>Установлены утилиты из Carbon 4</h3>
+<table>
+<tr><th>Компонент</th><th>Путь</th><th>Описание</th></tr>
+<tr><td>rtsh</td><td><code>/usr/local/bin/rtsh</code></td><td>Главная утилита управления конфигурациями NAS</td></tr>
+<tr><td>OSS команды (18 шт.)</td><td><code>/usr/local/bin/oss/</code></td><td>cfg_init, cfg_fill, cfg_make, cfg_upload, cfg_download, cfg_save, cfg_diff, cfg_status, cfg_log, acl_fill и др.</td></tr>
+<tr><td>OSS схемы (44 шт.)</td><td><code>/usr/local/share/oss/</code></td><td>mikrotik_simple, cisco_isg, redback, asterisk, eltex и др.</td></tr>
+<tr><td>git, rsync</td><td>apt packages</td><td>Необходимы для cfg_init и cfg_save</td></tr>
+</table>
+
+<h3>Инициализация NAS</h3>
+<p>Все 12 NAS инициализированы со схемой <code>mikrotik_simple_v1</code>:</p>
+
+<table>
+<tr><th>NAS</th><th>oss_pathname</th><th>INI файлы</th><th>Шаблоны</th></tr>
+<tr><td>Червленое</td><td>/var/oss/chervlenoe</td><td>4</td><td>5</td></tr>
+<tr><td>NAS GAP</td><td>/var/oss/nas_gap</td><td>4</td><td>5</td></tr>
+<tr><td>TOY</td><td>/var/oss/toy</td><td>4</td><td>5</td></tr>
+<tr><td>NAS RAM</td><td>/var/oss/nas_ram</td><td>4</td><td>5</td></tr>
+<tr><td>NAS NEO</td><td>/var/oss/nas_neo</td><td>4</td><td>5</td></tr>
+<tr><td>Malder</td><td>/var/oss/malder</td><td>4</td><td>5</td></tr>
+<tr><td>CCR</td><td>/var/oss/ccr</td><td>4</td><td>5</td></tr>
+<tr><td>PLOD</td><td>/var/oss/plod</td><td>4</td><td>5</td></tr>
+<tr><td>Test</td><td>/var/oss/test</td><td>4</td><td>5</td></tr>
+<tr><td>FAG</td><td>/var/oss/fag</td><td>4</td><td>5</td></tr>
+<tr><td>JOY</td><td>/var/oss/joy</td><td>4</td><td>5</td></tr>
+<tr><td>NAS_SUN</td><td>/var/oss/nas_sun</td><td>4</td><td>5</td></tr>
+</table>
+
+<p><strong>INI файлы:</strong> main.ini, firewall.ini, netflow.ini, pppoe.ini<br>
+<strong>Шаблоны (.tmplt):</strong> firewall_address_list.cfg, firewall_filter.cfg, firewall_nat.cfg, netflow.cfg, pppoe.cfg</p>
+
+<h3>Docker конфигурация</h3>
+<ul>
+<li><strong>Dockerfile</strong> — добавлены COPY для rtsh, oss_bin, oss_share + apt install git rsync</li>
+<li><strong>Volume</strong> <code>oss_data:/var/oss</code> — данные сохраняются между перезапусками контейнера</li>
+<li><strong>Gunicorn</strong> — <code>GUNICORN_WORKERS=1</code>, <code>GUNICORN_THREADS=8</code> (для корректной работы /run_script/ endpoint)</li>
+</ul>
+
+<h3>Исправления JS</h3>
+<ul>
+<li><strong>run_command()</strong> — исправлен парсинг JSON (typeof check для string/object)</li>
+<li><strong>bind_editor()</strong> — последовательная загрузка (setTimeout 2с/4с/6с) вместо параллельной</li>
+<li><strong>Модальное окно вывода</strong> — перенесено на уровень <code>&lt;body&gt;</code> (было внутри flex-контейнера → маленькое)</li>
+<li><strong>Кнопка «Обновить»</strong> — зелёная (<code>btn-success</code>)</li>
+<li><strong>Кнопка «Отмена»</strong> — красный контур (<code>btn-outline-danger</code>)</li>
+</ul>
+
+<div class="files"><strong>Файлы:</strong> <code>Dockerfile</code>, <code>docker-compose.prod.yml</code>, <code>billing/static/js/script.js</code>, <code>billing/templates/buttons_nas.html</code>, <code>billing/templates/shell-stdout.html</code>, <code>billing/templates/down_panel.html</code></div>
+
+<!-- ════════════════════════════════════════════ -->
+<h2>8. Абонент в header карточки Users</h2>
+
+<p>На странице <code>/admin/Users/&lt;id&gt;/</code> в верхней панели отображается кнопка-ссылка на абонента: «ООО «Волга-Лайт» (#5211)» → кликабельна, ведёт на карточку абонента.</p>
+
+<div class="files"><strong>Файл:</strong> <code>billing/templates/top_panel.html</code></div>
+
+<!-- ════════════════════════════════════════════ -->
+<h2>9. Порядок полей Users</h2>
+
+<p>Исправлен порядок полей на карточке Users:</p>
+<p><strong>Было:</strong> ... SWITCH → Номер квартиры → Дом<br>
+<strong>Стало:</strong> ... Дом → Номер квартиры → SWITCH → Switch порт</p>
+
+<p>Изменено через SQL: <code>FIELD_ORDER</code> в таблице <code>FRAMEWORK_FORM_GROUP_FIELDS</code>.</p>
+
+<!-- ════════════════════════════════════════════ -->
+<h2>Планы работ</h2>
+
+<ul>
+<li><a href="/reports/chat_tasks_29mart.html">Отчёт по задачам из Telegram-чата</a> — 25 задач, все выполнены</li>
+<li><a href="/reports/radius.html">RADIUS и NAS — отчёт по настройке</a></li>
+</ul>
+
+<p>Файлы планов (в репозитории):</p>
+<ul>
+<li><code>chat_tasks/plan-verstka.md</code> — отслеживание верстки всех страниц (светлая/тёмная тема, адаптивность)</li>
+<li><code>chat_tasks/plan-form-selects.md</code> — аудит FK-полей: Select2 vs Popup-select</li>
+<li><code>chat_tasks/plan-radius-nas.md</code> — RADIUS/NAS: сканирование, тестирование, 10 этапов</li>
+</ul>
+
+<div class="footer">
+СмИТ Биллинг v1.0.0 (build 37) &nbsp;|&nbsp; 29 марта 2026 г. &nbsp;|&nbsp; <a href="https://testbill.smit34.ru">testbill.smit34.ru</a>
+</div>
+</body>
+</html>

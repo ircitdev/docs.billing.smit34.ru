@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RADIUS и NAS — Отчёт по настройке | СмИТ Биллинг 1.0</title>
+<style>
+:root{--bg:#fff;--fg:#1a1a2e;--accent:#5BA89D;--border:#dee2e6;--code-bg:#f4f5f7;--card-bg:#fafbfc;--toc-bg:#f0f7f5}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;line-height:1.6;color:var(--fg);background:var(--bg);max-width:1100px;margin:0 auto;padding:20px 40px 60px}
+h1{font-size:2em;color:var(--accent);border-bottom:3px solid var(--accent);padding-bottom:10px;margin:30px 0 20px}
+h2{font-size:1.5em;color:#2c3e50;border-bottom:1px solid var(--border);padding-bottom:8px;margin:35px 0 15px}
+h3{font-size:1.2em;color:#34495e;margin:20px 0 10px}
+p{margin:8px 0}
+code{background:var(--code-bg);padding:2px 6px;border-radius:3px;font-family:'Cascadia Code','Fira Code',monospace;font-size:.9em}
+pre{background:#1e1e2e;color:#cdd6f4;padding:16px;border-radius:8px;overflow-x:auto;font-size:.85em;line-height:1.5;margin:12px 0}
+pre code{background:none;padding:0;color:inherit}
+table{border-collapse:collapse;width:100%;margin:12px 0}
+th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;font-size:.9em}
+th{background:var(--accent);color:#fff;font-weight:600}
+tr:nth-child(even){background:var(--card-bg)}
+.toc{background:var(--toc-bg);border:1px solid var(--accent);border-radius:8px;padding:20px 30px;margin:20px 0 30px}
+.toc h2{border:none;margin:0 0 10px;font-size:1.2em;color:var(--accent)}
+.toc ol{padding-left:20px}
+.toc li{margin:4px 0}
+.toc a{color:var(--accent);text-decoration:none}
+.toc a:hover{text-decoration:underline}
+.toc ol ol{margin-top:4px}
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.8em;font-weight:600;color:#fff}
+.badge-ok{background:#27ae60}
+.badge-warn{background:#f39c12}
+.badge-info{background:#3498db}
+.badge-new{background:#e74c3c}
+.card{background:var(--card-bg);border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin:12px 0}
+.card h4{margin:0 0 8px;color:var(--accent)}
+img{max-width:100%;border:1px solid var(--border);border-radius:6px;margin:10px 0;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.status-table td:first-child{font-weight:600;white-space:nowrap}
+.arch-diagram{background:#1e1e2e;color:#a6e3a1;padding:20px;border-radius:8px;font-family:monospace;font-size:.85em;line-height:1.6;overflow-x:auto;white-space:pre}
+.footer{margin-top:40px;padding-top:15px;border-top:1px solid var(--border);color:#888;font-size:.85em;text-align:center}
+.nav-top{display:flex;gap:20px;margin-bottom:20px;padding:10px 0;border-bottom:1px solid var(--border)}
+.nav-top a{color:var(--accent);text-decoration:none;font-weight:600}
+.nav-top a:hover{text-decoration:underline}
+.warn-box{background:#fef3cd;border:1px solid #ffc107;border-radius:6px;padding:12px 16px;margin:12px 0}
+.info-box{background:#d1ecf1;border:1px solid #0dcaf0;border-radius:6px;padding:12px 16px;margin:12px 0}
+</style>
+</head>
+<body>
+
+<div class="nav-top">
+  <a href="/reports/radius.html">Отчёт RADIUS</a>
+  <a href="/reports/radius.html#known-issues">Известные проблемы</a>
+  <a href="/reports/radius.html#instruction">Инструкция администратора</a>
+  <a href="/">Документация</a>
+</div>
+
+<h1>RADIUS и NAS — Отчёт по настройке</h1>
+<p><strong>Дата:</strong> 29 марта 2026 г. | <strong>Сервер:</strong> testbill.smit34.ru | <strong>Версия:</strong> СмИТ Биллинг v1.0.0 (build 37)</p>
+
+<div class="toc">
+<h2>Оглавление</h2>
+<ol>
+  <li><a href="#summary">Краткая сводка</a></li>
+  <li><a href="#architecture">Архитектура RADIUS</a></li>
+  <li><a href="#freeradius">Конфигурация FreeRADIUS</a>
+    <ol>
+      <li><a href="#fr-container">Docker-контейнер</a></li>
+      <li><a href="#fr-modules">Модули и виртуальные серверы</a></li>
+      <li><a href="#fr-clients">Клиенты (NAS)</a></li>
+      <li><a href="#fr-auth">Процесс авторизации</a></li>
+    </ol>
+  </li>
+  <li><a href="#models">Модели данных</a>
+    <ol>
+      <li><a href="#models-radius">RADIUS-модели</a></li>
+      <li><a href="#models-carbon4">Полнота моделей (Carbon 4)</a></li>
+    </ol>
+  </li>
+  <li><a href="#nas-settings">Настройки NAS</a>
+    <ol>
+      <li><a href="#nas-list">Список NAS</a></li>
+      <li><a href="#nas-fields">Поля авторизации и аккаунтинга</a></li>
+      <li><a href="#nas-deploy">Вкладка «Развёртывание»</a></li>
+    </ol>
+  </li>
+  <li><a href="#testing">Результаты тестирования</a></li>
+  <li><a href="#changes">Список изменений</a></li>
+  <li><a href="#known-issues">Известные проблемы</a></li>
+  <li><a href="#instruction">Инструкция администратора</a>
+    <ol>
+      <li><a href="#instr-nas">Управление NAS-устройствами</a></li>
+      <li><a href="#instr-user">Назначение IP абоненту</a></li>
+      <li><a href="#instr-radius">Проверка RADIUS</a></li>
+      <li><a href="#instr-deploy">Развёртывание конфигурации</a></li>
+    </ol>
+  </li>
+</ol>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<h2 id="summary">1. Краткая сводка</h2>
+
+<table class="status-table">
+<tr><td>FreeRADIUS</td><td><span class="badge badge-ok">Работает</span> v3.2.3 + rlm_python3</td></tr>
+<tr><td>Порты</td><td>1812/1813 (Internet), 2812/2813 (VoIP), 6812/6813 (IPTV)</td></tr>
+<tr><td>Авторизация</td><td><span class="badge badge-ok">Работает</span> PAP через Python3 модуль → PostgreSQL</td></tr>
+<tr><td>Аккаунтинг</td><td><span class="badge badge-ok">Работает</span> Start/Update/Stop → USERS_RADIUSAUTH</td></tr>
+<tr><td>NAS-устройства</td><td>13 шт., все с <code>radius_secret = smitsecretkey</code></td></tr>
+<tr><td>Пользователи</td><td>5563 записей в USERS_RADIUSAUTH</td></tr>
+<tr><td>Модели Django</td><td>135 (100% совместимость с Carbon 4 + 37 новых)</td></tr>
+<tr><td>Миграция</td><td>0047 (NAS fields) + 0048 (NAS FK fix) + 0049 (23 Carbon 4 models, fake-applied)</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════ -->
+<h2 id="architecture">2. Архитектура RADIUS</h2>
+
+<div class="arch-diagram">
+NAS-устройства (MikroTik/Cisco/Asterisk)
+    │
+    │ RADIUS Auth/Acct (UDP)
+    ▼
+┌─────────────────────────────────────────────┐
+│         FreeRADIUS 3.2.3 Container          │
+│                                             │
+│  ┌─────────────────────────────────────┐    │
+│  │ Virtual Server "default" (1812/13)  │    │
+│  │   authorize: python3 → internet.py  │    │
+│  │   authenticate: PAP/CHAP/MSCHAP     │    │
+│  │   post-auth: python3               │    │
+│  │   accounting: python3              │    │
+│  └─────────────────────────────────────┘    │
+│                                             │
+│  ┌───────────────────┐ ┌─────────────────┐  │
+│  │ python_voip       │ │ python_iptv     │  │
+│  │ (2812/13)         │ │ (6812/13)       │  │
+│  └───────────────────┘ └─────────────────┘  │
+│                                             │
+│  Unified rlm_python3 Module                 │
+│  dispatcher.py → internet/voip/iptv.py      │
+└──────────────────┬──────────────────────────┘
+                   │ Django ORM
+                   ▼
+┌─────────────────────────────────────────────┐
+│              PostgreSQL 16                   │
+│                                             │
+│  users (login, psw, ip, nas_id, enabled)    │
+│  nas (ip, radius_secret, auth_*, acc_*)     │
+│  USERS_RADIUSAUTH (session, logged, octets) │
+│  NAS_RADIUS_PARAMS (custom reply attrs)     │
+│  TARIF_RADIUS_PARAMS (tariff reply attrs)   │
+└─────────────────────────────────────────────┘
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<h2 id="freeradius">3. Конфигурация FreeRADIUS</h2>
+
+<h3 id="fr-container">3.1. Docker-контейнер</h3>
+
+<div class="card">
+<h4>docker-compose.prod.yml — сервис freeradius</h4>
+<pre><code>freeradius:
+  build:
+    context: .
+    dockerfile: docker/freeradius/Dockerfile
+  ports:
+    - "1812:1812/udp"   # Internet Auth
+    - "1813:1813/udp"   # Internet Acct
+    - "2812:2812/udp"   # VoIP Auth
+    - "2813:2813/udp"   # VoIP Acct
+    - "6812:6812/udp"   # IPTV Auth
+    - "6813:6813/udp"   # IPTV Acct
+  env_file: .env
+  depends_on:
+    - db
+  restart: unless-stopped
+
+# Примечание: контейнер также указан в docker-compose.prod.yml
+# на testbill.smit34.ru с аналогичной конфигурацией</code></pre>
+</div>
+
+<p>Базовый образ: <code>freeradius/freeradius-server:3.2.3</code> с Python 3, Django 4.2, psycopg2.</p>
+
+<div class="warn-box">
+<strong>Важно:</strong> FreeRADIUS 3.x поддерживает только <strong>один</strong> экземпляр <code>rlm_python3</code>. Дублирование модулей (<code>python3_voip</code>, <code>python3_iptv</code>) вызывает crash: <code>drop_gil: GIL is not locked</code>. Все запросы маршрутизируются через единый <code>dispatcher.py</code>.
+</div>
+
+<p>Thread pool пропатчен для однопоточного режима (Python GIL):</p>
+<pre><code>start_servers = 1
+max_servers = 1
+min_spare_servers = 0
+max_spare_servers = 0</code></pre>
+
+<h3 id="fr-modules">3.2. Модули и виртуальные серверы</h3>
+
+<table>
+<tr><th>Файл</th><th>Назначение</th></tr>
+<tr><td><code>mods-enabled/python3</code></td><td>Единый rlm_python3 → dispatcher.py</td></tr>
+<tr><td><code>sites-enabled/default</code></td><td>Internet: порты 1812/1813, PAP/CHAP/MSCHAP + python3</td></tr>
+<tr><td><code>sites-enabled/python_voip</code></td><td>VoIP: порты 2812/2813, Digest + python3</td></tr>
+<tr><td><code>sites-enabled/python_iptv</code></td><td>IPTV: порты 6812/6813, CHAP/Digest + python3</td></tr>
+</table>
+
+<h3 id="fr-clients">3.3. Клиенты (NAS)</h3>
+
+<p><code>clients.conf</code> генерируется автоматически при старте контейнера скриптом <code>entrypoint.sh</code>:</p>
+<pre><code>#!/bin/bash
+# entrypoint.sh — generates clients.conf from billing DB
+python3 -c "
+import django; django.setup()
+from billing.models import Nas
+for nas in Nas.objects.all():
+    # write client block for each NAS
+"
+exec freeradius -f "$@"</code></pre>
+
+<p>Кириллические имена NAS фильтруются (только ASCII). Добавляется wildcard-клиент <code>0.0.0.0/0</code> с секретом <code>smitsecretkey</code> для тестирования.</p>
+
+<h3 id="fr-auth">3.4. Процесс авторизации</h3>
+
+<p>Файл: <code>radius_python/internet.py</code></p>
+
+<div class="card">
+<h4>authorize(p) — Авторизация</h4>
+<ol>
+<li>Извлекает <code>User-Name</code> из RADIUS-пакета</li>
+<li>Ищет пользователя в <code>Users</code> по логину (с учётом ведущих нулей)</li>
+<li>Проверяет <code>enabled</code> статус, <code>reject_block</code> на NAS</li>
+<li>Возвращает <code>Cleartext-Password</code> из поля <code>psw</code></li>
+<li>Добавляет <code>Framed-IP-Address</code> из поля <code>ip</code></li>
+<li>Добавляет атрибуты из <code>NasRadiusParams</code> и <code>TarifRadiusParams</code></li>
+</ol>
+</div>
+
+<div class="card">
+<h4>accounting(p) — Аккаунтинг</h4>
+<ol>
+<li>Обрабатывает <code>Acct-Status-Type</code>: Start, Interim-Update, Stop</li>
+<li>Обновляет <code>USERS_RADIUSAUTH</code>: logged, session_id, octets, radius_update</li>
+<li>При Stop: сбрасывает <code>Users.logged = False</code></li>
+</ol>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<h2 id="models">4. Модели данных</h2>
+
+<h3 id="models-radius">4.1. RADIUS-модели</h3>
+
+<table>
+<tr><th>Модель</th><th>Таблица</th><th>Назначение</th></tr>
+<tr><td>UsersRadiusauth</td><td>USERS_RADIUSAUTH</td><td>Активные RADIUS-сессии (logged, session_id, octets)</td></tr>
+<tr><td>NasRadiusParams</td><td>NAS_RADIUS_PARAMS</td><td>Пользовательские RADIUS-атрибуты по NAS</td></tr>
+<tr><td>TarifRadiusParams</td><td>TARIF_RADIUS_PARAMS</td><td>RADIUS-атрибуты по тарифу</td></tr>
+<tr><td>VoipLog</td><td>VOIP_LOG</td><td>CDR записи VoIP-звонков</td></tr>
+<tr><td>VoipNas</td><td>VOIP_NAS</td><td>VoIP-специфичные NAS</td></tr>
+<tr><td>AbonentsSpeed</td><td>ABONENTS_SPEED</td><td>QoS скорости абонентов</td></tr>
+</table>
+
+<h3 id="models-carbon4">4.2. Полнота моделей (Carbon 4)</h3>
+
+<p>Добавлено <strong>23 модели</strong> (миграция 0049) — 22 из оригинального Carbon 4 + SystemSettings:</p>
+
+<table>
+<tr><th>Модель</th><th>Таблица</th><th>Описание</th></tr>
+<tr><td>AbonentsSpeed</td><td>ABONENTS_SPEED</td><td>QoS скорости</td></tr>
+<tr><td>AccountStack</td><td>ACCOUNT_STACK</td><td>Стек операций ЛС</td></tr>
+<tr><td>AccountStackType</td><td>ACCOUNT_STACK_TYPE</td><td>Типы операций стека</td></tr>
+<tr><td>AdminUsersProfile</td><td>ADMIN_USERS_PROFILE</td><td>Профиль администратора</td></tr>
+<tr><td>AuditEvents</td><td>AUDIT_EVENTS</td><td>Типы событий аудита</td></tr>
+<tr><td>CategoryDirections</td><td>CATEGORY_DIRECTIONS</td><td>VoIP категория→направление</td></tr>
+<tr><td>ContractNumberPrefixes</td><td>CONTRACT_NUMBER_PREFIXES</td><td>Префиксы договоров</td></tr>
+<tr><td>CrmTaskType</td><td>CRM_TASK_TYPE</td><td>Типы CRM задач</td></tr>
+<tr><td>Discounts</td><td>DISCOUNTS</td><td>Скидки/наценки</td></tr>
+<tr><td>EventsStackCompact</td><td>EVENTS_STACK_COMPACT</td><td>Компактные RADIUS события</td></tr>
+<tr><td>IptvType</td><td>IPTV_TYPE</td><td>Типы IPTV</td></tr>
+<tr><td>News</td><td>NEWS</td><td>Новости</td></tr>
+<tr><td>SensorsCounters</td><td>SENSORS_COUNTERS</td><td>Счётчики датчиков</td></tr>
+<tr><td>SensorsLog</td><td>SENSORS_LOG</td><td>Журнал датчиков</td></tr>
+<tr><td>TarifPlanset</td><td>TARIF_PLANSET</td><td>Тарифные планы</td></tr>
+<tr><td>TarifUsersUslugaAllow</td><td>TARIF_USERS_USLUGA_ALLOW</td><td>Разрешённые услуги</td></tr>
+<tr><td>TrafficBill</td><td>TRAFFIC</td><td>Биллинг трафика</td></tr>
+<tr><td>UserSubnets</td><td>USER_SUBNETS</td><td>Подсети пользователей</td></tr>
+<tr><td>UsersRadiusauth</td><td>USERS_RADIUSAUTH</td><td>RADIUS-сессии</td></tr>
+<tr><td>UslugaParent</td><td>USLUGA_PARENT</td><td>Иерархия услуг</td></tr>
+<tr><td>UslugaRangeUsluga</td><td>USLUGA_RANGE_USLUGA</td><td>Связь линейка→услуга</td></tr>
+<tr><td>VoipType</td><td>VOIP_TYPE</td><td>Типы VoIP</td></tr>
+<tr><td>SystemSettings</td><td>system_settings</td><td>Системные настройки (key/value)</td></tr>
+</table>
+
+<p><strong>Итого: 135 моделей</strong> (98 из Carbon 4 + 37 новых). 22 добавленные модели Carbon 4 имеют <code>managed=False</code> — таблицы создаются по необходимости. SystemSettings — новая модель (<code>managed=True</code>).</p>
+
+<!-- ═══════════════════════════════════════════ -->
+<h2 id="nas-settings">5. Настройки NAS</h2>
+
+<h3 id="nas-list">5.1. Список NAS</h3>
+
+<img src="/img/report_nas_list.jpg" alt="Список NAS-устройств">
+
+<table>
+<tr><th>ID</th><th>Имя</th><th>IP</th><th>Тип</th><th>RADIUS Secret</th></tr>
+<tr><td>5</td><td>Червленое</td><td>10.233.1.101</td><td>mikrotik6</td><td>smitsecretkey</td></tr>
+<tr><td>11</td><td>NAS GAP</td><td>10.100.100.69</td><td>mikrotik6</td><td>smitsecretkey</td></tr>
+<tr><td>19</td><td>TOY</td><td>10.233.1.90</td><td>mikrotik6</td><td>smitsecretkey</td></tr>
+<tr><td>35</td><td>NAS RAM</td><td>10.233.1.94</td><td>mikrotik6</td><td>smitsecretkey</td></tr>
+<tr><td>38</td><td>NAS NEO</td><td>10.100.100.21</td><td>mikrotik6</td><td>smitsecretkey</td></tr>
+<tr><td>49</td><td>Malder</td><td>37.29.7.151</td><td>mikrotik6</td><td>smitsecretkey</td></tr>
+<tr><td>50</td><td>CCR</td><td>10.100.100.46</td><td>mikrotik6</td><td>smitsecretkey</td></tr>
+<tr><td>51</td><td>PLOD</td><td>178.35.228.67</td><td>mikrotik6</td><td>smitsecretkey</td></tr>
+<tr><td>52</td><td>bill</td><td>127.0.0.1</td><td>common_ssh</td><td>smitsecretkey</td></tr>
+<tr><td>53</td><td>Test</td><td>83.234.21.201</td><td>mikrotik6</td><td>smitsecretkey</td></tr>
+<tr><td>54</td><td>FAG</td><td>10.100.100.30</td><td>mikrotik6</td><td>smitsecretkey</td></tr>
+<tr><td>55</td><td>JOY</td><td>10.100.100.25</td><td>mikrotik6</td><td>smitsecretkey</td></tr>
+<tr><td>56</td><td>NAS_SUN</td><td>10.100.100.94</td><td>mikrotik6</td><td>smitsecretkey</td></tr>
+</table>
+
+<h3 id="nas-fields">5.2. Поля авторизации и аккаунтинга</h3>
+
+<p>Для всех MikroTik NAS установлены следующие RADIUS-настройки:</p>
+
+<table>
+<tr><th>Поле</th><th>Значение</th><th>Описание</th></tr>
+<tr><td>auth_login</td><td><span class="badge badge-ok">True</span></td><td>Авторизация по логину (PPPoE/VPN)</td></tr>
+<tr><td>acc_start_login</td><td><span class="badge badge-ok">True</span></td><td>Accounting Start по логину</td></tr>
+<tr><td>acc_start_sid</td><td><span class="badge badge-ok">True</span></td><td>Accounting Start по Session-ID</td></tr>
+<tr><td>acc_update_sid</td><td><span class="badge badge-ok">True</span></td><td>Accounting Update по Session-ID</td></tr>
+<tr><td>acc_stop_sid</td><td><span class="badge badge-ok">True</span></td><td>Accounting Stop по Session-ID</td></tr>
+<tr><td>reject_block</td><td><span class="badge badge-ok">True</span></td><td>Отклонять заблокированных</td></tr>
+<tr><td>coa_port</td><td>3799</td><td>Порт Change of Authorization</td></tr>
+<tr><td>radius_secret</td><td>smitsecretkey</td><td>Общий секрет RADIUS</td></tr>
+</table>
+
+<h3 id="nas-deploy">5.3. Вкладка «Развёртывание»</h3>
+
+<img src="/img/report_nas_deploy.jpg" alt="Вкладка Развёртывание">
+
+<p>Вертикальные под-вкладки (как в оригинальном Carbon 4):</p>
+<ul>
+<li><strong>Управление</strong> — 5 шагов развёртывания (init → fill → download → make → upload → save)</li>
+<li><strong>Настройка</strong> — редактирование INI-файлов</li>
+<li><strong>Шаблоны</strong> — редактирование .tmplt файлов</li>
+<li><strong>Upload cfg</strong> — конфигурации для загрузки</li>
+<li><strong>Download cfg</strong> — файлы с оборудования</li>
+</ul>
+
+<img src="/img/report_nas_config_tab.jpg" alt="Вкладка Настройка">
+
+<!-- ═══════════════════════════════════════════ -->
+<h2 id="testing">6. Результаты тестирования</h2>
+
+<table>
+<tr><th>Тест</th><th>Команда</th><th>Результат</th></tr>
+<tr><td>Валидный пользователь</td><td><code>radtest 2105 2243179 127.0.0.1 0 testing123</code></td><td><span class="badge badge-ok">Access-Accept</span> + Framed-IP-Address=10.99.56.101</td></tr>
+<tr><td>Другой пользователь</td><td><code>radtest 77778 98482018 127.0.0.1 0 testing123</code></td><td><span class="badge badge-ok">Access-Accept</span> + Framed-IP-Address=10.99.8.119</td></tr>
+<tr><td>С ведущим нулём</td><td><code>radtest 099999 1136850024 127.0.0.1 0 testing123</code></td><td><span class="badge badge-ok">Access-Accept</span> + Framed-IP-Address=10.99.40.46</td></tr>
+<tr><td>Неверный пароль</td><td><code>radtest 2105 wrongpassword 127.0.0.1 0 testing123</code></td><td><span class="badge badge-new">Access-Reject</span></td></tr>
+<tr><td>Несуществующий</td><td><code>radtest 999999 password 127.0.0.1 0 testing123</code></td><td><span class="badge badge-new">Access-Reject</span></td></tr>
+<tr><td>Django check</td><td><code>manage.py check --deploy</code></td><td><span class="badge badge-ok">0 ошибок</span></td></tr>
+<tr><td>Миграции</td><td><code>manage.py makemigrations --check</code></td><td><span class="badge badge-ok">No changes</span></td></tr>
+<tr><td>Модели</td><td>apps.get_app_config('billing').get_models()</td><td><span class="badge badge-ok">135 моделей</span></td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════ -->
+<h2 id="changes">7. Список изменений</h2>
+
+<table>
+<tr><th>Файл</th><th>Изменение</th></tr>
+<tr><td>radius_python/internet.py</td><td><span class="badge badge-new">Новый</span> Полная реализация authorize + post_auth + accounting</td></tr>
+<tr><td>radius_python/dispatcher.py</td><td>Создание /var/log/django в _ensure_django()</td></tr>
+<tr><td>docker/freeradius/entrypoint.sh</td><td><span class="badge badge-new">Новый</span> Генерация clients.conf из БД</td></tr>
+<tr><td>docker/freeradius/Dockerfile</td><td>Entrypoint, chmod 666 error.log, COPY paths fix</td></tr>
+<tr><td>docker/freeradius/sites-enabled/default</td><td>Добавлен python3 в authorize и accounting</td></tr>
+<tr><td>docker/freeradius/mods-enabled/python3_voip</td><td><span class="badge badge-new">Удалён</span> (GIL crash fix)</td></tr>
+<tr><td>docker/freeradius/mods-enabled/python3_iptv</td><td><span class="badge badge-new">Удалён</span> (GIL crash fix)</td></tr>
+<tr><td>billing/models/stubs.py</td><td>+22 модели Carbon 4 (544 строк)</td></tr>
+<tr><td>billing/models/__init__.py</td><td>Импорт 22 новых моделей</td></tr>
+<tr><td>billing/migrations/0047_*.py</td><td><span class="badge badge-new">Новый</span> NAS: 12 недостающих полей (OSS, telnet, billing_ip_pull и др.)</td></tr>
+<tr><td>billing/migrations/0048_*.py</td><td><span class="badge badge-new">Новый</span> NAS: исправление FK-полей (IpPull → billing/cabinet)</td></tr>
+<tr><td>billing/migrations/0049_*.py</td><td><span class="badge badge-new">Новый</span> 23 модели (22 Carbon 4 + SystemSettings, fake-applied)</td></tr>
+<tr><td>billing/templates/buttons_nas.html</td><td>Вертикальные под-вкладки (was horizontal)</td></tr>
+<tr><td>billing/static/js/script.js</td><td>Кнопка «Обновить» — btn-primary, show save</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════ -->
+<h2 id="known-issues">8. Известные проблемы</h2>
+
+<table>
+<tr><th>Проблема</th><th>Статус</th><th>Описание</th></tr>
+<tr>
+  <td>Сохранение карточки Users (IP, NAS)</td>
+  <td><span class="badge badge-warn">В работе</span></td>
+  <td>При редактировании Users на <code>/admin/Users/&lt;id&gt;/</code> изменения полей IP и NAS не сохраняются через форму. Прямое обновление через <code>.save()</code> работает. Причина: валидация формы (<code>process_post()</code> в <code>form.py</code>) — добавлено отладочное логирование для диагностики.</td>
+</tr>
+<tr>
+  <td>FrameworkFormGroupFields дубли</td>
+  <td><span class="badge badge-info">Мониторинг</span></td>
+  <td>Таблица содержит 341 запись, многие дублируются. Может влиять на генерацию полей формы. Рекомендация: очистить дубликаты через SQL.</td>
+</tr>
+</table>
+
+<!-- ═══════════════════════════════════════════ -->
+<h2 id="instruction">9. Инструкция администратора</h2>
+
+<h3 id="instr-nas">9.1. Управление NAS-устройствами</h3>
+
+<p>Перейдите в <strong>Оборудование → NAS</strong> (<code>/admin/equipment/Nas/?object_type=1</code>).</p>
+
+<img src="/img/report_nas_list.jpg" alt="Список NAS">
+
+<p>Для редактирования NAS кликните на его имя. Откроется карточка с вкладками:</p>
+
+<img src="/img/report_nas_card.jpg" alt="Карточка NAS">
+
+<h4>Ключевые поля NAS для RADIUS:</h4>
+<ul>
+<li><strong>IP</strong> — IP-адрес NAS-устройства (MikroTik, Cisco и т.д.)</li>
+<li><strong>RADIUS Secret</strong> — общий секрет для RADIUS (должен совпадать на NAS и в биллинге)</li>
+<li><strong>Тип NAS</strong> — выберите тип оборудования (mikrotik6, common_ssh и т.д.)</li>
+<li><strong>CoA порт</strong> — порт Change of Authorization (обычно 3799)</li>
+</ul>
+
+<h4>Настройки авторизации (вкладка «Расширенные»):</h4>
+<ul>
+<li><strong>auth_login</strong> — авторизация по логину (PPPoE/VPN) — <em>обязательно для MikroTik</em></li>
+<li><strong>reject_block</strong> — отклонять заблокированных абонентов при RADIUS-запросе</li>
+</ul>
+
+<h4>Настройки аккаунтинга:</h4>
+<ul>
+<li><strong>acc_start_sid</strong> — учёт начала сессии по Session-ID</li>
+<li><strong>acc_update_sid</strong> — промежуточные обновления по Session-ID</li>
+<li><strong>acc_stop_sid</strong> — завершение сессии по Session-ID</li>
+</ul>
+
+<div class="info-box">
+<strong>Примечание:</strong> При добавлении нового NAS необходимо перезапустить контейнер FreeRADIUS, чтобы обновить <code>clients.conf</code>:
+<pre><code>docker compose -f docker-compose.prod.yml restart freeradius</code></pre>
+</div>
+
+<h3 id="instr-user">9.2. Назначение IP абоненту</h3>
+
+<p>Чтобы назначить IP-адрес и привязать абонента к NAS:</p>
+
+<ol>
+<li>Перейдите в <strong>Абоненты</strong>, найдите нужного абонента</li>
+<li>На вкладке <strong>Учётные записи</strong> откройте карточку пользователя (Users)</li>
+</ol>
+
+<img src="/img/report_users_card.jpg" alt="Карточка пользователя">
+
+<ol start="3">
+<li>Заполните поля:
+  <ul>
+    <li><strong>IPv4</strong> — статический IP-адрес абонента (например <code>10.77.0.100</code>)</li>
+    <li><strong>Nas</strong> — выберите NAS-устройство из выпадающего списка</li>
+    <li><strong>Тип авторизации</strong> — выберите «по vpn pptp, pppoe» (ID=100) или «любая через RADIUS» (ID=6)</li>
+    <li><strong>Маска</strong> — маска подсети (обычно 32 для одиночного IP)</li>
+  </ul>
+</li>
+<li>Нажмите зелёную кнопку <strong>«Сохранить»</strong> в верхней панели</li>
+</ol>
+
+<div class="warn-box">
+<strong>Важно:</strong> IP-адрес будет автоматически возвращён в RADIUS-ответе как атрибут <code>Framed-IP-Address</code>. Убедитесь, что IP уникален в рамках NAS.
+</div>
+
+<h4>Пул IP адресов</h4>
+<p>В правой колонке карточки пользователя можно указать:</p>
+<ul>
+<li><strong>Пул IP адресов</strong> — пул для динамической выдачи (если не задан статический IP)</li>
+<li><strong>Host Пул</strong> — пул для VPN-хостов</li>
+<li><strong>MAC</strong> — MAC-адрес оборудования абонента</li>
+</ul>
+
+<h3 id="instr-radius">9.3. Проверка RADIUS</h3>
+
+<p>Для проверки авторизации абонента подключитесь к контейнеру FreeRADIUS и выполните:</p>
+
+<pre><code># Войти в контейнер
+docker compose -f docker-compose.prod.yml exec freeradius bash
+
+# Тест авторизации (логин, пароль, сервер, порт, секрет)
+radtest &lt;логин&gt; &lt;пароль&gt; 127.0.0.1 0 testing123
+
+# Пример:
+radtest 2105 2243179 127.0.0.1 0 testing123</code></pre>
+
+<p>Ожидаемый результат для валидного абонента:</p>
+<pre><code>Received Access-Accept Id 17 from 127.0.0.1:714
+    Framed-IP-Address = 10.99.56.101</code></pre>
+
+<p>Для заблокированного или несуществующего:</p>
+<pre><code>Received Access-Reject Id 110 from 127.0.0.1:714</code></pre>
+
+<h3 id="instr-deploy">9.4. Развёртывание конфигурации на NAS</h3>
+
+<p>Вкладка <strong>Развёртывание</strong> в карточке NAS позволяет управлять конфигурацией MikroTik:</p>
+
+<img src="/img/report_nas_deploy.jpg" alt="Развёртывание">
+
+<h4>Шаги развёртывания:</h4>
+<ol>
+<li><strong>Шаг 1 — Инициализация:</strong> <code>rtsh cfg init</code> → создаёт каталог, <code>rtsh cfg fill</code> → заполняет INI данными из биллинга</li>
+<li><strong>Шаг 2 — Сохранение текущей:</strong> <code>rtsh cfg download</code> → скачивает конфигурацию с оборудования</li>
+<li><strong>Шаг 3 — Подготовка:</strong> <code>rtsh cfg make</code> → генерирует конфигурацию для загрузки</li>
+<li><strong>Шаг 4 — Загрузка:</strong> <code>rtsh cfg upload</code> → загружает конфигурацию в оборудование</li>
+<li><strong>Шаг 5 — Проверка:</strong> <code>rtsh cfg download</code> + <code>rtsh cfg diff cur</code> → сравнивает результат</li>
+</ol>
+
+<h4>Редактирование файлов:</h4>
+<p>Под-вкладки <strong>Настройка</strong>, <strong>Шаблоны</strong>, <strong>Upload cfg</strong>, <strong>Download cfg</strong> позволяют просматривать и редактировать конфигурационные файлы прямо в браузере:</p>
+<ul>
+<li>Кликните на имя файла в списке слева</li>
+<li>Отредактируйте содержимое в текстовом поле справа</li>
+<li>Нажмите <strong>«Сохранить»</strong> под текстовым полем</li>
+<li>Для обновления списка файлов нажмите <strong>«Обновить»</strong></li>
+</ul>
+
+<div class="footer">
+СмИТ Биллинг v1.0.0 (build 37) | Отчёт обновлён 29 марта 2026 г. | <a href="https://testbill.smit34.ru">testbill.smit34.ru</a>
+</div>
+
+</body>
+</html>

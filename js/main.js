@@ -1,5 +1,17 @@
 // СмИТ Биллинг 1.0 Docs — navigation + theme toggle + submenu
 document.addEventListener('DOMContentLoaded', function () {
+
+  // --- Header logo click → smooth scroll to top ---
+  var headerLogo = document.querySelector('header.header .logo');
+  if (headerLogo) {
+    headerLogo.classList.add('logo-scroll-top');
+    headerLogo.style.cursor = 'pointer';
+    headerLogo.addEventListener('click', function (e) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
   // --- Theme toggle ---
   var html = document.documentElement;
   var saved = localStorage.getItem('smit-docs-theme');
@@ -14,6 +26,18 @@ document.addEventListener('DOMContentLoaded', function () {
       html.setAttribute('data-theme', next);
       localStorage.setItem('smit-docs-theme', next);
     });
+
+  // Sidebar theme toggle (mobile)
+  var sidebarTheme = document.querySelector('.sidebar-theme-toggle');
+  if (sidebarTheme) {
+    sidebarTheme.addEventListener('click', function () {
+      var current = html.getAttribute('data-theme');
+      var next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('smit-docs-theme', next);
+    });
+  }
+
   }
 
   // --- Mobile sidebar toggle ---
