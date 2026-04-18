@@ -107,7 +107,12 @@ a:hover { color: var(--primary-dark); text-decoration: underline; }
   position: fixed;
   top: 0; left: 0; right: 0;
   height: var(--header-height);
-  background: linear-gradient(135deg, var(--header-grad-a), var(--header-grad-b));
+  background: linear-gradient(135deg,
+    var(--header-grad-a),
+    var(--header-grad-b),
+    var(--header-grad-a));
+  background-size: 200% 200%;
+  animation: header-gradient-shift 18s ease-in-out infinite;
   color: var(--text-white);
   display: flex;
   align-items: center;
@@ -116,8 +121,20 @@ a:hover { color: var(--primary-dark); text-decoration: underline; }
   box-shadow: 0 1px 3px rgba(15,23,42,.06), 0 4px 12px rgba(15,23,42,.08);
 }
 
+@keyframes header-gradient-shift {
+  0%   { background-position:   0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position:   0% 50%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header { animation: none; }
+}
+
 [data-theme="dark"] .header {
-  background: linear-gradient(135deg, #0f172a, #1e293b);
+  background: linear-gradient(135deg, #0f172a, #1e293b, #0f172a);
+  background-size: 200% 200%;
+  animation: header-gradient-shift 18s ease-in-out infinite;
   border-bottom: 1px solid #334155;
 }
 

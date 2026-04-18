@@ -41,7 +41,9 @@ PYEOF
 )
 
 echo "=== 2. Mirror to $MIRROR ==="
-rsync -a --delete --exclude=.git "$HERE/" "$MIRROR/"
+# Clear mirror (keep .git), then copy master content
+find "$MIRROR" -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
+cp -r "$HERE"/. "$MIRROR"/
 echo "  synced"
 
 echo "=== 3. Commit + push in mirror repo ==="
