@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 214)</title>
+  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 221)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 214)">
+  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 221)">
   <meta property="og:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/billing.html">
   <meta property="og:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 214)">
+  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 221)">
   <meta name="twitter:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta name="twitter:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
   <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
@@ -606,7 +606,9 @@ docker compose up -d</code></pre>
     <li><a href="#finance-operations">Финансовые операции. Учёт НДС</a></li>
     <li><a href="#templates">Шаблоны абонентов и учётных записей</a></li>
     <li><a href="#block-types">Типы блокировок пользователей</a></li>
-    <li><a href="#termination">Расторжение договора</a></li>
+    <li><a href="#termination">Расторжение договора</a>
+      <ul><li><a href="#abonent-restore">Восстановление из корзины</a></li></ul>
+    </li>
     <li><a href="#edit-subscriber">Редактирование абонента</a></li>
     <li><a href="#grace-period">Льготный период оплаты</a></li>
     <li><a href="#retroactive">Подключение абонента задним числом</a></li>
@@ -632,7 +634,9 @@ docker compose up -d</code></pre>
     <li><a href="#finance-operations">Финансовые операции. Учёт НДС</a></li>
     <li><a href="#templates">Шаблоны абонентов</a></li>
     <li><a href="#block-types">Типы блокировок</a></li>
-    <li><a href="#termination">Расторжение договора</a></li>
+    <li><a href="#termination">Расторжение договора</a>
+      <ul><li><a href="#abonent-restore">Восстановление</a></li></ul>
+    </li>
     <li><a href="#edit-subscriber">Редактирование абонента</a></li>
     <li><a href="#grace-period">Льготный период</a></li>
     <li><a href="#retroactive">Подключение задним числом</a></li>
@@ -900,8 +904,16 @@ docker compose up -d</code></pre>
   </ol>
   <h4>По инициативе оператора</h4>
   <p>Выполните процедуру выше, затем установите подстатус «По инициативе оператора».</p>
-  <h4>Отмена расторжения</h4>
-  <p>Восстановите абонента из корзины — операция расторжения будет отменена.</p>
+  <h4 id="abonent-restore">Восстановление абонента из корзины</h4>
+  <p>Карточка удалённого абонента показывает серый баннер с кнопкой <strong>Восстановить</strong>. Операция:</p>
+  <ul>
+    <li>Устанавливает <code>deleted=False</code>, <code>enabled=True</code> на абоненте</li>
+    <li>Повторно включает все учётные записи (<code>Users.enabled=True</code>)</li>
+    <li>Повторно включает все услуги (<code>UsersUsluga.enabled=True</code>, только без флага <code>deleted</code>)</li>
+    <li>Добавляет запись в аудит: «Абонент восстановлен из корзины»</li>
+  </ul>
+  <img src="../img/v221/abonent_restore_banner.png" alt="Баннер восстановления удалённого абонента" class="screenshot">
+  <p>Эндпоинт: <code>POST /admin/Abonents/{id}/restore/</code> — возвращает <code>{"ok": true}</code>, страница перезагружается.</p>
 
   <!-- Редактирование абонента -->
   <h3 id="edit-subscriber">Редактирование абонента</h3>
@@ -2810,7 +2822,7 @@ chmod +x restore.sh
 
   <h3 id="audit">10.1. Аудит</h3>
   <p>Полнофункциональный журнал аудита с бесконечной прокруткой и серверной фильтрацией. URL: <code>/admin/reports/AuditOperations/</code></p>
-  <img src="../img/v140/audit_operations.png" alt="Аудит операций" class="screenshot">
+  <img src="../img/v221/audit_full.png" alt="Аудит операций" class="screenshot">
 
   <h4>Фильтры</h4>
   <ul>
@@ -2844,7 +2856,7 @@ chmod +x restore.sh
 
   <h3 id="report-constructor">10.3. Библиотека отчётов</h3>
   <p>Раздел <code>/admin/reports/AdminCustomReports/</code> — 63 SQL-отчёта для оперативной работы оператора. Каждый отчёт имеет краткое описание, тип (категорию) и может быть добавлен в избранное.</p>
-  <img src="../img/v100/reports_constructor_list.png" alt="Конструктор отчётов — список" class="screenshot">
+  <img src="../img/v221/reports_library_list.png" alt="Библиотека отчётов — список" class="screenshot">
 
   <h4>Описания отчётов</h4>
   <p>Колонка «SQL-запрос» заменена на «Описание» — краткий текст о содержимом отчёта. SQL по-прежнему доступен в модальном окне редактирования. Описания написаны для всех 63 отчётов.</p>
@@ -2867,7 +2879,7 @@ chmod +x restore.sh
 
   <h4>Модальное окно редактирования</h4>
   <p>Создание и редактирование отчётов — в модальном окне (modal-xl). Поля: название, описание, тип, SQL-запрос (со счётчиком строк), шаблон, разрешение ЛК.</p>
-  <img src="../img/v100/reports_constructor_modal.png" alt="Модальное окно редактирования" class="screenshot">
+  <img src="../img/v221/reports_library_modal.png" alt="Модальное окно редактирования отчёта" class="screenshot">
 
   <h4>Параметры с календарём</h4>
   <p>Поля ввода дат (Начало/Конец периода) автоматически получают нативный календарь браузера. Распознаются по label-у и имени поля.</p>
@@ -3171,7 +3183,7 @@ chmod +x restore.sh
 
   <!-- ===== 9. Справочники ===== -->
   <h2 id="dictionaries">11. Справочники</h2>
-  <p>Справочники СмИТ Биллинг v1.6.0 (build 214) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
+  <p>Справочники СмИТ Биллинг v1.6.0 (build 221) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
   <div class="section-toc">
   <details open>
     <summary><strong>Содержание раздела</strong></summary>
@@ -3476,7 +3488,9 @@ ACL_BLOCKED_GROUPS = ACL_DISABLED</code></pre>
     <summary><strong>Содержание раздела</strong></summary>
     <ul>
       <li><a href="#modal-finops">13.1. Финансовые операции — список и модал создания</a></li>
-      <li><a href="#modal-users">13.2. Учётная запись — модал с вкладками</a></li>
+      <li><a href="#modal-users">13.2. Учётная запись — модал с вкладками</a>
+        <ul><li><a href="#create-address">13.2а. Быстрое создание адреса</a></li></ul>
+      </li>
       <li><a href="#modal-service-edit">13.3. Редактирование услуги</a></li>
       <li><a href="#modal-service-add">13.4. Добавление услуги</a></li>
     </ul>
@@ -3505,8 +3519,17 @@ ACL_BLOCKED_GROUPS = ACL_DISABLED</code></pre>
     <li><strong>Адрес</strong> — Дом (Select2 AJAX по <code>/rest_api/v2/Homes/</code>), номер квартиры.</li>
     <li><strong>RADIUS</strong> — read-only таблица последних 20 записей из <code>UsersRadiusauth</code>: NAS, IP, session, входящий/исходящий трафик (форматированный: Б/КБ/МБ/ГБ), время обновления, индикатор online.</li>
   </ul>
-  <img src="../img/v100/users_modal_main.png" alt="Модал учётной записи — вкладка Основные" class="screenshot">
-  <img src="../img/v100/users_modal_radius.png" alt="Модал учётной записи — вкладка RADIUS" class="screenshot">
+  <img src="../img/v221/user_modal_addr_tab.png" alt="Модал учётной записи — вкладка Адрес" class="screenshot">
+
+  <h4 id="create-address">Быстрое создание адреса</h4>
+  <p>На вкладке «Адрес» рядом с полем выбора дома находится кнопка <strong>+ Создать адрес</strong>. Нажатие открывает вложенный модал прямо поверх модала учётной записи (без закрытия и потери введённых данных).</p>
+  <ul>
+    <li><strong>Название</strong> — наименование нового адреса (дома, строения)</li>
+    <li><strong>Родитель</strong> — Select2 AJAX-поиск по дереву адресов (<code>Homes</code>): выберите улицу, микрорайон или населённый пункт</li>
+    <li><strong>Индекс</strong> — почтовый индекс (опционально)</li>
+  </ul>
+  <p>После нажатия «Создать» новый адрес автоматически добавляется в список и выбирается в поле «Дом» без перезагрузки страницы. Эндпоинт: <code>POST /admin/dictionary/homes_create_ajax/</code>.</p>
+  <img src="../img/v221/create_address_dialog.png" alt="Диалог создания нового адреса" class="screenshot">
 
   <h4>AJAX-эндпоинты</h4>
   <ul>
@@ -3569,7 +3592,7 @@ ACL_BLOCKED_GROUPS = ACL_DISABLED</code></pre>
 
   <!-- ===== 14. Обзор безопасности ===== -->
   <h2 id="security">14. Обзор безопасности</h2>
-  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 214) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
+  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 221) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
 
   <h3>Сетевая изоляция</h3>
   <p><strong>Docker-контейнеризация</strong> — каждый сервис (web, db, redis, celery, nginx, freeradius) работает в изолированном Docker-контейнере с собственной сетью (172.28.0.0/16). Входящие соединения проходят через nginx reverse proxy, что предотвращает прямой доступ к внутренним сервисам.</p>
@@ -3638,7 +3661,7 @@ ACL_BLOCKED_GROUPS = ACL_DISABLED</code></pre>
   <p>Версия отображается в футере: <strong>СмИТ Биллинг 1.6</strong>. Файл версии: <code>billing/version.py</code>.</p>
 
   <div class="info-block">
-    <h4>Текущий релиз: v1.6.0 (build 214) — 18.04.2026</h4>
+    <h4>Текущий релиз: v1.6.0 (build 221) — 18.04.2026</h4>
     <ul>
       <li>Справочник адресов — динамическая загрузка, фильтр по Району, клиентская сортировка и CSV</li>
       <li>Финансовые операции — фильтр по периоду, сводка прихода/расхода прямо во вкладке</li>
@@ -3651,7 +3674,7 @@ ACL_BLOCKED_GROUPS = ACL_DISABLED</code></pre>
     </ul>
   </div>
 
-  <h3>Скриншоты v1.6.0 (build 214)</h3>
+  <h3>Скриншоты v1.6.0 (build 221)</h3>
   <h4>Десктоп</h4>
   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(400px,1fr));gap:12px;margin-bottom:20px">
     <div><img src="../img/v100/abonents_folder.png" alt="Папка абонентов" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Папка абонентов с поиском</div></div>
@@ -3702,7 +3725,7 @@ docker compose up -d</code></pre>
 
   <!-- ===== 16. Стороннее ПО ===== -->
   <h2 id="third-party">16. Стороннее ПО</h2>
-  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 214).</p>
+  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 221).</p>
 
   <!-- ===== 17. Смена языка ===== -->
   <h2 id="language">17. Смена языка</h2>
@@ -3710,7 +3733,7 @@ docker compose up -d</code></pre>
 
   <!-- ===== 18. Технологический стек ===== -->
   <h2 id="tech-stack">18. Технологический стек</h2>
-  <p>СмИТ Биллинг v1.6.0 (build 214) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
+  <p>СмИТ Биллинг v1.6.0 (build 221) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
 
   <h3>Почему PostgreSQL</h3>
   <p>PostgreSQL 16 выбран в качестве основной СУБД по ряду причин:</p>
@@ -3792,8 +3815,8 @@ docker compose ps
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 214)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">18.04.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 214)</span>&nbsp;|&nbsp;<span data-smit="updated">18.04.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 221)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">18.04.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 221)</span>&nbsp;|&nbsp;<span data-smit="updated">18.04.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=220"></script>
