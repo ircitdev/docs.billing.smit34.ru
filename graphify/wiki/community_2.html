@@ -244,16 +244,21 @@ tbody tr:hover { background: var(--bg3); }
 </head>
 <body>
 
-<header class="site-header">
-  <h1>graphify</h1>
-  <div class="nav-links">
-    <a href="index.html" class="nav-link">← Все сообщества</a>
-    <a href="../graph.html" class="nav-link">← Граф</a>
-    <a href="community_1.html" class="nav-link">← Личный кабинет</a>
-    <a href="community_3.html" class="nav-link">Поиск абонентов →</a>
+<div class="docs-topnav">
+  <a href="../../../index.html" class="dtn-logo">
+    <div class="dtn-logo-icon">С</div>
+    <span>СмИТ Биллинг</span>
+  </a>
+  <span class="dtn-sep">/</span>
+  <div class="dtn-links">
+    <a href="../../../index.html" class="dtn-link">← Документация</a>
+    <a href="../../../pages/dev/index.html" class="dtn-link">Разработчикам</a>
+    <a href="../graph.html" class="dtn-link">Граф</a>
+    <a href="index.html" class="dtn-link">Wiki</a>
   </div>
-  <button class="theme-btn" title="Переключить тему">◑ Тема</button>
-</header>
+  <div class="dtn-spacer"></div>
+  <button class="dtn-theme-btn" id="themeToggle" title="Переключить тему">◑ Тема</button>
+</div>
 
 <div class="main">
   <!-- Community header -->
