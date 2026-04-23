@@ -366,11 +366,14 @@ nodeSel.append('text').attr('class','node-name')
   });
 
 // ── simulation ──
+const cx = wrap.clientWidth / 2, cy = wrap.clientHeight / 2;
 const sim = d3.forceSimulation(NODES)
   .force('link', d3.forceLink(LINKS).id(d=>d.id).distance(d => 60 + (d.source.r||30) + (d.target.r||30)).strength(0.4))
   .force('charge', d3.forceManyBody().strength(d => -Math.pow(d.r,1.6)))
   .force('collision', d3.forceCollide().radius(d => d.r + 12).iterations(3))
-  .force('center', d3.forceCenter(wrap.clientWidth/2, wrap.clientHeight/2))
+  .force('center', d3.forceCenter(cx, cy).strength(0.08))
+  .force('x', d3.forceX(cx).strength(0.04))
+  .force('y', d3.forceY(cy).strength(0.04))
   .on('tick', ticked);
 
 function ticked() {
