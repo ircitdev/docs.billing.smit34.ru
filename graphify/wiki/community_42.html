@@ -25,29 +25,17 @@ body {
 a { color: var(--primary-l); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
-/* Header */
-.site-header {
-  background: var(--bg2); border-bottom: 1px solid var(--border);
-  padding: 12px 24px; display: flex; align-items: center; gap: 16px;
-  position: sticky; top: 0; z-index: 100;
-}
-.site-header h1 { font-size: 18px; font-weight: 700; color: var(--primary-l); flex: 1; }
-.site-header .subtitle { color: var(--text2); font-size: 12px; }
-.nav-links { display: flex; gap: 8px; }
-.nav-link {
-  color: var(--text2); font-size: 13px; padding: 4px 10px;
-  border: 1px solid var(--border); border-radius: 6px;
-  transition: all 0.15s;
-}
-.nav-link:hover { color: var(--primary-l); border-color: var(--primary); text-decoration: none; }
 
-/* Theme toggle */
-.theme-btn {
-  background: var(--bg3); border: 1px solid var(--border); color: var(--text2);
-  padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 13px;
-  transition: all 0.15s;
-}
-.theme-btn:hover { color: var(--primary-l); border-color: var(--primary); }
+
+
+
+
+
+
+
+
+
+
 
 /* Main layout */
 .main { padding: 24px; max-width: 1400px; margin: 0 auto; }
@@ -206,59 +194,86 @@ tbody tr:hover { background: var(--bg3); }
 .comm-name { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
 .comm-id { color: var(--text3); font-size: 12px; }
 
+/* ── Фирменная шапка docs ─────────────────────────────────────────────────── */
+:root { --header-grad-a: #43a047; --header-grad-b: #26a69a; --header-height: 56px; }
+[data-theme=dark] { --header-grad-a: #0f172a; --header-grad-b: #1e293b; }
 
-/* ── Docs topnav (patch) ── */
-.docs-topnav {
-  background: var(--bg2); border-bottom: 1px solid var(--border);
-  padding: 0 20px; display: flex; align-items: center; gap: 12px;
-  height: 44px; position: sticky; top: 0; z-index: 200;
-  font-size: 13px;
+@keyframes header-gradient-shift {
+  0%   { background-position:   0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position:   0% 50%; }
 }
-.docs-topnav .dtn-logo {
-  display: flex; align-items: center; gap: 7px;
-  color: var(--text); font-weight: 600; text-decoration: none; flex-shrink: 0;
-}
-.docs-topnav .dtn-logo-icon {
-  width: 22px; height: 22px; background: linear-gradient(135deg,#43a047,#26a69a);
-  border-radius: 5px; display: flex; align-items: center; justify-content: center;
-  font-size: 12px; color: #fff; font-weight: bold; flex-shrink: 0;
-}
-.docs-topnav .dtn-sep { color: var(--text3); }
-.docs-topnav .dtn-links { display: flex; gap: 6px; flex-wrap: wrap; }
-.docs-topnav .dtn-link {
-  color: var(--text2); padding: 3px 9px; border: 1px solid var(--border);
-  border-radius: 5px; text-decoration: none; transition: all 0.15s; font-size: 12px;
-}
-.docs-topnav .dtn-link:hover { color: var(--primary-l); border-color: var(--primary); text-decoration: none; }
-.docs-topnav .dtn-spacer { flex: 1; min-width: 8px; }
-.docs-topnav .dtn-theme-btn {
-  background: var(--bg3); border: 1px solid var(--border); color: var(--text2);
-  padding: 4px 10px; border-radius: 5px; cursor: pointer; font-size: 12px;
-  transition: all 0.15s; flex-shrink: 0;
-}
-.docs-topnav .dtn-theme-btn:hover { color: var(--primary-l); border-color: var(--primary); }
-/* Hide old site-header since topnav replaces it */
-.site-header { display: none !important; }
+@media (prefers-reduced-motion: reduce) { .header { animation: none !important; } }
 
+.header {
+  position: fixed; top: 0; left: 0; right: 0; height: var(--header-height);
+  background: linear-gradient(135deg, var(--header-grad-a), var(--header-grad-b), var(--header-grad-a));
+  background-size: 200% 200%;
+  animation: header-gradient-shift 18s ease-in-out infinite;
+  color: #fff; display: flex; align-items: center; padding: 0 20px;
+  z-index: 200; gap: 12px;
+  box-shadow: 0 1px 3px rgba(15,23,42,.06), 0 4px 12px rgba(15,23,42,.08);
+}
+[data-theme=dark] .header { border-bottom: 1px solid #334155; }
+.header-left { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+.header-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
+.logo:hover { text-decoration: none; }
+.logo-icon {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, #43a047, #26a69a);
+  border-radius: 8px; display: flex; align-items: center; justify-content: center;
+  color: #fff; font-weight: 700; font-size: 1.15rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,.25); flex-shrink: 0;
+}
+[data-theme=dark] .logo-icon { box-shadow: 0 2px 12px rgba(77,182,172,.35); }
+.logo-text { font-size: 1.15rem; font-weight: 700; white-space: nowrap; color: #fff; }
+.logo-text span { font-weight: 300; opacity: .85; }
+.logo-text .logo-main { font-weight: 700; opacity: 1; }
+.logo-text .logo-main::after { content: '\00a0|\00a0'; font-weight: 300; opacity: .85; }
+.header-nav-link {
+  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22);
+  color: #fff; border-radius: 8px; padding: 5px 12px; font-size: 13px;
+  text-decoration: none; white-space: nowrap; transition: background .2s;
+}
+.header-nav-link:hover { background: rgba(255,255,255,.25); text-decoration: none; color: #fff; }
+.theme-toggle {
+  background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.25);
+  color: #fff; width: 36px; height: 36px; border-radius: 8px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; transition: background .2s, transform .2s; flex-shrink: 0;
+}
+.theme-toggle:hover { background: rgba(255,255,255,.25); transform: scale(1.05); }
+.theme-toggle .icon-sun, .theme-toggle .icon-moon { line-height: 1; }
+[data-theme=dark]  .theme-toggle .icon-sun  { display: inline; }
+[data-theme=dark]  .theme-toggle .icon-moon { display: none; }
+:root .theme-toggle .icon-sun  { display: none; }
+:root .theme-toggle .icon-moon { display: inline; }
+
+/* Offset body for fixed header */
+body { padding-top: var(--header-height); }
+/* ── /шапка ───────────────────────────────────────────────────────────────── */
 </style>
 </head>
 <body>
 
-<div class="docs-topnav">
-  <a href="../../../index.html" class="dtn-logo">
-    <div class="dtn-logo-icon">С</div>
-    <span>СмИТ Биллинг</span>
-  </a>
-  <span class="dtn-sep">/</span>
-  <div class="dtn-links">
-    <a href="../../../index.html" class="dtn-link">← Документация</a>
-    <a href="../../../pages/dev/index.html" class="dtn-link">Разработчикам</a>
-    <a href="../graph.html" class="dtn-link">Граф</a>
-    <a href="index.html" class="dtn-link">Wiki</a>
+<header class="header">
+  <div class="header-left">
+    <div class="logo">
+      <div class="logo-icon">С</div>
+      <div class="logo-text"><span class="logo-main">СмИТ Биллинг</span><span>Wiki</span></div>
+    </div>
   </div>
-  <div class="dtn-spacer"></div>
-  <button class="dtn-theme-btn" id="themeToggle" title="Переключить тему">◑ Тема</button>
-</div>
+  <div class="header-right">
+    <a href="index.html" class="header-nav-link">← Wiki</a>
+    <a href="../graph.html" class="header-nav-link">Граф</a>
+    <a href="../../index.html" class="header-nav-link">Документация</a>
+    <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему" title="Светлая / тёмная тема">
+      <span class="icon-sun">&#9788;</span>
+      <span class="icon-moon">&#9790;</span>
+    </button>
+  </div>
+</header>
 
 <div class="main">
   <!-- Community header -->
@@ -314,38 +329,21 @@ tbody tr:hover { background: var(--bg3); }
 </div>
 
 <script>
-
 // Theme toggle
 const html = document.documentElement;
 const saved = localStorage.getItem('theme') || 'dark';
 html.setAttribute('data-theme', saved);
-document.querySelectorAll('.theme-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
+const themeBtn = document.getElementById('themeToggle');
+if (themeBtn) {
+  themeBtn.addEventListener('click', () => {
     const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     html.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
   });
-});
-
-
-const NODES = [{"id": "lk_management_commands_init_py", "label": "__init__.py", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\management\\commands\\__init__.py", "short_path": "commands/__init__.py", "source_location": "L1", "degree": 0, "neighbors": []}];
-const RELATED = [];
-
-// Render related communities
-const relGrid = document.getElementById('relatedGrid');
-if (RELATED.length === 0) {
-  relGrid.innerHTML = '<span style="color:var(--text3);font-size:13px;">Нет связей с другими сообществами</span>';
-} else {
-  RELATED.forEach(r => {
-    const a = document.createElement('a');
-    a.href = `community_${r.cid}.html`;
-    a.className = 'rel-chip';
-    a.innerHTML = `<span style="width:8px;height:8px;border-radius:50%;background:${r.color};flex-shrink:0;display:inline-block;"></span>
-      ${escHtml(r.label)}
-      <span class="rel-count">${r.count}</span>`;
-    relGrid.appendChild(a);
-  });
 }
+
+
+
 
 function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -488,26 +486,5 @@ if (degTh) degTh.classList.add('sorted-desc');
 render();
 </script>
 
-<script>
-// ── Theme sync with docs site (patch) ──
-(function() {
-  var html = document.documentElement;
-  var saved = localStorage.getItem('smit-docs-theme') || localStorage.getItem('theme') || 'dark';
-  html.setAttribute('data-theme', saved);
-  document.querySelectorAll('.dtn-theme-btn').forEach(function(btn) {
-    btn.textContent = saved === 'dark' ? '☀ Тема' : '◑ Тема';
-    btn.addEventListener('click', function() {
-      var cur = html.getAttribute('data-theme');
-      var next = cur === 'dark' ? 'light' : 'dark';
-      html.setAttribute('data-theme', next);
-      localStorage.setItem('smit-docs-theme', next);
-      localStorage.setItem('theme', next);
-      document.querySelectorAll('.dtn-theme-btn').forEach(function(b) {
-        b.textContent = next === 'dark' ? '☀ Тема' : '◑ Тема';
-      });
-    });
-  });
-})();
-</script>
 </body>
 </html>
