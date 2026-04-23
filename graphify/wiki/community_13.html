@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-theme="dark">
 <head>
 <meta charset="utf-8">
-<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Community 13 — Интерфейс | graphify</title>
 <style>
@@ -26,17 +25,29 @@ body {
 a { color: var(--primary-l); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
+/* Header */
+.site-header {
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  padding: 12px 24px; display: flex; align-items: center; gap: 16px;
+  position: sticky; top: 0; z-index: 100;
+}
+.site-header h1 { font-size: 18px; font-weight: 700; color: var(--primary-l); flex: 1; }
+.site-header .subtitle { color: var(--text2); font-size: 12px; }
+.nav-links { display: flex; gap: 8px; }
+.nav-link {
+  color: var(--text2); font-size: 13px; padding: 4px 10px;
+  border: 1px solid var(--border); border-radius: 6px;
+  transition: all 0.15s;
+}
+.nav-link:hover { color: var(--primary-l); border-color: var(--primary); text-decoration: none; }
 
-
-
-
-
-
-
-
-
-
-
+/* Theme toggle */
+.theme-btn {
+  background: var(--bg3); border: 1px solid var(--border); color: var(--text2);
+  padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 13px;
+  transition: all 0.15s;
+}
+.theme-btn:hover { color: var(--primary-l); border-color: var(--primary); }
 
 /* Main layout */
 .main { padding: 24px; max-width: 1400px; margin: 0 auto; }
@@ -79,11 +90,14 @@ tbody tr:hover { background: var(--bg3); }
 .badge-rationale { background: rgba(148,163,184,0.15); color: var(--text2); }
 .badge-document { background: rgba(89,161,79,0.2); color: #86efac; }
 
-/* Community dot */
+/* Community icon (card & legend) — square with themed SVG */
 .com-dot {
-  display: inline-block; width: 12px; height: 12px;
-  border-radius: 50%; flex-shrink: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px;
+  border-radius: 8px; flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,.18);
 }
+.com-dot svg { width: 18px; height: 18px; }
 
 /* Cards grid */
 .cards-grid {
@@ -100,16 +114,11 @@ tbody tr:hover { background: var(--bg3); }
 }
 .card:hover { border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary) inset; }
 .card-header { display: flex; align-items: center; gap: 10px; }
-.card-title { font-weight: 700; font-size: 15px; }
-.card-meta { color: var(--text2); font-size: 12px; }
-.card-top3 { color: var(--text3); font-size: 12px; font-family: monospace; }
-.card-btn {
-  margin-top: auto; display: inline-block; padding: 6px 14px;
-  background: var(--primary); color: #fff; border-radius: 6px;
-  font-size: 13px; font-weight: 600; text-align: center;
-  transition: background 0.15s; cursor: pointer; border: none; text-decoration: none;
-}
-.card-btn:hover { background: var(--primary-l); text-decoration: none; color: #fff; }
+.card-title { font-weight: 700; font-size: 15px; color: var(--primary-l); transition: color 0.15s; }
+.card:hover .card-title { text-decoration: underline; }
+.card-desc { color: var(--text); font-size: 13px; line-height: 1.45; text-decoration: none; }
+.card-meta { color: var(--text2); font-size: 12px; text-decoration: none; }
+.card-top3 { color: var(--text3); font-size: 12px; font-family: monospace; text-decoration: none; }
 
 /* Section heading */
 .section-heading {
@@ -182,31 +191,17 @@ tbody tr:hover { background: var(--bg3); }
 .search-results { display: none; margin-top: 16px; }
 .search-results.visible { display: block; }
 
-/* Community page header */
-.comm-header {
-  display: flex; align-items: flex-start; gap: 16px;
-  margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border);
-}
-.comm-icon {
-  width: 56px; height: 56px; border-radius: 50%;
-  flex-shrink: 0; display: flex; align-items: center; justify-content: center;
-  font-size: 22px; font-weight: 700; color: #fff;
-}
-.comm-name { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
-.comm-id { color: var(--text3); font-size: 12px; }
-
-/* ── Фирменная шапка docs ─────────────────────────────────────────────────── */
+/* Фирменная шапка docs (gradient, fixed) */
 :root { --header-grad-a: #43a047; --header-grad-b: #26a69a; --header-height: 56px; }
 [data-theme=dark] { --header-grad-a: #0f172a; --header-grad-b: #1e293b; }
-
 @keyframes header-gradient-shift {
   0%   { background-position:   0% 50%; }
   50%  { background-position: 100% 50%; }
   100% { background-position:   0% 50%; }
 }
-@media (prefers-reduced-motion: reduce) { .header { animation: none !important; } }
+@media (prefers-reduced-motion: reduce) { .docs-topnav { animation: none !important; } }
 
-.header {
+.docs-topnav {
   position: fixed; top: 0; left: 0; right: 0; height: var(--header-height);
   background: linear-gradient(135deg, var(--header-grad-a), var(--header-grad-b), var(--header-grad-a));
   background-size: 200% 200%;
@@ -215,74 +210,119 @@ tbody tr:hover { background: var(--bg3); }
   z-index: 200; gap: 12px;
   box-shadow: 0 1px 3px rgba(15,23,42,.06), 0 4px 12px rgba(15,23,42,.08);
 }
-[data-theme=dark] .header { border-bottom: 1px solid #334155; }
-.header-left { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
-.header-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
-.logo:hover { text-decoration: none; }
-.logo-icon {
-  width: 36px; height: 36px;
-  background: linear-gradient(135deg, #43a047, #26a69a);
-  border-radius: 8px; display: flex; align-items: center; justify-content: center;
-  color: #fff; font-weight: 700; font-size: 1.15rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,.25); flex-shrink: 0;
-}
-[data-theme=dark] .logo-icon { box-shadow: 0 2px 12px rgba(77,182,172,.35); }
-.logo-text { font-size: 1.15rem; font-weight: 700; white-space: nowrap; color: #fff; }
-.logo-text span { font-weight: 300; opacity: .85; }
-.logo-text .logo-main { font-weight: 700; opacity: 1; }
-.logo-text .logo-main::after { content: '\00a0|\00a0'; font-weight: 300; opacity: .85; }
-.header-nav-link {
-  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22);
-  color: #fff; border-radius: 8px; padding: 5px 12px; font-size: 13px;
-  text-decoration: none; white-space: nowrap; transition: background .2s;
-}
-.header-nav-link:hover { background: rgba(255,255,255,.25); text-decoration: none; color: #fff; }
-.theme-toggle {
-  background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.25);
-  color: #fff; width: 36px; height: 36px; border-radius: 8px;
-  cursor: pointer; display: flex; align-items: center; justify-content: center;
-  font-size: 1.1rem; transition: background .2s, transform .2s; flex-shrink: 0;
-}
-.theme-toggle:hover { background: rgba(255,255,255,.25); transform: scale(1.05); }
-.theme-toggle .icon-sun, .theme-toggle .icon-moon { line-height: 1; }
-[data-theme=dark]  .theme-toggle .icon-sun  { display: inline; }
-[data-theme=dark]  .theme-toggle .icon-moon { display: none; }
-:root .theme-toggle .icon-sun  { display: none; }
-:root .theme-toggle .icon-moon { display: inline; }
-
-/* Offset body for fixed header */
+[data-theme=dark] .docs-topnav { border-bottom: 1px solid #334155; }
 body { padding-top: var(--header-height); }
-/* ── /шапка ───────────────────────────────────────────────────────────────── */
+
+.docs-topnav .dtn-logo {
+  display: flex; align-items: center; gap: 10px;
+  font-weight: 700; font-size: 15px; color: #fff; text-decoration: none; white-space: nowrap;
+}
+.docs-topnav .dtn-logo:hover { text-decoration: none; color: #fff; }
+.docs-topnav .dtn-logo-icon {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: linear-gradient(135deg, #66bb6a, #26a69a);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 800; flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,.18);
+}
+.docs-topnav .dtn-sep { display: none; }
+.docs-topnav .dtn-links { display: flex; gap: 6px; flex-wrap: nowrap; }
+.docs-topnav .dtn-link {
+  color: #fff; font-size: 13px; padding: 6px 12px;
+  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22);
+  border-radius: 8px; transition: all 0.15s; white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.docs-topnav .dtn-link:hover { background: rgba(255,255,255,.22); text-decoration: none; color: #fff; }
+.docs-topnav .dtn-link .dtn-ico { font-size: 15px; line-height: 1; }
+.docs-topnav .dtn-link .dtn-txt { display: inline; }
+.docs-topnav .dtn-spacer { flex: 1; min-width: 8px; }
+.docs-topnav .dtn-theme-btn {
+  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22); color: #fff;
+  padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 13px;
+  transition: all 0.15s; white-space: nowrap; flex-shrink: 0;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.docs-topnav .dtn-theme-btn:hover { background: rgba(255,255,255,.22); }
+
+/* Mobile: иконки вместо текста, логотип-текст скрыть */
+@media (max-width: 680px) {
+  .docs-topnav { padding: 0 12px; gap: 8px; }
+  .docs-topnav .dtn-logo .dtn-logo-text { display: none; }
+  .docs-topnav .dtn-link .dtn-txt { display: none; }
+  .docs-topnav .dtn-link { padding: 6px 10px; }
+  .docs-topnav .dtn-theme-btn .dtn-theme-txt { display: none; }
+  .docs-topnav .dtn-theme-btn { padding: 6px 10px; }
+}
+
+/* Community page header */
+.comm-header {
+  display: flex; align-items: flex-start; gap: 16px;
+  margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border);
+}
+.comm-icon {
+  width: 72px; height: 72px; border-radius: 14px;
+  flex-shrink: 0; box-shadow: 0 4px 14px rgba(0,0,0,.22);
+  display: flex; align-items: center; justify-content: center;
+}
+.comm-icon svg { width: 40px; height: 40px; }
+@media (max-width: 680px) {
+  .comm-icon { width: 56px; height: 56px; border-radius: 12px; }
+  .comm-icon svg { width: 30px; height: 30px; }
+}
+.comm-name { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+.comm-id { color: var(--text3); font-size: 12px; }
+.comm-desc-hdr {
+  margin-top: 10px; color: var(--text); font-size: 14px; line-height: 1.5;
+  max-width: 760px;
+}
+
 </style>
 </head>
 <body>
 
-<header class="header">
-  <div class="header-left">
-    <div class="logo">
-      <div class="logo-icon">С</div>
-      <div class="logo-text"><span class="logo-main">СмИТ Биллинг</span><span>Wiki</span></div>
-    </div>
+<div class="docs-topnav">
+  <a href="../../../index.html" class="dtn-logo" title="СмИТ Биллинг — Документация">
+    <div class="dtn-logo-icon">С</div>
+    <span class="dtn-logo-text">СмИТ Биллинг</span>
+  </a>
+  <div class="dtn-links">
+    <a href="../../../index.html" class="dtn-link" title="Документация">
+      <span class="dtn-ico">📘</span><span class="dtn-txt">Документация</span>
+    </a>
+    <a href="../../../pages/dev/index.html" class="dtn-link" title="Разработчикам">
+      <span class="dtn-ico">⚙️</span><span class="dtn-txt">Разработчикам</span>
+    </a>
+    <a href="../graph.html" class="dtn-link" title="Граф зависимостей">
+      <span class="dtn-ico">🕸</span><span class="dtn-txt">Граф</span>
+    </a>
+    <a href="index.html" class="dtn-link" title="Wiki сообществ">
+      <span class="dtn-ico">📚</span><span class="dtn-txt">Wiki</span>
+    </a>
+    <a href="../help.html" class="dtn-link" title="graphify CLI">
+      <span class="dtn-ico">💻</span><span class="dtn-txt">CLI</span>
+    </a>
+    <a href="community_12.html" class="dtn-link">← Шаблоны ЛК</a>
+    <a href="community_14.html" class="dtn-link">Отчёты СОРМ →</a>
   </div>
-  <div class="header-right">
-    <a href="index.html" class="header-nav-link">← Wiki</a>
-    <a href="../graph.html" class="header-nav-link">Граф</a>
-    <a href="../../index.html" class="header-nav-link">Документация</a>
-    <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему" title="Светлая / тёмная тема">
-      <span class="icon-sun">&#9788;</span>
-      <span class="icon-moon">&#9790;</span>
-    </button>
-  </div>
-</header>
+  <div class="dtn-spacer"></div>
+  <button class="dtn-theme-btn" id="themeToggle" title="Переключить тему">
+    <span class="dtn-ico">◑</span><span class="dtn-theme-txt">Тема</span>
+  </button>
+</div>
 
 <div class="main">
   <!-- Community header -->
   <div class="comm-header">
-    <div class="comm-icon" style="background:#b6992d;">И</div>
-    <div>
+    <div class="comm-icon" style="background:#b6992d;"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h6v8H4zm10 0h6v4h-6zM4 16h6v4H4zm10-4h6v8h-6z"/></svg></div>
+    <div style="flex:1;min-width:0;">
       <div class="comm-name">Интерфейс</div>
       <div class="comm-id">Community #13</div>
+      <div class="comm-desc-hdr">Interface Framework: настройки отображения полей, группы, доступы.</div>
+      <div style="margin-top:10px;">
+        <a href="index.html" class="dtn-link" style="font-size:12px;padding:4px 10px;">← Все сообщества</a>
+      </div>
     </div>
   </div>
 
@@ -330,21 +370,38 @@ body { padding-top: var(--header-height); }
 </div>
 
 <script>
+
 // Theme toggle
 const html = document.documentElement;
 const saved = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 html.setAttribute('data-theme', saved);
-const themeBtn = document.getElementById('themeToggle');
-if (themeBtn) {
-  themeBtn.addEventListener('click', () => {
+document.querySelectorAll('.dtn-theme-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
     const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     html.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
   });
+});
+
+
+const NODES = [{"id": "billing_models_framework_py", "label": "framework.py", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\framework.py", "short_path": "models/framework.py", "source_location": "L1", "degree": 9, "neighbors": [{"id": "framework_frameworkformgroups", "label": "FrameworkFormGroups", "cid": "13"}, {"id": "framework_frameworkformgroupfields", "label": "FrameworkFormGroupFields", "cid": "13"}, {"id": "framework_meta", "label": "Meta", "cid": "13"}, {"id": "django_db", "label": "django_db", "cid": ""}, {"id": "billing_models_init_py", "label": "__init__.py", "cid": "2"}, {"id": "framework_interface", "label": "Interface", "cid": "13"}, {"id": "framework_rationale_1", "label": "billing/models/framework.py — модели фреймворка интерфейса Оригинал: admin/model", "cid": "13"}]}, {"id": "billing_views_interface_settings_py", "label": "interface_settings.py", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\interface_settings.py", "short_path": "views/interface_settings.py", "source_location": "L1", "degree": 15, "neighbors": [{"id": "django_forms_models", "label": "django_forms_models", "cid": ""}, {"id": "interface_settings_build_field_labels", "label": "_build_field_labels()", "cid": "13"}, {"id": "interface_settings_rationale_1", "label": "Настройки интерфейса — Python 3 / Django 4.2", "cid": "13"}, {"id": "copy", "label": "copy", "cid": ""}, {"id": "django_db_models", "label": "django_db_models", "cid": ""}, {"id": "django_shortcuts", "label": "django_shortcuts", "cid": ""}, {"id": "interface_settings_is_valid_model", "label": "_is_valid_model()", "cid": "13"}, {"id": "django_db", "label": "django_db", "cid": ""}, {"id": "django_utils_translation", "label": "django_utils_translation", "cid": ""}, {"id": "django_views_generic_base", "label": "django_views_generic_base", "cid": ""}, {"id": "interface_settings_filter_menu_for_interface", "label": "_filter_menu_for_interface()", "cid": "13"}, {"id": "interface_settings_interfacesettings", "label": "InterfaceSettings", "cid": "13"}, {"id": "django_apps", "label": "django_apps", "cid": ""}, {"id": "billing_model", "label": "billing_model", "cid": ""}, {"id": "re", "label": "re", "cid": ""}]}, {"id": "billing_views_permission_settings_py", "label": "permission_settings.py", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\permission_settings.py", "short_path": "views/permission_settings.py", "source_location": "L1", "degree": 22, "neighbors": [{"id": "django_contrib_auth_models", "label": "django_contrib_auth_models", "cid": ""}, {"id": "permission_settings_permissionexception", "label": "PermissionException", "cid": "0"}, {"id": "django_contrib_auth_decorators", "label": "django_contrib_auth_decorators", "cid": ""}, {"id": "django_shortcuts", "label": "django_shortcuts", "cid": ""}, {"id": "permission_settings_model_permissions", "label": "model_permissions()", "cid": "13"}, {"id": "billing_safe_globals", "label": "billing_safe_globals", "cid": ""}, {"id": "daemons_audit", "label": "daemons_audit", "cid": ""}, {"id": "permission_settings_abonent_group_permissions", "label": "abonent_group_permissions()", "cid": "11"}, {"id": "django_apps", "label": "django_apps", "cid": ""}, {"id": "permission_settings_get_model_list", "label": "get_model_list()", "cid": "13"}, {"id": "billing_models", "label": "billing_models", "cid": ""}, {"id": "django_db", "label": "django_db", "cid": ""}, {"id": "django_utils_translation", "label": "django_utils_translation", "cid": ""}, {"id": "permission_settings_get_data_by_model", "label": "get_data_by_model()", "cid": "13"}, {"id": "permission_settings_get_related_groups", "label": "get_related_groups()", "cid": "13"}]}, {"id": "billing_views_user_attribute_widget_py", "label": "user_attribute_widget.py", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\user_attribute_widget.py", "short_path": "views/user_attribute_widget.py", "source_location": "L1", "degree": 7, "neighbors": [{"id": "django_http", "label": "django_http", "cid": ""}, {"id": "python_tools", "label": "python_tools", "cid": ""}, {"id": "django_shortcuts", "label": "django_shortcuts", "cid": ""}, {"id": "django_utils_translation", "label": "django_utils_translation", "cid": ""}, {"id": "django_apps", "label": "django_apps", "cid": ""}, {"id": "user_attribute_widget_get_widget", "label": "get_widget()", "cid": "13"}, {"id": "user_attribute_widget_rationale_1", "label": "Виджет атрибутов пользователей — Python 3 / Django 4.2 Замена: admin/view/user_a", "cid": "13"}]}, {"id": "billing_views_users_ajax_py", "label": "users_ajax.py", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\users_ajax.py", "short_path": "views/users_ajax.py", "source_location": "L1", "degree": 10, "neighbors": [{"id": "users_ajax_users_api", "label": "users_api()", "cid": "13"}, {"id": "users_ajax_user_to_dict", "label": "_user_to_dict()", "cid": "13"}, {"id": "django_http", "label": "django_http", "cid": ""}, {"id": "django_contrib_auth_decorators", "label": "django_contrib_auth_decorators", "cid": ""}, {"id": "users_ajax_users_genip_api", "label": "users_genip_api()", "cid": "13"}, {"id": "django_apps", "label": "django_apps", "cid": ""}, {"id": "users_ajax_rationale_1", "label": "AJAX API для учётных записей (Users) — модальное редактирование на карточке абон", "cid": "13"}, {"id": "users_ajax_radiusauth_ajax", "label": "radiusauth_ajax()", "cid": "13"}, {"id": "logging", "label": "logging", "cid": ""}, {"id": "users_ajax_users_radius_api", "label": "users_radius_api()", "cid": "13"}]}, {"id": "framework_frameworkformgroupfields", "label": "FrameworkFormGroupFields", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\framework.py", "short_path": "models/framework.py", "source_location": "L30", "degree": 20, "neighbors": [{"id": "framework_frameworkformgroupfields_str", "label": ".__str__()", "cid": "13"}, {"id": "interface_settings_rationale_1", "label": "Настройки интерфейса — Python 3 / Django 4.2", "cid": "13"}, {"id": "interface_settings_rationale_146", "label": "Return MENU_LIST with only submenu items that have a real Django model.", "cid": "13"}, {"id": "billing_models_framework_py", "label": "framework.py", "cid": "13"}, {"id": "interface_settings_rationale_28", "label": "Build mapping: UPPERCASE_DB_COLUMN -> verbose_name for a Django model.", "cid": "13"}, {"id": "interface_settings_rationale_19", "label": "Return True if model_name resolves to a real Django model in billing app.", "cid": "13"}, {"id": "init_rationale_26", "label": "Универсальный контекст для печатных форм.", "cid": "2"}, {"id": "interface_settings_interfacesettings", "label": "InterfaceSettings", "cid": "13"}, {"id": "framework_frameworkformgroupfields_get_legacy_dict", "label": ".get_legacy_dict()", "cid": "13"}, {"id": "interface_settings_interfacesettings_get_setting_model", "label": "._get_setting_model()", "cid": "13"}]}, {"id": "framework_frameworkformgroupfields_get_legacy_dict", "label": ".get_legacy_dict()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\framework.py", "short_path": "models/framework.py", "source_location": "L51", "degree": 2, "neighbors": [{"id": "interface_settings_interfacesettings_get_setting_model", "label": "._get_setting_model()", "cid": "13"}, {"id": "framework_frameworkformgroupfields", "label": "FrameworkFormGroupFields", "cid": "13"}]}, {"id": "framework_frameworkformgroupfields_str", "label": ".__str__()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\framework.py", "short_path": "models/framework.py", "source_location": "L48", "degree": 1, "neighbors": [{"id": "framework_frameworkformgroupfields", "label": "FrameworkFormGroupFields", "cid": "13"}]}, {"id": "framework_frameworkformgroups", "label": "FrameworkFormGroups", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\framework.py", "short_path": "models/framework.py", "source_location": "L18", "degree": 4, "neighbors": [{"id": "framework_rationale_19", "label": "Группы полей (вкладки) для форм.", "cid": "13"}, {"id": "framework_frameworkformgroups_str", "label": ".__str__()", "cid": "13"}, {"id": "billing_models_framework_py", "label": "framework.py", "cid": "13"}, {"id": "init_rationale_26", "label": "Универсальный контекст для печатных форм.", "cid": "2"}]}, {"id": "framework_frameworkformgroups_str", "label": ".__str__()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\framework.py", "short_path": "models/framework.py", "source_location": "L26", "degree": 1, "neighbors": [{"id": "framework_frameworkformgroups", "label": "FrameworkFormGroups", "cid": "13"}]}, {"id": "framework_interface", "label": "Interface", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\framework.py", "short_path": "models/framework.py", "source_location": "L8", "degree": 8, "neighbors": [{"id": "interface_settings_rationale_1", "label": "Настройки интерфейса — Python 3 / Django 4.2", "cid": "13"}, {"id": "framework_interface_str", "label": ".__str__()", "cid": "13"}, {"id": "billing_models_framework_py", "label": "framework.py", "cid": "13"}, {"id": "interface_settings_rationale_28", "label": "Build mapping: UPPERCASE_DB_COLUMN -> verbose_name for a Django model.", "cid": "13"}, {"id": "interface_settings_rationale_146", "label": "Return MENU_LIST with only submenu items that have a real Django model.", "cid": "13"}, {"id": "interface_settings_rationale_19", "label": "Return True if model_name resolves to a real Django model in billing app.", "cid": "13"}, {"id": "init_rationale_26", "label": "Универсальный контекст для печатных форм.", "cid": "2"}, {"id": "interface_settings_interfacesettings", "label": "InterfaceSettings", "cid": "13"}]}, {"id": "framework_interface_str", "label": ".__str__()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\framework.py", "short_path": "models/framework.py", "source_location": "L14", "degree": 1, "neighbors": [{"id": "framework_interface", "label": "Interface", "cid": "13"}]}, {"id": "framework_meta", "label": "Meta", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\framework.py", "short_path": "models/framework.py", "source_location": "L11", "degree": 3, "neighbors": [{"id": "billing_models_framework_py", "label": "framework.py", "cid": "13"}]}, {"id": "framework_rationale_1", "label": "billing/models/framework.py — модели фреймворка интерфейса Оригинал: admin/model", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\framework.py", "short_path": "models/framework.py", "source_location": "L1", "degree": 1, "neighbors": [{"id": "billing_models_framework_py", "label": "framework.py", "cid": "13"}]}, {"id": "framework_rationale_19", "label": "Группы полей (вкладки) для форм.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\framework.py", "short_path": "models/framework.py", "source_location": "L19", "degree": 1, "neighbors": [{"id": "framework_frameworkformgroups", "label": "FrameworkFormGroups", "cid": "13"}]}, {"id": "interface_settings_build_field_labels", "label": "_build_field_labels()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\interface_settings.py", "short_path": "views/interface_settings.py", "source_location": "L27", "degree": 3, "neighbors": [{"id": "interface_settings_interfacesettings_get_settings", "label": ".get_settings()", "cid": "13"}, {"id": "interface_settings_rationale_28", "label": "Build mapping: UPPERCASE_DB_COLUMN -> verbose_name for a Django model.", "cid": "13"}, {"id": "billing_views_interface_settings_py", "label": "interface_settings.py", "cid": "13"}]}, {"id": "interface_settings_filter_menu_for_interface", "label": "_filter_menu_for_interface()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\interface_settings.py", "short_path": "views/interface_settings.py", "source_location": "L145", "degree": 4, "neighbors": [{"id": "interface_settings_interfacesettings_get_settings", "label": ".get_settings()", "cid": "13"}, {"id": "interface_settings_is_valid_model", "label": "_is_valid_model()", "cid": "13"}, {"id": "billing_views_interface_settings_py", "label": "interface_settings.py", "cid": "13"}, {"id": "interface_settings_interfacesettings_get", "label": ".get()", "cid": "13"}]}, {"id": "interface_settings_interfacesettings", "label": "InterfaceSettings", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\interface_settings.py", "short_path": "views/interface_settings.py", "source_location": "L44", "degree": 13, "neighbors": [{"id": "billing_views_interface_settings_py", "label": "interface_settings.py", "cid": "13"}, {"id": "interface_settings_interfacesettings_get_settings", "label": ".get_settings()", "cid": "13"}, {"id": "interface_settings_interfacesettings_get_setting_model", "label": "._get_setting_model()", "cid": "13"}, {"id": "framework_frameworkformgroupfields", "label": "FrameworkFormGroupFields", "cid": "13"}, {"id": "interface_settings_interfacesettings_get_interfaces", "label": "._get_interfaces()", "cid": "13"}, {"id": "interface_settings_interfacesettings_add_submenu", "label": "._add_submenu()", "cid": "13"}, {"id": "interface_settings_interfacesettings_get", "label": ".get()", "cid": "13"}, {"id": "interface_settings_interfacesettings_post", "label": ".post()", "cid": "13"}, {"id": "framework_interface", "label": "Interface", "cid": "13"}, {"id": "view", "label": "View", "cid": "0"}, {"id": "interface_settings_interfacesettings_init", "label": ".__init__()", "cid": "13"}]}, {"id": "interface_settings_interfacesettings_add_submenu", "label": "._add_submenu()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\interface_settings.py", "short_path": "views/interface_settings.py", "source_location": "L47", "degree": 2, "neighbors": [{"id": "interface_settings_interfacesettings", "label": "InterfaceSettings", "cid": "13"}, {"id": "interface_settings_interfacesettings_init", "label": ".__init__()", "cid": "13"}]}, {"id": "interface_settings_interfacesettings_get", "label": ".get()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\interface_settings.py", "short_path": "views/interface_settings.py", "source_location": "L86", "degree": 6, "neighbors": [{"id": "helpdesk_plaintextwidget_render", "label": ".render()", "cid": "1"}, {"id": "interface_settings_interfacesettings_get_settings", "label": ".get_settings()", "cid": "13"}, {"id": "interface_settings_filter_menu_for_interface", "label": "_filter_menu_for_interface()", "cid": "13"}, {"id": "interface_settings_interfacesettings", "label": "InterfaceSettings", "cid": "13"}, {"id": "interface_settings_interfacesettings_post", "label": ".post()", "cid": "13"}, {"id": "form_searchqueryset_filter", "label": ".filter()", "cid": "0"}]}, {"id": "interface_settings_interfacesettings_get_interfaces", "label": "._get_interfaces()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\interface_settings.py", "short_path": "views/interface_settings.py", "source_location": "L101", "degree": 3, "neighbors": [{"id": "interface_settings_interfacesettings_get_settings", "label": ".get_settings()", "cid": "13"}, {"id": "interface_settings_interfacesettings", "label": "InterfaceSettings", "cid": "13"}, {"id": "form_searchqueryset_all", "label": ".all()", "cid": "0"}]}, {"id": "interface_settings_interfacesettings_get_setting_model", "label": "._get_setting_model()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\interface_settings.py", "short_path": "views/interface_settings.py", "source_location": "L105", "degree": 8, "neighbors": [{"id": "interface_settings_interfacesettings_get_settings", "label": ".get_settings()", "cid": "13"}, {"id": "form_searchqueryset_order_by", "label": ".order_by()", "cid": "0"}, {"id": "form_searchqueryset_count", "label": ".count()", "cid": "0"}, {"id": "framework_frameworkformgroupfields", "label": "FrameworkFormGroupFields", "cid": "13"}, {"id": "nas_naschangeview_get_model", "label": ".get_model()", "cid": "13"}, {"id": "interface_settings_interfacesettings", "label": "InterfaceSettings", "cid": "13"}, {"id": "framework_frameworkformgroupfields_get_legacy_dict", "label": ".get_legacy_dict()", "cid": "13"}, {"id": "form_searchqueryset_filter", "label": ".filter()", "cid": "0"}]}, {"id": "interface_settings_interfacesettings_get_settings", "label": ".get_settings()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\interface_settings.py", "short_path": "views/interface_settings.py", "source_location": "L158", "degree": 10, "neighbors": [{"id": "interface_settings_build_field_labels", "label": "_build_field_labels()", "cid": "13"}, {"id": "form_searchformmixin_process_search", "label": ".process_search()", "cid": "11"}, {"id": "form_mainsearchview_make_formset", "label": ".make_formset()", "cid": "10"}, {"id": "interface_settings_interfacesettings_get_interfaces", "label": "._get_interfaces()", "cid": "13"}, {"id": "interface_settings_filter_menu_for_interface", "label": "_filter_menu_for_interface()", "cid": "13"}, {"id": "interface_settings_interfacesettings", "label": "InterfaceSettings", "cid": "13"}, {"id": "interface_settings_interfacesettings_get", "label": ".get()", "cid": "13"}, {"id": "abonents_abonentviewmixin_make_context", "label": ".make_context()", "cid": "0"}, {"id": "interface_settings_interfacesettings_get_setting_model", "label": "._get_setting_model()", "cid": "13"}, {"id": "form_printobject", "label": "printObject()", "cid": "0"}]}, {"id": "interface_settings_interfacesettings_init", "label": ".__init__()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\interface_settings.py", "short_path": "views/interface_settings.py", "source_location": "L59", "degree": 2, "neighbors": [{"id": "interface_settings_interfacesettings", "label": "InterfaceSettings", "cid": "13"}, {"id": "interface_settings_interfacesettings_add_submenu", "label": "._add_submenu()", "cid": "13"}]}, {"id": "interface_settings_interfacesettings_post", "label": ".post()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\interface_settings.py", "short_path": "views/interface_settings.py", "source_location": "L71", "degree": 5, "neighbors": [{"id": "stubs_auditoperations_save", "label": ".save()", "cid": "0"}, {"id": "nas_naschangeview_get_model", "label": ".get_model()", "cid": "13"}, {"id": "interface_settings_interfacesettings", "label": "InterfaceSettings", "cid": "13"}, {"id": "interface_settings_interfacesettings_get", "label": ".get()", "cid": "13"}, {"id": "form_searchqueryset_filter", "label": ".filter()", "cid": "0"}]}, {"id": "interface_settings_is_valid_model", "label": "_is_valid_model()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\interface_settings.py", "short_path": "views/interface_settings.py", "source_location": "L18", "degree": 4, "neighbors": [{"id": "nas_naschangeview_get_model", "label": ".get_model()", "cid": "13"}, {"id": "interface_settings_filter_menu_for_interface", "label": "_filter_menu_for_interface()", "cid": "13"}, {"id": "billing_views_interface_settings_py", "label": "interface_settings.py", "cid": "13"}, {"id": "interface_settings_rationale_19", "label": "Return True if model_name resolves to a real Django model in billing app.", "cid": "13"}]}, {"id": "interface_settings_rationale_1", "label": "Настройки интерфейса — Python 3 / Django 4.2", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\interface_settings.py", "short_path": "views/interface_settings.py", "source_location": "L1", "degree": 5, "neighbors": [{"id": "framework_interface", "label": "Interface", "cid": "13"}, {"id": "billing_views_interface_settings_py", "label": "interface_settings.py", "cid": "13"}, {"id": "framework_frameworkformgroupfields", "label": "FrameworkFormGroupFields", "cid": "13"}]}, {"id": "interface_settings_rationale_146", "label": "Return MENU_LIST with only submenu items that have a real Django model.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\interface_settings.py", "short_path": "views/interface_settings.py", "source_location": "L146", "degree": 5, "neighbors": [{"id": "interface_settings_interfacesettings_filter_menu_for_interface", "label": "interface_settings_interfacesettings_filter_menu_for_interface", "cid": ""}, {"id": "framework_interface", "label": "Interface", "cid": "13"}, {"id": "framework_frameworkformgroupfields", "label": "FrameworkFormGroupFields", "cid": "13"}]}, {"id": "interface_settings_rationale_19", "label": "Return True if model_name resolves to a real Django model in billing app.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\interface_settings.py", "short_path": "views/interface_settings.py", "source_location": "L19", "degree": 5, "neighbors": [{"id": "interface_settings_is_valid_model", "label": "_is_valid_model()", "cid": "13"}, {"id": "framework_interface", "label": "Interface", "cid": "13"}, {"id": "framework_frameworkformgroupfields", "label": "FrameworkFormGroupFields", "cid": "13"}]}, {"id": "interface_settings_rationale_28", "label": "Build mapping: UPPERCASE_DB_COLUMN -> verbose_name for a Django model.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\interface_settings.py", "short_path": "views/interface_settings.py", "source_location": "L28", "degree": 5, "neighbors": [{"id": "interface_settings_build_field_labels", "label": "_build_field_labels()", "cid": "13"}, {"id": "framework_interface", "label": "Interface", "cid": "13"}, {"id": "framework_frameworkformgroupfields", "label": "FrameworkFormGroupFields", "cid": "13"}]}, {"id": "managers_custommanager_rel_tables", "label": ".rel_tables()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\managers.py", "short_path": "models/managers.py", "source_location": "L60", "degree": 5, "neighbors": [{"id": "managers_rationale_61", "label": "Возвращает список связанных моделей (FK → текущая модель).         Формат: [{'ta", "cid": "13"}, {"id": "permission_settings_model_permissions", "label": "model_permissions()", "cid": "13"}, {"id": "permission_settings_group_list2", "label": "group_list2()", "cid": "13"}, {"id": "usluga_uslugachangeview_get", "label": ".get()", "cid": "1"}, {"id": "managers_custommanager", "label": "CustomManager", "cid": "2"}]}, {"id": "managers_rationale_61", "label": "Возвращает список связанных моделей (FK → текущая модель).         Формат: [{'ta", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\managers.py", "short_path": "models/managers.py", "source_location": "L61", "degree": 1, "neighbors": [{"id": "managers_custommanager_rel_tables", "label": ".rel_tables()", "cid": "13"}]}, {"id": "nas_naschangeview_get_model", "label": ".get_model()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\nas.py", "short_path": "views/nas.py", "source_location": "L161", "degree": 24, "neighbors": [{"id": "voip_voipnaschangeview_get_groups_from_model", "label": ".get_groups_from_model()", "cid": "6"}, {"id": "permission_settings_model_permissions", "label": "model_permissions()", "cid": "13"}, {"id": "interface_settings_is_valid_model", "label": "_is_valid_model()", "cid": "13"}, {"id": "form_searchqueryset_filter", "label": ".filter()", "cid": "0"}, {"id": "nas_naschangeview_get_object_type", "label": "._get_object_type()", "cid": "6"}, {"id": "usluga_get_tree_json", "label": "get_tree_json()", "cid": "0"}, {"id": "nas_filtermixin_make_queryset", "label": ".make_queryset()", "cid": "6"}, {"id": "reports_process_unaccounted_data", "label": "process_unaccounted_data()", "cid": "6"}, {"id": "users_users", "label": "Users", "cid": "3"}, {"id": "reports_grid_handler", "label": "grid_handler()", "cid": "6"}, {"id": "user_attribute_widget_get_widget", "label": "get_widget()", "cid": "13"}, {"id": "permission_settings_get_related_groups", "label": "get_related_groups()", "cid": "13"}, {"id": "crm_crmbaseview_make_context", "label": ".make_context()", "cid": "6"}, {"id": "reports_grid_config", "label": "grid_config()", "cid": "6"}, {"id": "home_treemixin_get_tree_json", "label": ".get_tree_json()", "cid": "5"}]}, {"id": "permission_settings_add_group", "label": "add_group()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\permission_settings.py", "short_path": "views/permission_settings.py", "source_location": "L356", "degree": 4, "neighbors": [{"id": "usluga_uslugachangeview_get", "label": ".get()", "cid": "1"}, {"id": "form_searchqueryset_filter", "label": ".filter()", "cid": "0"}, {"id": "billing_views_permission_settings_py", "label": "permission_settings.py", "cid": "13"}, {"id": "permission_settings_rationale_357", "label": "Create a new Django auth group.", "cid": "13"}]}, {"id": "permission_settings_get_data_by_model", "label": "get_data_by_model()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\permission_settings.py", "short_path": "views/permission_settings.py", "source_location": "L55", "degree": 2, "neighbors": [{"id": "billing_views_permission_settings_py", "label": "permission_settings.py", "cid": "13"}, {"id": "permission_settings_rationale_56", "label": "Возвращает словарь с именем и таблицей модели на основе метаданных Firebird.", "cid": "13"}]}, {"id": "permission_settings_get_model_list", "label": "get_model_list()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\permission_settings.py", "short_path": "views/permission_settings.py", "source_location": "L46", "degree": 2, "neighbors": [{"id": "permission_settings_rationale_47", "label": "Возвращает список всех моделей-потомков BaseModel из модуля abstract_models.", "cid": "13"}, {"id": "billing_views_permission_settings_py", "label": "permission_settings.py", "cid": "13"}]}, {"id": "permission_settings_get_related_groups", "label": "get_related_groups()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\permission_settings.py", "short_path": "views/permission_settings.py", "source_location": "L209", "degree": 4, "neighbors": [{"id": "nas_naschangeview_get_model", "label": ".get_model()", "cid": "13"}, {"id": "permission_settings_rationale_210", "label": "Возвращает список имён моделей, которые ссылаются на указанную модель.      :par", "cid": "13"}, {"id": "billing_views_permission_settings_py", "label": "permission_settings.py", "cid": "13"}, {"id": "permission_settings_model_permissions", "label": "model_permissions()", "cid": "13"}]}, {"id": "permission_settings_group_list2", "label": "group_list2()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\permission_settings.py", "short_path": "views/permission_settings.py", "source_location": "L225", "degree": 6, "neighbors": [{"id": "helpdesk_plaintextwidget_render", "label": ".render()", "cid": "1"}, {"id": "permission_settings_rationale_226", "label": "Список групп (вторая версия интерфейса).      :param group_id: ID группы Django", "cid": "13"}, {"id": "form_searchqueryset_all", "label": ".all()", "cid": "0"}, {"id": "billing_views_permission_settings_py", "label": "permission_settings.py", "cid": "13"}, {"id": "nas_naschangeview_get_model", "label": ".get_model()", "cid": "13"}, {"id": "managers_custommanager_rel_tables", "label": ".rel_tables()", "cid": "13"}]}, {"id": "permission_settings_model_permissions", "label": "model_permissions()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\permission_settings.py", "short_path": "views/permission_settings.py", "source_location": "L91", "degree": 11, "neighbors": [{"id": "helpdesk_plaintextwidget_render", "label": ".render()", "cid": "1"}, {"id": "permission_settings_sync_base_groups", "label": "_sync_base_groups()", "cid": "13"}, {"id": "permission_settings_get_related_groups", "label": "get_related_groups()", "cid": "13"}, {"id": "permission_settings_rationale_92", "label": "Управление правами доступа групп к моделям.      :param group_id: ID группы Djan", "cid": "13"}, {"id": "stubs_auditoperations_save", "label": ".save()", "cid": "0"}, {"id": "form_searchqueryset_all", "label": ".all()", "cid": "0"}, {"id": "billing_views_permission_settings_py", "label": "permission_settings.py", "cid": "13"}, {"id": "nas_naschangeview_get_model", "label": ".get_model()", "cid": "13"}, {"id": "usluga_uslugachangeview_get", "label": ".get()", "cid": "1"}, {"id": "managers_custommanager_rel_tables", "label": ".rel_tables()", "cid": "13"}, {"id": "form_searchqueryset_filter", "label": ".filter()", "cid": "0"}]}, {"id": "permission_settings_rationale_210", "label": "Возвращает список имён моделей, которые ссылаются на указанную модель.      :par", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\permission_settings.py", "short_path": "views/permission_settings.py", "source_location": "L210", "degree": 1, "neighbors": [{"id": "permission_settings_get_related_groups", "label": "get_related_groups()", "cid": "13"}]}, {"id": "permission_settings_rationale_226", "label": "Список групп (вторая версия интерфейса).      :param group_id: ID группы Django", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\permission_settings.py", "short_path": "views/permission_settings.py", "source_location": "L226", "degree": 1, "neighbors": [{"id": "permission_settings_group_list2", "label": "group_list2()", "cid": "13"}]}, {"id": "permission_settings_rationale_34", "label": "Синхронизирует базовые группы.     Оригинал синхронизировал через SOAP API — в н", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\permission_settings.py", "short_path": "views/permission_settings.py", "source_location": "L34", "degree": 1, "neighbors": [{"id": "permission_settings_sync_base_groups", "label": "_sync_base_groups()", "cid": "13"}]}, {"id": "permission_settings_rationale_357", "label": "Create a new Django auth group.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\permission_settings.py", "short_path": "views/permission_settings.py", "source_location": "L357", "degree": 1, "neighbors": [{"id": "permission_settings_add_group", "label": "add_group()", "cid": "13"}]}, {"id": "permission_settings_rationale_47", "label": "Возвращает список всех моделей-потомков BaseModel из модуля abstract_models.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\permission_settings.py", "short_path": "views/permission_settings.py", "source_location": "L47", "degree": 1, "neighbors": [{"id": "permission_settings_get_model_list", "label": "get_model_list()", "cid": "13"}]}, {"id": "permission_settings_rationale_56", "label": "Возвращает словарь с именем и таблицей модели на основе метаданных Firebird.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\permission_settings.py", "short_path": "views/permission_settings.py", "source_location": "L56", "degree": 1, "neighbors": [{"id": "permission_settings_get_data_by_model", "label": "get_data_by_model()", "cid": "13"}]}, {"id": "permission_settings_rationale_92", "label": "Управление правами доступа групп к моделям.      :param group_id: ID группы Djan", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\permission_settings.py", "short_path": "views/permission_settings.py", "source_location": "L92", "degree": 1, "neighbors": [{"id": "permission_settings_model_permissions", "label": "model_permissions()", "cid": "13"}]}, {"id": "permission_settings_sync_base_groups", "label": "_sync_base_groups()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\permission_settings.py", "short_path": "views/permission_settings.py", "source_location": "L33", "degree": 4, "neighbors": [{"id": "permission_settings_rationale_34", "label": "Синхронизирует базовые группы.     Оригинал синхронизировал через SOAP API — в н", "cid": "13"}, {"id": "permission_settings_abonent_group_permissions", "label": "abonent_group_permissions()", "cid": "11"}, {"id": "billing_views_permission_settings_py", "label": "permission_settings.py", "cid": "13"}, {"id": "permission_settings_model_permissions", "label": "model_permissions()", "cid": "13"}]}, {"id": "user_attribute_widget_get_widget", "label": "get_widget()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\user_attribute_widget.py", "short_path": "views/user_attribute_widget.py", "source_location": "L21", "degree": 6, "neighbors": [{"id": "helpdesk_plaintextwidget_render", "label": ".render()", "cid": "1"}, {"id": "billing_views_user_attribute_widget_py", "label": "user_attribute_widget.py", "cid": "13"}, {"id": "form_searchqueryset_all", "label": ".all()", "cid": "0"}, {"id": "nas_naschangeview_get_model", "label": ".get_model()", "cid": "13"}, {"id": "form_baseview_get_main_url", "label": ".get_main_url()", "cid": "10"}, {"id": "usluga_uslugachangeview_get", "label": ".get()", "cid": "1"}]}, {"id": "user_attribute_widget_rationale_1", "label": "Виджет атрибутов пользователей — Python 3 / Django 4.2 Замена: admin/view/user_a", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\user_attribute_widget.py", "short_path": "views/user_attribute_widget.py", "source_location": "L1", "degree": 1, "neighbors": [{"id": "billing_views_user_attribute_widget_py", "label": "user_attribute_widget.py", "cid": "13"}]}, {"id": "users_ajax_radiusauth_ajax", "label": "radiusauth_ajax()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\users_ajax.py", "short_path": "views/users_ajax.py", "source_location": "L133", "degree": 5, "neighbors": [{"id": "users_ajax_rationale_134", "label": "GET: детали RADIUS-сессии. POST: редактирование / сброс.", "cid": "13"}, {"id": "stubs_auditoperations_save", "label": ".save()", "cid": "0"}, {"id": "nas_naschangeview_get_model", "label": ".get_model()", "cid": "13"}, {"id": "usluga_uslugachangeview_get", "label": ".get()", "cid": "1"}, {"id": "billing_views_users_ajax_py", "label": "users_ajax.py", "cid": "13"}]}, {"id": "users_ajax_rationale_1", "label": "AJAX API для учётных записей (Users) — модальное редактирование на карточке абон", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\users_ajax.py", "short_path": "views/users_ajax.py", "source_location": "L1", "degree": 1, "neighbors": [{"id": "billing_views_users_ajax_py", "label": "users_ajax.py", "cid": "13"}]}, {"id": "users_ajax_rationale_109", "label": "Возвращает RADIUS-авторизации для пользователя.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\users_ajax.py", "short_path": "views/users_ajax.py", "source_location": "L109", "degree": 1, "neighbors": [{"id": "users_ajax_users_radius_api", "label": "users_radius_api()", "cid": "13"}]}, {"id": "users_ajax_rationale_134", "label": "GET: детали RADIUS-сессии. POST: редактирование / сброс.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\users_ajax.py", "short_path": "views/users_ajax.py", "source_location": "L134", "degree": 1, "neighbors": [{"id": "users_ajax_radiusauth_ajax", "label": "radiusauth_ajax()", "cid": "13"}]}, {"id": "users_ajax_rationale_185", "label": "Выдаёт свободный IP из пула для пользователя.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\users_ajax.py", "short_path": "views/users_ajax.py", "source_location": "L185", "degree": 1, "neighbors": [{"id": "users_ajax_users_genip_api", "label": "users_genip_api()", "cid": "13"}]}, {"id": "users_ajax_user_to_dict", "label": "_user_to_dict()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\users_ajax.py", "short_path": "views/users_ajax.py", "source_location": "L12", "degree": 2, "neighbors": [{"id": "users_ajax_users_api", "label": "users_api()", "cid": "13"}, {"id": "billing_views_users_ajax_py", "label": "users_ajax.py", "cid": "13"}]}, {"id": "users_ajax_users_api", "label": "users_api()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\users_ajax.py", "short_path": "views/users_ajax.py", "source_location": "L46", "degree": 8, "neighbors": [{"id": "users_ajax_user_to_dict", "label": "_user_to_dict()", "cid": "13"}, {"id": "stubs_auditoperations_save", "label": ".save()", "cid": "0"}, {"id": "abonents_abonents_delete", "label": ".delete()", "cid": "11"}, {"id": "nas_naschangeview_get_model", "label": ".get_model()", "cid": "13"}, {"id": "users_users", "label": "Users", "cid": "3"}, {"id": "usluga_uslugachangeview_get", "label": ".get()", "cid": "1"}, {"id": "billing_views_users_ajax_py", "label": "users_ajax.py", "cid": "13"}, {"id": "exception", "label": "Exception", "cid": "0"}]}, {"id": "users_ajax_users_genip_api", "label": "users_genip_api()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\users_ajax.py", "short_path": "views/users_ajax.py", "source_location": "L184", "degree": 3, "neighbors": [{"id": "nas_api_allocate_ip", "label": "allocate_ip()", "cid": "7"}, {"id": "billing_views_users_ajax_py", "label": "users_ajax.py", "cid": "13"}, {"id": "users_ajax_rationale_185", "label": "Выдаёт свободный IP из пула для пользователя.", "cid": "13"}]}, {"id": "users_ajax_users_radius_api", "label": "users_radius_api()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\views\\users_ajax.py", "short_path": "views/users_ajax.py", "source_location": "L108", "degree": 5, "neighbors": [{"id": "users_ajax_rationale_109", "label": "Возвращает RADIUS-авторизации для пользователя.", "cid": "13"}, {"id": "form_searchqueryset_order_by", "label": ".order_by()", "cid": "0"}, {"id": "nas_naschangeview_get_model", "label": ".get_model()", "cid": "13"}, {"id": "billing_views_users_ajax_py", "label": "users_ajax.py", "cid": "13"}, {"id": "form_searchqueryset_filter", "label": ".filter()", "cid": "0"}]}];
+const RELATED = [{"cid": "0", "label": "Карточка абонента", "color": "#4e79a7", "count": 24, "icon": "user"}, {"cid": "1", "label": "Личный кабинет", "color": "#f28e2b", "count": 11, "icon": "home"}, {"cid": "6", "label": "ACL и соцсети", "color": "#b07aa1", "count": 8, "icon": "world"}, {"cid": "2", "label": "Финансы и деньги", "color": "#e15759", "count": 5, "icon": "credit-card"}, {"cid": "11", "label": "Задачи биллинга", "color": "#fabfd2", "count": 4, "icon": "settings"}, {"cid": "10", "label": "Фреймворк форм", "color": "#d37295", "count": 2, "icon": "layout-list"}, {"cid": "3", "label": "Поиск абонентов", "color": "#76b7b2", "count": 2, "icon": "search"}, {"cid": "5", "label": "Авторизация", "color": "#edc948", "count": 1, "icon": "lock"}, {"cid": "7", "label": "Блокировки", "color": "#ff9da7", "count": 1, "icon": "ban"}, {"cid": "4", "label": "Мобильный API", "color": "#59a14f", "count": 1, "icon": "device-mobile"}];
+
+// Render related communities
+const relGrid = document.getElementById('relatedGrid');
+if (RELATED.length === 0) {
+  relGrid.innerHTML = '<span style="color:var(--text3);font-size:13px;">Нет связей с другими сообществами</span>';
+} else {
+  RELATED.forEach(r => {
+    const a = document.createElement('a');
+    a.href = `community_${r.cid}.html`;
+    a.className = 'rel-chip';
+    a.innerHTML = `<span style="width:8px;height:8px;border-radius:50%;background:${r.color};flex-shrink:0;display:inline-block;"></span>
+      ${escHtml(r.label)}
+      <span class="rel-count">${r.count}</span>`;
+    relGrid.appendChild(a);
+  });
 }
-
-
-
 
 function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -486,6 +543,5 @@ const degTh = document.querySelector('#nodesTable th[data-col="degree"]');
 if (degTh) degTh.classList.add('sorted-desc');
 render();
 </script>
-
 </body>
 </html>

@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-theme="dark">
 <head>
 <meta charset="utf-8">
-<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Community 15 — Платёжные системы | graphify</title>
 <style>
@@ -26,17 +25,29 @@ body {
 a { color: var(--primary-l); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
+/* Header */
+.site-header {
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  padding: 12px 24px; display: flex; align-items: center; gap: 16px;
+  position: sticky; top: 0; z-index: 100;
+}
+.site-header h1 { font-size: 18px; font-weight: 700; color: var(--primary-l); flex: 1; }
+.site-header .subtitle { color: var(--text2); font-size: 12px; }
+.nav-links { display: flex; gap: 8px; }
+.nav-link {
+  color: var(--text2); font-size: 13px; padding: 4px 10px;
+  border: 1px solid var(--border); border-radius: 6px;
+  transition: all 0.15s;
+}
+.nav-link:hover { color: var(--primary-l); border-color: var(--primary); text-decoration: none; }
 
-
-
-
-
-
-
-
-
-
-
+/* Theme toggle */
+.theme-btn {
+  background: var(--bg3); border: 1px solid var(--border); color: var(--text2);
+  padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 13px;
+  transition: all 0.15s;
+}
+.theme-btn:hover { color: var(--primary-l); border-color: var(--primary); }
 
 /* Main layout */
 .main { padding: 24px; max-width: 1400px; margin: 0 auto; }
@@ -79,11 +90,14 @@ tbody tr:hover { background: var(--bg3); }
 .badge-rationale { background: rgba(148,163,184,0.15); color: var(--text2); }
 .badge-document { background: rgba(89,161,79,0.2); color: #86efac; }
 
-/* Community dot */
+/* Community icon (card & legend) — square with themed SVG */
 .com-dot {
-  display: inline-block; width: 12px; height: 12px;
-  border-radius: 50%; flex-shrink: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px;
+  border-radius: 8px; flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,.18);
 }
+.com-dot svg { width: 18px; height: 18px; }
 
 /* Cards grid */
 .cards-grid {
@@ -100,16 +114,11 @@ tbody tr:hover { background: var(--bg3); }
 }
 .card:hover { border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary) inset; }
 .card-header { display: flex; align-items: center; gap: 10px; }
-.card-title { font-weight: 700; font-size: 15px; }
-.card-meta { color: var(--text2); font-size: 12px; }
-.card-top3 { color: var(--text3); font-size: 12px; font-family: monospace; }
-.card-btn {
-  margin-top: auto; display: inline-block; padding: 6px 14px;
-  background: var(--primary); color: #fff; border-radius: 6px;
-  font-size: 13px; font-weight: 600; text-align: center;
-  transition: background 0.15s; cursor: pointer; border: none; text-decoration: none;
-}
-.card-btn:hover { background: var(--primary-l); text-decoration: none; color: #fff; }
+.card-title { font-weight: 700; font-size: 15px; color: var(--primary-l); transition: color 0.15s; }
+.card:hover .card-title { text-decoration: underline; }
+.card-desc { color: var(--text); font-size: 13px; line-height: 1.45; text-decoration: none; }
+.card-meta { color: var(--text2); font-size: 12px; text-decoration: none; }
+.card-top3 { color: var(--text3); font-size: 12px; font-family: monospace; text-decoration: none; }
 
 /* Section heading */
 .section-heading {
@@ -182,31 +191,17 @@ tbody tr:hover { background: var(--bg3); }
 .search-results { display: none; margin-top: 16px; }
 .search-results.visible { display: block; }
 
-/* Community page header */
-.comm-header {
-  display: flex; align-items: flex-start; gap: 16px;
-  margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border);
-}
-.comm-icon {
-  width: 56px; height: 56px; border-radius: 50%;
-  flex-shrink: 0; display: flex; align-items: center; justify-content: center;
-  font-size: 22px; font-weight: 700; color: #fff;
-}
-.comm-name { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
-.comm-id { color: var(--text3); font-size: 12px; }
-
-/* ── Фирменная шапка docs ─────────────────────────────────────────────────── */
+/* Фирменная шапка docs (gradient, fixed) */
 :root { --header-grad-a: #43a047; --header-grad-b: #26a69a; --header-height: 56px; }
 [data-theme=dark] { --header-grad-a: #0f172a; --header-grad-b: #1e293b; }
-
 @keyframes header-gradient-shift {
   0%   { background-position:   0% 50%; }
   50%  { background-position: 100% 50%; }
   100% { background-position:   0% 50%; }
 }
-@media (prefers-reduced-motion: reduce) { .header { animation: none !important; } }
+@media (prefers-reduced-motion: reduce) { .docs-topnav { animation: none !important; } }
 
-.header {
+.docs-topnav {
   position: fixed; top: 0; left: 0; right: 0; height: var(--header-height);
   background: linear-gradient(135deg, var(--header-grad-a), var(--header-grad-b), var(--header-grad-a));
   background-size: 200% 200%;
@@ -215,74 +210,119 @@ tbody tr:hover { background: var(--bg3); }
   z-index: 200; gap: 12px;
   box-shadow: 0 1px 3px rgba(15,23,42,.06), 0 4px 12px rgba(15,23,42,.08);
 }
-[data-theme=dark] .header { border-bottom: 1px solid #334155; }
-.header-left { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
-.header-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
-.logo:hover { text-decoration: none; }
-.logo-icon {
-  width: 36px; height: 36px;
-  background: linear-gradient(135deg, #43a047, #26a69a);
-  border-radius: 8px; display: flex; align-items: center; justify-content: center;
-  color: #fff; font-weight: 700; font-size: 1.15rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,.25); flex-shrink: 0;
-}
-[data-theme=dark] .logo-icon { box-shadow: 0 2px 12px rgba(77,182,172,.35); }
-.logo-text { font-size: 1.15rem; font-weight: 700; white-space: nowrap; color: #fff; }
-.logo-text span { font-weight: 300; opacity: .85; }
-.logo-text .logo-main { font-weight: 700; opacity: 1; }
-.logo-text .logo-main::after { content: '\00a0|\00a0'; font-weight: 300; opacity: .85; }
-.header-nav-link {
-  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22);
-  color: #fff; border-radius: 8px; padding: 5px 12px; font-size: 13px;
-  text-decoration: none; white-space: nowrap; transition: background .2s;
-}
-.header-nav-link:hover { background: rgba(255,255,255,.25); text-decoration: none; color: #fff; }
-.theme-toggle {
-  background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.25);
-  color: #fff; width: 36px; height: 36px; border-radius: 8px;
-  cursor: pointer; display: flex; align-items: center; justify-content: center;
-  font-size: 1.1rem; transition: background .2s, transform .2s; flex-shrink: 0;
-}
-.theme-toggle:hover { background: rgba(255,255,255,.25); transform: scale(1.05); }
-.theme-toggle .icon-sun, .theme-toggle .icon-moon { line-height: 1; }
-[data-theme=dark]  .theme-toggle .icon-sun  { display: inline; }
-[data-theme=dark]  .theme-toggle .icon-moon { display: none; }
-:root .theme-toggle .icon-sun  { display: none; }
-:root .theme-toggle .icon-moon { display: inline; }
-
-/* Offset body for fixed header */
+[data-theme=dark] .docs-topnav { border-bottom: 1px solid #334155; }
 body { padding-top: var(--header-height); }
-/* ── /шапка ───────────────────────────────────────────────────────────────── */
+
+.docs-topnav .dtn-logo {
+  display: flex; align-items: center; gap: 10px;
+  font-weight: 700; font-size: 15px; color: #fff; text-decoration: none; white-space: nowrap;
+}
+.docs-topnav .dtn-logo:hover { text-decoration: none; color: #fff; }
+.docs-topnav .dtn-logo-icon {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: linear-gradient(135deg, #66bb6a, #26a69a);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 800; flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,.18);
+}
+.docs-topnav .dtn-sep { display: none; }
+.docs-topnav .dtn-links { display: flex; gap: 6px; flex-wrap: nowrap; }
+.docs-topnav .dtn-link {
+  color: #fff; font-size: 13px; padding: 6px 12px;
+  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22);
+  border-radius: 8px; transition: all 0.15s; white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.docs-topnav .dtn-link:hover { background: rgba(255,255,255,.22); text-decoration: none; color: #fff; }
+.docs-topnav .dtn-link .dtn-ico { font-size: 15px; line-height: 1; }
+.docs-topnav .dtn-link .dtn-txt { display: inline; }
+.docs-topnav .dtn-spacer { flex: 1; min-width: 8px; }
+.docs-topnav .dtn-theme-btn {
+  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22); color: #fff;
+  padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 13px;
+  transition: all 0.15s; white-space: nowrap; flex-shrink: 0;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.docs-topnav .dtn-theme-btn:hover { background: rgba(255,255,255,.22); }
+
+/* Mobile: иконки вместо текста, логотип-текст скрыть */
+@media (max-width: 680px) {
+  .docs-topnav { padding: 0 12px; gap: 8px; }
+  .docs-topnav .dtn-logo .dtn-logo-text { display: none; }
+  .docs-topnav .dtn-link .dtn-txt { display: none; }
+  .docs-topnav .dtn-link { padding: 6px 10px; }
+  .docs-topnav .dtn-theme-btn .dtn-theme-txt { display: none; }
+  .docs-topnav .dtn-theme-btn { padding: 6px 10px; }
+}
+
+/* Community page header */
+.comm-header {
+  display: flex; align-items: flex-start; gap: 16px;
+  margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border);
+}
+.comm-icon {
+  width: 72px; height: 72px; border-radius: 14px;
+  flex-shrink: 0; box-shadow: 0 4px 14px rgba(0,0,0,.22);
+  display: flex; align-items: center; justify-content: center;
+}
+.comm-icon svg { width: 40px; height: 40px; }
+@media (max-width: 680px) {
+  .comm-icon { width: 56px; height: 56px; border-radius: 12px; }
+  .comm-icon svg { width: 30px; height: 30px; }
+}
+.comm-name { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+.comm-id { color: var(--text3); font-size: 12px; }
+.comm-desc-hdr {
+  margin-top: 10px; color: var(--text); font-size: 14px; line-height: 1.5;
+  max-width: 760px;
+}
+
 </style>
 </head>
 <body>
 
-<header class="header">
-  <div class="header-left">
-    <div class="logo">
-      <div class="logo-icon">С</div>
-      <div class="logo-text"><span class="logo-main">СмИТ Биллинг</span><span>Wiki</span></div>
-    </div>
+<div class="docs-topnav">
+  <a href="../../../index.html" class="dtn-logo" title="СмИТ Биллинг — Документация">
+    <div class="dtn-logo-icon">С</div>
+    <span class="dtn-logo-text">СмИТ Биллинг</span>
+  </a>
+  <div class="dtn-links">
+    <a href="../../../index.html" class="dtn-link" title="Документация">
+      <span class="dtn-ico">📘</span><span class="dtn-txt">Документация</span>
+    </a>
+    <a href="../../../pages/dev/index.html" class="dtn-link" title="Разработчикам">
+      <span class="dtn-ico">⚙️</span><span class="dtn-txt">Разработчикам</span>
+    </a>
+    <a href="../graph.html" class="dtn-link" title="Граф зависимостей">
+      <span class="dtn-ico">🕸</span><span class="dtn-txt">Граф</span>
+    </a>
+    <a href="index.html" class="dtn-link" title="Wiki сообществ">
+      <span class="dtn-ico">📚</span><span class="dtn-txt">Wiki</span>
+    </a>
+    <a href="../help.html" class="dtn-link" title="graphify CLI">
+      <span class="dtn-ico">💻</span><span class="dtn-txt">CLI</span>
+    </a>
+    <a href="community_14.html" class="dtn-link">← Отчёты СОРМ</a>
+    <a href="community_16.html" class="dtn-link">Сообщения →</a>
   </div>
-  <div class="header-right">
-    <a href="index.html" class="header-nav-link">← Wiki</a>
-    <a href="../graph.html" class="header-nav-link">Граф</a>
-    <a href="../../index.html" class="header-nav-link">Документация</a>
-    <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему" title="Светлая / тёмная тема">
-      <span class="icon-sun">&#9788;</span>
-      <span class="icon-moon">&#9790;</span>
-    </button>
-  </div>
-</header>
+  <div class="dtn-spacer"></div>
+  <button class="dtn-theme-btn" id="themeToggle" title="Переключить тему">
+    <span class="dtn-ico">◑</span><span class="dtn-theme-txt">Тема</span>
+  </button>
+</div>
 
 <div class="main">
   <!-- Community header -->
   <div class="comm-header">
-    <div class="comm-icon" style="background:#86bcb6;">П</div>
-    <div>
+    <div class="comm-icon" style="background:#86bcb6;"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18v12H3zM3 10h18M7 14h2M13 14h4"/></svg></div>
+    <div style="flex:1;min-width:0;">
       <div class="comm-name">Платёжные системы</div>
-      <div class="comm-id">Community #15</div>
+      <div class="comm-id">Community #15 · <a href="../../../pages/billing.html#payment-systems" style="color:var(--primary-l);font-size:12px;" title="Раздел в документации">📖 Документация</a></div>
+      <div class="comm-desc-hdr">Платёжные системы: YooKassa (HTTP+REST v3), Wallet One, универсальный webhook.</div>
+      <div style="margin-top:10px;">
+        <a href="index.html" class="dtn-link" style="font-size:12px;padding:4px 10px;">← Все сообщества</a>
+      </div>
     </div>
   </div>
 
@@ -330,21 +370,38 @@ body { padding-top: var(--header-height); }
 </div>
 
 <script>
+
 // Theme toggle
 const html = document.documentElement;
 const saved = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 html.setAttribute('data-theme', saved);
-const themeBtn = document.getElementById('themeToggle');
-if (themeBtn) {
-  themeBtn.addEventListener('click', () => {
+document.querySelectorAll('.dtn-theme-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
     const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     html.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
   });
+});
+
+
+const NODES = [{"id": "lk_services_payment_py", "label": "payment.py", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\services\\payment.py", "short_path": "services/payment.py", "source_location": "L1", "degree": 25, "neighbors": [{"id": "payment_get_setting", "label": "_get_setting()", "cid": "15"}, {"id": "payment_process_yookassa_webhook", "label": "_process_yookassa_webhook()", "cid": "15"}, {"id": "payment_create_payment", "label": "create_payment()", "cid": "15"}, {"id": "uuid", "label": "uuid", "cid": ""}, {"id": "payment_process_webhook", "label": "process_webhook()", "cid": "15"}, {"id": "payment_process_generic_webhook", "label": "_process_generic_webhook()", "cid": "15"}, {"id": "payment_create_yookassa_rest", "label": "_create_yookassa_rest()", "cid": "15"}, {"id": "payment_create_w1_payment", "label": "_create_w1_payment()", "cid": "15"}, {"id": "logging", "label": "logging", "cid": ""}, {"id": "payment_create_yookassa_http_form", "label": "_create_yookassa_http_form()", "cid": "15"}, {"id": "payment_credit_abonent", "label": "_credit_abonent()", "cid": "15"}, {"id": "decimal", "label": "decimal", "cid": ""}, {"id": "django_db", "label": "django_db", "cid": ""}, {"id": "payment_create_yookassa_payment", "label": "_create_yookassa_payment()", "cid": "15"}, {"id": "payment_get_active_system", "label": "get_active_system()", "cid": "15"}]}, {"id": "lk_views_payments_py", "label": "payments.py", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\views\\payments.py", "short_path": "views/payments.py", "source_location": "L1", "degree": 17, "neighbors": [{"id": "django_conf", "label": "django_conf", "cid": ""}, {"id": "django_http", "label": "django_http", "cid": ""}, {"id": "django_core_paginator", "label": "django_core_paginator", "cid": ""}, {"id": "django_views_decorators_csrf", "label": "django_views_decorators_csrf", "cid": ""}, {"id": "payments_get_ip_whitelist", "label": "_get_ip_whitelist()", "cid": "15"}, {"id": "django_shortcuts", "label": "django_shortcuts", "cid": ""}, {"id": "decimal", "label": "decimal", "cid": ""}, {"id": "datetime", "label": "datetime", "cid": ""}, {"id": "lk_decorators", "label": "lk_decorators", "cid": ""}, {"id": "payments_payment_history", "label": "payment_history()", "cid": "15"}, {"id": "django_utils", "label": "django_utils", "cid": ""}, {"id": "payments_payment_result", "label": "payment_result()", "cid": "15"}, {"id": "payments_get_client_ip", "label": "_get_client_ip()", "cid": "15"}, {"id": "payments_payment_pay", "label": "payment_pay()", "cid": "15"}, {"id": "payments_ip_in_whitelist", "label": "_ip_in_whitelist()", "cid": "15"}]}, {"id": "payment_calculate_commission", "label": "calculate_commission()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\services\\payment.py", "short_path": "services/payment.py", "source_location": "L37", "degree": 5, "neighbors": [{"id": "lk_services_payment_py", "label": "payment.py", "cid": "15"}, {"id": "payment_create_payment", "label": "create_payment()", "cid": "15"}, {"id": "payments_payment_pay", "label": "payment_pay()", "cid": "15"}, {"id": "payment_rationale_38", "label": "Calculate amount WITH commission to send to payment system.      User wants to p", "cid": "15"}, {"id": "payment_get_commission_rate", "label": "get_commission_rate()", "cid": "15"}]}, {"id": "payment_create_payment", "label": "create_payment()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\services\\payment.py", "short_path": "services/payment.py", "source_location": "L64", "degree": 8, "neighbors": [{"id": "payment_rationale_65", "label": "Create payment and return redirect URL (or form dict for HTTP protocol).      `a", "cid": "15"}, {"id": "lk_services_payment_py", "label": "payment.py", "cid": "15"}, {"id": "payment_create_w1_payment", "label": "_create_w1_payment()", "cid": "15"}, {"id": "finance_payment_create", "label": "payment_create()", "cid": "4"}, {"id": "payment_calculate_commission", "label": "calculate_commission()", "cid": "15"}, {"id": "payments_payment_pay", "label": "payment_pay()", "cid": "15"}, {"id": "payment_get_active_system", "label": "get_active_system()", "cid": "15"}, {"id": "payment_create_yookassa_payment", "label": "_create_yookassa_payment()", "cid": "15"}]}, {"id": "payment_create_w1_payment", "label": "_create_w1_payment()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\services\\payment.py", "short_path": "services/payment.py", "source_location": "L234", "degree": 5, "neighbors": [{"id": "payment_get_setting", "label": "_get_setting()", "cid": "15"}, {"id": "payment_w1_signature", "label": "_w1_signature()", "cid": "15"}, {"id": "lk_services_payment_py", "label": "payment.py", "cid": "15"}, {"id": "payment_rationale_235", "label": "Create W1 payment form data.      pay_amount — amount WITH commission (sent to W", "cid": "15"}, {"id": "payment_create_payment", "label": "create_payment()", "cid": "15"}]}, {"id": "payment_create_yookassa_http_form", "label": "_create_yookassa_http_form()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\services\\payment.py", "short_path": "services/payment.py", "source_location": "L475", "degree": 4, "neighbors": [{"id": "payment_create_yookassa_payment", "label": "_create_yookassa_payment()", "cid": "15"}, {"id": "payment_get_setting", "label": "_get_setting()", "cid": "15"}, {"id": "payment_rationale_476", "label": "Return form data dict for HTTP protocol (old Yandex.Kassa form POST).", "cid": "15"}, {"id": "lk_services_payment_py", "label": "payment.py", "cid": "15"}]}, {"id": "payment_create_yookassa_payment", "label": "_create_yookassa_payment()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\services\\payment.py", "short_path": "services/payment.py", "source_location": "L343", "degree": 6, "neighbors": [{"id": "payment_get_setting", "label": "_get_setting()", "cid": "15"}, {"id": "payment_create_yookassa_rest", "label": "_create_yookassa_rest()", "cid": "15"}, {"id": "lk_services_payment_py", "label": "payment.py", "cid": "15"}, {"id": "payment_create_yookassa_http_form", "label": "_create_yookassa_http_form()", "cid": "15"}, {"id": "payment_create_payment", "label": "create_payment()", "cid": "15"}, {"id": "payment_rationale_344", "label": "Create YooKassa payment via REST API v3 or HTTP protocol form.      pay_amount —", "cid": "15"}]}, {"id": "payment_create_yookassa_rest", "label": "_create_yookassa_rest()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\services\\payment.py", "short_path": "services/payment.py", "source_location": "L365", "degree": 5, "neighbors": [{"id": "lk_services_payment_py", "label": "payment.py", "cid": "15"}, {"id": "usluga_uslugachangeview_post", "label": ".post()", "cid": "1"}, {"id": "usluga_uslugachangeview_get", "label": ".get()", "cid": "1"}, {"id": "payment_create_yookassa_payment", "label": "_create_yookassa_payment()", "cid": "15"}, {"id": "payment_rationale_366", "label": "Create payment via YooKassa REST API v3.", "cid": "15"}]}, {"id": "payment_credit_abonent", "label": "_credit_abonent()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\services\\payment.py", "short_path": "services/payment.py", "source_location": "L563", "degree": 8, "neighbors": [{"id": "payment_process_yookassa_webhook", "label": "_process_yookassa_webhook()", "cid": "15"}, {"id": "payment_process_generic_webhook", "label": "_process_generic_webhook()", "cid": "15"}, {"id": "lk_services_payment_py", "label": "payment.py", "cid": "15"}, {"id": "payment_process_w1_webhook", "label": "_process_w1_webhook()", "cid": "15"}, {"id": "stubs_auditoperations_save", "label": ".save()", "cid": "0"}, {"id": "usluga_uslugachangeview_get", "label": ".get()", "cid": "1"}, {"id": "payment_rationale_564", "label": "Credit abonent account after successful payment.", "cid": "15"}, {"id": "payment_process_yookassa_http_webhook", "label": "_process_yookassa_http_webhook()", "cid": "15"}]}, {"id": "payment_get_active_system", "label": "get_active_system()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\services\\payment.py", "short_path": "services/payment.py", "source_location": "L24", "degree": 7, "neighbors": [{"id": "payment_get_setting", "label": "_get_setting()", "cid": "15"}, {"id": "lk_services_payment_py", "label": "payment.py", "cid": "15"}, {"id": "payment_create_payment", "label": "create_payment()", "cid": "15"}, {"id": "finance_payment_create", "label": "payment_create()", "cid": "4"}, {"id": "account_get_payment_system", "label": "_get_payment_system()", "cid": "4"}, {"id": "payment_rationale_25", "label": "Return active payment system name or '' if disabled.", "cid": "15"}, {"id": "payments_payment_pay", "label": "payment_pay()", "cid": "15"}]}, {"id": "payment_get_commission_rate", "label": "get_commission_rate()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\services\\payment.py", "short_path": "services/payment.py", "source_location": "L29", "degree": 5, "neighbors": [{"id": "payment_get_setting", "label": "_get_setting()", "cid": "15"}, {"id": "lk_services_payment_py", "label": "payment.py", "cid": "15"}, {"id": "payment_calculate_commission", "label": "calculate_commission()", "cid": "15"}, {"id": "payment_rationale_30", "label": "Return commission rate as Decimal, read from DB or .env.", "cid": "15"}, {"id": "payments_payment_pay", "label": "payment_pay()", "cid": "15"}]}, {"id": "payment_get_setting", "label": "_get_setting()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\services\\payment.py", "short_path": "services/payment.py", "source_location": "L15", "degree": 13, "neighbors": [{"id": "payment_process_generic_webhook", "label": "_process_generic_webhook()", "cid": "15"}, {"id": "payment_process_yookassa_webhook", "label": "_process_yookassa_webhook()", "cid": "15"}, {"id": "lk_services_payment_py", "label": "payment.py", "cid": "15"}, {"id": "payment_create_w1_payment", "label": "_create_w1_payment()", "cid": "15"}, {"id": "payment_process_w1_webhook", "label": "_process_w1_webhook()", "cid": "15"}, {"id": "payment_create_yookassa_http_form", "label": "_create_yookassa_http_form()", "cid": "15"}, {"id": "payments_get_ip_whitelist", "label": "_get_ip_whitelist()", "cid": "15"}, {"id": "settings_service_get_setting", "label": "get_setting()", "cid": "1"}, {"id": "payment_rationale_16", "label": "Read a setting: DB (admin panel) → Django settings (.env) → default.", "cid": "15"}, {"id": "payment_get_active_system", "label": "get_active_system()", "cid": "15"}, {"id": "payment_create_yookassa_payment", "label": "_create_yookassa_payment()", "cid": "15"}, {"id": "payment_get_commission_rate", "label": "get_commission_rate()", "cid": "15"}, {"id": "payment_process_yookassa_http_webhook", "label": "_process_yookassa_http_webhook()", "cid": "15"}]}, {"id": "payment_process_generic_webhook", "label": "_process_generic_webhook()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\services\\payment.py", "short_path": "services/payment.py", "source_location": "L131", "degree": 7, "neighbors": [{"id": "payment_get_setting", "label": "_get_setting()", "cid": "15"}, {"id": "payment_process_webhook", "label": "process_webhook()", "cid": "15"}, {"id": "lk_services_payment_py", "label": "payment.py", "cid": "15"}, {"id": "payment_credit_abonent", "label": "_credit_abonent()", "cid": "15"}, {"id": "payment_rationale_132", "label": "Универсальный webhook для «Единой кассы» и любой платёжки с простым POST.      О", "cid": "15"}, {"id": "usluga_uslugachangeview_get", "label": ".get()", "cid": "1"}, {"id": "form_searchqueryset_filter", "label": ".filter()", "cid": "0"}]}, {"id": "payment_process_w1_webhook", "label": "_process_w1_webhook()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\services\\payment.py", "short_path": "services/payment.py", "source_location": "L284", "degree": 7, "neighbors": [{"id": "payment_get_setting", "label": "_get_setting()", "cid": "15"}, {"id": "payment_process_webhook", "label": "process_webhook()", "cid": "15"}, {"id": "payment_w1_signature", "label": "_w1_signature()", "cid": "15"}, {"id": "lk_services_payment_py", "label": "payment.py", "cid": "15"}, {"id": "payment_credit_abonent", "label": "_credit_abonent()", "cid": "15"}, {"id": "usluga_uslugachangeview_get", "label": ".get()", "cid": "1"}, {"id": "payment_rationale_285", "label": "Process W1 payment notification.", "cid": "15"}]}, {"id": "payment_process_webhook", "label": "process_webhook()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\services\\payment.py", "short_path": "services/payment.py", "source_location": "L95", "degree": 8, "neighbors": [{"id": "payment_process_yookassa_webhook", "label": "_process_yookassa_webhook()", "cid": "15"}, {"id": "payment_process_generic_webhook", "label": "_process_generic_webhook()", "cid": "15"}, {"id": "lk_services_payment_py", "label": "payment.py", "cid": "15"}, {"id": "payment_process_w1_webhook", "label": "_process_w1_webhook()", "cid": "15"}, {"id": "payment_rationale_96", "label": "Process payment webhook from any system. Returns True/str on success.      Едины", "cid": "15"}, {"id": "payments_payment_webhook", "label": "payment_webhook()", "cid": "15"}, {"id": "usluga_uslugachangeview_get", "label": ".get()", "cid": "1"}, {"id": "payment_process_yookassa_http_webhook", "label": "_process_yookassa_http_webhook()", "cid": "15"}]}, {"id": "payment_process_yookassa_http_webhook", "label": "_process_yookassa_http_webhook()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\services\\payment.py", "short_path": "services/payment.py", "source_location": "L499", "degree": 6, "neighbors": [{"id": "payment_get_setting", "label": "_get_setting()", "cid": "15"}, {"id": "payment_process_webhook", "label": "process_webhook()", "cid": "15"}, {"id": "lk_services_payment_py", "label": "payment.py", "cid": "15"}, {"id": "payment_credit_abonent", "label": "_credit_abonent()", "cid": "15"}, {"id": "payment_rationale_500", "label": "Process YooKassa HTTP protocol webhook (checkOrder / paymentAviso).", "cid": "15"}, {"id": "usluga_uslugachangeview_get", "label": ".get()", "cid": "1"}]}, {"id": "payment_process_yookassa_webhook", "label": "_process_yookassa_webhook()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\services\\payment.py", "short_path": "services/payment.py", "source_location": "L405", "degree": 6, "neighbors": [{"id": "payment_get_setting", "label": "_get_setting()", "cid": "15"}, {"id": "payment_process_webhook", "label": "process_webhook()", "cid": "15"}, {"id": "lk_services_payment_py", "label": "payment.py", "cid": "15"}, {"id": "payment_credit_abonent", "label": "_credit_abonent()", "cid": "15"}, {"id": "usluga_uslugachangeview_get", "label": ".get()", "cid": "1"}, {"id": "payment_rationale_406", "label": "Process YooKassa REST API v3 webhook (JSON body).      Верификация: IP-whitelist", "cid": "15"}]}, {"id": "payment_rationale_1", "label": "Payment system integration: YooKassa (REST API v3 + HTTP protocol) + W1.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\services\\payment.py", "short_path": "services/payment.py", "source_location": "L1", "degree": 2, "neighbors": [{"id": "stubs_msgstack", "label": "MsgStack", "cid": "3"}, {"id": "lk_services_payment_py", "label": "payment.py", "cid": "15"}]}, {"id": "payment_rationale_132", "label": "Универсальный webhook для «Единой кассы» и любой платёжки с простым POST.      О", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\services\\payment.py", "short_path": "services/payment.py", "source_location": "L132", "degree": 2, "neighbors": [{"id": "stubs_msgstack", "label": "MsgStack", "cid": "3"}, {"id": "payment_process_generic_webhook", "label": "_process_generic_webhook()", "cid": "15"}]}, {"id": "payment_rationale_16", "label": "Read a setting: DB (admin panel) → Django settings (.env) → default.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\services\\payment.py", "short_path": "services/payment.py", "source_location": "L16", "degree": 2, "neighbors": [{"id": "stubs_msgstack", "label": "MsgStack", "cid": "3"}, {"id": "payment_get_setting", "label": "_get_setting()", "cid": "15"}]}, {"id": "payment_rationale_219", "label": "Calculate W1 signature: md5(sorted values + secret_key) as base64.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\services\\payment.py", "short_path": "services/payment.py", "source_location": "L219", "degree": 2, "neighbors": [{"id": "stubs_msgstack", "label": "MsgStack", "cid": "3"}, {"id": "payment_w1_signature", "label": "_w1_signature()", "cid": "15"}]}, {"id": "payment_rationale_235", "label": "Create W1 payment form data.      pay_amount — amount WITH commission (sent to W", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\services\\payment.py", "short_path": "services/payment.py", "source_location": "L235", "degree": 2, "neighbors": [{"id": "payment_create_w1_payment", "label": "_create_w1_payment()", "cid": "15"}, {"id": "stubs_msgstack", "label": "MsgStack", "cid": "3"}]}, {"id": "payment_rationale_25", "label": "Return active payment system name or '' if disabled.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\services\\payment.py", "short_path": "services/payment.py", "source_location": "L25", "degree": 2, "neighbors": [{"id": "stubs_msgstack", "label": "MsgStack", "cid": "3"}, {"id": "payment_get_active_system", "label": "get_active_system()", "cid": "15"}]}, {"id": "payment_rationale_285", "label": "Process W1 payment notification.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\services\\payment.py", "short_path": "services/payment.py", "source_location": "L285", "degree": 2, "neighbors": [{"id": "payment_process_w1_webhook", "label": "_process_w1_webhook()", "cid": "15"}, {"id": "stubs_msgstack", "label": "MsgStack", "cid": "3"}]}, {"id": "payment_rationale_30", "label": "Return commission rate as Decimal, read from DB or .env.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\services\\payment.py", "short_path": "services/payment.py", "source_location": "L30", "degree": 2, "neighbors": [{"id": "stubs_msgstack", "label": "MsgStack", "cid": "3"}, {"id": "payment_get_commission_rate", "label": "get_commission_rate()", "cid": "15"}]}, {"id": "payment_rationale_344", "label": "Create YooKassa payment via REST API v3 or HTTP protocol form.      pay_amount —", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\services\\payment.py", "short_path": "services/payment.py", "source_location": "L344", "degree": 2, "neighbors": [{"id": "stubs_msgstack", "label": "MsgStack", "cid": "3"}, {"id": "payment_create_yookassa_payment", "label": "_create_yookassa_payment()", "cid": "15"}]}, {"id": "payment_rationale_366", "label": "Create payment via YooKassa REST API v3.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\services\\payment.py", "short_path": "services/payment.py", "source_location": "L366", "degree": 2, "neighbors": [{"id": "stubs_msgstack", "label": "MsgStack", "cid": "3"}, {"id": "payment_create_yookassa_rest", "label": "_create_yookassa_rest()", "cid": "15"}]}, {"id": "payment_rationale_38", "label": "Calculate amount WITH commission to send to payment system.      User wants to p", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\services\\payment.py", "short_path": "services/payment.py", "source_location": "L38", "degree": 2, "neighbors": [{"id": "stubs_msgstack", "label": "MsgStack", "cid": "3"}, {"id": "payment_calculate_commission", "label": "calculate_commission()", "cid": "15"}]}, {"id": "payment_rationale_406", "label": "Process YooKassa REST API v3 webhook (JSON body).      Верификация: IP-whitelist", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\services\\payment.py", "short_path": "services/payment.py", "source_location": "L406", "degree": 2, "neighbors": [{"id": "stubs_msgstack", "label": "MsgStack", "cid": "3"}, {"id": "payment_process_yookassa_webhook", "label": "_process_yookassa_webhook()", "cid": "15"}]}, {"id": "payment_rationale_476", "label": "Return form data dict for HTTP protocol (old Yandex.Kassa form POST).", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\services\\payment.py", "short_path": "services/payment.py", "source_location": "L476", "degree": 2, "neighbors": [{"id": "payment_create_yookassa_http_form", "label": "_create_yookassa_http_form()", "cid": "15"}, {"id": "stubs_msgstack", "label": "MsgStack", "cid": "3"}]}, {"id": "payment_rationale_500", "label": "Process YooKassa HTTP protocol webhook (checkOrder / paymentAviso).", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\services\\payment.py", "short_path": "services/payment.py", "source_location": "L500", "degree": 2, "neighbors": [{"id": "stubs_msgstack", "label": "MsgStack", "cid": "3"}, {"id": "payment_process_yookassa_http_webhook", "label": "_process_yookassa_http_webhook()", "cid": "15"}]}, {"id": "payment_rationale_564", "label": "Credit abonent account after successful payment.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\services\\payment.py", "short_path": "services/payment.py", "source_location": "L564", "degree": 2, "neighbors": [{"id": "stubs_msgstack", "label": "MsgStack", "cid": "3"}, {"id": "payment_credit_abonent", "label": "_credit_abonent()", "cid": "15"}]}, {"id": "payment_rationale_65", "label": "Create payment and return redirect URL (or form dict for HTTP protocol).      `a", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\services\\payment.py", "short_path": "services/payment.py", "source_location": "L65", "degree": 2, "neighbors": [{"id": "stubs_msgstack", "label": "MsgStack", "cid": "3"}, {"id": "payment_create_payment", "label": "create_payment()", "cid": "15"}]}, {"id": "payment_rationale_96", "label": "Process payment webhook from any system. Returns True/str on success.      Едины", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\services\\payment.py", "short_path": "services/payment.py", "source_location": "L96", "degree": 2, "neighbors": [{"id": "stubs_msgstack", "label": "MsgStack", "cid": "3"}, {"id": "payment_process_webhook", "label": "process_webhook()", "cid": "15"}]}, {"id": "payment_w1_signature", "label": "_w1_signature()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\services\\payment.py", "short_path": "services/payment.py", "source_location": "L218", "degree": 4, "neighbors": [{"id": "payment_create_w1_payment", "label": "_create_w1_payment()", "cid": "15"}, {"id": "payment_process_w1_webhook", "label": "_process_w1_webhook()", "cid": "15"}, {"id": "payment_rationale_219", "label": "Calculate W1 signature: md5(sorted values + secret_key) as base64.", "cid": "15"}, {"id": "lk_services_payment_py", "label": "payment.py", "cid": "15"}]}, {"id": "payments_get_client_ip", "label": "_get_client_ip()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\views\\payments.py", "short_path": "views/payments.py", "source_location": "L160", "degree": 4, "neighbors": [{"id": "usluga_uslugachangeview_get", "label": ".get()", "cid": "1"}, {"id": "payments_payment_webhook", "label": "payment_webhook()", "cid": "15"}, {"id": "lk_views_payments_py", "label": "payments.py", "cid": "15"}, {"id": "payments_rationale_161", "label": "Extract real client IP from request (behind nginx proxy).", "cid": "15"}]}, {"id": "payments_get_ip_whitelist", "label": "_get_ip_whitelist()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\views\\payments.py", "short_path": "views/payments.py", "source_location": "L180", "degree": 4, "neighbors": [{"id": "payments_rationale_181", "label": "Read IP whitelist from DB settings, fall back to defaults.", "cid": "15"}, {"id": "payments_payment_webhook", "label": "payment_webhook()", "cid": "15"}, {"id": "lk_views_payments_py", "label": "payments.py", "cid": "15"}, {"id": "payment_get_setting", "label": "_get_setting()", "cid": "15"}]}, {"id": "payments_ip_in_whitelist", "label": "_ip_in_whitelist()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\views\\payments.py", "short_path": "views/payments.py", "source_location": "L192", "degree": 3, "neighbors": [{"id": "payments_rationale_193", "label": "Check if IP is in any of the CIDR ranges in whitelist.", "cid": "15"}, {"id": "payments_payment_webhook", "label": "payment_webhook()", "cid": "15"}, {"id": "lk_views_payments_py", "label": "payments.py", "cid": "15"}]}, {"id": "payments_payment_history", "label": "payment_history()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\views\\payments.py", "short_path": "views/payments.py", "source_location": "L18", "degree": 5, "neighbors": [{"id": "helpdesk_plaintextwidget_render", "label": ".render()", "cid": "1"}, {"id": "form_searchqueryset_order_by", "label": ".order_by()", "cid": "0"}, {"id": "lk_views_payments_py", "label": "payments.py", "cid": "15"}, {"id": "usluga_uslugachangeview_get", "label": ".get()", "cid": "1"}, {"id": "form_searchqueryset_filter", "label": ".filter()", "cid": "0"}]}, {"id": "payments_payment_pay", "label": "payment_pay()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\views\\payments.py", "short_path": "views/payments.py", "source_location": "L79", "degree": 8, "neighbors": [{"id": "helpdesk_plaintextwidget_render", "label": ".render()", "cid": "1"}, {"id": "payments_rationale_80", "label": "Show payment form and initiate payment.", "cid": "15"}, {"id": "payment_create_payment", "label": "create_payment()", "cid": "15"}, {"id": "lk_views_payments_py", "label": "payments.py", "cid": "15"}, {"id": "payment_calculate_commission", "label": "calculate_commission()", "cid": "15"}, {"id": "payment_get_active_system", "label": "get_active_system()", "cid": "15"}, {"id": "usluga_uslugachangeview_get", "label": ".get()", "cid": "1"}, {"id": "payment_get_commission_rate", "label": "get_commission_rate()", "cid": "15"}]}, {"id": "payments_payment_result", "label": "payment_result()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\views\\payments.py", "short_path": "views/payments.py", "source_location": "L152", "degree": 3, "neighbors": [{"id": "helpdesk_plaintextwidget_render", "label": ".render()", "cid": "1"}, {"id": "payments_rationale_153", "label": "Payment result page (user returns here after payment).", "cid": "15"}, {"id": "lk_views_payments_py", "label": "payments.py", "cid": "15"}]}, {"id": "payments_payment_webhook", "label": "payment_webhook()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\views\\payments.py", "short_path": "views/payments.py", "source_location": "L209", "degree": 7, "neighbors": [{"id": "exception", "label": "Exception", "cid": "0"}, {"id": "payment_process_webhook", "label": "process_webhook()", "cid": "15"}, {"id": "lk_views_payments_py", "label": "payments.py", "cid": "15"}, {"id": "payments_rationale_210", "label": "Receive payment notifications from payment systems.", "cid": "15"}, {"id": "payments_get_client_ip", "label": "_get_client_ip()", "cid": "15"}, {"id": "payments_ip_in_whitelist", "label": "_ip_in_whitelist()", "cid": "15"}, {"id": "payments_get_ip_whitelist", "label": "_get_ip_whitelist()", "cid": "15"}]}, {"id": "payments_rationale_153", "label": "Payment result page (user returns here after payment).", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\views\\payments.py", "short_path": "views/payments.py", "source_location": "L153", "degree": 1, "neighbors": [{"id": "payments_payment_result", "label": "payment_result()", "cid": "15"}]}, {"id": "payments_rationale_161", "label": "Extract real client IP from request (behind nginx proxy).", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\views\\payments.py", "short_path": "views/payments.py", "source_location": "L161", "degree": 1, "neighbors": [{"id": "payments_get_client_ip", "label": "_get_client_ip()", "cid": "15"}]}, {"id": "payments_rationale_181", "label": "Read IP whitelist from DB settings, fall back to defaults.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\views\\payments.py", "short_path": "views/payments.py", "source_location": "L181", "degree": 1, "neighbors": [{"id": "payments_get_ip_whitelist", "label": "_get_ip_whitelist()", "cid": "15"}]}, {"id": "payments_rationale_193", "label": "Check if IP is in any of the CIDR ranges in whitelist.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\views\\payments.py", "short_path": "views/payments.py", "source_location": "L193", "degree": 1, "neighbors": [{"id": "payments_ip_in_whitelist", "label": "_ip_in_whitelist()", "cid": "15"}]}, {"id": "payments_rationale_210", "label": "Receive payment notifications from payment systems.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\views\\payments.py", "short_path": "views/payments.py", "source_location": "L210", "degree": 1, "neighbors": [{"id": "payments_payment_webhook", "label": "payment_webhook()", "cid": "15"}]}, {"id": "payments_rationale_80", "label": "Show payment form and initiate payment.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\views\\payments.py", "short_path": "views/payments.py", "source_location": "L80", "degree": 1, "neighbors": [{"id": "payments_payment_pay", "label": "payment_pay()", "cid": "15"}]}];
+const RELATED = [{"cid": "3", "label": "Поиск абонентов", "color": "#76b7b2", "count": 17, "icon": "search"}, {"cid": "1", "label": "Личный кабинет", "color": "#f28e2b", "count": 15, "icon": "home"}, {"cid": "0", "label": "Карточка абонента", "color": "#4e79a7", "count": 5, "icon": "user"}, {"cid": "4", "label": "Мобильный API", "color": "#59a14f", "count": 3, "icon": "device-mobile"}];
+
+// Render related communities
+const relGrid = document.getElementById('relatedGrid');
+if (RELATED.length === 0) {
+  relGrid.innerHTML = '<span style="color:var(--text3);font-size:13px;">Нет связей с другими сообществами</span>';
+} else {
+  RELATED.forEach(r => {
+    const a = document.createElement('a');
+    a.href = `community_${r.cid}.html`;
+    a.className = 'rel-chip';
+    a.innerHTML = `<span style="width:8px;height:8px;border-radius:50%;background:${r.color};flex-shrink:0;display:inline-block;"></span>
+      ${escHtml(r.label)}
+      <span class="rel-count">${r.count}</span>`;
+    relGrid.appendChild(a);
+  });
 }
-
-
-
 
 function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -486,6 +543,5 @@ const degTh = document.querySelector('#nodesTable th[data-col="degree"]');
 if (degTh) degTh.classList.add('sorted-desc');
 render();
 </script>
-
 </body>
 </html>

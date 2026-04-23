@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-theme="dark">
 <head>
 <meta charset="utf-8">
-<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Community 12 — Шаблоны ЛК | graphify</title>
 <style>
@@ -26,17 +25,29 @@ body {
 a { color: var(--primary-l); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
+/* Header */
+.site-header {
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  padding: 12px 24px; display: flex; align-items: center; gap: 16px;
+  position: sticky; top: 0; z-index: 100;
+}
+.site-header h1 { font-size: 18px; font-weight: 700; color: var(--primary-l); flex: 1; }
+.site-header .subtitle { color: var(--text2); font-size: 12px; }
+.nav-links { display: flex; gap: 8px; }
+.nav-link {
+  color: var(--text2); font-size: 13px; padding: 4px 10px;
+  border: 1px solid var(--border); border-radius: 6px;
+  transition: all 0.15s;
+}
+.nav-link:hover { color: var(--primary-l); border-color: var(--primary); text-decoration: none; }
 
-
-
-
-
-
-
-
-
-
-
+/* Theme toggle */
+.theme-btn {
+  background: var(--bg3); border: 1px solid var(--border); color: var(--text2);
+  padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 13px;
+  transition: all 0.15s;
+}
+.theme-btn:hover { color: var(--primary-l); border-color: var(--primary); }
 
 /* Main layout */
 .main { padding: 24px; max-width: 1400px; margin: 0 auto; }
@@ -79,11 +90,14 @@ tbody tr:hover { background: var(--bg3); }
 .badge-rationale { background: rgba(148,163,184,0.15); color: var(--text2); }
 .badge-document { background: rgba(89,161,79,0.2); color: #86efac; }
 
-/* Community dot */
+/* Community icon (card & legend) — square with themed SVG */
 .com-dot {
-  display: inline-block; width: 12px; height: 12px;
-  border-radius: 50%; flex-shrink: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px;
+  border-radius: 8px; flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,.18);
 }
+.com-dot svg { width: 18px; height: 18px; }
 
 /* Cards grid */
 .cards-grid {
@@ -100,16 +114,11 @@ tbody tr:hover { background: var(--bg3); }
 }
 .card:hover { border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary) inset; }
 .card-header { display: flex; align-items: center; gap: 10px; }
-.card-title { font-weight: 700; font-size: 15px; }
-.card-meta { color: var(--text2); font-size: 12px; }
-.card-top3 { color: var(--text3); font-size: 12px; font-family: monospace; }
-.card-btn {
-  margin-top: auto; display: inline-block; padding: 6px 14px;
-  background: var(--primary); color: #fff; border-radius: 6px;
-  font-size: 13px; font-weight: 600; text-align: center;
-  transition: background 0.15s; cursor: pointer; border: none; text-decoration: none;
-}
-.card-btn:hover { background: var(--primary-l); text-decoration: none; color: #fff; }
+.card-title { font-weight: 700; font-size: 15px; color: var(--primary-l); transition: color 0.15s; }
+.card:hover .card-title { text-decoration: underline; }
+.card-desc { color: var(--text); font-size: 13px; line-height: 1.45; text-decoration: none; }
+.card-meta { color: var(--text2); font-size: 12px; text-decoration: none; }
+.card-top3 { color: var(--text3); font-size: 12px; font-family: monospace; text-decoration: none; }
 
 /* Section heading */
 .section-heading {
@@ -182,31 +191,17 @@ tbody tr:hover { background: var(--bg3); }
 .search-results { display: none; margin-top: 16px; }
 .search-results.visible { display: block; }
 
-/* Community page header */
-.comm-header {
-  display: flex; align-items: flex-start; gap: 16px;
-  margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border);
-}
-.comm-icon {
-  width: 56px; height: 56px; border-radius: 50%;
-  flex-shrink: 0; display: flex; align-items: center; justify-content: center;
-  font-size: 22px; font-weight: 700; color: #fff;
-}
-.comm-name { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
-.comm-id { color: var(--text3); font-size: 12px; }
-
-/* ── Фирменная шапка docs ─────────────────────────────────────────────────── */
+/* Фирменная шапка docs (gradient, fixed) */
 :root { --header-grad-a: #43a047; --header-grad-b: #26a69a; --header-height: 56px; }
 [data-theme=dark] { --header-grad-a: #0f172a; --header-grad-b: #1e293b; }
-
 @keyframes header-gradient-shift {
   0%   { background-position:   0% 50%; }
   50%  { background-position: 100% 50%; }
   100% { background-position:   0% 50%; }
 }
-@media (prefers-reduced-motion: reduce) { .header { animation: none !important; } }
+@media (prefers-reduced-motion: reduce) { .docs-topnav { animation: none !important; } }
 
-.header {
+.docs-topnav {
   position: fixed; top: 0; left: 0; right: 0; height: var(--header-height);
   background: linear-gradient(135deg, var(--header-grad-a), var(--header-grad-b), var(--header-grad-a));
   background-size: 200% 200%;
@@ -215,74 +210,119 @@ tbody tr:hover { background: var(--bg3); }
   z-index: 200; gap: 12px;
   box-shadow: 0 1px 3px rgba(15,23,42,.06), 0 4px 12px rgba(15,23,42,.08);
 }
-[data-theme=dark] .header { border-bottom: 1px solid #334155; }
-.header-left { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
-.header-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
-.logo:hover { text-decoration: none; }
-.logo-icon {
-  width: 36px; height: 36px;
-  background: linear-gradient(135deg, #43a047, #26a69a);
-  border-radius: 8px; display: flex; align-items: center; justify-content: center;
-  color: #fff; font-weight: 700; font-size: 1.15rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,.25); flex-shrink: 0;
-}
-[data-theme=dark] .logo-icon { box-shadow: 0 2px 12px rgba(77,182,172,.35); }
-.logo-text { font-size: 1.15rem; font-weight: 700; white-space: nowrap; color: #fff; }
-.logo-text span { font-weight: 300; opacity: .85; }
-.logo-text .logo-main { font-weight: 700; opacity: 1; }
-.logo-text .logo-main::after { content: '\00a0|\00a0'; font-weight: 300; opacity: .85; }
-.header-nav-link {
-  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22);
-  color: #fff; border-radius: 8px; padding: 5px 12px; font-size: 13px;
-  text-decoration: none; white-space: nowrap; transition: background .2s;
-}
-.header-nav-link:hover { background: rgba(255,255,255,.25); text-decoration: none; color: #fff; }
-.theme-toggle {
-  background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.25);
-  color: #fff; width: 36px; height: 36px; border-radius: 8px;
-  cursor: pointer; display: flex; align-items: center; justify-content: center;
-  font-size: 1.1rem; transition: background .2s, transform .2s; flex-shrink: 0;
-}
-.theme-toggle:hover { background: rgba(255,255,255,.25); transform: scale(1.05); }
-.theme-toggle .icon-sun, .theme-toggle .icon-moon { line-height: 1; }
-[data-theme=dark]  .theme-toggle .icon-sun  { display: inline; }
-[data-theme=dark]  .theme-toggle .icon-moon { display: none; }
-:root .theme-toggle .icon-sun  { display: none; }
-:root .theme-toggle .icon-moon { display: inline; }
-
-/* Offset body for fixed header */
+[data-theme=dark] .docs-topnav { border-bottom: 1px solid #334155; }
 body { padding-top: var(--header-height); }
-/* ── /шапка ───────────────────────────────────────────────────────────────── */
+
+.docs-topnav .dtn-logo {
+  display: flex; align-items: center; gap: 10px;
+  font-weight: 700; font-size: 15px; color: #fff; text-decoration: none; white-space: nowrap;
+}
+.docs-topnav .dtn-logo:hover { text-decoration: none; color: #fff; }
+.docs-topnav .dtn-logo-icon {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: linear-gradient(135deg, #66bb6a, #26a69a);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 800; flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,.18);
+}
+.docs-topnav .dtn-sep { display: none; }
+.docs-topnav .dtn-links { display: flex; gap: 6px; flex-wrap: nowrap; }
+.docs-topnav .dtn-link {
+  color: #fff; font-size: 13px; padding: 6px 12px;
+  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22);
+  border-radius: 8px; transition: all 0.15s; white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.docs-topnav .dtn-link:hover { background: rgba(255,255,255,.22); text-decoration: none; color: #fff; }
+.docs-topnav .dtn-link .dtn-ico { font-size: 15px; line-height: 1; }
+.docs-topnav .dtn-link .dtn-txt { display: inline; }
+.docs-topnav .dtn-spacer { flex: 1; min-width: 8px; }
+.docs-topnav .dtn-theme-btn {
+  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22); color: #fff;
+  padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 13px;
+  transition: all 0.15s; white-space: nowrap; flex-shrink: 0;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.docs-topnav .dtn-theme-btn:hover { background: rgba(255,255,255,.22); }
+
+/* Mobile: иконки вместо текста, логотип-текст скрыть */
+@media (max-width: 680px) {
+  .docs-topnav { padding: 0 12px; gap: 8px; }
+  .docs-topnav .dtn-logo .dtn-logo-text { display: none; }
+  .docs-topnav .dtn-link .dtn-txt { display: none; }
+  .docs-topnav .dtn-link { padding: 6px 10px; }
+  .docs-topnav .dtn-theme-btn .dtn-theme-txt { display: none; }
+  .docs-topnav .dtn-theme-btn { padding: 6px 10px; }
+}
+
+/* Community page header */
+.comm-header {
+  display: flex; align-items: flex-start; gap: 16px;
+  margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border);
+}
+.comm-icon {
+  width: 72px; height: 72px; border-radius: 14px;
+  flex-shrink: 0; box-shadow: 0 4px 14px rgba(0,0,0,.22);
+  display: flex; align-items: center; justify-content: center;
+}
+.comm-icon svg { width: 40px; height: 40px; }
+@media (max-width: 680px) {
+  .comm-icon { width: 56px; height: 56px; border-radius: 12px; }
+  .comm-icon svg { width: 30px; height: 30px; }
+}
+.comm-name { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+.comm-id { color: var(--text3); font-size: 12px; }
+.comm-desc-hdr {
+  margin-top: 10px; color: var(--text); font-size: 14px; line-height: 1.5;
+  max-width: 760px;
+}
+
 </style>
 </head>
 <body>
 
-<header class="header">
-  <div class="header-left">
-    <div class="logo">
-      <div class="logo-icon">С</div>
-      <div class="logo-text"><span class="logo-main">СмИТ Биллинг</span><span>Wiki</span></div>
-    </div>
+<div class="docs-topnav">
+  <a href="../../../index.html" class="dtn-logo" title="СмИТ Биллинг — Документация">
+    <div class="dtn-logo-icon">С</div>
+    <span class="dtn-logo-text">СмИТ Биллинг</span>
+  </a>
+  <div class="dtn-links">
+    <a href="../../../index.html" class="dtn-link" title="Документация">
+      <span class="dtn-ico">📘</span><span class="dtn-txt">Документация</span>
+    </a>
+    <a href="../../../pages/dev/index.html" class="dtn-link" title="Разработчикам">
+      <span class="dtn-ico">⚙️</span><span class="dtn-txt">Разработчикам</span>
+    </a>
+    <a href="../graph.html" class="dtn-link" title="Граф зависимостей">
+      <span class="dtn-ico">🕸</span><span class="dtn-txt">Граф</span>
+    </a>
+    <a href="index.html" class="dtn-link" title="Wiki сообществ">
+      <span class="dtn-ico">📚</span><span class="dtn-txt">Wiki</span>
+    </a>
+    <a href="../help.html" class="dtn-link" title="graphify CLI">
+      <span class="dtn-ico">💻</span><span class="dtn-txt">CLI</span>
+    </a>
+    <a href="community_11.html" class="dtn-link">← Задачи биллинга</a>
+    <a href="community_13.html" class="dtn-link">Интерфейс →</a>
   </div>
-  <div class="header-right">
-    <a href="index.html" class="header-nav-link">← Wiki</a>
-    <a href="../graph.html" class="header-nav-link">Граф</a>
-    <a href="../../index.html" class="header-nav-link">Документация</a>
-    <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему" title="Светлая / тёмная тема">
-      <span class="icon-sun">&#9788;</span>
-      <span class="icon-moon">&#9790;</span>
-    </button>
-  </div>
-</header>
+  <div class="dtn-spacer"></div>
+  <button class="dtn-theme-btn" id="themeToggle" title="Переключить тему">
+    <span class="dtn-ico">◑</span><span class="dtn-theme-txt">Тема</span>
+  </button>
+</div>
 
 <div class="main">
   <!-- Community header -->
   <div class="comm-header">
-    <div class="comm-icon" style="background:#8cd17d;">Ш</div>
-    <div>
+    <div class="comm-icon" style="background:#8cd17d;"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm0 0v6h6M9 13h6M9 17h4"/></svg></div>
+    <div style="flex:1;min-width:0;">
       <div class="comm-name">Шаблоны ЛК</div>
       <div class="comm-id">Community #12</div>
+      <div class="comm-desc-hdr">Шаблоны ЛК: базовый layout, AI-чат, уведомления, дашборд личного кабинета.</div>
+      <div style="margin-top:10px;">
+        <a href="index.html" class="dtn-link" style="font-size:12px;padding:4px 10px;">← Все сообщества</a>
+      </div>
     </div>
   </div>
 
@@ -330,21 +370,38 @@ body { padding-top: var(--header-height); }
 </div>
 
 <script>
+
 // Theme toggle
 const html = document.documentElement;
 const saved = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 html.setAttribute('data-theme', saved);
-const themeBtn = document.getElementById('themeToggle');
-if (themeBtn) {
-  themeBtn.addEventListener('click', () => {
+document.querySelectorAll('.dtn-theme-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
     const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     html.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
   });
+});
+
+
+const NODES = [{"id": "base_base_html", "label": "LK Base Layout Template", "file_type": "document", "source_file": "lk/templates/lk/base.html", "short_path": "lk/base.html", "source_location": "", "degree": 21, "neighbors": [{"id": "profile_profile_html", "label": "LK Profile Screen", "cid": "12"}, {"id": "payments_pay_pay_html", "label": "LK Payment Form Screen", "cid": "12"}, {"id": "result_result_html", "label": "LK Payment Result Screen", "cid": "12"}, {"id": "support_detail_detail_html", "label": "LK Support Ticket Detail Screen", "cid": "12"}, {"id": "tariff_confirm_confirm_html", "label": "LK Tariff Change Confirmation Screen", "cid": "12"}, {"id": "voluntary_block_voluntary_block_html", "label": "LK Voluntary Block Screen", "cid": "12"}, {"id": "payments_history_history_html", "label": "LK Payment History Screen", "cid": "12"}, {"id": "messages_messages_html", "label": "LK Messages Screen", "cid": "12"}, {"id": "base_lk_navbar", "label": "LK Navbar Component", "cid": "12"}, {"id": "promise_pay_promise_pay_html", "label": "LK Promise Pay Screen", "cid": "12"}, {"id": "lk_lk_filters", "label": "LK Template Filters (lk_filters templatetag)", "cid": "12"}, {"id": "base_dismiss_notif_endpoint", "label": "POST /lk/notifications/dismiss/{id}/", "cid": "12"}, {"id": "support_create_create_html", "label": "LK Support Create Ticket Screen", "cid": "12"}, {"id": "support_list_list_html", "label": "LK Support Ticket List Screen", "cid": "12"}, {"id": "dashboard_dashboard_html", "label": "LK Dashboard Screen", "cid": "12"}]}, {"id": "base_dark_theme_toggle", "label": "LK Dark Theme Toggle", "file_type": "document", "source_file": "lk/templates/lk/base.html", "short_path": "lk/base.html", "source_location": "line 166-181", "degree": 1, "neighbors": [{"id": "base_base_html", "label": "LK Base Layout Template", "cid": "12"}]}, {"id": "base_dismiss_notif_endpoint", "label": "POST /lk/notifications/dismiss/{id}/", "file_type": "document", "source_file": "lk/templates/lk/base.html", "short_path": "lk/base.html", "source_location": "line 197", "degree": 1, "neighbors": [{"id": "base_base_html", "label": "LK Base Layout Template", "cid": "12"}]}, {"id": "base_lk_navbar", "label": "LK Navbar Component", "file_type": "document", "source_file": "lk/templates/lk/base.html", "short_path": "lk/base.html", "source_location": "line 65-99", "degree": 1, "neighbors": [{"id": "base_base_html", "label": "LK Base Layout Template", "cid": "12"}]}, {"id": "base_lk_sidebar", "label": "LK Sidebar Navigation", "file_type": "document", "source_file": "lk/templates/lk/base.html", "short_path": "lk/base.html", "source_location": "line 104-121", "degree": 12, "neighbors": [{"id": "dashboard_dashboard_html", "label": "LK Dashboard Screen", "cid": "12"}, {"id": "sessions_sessions_html", "label": "LK Sessions Screen (stub)", "cid": "12"}, {"id": "tariff_list_list_html", "label": "LK Tariff List Screen", "cid": "12"}, {"id": "profile_profile_html", "label": "LK Profile Screen", "cid": "12"}, {"id": "payments_history_history_html", "label": "LK Payment History Screen", "cid": "12"}, {"id": "chat_chat_html", "label": "LK AI Chat Screen", "cid": "12"}, {"id": "messages_messages_html", "label": "LK Messages Screen", "cid": "12"}, {"id": "base_base_html", "label": "LK Base Layout Template", "cid": "12"}, {"id": "support_list_list_html", "label": "LK Support Ticket List Screen", "cid": "12"}, {"id": "payments_pay_pay_html", "label": "LK Payment Form Screen", "cid": "12"}, {"id": "promise_pay_promise_pay_html", "label": "LK Promise Pay Screen", "cid": "12"}, {"id": "voluntary_block_voluntary_block_html", "label": "LK Voluntary Block Screen", "cid": "12"}]}, {"id": "base_notifications_block", "label": "LK Notifications Banner", "file_type": "document", "source_file": "lk/templates/lk/base.html", "short_path": "lk/base.html", "source_location": "line 125-139", "degree": 1, "neighbors": [{"id": "base_base_html", "label": "LK Base Layout Template", "cid": "12"}]}, {"id": "chat_chat_html", "label": "LK AI Chat Screen", "file_type": "document", "source_file": "lk/templates/lk/chat.html", "short_path": "lk/chat.html", "source_location": "", "degree": 8, "neighbors": [{"id": "chat_escalated_banner", "label": "Chat Escalated-to-Operator Banner", "cid": "12"}, {"id": "chat_send_endpoint", "label": "POST /lk/chat/send/", "cid": "12"}, {"id": "chat_history_endpoint", "label": "GET /lk/chat/history/", "cid": "12"}, {"id": "base_lk_sidebar", "label": "LK Sidebar Navigation", "cid": "12"}, {"id": "chat_session_storage", "label": "Chat Session Storage (localStorage lk_chat_session)", "cid": "12"}, {"id": "chat_file_upload", "label": "Chat File Upload (FormData, image/pdf, max 5 files, 10MB each)", "cid": "12"}, {"id": "base_base_html", "label": "LK Base Layout Template", "cid": "12"}, {"id": "support_list_list_html", "label": "LK Support Ticket List Screen", "cid": "12"}]}, {"id": "chat_escalated_banner", "label": "Chat Escalated-to-Operator Banner", "file_type": "document", "source_file": "lk/templates/lk/chat.html", "short_path": "lk/chat.html", "source_location": "line 80-82", "degree": 1, "neighbors": [{"id": "chat_chat_html", "label": "LK AI Chat Screen", "cid": "12"}]}, {"id": "chat_file_upload", "label": "Chat File Upload (FormData, image/pdf, max 5 files, 10MB each)", "file_type": "document", "source_file": "lk/templates/lk/chat.html", "short_path": "lk/chat.html", "source_location": "line 86-97", "degree": 1, "neighbors": [{"id": "chat_chat_html", "label": "LK AI Chat Screen", "cid": "12"}]}, {"id": "chat_history_endpoint", "label": "GET /lk/chat/history/", "file_type": "document", "source_file": "lk/templates/lk/chat.html", "short_path": "lk/chat.html", "source_location": "line 288", "degree": 1, "neighbors": [{"id": "chat_chat_html", "label": "LK AI Chat Screen", "cid": "12"}]}, {"id": "chat_send_endpoint", "label": "POST /lk/chat/send/", "file_type": "document", "source_file": "lk/templates/lk/chat.html", "short_path": "lk/chat.html", "source_location": "line 249,259", "degree": 1, "neighbors": [{"id": "chat_chat_html", "label": "LK AI Chat Screen", "cid": "12"}]}, {"id": "chat_session_storage", "label": "Chat Session Storage (localStorage lk_chat_session)", "file_type": "document", "source_file": "lk/templates/lk/chat.html", "short_path": "lk/chat.html", "source_location": "line 96-104", "degree": 1, "neighbors": [{"id": "chat_chat_html", "label": "LK AI Chat Screen", "cid": "12"}]}, {"id": "dashboard_balance_card", "label": "Dashboard Balance Card", "file_type": "document", "source_file": "lk/templates/lk/dashboard.html", "short_path": "lk/dashboard.html", "source_location": "line 9-27", "degree": 1, "neighbors": [{"id": "dashboard_dashboard_html", "label": "LK Dashboard Screen", "cid": "12"}]}, {"id": "dashboard_dashboard_html", "label": "LK Dashboard Screen", "file_type": "document", "source_file": "lk/templates/lk/dashboard.html", "short_path": "lk/dashboard.html", "source_location": "", "degree": 11, "neighbors": [{"id": "lk_lk_filters", "label": "LK Template Filters (lk_filters templatetag)", "cid": "12"}, {"id": "dashboard_services_table", "label": "Dashboard Connected Services Table", "cid": "12"}, {"id": "dashboard_tarif_card", "label": "Dashboard Tariff Card", "cid": "12"}, {"id": "dashboard_balance_card", "label": "Dashboard Balance Card", "cid": "12"}, {"id": "result_result_html", "label": "LK Payment Result Screen", "cid": "12"}, {"id": "dashboard_recommend_card", "label": "Dashboard Recommended Payment Card", "cid": "12"}, {"id": "base_lk_sidebar", "label": "LK Sidebar Navigation", "cid": "12"}, {"id": "dashboard_quick_actions", "label": "Dashboard Quick Action Buttons", "cid": "12"}, {"id": "base_base_html", "label": "LK Base Layout Template", "cid": "12"}, {"id": "dashboard_status_card", "label": "Dashboard Status Card", "cid": "12"}, {"id": "dashboard_promise_pay_alert", "label": "Dashboard Promise Pay Active Alert", "cid": "12"}]}, {"id": "dashboard_promise_pay_alert", "label": "Dashboard Promise Pay Active Alert", "file_type": "document", "source_file": "lk/templates/lk/dashboard.html", "short_path": "lk/dashboard.html", "source_location": "line 100-109", "degree": 1, "neighbors": [{"id": "dashboard_dashboard_html", "label": "LK Dashboard Screen", "cid": "12"}]}, {"id": "dashboard_quick_actions", "label": "Dashboard Quick Action Buttons", "file_type": "document", "source_file": "lk/templates/lk/dashboard.html", "short_path": "lk/dashboard.html", "source_location": "line 90-97", "degree": 6, "neighbors": [{"id": "dashboard_dashboard_html", "label": "LK Dashboard Screen", "cid": "12"}, {"id": "payments_pay_pay_html", "label": "LK Payment Form Screen", "cid": "12"}, {"id": "support_create_create_html", "label": "LK Support Create Ticket Screen", "cid": "12"}, {"id": "tariff_list_list_html", "label": "LK Tariff List Screen", "cid": "12"}, {"id": "promise_pay_promise_pay_html", "label": "LK Promise Pay Screen", "cid": "12"}, {"id": "voluntary_block_voluntary_block_html", "label": "LK Voluntary Block Screen", "cid": "12"}]}, {"id": "dashboard_recommend_card", "label": "Dashboard Recommended Payment Card", "file_type": "document", "source_file": "lk/templates/lk/dashboard.html", "short_path": "lk/dashboard.html", "source_location": "line 70-87", "degree": 1, "neighbors": [{"id": "dashboard_dashboard_html", "label": "LK Dashboard Screen", "cid": "12"}]}, {"id": "dashboard_services_table", "label": "Dashboard Connected Services Table", "file_type": "document", "source_file": "lk/templates/lk/dashboard.html", "short_path": "lk/dashboard.html", "source_location": "line 127-152", "degree": 1, "neighbors": [{"id": "dashboard_dashboard_html", "label": "LK Dashboard Screen", "cid": "12"}]}, {"id": "dashboard_status_card", "label": "Dashboard Status Card", "file_type": "document", "source_file": "lk/templates/lk/dashboard.html", "short_path": "lk/dashboard.html", "source_location": "line 50-68", "degree": 1, "neighbors": [{"id": "dashboard_dashboard_html", "label": "LK Dashboard Screen", "cid": "12"}]}, {"id": "dashboard_tarif_card", "label": "Dashboard Tariff Card", "file_type": "document", "source_file": "lk/templates/lk/dashboard.html", "short_path": "lk/dashboard.html", "source_location": "line 29-48", "degree": 1, "neighbors": [{"id": "dashboard_dashboard_html", "label": "LK Dashboard Screen", "cid": "12"}]}, {"id": "lk_lk_filters", "label": "LK Template Filters (lk_filters templatetag)", "file_type": "document", "source_file": "lk/templates/lk/base.html", "short_path": "lk/base.html", "source_location": "line 77", "degree": 9, "neighbors": [{"id": "dashboard_dashboard_html", "label": "LK Dashboard Screen", "cid": "12"}, {"id": "profile_profile_html", "label": "LK Profile Screen", "cid": "12"}, {"id": "payments_history_history_html", "label": "LK Payment History Screen", "cid": "12"}, {"id": "support_ticket_table_ticket_table_html", "label": "LK Support Ticket Table Partial", "cid": "12"}, {"id": "support_detail_detail_html", "label": "LK Support Ticket Detail Screen", "cid": "12"}, {"id": "base_base_html", "label": "LK Base Layout Template", "cid": "12"}, {"id": "support_list_list_html", "label": "LK Support Ticket List Screen", "cid": "12"}, {"id": "payments_pay_pay_html", "label": "LK Payment Form Screen", "cid": "12"}, {"id": "promise_pay_promise_pay_html", "label": "LK Promise Pay Screen", "cid": "12"}]}, {"id": "messages_messages_html", "label": "LK Messages Screen", "file_type": "document", "source_file": "lk/templates/lk/messages.html", "short_path": "lk/messages.html", "source_location": "", "degree": 3, "neighbors": [{"id": "base_base_html", "label": "LK Base Layout Template", "cid": "12"}, {"id": "base_lk_sidebar", "label": "LK Sidebar Navigation", "cid": "12"}, {"id": "messages_msg_channel_badges", "label": "Message Channel Badges (Email/SMS/Telegram/Push/VK)", "cid": "12"}]}, {"id": "messages_msg_channel_badges", "label": "Message Channel Badges (Email/SMS/Telegram/Push/VK)", "file_type": "document", "source_file": "lk/templates/lk/messages.html", "short_path": "lk/messages.html", "source_location": "line 23-27", "degree": 1, "neighbors": [{"id": "messages_messages_html", "label": "LK Messages Screen", "cid": "12"}]}, {"id": "pay_redirect_pay_redirect_html", "label": "LK Pay Redirect Screen (auto-submit form)", "file_type": "document", "source_file": "lk/templates/lk/payments/pay_redirect.html", "short_path": "payments/pay_redirect.html", "source_location": "", "degree": 1, "neighbors": [{"id": "payments_pay_endpoint", "label": "POST /lk/payments/pay/ (payment submit)", "cid": "12"}]}, {"id": "payments_history_history_html", "label": "LK Payment History Screen", "file_type": "document", "source_file": "lk/templates/lk/payments/history.html", "short_path": "payments/history.html", "source_location": "", "degree": 6, "neighbors": [{"id": "lk_lk_filters", "label": "LK Template Filters (lk_filters templatetag)", "cid": "12"}, {"id": "payments_history_period_filter", "label": "Payment History Period Filter (month/3month/year/all + date range)", "cid": "12"}, {"id": "payments_history_summary_cards", "label": "Payment History Summary Cards (income/expense/count)", "cid": "12"}, {"id": "base_lk_sidebar", "label": "LK Sidebar Navigation", "cid": "12"}, {"id": "base_base_html", "label": "LK Base Layout Template", "cid": "12"}, {"id": "payments_pay_pay_html", "label": "LK Payment Form Screen", "cid": "12"}]}, {"id": "payments_history_period_filter", "label": "Payment History Period Filter (month/3month/year/all + date range)", "file_type": "document", "source_file": "lk/templates/lk/payments/history.html", "short_path": "payments/history.html", "source_location": "line 11-28", "degree": 1, "neighbors": [{"id": "payments_history_history_html", "label": "LK Payment History Screen", "cid": "12"}]}, {"id": "payments_history_summary_cards", "label": "Payment History Summary Cards (income/expense/count)", "file_type": "document", "source_file": "lk/templates/lk/payments/history.html", "short_path": "payments/history.html", "source_location": "line 31-57", "degree": 1, "neighbors": [{"id": "payments_history_history_html", "label": "LK Payment History Screen", "cid": "12"}]}, {"id": "payments_pay_commission_display", "label": "Payment Commission Display", "file_type": "document", "source_file": "lk/templates/lk/payments/pay.html", "short_path": "payments/pay.html", "source_location": "line 50-55", "degree": 1, "neighbors": [{"id": "payments_pay_pay_html", "label": "LK Payment Form Screen", "cid": "12"}]}, {"id": "payments_pay_endpoint", "label": "POST /lk/payments/pay/ (payment submit)", "file_type": "document", "source_file": "lk/templates/lk/payments/pay.html", "short_path": "payments/pay.html", "source_location": "line 31", "degree": 2, "neighbors": [{"id": "pay_redirect_pay_redirect_html", "label": "LK Pay Redirect Screen (auto-submit form)", "cid": "12"}, {"id": "payments_pay_pay_form", "label": "Payment Amount Form (YooKassa/W1)", "cid": "12"}]}, {"id": "payments_pay_pay_form", "label": "Payment Amount Form (YooKassa/W1)", "file_type": "document", "source_file": "lk/templates/lk/payments/pay.html", "short_path": "payments/pay.html", "source_location": "line 31-73", "degree": 2, "neighbors": [{"id": "payments_pay_endpoint", "label": "POST /lk/payments/pay/ (payment submit)", "cid": "12"}, {"id": "payments_pay_pay_html", "label": "LK Payment Form Screen", "cid": "12"}]}, {"id": "payments_pay_pay_html", "label": "LK Payment Form Screen", "file_type": "document", "source_file": "lk/templates/lk/payments/pay.html", "short_path": "payments/pay.html", "source_location": "", "degree": 7, "neighbors": [{"id": "lk_lk_filters", "label": "LK Template Filters (lk_filters templatetag)", "cid": "12"}, {"id": "payments_history_history_html", "label": "LK Payment History Screen", "cid": "12"}, {"id": "payments_pay_pay_form", "label": "Payment Amount Form (YooKassa/W1)", "cid": "12"}, {"id": "payments_pay_commission_display", "label": "Payment Commission Display", "cid": "12"}, {"id": "base_lk_sidebar", "label": "LK Sidebar Navigation", "cid": "12"}, {"id": "dashboard_quick_actions", "label": "Dashboard Quick Action Buttons", "cid": "12"}, {"id": "base_base_html", "label": "LK Base Layout Template", "cid": "12"}]}, {"id": "profile_contact_form", "label": "Profile Contact Info Form (email/sms)", "file_type": "document", "source_file": "lk/templates/lk/profile.html", "short_path": "lk/profile.html", "source_location": "line 52-83", "degree": 1, "neighbors": [{"id": "profile_profile_html", "label": "LK Profile Screen", "cid": "12"}]}, {"id": "profile_phones_form", "label": "Profile Additional Phones Form", "file_type": "document", "source_file": "lk/templates/lk/profile.html", "short_path": "lk/profile.html", "source_location": "line 92-111", "degree": 1, "neighbors": [{"id": "profile_profile_html", "label": "LK Profile Screen", "cid": "12"}]}, {"id": "profile_profile_html", "label": "LK Profile Screen", "file_type": "document", "source_file": "lk/templates/lk/profile.html", "short_path": "lk/profile.html", "source_location": "", "degree": 9, "neighbors": [{"id": "lk_lk_filters", "label": "LK Template Filters (lk_filters templatetag)", "cid": "12"}, {"id": "profile_phones_form", "label": "Profile Additional Phones Form", "cid": "12"}, {"id": "profile_vk_link_block", "label": "Profile VK Link/Unlink Block", "cid": "12"}, {"id": "support_list_list_html", "label": "LK Support Ticket List Screen", "cid": "12"}, {"id": "profile_tg_login_widget", "label": "Profile Telegram Login Widget", "cid": "12"}, {"id": "base_lk_sidebar", "label": "LK Sidebar Navigation", "cid": "12"}, {"id": "base_base_html", "label": "LK Base Layout Template", "cid": "12"}, {"id": "profile_contact_form", "label": "Profile Contact Info Form (email/sms)", "cid": "12"}, {"id": "profile_tg_notify_block", "label": "Profile Telegram Notifications Block", "cid": "12"}]}, {"id": "profile_tg_link_token_endpoint", "label": "GET lk_telegram_link_token (AJAX token endpoint)", "file_type": "document", "source_file": "lk/templates/lk/profile.html", "short_path": "lk/profile.html", "source_location": "line 215", "degree": 1, "neighbors": [{"id": "profile_tg_notify_block", "label": "Profile Telegram Notifications Block", "cid": "12"}]}, {"id": "profile_tg_login_widget", "label": "Profile Telegram Login Widget", "file_type": "document", "source_file": "lk/templates/lk/profile.html", "short_path": "lk/profile.html", "source_location": "line 149-175", "degree": 1, "neighbors": [{"id": "profile_profile_html", "label": "LK Profile Screen", "cid": "12"}]}, {"id": "profile_tg_notify_block", "label": "Profile Telegram Notifications Block", "file_type": "document", "source_file": "lk/templates/lk/profile.html", "short_path": "lk/profile.html", "source_location": "line 179-203", "degree": 3, "neighbors": [{"id": "profile_profile_html", "label": "LK Profile Screen", "cid": "12"}, {"id": "profile_tg_link_token_endpoint", "label": "GET lk_telegram_link_token (AJAX token endpoint)", "cid": "12"}, {"id": "profile_tg_unlink_endpoint", "label": "POST lk_telegram_unlink (unlink notifications)", "cid": "12"}]}, {"id": "profile_tg_unlink_endpoint", "label": "POST lk_telegram_unlink (unlink notifications)", "file_type": "document", "source_file": "lk/templates/lk/profile.html", "short_path": "lk/profile.html", "source_location": "line 193", "degree": 1, "neighbors": [{"id": "profile_tg_notify_block", "label": "Profile Telegram Notifications Block", "cid": "12"}]}, {"id": "profile_vk_link_block", "label": "Profile VK Link/Unlink Block", "file_type": "document", "source_file": "lk/templates/lk/profile.html", "short_path": "lk/profile.html", "source_location": "line 121-146", "degree": 2, "neighbors": [{"id": "profile_profile_html", "label": "LK Profile Screen", "cid": "12"}, {"id": "profile_vk_link_url", "label": "GET /lk/auth/vk/?action=link", "cid": "12"}]}, {"id": "profile_vk_link_url", "label": "GET /lk/auth/vk/?action=link", "file_type": "document", "source_file": "lk/templates/lk/profile.html", "short_path": "lk/profile.html", "source_location": "line 142", "degree": 1, "neighbors": [{"id": "profile_vk_link_block", "label": "Profile VK Link/Unlink Block", "cid": "12"}]}, {"id": "promise_pay_activate_form", "label": "Promise Pay Activate Form", "file_type": "document", "source_file": "lk/templates/lk/promise_pay.html", "short_path": "lk/promise_pay.html", "source_location": "line 33-40", "degree": 1, "neighbors": [{"id": "promise_pay_promise_pay_html", "label": "LK Promise Pay Screen", "cid": "12"}]}, {"id": "promise_pay_promise_pay_html", "label": "LK Promise Pay Screen", "file_type": "document", "source_file": "lk/templates/lk/promise_pay.html", "short_path": "lk/promise_pay.html", "source_location": "", "degree": 5, "neighbors": [{"id": "lk_lk_filters", "label": "LK Template Filters (lk_filters templatetag)", "cid": "12"}, {"id": "promise_pay_activate_form", "label": "Promise Pay Activate Form", "cid": "12"}, {"id": "base_base_html", "label": "LK Base Layout Template", "cid": "12"}, {"id": "base_lk_sidebar", "label": "LK Sidebar Navigation", "cid": "12"}, {"id": "dashboard_quick_actions", "label": "Dashboard Quick Action Buttons", "cid": "12"}]}, {"id": "result_result_html", "label": "LK Payment Result Screen", "file_type": "document", "source_file": "lk/templates/lk/payments/result.html", "short_path": "payments/result.html", "source_location": "", "degree": 2, "neighbors": [{"id": "dashboard_dashboard_html", "label": "LK Dashboard Screen", "cid": "12"}, {"id": "base_base_html", "label": "LK Base Layout Template", "cid": "12"}]}, {"id": "sessions_sessions_html", "label": "LK Sessions Screen (stub)", "file_type": "document", "source_file": "lk/templates/lk/sessions.html", "short_path": "lk/sessions.html", "source_location": "", "degree": 2, "neighbors": [{"id": "base_base_html", "label": "LK Base Layout Template", "cid": "12"}, {"id": "base_lk_sidebar", "label": "LK Sidebar Navigation", "cid": "12"}]}, {"id": "support_create_create_html", "label": "LK Support Create Ticket Screen", "file_type": "document", "source_file": "lk/templates/lk/support/create.html", "short_path": "support/create.html", "source_location": "", "degree": 5, "neighbors": [{"id": "dashboard_quick_actions", "label": "Dashboard Quick Action Buttons", "cid": "12"}, {"id": "support_create_ticket_form", "label": "Create Ticket Form (subject/body/attachments)", "cid": "12"}, {"id": "base_base_html", "label": "LK Base Layout Template", "cid": "12"}, {"id": "support_list_list_html", "label": "LK Support Ticket List Screen", "cid": "12"}]}, {"id": "support_create_ticket_form", "label": "Create Ticket Form (subject/body/attachments)", "file_type": "document", "source_file": "lk/templates/lk/support/create.html", "short_path": "support/create.html", "source_location": "line 12-39", "degree": 1, "neighbors": [{"id": "support_create_create_html", "label": "LK Support Create Ticket Screen", "cid": "12"}]}, {"id": "support_detail_attachment_endpoint", "label": "GET lk_support_attachment (download attachment)", "file_type": "document", "source_file": "lk/templates/lk/support/detail.html", "short_path": "support/detail.html", "source_location": "line 65", "degree": 1, "neighbors": [{"id": "support_detail_detail_html", "label": "LK Support Ticket Detail Screen", "cid": "12"}]}, {"id": "support_detail_close_form", "label": "Ticket Close Form", "file_type": "document", "source_file": "lk/templates/lk/support/detail.html", "short_path": "support/detail.html", "source_location": "line 129-137", "degree": 1, "neighbors": [{"id": "support_detail_detail_html", "label": "LK Support Ticket Detail Screen", "cid": "12"}]}, {"id": "support_detail_detail_html", "label": "LK Support Ticket Detail Screen", "file_type": "document", "source_file": "lk/templates/lk/support/detail.html", "short_path": "support/detail.html", "source_location": "", "degree": 8, "neighbors": [{"id": "lk_lk_filters", "label": "LK Template Filters (lk_filters templatetag)", "cid": "12"}, {"id": "support_detail_close_form", "label": "Ticket Close Form", "cid": "12"}, {"id": "support_detail_attachment_endpoint", "label": "GET lk_support_attachment (download attachment)", "cid": "12"}, {"id": "support_ticket_table_ticket_table_html", "label": "LK Support Ticket Table Partial", "cid": "12"}, {"id": "support_detail_rating_block", "label": "Ticket Satisfaction Rating Block", "cid": "12"}, {"id": "base_base_html", "label": "LK Base Layout Template", "cid": "12"}, {"id": "support_list_list_html", "label": "LK Support Ticket List Screen", "cid": "12"}, {"id": "support_detail_reply_form", "label": "Ticket Reply Form", "cid": "12"}]}, {"id": "support_detail_rating_block", "label": "Ticket Satisfaction Rating Block", "file_type": "document", "source_file": "lk/templates/lk/support/detail.html", "short_path": "support/detail.html", "source_location": "line 82-99", "degree": 1, "neighbors": [{"id": "support_detail_detail_html", "label": "LK Support Ticket Detail Screen", "cid": "12"}]}, {"id": "support_detail_reply_form", "label": "Ticket Reply Form", "file_type": "document", "source_file": "lk/templates/lk/support/detail.html", "short_path": "support/detail.html", "source_location": "line 108-127", "degree": 1, "neighbors": [{"id": "support_detail_detail_html", "label": "LK Support Ticket Detail Screen", "cid": "12"}]}, {"id": "support_list_list_html", "label": "LK Support Ticket List Screen", "file_type": "document", "source_file": "lk/templates/lk/support/list.html", "short_path": "support/list.html", "source_location": "", "degree": 10, "neighbors": [{"id": "lk_lk_filters", "label": "LK Template Filters (lk_filters templatetag)", "cid": "12"}, {"id": "profile_profile_html", "label": "LK Profile Screen", "cid": "12"}, {"id": "support_ticket_table_ticket_table_html", "label": "LK Support Ticket Table Partial", "cid": "12"}, {"id": "chat_chat_html", "label": "LK AI Chat Screen", "cid": "12"}, {"id": "support_detail_detail_html", "label": "LK Support Ticket Detail Screen", "cid": "12"}, {"id": "base_lk_sidebar", "label": "LK Sidebar Navigation", "cid": "12"}, {"id": "support_create_create_html", "label": "LK Support Create Ticket Screen", "cid": "12"}, {"id": "base_base_html", "label": "LK Base Layout Template", "cid": "12"}, {"id": "support_list_tabs", "label": "Support Tickets Open/Closed Tabs", "cid": "12"}]}, {"id": "support_list_tabs", "label": "Support Tickets Open/Closed Tabs", "file_type": "document", "source_file": "lk/templates/lk/support/list.html", "short_path": "support/list.html", "source_location": "line 20-33", "degree": 1, "neighbors": [{"id": "support_list_list_html", "label": "LK Support Ticket List Screen", "cid": "12"}]}, {"id": "support_ticket_table_ticket_table_html", "label": "LK Support Ticket Table Partial", "file_type": "document", "source_file": "lk/templates/lk/support/_ticket_table.html", "short_path": "support/_ticket_table.html", "source_location": "", "degree": 3, "neighbors": [{"id": "lk_lk_filters", "label": "LK Template Filters (lk_filters templatetag)", "cid": "12"}, {"id": "support_detail_detail_html", "label": "LK Support Ticket Detail Screen", "cid": "12"}, {"id": "support_list_list_html", "label": "LK Support Ticket List Screen", "cid": "12"}]}, {"id": "tariff_change_endpoint", "label": "GET /lk/tariff/change/{pk}/ (tariff change URL)", "file_type": "document", "source_file": "lk/templates/lk/tariff/list.html", "short_path": "tariff/list.html", "source_location": "line 27", "degree": 1, "neighbors": [{"id": "tariff_list_tariff_card", "label": "Tariff Card with Change Link", "cid": "12"}]}, {"id": "tariff_confirm_confirm_form", "label": "Tariff Change Confirm Form", "file_type": "document", "source_file": "lk/templates/lk/tariff/confirm.html", "short_path": "tariff/confirm.html", "source_location": "line 27-33", "degree": 1, "neighbors": [{"id": "tariff_confirm_confirm_html", "label": "LK Tariff Change Confirmation Screen", "cid": "12"}]}, {"id": "tariff_confirm_confirm_html", "label": "LK Tariff Change Confirmation Screen", "file_type": "document", "source_file": "lk/templates/lk/tariff/confirm.html", "short_path": "tariff/confirm.html", "source_location": "", "degree": 3, "neighbors": [{"id": "tariff_confirm_confirm_form", "label": "Tariff Change Confirm Form", "cid": "12"}, {"id": "base_base_html", "label": "LK Base Layout Template", "cid": "12"}, {"id": "tariff_list_list_html", "label": "LK Tariff List Screen", "cid": "12"}]}, {"id": "tariff_list_list_html", "label": "LK Tariff List Screen", "file_type": "document", "source_file": "lk/templates/lk/tariff/list.html", "short_path": "tariff/list.html", "source_location": "", "degree": 5, "neighbors": [{"id": "tariff_list_tariff_card", "label": "Tariff Card with Change Link", "cid": "12"}, {"id": "base_base_html", "label": "LK Base Layout Template", "cid": "12"}, {"id": "tariff_confirm_confirm_html", "label": "LK Tariff Change Confirmation Screen", "cid": "12"}, {"id": "base_lk_sidebar", "label": "LK Sidebar Navigation", "cid": "12"}, {"id": "dashboard_quick_actions", "label": "Dashboard Quick Action Buttons", "cid": "12"}]}, {"id": "tariff_list_tariff_card", "label": "Tariff Card with Change Link", "file_type": "document", "source_file": "lk/templates/lk/tariff/list.html", "short_path": "tariff/list.html", "source_location": "line 19-32", "degree": 2, "neighbors": [{"id": "tariff_list_list_html", "label": "LK Tariff List Screen", "cid": "12"}, {"id": "tariff_change_endpoint", "label": "GET /lk/tariff/change/{pk}/ (tariff change URL)", "cid": "12"}]}, {"id": "voluntary_block_block_form", "label": "Voluntary Block/Unblock Form", "file_type": "document", "source_file": "lk/templates/lk/voluntary_block.html", "short_path": "lk/voluntary_block.html", "source_location": "line 19-38", "degree": 1, "neighbors": [{"id": "voluntary_block_voluntary_block_html", "label": "LK Voluntary Block Screen", "cid": "12"}]}, {"id": "voluntary_block_voluntary_block_html", "label": "LK Voluntary Block Screen", "file_type": "document", "source_file": "lk/templates/lk/voluntary_block.html", "short_path": "lk/voluntary_block.html", "source_location": "", "degree": 4, "neighbors": [{"id": "voluntary_block_block_form", "label": "Voluntary Block/Unblock Form", "cid": "12"}, {"id": "dashboard_quick_actions", "label": "Dashboard Quick Action Buttons", "cid": "12"}, {"id": "base_base_html", "label": "LK Base Layout Template", "cid": "12"}, {"id": "base_lk_sidebar", "label": "LK Sidebar Navigation", "cid": "12"}]}];
+const RELATED = [];
+
+// Render related communities
+const relGrid = document.getElementById('relatedGrid');
+if (RELATED.length === 0) {
+  relGrid.innerHTML = '<span style="color:var(--text3);font-size:13px;">Нет связей с другими сообществами</span>';
+} else {
+  RELATED.forEach(r => {
+    const a = document.createElement('a');
+    a.href = `community_${r.cid}.html`;
+    a.className = 'rel-chip';
+    a.innerHTML = `<span style="width:8px;height:8px;border-radius:50%;background:${r.color};flex-shrink:0;display:inline-block;"></span>
+      ${escHtml(r.label)}
+      <span class="rel-count">${r.count}</span>`;
+    relGrid.appendChild(a);
+  });
 }
-
-
-
 
 function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -486,6 +543,5 @@ const degTh = document.querySelector('#nodesTable th[data-col="degree"]');
 if (degTh) degTh.classList.add('sorted-desc');
 render();
 </script>
-
 </body>
 </html>

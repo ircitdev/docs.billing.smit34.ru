@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-theme="dark">
 <head>
 <meta charset="utf-8">
-<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Community 16 — Сообщения | graphify</title>
 <style>
@@ -26,17 +25,29 @@ body {
 a { color: var(--primary-l); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
+/* Header */
+.site-header {
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  padding: 12px 24px; display: flex; align-items: center; gap: 16px;
+  position: sticky; top: 0; z-index: 100;
+}
+.site-header h1 { font-size: 18px; font-weight: 700; color: var(--primary-l); flex: 1; }
+.site-header .subtitle { color: var(--text2); font-size: 12px; }
+.nav-links { display: flex; gap: 8px; }
+.nav-link {
+  color: var(--text2); font-size: 13px; padding: 4px 10px;
+  border: 1px solid var(--border); border-radius: 6px;
+  transition: all 0.15s;
+}
+.nav-link:hover { color: var(--primary-l); border-color: var(--primary); text-decoration: none; }
 
-
-
-
-
-
-
-
-
-
-
+/* Theme toggle */
+.theme-btn {
+  background: var(--bg3); border: 1px solid var(--border); color: var(--text2);
+  padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 13px;
+  transition: all 0.15s;
+}
+.theme-btn:hover { color: var(--primary-l); border-color: var(--primary); }
 
 /* Main layout */
 .main { padding: 24px; max-width: 1400px; margin: 0 auto; }
@@ -79,11 +90,14 @@ tbody tr:hover { background: var(--bg3); }
 .badge-rationale { background: rgba(148,163,184,0.15); color: var(--text2); }
 .badge-document { background: rgba(89,161,79,0.2); color: #86efac; }
 
-/* Community dot */
+/* Community icon (card & legend) — square with themed SVG */
 .com-dot {
-  display: inline-block; width: 12px; height: 12px;
-  border-radius: 50%; flex-shrink: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px;
+  border-radius: 8px; flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,.18);
 }
+.com-dot svg { width: 18px; height: 18px; }
 
 /* Cards grid */
 .cards-grid {
@@ -100,16 +114,11 @@ tbody tr:hover { background: var(--bg3); }
 }
 .card:hover { border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary) inset; }
 .card-header { display: flex; align-items: center; gap: 10px; }
-.card-title { font-weight: 700; font-size: 15px; }
-.card-meta { color: var(--text2); font-size: 12px; }
-.card-top3 { color: var(--text3); font-size: 12px; font-family: monospace; }
-.card-btn {
-  margin-top: auto; display: inline-block; padding: 6px 14px;
-  background: var(--primary); color: #fff; border-radius: 6px;
-  font-size: 13px; font-weight: 600; text-align: center;
-  transition: background 0.15s; cursor: pointer; border: none; text-decoration: none;
-}
-.card-btn:hover { background: var(--primary-l); text-decoration: none; color: #fff; }
+.card-title { font-weight: 700; font-size: 15px; color: var(--primary-l); transition: color 0.15s; }
+.card:hover .card-title { text-decoration: underline; }
+.card-desc { color: var(--text); font-size: 13px; line-height: 1.45; text-decoration: none; }
+.card-meta { color: var(--text2); font-size: 12px; text-decoration: none; }
+.card-top3 { color: var(--text3); font-size: 12px; font-family: monospace; text-decoration: none; }
 
 /* Section heading */
 .section-heading {
@@ -182,31 +191,17 @@ tbody tr:hover { background: var(--bg3); }
 .search-results { display: none; margin-top: 16px; }
 .search-results.visible { display: block; }
 
-/* Community page header */
-.comm-header {
-  display: flex; align-items: flex-start; gap: 16px;
-  margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border);
-}
-.comm-icon {
-  width: 56px; height: 56px; border-radius: 50%;
-  flex-shrink: 0; display: flex; align-items: center; justify-content: center;
-  font-size: 22px; font-weight: 700; color: #fff;
-}
-.comm-name { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
-.comm-id { color: var(--text3); font-size: 12px; }
-
-/* ── Фирменная шапка docs ─────────────────────────────────────────────────── */
+/* Фирменная шапка docs (gradient, fixed) */
 :root { --header-grad-a: #43a047; --header-grad-b: #26a69a; --header-height: 56px; }
 [data-theme=dark] { --header-grad-a: #0f172a; --header-grad-b: #1e293b; }
-
 @keyframes header-gradient-shift {
   0%   { background-position:   0% 50%; }
   50%  { background-position: 100% 50%; }
   100% { background-position:   0% 50%; }
 }
-@media (prefers-reduced-motion: reduce) { .header { animation: none !important; } }
+@media (prefers-reduced-motion: reduce) { .docs-topnav { animation: none !important; } }
 
-.header {
+.docs-topnav {
   position: fixed; top: 0; left: 0; right: 0; height: var(--header-height);
   background: linear-gradient(135deg, var(--header-grad-a), var(--header-grad-b), var(--header-grad-a));
   background-size: 200% 200%;
@@ -215,74 +210,119 @@ tbody tr:hover { background: var(--bg3); }
   z-index: 200; gap: 12px;
   box-shadow: 0 1px 3px rgba(15,23,42,.06), 0 4px 12px rgba(15,23,42,.08);
 }
-[data-theme=dark] .header { border-bottom: 1px solid #334155; }
-.header-left { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
-.header-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
-.logo:hover { text-decoration: none; }
-.logo-icon {
-  width: 36px; height: 36px;
-  background: linear-gradient(135deg, #43a047, #26a69a);
-  border-radius: 8px; display: flex; align-items: center; justify-content: center;
-  color: #fff; font-weight: 700; font-size: 1.15rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,.25); flex-shrink: 0;
-}
-[data-theme=dark] .logo-icon { box-shadow: 0 2px 12px rgba(77,182,172,.35); }
-.logo-text { font-size: 1.15rem; font-weight: 700; white-space: nowrap; color: #fff; }
-.logo-text span { font-weight: 300; opacity: .85; }
-.logo-text .logo-main { font-weight: 700; opacity: 1; }
-.logo-text .logo-main::after { content: '\00a0|\00a0'; font-weight: 300; opacity: .85; }
-.header-nav-link {
-  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22);
-  color: #fff; border-radius: 8px; padding: 5px 12px; font-size: 13px;
-  text-decoration: none; white-space: nowrap; transition: background .2s;
-}
-.header-nav-link:hover { background: rgba(255,255,255,.25); text-decoration: none; color: #fff; }
-.theme-toggle {
-  background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.25);
-  color: #fff; width: 36px; height: 36px; border-radius: 8px;
-  cursor: pointer; display: flex; align-items: center; justify-content: center;
-  font-size: 1.1rem; transition: background .2s, transform .2s; flex-shrink: 0;
-}
-.theme-toggle:hover { background: rgba(255,255,255,.25); transform: scale(1.05); }
-.theme-toggle .icon-sun, .theme-toggle .icon-moon { line-height: 1; }
-[data-theme=dark]  .theme-toggle .icon-sun  { display: inline; }
-[data-theme=dark]  .theme-toggle .icon-moon { display: none; }
-:root .theme-toggle .icon-sun  { display: none; }
-:root .theme-toggle .icon-moon { display: inline; }
-
-/* Offset body for fixed header */
+[data-theme=dark] .docs-topnav { border-bottom: 1px solid #334155; }
 body { padding-top: var(--header-height); }
-/* ── /шапка ───────────────────────────────────────────────────────────────── */
+
+.docs-topnav .dtn-logo {
+  display: flex; align-items: center; gap: 10px;
+  font-weight: 700; font-size: 15px; color: #fff; text-decoration: none; white-space: nowrap;
+}
+.docs-topnav .dtn-logo:hover { text-decoration: none; color: #fff; }
+.docs-topnav .dtn-logo-icon {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: linear-gradient(135deg, #66bb6a, #26a69a);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 800; flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,.18);
+}
+.docs-topnav .dtn-sep { display: none; }
+.docs-topnav .dtn-links { display: flex; gap: 6px; flex-wrap: nowrap; }
+.docs-topnav .dtn-link {
+  color: #fff; font-size: 13px; padding: 6px 12px;
+  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22);
+  border-radius: 8px; transition: all 0.15s; white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.docs-topnav .dtn-link:hover { background: rgba(255,255,255,.22); text-decoration: none; color: #fff; }
+.docs-topnav .dtn-link .dtn-ico { font-size: 15px; line-height: 1; }
+.docs-topnav .dtn-link .dtn-txt { display: inline; }
+.docs-topnav .dtn-spacer { flex: 1; min-width: 8px; }
+.docs-topnav .dtn-theme-btn {
+  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22); color: #fff;
+  padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 13px;
+  transition: all 0.15s; white-space: nowrap; flex-shrink: 0;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.docs-topnav .dtn-theme-btn:hover { background: rgba(255,255,255,.22); }
+
+/* Mobile: иконки вместо текста, логотип-текст скрыть */
+@media (max-width: 680px) {
+  .docs-topnav { padding: 0 12px; gap: 8px; }
+  .docs-topnav .dtn-logo .dtn-logo-text { display: none; }
+  .docs-topnav .dtn-link .dtn-txt { display: none; }
+  .docs-topnav .dtn-link { padding: 6px 10px; }
+  .docs-topnav .dtn-theme-btn .dtn-theme-txt { display: none; }
+  .docs-topnav .dtn-theme-btn { padding: 6px 10px; }
+}
+
+/* Community page header */
+.comm-header {
+  display: flex; align-items: flex-start; gap: 16px;
+  margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border);
+}
+.comm-icon {
+  width: 72px; height: 72px; border-radius: 14px;
+  flex-shrink: 0; box-shadow: 0 4px 14px rgba(0,0,0,.22);
+  display: flex; align-items: center; justify-content: center;
+}
+.comm-icon svg { width: 40px; height: 40px; }
+@media (max-width: 680px) {
+  .comm-icon { width: 56px; height: 56px; border-radius: 12px; }
+  .comm-icon svg { width: 30px; height: 30px; }
+}
+.comm-name { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+.comm-id { color: var(--text3); font-size: 12px; }
+.comm-desc-hdr {
+  margin-top: 10px; color: var(--text); font-size: 14px; line-height: 1.5;
+  max-width: 760px;
+}
+
 </style>
 </head>
 <body>
 
-<header class="header">
-  <div class="header-left">
-    <div class="logo">
-      <div class="logo-icon">С</div>
-      <div class="logo-text"><span class="logo-main">СмИТ Биллинг</span><span>Wiki</span></div>
-    </div>
+<div class="docs-topnav">
+  <a href="../../../index.html" class="dtn-logo" title="СмИТ Биллинг — Документация">
+    <div class="dtn-logo-icon">С</div>
+    <span class="dtn-logo-text">СмИТ Биллинг</span>
+  </a>
+  <div class="dtn-links">
+    <a href="../../../index.html" class="dtn-link" title="Документация">
+      <span class="dtn-ico">📘</span><span class="dtn-txt">Документация</span>
+    </a>
+    <a href="../../../pages/dev/index.html" class="dtn-link" title="Разработчикам">
+      <span class="dtn-ico">⚙️</span><span class="dtn-txt">Разработчикам</span>
+    </a>
+    <a href="../graph.html" class="dtn-link" title="Граф зависимостей">
+      <span class="dtn-ico">🕸</span><span class="dtn-txt">Граф</span>
+    </a>
+    <a href="index.html" class="dtn-link" title="Wiki сообществ">
+      <span class="dtn-ico">📚</span><span class="dtn-txt">Wiki</span>
+    </a>
+    <a href="../help.html" class="dtn-link" title="graphify CLI">
+      <span class="dtn-ico">💻</span><span class="dtn-txt">CLI</span>
+    </a>
+    <a href="community_15.html" class="dtn-link">← Платёжные системы</a>
+    <a href="community_17.html" class="dtn-link">Мобильная авторизация →</a>
   </div>
-  <div class="header-right">
-    <a href="index.html" class="header-nav-link">← Wiki</a>
-    <a href="../graph.html" class="header-nav-link">Граф</a>
-    <a href="../../index.html" class="header-nav-link">Документация</a>
-    <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему" title="Светлая / тёмная тема">
-      <span class="icon-sun">&#9788;</span>
-      <span class="icon-moon">&#9790;</span>
-    </button>
-  </div>
-</header>
+  <div class="dtn-spacer"></div>
+  <button class="dtn-theme-btn" id="themeToggle" title="Переключить тему">
+    <span class="dtn-ico">◑</span><span class="dtn-theme-txt">Тема</span>
+  </button>
+</div>
 
 <div class="main">
   <!-- Community header -->
   <div class="comm-header">
-    <div class="comm-icon" style="background:#f1ce63;">С</div>
-    <div>
+    <div class="comm-icon" style="background:#f1ce63;"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm18 2l-10 7L2 6"/></svg></div>
+    <div style="flex:1;min-width:0;">
       <div class="comm-name">Сообщения</div>
-      <div class="comm-id">Community #16</div>
+      <div class="comm-id">Community #16 · <a href="../../../pages/billing.html#messages" style="color:var(--primary-l);font-size:12px;" title="Раздел в документации">📖 Документация</a></div>
+      <div class="comm-desc-hdr">Рассылка сообщений: email (SMTP), SMS (SMSAero), шаблоны MsgStack.</div>
+      <div style="margin-top:10px;">
+        <a href="index.html" class="dtn-link" style="font-size:12px;padding:4px 10px;">← Все сообщества</a>
+      </div>
     </div>
   </div>
 
@@ -330,21 +370,38 @@ body { padding-top: var(--header-height); }
 </div>
 
 <script>
+
 // Theme toggle
 const html = document.documentElement;
 const saved = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 html.setAttribute('data-theme', saved);
-const themeBtn = document.getElementById('themeToggle');
-if (themeBtn) {
-  themeBtn.addEventListener('click', () => {
+document.querySelectorAll('.dtn-theme-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
     const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     html.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
   });
+});
+
+
+const NODES = [{"id": "billing_tasks_messaging_py", "label": "messaging.py", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\tasks\\messaging.py", "short_path": "tasks/messaging.py", "source_location": "L1", "degree": 23, "neighbors": [{"id": "messaging_send_vk", "label": "_send_vk()", "cid": "16"}, {"id": "requests", "label": "requests", "cid": ""}, {"id": "messaging_send_email", "label": "_send_email()", "cid": "16"}, {"id": "messaging_rationale_1", "label": "billing/tasks/messaging.py — Отправка сообщений.  Обрабатывает очередь MsgStack:", "cid": "16"}, {"id": "messaging_rationale_394", "label": "# TODO: фильтрация по дню рождения / дате подключения через UserAttributes", "cid": "16"}, {"id": "messaging_get_felicitation_abonents", "label": "_get_felicitation_abonents()", "cid": "16"}, {"id": "messaging_increment_count_try", "label": "_increment_count_try()", "cid": "16"}, {"id": "messaging_send_push", "label": "_send_push()", "cid": "16"}, {"id": "datetime", "label": "datetime", "cid": ""}, {"id": "celery", "label": "celery", "cid": ""}, {"id": "messaging_send_felicitations", "label": "send_felicitations()", "cid": "16"}, {"id": "django_conf", "label": "django_conf", "cid": ""}, {"id": "messaging_send_sms_smsru", "label": "_send_sms_smsru()", "cid": "16"}, {"id": "django_utils", "label": "django_utils", "cid": ""}, {"id": "messaging_send_sms", "label": "_send_sms()", "cid": "16"}]}, {"id": "messaging_create_felicitation_message", "label": "_create_felicitation_message()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\tasks\\messaging.py", "short_path": "tasks/messaging.py", "source_location": "L398", "degree": 3, "neighbors": [{"id": "billing_tasks_messaging_py", "label": "messaging.py", "cid": "16"}, {"id": "messaging_rationale_399", "label": "Создать сообщение-поздравление в MsgStack.", "cid": "16"}, {"id": "messaging_send_felicitations", "label": "send_felicitations()", "cid": "16"}]}, {"id": "messaging_dispatch_message", "label": "_dispatch_message()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\tasks\\messaging.py", "short_path": "tasks/messaging.py", "source_location": "L58", "degree": 10, "neighbors": [{"id": "abonents_send_message_view", "label": "send_message_view()", "cid": "0"}, {"id": "stubs_auditoperations_save", "label": ".save()", "cid": "0"}, {"id": "billing_tasks_messaging_py", "label": "messaging.py", "cid": "16"}, {"id": "messaging_send_telegram", "label": "_send_telegram()", "cid": "16"}, {"id": "messaging_rationale_59", "label": "Отправляет сообщение по всем запрошенным каналам и помечает sent_at.", "cid": "16"}, {"id": "messaging_send_vk", "label": "_send_vk()", "cid": "16"}, {"id": "messaging_process_message_queue", "label": "process_message_queue()", "cid": "16"}, {"id": "messaging_send_push", "label": "_send_push()", "cid": "16"}, {"id": "messaging_send_email", "label": "_send_email()", "cid": "16"}, {"id": "messaging_send_sms", "label": "_send_sms()", "cid": "16"}]}, {"id": "messaging_get_felicitation_abonents", "label": "_get_felicitation_abonents()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\tasks\\messaging.py", "short_path": "tasks/messaging.py", "source_location": "L392", "degree": 3, "neighbors": [{"id": "billing_tasks_messaging_py", "label": "messaging.py", "cid": "16"}, {"id": "messaging_send_felicitations", "label": "send_felicitations()", "cid": "16"}, {"id": "messaging_rationale_393", "label": "Получить абонентов для поздравления по атрибуту даты.", "cid": "16"}]}, {"id": "messaging_increment_count_try", "label": "_increment_count_try()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\tasks\\messaging.py", "short_path": "tasks/messaging.py", "source_location": "L111", "degree": 4, "neighbors": [{"id": "billing_tasks_messaging_py", "label": "messaging.py", "cid": "16"}, {"id": "messaging_process_message_queue", "label": "process_message_queue()", "cid": "16"}, {"id": "stubs_auditoperations_save", "label": ".save()", "cid": "0"}, {"id": "messaging_rationale_112", "label": "Увеличивает счётчик попыток. После MAX_TRIES помечает sent_at чтобы не зациклива", "cid": "16"}]}, {"id": "messaging_process_message_queue", "label": "process_message_queue()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\tasks\\messaging.py", "short_path": "tasks/messaging.py", "source_location": "L21", "degree": 6, "neighbors": [{"id": "billing_tasks_messaging_py", "label": "messaging.py", "cid": "16"}, {"id": "messaging_rationale_22", "label": "Обработка очереди сообщений из MsgStack.      Каждые 60 секунд (см. CELERY_BEAT_", "cid": "16"}, {"id": "messaging_increment_count_try", "label": "_increment_count_try()", "cid": "16"}, {"id": "form_searchqueryset_order_by", "label": ".order_by()", "cid": "0"}, {"id": "messaging_dispatch_message", "label": "_dispatch_message()", "cid": "16"}, {"id": "form_searchqueryset_filter", "label": ".filter()", "cid": "0"}]}, {"id": "messaging_rationale_1", "label": "billing/tasks/messaging.py — Отправка сообщений.  Обрабатывает очередь MsgStack:", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\tasks\\messaging.py", "short_path": "tasks/messaging.py", "source_location": "L1", "degree": 6, "neighbors": [{"id": "billing_tasks_messaging_py", "label": "messaging.py", "cid": "16"}, {"id": "stubs_msgstack", "label": "MsgStack", "cid": "3"}, {"id": "stubs_felicitations", "label": "Felicitations", "cid": "16"}, {"id": "models_socialauth", "label": "SocialAuth", "cid": "3"}]}, {"id": "messaging_rationale_112", "label": "Увеличивает счётчик попыток. После MAX_TRIES помечает sent_at чтобы не зациклива", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\tasks\\messaging.py", "short_path": "tasks/messaging.py", "source_location": "L112", "degree": 6, "neighbors": [{"id": "messaging_increment_count_try", "label": "_increment_count_try()", "cid": "16"}, {"id": "stubs_msgstack", "label": "MsgStack", "cid": "3"}, {"id": "stubs_felicitations", "label": "Felicitations", "cid": "16"}, {"id": "models_socialauth", "label": "SocialAuth", "cid": "3"}]}, {"id": "messaging_rationale_128", "label": "Отправка email через Django mail backend.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\tasks\\messaging.py", "short_path": "tasks/messaging.py", "source_location": "L128", "degree": 6, "neighbors": [{"id": "stubs_msgstack", "label": "MsgStack", "cid": "3"}, {"id": "messaging_send_email", "label": "_send_email()", "cid": "16"}, {"id": "stubs_felicitations", "label": "Felicitations", "cid": "16"}, {"id": "models_socialauth", "label": "SocialAuth", "cid": "3"}]}, {"id": "messaging_rationale_154", "label": "Отправка SMS через шлюз (SMSC.ru по умолчанию).", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\tasks\\messaging.py", "short_path": "tasks/messaging.py", "source_location": "L154", "degree": 6, "neighbors": [{"id": "stubs_msgstack", "label": "MsgStack", "cid": "3"}, {"id": "messaging_send_sms", "label": "_send_sms()", "cid": "16"}, {"id": "stubs_felicitations", "label": "Felicitations", "cid": "16"}, {"id": "models_socialauth", "label": "SocialAuth", "cid": "3"}]}, {"id": "messaging_rationale_176", "label": "Отправка через SMSAero API v2 (Basic Auth: email:api_key).", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\tasks\\messaging.py", "short_path": "tasks/messaging.py", "source_location": "L176", "degree": 6, "neighbors": [{"id": "stubs_msgstack", "label": "MsgStack", "cid": "3"}, {"id": "messaging_send_sms_smsaero", "label": "_send_sms_smsaero()", "cid": "16"}, {"id": "stubs_felicitations", "label": "Felicitations", "cid": "16"}, {"id": "models_socialauth", "label": "SocialAuth", "cid": "3"}]}, {"id": "messaging_rationale_208", "label": "Отправка через SMSC.ru API.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\tasks\\messaging.py", "short_path": "tasks/messaging.py", "source_location": "L208", "degree": 6, "neighbors": [{"id": "messaging_send_sms_smsc", "label": "_send_sms_smsc()", "cid": "16"}, {"id": "stubs_msgstack", "label": "MsgStack", "cid": "3"}, {"id": "stubs_felicitations", "label": "Felicitations", "cid": "16"}, {"id": "models_socialauth", "label": "SocialAuth", "cid": "3"}]}, {"id": "messaging_rationale_22", "label": "Обработка очереди сообщений из MsgStack.      Каждые 60 секунд (см. CELERY_BEAT_", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\tasks\\messaging.py", "short_path": "tasks/messaging.py", "source_location": "L22", "degree": 6, "neighbors": [{"id": "stubs_msgstack", "label": "MsgStack", "cid": "3"}, {"id": "messaging_process_message_queue", "label": "process_message_queue()", "cid": "16"}, {"id": "stubs_felicitations", "label": "Felicitations", "cid": "16"}, {"id": "models_socialauth", "label": "SocialAuth", "cid": "3"}]}, {"id": "messaging_rationale_230", "label": "Отправка через SMS.ru API.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\tasks\\messaging.py", "short_path": "tasks/messaging.py", "source_location": "L230", "degree": 6, "neighbors": [{"id": "messaging_send_sms_smsru", "label": "_send_sms_smsru()", "cid": "16"}, {"id": "stubs_msgstack", "label": "MsgStack", "cid": "3"}, {"id": "stubs_felicitations", "label": "Felicitations", "cid": "16"}, {"id": "models_socialauth", "label": "SocialAuth", "cid": "3"}]}, {"id": "messaging_rationale_249", "label": "Отправка Telegram-сообщения через бота.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\tasks\\messaging.py", "short_path": "tasks/messaging.py", "source_location": "L249", "degree": 6, "neighbors": [{"id": "stubs_msgstack", "label": "MsgStack", "cid": "3"}, {"id": "stubs_felicitations", "label": "Felicitations", "cid": "16"}, {"id": "messaging_send_telegram", "label": "_send_telegram()", "cid": "16"}, {"id": "models_socialauth", "label": "SocialAuth", "cid": "3"}]}, {"id": "messaging_rationale_279", "label": "Отправка push-уведомления через Firebase Cloud Messaging.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\tasks\\messaging.py", "short_path": "tasks/messaging.py", "source_location": "L279", "degree": 6, "neighbors": [{"id": "stubs_msgstack", "label": "MsgStack", "cid": "3"}, {"id": "messaging_send_push", "label": "_send_push()", "cid": "16"}, {"id": "stubs_felicitations", "label": "Felicitations", "cid": "16"}, {"id": "models_socialauth", "label": "SocialAuth", "cid": "3"}]}, {"id": "messaging_rationale_315", "label": "Отправка сообщения через VK API (community messages).      Требует VK Community", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\tasks\\messaging.py", "short_path": "tasks/messaging.py", "source_location": "L315", "degree": 6, "neighbors": [{"id": "messaging_send_vk", "label": "_send_vk()", "cid": "16"}, {"id": "stubs_msgstack", "label": "MsgStack", "cid": "3"}, {"id": "stubs_felicitations", "label": "Felicitations", "cid": "16"}, {"id": "models_socialauth", "label": "SocialAuth", "cid": "3"}]}, {"id": "messaging_rationale_361", "label": "Отправка поздравлений абонентам (дни рождения, юбилеи подключения).      Запуска", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\tasks\\messaging.py", "short_path": "tasks/messaging.py", "source_location": "L361", "degree": 6, "neighbors": [{"id": "messaging_send_felicitations", "label": "send_felicitations()", "cid": "16"}, {"id": "stubs_msgstack", "label": "MsgStack", "cid": "3"}, {"id": "stubs_felicitations", "label": "Felicitations", "cid": "16"}, {"id": "models_socialauth", "label": "SocialAuth", "cid": "3"}]}, {"id": "messaging_rationale_393", "label": "Получить абонентов для поздравления по атрибуту даты.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\tasks\\messaging.py", "short_path": "tasks/messaging.py", "source_location": "L393", "degree": 6, "neighbors": [{"id": "stubs_msgstack", "label": "MsgStack", "cid": "3"}, {"id": "stubs_felicitations", "label": "Felicitations", "cid": "16"}, {"id": "messaging_get_felicitation_abonents", "label": "_get_felicitation_abonents()", "cid": "16"}, {"id": "models_socialauth", "label": "SocialAuth", "cid": "3"}]}, {"id": "messaging_rationale_394", "label": "# TODO: фильтрация по дню рождения / дате подключения через UserAttributes", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\tasks\\messaging.py", "short_path": "tasks/messaging.py", "source_location": "L394", "degree": 6, "neighbors": [{"id": "billing_tasks_messaging_py", "label": "messaging.py", "cid": "16"}, {"id": "stubs_msgstack", "label": "MsgStack", "cid": "3"}, {"id": "stubs_felicitations", "label": "Felicitations", "cid": "16"}, {"id": "models_socialauth", "label": "SocialAuth", "cid": "3"}]}, {"id": "messaging_rationale_399", "label": "Создать сообщение-поздравление в MsgStack.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\tasks\\messaging.py", "short_path": "tasks/messaging.py", "source_location": "L399", "degree": 6, "neighbors": [{"id": "stubs_msgstack", "label": "MsgStack", "cid": "3"}, {"id": "messaging_create_felicitation_message", "label": "_create_felicitation_message()", "cid": "16"}, {"id": "stubs_felicitations", "label": "Felicitations", "cid": "16"}, {"id": "models_socialauth", "label": "SocialAuth", "cid": "3"}]}, {"id": "messaging_rationale_59", "label": "Отправляет сообщение по всем запрошенным каналам и помечает sent_at.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\tasks\\messaging.py", "short_path": "tasks/messaging.py", "source_location": "L59", "degree": 6, "neighbors": [{"id": "stubs_msgstack", "label": "MsgStack", "cid": "3"}, {"id": "stubs_felicitations", "label": "Felicitations", "cid": "16"}, {"id": "messaging_dispatch_message", "label": "_dispatch_message()", "cid": "16"}, {"id": "models_socialauth", "label": "SocialAuth", "cid": "3"}]}, {"id": "messaging_send_email", "label": "_send_email()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\tasks\\messaging.py", "short_path": "tasks/messaging.py", "source_location": "L127", "degree": 3, "neighbors": [{"id": "billing_tasks_messaging_py", "label": "messaging.py", "cid": "16"}, {"id": "messaging_rationale_128", "label": "Отправка email через Django mail backend.", "cid": "16"}, {"id": "messaging_dispatch_message", "label": "_dispatch_message()", "cid": "16"}]}, {"id": "messaging_send_felicitations", "label": "send_felicitations()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\tasks\\messaging.py", "short_path": "tasks/messaging.py", "source_location": "L360", "degree": 5, "neighbors": [{"id": "messaging_get_felicitation_abonents", "label": "_get_felicitation_abonents()", "cid": "16"}, {"id": "billing_tasks_messaging_py", "label": "messaging.py", "cid": "16"}, {"id": "messaging_rationale_361", "label": "Отправка поздравлений абонентам (дни рождения, юбилеи подключения).      Запуска", "cid": "16"}, {"id": "messaging_create_felicitation_message", "label": "_create_felicitation_message()", "cid": "16"}, {"id": "form_searchqueryset_filter", "label": ".filter()", "cid": "0"}]}, {"id": "messaging_send_push", "label": "_send_push()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\tasks\\messaging.py", "short_path": "tasks/messaging.py", "source_location": "L278", "degree": 3, "neighbors": [{"id": "billing_tasks_messaging_py", "label": "messaging.py", "cid": "16"}, {"id": "messaging_rationale_279", "label": "Отправка push-уведомления через Firebase Cloud Messaging.", "cid": "16"}, {"id": "messaging_dispatch_message", "label": "_dispatch_message()", "cid": "16"}]}, {"id": "messaging_send_sms", "label": "_send_sms()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\tasks\\messaging.py", "short_path": "tasks/messaging.py", "source_location": "L153", "degree": 6, "neighbors": [{"id": "messaging_send_sms_smsc", "label": "_send_sms_smsc()", "cid": "16"}, {"id": "billing_tasks_messaging_py", "label": "messaging.py", "cid": "16"}, {"id": "messaging_send_sms_smsaero", "label": "_send_sms_smsaero()", "cid": "16"}, {"id": "messaging_rationale_154", "label": "Отправка SMS через шлюз (SMSC.ru по умолчанию).", "cid": "16"}, {"id": "messaging_dispatch_message", "label": "_dispatch_message()", "cid": "16"}, {"id": "messaging_send_sms_smsru", "label": "_send_sms_smsru()", "cid": "16"}]}, {"id": "messaging_send_sms_smsaero", "label": "_send_sms_smsaero()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\tasks\\messaging.py", "short_path": "tasks/messaging.py", "source_location": "L175", "degree": 5, "neighbors": [{"id": "billing_tasks_messaging_py", "label": "messaging.py", "cid": "16"}, {"id": "usluga_uslugachangeview_post", "label": ".post()", "cid": "1"}, {"id": "messaging_rationale_176", "label": "Отправка через SMSAero API v2 (Basic Auth: email:api_key).", "cid": "16"}, {"id": "usluga_uslugachangeview_get", "label": ".get()", "cid": "1"}, {"id": "messaging_send_sms", "label": "_send_sms()", "cid": "16"}]}, {"id": "messaging_send_sms_smsc", "label": "_send_sms_smsc()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\tasks\\messaging.py", "short_path": "tasks/messaging.py", "source_location": "L207", "degree": 4, "neighbors": [{"id": "billing_tasks_messaging_py", "label": "messaging.py", "cid": "16"}, {"id": "usluga_uslugachangeview_get", "label": ".get()", "cid": "1"}, {"id": "messaging_send_sms", "label": "_send_sms()", "cid": "16"}, {"id": "messaging_rationale_208", "label": "Отправка через SMSC.ru API.", "cid": "16"}]}, {"id": "messaging_send_sms_smsru", "label": "_send_sms_smsru()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\tasks\\messaging.py", "short_path": "tasks/messaging.py", "source_location": "L229", "degree": 5, "neighbors": [{"id": "messaging_rationale_230", "label": "Отправка через SMS.ru API.", "cid": "16"}, {"id": "billing_tasks_messaging_py", "label": "messaging.py", "cid": "16"}, {"id": "usluga_uslugachangeview_post", "label": ".post()", "cid": "1"}, {"id": "usluga_uslugachangeview_get", "label": ".get()", "cid": "1"}, {"id": "messaging_send_sms", "label": "_send_sms()", "cid": "16"}]}, {"id": "messaging_send_telegram", "label": "_send_telegram()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\tasks\\messaging.py", "short_path": "tasks/messaging.py", "source_location": "L248", "degree": 5, "neighbors": [{"id": "messaging_rationale_249", "label": "Отправка Telegram-сообщения через бота.", "cid": "16"}, {"id": "billing_tasks_messaging_py", "label": "messaging.py", "cid": "16"}, {"id": "usluga_uslugachangeview_post", "label": ".post()", "cid": "1"}, {"id": "messaging_dispatch_message", "label": "_dispatch_message()", "cid": "16"}, {"id": "usluga_uslugachangeview_get", "label": ".get()", "cid": "1"}]}, {"id": "messaging_send_vk", "label": "_send_vk()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\tasks\\messaging.py", "short_path": "tasks/messaging.py", "source_location": "L314", "degree": 6, "neighbors": [{"id": "messaging_rationale_315", "label": "Отправка сообщения через VK API (community messages).      Требует VK Community", "cid": "16"}, {"id": "billing_tasks_messaging_py", "label": "messaging.py", "cid": "16"}, {"id": "usluga_uslugachangeview_post", "label": ".post()", "cid": "1"}, {"id": "messaging_dispatch_message", "label": "_dispatch_message()", "cid": "16"}, {"id": "usluga_uslugachangeview_get", "label": ".get()", "cid": "1"}, {"id": "form_searchqueryset_filter", "label": ".filter()", "cid": "0"}]}, {"id": "stubs_felicitations", "label": "Felicitations", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\stubs.py", "short_path": "models/stubs.py", "source_location": "L1421", "degree": 19, "neighbors": [{"id": "messaging_rationale_154", "label": "Отправка SMS через шлюз (SMSC.ru по умолчанию).", "cid": "16"}, {"id": "messaging_rationale_393", "label": "Получить абонентов для поздравления по атрибуту даты.", "cid": "16"}, {"id": "messaging_rationale_1", "label": "billing/tasks/messaging.py — Отправка сообщений.  Обрабатывает очередь MsgStack:", "cid": "16"}, {"id": "messaging_rationale_394", "label": "# TODO: фильтрация по дню рождения / дате подключения через UserAttributes", "cid": "16"}, {"id": "billing_models_stubs_py", "label": "stubs.py", "cid": "2"}, {"id": "messaging_rationale_22", "label": "Обработка очереди сообщений из MsgStack.      Каждые 60 секунд (см. CELERY_BEAT_", "cid": "16"}, {"id": "stubs_felicitations_str", "label": ".__str__()", "cid": "16"}, {"id": "messaging_rationale_361", "label": "Отправка поздравлений абонентам (дни рождения, юбилеи подключения).      Запуска", "cid": "16"}, {"id": "messaging_rationale_399", "label": "Создать сообщение-поздравление в MsgStack.", "cid": "16"}, {"id": "messaging_rationale_112", "label": "Увеличивает счётчик попыток. После MAX_TRIES помечает sent_at чтобы не зациклива", "cid": "16"}, {"id": "messaging_rationale_128", "label": "Отправка email через Django mail backend.", "cid": "16"}, {"id": "messaging_rationale_230", "label": "Отправка через SMS.ru API.", "cid": "16"}, {"id": "messaging_rationale_249", "label": "Отправка Telegram-сообщения через бота.", "cid": "16"}, {"id": "messaging_rationale_315", "label": "Отправка сообщения через VK API (community messages).      Требует VK Community", "cid": "16"}, {"id": "messaging_rationale_59", "label": "Отправляет сообщение по всем запрошенным каналам и помечает sent_at.", "cid": "16"}]}, {"id": "stubs_felicitations_str", "label": ".__str__()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\stubs.py", "short_path": "models/stubs.py", "source_location": "L1438", "degree": 1, "neighbors": [{"id": "stubs_felicitations", "label": "Felicitations", "cid": "16"}]}];
+const RELATED = [{"cid": "3", "label": "Поиск абонентов", "color": "#76b7b2", "count": 64, "icon": "search"}, {"cid": "1", "label": "Личный кабинет", "color": "#f28e2b", "count": 9, "icon": "home"}, {"cid": "0", "label": "Карточка абонента", "color": "#4e79a7", "count": 7, "icon": "user"}, {"cid": "2", "label": "Финансы и деньги", "color": "#e15759", "count": 2, "icon": "credit-card"}];
+
+// Render related communities
+const relGrid = document.getElementById('relatedGrid');
+if (RELATED.length === 0) {
+  relGrid.innerHTML = '<span style="color:var(--text3);font-size:13px;">Нет связей с другими сообществами</span>';
+} else {
+  RELATED.forEach(r => {
+    const a = document.createElement('a');
+    a.href = `community_${r.cid}.html`;
+    a.className = 'rel-chip';
+    a.innerHTML = `<span style="width:8px;height:8px;border-radius:50%;background:${r.color};flex-shrink:0;display:inline-block;"></span>
+      ${escHtml(r.label)}
+      <span class="rel-count">${r.count}</span>`;
+    relGrid.appendChild(a);
+  });
 }
-
-
-
 
 function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -486,6 +543,5 @@ const degTh = document.querySelector('#nodesTable th[data-col="degree"]');
 if (degTh) degTh.classList.add('sorted-desc');
 render();
 </script>
-
 </body>
 </html>

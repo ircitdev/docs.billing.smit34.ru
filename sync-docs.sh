@@ -44,7 +44,12 @@ echo "=== 2. Mirror to $MIRROR ==="
 # Clear mirror (keep .git), then copy master content
 find "$MIRROR" -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
 cp -r "$HERE"/. "$MIRROR"/
-echo "  synced"
+if [ -d "$HERE/graphify" ]; then
+  GRAPHIFY_FILES=$(find "$HERE/graphify" -type f | wc -l)
+  echo "  synced (incl. graphify: $GRAPHIFY_FILES files)"
+else
+  echo "  synced"
+fi
 
 echo "=== 3. Commit + push in mirror repo ==="
 cd "$MIRROR"

@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-theme="dark">
 <head>
 <meta charset="utf-8">
-<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Community 20 — FreeScout Webhooks | graphify</title>
 <style>
@@ -26,17 +25,29 @@ body {
 a { color: var(--primary-l); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
+/* Header */
+.site-header {
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  padding: 12px 24px; display: flex; align-items: center; gap: 16px;
+  position: sticky; top: 0; z-index: 100;
+}
+.site-header h1 { font-size: 18px; font-weight: 700; color: var(--primary-l); flex: 1; }
+.site-header .subtitle { color: var(--text2); font-size: 12px; }
+.nav-links { display: flex; gap: 8px; }
+.nav-link {
+  color: var(--text2); font-size: 13px; padding: 4px 10px;
+  border: 1px solid var(--border); border-radius: 6px;
+  transition: all 0.15s;
+}
+.nav-link:hover { color: var(--primary-l); border-color: var(--primary); text-decoration: none; }
 
-
-
-
-
-
-
-
-
-
-
+/* Theme toggle */
+.theme-btn {
+  background: var(--bg3); border: 1px solid var(--border); color: var(--text2);
+  padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 13px;
+  transition: all 0.15s;
+}
+.theme-btn:hover { color: var(--primary-l); border-color: var(--primary); }
 
 /* Main layout */
 .main { padding: 24px; max-width: 1400px; margin: 0 auto; }
@@ -79,11 +90,14 @@ tbody tr:hover { background: var(--bg3); }
 .badge-rationale { background: rgba(148,163,184,0.15); color: var(--text2); }
 .badge-document { background: rgba(89,161,79,0.2); color: #86efac; }
 
-/* Community dot */
+/* Community icon (card & legend) — square with themed SVG */
 .com-dot {
-  display: inline-block; width: 12px; height: 12px;
-  border-radius: 50%; flex-shrink: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px;
+  border-radius: 8px; flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,.18);
 }
+.com-dot svg { width: 18px; height: 18px; }
 
 /* Cards grid */
 .cards-grid {
@@ -100,16 +114,11 @@ tbody tr:hover { background: var(--bg3); }
 }
 .card:hover { border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary) inset; }
 .card-header { display: flex; align-items: center; gap: 10px; }
-.card-title { font-weight: 700; font-size: 15px; }
-.card-meta { color: var(--text2); font-size: 12px; }
-.card-top3 { color: var(--text3); font-size: 12px; font-family: monospace; }
-.card-btn {
-  margin-top: auto; display: inline-block; padding: 6px 14px;
-  background: var(--primary); color: #fff; border-radius: 6px;
-  font-size: 13px; font-weight: 600; text-align: center;
-  transition: background 0.15s; cursor: pointer; border: none; text-decoration: none;
-}
-.card-btn:hover { background: var(--primary-l); text-decoration: none; color: #fff; }
+.card-title { font-weight: 700; font-size: 15px; color: var(--primary-l); transition: color 0.15s; }
+.card:hover .card-title { text-decoration: underline; }
+.card-desc { color: var(--text); font-size: 13px; line-height: 1.45; text-decoration: none; }
+.card-meta { color: var(--text2); font-size: 12px; text-decoration: none; }
+.card-top3 { color: var(--text3); font-size: 12px; font-family: monospace; text-decoration: none; }
 
 /* Section heading */
 .section-heading {
@@ -182,31 +191,17 @@ tbody tr:hover { background: var(--bg3); }
 .search-results { display: none; margin-top: 16px; }
 .search-results.visible { display: block; }
 
-/* Community page header */
-.comm-header {
-  display: flex; align-items: flex-start; gap: 16px;
-  margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border);
-}
-.comm-icon {
-  width: 56px; height: 56px; border-radius: 50%;
-  flex-shrink: 0; display: flex; align-items: center; justify-content: center;
-  font-size: 22px; font-weight: 700; color: #fff;
-}
-.comm-name { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
-.comm-id { color: var(--text3); font-size: 12px; }
-
-/* ── Фирменная шапка docs ─────────────────────────────────────────────────── */
+/* Фирменная шапка docs (gradient, fixed) */
 :root { --header-grad-a: #43a047; --header-grad-b: #26a69a; --header-height: 56px; }
 [data-theme=dark] { --header-grad-a: #0f172a; --header-grad-b: #1e293b; }
-
 @keyframes header-gradient-shift {
   0%   { background-position:   0% 50%; }
   50%  { background-position: 100% 50%; }
   100% { background-position:   0% 50%; }
 }
-@media (prefers-reduced-motion: reduce) { .header { animation: none !important; } }
+@media (prefers-reduced-motion: reduce) { .docs-topnav { animation: none !important; } }
 
-.header {
+.docs-topnav {
   position: fixed; top: 0; left: 0; right: 0; height: var(--header-height);
   background: linear-gradient(135deg, var(--header-grad-a), var(--header-grad-b), var(--header-grad-a));
   background-size: 200% 200%;
@@ -215,74 +210,119 @@ tbody tr:hover { background: var(--bg3); }
   z-index: 200; gap: 12px;
   box-shadow: 0 1px 3px rgba(15,23,42,.06), 0 4px 12px rgba(15,23,42,.08);
 }
-[data-theme=dark] .header { border-bottom: 1px solid #334155; }
-.header-left { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
-.header-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
-.logo:hover { text-decoration: none; }
-.logo-icon {
-  width: 36px; height: 36px;
-  background: linear-gradient(135deg, #43a047, #26a69a);
-  border-radius: 8px; display: flex; align-items: center; justify-content: center;
-  color: #fff; font-weight: 700; font-size: 1.15rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,.25); flex-shrink: 0;
-}
-[data-theme=dark] .logo-icon { box-shadow: 0 2px 12px rgba(77,182,172,.35); }
-.logo-text { font-size: 1.15rem; font-weight: 700; white-space: nowrap; color: #fff; }
-.logo-text span { font-weight: 300; opacity: .85; }
-.logo-text .logo-main { font-weight: 700; opacity: 1; }
-.logo-text .logo-main::after { content: '\00a0|\00a0'; font-weight: 300; opacity: .85; }
-.header-nav-link {
-  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22);
-  color: #fff; border-radius: 8px; padding: 5px 12px; font-size: 13px;
-  text-decoration: none; white-space: nowrap; transition: background .2s;
-}
-.header-nav-link:hover { background: rgba(255,255,255,.25); text-decoration: none; color: #fff; }
-.theme-toggle {
-  background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.25);
-  color: #fff; width: 36px; height: 36px; border-radius: 8px;
-  cursor: pointer; display: flex; align-items: center; justify-content: center;
-  font-size: 1.1rem; transition: background .2s, transform .2s; flex-shrink: 0;
-}
-.theme-toggle:hover { background: rgba(255,255,255,.25); transform: scale(1.05); }
-.theme-toggle .icon-sun, .theme-toggle .icon-moon { line-height: 1; }
-[data-theme=dark]  .theme-toggle .icon-sun  { display: inline; }
-[data-theme=dark]  .theme-toggle .icon-moon { display: none; }
-:root .theme-toggle .icon-sun  { display: none; }
-:root .theme-toggle .icon-moon { display: inline; }
-
-/* Offset body for fixed header */
+[data-theme=dark] .docs-topnav { border-bottom: 1px solid #334155; }
 body { padding-top: var(--header-height); }
-/* ── /шапка ───────────────────────────────────────────────────────────────── */
+
+.docs-topnav .dtn-logo {
+  display: flex; align-items: center; gap: 10px;
+  font-weight: 700; font-size: 15px; color: #fff; text-decoration: none; white-space: nowrap;
+}
+.docs-topnav .dtn-logo:hover { text-decoration: none; color: #fff; }
+.docs-topnav .dtn-logo-icon {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: linear-gradient(135deg, #66bb6a, #26a69a);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 800; flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,.18);
+}
+.docs-topnav .dtn-sep { display: none; }
+.docs-topnav .dtn-links { display: flex; gap: 6px; flex-wrap: nowrap; }
+.docs-topnav .dtn-link {
+  color: #fff; font-size: 13px; padding: 6px 12px;
+  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22);
+  border-radius: 8px; transition: all 0.15s; white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.docs-topnav .dtn-link:hover { background: rgba(255,255,255,.22); text-decoration: none; color: #fff; }
+.docs-topnav .dtn-link .dtn-ico { font-size: 15px; line-height: 1; }
+.docs-topnav .dtn-link .dtn-txt { display: inline; }
+.docs-topnav .dtn-spacer { flex: 1; min-width: 8px; }
+.docs-topnav .dtn-theme-btn {
+  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22); color: #fff;
+  padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 13px;
+  transition: all 0.15s; white-space: nowrap; flex-shrink: 0;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.docs-topnav .dtn-theme-btn:hover { background: rgba(255,255,255,.22); }
+
+/* Mobile: иконки вместо текста, логотип-текст скрыть */
+@media (max-width: 680px) {
+  .docs-topnav { padding: 0 12px; gap: 8px; }
+  .docs-topnav .dtn-logo .dtn-logo-text { display: none; }
+  .docs-topnav .dtn-link .dtn-txt { display: none; }
+  .docs-topnav .dtn-link { padding: 6px 10px; }
+  .docs-topnav .dtn-theme-btn .dtn-theme-txt { display: none; }
+  .docs-topnav .dtn-theme-btn { padding: 6px 10px; }
+}
+
+/* Community page header */
+.comm-header {
+  display: flex; align-items: flex-start; gap: 16px;
+  margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border);
+}
+.comm-icon {
+  width: 72px; height: 72px; border-radius: 14px;
+  flex-shrink: 0; box-shadow: 0 4px 14px rgba(0,0,0,.22);
+  display: flex; align-items: center; justify-content: center;
+}
+.comm-icon svg { width: 40px; height: 40px; }
+@media (max-width: 680px) {
+  .comm-icon { width: 56px; height: 56px; border-radius: 12px; }
+  .comm-icon svg { width: 30px; height: 30px; }
+}
+.comm-name { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+.comm-id { color: var(--text3); font-size: 12px; }
+.comm-desc-hdr {
+  margin-top: 10px; color: var(--text); font-size: 14px; line-height: 1.5;
+  max-width: 760px;
+}
+
 </style>
 </head>
 <body>
 
-<header class="header">
-  <div class="header-left">
-    <div class="logo">
-      <div class="logo-icon">С</div>
-      <div class="logo-text"><span class="logo-main">СмИТ Биллинг</span><span>Wiki</span></div>
-    </div>
+<div class="docs-topnav">
+  <a href="../../../index.html" class="dtn-logo" title="СмИТ Биллинг — Документация">
+    <div class="dtn-logo-icon">С</div>
+    <span class="dtn-logo-text">СмИТ Биллинг</span>
+  </a>
+  <div class="dtn-links">
+    <a href="../../../index.html" class="dtn-link" title="Документация">
+      <span class="dtn-ico">📘</span><span class="dtn-txt">Документация</span>
+    </a>
+    <a href="../../../pages/dev/index.html" class="dtn-link" title="Разработчикам">
+      <span class="dtn-ico">⚙️</span><span class="dtn-txt">Разработчикам</span>
+    </a>
+    <a href="../graph.html" class="dtn-link" title="Граф зависимостей">
+      <span class="dtn-ico">🕸</span><span class="dtn-txt">Граф</span>
+    </a>
+    <a href="index.html" class="dtn-link" title="Wiki сообществ">
+      <span class="dtn-ico">📚</span><span class="dtn-txt">Wiki</span>
+    </a>
+    <a href="../help.html" class="dtn-link" title="graphify CLI">
+      <span class="dtn-ico">💻</span><span class="dtn-txt">CLI</span>
+    </a>
+    <a href="community_19.html" class="dtn-link">← Модель аккаунта</a>
+    
   </div>
-  <div class="header-right">
-    <a href="index.html" class="header-nav-link">← Wiki</a>
-    <a href="../graph.html" class="header-nav-link">Граф</a>
-    <a href="../../index.html" class="header-nav-link">Документация</a>
-    <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему" title="Светлая / тёмная тема">
-      <span class="icon-sun">&#9788;</span>
-      <span class="icon-moon">&#9790;</span>
-    </button>
-  </div>
-</header>
+  <div class="dtn-spacer"></div>
+  <button class="dtn-theme-btn" id="themeToggle" title="Переключить тему">
+    <span class="dtn-ico">◑</span><span class="dtn-theme-txt">Тема</span>
+  </button>
+</div>
 
 <div class="main">
   <!-- Community header -->
   <div class="comm-header">
-    <div class="comm-icon" style="background:#4e79a7;">F</div>
-    <div>
+    <div class="comm-icon" style="background:#4e79a7;"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5v2m0 4v2m0 4v2M5 5h14a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V7a2 2 0 0 1 2-2z"/></svg></div>
+    <div style="flex:1;min-width:0;">
       <div class="comm-name">FreeScout Webhooks</div>
-      <div class="comm-id">Community #20</div>
+      <div class="comm-id">Community #20 · <a href="../../../pages/billing.html#lk-support" style="color:var(--primary-l);font-size:12px;" title="Раздел в документации">📖 Документация</a></div>
+      <div class="comm-desc-hdr">Webhooks от FreeScout: conversation.*, assignment, status_changed.</div>
+      <div style="margin-top:10px;">
+        <a href="index.html" class="dtn-link" style="font-size:12px;padding:4px 10px;">← Все сообщества</a>
+      </div>
     </div>
   </div>
 
@@ -330,21 +370,38 @@ body { padding-top: var(--header-height); }
 </div>
 
 <script>
+
 // Theme toggle
 const html = document.documentElement;
 const saved = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 html.setAttribute('data-theme', saved);
-const themeBtn = document.getElementById('themeToggle');
-if (themeBtn) {
-  themeBtn.addEventListener('click', () => {
+document.querySelectorAll('.dtn-theme-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
     const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     html.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
   });
+});
+
+
+const NODES = [{"id": "mobile_api_views_webhooks_py", "label": "webhooks.py", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L1", "degree": 10, "neighbors": [{"id": "django_http", "label": "django_http", "cid": ""}, {"id": "webhooks_rationale_1", "label": "Webhook handlers for external service callbacks.", "cid": "20"}, {"id": "django_views_decorators_csrf", "label": "django_views_decorators_csrf", "cid": ""}, {"id": "django_views_decorators_http", "label": "django_views_decorators_http", "cid": ""}, {"id": "json", "label": "json", "cid": ""}, {"id": "webhooks_log_ticket_closed", "label": "_log_ticket_closed()", "cid": "20"}, {"id": "webhooks_freescout_webhook", "label": "freescout_webhook()", "cid": "20"}, {"id": "webhooks_send_push_for_ticket_reply", "label": "_send_push_for_ticket_reply()", "cid": "20"}, {"id": "webhooks_notify_agent_assigned", "label": "_notify_agent_assigned()", "cid": "20"}, {"id": "logging", "label": "logging", "cid": ""}]}, {"id": "webhooks_freescout_webhook", "label": "freescout_webhook()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L14", "degree": 6, "neighbors": [{"id": "webhooks_rationale_15", "label": "FreeScout webhook — handles various conversation events.      Configure in FreeS", "cid": "20"}, {"id": "mobile_api_views_webhooks_py", "label": "webhooks.py", "cid": "20"}, {"id": "webhooks_log_ticket_closed", "label": "_log_ticket_closed()", "cid": "20"}, {"id": "usluga_uslugachangeview_get", "label": ".get()", "cid": "1"}, {"id": "webhooks_send_push_for_ticket_reply", "label": "_send_push_for_ticket_reply()", "cid": "20"}, {"id": "webhooks_notify_agent_assigned", "label": "_notify_agent_assigned()", "cid": "20"}]}, {"id": "webhooks_log_ticket_closed", "label": "_log_ticket_closed()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L116", "degree": 4, "neighbors": [{"id": "mobile_api_views_webhooks_py", "label": "webhooks.py", "cid": "20"}, {"id": "webhooks_freescout_webhook", "label": "freescout_webhook()", "cid": "20"}, {"id": "webhooks_rationale_117", "label": "Log ticket closure to abonent activity (AuditOperations).", "cid": "20"}, {"id": "form_searchqueryset_filter", "label": ".filter()", "cid": "0"}]}, {"id": "webhooks_notify_agent_assigned", "label": "_notify_agent_assigned()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L75", "degree": 5, "neighbors": [{"id": "mobile_api_views_webhooks_py", "label": "webhooks.py", "cid": "20"}, {"id": "usluga_uslugachangeview_post", "label": ".post()", "cid": "1"}, {"id": "webhooks_freescout_webhook", "label": "freescout_webhook()", "cid": "20"}, {"id": "form_searchqueryset_filter", "label": ".filter()", "cid": "0"}, {"id": "webhooks_rationale_76", "label": "Notify operator via Telegram when ticket is assigned to them.", "cid": "20"}]}, {"id": "webhooks_rationale_1", "label": "Webhook handlers for external service callbacks.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L1", "degree": 2, "neighbors": [{"id": "mobile_api_views_webhooks_py", "label": "webhooks.py", "cid": "20"}, {"id": "stubs_auditoperations", "label": "AuditOperations", "cid": "3"}]}, {"id": "webhooks_rationale_117", "label": "Log ticket closure to abonent activity (AuditOperations).", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L117", "degree": 2, "neighbors": [{"id": "webhooks_log_ticket_closed", "label": "_log_ticket_closed()", "cid": "20"}, {"id": "stubs_auditoperations", "label": "AuditOperations", "cid": "3"}]}, {"id": "webhooks_rationale_15", "label": "FreeScout webhook — handles various conversation events.      Configure in FreeS", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L15", "degree": 2, "neighbors": [{"id": "stubs_auditoperations", "label": "AuditOperations", "cid": "3"}, {"id": "webhooks_freescout_webhook", "label": "freescout_webhook()", "cid": "20"}]}, {"id": "webhooks_rationale_57", "label": "Send push notification to abonent when support replies.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L57", "degree": 2, "neighbors": [{"id": "stubs_auditoperations", "label": "AuditOperations", "cid": "3"}, {"id": "webhooks_send_push_for_ticket_reply", "label": "_send_push_for_ticket_reply()", "cid": "20"}]}, {"id": "webhooks_rationale_76", "label": "Notify operator via Telegram when ticket is assigned to them.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L76", "degree": 2, "neighbors": [{"id": "webhooks_notify_agent_assigned", "label": "_notify_agent_assigned()", "cid": "20"}, {"id": "stubs_auditoperations", "label": "AuditOperations", "cid": "3"}]}, {"id": "webhooks_send_push_for_ticket_reply", "label": "_send_push_for_ticket_reply()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L56", "degree": 4, "neighbors": [{"id": "mobile_api_views_webhooks_py", "label": "webhooks.py", "cid": "20"}, {"id": "webhooks_rationale_57", "label": "Send push notification to abonent when support replies.", "cid": "20"}, {"id": "webhooks_freescout_webhook", "label": "freescout_webhook()", "cid": "20"}, {"id": "form_searchqueryset_filter", "label": ".filter()", "cid": "0"}]}];
+const RELATED = [{"cid": "3", "label": "Поиск абонентов", "color": "#76b7b2", "count": 5, "icon": "search"}, {"cid": "0", "label": "Карточка абонента", "color": "#4e79a7", "count": 3, "icon": "user"}, {"cid": "1", "label": "Личный кабинет", "color": "#f28e2b", "count": 2, "icon": "home"}];
+
+// Render related communities
+const relGrid = document.getElementById('relatedGrid');
+if (RELATED.length === 0) {
+  relGrid.innerHTML = '<span style="color:var(--text3);font-size:13px;">Нет связей с другими сообществами</span>';
+} else {
+  RELATED.forEach(r => {
+    const a = document.createElement('a');
+    a.href = `community_${r.cid}.html`;
+    a.className = 'rel-chip';
+    a.innerHTML = `<span style="width:8px;height:8px;border-radius:50%;background:${r.color};flex-shrink:0;display:inline-block;"></span>
+      ${escHtml(r.label)}
+      <span class="rel-count">${r.count}</span>`;
+    relGrid.appendChild(a);
+  });
 }
-
-
-
 
 function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -486,6 +543,5 @@ const degTh = document.querySelector('#nodesTable th[data-col="degree"]');
 if (degTh) degTh.classList.add('sorted-desc');
 render();
 </script>
-
 </body>
 </html>
