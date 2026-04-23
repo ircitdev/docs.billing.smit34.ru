@@ -137,16 +137,33 @@
   <h1><i class="ti ti-topology-star-3"></i> Для разработчиков</h1>
   <p>Инструменты анализа архитектуры кода СмИТ Биллинг: интерактивный граф зависимостей, wiki сообществ и справочник по graphify CLI.</p>
 
+  <div class="welcome-image">
+    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/robot_dev.jpg" alt="Для разработчиков" loading="lazy">
+  </div>
+
+  <style>
+    .card-with-preview { padding: 0; overflow: hidden; display: flex; flex-direction: column; }
+    .card-preview { width: 100%; height: 180px; object-fit: cover; display: block; }
+    .card-body { padding: 20px; }
+    .card-body h3 { margin: 0 0 8px 0; }
+    .card-body p { margin: 0; color: var(--text-secondary, #94a3b8); }
+  </style>
   <div class="cards">
-    <a href="../../graphify/graph.html" class="card">
-      <div class="icon"><i class="ti ti-chart-bubble"></i></div>
-      <h3>Граф архитектуры</h3>
-      <p>Интерактивный граф 2524 модулей, разбитых на 25 сообществ. D3.js force simulation.</p>
+    <a href="../../graphify/graph.html" class="card card-with-preview">
+      <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/robot_graph.jpg"
+           alt="Граф архитектуры" class="card-preview" loading="lazy">
+      <div class="card-body">
+        <h3><i class="ti ti-chart-bubble"></i> Граф архитектуры</h3>
+        <p>Интерактивный граф 2524 модулей, разбитых на 25 сообществ. D3.js force simulation.</p>
+      </div>
     </a>
-    <a href="../../graphify/wiki/index.html" class="card">
-      <div class="icon"><i class="ti ti-books"></i></div>
-      <h3>Wiki сообществ</h3>
-      <p>47 страниц с таблицами нод, типами, файлами и связями. Поиск по всем модулям.</p>
+    <a href="../../graphify/wiki/index.html" class="card card-with-preview">
+      <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/robot_wiki.jpg"
+           alt="Wiki сообществ" class="card-preview" loading="lazy">
+      <div class="card-body">
+        <h3><i class="ti ti-books"></i> Wiki сообществ</h3>
+        <p>21 страница с таблицами нод, типами, файлами и связями. Поиск по всем модулям.</p>
+      </div>
     </a>
     <a href="../../graphify/help.html" class="card">
       <div class="icon"><i class="ti ti-terminal"></i></div>
