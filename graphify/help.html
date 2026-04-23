@@ -1,371 +1,446 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Graphify — Документация для SmitBilling</title>
-<style>
-  :root {
-    --bg: #0f1117;
-    --bg2: #161b27;
-    --bg3: #1e2535;
-    --border: #2a3147;
-    --accent: #4e79a7;
-    --accent2: #59a14f;
-    --accent3: #f28e2b;
-    --accent4: #e15759;
-    --text: #e2e8f0;
-    --text2: #94a3b8;
-    --text3: #64748b;
-    --code-bg: #1a2035;
-    --radius: 8px;
-    --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-size: 15px;
-    line-height: 1.65;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>graphify CLI — СмИТ Биллинг Документация</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css?v=222">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.26.0/dist/tabler-icons.min.css">
+  <link rel="stylesheet" href="../css/search.css?v=222">
+  <style>
+    /* graphify-specific: these classes are not in style.css */
+    .god-list { display: flex; flex-direction: column; gap: 6px; margin: 12px 0; }
+    .god-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--card-bg, #fff);
+      border: 1px solid var(--border-color, #e2e8f0);
+      border-radius: 6px;
+      padding: 8px 14px;
+      font-size: .88rem;
+    }
+    .god-rank { color: var(--text-muted, #94a3b8); font-weight: 700; width: 20px; text-align: right; font-family: monospace; }
+    .god-name { color: var(--accent, #26a69a); font-family: monospace; font-size: .82rem; flex: 1; }
+    .god-edges { color: var(--text-muted, #94a3b8); font-size: .78rem; font-family: monospace; }
+    .god-desc { color: var(--text-secondary, #475569); font-size: .8rem; }
+    .god-bar { width: 80px; height: 4px; background: var(--border-color, #e2e8f0); border-radius: 2px; }
+    .god-bar-fill { height: 100%; border-radius: 2px; background: var(--accent, #26a69a); }
 
-  /* Layout */
-  .layout { display: flex; min-height: 100vh; }
-  nav {
-    width: 260px;
-    flex-shrink: 0;
-    background: var(--bg2);
-    border-right: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    overflow-y: auto;
-    padding: 24px 0;
-  }
-  main {
-    flex: 1;
-    max-width: 860px;
-    padding: 40px 48px;
-    overflow: hidden;
-  }
+    .comm-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; margin: 12px 0; }
+    .comm-chip {
+      background: var(--card-bg, #fff);
+      border: 1px solid var(--border-color, #e2e8f0);
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: .82rem;
+    }
+    .comm-id { color: var(--text-muted, #94a3b8); font-family: monospace; font-size: .72rem; }
+    .comm-name { color: var(--text-color, #1f2d3d); font-weight: 600; font-size: .84rem; }
+    .comm-nodes { color: var(--text-muted, #94a3b8); font-size: .72rem; }
 
-  /* Nav */
-  .nav-logo {
-    padding: 0 20px 20px;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 16px;
-  }
-  .nav-logo h2 { font-size: 1rem; color: var(--accent); font-weight: 700; }
-  .nav-logo span { font-size: .78rem; color: var(--text3); }
-  .nav-section { padding: 6px 20px 2px; font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text3); margin-top: 8px; }
-  nav a {
-    display: block;
-    padding: 5px 20px;
-    color: var(--text2);
-    text-decoration: none;
-    font-size: .88rem;
-    border-left: 2px solid transparent;
-    transition: all .15s;
-  }
-  nav a:hover { color: var(--text); background: var(--bg3); border-left-color: var(--accent); }
-  nav a.active { color: var(--accent); border-left-color: var(--accent); }
+    .steps { display: flex; flex-direction: column; gap: 0; margin: 16px 0; }
+    .step {
+      display: flex;
+      gap: 16px;
+      padding-bottom: 20px;
+      position: relative;
+    }
+    .step::before {
+      content: '';
+      position: absolute;
+      left: 15px;
+      top: 32px;
+      bottom: 0;
+      width: 2px;
+      background: var(--border-color, #e2e8f0);
+    }
+    .step:last-child::before { display: none; }
+    .step-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--sidebar-bg, #f4f6f9);
+      border: 2px solid var(--border-color, #e2e8f0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .8rem;
+      font-weight: 700;
+      color: var(--accent, #26a69a);
+      flex-shrink: 0;
+      font-family: monospace;
+    }
+    .step-num.done { border-color: #59a14f; color: #59a14f; background: rgba(89,161,79,.1); }
+    .step-content { padding-top: 4px; }
+    .step-title { font-weight: 600; color: var(--text-color, #1f2d3d); font-size: .9rem; }
+    .step-desc { color: var(--text-secondary, #475569); font-size: .82rem; margin-top: 2px; }
 
-  /* Typography */
-  h1 { font-size: 2rem; font-weight: 800; color: var(--text); margin-bottom: 8px; }
-  h2 { font-size: 1.3rem; font-weight: 700; color: var(--text); margin: 40px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
-  h3 { font-size: 1rem; font-weight: 600; color: var(--text); margin: 24px 0 10px; }
-  h4 { font-size: .9rem; font-weight: 600; color: var(--text2); margin: 16px 0 8px; }
-  p { color: var(--text2); margin-bottom: 12px; }
-  a { color: var(--accent); text-decoration: none; }
-  a:hover { text-decoration: underline; }
-  strong { color: var(--text); font-weight: 600; }
-  ul, ol { padding-left: 1.4em; color: var(--text2); margin-bottom: 12px; }
-  li { margin-bottom: 4px; }
+    .skill-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+    .skill-card {
+      background: var(--card-bg, #fff);
+      border: 1px solid var(--border-color, #e2e8f0);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .skill-card h4 { margin: 0 0 8px; color: var(--accent, #26a69a); font-size: .9rem; }
+    .skill-card .verdict { font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin-top: 10px; }
+    .verdict-yes { color: #59a14f; }
+    .verdict-no { color: var(--text-muted, #94a3b8); }
+    .verdict-maybe { color: #f28e2b; }
 
-  /* Hero */
-  .hero {
-    background: linear-gradient(135deg, #1a2540 0%, #0f1117 60%);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 32px;
-    margin-bottom: 32px;
-    position: relative;
-    overflow: hidden;
-  }
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: -60px; right: -60px;
-    width: 200px; height: 200px;
-    background: radial-gradient(circle, rgba(78,121,167,.2) 0%, transparent 70%);
-    border-radius: 50%;
-  }
-  .hero-sub { color: var(--text2); font-size: 1rem; margin-top: 8px; }
-  .stats-row { display: flex; gap: 24px; margin-top: 20px; flex-wrap: wrap; }
-  .stat { background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; padding: 12px 20px; text-align: center; }
-  .stat-num { font-size: 1.6rem; font-weight: 800; color: var(--accent); display: block; }
-  .stat-label { font-size: .75rem; color: var(--text3); text-transform: uppercase; letter-spacing: .06em; }
+    .stats-row { display: flex; gap: 16px; margin-top: 20px; flex-wrap: wrap; }
+    .stat {
+      background: var(--sidebar-bg, #f4f6f9);
+      border: 1px solid var(--border-color, #e2e8f0);
+      border-radius: 6px;
+      padding: 12px 20px;
+      text-align: center;
+    }
+    .stat-num { font-size: 1.6rem; font-weight: 800; color: var(--accent, #26a69a); display: block; }
+    .stat-label { font-size: .75rem; color: var(--text-muted, #94a3b8); text-transform: uppercase; letter-spacing: .06em; }
 
-  /* Code */
-  code {
-    font-family: var(--font-mono);
-    font-size: .85em;
-    background: var(--code-bg);
-    color: #7dd3fc;
-    padding: 2px 6px;
-    border-radius: 4px;
-    border: 1px solid var(--border);
-  }
-  pre {
-    background: var(--code-bg);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 18px 20px;
-    overflow-x: auto;
-    margin: 12px 0 16px;
-    position: relative;
-  }
-  pre code {
-    background: none;
-    border: none;
-    padding: 0;
-    font-size: .84rem;
-    color: #e2e8f0;
-    line-height: 1.7;
-  }
-  .cmd-line { color: #7dd3fc; }
-  .comment { color: #64748b; font-style: italic; }
-  .string { color: #86efac; }
-  .kw { color: #c084fc; }
-  .copy-btn {
-    position: absolute;
-    top: 8px; right: 10px;
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    color: var(--text3);
-    font-size: .72rem;
-    padding: 3px 8px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-family: var(--font-mono);
-    transition: all .15s;
-  }
-  .copy-btn:hover { color: var(--text); border-color: var(--accent); }
-
-  /* Tables */
-  table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; font-size: .88rem; }
-  th { background: var(--bg3); color: var(--text); font-weight: 600; text-align: left; padding: 8px 12px; border: 1px solid var(--border); }
-  td { padding: 7px 12px; border: 1px solid var(--border); color: var(--text2); vertical-align: top; }
-  tr:hover td { background: rgba(255,255,255,.02); }
-  td code { font-size: .8rem; }
-
-  /* Cards */
-  .card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 18px 20px;
-    margin-bottom: 12px;
-  }
-  .card h4 { margin-top: 0; }
-  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-  .card-accent { border-left: 3px solid var(--accent); }
-  .card-green { border-left: 3px solid var(--accent2); }
-  .card-orange { border-left: 3px solid var(--accent3); }
-  .card-red { border-left: 3px solid var(--accent4); }
-
-  /* Badges */
-  .badge {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: .72rem;
-    font-weight: 600;
-    font-family: var(--font-mono);
-  }
-  .badge-blue { background: rgba(78,121,167,.2); color: #93c5fd; border: 1px solid rgba(78,121,167,.3); }
-  .badge-green { background: rgba(89,161,79,.2); color: #86efac; border: 1px solid rgba(89,161,79,.3); }
-  .badge-orange { background: rgba(242,142,43,.2); color: #fbbf24; border: 1px solid rgba(242,142,43,.3); }
-  .badge-gray { background: rgba(100,116,139,.15); color: var(--text3); border: 1px solid var(--border); }
-
-  /* Callout */
-  .callout {
-    border-radius: var(--radius);
-    padding: 14px 16px;
-    margin: 16px 0;
-    font-size: .88rem;
-  }
-  .callout-info { background: rgba(78,121,167,.1); border: 1px solid rgba(78,121,167,.3); color: #93c5fd; }
-  .callout-tip { background: rgba(89,161,79,.1); border: 1px solid rgba(89,161,79,.3); color: #86efac; }
-  .callout-warn { background: rgba(242,142,43,.1); border: 1px solid rgba(242,142,43,.3); color: #fbbf24; }
-
-  /* God nodes */
-  .god-list { display: flex; flex-direction: column; gap: 6px; margin: 12px 0; }
-  .god-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 8px 14px;
-    font-size: .88rem;
-  }
-  .god-rank { color: var(--text3); font-weight: 700; width: 20px; text-align: right; font-family: var(--font-mono); }
-  .god-name { color: var(--accent); font-family: var(--font-mono); font-size: .82rem; flex: 1; }
-  .god-edges { color: var(--text3); font-size: .78rem; font-family: var(--font-mono); }
-  .god-desc { color: var(--text2); font-size: .8rem; }
-  .god-bar { width: 80px; height: 4px; background: var(--bg3); border-radius: 2px; }
-  .god-bar-fill { height: 100%; border-radius: 2px; background: var(--accent); }
-
-  /* Community chips */
-  .comm-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; margin: 12px 0; }
-  .comm-chip {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 8px 12px;
-    font-size: .82rem;
-  }
-  .comm-id { color: var(--text3); font-family: var(--font-mono); font-size: .72rem; }
-  .comm-name { color: var(--text); font-weight: 600; font-size: .84rem; }
-  .comm-nodes { color: var(--text3); font-size: .72rem; }
-
-  /* Pipeline steps */
-  .steps { display: flex; flex-direction: column; gap: 0; margin: 16px 0; }
-  .step {
-    display: flex;
-    gap: 16px;
-    padding-bottom: 20px;
-    position: relative;
-  }
-  .step::before {
-    content: '';
-    position: absolute;
-    left: 15px;
-    top: 32px;
-    bottom: 0;
-    width: 2px;
-    background: var(--border);
-  }
-  .step:last-child::before { display: none; }
-  .step-num {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: var(--bg3);
-    border: 2px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: .8rem;
-    font-weight: 700;
-    color: var(--accent);
-    flex-shrink: 0;
-    font-family: var(--font-mono);
-  }
-  .step-num.done { border-color: var(--accent2); color: var(--accent2); background: rgba(89,161,79,.1); }
-  .step-content { padding-top: 4px; }
-  .step-title { font-weight: 600; color: var(--text); font-size: .9rem; }
-  .step-desc { color: var(--text2); font-size: .82rem; margin-top: 2px; }
-
-  /* Skills comparison */
-  .skill-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
-  .skill-card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 16px;
-  }
-  .skill-card h4 { margin: 0 0 8px; color: var(--accent); font-size: .9rem; }
-  .skill-card .verdict { font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin-top: 10px; }
-  .verdict-yes { color: var(--accent2); }
-  .verdict-no { color: var(--text3); }
-  .verdict-maybe { color: var(--accent3); }
-
-  /* Scroll indicator */
-  .scroll-top {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    color: var(--text2);
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 1rem;
-    opacity: 0;
-    transition: opacity .2s;
-    text-decoration: none;
-  }
-  .scroll-top.visible { opacity: 1; }
-
-  @media (max-width: 900px) {
-    nav { display: none; }
-    main { padding: 24px 20px; }
-    .card-grid, .skill-compare { grid-template-columns: 1fr; }
-    .stats-row { gap: 12px; }
-  }
-</style>
+    @media (max-width: 768px) {
+      .skill-compare { grid-template-columns: 1fr; }
+      .stats-row { gap: 10px; }
+    }
+  </style>
 </head>
 <body>
 
-<div class="layout">
-<!-- Sidebar -->
-<nav id="nav">
-  <div class="nav-logo">
-    <h2>graphify</h2>
-    <span>SmitBilling knowledge graph</span>
+<header class="header">
+  <div class="header-left">
+    <button class="menu-toggle" aria-label="Меню"><i class="bi bi-list"></i></button>
+    <div class="logo">
+      <div class="logo-icon">С</div>
+      <div class="logo-text"><span class="logo-main"><span data-smit="brand-short">СмИТ Биллинг 1.6</span></span><span>Документация</span></div>
+    </div>
   </div>
-  <div class="nav-section">Введение</div>
-  <a href="#what">Что такое graphify</a>
-  <a href="#graph-state">Текущее состояние</a>
-  <div class="nav-section">Использование</div>
-  <a href="#query">graphify query</a>
-  <a href="#path">graphify path</a>
-  <a href="#explain">graphify explain</a>
-  <a href="#update">graphify update</a>
-  <a href="#viz">Визуализация</a>
-  <div class="nav-section">Архитектура проекта</div>
-  <a href="#god-nodes">God nodes</a>
-  <a href="#communities">Сообщества (34)</a>
-  <a href="#insights">Ключевые инсайты</a>
-  <div class="nav-section">Сопровождение</div>
-  <a href="#rebuild">Перестройка графа</a>
-  <a href="#pipeline">Pipeline-скрипты</a>
-  <div class="nav-section">Дополнительные skills</div>
-  <a href="#skills">Сравнение skills</a>
-  <a href="#installed-skills">Установленные skills</a>
-  <a href="#skill-building-forms">/building-forms</a>
-  <a href="#skill-creating-dashboards">/creating-dashboards</a>
-  <a href="#skill-designing-apis">/designing-apis</a>
-  <a href="#skill-impeccable">/impeccable</a>
-  <a href="#skill-ui-refactor">/ui-refactor</a>
-  <a href="#skill-graphify">/graphify</a>
-  <a href="#skill-debugging-techniques">/debugging-techniques</a>
-  <a href="#skill-optimizing-sql">/optimizing-sql</a>
-  <a href="#skill-testing-strategies">/testing-strategies</a>
-  <a href="#skill-using-relational-databases">/using-relational-databases</a>
-  <a href="#skill-ux-designer">/ux-designer</a>
-  <a href="#skill-don-norman">/don-norman-principles-audit</a>
-  <a href="#skill-cognitive-walkthrough">/cognitive-walkthrough</a>
-  <a href="#skill-ux-audit-rethink">/ux-audit-rethink</a>
-</nav>
+  <div class="header-search">
+    <div class="docs-search-wrap">
+      <input type="search" id="docsSearch" class="docs-search-input" placeholder="Поиск по документации..." autocomplete="off">
+      <span class="docs-search-icon"><i class="bi bi-search"></i></span>
+      <div class="docs-search-results" id="docsSearchResults"></div>
+    </div>
+  </div>
+  <div class="header-right">
+    <button class="mobile-search-btn" aria-label="Поиск" title="Поиск по документации">
+      <i class="bi bi-search"></i>
+    </button>
+    <button class="theme-toggle" aria-label="Переключить тему" title="Светлая / тёмная тема">
+      <span class="icon-sun"><i class="bi bi-sun"></i></span>
+      <span class="icon-moon"><i class="bi bi-moon-stars"></i></span>
+    </button>
+  </div>
+</header>
 
-<!-- Main content -->
-<main>
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+<div class="search-overlay" id="searchOverlay" role="dialog" aria-label="Поиск по документации">
+  <div class="search-overlay-inner">
+    <i class="bi bi-search search-prefix-icon"></i>
+    <input type="search" id="docsSearchMobile" placeholder="Поиск по документации..." autocomplete="off">
+    <button class="search-overlay-close" aria-label="Закрыть" id="searchOverlayClose"><i class="bi bi-x-lg"></i></button>
+    <div class="docs-search-results search-overlay-results" id="docsSearchResultsMobile"></div>
+  </div>
+</div>
+
+<aside class="sidebar">
+  <nav>
+    <div class="nav-section">Разделы</div>
+        <ul>
+      <li><a href="../index.html"><i class="ti ti-home"></i> Главная</a></li>
+
+      <li class="has-children">
+        <a href="../pages/installation.html" data-short="Установка"><i class="ti ti-box"></i> Установка и интеграция <span class="arrow"><i class="bi bi-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="../pages/installation.html#requirements">Этап 1. Системные требования</a></li>
+          <li><a href="../pages/installation.html#docker-install">Этап 2. Установка Docker Compose</a></li>
+          <li><a href="../pages/installation.html#demo-cleanup">Этап 3. Удаление демо-данных</a></li>
+          <li><a href="../pages/installation.html#equip-integration">Этап 4. Интеграция с оборудованием</a></li>
+          <li><a href="../pages/installation.html#tariff-setup">Этап 5. Настройка тарифов</a></li>
+          <li><a href="../pages/installation.html#add-subscribers">Этап 6. Добавление абонентов</a></li>
+          <li><a href="../pages/installation.html#final-test">Этап 7. Финальное тестирование</a></li>
+          <li><a href="../pages/installation.html#video">Видеоинструкции</a></li>
+        </ul>
+      </li>
+
+      <li class="has-children">
+        <a href="../pages/billing.html" data-short="Настройки"><i class="ti ti-settings"></i> Настройки биллинга <span class="arrow"><i class="bi bi-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="../pages/billing.html#general">1. Общие настройки</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#admin-ip">1.1. IP администратора</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#global-settings">1.2. Глобальные настройки</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#ssl-admin">1.3. SSL для HTTPS</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#user-interfaces">1.4. Интерфейсы</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#db-cleanup">1.5. Очистка БД</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#access-control">1.6. Права доступа</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#diagnostic-commands">1.7. Диагностика</a></li>
+          <li><a href="../pages/billing.html#subscribers">2. Работа с абонентами</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#create-subscriber">2.1. Создание абонента</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#add-service">2.2. Выбор тарифа</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#ip-addresses">2.3. IP-адреса</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#subscriber-tree">2.4. Дерево абонентов</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#contracts">2.5. Договоры</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#search">2.6. Поиск</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#finance-operations">2.7. Финансовые операции</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#templates">2.8. Шаблоны</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#block-types">2.9. Блокировки</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#termination">2.10. Расторжение</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#grace-period">2.11. Льготный период</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#period-close">2.12. Закрытие периода</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#block-unblock">2.13. Блок/разблок</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#accounts">2.14. Лицевые счета</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#debtors">2.15. Должники</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#turnover-sheet">2.16. ОСВ</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#send-message">2.17. Сообщения абоненту</a></li>
+          <li><a href="../pages/billing.html#tariffs">3. Тарификация и услуги</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#tarif-create">3.1. Тарифы</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#payment-cards">3.2. Карты оплаты</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#tarif-change">3.3. Смена тарифа</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#storno">3.4. Сторно</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#recommended-payment">3.5. Рекомендуемый платёж</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#services">3.6. Услуги</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#penalties">3.7. Пени и штрафы</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#disconnection">3.8. Отключения</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#service-versioning">3.9. Версионность</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#bonus-system">3.16. Бонусы</a></li>
+          <li><a href="../pages/billing.html#messaging">4. Отправка сообщений</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#mail-domain">4.1. Домен почты</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#messaging-system">4.2. Система сообщений</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#scheduled-messaging">4.3. Плановая отправка</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#telegram">4.4. Telegram</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#smsaero">4.5. SMSAero</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#email-smtp">4.6. Email (SMTP)</a></li>
+          <li><a href="../pages/billing.html#payments">5. Платежи, API, 1С</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#cashier">5.1. Веб-касса</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#payment-systems">5.2. Платёжные системы</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#1c-integration">5.3. Интеграция с 1С</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#api">5.4. API</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#cash-registers">5.5. Кассы</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#csv-export">5.6. CSV-выгрузка</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#online-cash">5.7. Онлайн-кассы (54-ФЗ)</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#payment-ssl">5.8. SSL платёжных</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#payment-errors">5.9. Коды ошибок</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#yookassa-settings">5.10. ЮKassa</a></li>
+          <li><a href="../pages/billing.html#cabinet">6. Личный кабинет</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#lk-auth">6.1. Авторизация</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#lk-settings">6.2. Интеграции</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#lk-telegram">6.3. Telegram-бот</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#lk-payments">6.4. Оплата (ЮKassa)</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#lk-mobile-app">6.5. Моб. приложение</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#lk-support">6.6. FreeScout</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#lk-ai-chat">6.7. AI-ассистент</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#lk-profile">6.8. Профиль</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#lk-deploy">6.9. Развёртывание</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#lk-firebase">6.10. Push</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#lk-claude-ai">6.11. Claude AI</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#telegram-admin-bot">6.12. TG бот оператора</a></li>
+          <li><a href="../pages/billing.html#oss-bss">7. OSS.BSS / NAS</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#rtsh">7.1. rtsh</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#oss-commands">7.2. Команды OSS</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#oss-schemes">7.3. Схемы оборудования</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#nas-controller">7.4. NasController</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#nas-tasks">7.5. Мониторинг NAS</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#firewall-service">7.6. Firewall</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#helpdesk">7.7. FreeScout CRM</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#userside">7.8. UserSide</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#shell-exec">7.9. Shell-команды</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#nas-management-api">7.10. NAS API</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#ip-allocation">7.11. Выделение IP</a></li>
+          <li><a href="../pages/billing.html#freeradius">8. FreeRADIUS</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#radius-arch">8.1. Архитектура</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#radius-auth">8.2. Авторизация</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#radius-accounting">8.3. Аккаунтинг</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#radius-clients">8.4. Клиенты (NAS)</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#radius-test">8.5. Тестирование</a></li>
+          <li><a href="../pages/billing.html#backup-system">9. Резервное копирование</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#backup-config">9.1. Настройка</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#backup-types">9.2. Типы</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#backup-restore">9.3. Восстановление</a></li>
+          <li><a href="../pages/billing.html#reports">10. Отчёты</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#audit">10.1. Аудит</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#payment-log">10.2. Журнал платежей</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#report-constructor">10.3. Конструктор</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#director-report">10.4. Панель директора</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#audit-report">10.5. По аудитам</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#dev-reports">10.6. Разработка и логи</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#reports-improvements">10.7. Улучшения</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#monthly-billing">10.8. Месячное списание</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#menu-improvements">10.9. Навигация</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#staff-management">10.10. Персонал</a></li>
+          <li><a href="../pages/billing.html#dictionaries">11. Справочники</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#phone-pools">11.1. Пулы номеров</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#subscriber-statuses">11.2. Статусы</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#currencies">11.3. Валюты</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#vlan-pools">11.4. Пулы VLAN</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#ip-pools">11.5. Пулы IP</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#requisites">11.6. Реквизиты</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#houses">11.7. Адреса</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#greetings">11.8. Поздравления</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#acl">11.9. ACL группы</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#periods">11.10. Периоды</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#holidays">11.11. Выходные</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#connection-points">11.12. Точки подкл.</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#subnets">11.13. Подсети</a></li>
+          <li><a href="../pages/billing.html#additional">12. Дополнительные настройки</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#agent-schemes">12.1. Агентские схемы</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#billing-slave">12.2. Дочерний сервер</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#data-retention">12.3. Хранение истории</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#sorm-access">12.4. СОРМ</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#print-templates">12.5. Шаблоны печати</a></li>
+          <li><a href="../pages/billing.html#modal-dialogs">13. Модальные окна</a></li>
+          <li><a href="../pages/billing.html#security">14. Обзор безопасности</a></li>
+          <li><a href="../pages/billing.html#versioning">15. Версионность</a></li>
+          <li><a href="../pages/billing.html#third-party">16. Стороннее ПО</a></li>
+          <li><a href="../pages/billing.html#language">17. Смена языка</a></li>
+          <li><a href="../pages/billing.html#tech-stack">18. Технологический стек</a></li>
+        </ul>
+      </li>
+
+      <li class="has-children">
+        <a href="../pages/server.html" data-short="Сервер"><i class="ti ti-server"></i> Управление сервером <span class="arrow"><i class="bi bi-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="../pages/server.html#server-setup">1. Настройка сервера</a></li>
+          <li class="sub-item"><a href="../pages/server.html#network">1.1. Настройки сети</a></li>
+          <li class="sub-item"><a href="../pages/server.html#security">1.2. Безопасность</a></li>
+          <li class="sub-item"><a href="../pages/server.html#watchdog">1.3. Watchdog</a></li>
+          <li class="sub-item"><a href="../pages/server.html#error-notifications">1.4. Уведомления об ошибках</a></li>
+          <li class="sub-item"><a href="../pages/server.html#time-settings">1.5. Настройка времени</a></li>
+          <li class="sub-item"><a href="../pages/server.html#file-settings">1.6. Настройки в файле</a></li>
+          <li><a href="../pages/server.html#maintenance">2. Сервисное обслуживание</a></li>
+          <li class="sub-item"><a href="../pages/server.html#update">2.1. Обновление биллинга</a></li>
+          <li class="sub-item"><a href="../pages/server.html#backup">2.2. Резервное копирование</a></li>
+          <li class="sub-item"><a href="../pages/server.html#hardware-replace">2.3. Замена оборудования</a></li>
+          <li class="sub-item"><a href="../pages/server.html#reboot">2.4. Выкл./перезагрузка</a></li>
+          <li class="sub-item"><a href="../pages/server.html#db-failover">2.5. Отказоустойчивость БД</a></li>
+          <li class="sub-item"><a href="../pages/server.html#monitoring">2.6. Мониторинг</a></li>
+          <li class="sub-item"><a href="../pages/server.html#abonent-count">2.7. Количество абонентов</a></li>
+          <li class="sub-item"><a href="../pages/server.html#license-expand">2.8. Расширение лицензии</a></li>
+          <li class="sub-item"><a href="../pages/server.html#reactivation">2.9. Повторная активация</a></li>
+          <li><a href="../pages/server.html#modules">3. Управление модулями</a></li>
+          <li class="sub-item"><a href="../pages/server.html#diagnostics">3.1. Диагностика</a></li>
+          <li class="sub-item"><a href="../pages/server.html#module-web">3.2. Web (Django/Gunicorn)</a></li>
+          <li class="sub-item"><a href="../pages/server.html#module-celery">3.3. Celery</a></li>
+          <li class="sub-item"><a href="../pages/server.html#module-collector">3.4. Collector</a></li>
+          <li class="sub-item"><a href="../pages/server.html#module-zabbix">3.5. Zabbix</a></li>
+          <li class="sub-item"><a href="../pages/server.html#module-hooks">3.6. Хуки/firewall</a></li>
+          <li><a href="../pages/server.html#remote">4. Удалённое управление</a></li>
+          <li><a href="../pages/server.html#advanced">5. Доп. возможности</a></li>
+        </ul>
+      </li>
+
+      <li class="has-children">
+        <a href="../pages/equipment.html" data-short="Оборудование"><i class="ti ti-broadcast"></i> Интеграция с оборудованием <span class="arrow"><i class="bi bi-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="../pages/equipment.html#internet">1. Интернет (NAS/BRAS)</a></li>
+          <li class="sub-item"><a href="../pages/equipment.html#switch-types">1.1. Типы коммутаторов</a></li>
+          <li><a href="../pages/equipment.html#voip">2. Телефония (VoIP)</a></li>
+          <li><a href="../pages/equipment.html#iptv">3. IPTV</a></li>
+          <li class="sub-item"><a href="../pages/equipment.html#iptv-tvip">3.1. TVIP Media</a></li>
+          <li class="sub-item"><a href="../pages/equipment.html#iptv-lfstream">3.2. LFStream</a></li>
+          <li class="sub-item"><a href="../pages/equipment.html#iptv-mappings">3.3. Маппинг пакетов</a></li>
+          <li class="sub-item"><a href="../pages/equipment.html#iptv-sync">3.4. Синхронизация</a></li>
+          <li><a href="../pages/equipment.html#cpe">4. Абонентское оборудование</a></li>
+          <li><a href="../pages/equipment.html#cameras">5. Камеры</a></li>
+          <li><a href="../pages/equipment.html#rental">6. Аренда оборудования</a></li>
+        </ul>
+      </li>
+
+      <li class="has-children">
+        <a href="../pages/sorm.html" data-short="СОРМ3"><i class="ti ti-shield-lock"></i> Интеграция с СОРМ3 <span class="arrow"><i class="bi bi-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="../pages/sorm.html#principle">1. Принцип работы</a></li>
+          <li><a href="../pages/sorm.html#integrated">2. Интегрированные решения</a></li>
+          <li><a href="../pages/sorm.html#pending">3. Ожидающие интеграции</a></li>
+          <li><a href="../pages/sorm.html#setup">4. Настройка подключения</a></li>
+          <li><a href="../pages/sorm.html#reports">5. Отчёты и SQL</a></li>
+          <li><a href="../pages/sorm.html#schedule">6. Расписание выгрузки</a></li>
+          <li><a href="../pages/sorm.html#manual-run">7. Управление отчётами</a></li>
+          <li><a href="../pages/sorm.html#children">8. Схемы настройки</a></li>
+        </ul>
+      </li>
+
+      <li class="has-children">
+        <a href="../pages/api.html"><i class="ti ti-link"></i> API <span class="arrow"><i class="bi bi-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="../pages/api.html#overview">1. Обзор API</a></li>
+          <li><a href="../pages/api.html#auth">2. Аутентификация</a></li>
+          <li><a href="../pages/api.html#rest-v2">3. REST API v2</a></li>
+          <li><a href="../pages/api.html#promise-pay">4. Обещанный платёж</a></li>
+          <li><a href="../pages/api.html#payments-api">5. Платёжные API</a></li>
+          <li class="sub-item"><a href="../pages/api.html#payments-endpoints">5.0. Список endpoint</a></li>
+          <li class="sub-item"><a href="../pages/api.html#payments-flow">5.1. Схема платежа</a></li>
+          <li class="sub-item"><a href="../pages/api.html#payments-create">5.2. Инициация</a></li>
+          <li class="sub-item"><a href="../pages/api.html#yookassa-rest">5.3. ЮKassa REST v3</a></li>
+          <li class="sub-item"><a href="../pages/api.html#yookassa-http">5.4. ЮKassa HTTP</a></li>
+          <li class="sub-item"><a href="../pages/api.html#w1-api">5.5. Wallet One</a></li>
+          <li class="sub-item"><a href="../pages/api.html#payments-settings">5.6. Настройки</a></li>
+          <li class="sub-item"><a href="../pages/api.html#payments-finops">5.7. FinanceOperations</a></li>
+          <li><a href="../pages/api.html#soap">6. SOAP API</a></li>
+          <li><a href="../pages/api.html#web-api">7. Web API</a></li>
+          <li><a href="../pages/api.html#ajax">8. AJAX-эндпоинты</a></li>
+          <li><a href="../pages/api.html#mobile-api">9. Mobile API</a></li>
+          <li><a href="../pages/api.html#errors">10. Коды ошибок</a></li>
+        </ul>
+      </li>
+
+      <li class="has-children">
+        <a href="../pages/troubleshooting.html" data-short="Проблемы"><i class="ti ti-tool"></i> Решение проблем <span class="arrow"><i class="bi bi-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="../pages/troubleshooting.html#general">1. Общие вопросы</a></li>
+          <li><a href="../pages/troubleshooting.html#auth">2. Абоненты и авторизация</a></li>
+          <li><a href="../pages/troubleshooting.html#billing-payments">3. Биллинг и платежи</a></li>
+          <li><a href="../pages/troubleshooting.html#server-perf">4. Сервер и производительность</a></li>
+          <li><a href="../pages/troubleshooting.html#network">5. Сеть и доступ</a></li>
+          <li><a href="../pages/troubleshooting.html#security">6. Безопасность</a></li>
+          <li><a href="../pages/troubleshooting.html#other">7. Прочее</a></li>
+        </ul>
+      </li>
+
+      <li class="has-children">
+        <a href="../pages/licensing.html" data-short="Лицензии"><i class="ti ti-file-description"></i> Лицензирование <span class="arrow"><i class="bi bi-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li class="staff-only"><a href="../pages/licensing.html#license-server"><i class="bi bi-shield-lock" style="font-size:.7em;opacity:.5"></i> 1. Сервер лицензий</a></li>
+          <li class="staff-only"><a href="../pages/licensing.html#issue-license"><i class="bi bi-shield-lock" style="font-size:.7em;opacity:.5"></i> 2. Выдача лицензии</a></li>
+          <li class="staff-only"><a href="../pages/licensing.html#activate"><i class="bi bi-shield-lock" style="font-size:.7em;opacity:.5"></i> 3. Активация</a></li>
+          <li class="staff-only"><a href="../pages/licensing.html#manage"><i class="bi bi-shield-lock" style="font-size:.7em;opacity:.5"></i> 4. Управление</a></li>
+          <li class="staff-only"><a href="../pages/licensing.html#api"><i class="bi bi-shield-lock" style="font-size:.7em;opacity:.5"></i> 5. API проверки</a></li>
+          <li><a href="../pages/licensing.html#delivery">6. Порядок поставки</a></li>
+          <li><a href="../pages/licensing.html#payment-issues">7. Не проходит оплата</a></li>
+        </ul>
+      </li>
+
+      <li><a href="../pages/contacts.html"><i class="ti ti-phone"></i> Контакты</a></li>
+    </ul>
+
+      <div class="nav-section">Разработчикам</div>
+      <ul>
+        <li class="has-children open">
+          <a href="graph.html"><i class="ti ti-topology-star-3"></i> Архитектура кода <span class="arrow"><i class="bi bi-chevron-right"></i></span></a>
+          <ul class="submenu">
+            <li><a href="graph.html">Граф сообществ</a></li>
+            <li><a href="wiki/index.html">Wiki модулей</a></li>
+            <li><a href="../pages/dev/index.html">Портал разработчика</a></li>
+            <li><a href="help.html" class="active">graphify CLI</a></li>
+          </ul>
+        </li>
+      </ul>
+  <button class="sidebar-theme-toggle" aria-label="Тема"><span class="icon-sun"><i class="ti ti-sun"></i></span><span class="icon-moon"><i class="ti ti-moon"></i></span><span class="sidebar-theme-label">Сменить тему</span></button>
+</nav>
+</aside>
+
+<main class="content">
+  <div class="breadcrumb">
+    <a href="../index.html">Документация</a> <span class="sep">/</span> <a href="graph.html">Архитектура кода</a> <span class="sep">/</span> graphify CLI
+  </div>
 
 <!-- Hero -->
-<div class="hero" id="top">
+<div id="top">
   <h1>graphify</h1>
-  <p class="hero-sub">Knowledge graph для SmitBilling — 2524 узла, 9003 ребра, 34 сообщества</p>
+  <p style="color:var(--text-secondary,#475569);font-size:1rem;margin-top:4px;">Knowledge graph для SmitBilling — 2524 узла, 9003 ребра, 34 сообщества</p>
   <div class="stats-row">
     <div class="stat"><span class="stat-num">2524</span><span class="stat-label">Узлов</span></div>
     <div class="stat"><span class="stat-num">9003</span><span class="stat-label">Рёбер</span></div>
@@ -577,19 +652,19 @@
 <p>Алгоритм Louvain обнаружил 34 кластера. Каждый — логический модуль или слой системы.</p>
 
 <div class="comm-grid">
-  <div class="comm-chip"><div class="comm-id">#0</div><div class="comm-name">Abonent Views & Map</div><div class="comm-nodes">211 узлов</div></div>
+  <div class="comm-chip"><div class="comm-id">#0</div><div class="comm-name">Abonent Views &amp; Map</div><div class="comm-nodes">211 узлов</div></div>
   <div class="comm-chip"><div class="comm-id">#1</div><div class="comm-name">LK Personal Account</div><div class="comm-nodes">230 узлов</div></div>
-  <div class="comm-chip"><div class="comm-id">#2</div><div class="comm-name">Finance & Money</div><div class="comm-nodes">168 узлов</div></div>
-  <div class="comm-chip"><div class="comm-id">#3</div><div class="comm-name">Abonent Search & Wizard</div><div class="comm-nodes">194 узлов</div></div>
+  <div class="comm-chip"><div class="comm-id">#2</div><div class="comm-name">Finance &amp; Money</div><div class="comm-nodes">168 узлов</div></div>
+  <div class="comm-chip"><div class="comm-id">#3</div><div class="comm-name">Abonent Search &amp; Wizard</div><div class="comm-nodes">194 узлов</div></div>
   <div class="comm-chip"><div class="comm-id">#4</div><div class="comm-name">Mobile API Account</div><div class="comm-nodes">141 узлов</div></div>
-  <div class="comm-chip"><div class="comm-id">#5</div><div class="comm-name">Auth & Core Models</div><div class="comm-nodes">91 узел</div></div>
-  <div class="comm-chip"><div class="comm-id">#6</div><div class="comm-name">ACL & Social Internet</div><div class="comm-nodes">83 узла</div></div>
-  <div class="comm-chip"><div class="comm-id">#7</div><div class="comm-name">Firewall & Blocking</div><div class="comm-nodes">105 узлов</div></div>
+  <div class="comm-chip"><div class="comm-id">#5</div><div class="comm-name">Auth &amp; Core Models</div><div class="comm-nodes">91 узел</div></div>
+  <div class="comm-chip"><div class="comm-id">#6</div><div class="comm-name">ACL &amp; Social Internet</div><div class="comm-nodes">83 узла</div></div>
+  <div class="comm-chip"><div class="comm-id">#7</div><div class="comm-name">Firewall &amp; Blocking</div><div class="comm-nodes">105 узлов</div></div>
   <div class="comm-chip"><div class="comm-id">#8</div><div class="comm-name">Backup System</div><div class="comm-nodes">91 узел</div></div>
   <div class="comm-chip"><div class="comm-id">#9</div><div class="comm-name">IPTV Integration</div><div class="comm-nodes">62 узла</div></div>
   <div class="comm-chip"><div class="comm-id">#10</div><div class="comm-name">Form Framework</div><div class="comm-nodes">24 узла</div></div>
   <div class="comm-chip"><div class="comm-id">#11</div><div class="comm-name">Billing Tasks</div><div class="comm-nodes">63 узла</div></div>
-  <div class="comm-chip"><div class="comm-id">#12</div><div class="comm-name">LK Templates & Chat</div><div class="comm-nodes">61 узел</div></div>
+  <div class="comm-chip"><div class="comm-id">#12</div><div class="comm-name">LK Templates &amp; Chat</div><div class="comm-nodes">61 узел</div></div>
   <div class="comm-chip"><div class="comm-id">#13</div><div class="comm-name">Interface Framework</div><div class="comm-nodes">40 узлов</div></div>
   <div class="comm-chip"><div class="comm-id">#14</div><div class="comm-name">SORM Reports</div><div class="comm-nodes">52 узла</div></div>
   <div class="comm-chip"><div class="comm-id">#15</div><div class="comm-name">Payment Services</div><div class="comm-nodes">46 узлов</div></div>
@@ -907,7 +982,7 @@
   </div>
 </div>
 
-<pre><button class="copy-btn" onclick="copy(this)">copy</button><code><span class="cmd-comment"># Django template — стандартный паттерн с Bootstrap</span>
+<pre><button class="copy-btn" onclick="copy(this)">copy</button><code><span class="comment"># Django template — стандартный паттерн с Bootstrap</span>
 &lt;div class="form-group {% if form.email.errors %}has-error{% endif %}"&gt;
   &lt;label for="{{ form.email.id_for_label }}"&gt;Email&lt;/label&gt;
   {{ form.email }}
@@ -916,7 +991,7 @@
   {% endif %}
 &lt;/div&gt;</code></pre>
 
-<div class="callout callout-warning">
+<div class="callout callout-warn">
   <strong>Правило проекта:</strong> money-поля — всегда вводить в рублях в форме, <code>MoneyFormField.clean()</code>
   умножает на 10¹⁰ перед сохранением. Не обходите это — формулы за вас уже написаны.
 </div>
@@ -934,18 +1009,18 @@
 
 <h3>Стандартный AJAX-эндпоинт для KPI</h3>
 
-<pre><button class="copy-btn" onclick="copy(this)">copy</button><code><span class="cmd-comment"># billing/views/reports.py — шаблон KPI-эндпоинта</span>
+<pre><button class="copy-btn" onclick="copy(this)">copy</button><code><span class="comment"># billing/views/reports.py — шаблон KPI-эндпоинта</span>
 def dashboard_kpi_api(request):
     period = request.GET.get('period', 'month')
-    <span class="cmd-comment"># current + previous период → delta в %</span>
+    <span class="comment"># current + previous период → delta в %</span>
     revenue = FinanceOperations.objects.filter(...).aggregate(Sum('op_summa'))
-    <span class="cmd-comment"># ВСЕГДА делить на DB_MONEY_KOEF перед отдачей в JSON</span>
+    <span class="comment"># ВСЕГДА делить на DB_MONEY_KOEF перед отдачей в JSON</span>
     return JsonResponse({
         'revenue': float(revenue / DB_MONEY_KOEF),
         'revenue_pct': round(pct, 1),
     })</code></pre>
 
-<pre><button class="copy-btn" onclick="copy(this)">copy</button><code><span class="cmd-comment">// ApexCharts — уже подключён в проекте, тема из AdminLTE</span>
+<pre><button class="copy-btn" onclick="copy(this)">copy</button><code><span class="comment">// ApexCharts — уже подключён в проекте, тема из AdminLTE</span>
 const chart = new ApexCharts(document.getElementById('rev-chart'), {
   chart: { type: 'area', height: 200, toolbar: { show: false } },
   series: [{ name: 'Выручка', data: chartData }],
@@ -973,17 +1048,17 @@ const chart = new ApexCharts(document.getElementById('rev-chart'), {
 </ul>
 
 <h3>Правило денег в API-ответах</h3>
-<div class="callout callout-warning">
+<div class="callout callout-warn">
   <strong>Критично:</strong> никогда не возвращать сырые значения ×10¹⁰ из БД.
   Фронтенд и мобильное приложение всегда получают рубли (float).
 </div>
 
-<pre><button class="copy-btn" onclick="copy(this)">copy</button><code><span class="cmd-comment"># Всегда в сериализаторе:</span>
+<pre><button class="copy-btn" onclick="copy(this)">copy</button><code><span class="comment"># Всегда в сериализаторе:</span>
 def get_balance(self, obj):
-    return float(obj.account.ostatok / DB_MONEY_KOEF)  <span class="cmd-comment"># ✓</span>
+    return float(obj.account.ostatok / DB_MONEY_KOEF)  <span class="comment"># ✓</span>
 
-<span class="cmd-comment"># НЕ так:</span>
-return obj.account.ostatok  <span class="cmd-comment"># ✗ — вернёт 12345678900000, фронт сломается</span></code></pre>
+<span class="comment"># НЕ так:</span>
+return obj.account.ostatok  <span class="comment"># ✗ — вернёт 12345678900000, фронт сломается</span></code></pre>
 
 <h3>Выбор пагинации</h3>
 <table>
@@ -1053,7 +1128,7 @@ return obj.account.ostatok  <span class="cmd-comment"># ✗ — вернёт 123
   </div>
 </div>
 
-<div class="callout callout-warning">
+<div class="callout callout-warn">
   impeccable требует файл <code>.impeccable.md</code> в корне проекта с описанием бренда и аудитории.
   Для Django admin-интерфейса команды /bolder и /animate малоприменимы — используйте /critique, /polish, /layout.
 </div>
@@ -1184,10 +1259,10 @@ pytest -x  # стоп после первого падения</code></pre>
   </tbody>
 </table>
 
-<pre><button class="copy-btn" onclick="copy(this)">copy</button><code><span class="cmd-comment"># Добавить индекс в production БЕЗ блокировки таблицы</span>
-<span class="cmd-comment"># migrations/0052_add_finops_index.py</span>
+<pre><button class="copy-btn" onclick="copy(this)">copy</button><code><span class="comment"># Добавить индекс в production БЕЗ блокировки таблицы</span>
+<span class="comment"># migrations/0052_add_finops_index.py</span>
 class Migration(migrations.Migration):
-    atomic = False  <span class="cmd-comment"># обязательно для CONCURRENTLY</span>
+    atomic = False  <span class="comment"># обязательно для CONCURRENTLY</span>
     operations = [
         migrations.RunSQL(
             "CREATE INDEX CONCURRENTLY idx_finops_date "
@@ -1196,12 +1271,12 @@ class Migration(migrations.Migration):
         ),
     ]</code></pre>
 
-<pre><button class="copy-btn" onclick="copy(this)">copy</button><code><span class="cmd-comment"># Диагностика N+1 в Django</span>
+<pre><button class="copy-btn" onclick="copy(this)">copy</button><code><span class="comment"># Диагностика N+1 в Django</span>
 from django.test.utils import CaptureQueriesContext
 from django.db import connection
 with CaptureQueriesContext(connection) as ctx:
     list(Abonents.objects.filter(enabled=True).select_related('tarif'))
-print(f"{len(ctx.captured_queries)} queries")  <span class="cmd-comment"># должно быть 2, не 4270</span></code></pre>
+print(f"{len(ctx.captured_queries)} queries")  <span class="comment"># должно быть 2, не 4270</span></code></pre>
 
 <!-- testing-strategies -->
 <h2 id="skill-testing-strategies">/testing-strategies — тесты для Django/Python</h2>
@@ -1214,103 +1289,36 @@ print(f"{len(ctx.captured_queries)} queries")  <span class="cmd-comment"># до�
   <li>Тест для REST API (mobile_api или rest_api/v2)</li>
 </ul>
 
-<h3>Пирамида тестов для проекта</h3>
-<table>
-  <thead><tr><th>Тип</th><th>%</th><th>Что тестировать</th><th>Инструмент</th></tr></thead>
-  <tbody>
-    <tr><td>Unit</td><td>60-70%</td><td>Расчёт денег, фильтры, валидация форм</td><td>pytest</td></tr>
-    <tr><td>Integration</td><td>20-30%</td><td>Django views + DB, Celery tasks, API endpoints</td><td>Django TestCase</td></tr>
-    <tr><td>E2E</td><td>10%</td><td>Платёжный поток, LK авторизация</td><td>requests / Playwright</td></tr>
-  </tbody>
-</table>
-
-<pre><button class="copy-btn" onclick="copy(this)">copy</button><code><span class="cmd-comment"># billing/tests/test_money.py — unit test денег</span>
-from decimal import Decimal
-DB_MONEY_KOEF = Decimal('10000000000')
-
-def test_money_round_trip():
-    rubles = Decimal('500.00')
-    assert rubles * DB_MONEY_KOEF / DB_MONEY_KOEF == rubles
-
-<span class="cmd-comment"># billing/tests/test_views.py — integration test</span>
-class AbonentViewTest(TestCase):
-    def setUp(self):
-        self.client.login(username='admin', password='admin')
-
-    def test_search_returns_200(self):
-        r = self.client.get('/admin/Abonents/search/', {'q': 'Иванов'})
-        self.assertEqual(r.status_code, 200)</code></pre>
-
-<div class="callout callout-warning">
-  <strong>Правило проекта:</strong> не мокать PostgreSQL в integration-тестах —
-  использовать реальную тестовую БД (<code>pytest-django</code> создаёт её автоматически).
-  Мокать только внешние API: YooKassa, FreeScout, Claude.
-</div>
-
 <!-- using-relational-databases -->
-<h2 id="skill-using-relational-databases">/using-relational-databases — Django ORM + PostgreSQL</h2>
+<h2 id="skill-using-relational-databases">/using-relational-databases — Django ORM и PostgreSQL</h2>
 
 <h3>Когда вызывать</h3>
 <ul>
-  <li>Проектируете новую модель или изменяете существующую</li>
-  <li>Сложный ORM-запрос с агрегациями или аннотациями</li>
-  <li>Планируете миграцию для большой таблицы (finance_operations, abonents)</li>
-  <li>Выбор между ORM и raw SQL</li>
+  <li>Проектируете новые модели Django</li>
+  <li>Пишете сложные агрегации с MoneyField (деньги ×10¹⁰)</li>
+  <li>Планируете крупную миграцию (>100k строк) без даунтайма</li>
+  <li>Connection pooling или оптимизация под высокую нагрузку</li>
 </ul>
-
-<h3>Ключевые паттерны проекта</h3>
-<div class="card-grid">
-  <div class="card">
-    <h4>Агрегация денег</h4>
-    <pre><button class="copy-btn" onclick="copy(this)">copy</button><code>from django.db.models import Sum, DecimalField
-total = FinanceOperations.objects.filter(
-    abonent_id=pk, op_date__gte=start
-).aggregate(
-    t=Sum('op_summa', output_field=DecimalField(
-        max_digits=26, decimal_places=10))
-)['t'] or Decimal(0)
-rubles = total / DB_MONEY_KOEF</code></pre>
-  </div>
-  <div class="card">
-    <h4>Избегать N+1</h4>
-    <pre><button class="copy-btn" onclick="copy(this)">copy</button><code><span class="cmd-comment"># FK в цикле — всегда select_related</span>
-Abonents.objects.filter(enabled=True)\
-    .select_related('tarif', 'account')
-
-<span class="cmd-comment"># Reverse FK / M2M — prefetch_related</span>
-Abonents.objects.prefetch_related(
-    'users_set', 'abonentsblock_set'
-)</code></pre>
-  </div>
-</div>
-
-<div class="callout callout-warning">
-  <strong>Правило managed=False:</strong> 22 Carbon 4 модели имеют <code>managed=False</code> —
-  их схема не управляется Django-миграциями. Таблицы созданы вручную.
-  Добавлять поля через raw SQL, не через <code>AddField</code>.
-</div>
 
 <!-- ux-designer -->
-<h2 id="skill-ux-designer">/ux-designer — современный UX (2025)</h2>
+<h2 id="skill-ux-designer">/ux-designer — современный UX 2025</h2>
 
 <h3>Когда вызывать</h3>
 <ul>
-  <li>Проектируете новый экран или компонент (форма, модал, навигация)</li>
-  <li>Проверяете UX-решение на соответствие стандартам WCAG 2.2 AA</li>
-  <li>Нужен выбор: модал vs боковая панель vs полная страница</li>
-  <li>Проектируете AI-интерфейс (чат, копилот, генерация контента)</li>
-  <li>Хотите проверить дизайн на dark patterns и этичность</li>
+  <li>Проектируете новый экран или пользовательский поток</li>
+  <li>Хотите проверить решения по стандартам WCAG 2.2 AA</li>
+  <li>Нужны decision trees для выбора компонента (Modal vs SidePanel vs FullPage)</li>
+  <li>Работаете над AI-интерфейсом (чат, автодополнение)</li>
 </ul>
 
-<h3>Ключевые паттерны для проекта</h3>
 <div class="card-grid">
   <div class="card">
-    <h4>Decision tree: модал vs боковая панель</h4>
+    <h4>Decision tree: Modal vs SidePanel</h4>
     <ul>
-      <li>1–3 поля, быстрое подтверждение → <strong>Modal</strong></li>
-      <li>Редактирование деталей, контекст нужен → <strong>Side panel</strong></li>
-      <li>Многошаговый процесс (wizard) → <strong>Modal с stepper</strong></li>
-      <li>Сложный объект (новый абонент) → <strong>Full page</strong></li>
+      <li>Подтверждение / деструктивное действие → Modal</li>
+      <li>Детальное редактирование с контекстом → SidePanel</li>
+      <li>Полноэкранный wizard → FullPage</li>
+      <li>Быстрый просмотр без редактирования → Tooltip/Popover</li>
     </ul>
   </div>
   <div class="card">
@@ -1367,7 +1375,7 @@ Abonents.objects.prefetch_related(
   </div>
 </div>
 
-<pre><button class="copy-btn" onclick="copy(this)">copy</button><code><span class="cmd-comment"># Пример аудит-запроса</span>
+<pre><button class="copy-btn" onclick="copy(this)">copy</button><code><span class="comment"># Пример аудит-запроса</span>
 Используй /don-norman-principles-audit
 Проведи аудит страницы /admin/Abonents/search/
 Фокус: новый оператор, первый день работы
@@ -1444,7 +1452,7 @@ Abonents.objects.prefetch_related(
   </div>
 </div>
 
-<pre><button class="copy-btn" onclick="copy(this)">copy</button><code><span class="cmd-comment"># Пример запроса комплексного аудита</span>
+<pre><button class="copy-btn" onclick="copy(this)">copy</button><code><span class="comment"># Пример запроса комплексного аудита</span>
 Используй /ux-audit-rethink
 Проведи аудит раздела управления абонентами
 Основные пользователи: операторы биллинга (опытные, ежедневное использование)
@@ -1454,10 +1462,9 @@ Abonents.objects.prefetch_related(
 <br><br>
 
 </main>
-</div>
 
-<a href="#top" class="scroll-top" id="scrollTop">↑</a>
-
+<script src="../js/main.js?v=220"></script>
+<script src="../js/search.js?v=220"></script>
 <script>
 // Copy button
 function copy(btn) {
@@ -1467,26 +1474,6 @@ function copy(btn) {
     setTimeout(() => btn.textContent = 'copy', 1500);
   });
 }
-
-// Active nav link
-const sections = document.querySelectorAll('h2[id], h3[id]');
-const navLinks = document.querySelectorAll('nav a');
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      navLinks.forEach(a => a.classList.remove('active'));
-      const active = document.querySelector(`nav a[href="#${e.target.id}"]`);
-      if (active) active.classList.add('active');
-    }
-  });
-}, { rootMargin: '-20% 0px -70% 0px' });
-sections.forEach(s => obs.observe(s));
-
-// Scroll to top
-const scrollBtn = document.getElementById('scrollTop');
-window.addEventListener('scroll', () => {
-  scrollBtn.classList.toggle('visible', window.scrollY > 400);
-});
 </script>
 </body>
 </html>
