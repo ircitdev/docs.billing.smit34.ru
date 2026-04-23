@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Graphify — Документация для SmitBilling</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg2: #161b27;
+    --bg3: #1e2535;
+    --border: #2a3147;
+    --accent: #4e79a7;
+    --accent2: #59a14f;
+    --accent3: #f28e2b;
+    --accent4: #e15759;
+    --text: #e2e8f0;
+    --text2: #94a3b8;
+    --text3: #64748b;
+    --code-bg: #1a2035;
+    --radius: 8px;
+    --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  /* Layout */
+  .layout { display: flex; min-height: 100vh; }
+  nav {
+    width: 260px;
+    flex-shrink: 0;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 24px 0;
+  }
+  main {
+    flex: 1;
+    max-width: 860px;
+    padding: 40px 48px;
+    overflow: hidden;
+  }
+
+  /* Nav */
+  .nav-logo {
+    padding: 0 20px 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+  .nav-logo h2 { font-size: 1rem; color: var(--accent); font-weight: 700; }
+  .nav-logo span { font-size: .78rem; color: var(--text3); }
+  .nav-section { padding: 6px 20px 2px; font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text3); margin-top: 8px; }
+  nav a {
+    display: block;
+    padding: 5px 20px;
+    color: var(--text2);
+    text-decoration: none;
+    font-size: .88rem;
+    border-left: 2px solid transparent;
+    transition: all .15s;
+  }
+  nav a:hover { color: var(--text); background: var(--bg3); border-left-color: var(--accent); }
+  nav a.active { color: var(--accent); border-left-color: var(--accent); }
+
+  /* Typography */
+  h1 { font-size: 2rem; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+  h2 { font-size: 1.3rem; font-weight: 700; color: var(--text); margin: 40px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  h3 { font-size: 1rem; font-weight: 600; color: var(--text); margin: 24px 0 10px; }
+  h4 { font-size: .9rem; font-weight: 600; color: var(--text2); margin: 16px 0 8px; }
+  p { color: var(--text2); margin-bottom: 12px; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  strong { color: var(--text); font-weight: 600; }
+  ul, ol { padding-left: 1.4em; color: var(--text2); margin-bottom: 12px; }
+  li { margin-bottom: 4px; }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, #1a2540 0%, #0f1117 60%);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(78,121,167,.2) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .hero-sub { color: var(--text2); font-size: 1rem; margin-top: 8px; }
+  .stats-row { display: flex; gap: 24px; margin-top: 20px; flex-wrap: wrap; }
+  .stat { background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; padding: 12px 20px; text-align: center; }
+  .stat-num { font-size: 1.6rem; font-weight: 800; color: var(--accent); display: block; }
+  .stat-label { font-size: .75rem; color: var(--text3); text-transform: uppercase; letter-spacing: .06em; }
+
+  /* Code */
+  code {
+    font-family: var(--font-mono);
+    font-size: .85em;
+    background: var(--code-bg);
+    color: #7dd3fc;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    overflow-x: auto;
+    margin: 12px 0 16px;
+    position: relative;
+  }
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: .84rem;
+    color: #e2e8f0;
+    line-height: 1.7;
+  }
+  .cmd-line { color: #7dd3fc; }
+  .comment { color: #64748b; font-style: italic; }
+  .string { color: #86efac; }
+  .kw { color: #c084fc; }
+  .copy-btn {
+    position: absolute;
+    top: 8px; right: 10px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text3);
+    font-size: .72rem;
+    padding: 3px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    transition: all .15s;
+  }
+  .copy-btn:hover { color: var(--text); border-color: var(--accent); }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; font-size: .88rem; }
+  th { background: var(--bg3); color: var(--text); font-weight: 600; text-align: left; padding: 8px 12px; border: 1px solid var(--border); }
+  td { padding: 7px 12px; border: 1px solid var(--border); color: var(--text2); vertical-align: top; }
+  tr:hover td { background: rgba(255,255,255,.02); }
+  td code { font-size: .8rem; }
+
+  /* Cards */
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    margin-bottom: 12px;
+  }
+  .card h4 { margin-top: 0; }
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+  .card-accent { border-left: 3px solid var(--accent); }
+  .card-green { border-left: 3px solid var(--accent2); }
+  .card-orange { border-left: 3px solid var(--accent3); }
+  .card-red { border-left: 3px solid var(--accent4); }
+
+  /* Badges */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: .72rem;
+    font-weight: 600;
+    font-family: var(--font-mono);
+  }
+  .badge-blue { background: rgba(78,121,167,.2); color: #93c5fd; border: 1px solid rgba(78,121,167,.3); }
+  .badge-green { background: rgba(89,161,79,.2); color: #86efac; border: 1px solid rgba(89,161,79,.3); }
+  .badge-orange { background: rgba(242,142,43,.2); color: #fbbf24; border: 1px solid rgba(242,142,43,.3); }
+  .badge-gray { background: rgba(100,116,139,.15); color: var(--text3); border: 1px solid var(--border); }
+
+  /* Callout */
+  .callout {
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    margin: 16px 0;
+    font-size: .88rem;
+  }
+  .callout-info { background: rgba(78,121,167,.1); border: 1px solid rgba(78,121,167,.3); color: #93c5fd; }
+  .callout-tip { background: rgba(89,161,79,.1); border: 1px solid rgba(89,161,79,.3); color: #86efac; }
+  .callout-warn { background: rgba(242,142,43,.1); border: 1px solid rgba(242,142,43,.3); color: #fbbf24; }
+
+  /* God nodes */
+  .god-list { display: flex; flex-direction: column; gap: 6px; margin: 12px 0; }
+  .god-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: .88rem;
+  }
+  .god-rank { color: var(--text3); font-weight: 700; width: 20px; text-align: right; font-family: var(--font-mono); }
+  .god-name { color: var(--accent); font-family: var(--font-mono); font-size: .82rem; flex: 1; }
+  .god-edges { color: var(--text3); font-size: .78rem; font-family: var(--font-mono); }
+  .god-desc { color: var(--text2); font-size: .8rem; }
+  .god-bar { width: 80px; height: 4px; background: var(--bg3); border-radius: 2px; }
+  .god-bar-fill { height: 100%; border-radius: 2px; background: var(--accent); }
+
+  /* Community chips */
+  .comm-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; margin: 12px 0; }
+  .comm-chip {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: .82rem;
+  }
+  .comm-id { color: var(--text3); font-family: var(--font-mono); font-size: .72rem; }
+  .comm-name { color: var(--text); font-weight: 600; font-size: .84rem; }
+  .comm-nodes { color: var(--text3); font-size: .72rem; }
+
+  /* Pipeline steps */
+  .steps { display: flex; flex-direction: column; gap: 0; margin: 16px 0; }
+  .step {
+    display: flex;
+    gap: 16px;
+    padding-bottom: 20px;
+    position: relative;
+  }
+  .step::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 32px;
+    bottom: 0;
+    width: 2px;
+    background: var(--border);
+  }
+  .step:last-child::before { display: none; }
+  .step-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--bg3);
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .8rem;
+    font-weight: 700;
+    color: var(--accent);
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+  }
+  .step-num.done { border-color: var(--accent2); color: var(--accent2); background: rgba(89,161,79,.1); }
+  .step-content { padding-top: 4px; }
+  .step-title { font-weight: 600; color: var(--text); font-size: .9rem; }
+  .step-desc { color: var(--text2); font-size: .82rem; margin-top: 2px; }
+
+  /* Skills comparison */
+  .skill-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+  .skill-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+  }
+  .skill-card h4 { margin: 0 0 8px; color: var(--accent); font-size: .9rem; }
+  .skill-card .verdict { font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin-top: 10px; }
+  .verdict-yes { color: var(--accent2); }
+  .verdict-no { color: var(--text3); }
+  .verdict-maybe { color: var(--accent3); }
+
+  /* Scroll indicator */
+  .scroll-top {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text2);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1rem;
+    opacity: 0;
+    transition: opacity .2s;
+    text-decoration: none;
+  }
+  .scroll-top.visible { opacity: 1; }
+
+  @media (max-width: 900px) {
+    nav { display: none; }
+    main { padding: 24px 20px; }
+    .card-grid, .skill-compare { grid-template-columns: 1fr; }
+    .stats-row { gap: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="layout">
+<!-- Sidebar -->
+<nav id="nav">
+  <div class="nav-logo">
+    <h2>graphify</h2>
+    <span>SmitBilling knowledge graph</span>
+  </div>
+  <div class="nav-section">Введение</div>
+  <a href="#what">Что такое graphify</a>
+  <a href="#graph-state">Текущее состояние</a>
+  <div class="nav-section">Использование</div>
+  <a href="#query">graphify query</a>
+  <a href="#path">graphify path</a>
+  <a href="#explain">graphify explain</a>
+  <a href="#update">graphify update</a>
+  <a href="#viz">Визуализация</a>
+  <div class="nav-section">Архитектура проекта</div>
+  <a href="#god-nodes">God nodes</a>
+  <a href="#communities">Сообщества (34)</a>
+  <a href="#insights">Ключевые инсайты</a>
+  <div class="nav-section">Сопровождение</div>
+  <a href="#rebuild">Перестройка графа</a>
+  <a href="#pipeline">Pipeline-скрипты</a>
+  <div class="nav-section">Дополнительные skills</div>
+  <a href="#skills">Сравнение skills</a>
+  <a href="#installed-skills">Установленные skills</a>
+  <a href="#skill-building-forms">/building-forms</a>
+  <a href="#skill-creating-dashboards">/creating-dashboards</a>
+  <a href="#skill-designing-apis">/designing-apis</a>
+  <a href="#skill-impeccable">/impeccable</a>
+  <a href="#skill-ui-refactor">/ui-refactor</a>
+  <a href="#skill-graphify">/graphify</a>
+  <a href="#skill-debugging-techniques">/debugging-techniques</a>
+  <a href="#skill-optimizing-sql">/optimizing-sql</a>
+  <a href="#skill-testing-strategies">/testing-strategies</a>
+  <a href="#skill-using-relational-databases">/using-relational-databases</a>
+  <a href="#skill-ux-designer">/ux-designer</a>
+  <a href="#skill-don-norman">/don-norman-principles-audit</a>
+  <a href="#skill-cognitive-walkthrough">/cognitive-walkthrough</a>
+  <a href="#skill-ux-audit-rethink">/ux-audit-rethink</a>
+</nav>
+
+<!-- Main content -->
+<main>
+
+<!-- Hero -->
+<div class="hero" id="top">
+  <h1>graphify</h1>
+  <p class="hero-sub">Knowledge graph для SmitBilling — 2524 узла, 9003 ребра, 34 сообщества</p>
+  <div class="stats-row">
+    <div class="stat"><span class="stat-num">2524</span><span class="stat-label">Узлов</span></div>
+    <div class="stat"><span class="stat-num">9003</span><span class="stat-label">Рёбер</span></div>
+    <div class="stat"><span class="stat-num">34</span><span class="stat-label">Сообществ</span></div>
+    <div class="stat"><span class="stat-num">172</span><span class="stat-label">Файлов</span></div>
+    <div class="stat"><span class="stat-num">129k</span><span class="stat-label">Слов</span></div>
+  </div>
+</div>
+
+<!-- What -->
+<h2 id="what">Что такое graphify</h2>
+<p>
+  <strong>graphify</strong> превращает кодовую базу в структурированный граф знаний.
+  Вместо того чтобы читать сотни файлов при каждом вопросе об архитектуре,
+  Claude обращается к предвычисленному графу — это быстрее и даёт кросс-модульный контекст,
+  который невозможно получить из поиска по файлам.
+</p>
+
+<div class="card-grid">
+  <div class="card card-accent">
+    <h4>AST-граф (детерминированный)</h4>
+    <p>Импорты, вызовы функций, наследование классов — извлекается из Python-кода статически. Бесплатно, без LLM.</p>
+  </div>
+  <div class="card card-green">
+    <h4>Семантический граф (LLM)</h4>
+    <p>Концептуальные связи, зависимости по данным, архитектурные паттерны — извлекаются из шаблонов и документов.</p>
+  </div>
+  <div class="card card-orange">
+    <h4>Обнаружение сообществ</h4>
+    <p>Алгоритм кластеризации находит группы тесно связанных узлов — модули, слои, подсистемы.</p>
+  </div>
+  <div class="card card-red">
+    <h4>God nodes</h4>
+    <p>Узлы с наибольшим числом рёбер — ключевые абстракции, которые объединяют остальной код.</p>
+  </div>
+</div>
+
+<div class="callout callout-info">
+  Граф построен из: <strong>152 Python-файла</strong> (billing/views, models, services, tasks, mobile_api, lk)
+  + <strong>20 LK HTML-шаблонов</strong>. Последнее обновление: 2026-04-23.
+</div>
+
+<!-- Current state -->
+<h2 id="graph-state">Текущее состояние графа</h2>
+<p>Все выходные файлы находятся в <code>graphify-out/</code>:</p>
+<table>
+  <thead><tr><th>Файл</th><th>Размер</th><th>Назначение</th></tr></thead>
+  <tbody>
+    <tr><td><code>graph.html</code></td><td>3 МБ</td><td>Интерактивная визуализация (открыть в браузере)</td></tr>
+    <tr><td><code>graph.json</code></td><td>5 МБ</td><td>GraphRAG-ready JSON для Claude</td></tr>
+    <tr><td><code>GRAPH_REPORT.md</code></td><td>17 КБ</td><td>God nodes, сообщества, инсайты</td></tr>
+    <tr><td><code>.graphify_extract.json</code></td><td>5 МБ</td><td>Merged AST + semantic extraction</td></tr>
+    <tr><td><code>.graphify_analysis.json</code></td><td>101 КБ</td><td>Cohesion scores, предложенные вопросы</td></tr>
+    <tr><td><code>.graphify_labels.json</code></td><td>1 КБ</td><td>Имена сообществ</td></tr>
+    <tr><td><code>run_pipeline.py</code></td><td>—</td><td>Скрипт перестройки графа</td></tr>
+    <tr><td><code>run_labels.py</code></td><td>—</td><td>Скрипт переименования сообществ</td></tr>
+  </tbody>
+</table>
+
+<!-- Query -->
+<h2 id="query">graphify query — широкий поиск по графу</h2>
+<p>BFS-обход графа по вопросу на естественном языке. Возвращает связанные узлы в порядке близости к запросу.</p>
+
+<pre><button class="copy-btn" onclick="copy(this)">copy</button><code><span class="cmd-line">graphify query "как работает блокировка абонентов"</span>
+<span class="cmd-line">graphify query "биллинг ежемесячный" --budget 3000</span>
+<span class="cmd-line">graphify query "YooKassa платёж webhook" --dfs</span>
+<span class="cmd-line">graphify query "SORM экспорт FTP"</span></code></pre>
+
+<table>
+  <thead><tr><th>Флаг</th><th>Поведение</th></tr></thead>
+  <tbody>
+    <tr><td><code>--dfs</code></td><td>Depth-first вместо BFS — трассирует конкретный путь выполнения</td></tr>
+    <tr><td><code>--budget N</code></td><td>Ограничить ответ N токенами (по умолчанию 2000)</td></tr>
+    <tr><td><code>--graph path/to/graph.json</code></td><td>Использовать другой файл графа</td></tr>
+  </tbody>
+</table>
+
+<!-- Path -->
+<h2 id="path">graphify path — кратчайший путь между понятиями</h2>
+<p>Находит цепочку связей между двумя узлами. Полезно для понимания зависимостей.</p>
+
+<pre><button class="copy-btn" onclick="copy(this)">copy</button><code><span class="cmd-line">graphify path "BaseView" "FinanceOperations"</span>
+<span class="cmd-line">graphify path "AbonentsBlock" "FreeScoutClient"</span>
+<span class="cmd-line">graphify path "MobileJWTAuthentication" "Abonents"</span>
+<span class="cmd-line">graphify path "billing_worker" "UsersUsluga"</span></code></pre>
+
+<div class="callout callout-tip">
+  Используйте <strong>god node</strong> как промежуточную точку если прямого пути нет.
+  Например: <code>graphify path "push_notification" "BaseView"</code>
+</div>
+
+<!-- Explain -->
+<h2 id="explain">graphify explain — объяснение узла</h2>
+<p>Возвращает plain-language описание узла и его ближайших соседей в графе.</p>
+
+<pre><button class="copy-btn" onclick="copy(this)">copy</button><code><span class="cmd-line">graphify explain "BaseView"</span>
+<span class="cmd-line">graphify explain "MsgStack"</span>
+<span class="cmd-line">graphify explain "MoneyField"</span>
+<span class="cmd-line">graphify explain "FinanceOperations"</span></code></pre>
+
+<!-- Update -->
+<h2 id="update">graphify update — обновление после изменений кода</h2>
+<p>Перечитывает Python-файлы и обновляет AST-часть графа. Без LLM-вызовов — бесплатно и быстро.</p>
+
+<pre><button class="copy-btn" onclick="copy(this)">copy</button><code><span class="cmd-line">cd carbon_modern</span>
+<span class="cmd-line">graphify update .</span>
+<span class="comment"># Перестраивает AST для изменённых .py файлов
+# Семантические узлы (HTML, docs) остаются из кэша</span></code></pre>
+
+<div class="callout callout-warn">
+  <strong>Когда нужно делать update:</strong> после добавления новых view-функций, моделей, сервисов.
+  После изменения HTML-шаблонов — нужен полный rebuild (см. раздел "Перестройка").
+</div>
+
+<!-- Viz -->
+<h2 id="viz">Интерактивная визуализация</h2>
+<p>Откройте <code>graphify-out/graph.html</code> в браузере — интерактивный граф с поиском и легендой сообществ.</p>
+
+<div class="card">
+  <h4>Как пользоваться визуализацией</h4>
+  <ul>
+    <li>Поиск по имени узла — в правой панели</li>
+    <li>Клик на узел — показывает соседей и атрибуты</li>
+    <li>Легенда снизу — переключает видимость сообществ</li>
+    <li>Zoom — колесо мыши или pinch</li>
+    <li>Drag — перемещение узлов</li>
+  </ul>
+</div>
+
+<!-- God nodes -->
+<h2 id="god-nodes">God nodes — ключевые абстракции</h2>
+<p>Узлы с наибольшим числом рёбер. Это точки, через которые проходит большинство кросс-модульных зависимостей.</p>
+
+<div class="god-list">
+  <div class="god-item">
+    <span class="god-rank">1</span>
+    <span class="god-name">BaseView</span>
+    <div class="god-bar"><div class="god-bar-fill" style="width:100%"></div></div>
+    <span class="god-edges">197 рёбер</span>
+    <span class="god-desc">Базовый view-класс всего admin. Все views наследуют от него.</span>
+  </div>
+  <div class="god-item">
+    <span class="god-rank">2</span>
+    <span class="god-name">PaginatorFormMixin</span>
+    <div class="god-bar"><div class="god-bar-fill" style="width:84%"></div></div>
+    <span class="god-edges">166 рёбер</span>
+    <span class="god-desc">Пагинация во всех списках.</span>
+  </div>
+  <div class="god-item">
+    <span class="god-rank">3</span>
+    <span class="god-name">SearchFormMixin</span>
+    <div class="god-bar"><div class="god-bar-fill" style="width:81%"></div></div>
+    <span class="god-edges">160 рёбер</span>
+    <span class="god-desc">Поиск во всех CRUD-списках.</span>
+  </div>
+  <div class="god-item">
+    <span class="god-rank">4</span>
+    <span class="god-name">MsgStack</span>
+    <div class="god-bar"><div class="god-bar-fill" style="width:81%"></div></div>
+    <span class="god-edges">159 рёбер</span>
+    <span class="god-desc">Система уведомлений. Используется во всём billing.</span>
+  </div>
+  <div class="god-item">
+    <span class="god-rank">5</span>
+    <span class="god-name">Homes</span>
+    <div class="god-bar"><div class="god-bar-fill" style="width:76%"></div></div>
+    <span class="god-edges">149 рёбер</span>
+    <span class="god-desc">Модель адресов. FK из Users, Abonents, ConnectionPoints.</span>
+  </div>
+  <div class="god-item">
+    <span class="god-rank">6</span>
+    <span class="god-name">FreeScoutClient</span>
+    <div class="god-bar"><div class="god-bar-fill" style="width:70%"></div></div>
+    <span class="god-edges">138 рёбер</span>
+    <span class="god-desc">HTTP-клиент к FreeScout API. Tickets, customers, webhooks.</span>
+  </div>
+  <div class="god-item">
+    <span class="god-rank">7</span>
+    <span class="god-name">FinanceOperations</span>
+    <div class="god-bar"><div class="god-bar-fill" style="width:66%"></div></div>
+    <span class="god-edges">130 рёбер</span>
+    <span class="god-desc">Модель финансовых операций. Центр биллинговых расчётов.</span>
+  </div>
+  <div class="god-item">
+    <span class="god-rank">8</span>
+    <span class="god-name">AdminAccounts</span>
+    <div class="god-bar"><div class="god-bar-fill" style="width:64%"></div></div>
+    <span class="god-edges">127 рёбер</span>
+    <span class="god-desc">Лицевые счета абонентов. MoneyField (×10¹⁰).</span>
+  </div>
+  <div class="god-item">
+    <span class="god-rank">9</span>
+    <span class="god-name">StatusViewMixin</span>
+    <div class="god-bar"><div class="god-bar-fill" style="width:68%"></div></div>
+    <span class="god-edges">134 рёбер</span>
+    <span class="god-desc">Статус-миксин view.</span>
+  </div>
+  <div class="god-item">
+    <span class="god-rank">10</span>
+    <span class="god-name">Универсальный контекст для печатных форм</span>
+    <div class="god-bar"><div class="god-bar-fill" style="width:71%"></div></div>
+    <span class="god-edges">140 рёбер</span>
+    <span class="god-desc">Высокий betweenness centrality — мост между сообществами 0-16.</span>
+  </div>
+</div>
+
+<!-- Communities -->
+<h2 id="communities">34 именованных сообщества</h2>
+<p>Алгоритм Louvain обнаружил 34 кластера. Каждый — логический модуль или слой системы.</p>
+
+<div class="comm-grid">
+  <div class="comm-chip"><div class="comm-id">#0</div><div class="comm-name">Abonent Views & Map</div><div class="comm-nodes">211 узлов</div></div>
+  <div class="comm-chip"><div class="comm-id">#1</div><div class="comm-name">LK Personal Account</div><div class="comm-nodes">230 узлов</div></div>
+  <div class="comm-chip"><div class="comm-id">#2</div><div class="comm-name">Finance & Money</div><div class="comm-nodes">168 узлов</div></div>
+  <div class="comm-chip"><div class="comm-id">#3</div><div class="comm-name">Abonent Search & Wizard</div><div class="comm-nodes">194 узлов</div></div>
+  <div class="comm-chip"><div class="comm-id">#4</div><div class="comm-name">Mobile API Account</div><div class="comm-nodes">141 узлов</div></div>
+  <div class="comm-chip"><div class="comm-id">#5</div><div class="comm-name">Auth & Core Models</div><div class="comm-nodes">91 узел</div></div>
+  <div class="comm-chip"><div class="comm-id">#6</div><div class="comm-name">ACL & Social Internet</div><div class="comm-nodes">83 узла</div></div>
+  <div class="comm-chip"><div class="comm-id">#7</div><div class="comm-name">Firewall & Blocking</div><div class="comm-nodes">105 узлов</div></div>
+  <div class="comm-chip"><div class="comm-id">#8</div><div class="comm-name">Backup System</div><div class="comm-nodes">91 узел</div></div>
+  <div class="comm-chip"><div class="comm-id">#9</div><div class="comm-name">IPTV Integration</div><div class="comm-nodes">62 узла</div></div>
+  <div class="comm-chip"><div class="comm-id">#10</div><div class="comm-name">Form Framework</div><div class="comm-nodes">24 узла</div></div>
+  <div class="comm-chip"><div class="comm-id">#11</div><div class="comm-name">Billing Tasks</div><div class="comm-nodes">63 узла</div></div>
+  <div class="comm-chip"><div class="comm-id">#12</div><div class="comm-name">LK Templates & Chat</div><div class="comm-nodes">61 узел</div></div>
+  <div class="comm-chip"><div class="comm-id">#13</div><div class="comm-name">Interface Framework</div><div class="comm-nodes">40 узлов</div></div>
+  <div class="comm-chip"><div class="comm-id">#14</div><div class="comm-name">SORM Reports</div><div class="comm-nodes">52 узла</div></div>
+  <div class="comm-chip"><div class="comm-id">#15</div><div class="comm-name">Payment Services</div><div class="comm-nodes">46 узлов</div></div>
+  <div class="comm-chip"><div class="comm-id">#16</div><div class="comm-name">Messaging Tasks</div><div class="comm-nodes">31 узел</div></div>
+  <div class="comm-chip"><div class="comm-id">#17</div><div class="comm-name">Mobile Auth</div><div class="comm-nodes">14 узлов</div></div>
+  <div class="comm-chip"><div class="comm-id">#18</div><div class="comm-name">Push Notifications</div><div class="comm-nodes">15 узлов</div></div>
+  <div class="comm-chip"><div class="comm-id">#19</div><div class="comm-name">Account Model</div><div class="comm-nodes">9 узлов</div></div>
+  <div class="comm-chip"><div class="comm-id">#20</div><div class="comm-name">FreeScout Webhooks</div><div class="comm-nodes">9 узлов</div></div>
+  <div class="comm-chip"><div class="comm-id">#21</div><div class="comm-name">LK Auth</div><div class="comm-nodes">9 узлов</div></div>
+  <div class="comm-chip"><div class="comm-id">#22</div><div class="comm-name">Template Filters</div><div class="comm-nodes">6 узлов</div></div>
+  <div class="comm-chip"><div class="comm-id">+11</div><div class="comm-name">Мелкие изолированные</div><div class="comm-nodes">1–2 узла каждый</div></div>
+</div>
+
+<!-- Insights -->
+<h2 id="insights">Ключевые архитектурные инсайты</h2>
+
+<div class="card card-accent">
+  <h4>Высокий betweenness у "Универсального контекста печатных форм"</h4>
+  <p>Этот узел является мостом между <strong>11 сообществами</strong> (0–16). Centrality 0.133 — если этот компонент сломается, пострадает большая часть admin-интерфейса.</p>
+</div>
+
+<div class="card card-orange">
+  <h4>264 изолированных узла</h4>
+  <p>Узлы с ≤1 связью — возможно недокументированные компоненты или legacy-код без интеграции. Список в <code>GRAPH_REPORT.md → Knowledge Gaps</code>.</p>
+</div>
+
+<div class="card card-green">
+  <h4>LK и Admin — отдельные сообщества</h4>
+  <p>Community #1 (LK Personal Account) и #12 (LK Templates) практически не пересекаются с admin-сообществами. Это хорошо — чистое разделение.</p>
+</div>
+
+<div class="card">
+  <h4>Мобильный API — три независимых сообщества</h4>
+  <p>#4 (Mobile API Account), #17 (Mobile Auth), #18 (Push Notifications) — каждый изолирован. Можно разрабатывать независимо.</p>
+</div>
+
+<!-- Rebuild -->
+<h2 id="rebuild">Перестройка графа</h2>
+
+<h3>Быстрое обновление (AST, после изменений .py файлов)</h3>
+<pre><button class="copy-btn" onclick="copy(this)">copy</button><code><span class="cmd-line">cd carbon_modern</span>
+<span class="cmd-line">graphify update .</span></code></pre>
+
+<h3>Полный rebuild (после изменений шаблонов или добавления новых модулей)</h3>
+<pre><button class="copy-btn" onclick="copy(this)">copy</button><code><span class="comment"># Шаг 1: перестройка AST + merge с семантикой</span>
+<span class="cmd-line">cd carbon_modern && python graphify-out/run_pipeline.py</span>
+
+<span class="comment"># Шаг 2: применить именованные метки сообществ</span>
+<span class="cmd-line">python graphify-out/run_labels.py</span></code></pre>
+
+<h3>Полный цикл с новой семантической экстракцией (дорого — LLM)</h3>
+<pre><button class="copy-btn" onclick="copy(this)">copy</button><code><span class="comment"># Только если добавились новые HTML/docs файлы</span>
+<span class="cmd-line">cd carbon_modern</span>
+<span class="cmd-line">/graphify billing/</span>
+<span class="comment"># Запускает detect → AST → semantic subagents → merge → build → cluster → report</span></code></pre>
+
+<!-- Pipeline -->
+<h2 id="pipeline">Pipeline-скрипты</h2>
+
+<div class="steps">
+  <div class="step">
+    <div class="step-num done">1</div>
+    <div class="step-content">
+      <div class="step-title">Detect <span class="badge badge-green">done</span></div>
+      <div class="step-desc">Определение файлов корпуса. Результат: <code>.graphify_detect.json</code> (172 файла, 129k слов)</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num done">2</div>
+    <div class="step-content">
+      <div class="step-title">AST extraction <span class="badge badge-green">done</span></div>
+      <div class="step-desc">Статический анализ 152 Python-файлов. Результат: <code>.graphify_ast.json</code> (2550 узлов, 13592 ребра)</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num done">3</div>
+    <div class="step-content">
+      <div class="step-title">Semantic extraction <span class="badge badge-orange">partial</span></div>
+      <div class="step-desc">LLM-экстракция 20 LK HTML-шаблонов. Результат: <code>.graphify_chunk_01.json</code> (70 узлов, 102 ребра). Остальные файлы кэшированы.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num done">4</div>
+    <div class="step-content">
+      <div class="step-title">Build graph <span class="badge badge-green">done</span></div>
+      <div class="step-desc">Merge AST + semantic → NetworkX граф. 2524 узла, 9003 ребра после дедупликации.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num done">5</div>
+    <div class="step-content">
+      <div class="step-title">Cluster <span class="badge badge-green">done</span></div>
+      <div class="step-desc">Алгоритм Louvain → 34 сообщества с cohesion scores.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num done">6</div>
+    <div class="step-content">
+      <div class="step-title">Export + Label <span class="badge badge-green">done</span></div>
+      <div class="step-desc">graph.json, graph.html, GRAPH_REPORT.md с именованными сообществами.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Skills comparison -->
+<h2 id="skills">Проанализированные репозитории со skills</h2>
+
+<h3>Раунд 1 — UI/дизайн (апрель 2026)</h3>
+<div class="skill-compare">
+  <div class="skill-card">
+    <h4>anthropics/skills — frontend-design</h4>
+    <p>Официальный скилл от Anthropic. Гайд по созданию продакшн-UI с чётким эстетическим направлением.</p>
+    <ul><li>Design thinking protocol</li><li>Typography, color, motion guidelines</li></ul>
+    <div class="verdict verdict-yes">✓ Установлено как /ui-refactor</div>
+  </div>
+  <div class="skill-card">
+    <h4>pbakaus/impeccable</h4>
+    <p>Расширение frontend-design с 18 командами, 7 reference-файлами, anti-pattern библиотекой.</p>
+    <ul><li>18 команд (/critique, /polish, /bolder, /quieter, /overdrive…)</li><li>Требует .impeccable.md</li></ul>
+    <div class="verdict verdict-yes">✓ Установлено как /impeccable</div>
+  </div>
+  <div class="skill-card">
+    <h4>nextlevelbuilder/ui-ux-pro-max</h4>
+    <p>67 UI стилей, 161 палитра, генератор дизайн-систем. Ориентирован на лендинги и SaaS.</p>
+    <div class="verdict verdict-no">✗ Пропущено — избыточно для Django admin</div>
+  </div>
+  <div class="skill-card">
+    <h4>ancoleman/ai-design-components</h4>
+    <p>100 production-ready скиллов: frontend, backend, DevOps, security, cloud, AI/ML. Установлено 7 из них.</p>
+    <ul><li>building-forms, creating-dashboards, designing-apis</li><li>debugging-techniques, optimizing-sql, testing-strategies, using-relational-databases</li></ul>
+    <div class="verdict verdict-yes">✓ Установлено 7 skills из репозитория</div>
+  </div>
+</div>
+
+<h3>Раунд 2 — бэкенд/разработка (апрель 2026)</h3>
+<div class="skill-compare">
+  <div class="skill-card">
+    <h4>yeachan-heo/oh-my-claudecode</h4>
+    <p>Multi-agent orchestration framework: 19 агентов, /team, /autopilot, /ralph, /ultrawork. CLI-инструмент для управления Claude.</p>
+    <div class="verdict verdict-no">✗ Пропущено — AI workflow, не веб-разработка</div>
+  </div>
+  <div class="skill-card">
+    <h4>Ashutos1997/claude-design-auditor-skill</h4>
+    <p>Аудит дизайна по 18 категориям: типографика, accessibility, spacing, WCAG 2.1. Поддержка Figma MCP.</p>
+    <div class="verdict verdict-no">✗ Пропущено — UI/UX аудит, не backend</div>
+  </div>
+  <div class="skill-card">
+    <h4>Owl-Listener/designer-skills</h4>
+    <p>63 скилла и 27 команд по 8 дизайн-плагинам: personas, components, accessibility, prototyping.</p>
+    <div class="verdict verdict-no">✗ Пропущено — чисто дизайн, нет пересечений с биллингом</div>
+  </div>
+  <div class="skill-card">
+    <h4>haneen1705/UI-UX-Roadmap-2025-2026</h4>
+    <p>24-недельный учебный роадмап по UI/UX дизайну: Figma, wireframing, prototyping. Только образовательный.</p>
+    <div class="verdict verdict-no">✗ Пропущено — образовательный ресурс, не код</div>
+  </div>
+  <div class="skill-card">
+    <h4>mastepanoski/claude-skills</h4>
+    <p>11 skills для UX/UI аудита и AI governance: Nielsen, WCAG, NIST, OWASP LLM Top 10.</p>
+    <div class="verdict verdict-no">✗ Пропущено — compliance framework, не разработка</div>
+  </div>
+</div>
+
+<h3>Раунд 3 — UX-аудит и проектирование (апрель 2026)</h3>
+<div class="skill-compare">
+  <div class="skill-card">
+    <h4>szilu/ux-designer-skill</h4>
+    <p>297-строчный SKILL.md + 22 reference-файла: WCAG 2.2 AA, data tables, AI interfaces, dashboards, notifications, ethical design, onboarding. Охватывает весь современный UX (2025).</p>
+    <ul><li>Modal/SidePanel/FullPage decision tree</li><li>23 anti-patterns to avoid</li><li>Key metrics table (44px targets, 4.5:1 contrast)</li></ul>
+    <div class="verdict verdict-yes">✓ Установлено как /ux-designer</div>
+  </div>
+  <div class="skill-card">
+    <h4>vxcozy/don-norman-principles-audit</h4>
+    <p>Аудит интерфейсов по 7 принципам Дона Нормана (DOET): Discoverability, Affordance, Signifiers, Feedback, Mapping, Constraints, Conceptual Models. Severity-шкала 1–4.</p>
+    <ul><li>Структурированная процедура аудита (5 шагов)</li><li>Severity-шкала: Catastrophic/High/Medium/Low</li><li>Готовый шаблон отчёта</li></ul>
+    <div class="verdict verdict-yes">✓ Установлено как /don-norman-principles-audit</div>
+  </div>
+  <div class="skill-card">
+    <h4>vxcozy/cognitive-walkthrough</h4>
+    <p>Метод когнитивного обхода: 4 вопроса на каждом шаге задачи. Оценивает обучаемость интерфейса без участия реальных пользователей.</p>
+    <ul><li>4 вопроса: Q1 правильный эффект? Q2 действие заметно? Q3 связь действия с эффектом? Q4 виден прогресс?</li><li>Шаблон отчёта с Success Probability по типам пользователей</li></ul>
+    <div class="verdict verdict-yes">✓ Установлено как /cognitive-walkthrough</div>
+  </div>
+  <div class="skill-card">
+    <h4>vxcozy/ux-audit-rethink</h4>
+    <p>Комплексный UX-аудит по фреймворку IxDF: 7 UX-факторов (сотовые соты Морвилла) + 5 характеристик юзабилити ISO 9241-11 + 5 измерений взаимодействия. Health Score 0–100.</p>
+    <ul><li>Useful/Usable/Findable/Credible/Desirable/Accessible/Valuable</li><li>Design Thinking интеграция (Empathize→Define→Ideate→Prototype→Test)</li><li>Рейтинг 1–5 + приоритизированный роадмап</li></ul>
+    <div class="verdict verdict-yes">✓ Установлено как /ux-audit-rethink</div>
+  </div>
+  <div class="skill-card">
+    <h4>apexscaleai/claude-ui-design-system</h4>
+    <p>Генератор дизайн-систем с токенами, компонентами, Figma-интеграцией. Ориентирован на создание новых продуктов с нуля.</p>
+    <div class="verdict verdict-no">✗ Пропущено — создание дизайн-систем, не аудит существующего UI</div>
+  </div>
+  <div class="skill-card">
+    <h4>skills.sh — 4 UX skills</h4>
+    <p>building-forms, creating-dashboards, designing-apis — уже установлены из ancoleman/ai-design-components. Дублируются.</p>
+    <div class="verdict verdict-no">✗ Пропущено — дубликаты уже установленных</div>
+  </div>
+</div>
+
+<!-- Installed skills guide -->
+<h2 id="installed-skills">Установленные skills — инструкция</h2>
+
+<div class="callout callout-tip">
+  Все перечисленные ниже skills установлены в <code>~/.claude/skills/</code> и активируются командой в чате.
+  Каждый skill загружает в контекст Claude специализированные знания и паттерны, адаптированные под стек проекта
+  (Django 4.2 / AdminLTE / PostgreSQL / ApexCharts).
+</div>
+
+<table>
+  <thead><tr><th>Команда</th><th>Что делает</th><th>Когда использовать</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><code>/building-forms</code></td>
+      <td>Формы, валидация, accessibility WCAG 2.1 AA</td>
+      <td>Добавляете форму, модальный редактор, wizard-шаг</td>
+    </tr>
+    <tr>
+      <td><code>/creating-dashboards</code></td>
+      <td>KPI-карточки, ApexCharts, AJAX-эндпоинты, polling</td>
+      <td>Строите <code>/admin/welcome/</code>, <code>reports/dashboard/</code> или новый виджет</td>
+    </tr>
+    <tr>
+      <td><code>/designing-apis</code></td>
+      <td>REST-дизайн, pagination, throttle, error format, деньги в ответе</td>
+      <td>Проектируете новый эндпоинт в <code>mobile_api/</code> или <code>rest_api/v2/</code></td>
+    </tr>
+    <tr>
+      <td><code>/impeccable</code></td>
+      <td>18 команд UI-рефакторинга: /critique, /polish, /bolder, /animate, /typeset…</td>
+      <td>Серьёзный редизайн страниц ЛК или публичного сайта документации</td>
+    </tr>
+    <tr>
+      <td><code>/ui-refactor</code></td>
+      <td>Тактические UI-улучшения по 5 референсным гайдам (типографика, цвет, пространство)</td>
+      <td>Улучшаете визуальное качество страницы AdminLTE, не меняя функциональность</td>
+    </tr>
+    <tr>
+      <td><code>/graphify</code></td>
+      <td>Запускает полный graphify-пайплайн на указанной директории</td>
+      <td>Перестраиваете граф после больших изменений в коде</td>
+    </tr>
+    <tr>
+      <td><code>/debugging-techniques</code></td>
+      <td>Отладка Python/Django/Docker: breakpoint(), Celery rdb, docker exec</td>
+      <td>Странная ошибка, неожиданное поведение Celery, нужен трейс в контейнере</td>
+    </tr>
+    <tr>
+      <td><code>/optimizing-sql</code></td>
+      <td>EXPLAIN ANALYZE, N+1 детектор, CREATE INDEX CONCURRENTLY</td>
+      <td>Медленные страницы, тяжёлые запросы, добавляете индексы без даунтайма</td>
+    </tr>
+    <tr>
+      <td><code>/testing-strategies</code></td>
+      <td>Тест-пирамида Django: pytest unit/integration/E2E, factory_boy, моки внешних API</td>
+      <td>Пишете тесты для новой фичи, хотите покрыть биллинг-логику или API</td>
+    </tr>
+    <tr>
+      <td><code>/using-relational-databases</code></td>
+      <td>Django ORM паттерны, агрегации денег, safe migrations, connection pooling</td>
+      <td>Проектируете модели, пишете сложные запросы, планируете миграцию большой таблицы</td>
+    </tr>
+    <tr>
+      <td><code>/ux-designer</code></td>
+      <td>Полный UX-гайд 2025: чеклисты WCAG 2.2 AA, decision trees, anti-patterns, AI UI</td>
+      <td>Проектируете новый экран, хотите проверить UX решения по стандартам</td>
+    </tr>
+    <tr>
+      <td><code>/don-norman-principles-audit</code></td>
+      <td>Аудит по 7 принципам Нормана: Affordance, Signifiers, Feedback, Mapping и др.</td>
+      <td>Нужен структурированный аудит страницы с severity-рейтингом проблем</td>
+    </tr>
+    <tr>
+      <td><code>/cognitive-walkthrough</code></td>
+      <td>4-вопросный когнитивный обход: обучаемость интерфейса для новых пользователей</td>
+      <td>Проверяете новую фичу до пользовательского тестирования, оцениваете поток задачи</td>
+    </tr>
+    <tr>
+      <td><code>/ux-audit-rethink</code></td>
+      <td>IxDF-аудит: 7 UX-факторов + 5 характеристик ISO + 5 измерений, Health Score 0–100</td>
+      <td>Комплексный аудит раздела или всего продукта с приоритизированным роадмапом</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- building-forms -->
+<h2 id="skill-building-forms">/building-forms — формы и валидация</h2>
+
+<h3>Когда вызывать</h3>
+<ul>
+  <li>Новая форма регистрации или редактирования абонента</li>
+  <li>Wizard-шаг в AbonentWizard</li>
+  <li>Модальный редактор (UsersModal, ServiceModal, FinOpsModal)</li>
+  <li>Нужна валидация с понятными сообщениями об ошибках</li>
+  <li>Требования по accessibility WCAG 2.1 AA (нет — по умолчанию у AdminLTE)</li>
+</ul>
+
+<h3>Ключевые паттерны для проекта</h3>
+<div class="card-grid">
+  <div class="card">
+    <h4>Выбор компонента по типу данных</h4>
+    <ul>
+      <li>Короткий текст → <code>&lt;input type="text"&gt;</code></li>
+      <li>Выбор из &gt;15 опций → Select2 (уже есть в проекте)</li>
+      <li>Большой FK-список → Select2 AJAX (<code>/rest_api/v2/Model/?name__icontains=</code>)</li>
+      <li>Дата → Bootstrap datepicker или <code>&lt;input type="date"&gt;</code></li>
+      <li>Деньги → поле в рублях, умножать на 10¹⁰ перед сохранением</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Timing валидации</h4>
+    <p>On blur → показать ошибку. После первой ошибки → onChange. После исправления → показать успех немедленно.</p>
+    <p>Никогда не показывать ошибку пока поле не тронуто (pristine state).</p>
+  </div>
+</div>
+
+<pre><button class="copy-btn" onclick="copy(this)">copy</button><code><span class="cmd-comment"># Django template — стандартный паттерн с Bootstrap</span>
+&lt;div class="form-group {% if form.email.errors %}has-error{% endif %}"&gt;
+  &lt;label for="{{ form.email.id_for_label }}"&gt;Email&lt;/label&gt;
+  {{ form.email }}
+  {% if form.email.errors %}
+    &lt;div class="invalid-feedback" role="alert"&gt;{{ form.email.errors.0 }}&lt;/div&gt;
+  {% endif %}
+&lt;/div&gt;</code></pre>
+
+<div class="callout callout-warning">
+  <strong>Правило проекта:</strong> money-поля — всегда вводить в рублях в форме, <code>MoneyFormField.clean()</code>
+  умножает на 10¹⁰ перед сохранением. Не обходите это — формулы за вас уже написаны.
+</div>
+
+<!-- creating-dashboards -->
+<h2 id="skill-creating-dashboards">/creating-dashboards — дашборды и KPI</h2>
+
+<h3>Когда вызывать</h3>
+<ul>
+  <li>Добавляете новую карточку на <code>/admin/welcome/</code></li>
+  <li>Строите или переделываете <code>/admin/reports/dashboard/</code></li>
+  <li>Нужен ApexCharts-чарт с периодом (месяц/квартал/год)</li>
+  <li>Нужна real-time метрика (polling или SSE)</li>
+</ul>
+
+<h3>Стандартный AJAX-эндпоинт для KPI</h3>
+
+<pre><button class="copy-btn" onclick="copy(this)">copy</button><code><span class="cmd-comment"># billing/views/reports.py — шаблон KPI-эндпоинта</span>
+def dashboard_kpi_api(request):
+    period = request.GET.get('period', 'month')
+    <span class="cmd-comment"># current + previous период → delta в %</span>
+    revenue = FinanceOperations.objects.filter(...).aggregate(Sum('op_summa'))
+    <span class="cmd-comment"># ВСЕГДА делить на DB_MONEY_KOEF перед отдачей в JSON</span>
+    return JsonResponse({
+        'revenue': float(revenue / DB_MONEY_KOEF),
+        'revenue_pct': round(pct, 1),
+    })</code></pre>
+
+<pre><button class="copy-btn" onclick="copy(this)">copy</button><code><span class="cmd-comment">// ApexCharts — уже подключён в проекте, тема из AdminLTE</span>
+const chart = new ApexCharts(document.getElementById('rev-chart'), {
+  chart: { type: 'area', height: 200, toolbar: { show: false } },
+  series: [{ name: 'Выручка', data: chartData }],
+  xaxis: { type: 'datetime', labels: { format: 'dd.MM' } },
+  yaxis: { labels: { formatter: v => v.toLocaleString('ru-RU') + ' ₽' } },
+  theme: { mode: document.documentElement.dataset.theme || 'light' },
+  colors: ['#43b77a'],
+});</code></pre>
+
+<div class="callout callout-tip">
+  <strong>Parallel loading:</strong> загружайте все виджеты параллельно —
+  <code>Promise.all([fetchKPIs(), fetchCharts(), fetchTables()])</code>,
+  а не последовательно. На медленном соединении разница в 3×.
+</div>
+
+<!-- designing-apis -->
+<h2 id="skill-designing-apis">/designing-apis — REST API дизайн</h2>
+
+<h3>Когда вызывать</h3>
+<ul>
+  <li>Проектируете новый эндпоинт в <code>mobile_api/views/</code></li>
+  <li>Добавляете ресурс в <code>rest_api/v2/</code></li>
+  <li>Планируете breaking change (нужна новая версия?)</li>
+  <li>Нужна cursor-пагинация для большого датасета (&gt;100к строк)</li>
+</ul>
+
+<h3>Правило денег в API-ответах</h3>
+<div class="callout callout-warning">
+  <strong>Критично:</strong> никогда не возвращать сырые значения ×10¹⁰ из БД.
+  Фронтенд и мобильное приложение всегда получают рубли (float).
+</div>
+
+<pre><button class="copy-btn" onclick="copy(this)">copy</button><code><span class="cmd-comment"># Всегда в сериализаторе:</span>
+def get_balance(self, obj):
+    return float(obj.account.ostatok / DB_MONEY_KOEF)  <span class="cmd-comment"># ✓</span>
+
+<span class="cmd-comment"># НЕ так:</span>
+return obj.account.ostatok  <span class="cmd-comment"># ✗ — вернёт 12345678900000, фронт сломается</span></code></pre>
+
+<h3>Выбор пагинации</h3>
+<table>
+  <thead><tr><th>Таблица</th><th>Тип</th><th>Почему</th></tr></thead>
+  <tbody>
+    <tr><td>Abonents (4270)</td><td>Offset</td><td>Малый размер, редкие вставки</td></tr>
+    <tr><td>FinanceOperations (419K+)</td><td>Cursor</td><td>Большой размер, постоянные вставки сдвигают offset</td></tr>
+    <tr><td>AuditOperations</td><td>Cursor</td><td>Только append, большой объём</td></tr>
+    <tr><td>RADIUS sessions</td><td>Cursor</td><td>Realtime, offset ненадёжен</td></tr>
+  </tbody>
+</table>
+
+<h3>Стандартный формат ошибки</h3>
+<pre><button class="copy-btn" onclick="copy(this)">copy</button><code>{
+  "error": "validation_error",
+  "message": "Поле email обязательно",
+  "details": [
+    { "field": "email", "code": "required", "message": "Введите email адрес" }
+  ]
+}</code></pre>
+
+<!-- impeccable -->
+<h2 id="skill-impeccable">/impeccable — детальный UI-рефакторинг</h2>
+
+<h3>Когда вызывать</h3>
+<ul>
+  <li>Серьёзный редизайн страниц ЛК (<code>/lk/</code>)</li>
+  <li>Работа над публичным сайтом документации (docs.billing.smit34.ru)</li>
+  <li>Нужны конкретные команды: <code>/critique</code>, <code>/polish</code>, <code>/typeset</code>, <code>/animate</code></li>
+</ul>
+
+<h3>18 команд impeccable</h3>
+<div class="card-grid">
+  <div class="card">
+    <h4>Анализ и аудит</h4>
+    <ul>
+      <li><code>/critique</code> — детальный разбор текущего UI</li>
+      <li><code>/audit</code> — проверка по чеклисту</li>
+      <li><code>/distill</code> — выделить суть дизайна</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Визуальная доработка</h4>
+    <ul>
+      <li><code>/polish</code> — финальная шлифовка</li>
+      <li><code>/bolder</code> — усилить контраст и энергию</li>
+      <li><code>/quieter</code> — снизить визуальный шум</li>
+      <li><code>/overdrive</code> — максимальный вау-эффект</li>
+      <li><code>/colorize</code> — добавить цвет</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Типографика и форма</h4>
+    <ul>
+      <li><code>/typeset</code> — оптимизация текстового набора</li>
+      <li><code>/layout</code> — переработка сетки и spacing</li>
+      <li><code>/shape</code> — работа с формами и скруглениями</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Анимация и UX</h4>
+    <ul>
+      <li><code>/animate</code> — добавить motion design</li>
+      <li><code>/delight</code> — микровзаимодействия</li>
+      <li><code>/hooked-ux</code> — UX по модели Хука</li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout callout-warning">
+  impeccable требует файл <code>.impeccable.md</code> в корне проекта с описанием бренда и аудитории.
+  Для Django admin-интерфейса команды /bolder и /animate малоприменимы — используйте /critique, /polish, /layout.
+</div>
+
+<!-- ui-refactor -->
+<h2 id="skill-ui-refactor">/ui-refactor — тактический UI (AdminLTE)</h2>
+
+<h3>Когда вызывать</h3>
+<ul>
+  <li>Улучшаете конкретную страницу AdminLTE не меняя функциональность</li>
+  <li>Нужны рекомендации по spacing, цвету, типографике для Bootstrap 5</li>
+  <li>Анализ визуальной иерархии формы или таблицы</li>
+</ul>
+
+<h3>Передать URL страницы в аргументах</h3>
+<pre><button class="copy-btn" onclick="copy(this)">copy</button><code>/ui-refactor https://testbill.smit34.ru/admin/welcome/
+/ui-refactor https://testbill.smit34.ru/admin/Abonents/9001/
+/ui-refactor https://testbill.smit34.ru/lk/</code></pre>
+
+<p>Skill работает в 4 шага: начинает с grayscale → решает структурные проблемы → подбирает цвет →
+применяет тактики из 5 reference-файлов (hierarchy, layout-spacing, typography, color, depth-and-polish).</p>
+
+<div class="callout callout-tip">
+  <strong>Правило проекта:</strong> не трогайте chrome (navbar, sidebar) — начинайте с конкретной функциональности.
+  Sidebar AdminLTE зафиксирован стилями <code>theme-smit.css</code>.
+</div>
+
+<!-- graphify skill -->
+<h2 id="skill-graphify">/graphify — перестройка графа знаний</h2>
+
+<h3>Когда вызывать</h3>
+<ul>
+  <li>Добавили значимый блок нового кода (новый модуль, новые views)</li>
+  <li>Переименовали классы или переместили файлы</li>
+  <li>Хотите включить новые документы или шаблоны в семантический граф</li>
+</ul>
+
+<h3>Два режима обновления</h3>
+<table>
+  <thead><tr><th>Команда</th><th>Что делает</th><th>Стоимость</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><code>graphify update .</code></td>
+      <td>Только AST-граф (импорты, вызовы) — без LLM</td>
+      <td>Бесплатно, ~30 секунд</td>
+    </tr>
+    <tr>
+      <td><code>/graphify billing/</code></td>
+      <td>Полный пайплайн: AST + семантика + отчёт + HTML</td>
+      <td>~$0.50–2.00 за LLM-токены</td>
+    </tr>
+    <tr>
+      <td><code>python graphify-out/run_pipeline.py</code></td>
+      <td>Ручной запуск без Claude (если .json-файлы уже актуальны)</td>
+      <td>Бесплатно</td>
+    </tr>
+    <tr>
+      <td><code>python graphify-out/run_labels.py</code></td>
+      <td>Переименовать сообщества и регенерировать отчёт</td>
+      <td>Бесплатно</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- debugging-techniques -->
+<h2 id="skill-debugging-techniques">/debugging-techniques — отладка Python и Docker</h2>
+
+<h3>Когда вызывать</h3>
+<ul>
+  <li>Непонятное поведение Django view, Celery task или billing_worker</li>
+  <li>Нужно войти в запущенный Docker-контейнер и исследовать состояние</li>
+  <li>Отладка в production без перезапуска сервиса</li>
+  <li>Тест падает — нужно остановиться на строке падения</li>
+</ul>
+
+<h3>Быстрая шпаргалка для проекта</h3>
+<div class="card-grid">
+  <div class="card">
+    <h4>Локальная отладка (dev server :8899)</h4>
+    <pre><button class="copy-btn" onclick="copy(this)">copy</button><code>import pdb; pdb.set_trace()   # в любом месте кода
+# или Python 3.7+
+breakpoint()</code></pre>
+  </div>
+  <div class="card">
+    <h4>Celery task (remote debugger)</h4>
+    <pre><button class="copy-btn" onclick="copy(this)">copy</button><code>from celery.contrib import rdb
+rdb.set_trace()
+# подключиться: telnet localhost 6899</code></pre>
+  </div>
+  <div class="card">
+    <h4>Docker web-контейнер</h4>
+    <pre><button class="copy-btn" onclick="copy(this)">copy</button><code>docker exec -it $(docker compose ps -q web) bash
+python manage.py shell
+# или tail -f /var/log/django/error.log</code></pre>
+  </div>
+  <div class="card">
+    <h4>Тест с остановкой на ошибке</h4>
+    <pre><button class="copy-btn" onclick="copy(this)">copy</button><code>pytest --pdb billing/tests/
+pytest -x  # стоп после первого падения</code></pre>
+  </div>
+</div>
+
+<div class="callout callout-tip">
+  <strong>Production rule:</strong> никогда не логировать сырые деньги ×10¹⁰.
+  В логах всегда <code>float(value / DB_MONEY_KOEF)</code> — иначе числа вводят в заблуждение.
+</div>
+
+<!-- optimizing-sql -->
+<h2 id="skill-optimizing-sql">/optimizing-sql — оптимизация запросов PostgreSQL</h2>
+
+<h3>Когда вызывать</h3>
+<ul>
+  <li>Страница грузится медленно — подозрение на медленный запрос</li>
+  <li>Нужно добавить индекс на production без downtime</li>
+  <li>Django ORM генерирует N+1 запросов</li>
+  <li>Отчёт по <code>FinanceOperations</code> (419K строк) тормозит</li>
+</ul>
+
+<h3>5-шаговый процесс</h3>
+<table>
+  <thead><tr><th>#</th><th>Шаг</th><th>Инструмент</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>Анализ плана</td><td><code>EXPLAIN ANALYZE SELECT ...</code></td></tr>
+    <tr><td>2</td><td>Найти проблему</td><td>Seq Scan? N+1? Correlated subquery?</td></tr>
+    <tr><td>3</td><td>Стратегия индексов</td><td>Equality → Range → ORDER BY</td></tr>
+    <tr><td>4</td><td>Составной индекс</td><td>Равенство первым, диапазон последним</td></tr>
+    <tr><td>5</td><td>Переписать запрос</td><td><code>select_related()</code>, CTE, batch</td></tr>
+  </tbody>
+</table>
+
+<pre><button class="copy-btn" onclick="copy(this)">copy</button><code><span class="cmd-comment"># Добавить индекс в production БЕЗ блокировки таблицы</span>
+<span class="cmd-comment"># migrations/0052_add_finops_index.py</span>
+class Migration(migrations.Migration):
+    atomic = False  <span class="cmd-comment"># обязательно для CONCURRENTLY</span>
+    operations = [
+        migrations.RunSQL(
+            "CREATE INDEX CONCURRENTLY idx_finops_date "
+            "ON finance_operations (op_date DESC)",
+            "DROP INDEX IF EXISTS idx_finops_date"
+        ),
+    ]</code></pre>
+
+<pre><button class="copy-btn" onclick="copy(this)">copy</button><code><span class="cmd-comment"># Диагностика N+1 в Django</span>
+from django.test.utils import CaptureQueriesContext
+from django.db import connection
+with CaptureQueriesContext(connection) as ctx:
+    list(Abonents.objects.filter(enabled=True).select_related('tarif'))
+print(f"{len(ctx.captured_queries)} queries")  <span class="cmd-comment"># должно быть 2, не 4270</span></code></pre>
+
+<!-- testing-strategies -->
+<h2 id="skill-testing-strategies">/testing-strategies — тесты для Django/Python</h2>
+
+<h3>Когда вызывать</h3>
+<ul>
+  <li>Пишете тест для новой фичи — непонятно unit или integration</li>
+  <li>Нужно покрыть billing_worker тестами перед monthly billing</li>
+  <li>Настройка pytest + coverage для нового модуля</li>
+  <li>Тест для REST API (mobile_api или rest_api/v2)</li>
+</ul>
+
+<h3>Пирамида тестов для проекта</h3>
+<table>
+  <thead><tr><th>Тип</th><th>%</th><th>Что тестировать</th><th>Инструмент</th></tr></thead>
+  <tbody>
+    <tr><td>Unit</td><td>60-70%</td><td>Расчёт денег, фильтры, валидация форм</td><td>pytest</td></tr>
+    <tr><td>Integration</td><td>20-30%</td><td>Django views + DB, Celery tasks, API endpoints</td><td>Django TestCase</td></tr>
+    <tr><td>E2E</td><td>10%</td><td>Платёжный поток, LK авторизация</td><td>requests / Playwright</td></tr>
+  </tbody>
+</table>
+
+<pre><button class="copy-btn" onclick="copy(this)">copy</button><code><span class="cmd-comment"># billing/tests/test_money.py — unit test денег</span>
+from decimal import Decimal
+DB_MONEY_KOEF = Decimal('10000000000')
+
+def test_money_round_trip():
+    rubles = Decimal('500.00')
+    assert rubles * DB_MONEY_KOEF / DB_MONEY_KOEF == rubles
+
+<span class="cmd-comment"># billing/tests/test_views.py — integration test</span>
+class AbonentViewTest(TestCase):
+    def setUp(self):
+        self.client.login(username='admin', password='admin')
+
+    def test_search_returns_200(self):
+        r = self.client.get('/admin/Abonents/search/', {'q': 'Иванов'})
+        self.assertEqual(r.status_code, 200)</code></pre>
+
+<div class="callout callout-warning">
+  <strong>Правило проекта:</strong> не мокать PostgreSQL в integration-тестах —
+  использовать реальную тестовую БД (<code>pytest-django</code> создаёт её автоматически).
+  Мокать только внешние API: YooKassa, FreeScout, Claude.
+</div>
+
+<!-- using-relational-databases -->
+<h2 id="skill-using-relational-databases">/using-relational-databases — Django ORM + PostgreSQL</h2>
+
+<h3>Когда вызывать</h3>
+<ul>
+  <li>Проектируете новую модель или изменяете существующую</li>
+  <li>Сложный ORM-запрос с агрегациями или аннотациями</li>
+  <li>Планируете миграцию для большой таблицы (finance_operations, abonents)</li>
+  <li>Выбор между ORM и raw SQL</li>
+</ul>
+
+<h3>Ключевые паттерны проекта</h3>
+<div class="card-grid">
+  <div class="card">
+    <h4>Агрегация денег</h4>
+    <pre><button class="copy-btn" onclick="copy(this)">copy</button><code>from django.db.models import Sum, DecimalField
+total = FinanceOperations.objects.filter(
+    abonent_id=pk, op_date__gte=start
+).aggregate(
+    t=Sum('op_summa', output_field=DecimalField(
+        max_digits=26, decimal_places=10))
+)['t'] or Decimal(0)
+rubles = total / DB_MONEY_KOEF</code></pre>
+  </div>
+  <div class="card">
+    <h4>Избегать N+1</h4>
+    <pre><button class="copy-btn" onclick="copy(this)">copy</button><code><span class="cmd-comment"># FK в цикле — всегда select_related</span>
+Abonents.objects.filter(enabled=True)\
+    .select_related('tarif', 'account')
+
+<span class="cmd-comment"># Reverse FK / M2M — prefetch_related</span>
+Abonents.objects.prefetch_related(
+    'users_set', 'abonentsblock_set'
+)</code></pre>
+  </div>
+</div>
+
+<div class="callout callout-warning">
+  <strong>Правило managed=False:</strong> 22 Carbon 4 модели имеют <code>managed=False</code> —
+  их схема не управляется Django-миграциями. Таблицы созданы вручную.
+  Добавлять поля через raw SQL, не через <code>AddField</code>.
+</div>
+
+<!-- ux-designer -->
+<h2 id="skill-ux-designer">/ux-designer — современный UX (2025)</h2>
+
+<h3>Когда вызывать</h3>
+<ul>
+  <li>Проектируете новый экран или компонент (форма, модал, навигация)</li>
+  <li>Проверяете UX-решение на соответствие стандартам WCAG 2.2 AA</li>
+  <li>Нужен выбор: модал vs боковая панель vs полная страница</li>
+  <li>Проектируете AI-интерфейс (чат, копилот, генерация контента)</li>
+  <li>Хотите проверить дизайн на dark patterns и этичность</li>
+</ul>
+
+<h3>Ключевые паттерны для проекта</h3>
+<div class="card-grid">
+  <div class="card">
+    <h4>Decision tree: модал vs боковая панель</h4>
+    <ul>
+      <li>1–3 поля, быстрое подтверждение → <strong>Modal</strong></li>
+      <li>Редактирование деталей, контекст нужен → <strong>Side panel</strong></li>
+      <li>Многошаговый процесс (wizard) → <strong>Modal с stepper</strong></li>
+      <li>Сложный объект (новый абонент) → <strong>Full page</strong></li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Ключевые числа</h4>
+    <ul>
+      <li>Touch target: <strong>44×44px</strong> минимум</li>
+      <li>Контрастность текста: <strong>4.5:1</strong> (WCAG AA)</li>
+      <li>Анимации: <strong>300–500ms</strong></li>
+      <li>Отклик на действие: <strong>&lt;100ms</strong></li>
+      <li>Автоудаление тостов: <strong>4–8 секунд</strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout callout-tip">
+  <strong>Проект-специфично:</strong> AdminLTE 3.2 — используйте существующие классы card/badge/btn.
+  Каждый новый компонент проверяйте в тёмной теме (<code>theme-smit.css</code>).
+  Select2 AJAX для FK-списков &gt;50 элементов.
+</div>
+
+<!-- don-norman -->
+<h2 id="skill-don-norman">/don-norman-principles-audit — аудит по Норману</h2>
+
+<h3>Когда вызывать</h3>
+<ul>
+  <li>Нужен структурированный аудит страницы с приоритизацией проблем</li>
+  <li>Пользователи жалуются на непонятность, но непонятно что именно</li>
+  <li>Хотите аргументировать UX-решение через теорию</li>
+  <li>Готовите отчёт об улучшениях для стейкхолдеров</li>
+</ul>
+
+<h3>7 принципов Нормана</h3>
+<div class="card-grid">
+  <div class="card">
+    <h4>Принципы и red flags</h4>
+    <ul>
+      <li><strong>Discoverability</strong> — все функции видны без документации</li>
+      <li><strong>Affordance</strong> — кнопки выглядят как кнопки</li>
+      <li><strong>Signifiers</strong> — подсказки указывают на нужные действия</li>
+      <li><strong>Feedback</strong> — каждое действие даёт видимый ответ</li>
+      <li><strong>Mapping</strong> — контролы расположены рядом с тем, что они меняют</li>
+      <li><strong>Constraints</strong> — невалидные действия заблокированы заранее</li>
+      <li><strong>Conceptual Models</strong> — метафоры соответствуют ожиданиям</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Severity-шкала</h4>
+    <ul>
+      <li><strong>4 — Catastrophic:</strong> пользователь не может выполнить задачу</li>
+      <li><strong>3 — High:</strong> выполняет с трудом / обходным путём</li>
+      <li><strong>2 — Medium:</strong> путается, лишние клики, но справляется</li>
+      <li><strong>1 — Low:</strong> незначительное раздражение</li>
+    </ul>
+  </div>
+</div>
+
+<pre><button class="copy-btn" onclick="copy(this)">copy</button><code><span class="cmd-comment"># Пример аудит-запроса</span>
+Используй /don-norman-principles-audit
+Проведи аудит страницы /admin/Abonents/search/
+Фокус: новый оператор, первый день работы
+Задача: найти абонента и открыть его карточку</code></pre>
+
+<!-- cognitive-walkthrough -->
+<h2 id="skill-cognitive-walkthrough">/cognitive-walkthrough — обучаемость интерфейса</h2>
+
+<h3>Когда вызывать</h3>
+<ul>
+  <li>Новая фича готова, хотите проверить до пользовательского тестирования</li>
+  <li>Нужно оценить, сможет ли новый оператор разобраться без обучения</li>
+  <li>Сравниваете два варианта дизайна по обучаемости</li>
+  <li>Нет доступа к реальным пользователям</li>
+</ul>
+
+<h3>4 вопроса когнитивного обхода</h3>
+<div class="card-grid">
+  <div class="card">
+    <h4>На каждом шаге задачи</h4>
+    <ul>
+      <li><strong>Q1:</strong> Поймёт ли пользователь, что это нужный шаг?</li>
+      <li><strong>Q2:</strong> Заметит ли пользователь нужный элемент управления?</li>
+      <li><strong>Q3:</strong> Свяжет ли пользователь элемент с нужным действием?</li>
+      <li><strong>Q4:</strong> Увидит ли пользователь, что произошёл прогресс?</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Типичные сбои в SmitBilling</h4>
+    <ul>
+      <li><strong>Q2:</strong> Массовые действия — видны только после выбора чекбоксов</li>
+      <li><strong>Q3:</strong> «Остаток» и «Баланс» для одного поля в разных местах</li>
+      <li><strong>Q4:</strong> AJAX-сохранение без спиннера и сообщения об успехе</li>
+      <li><strong>Q1:</strong> «Удалить» для soft-delete (ожидается архивирование)</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ux-audit-rethink -->
+<h2 id="skill-ux-audit-rethink">/ux-audit-rethink — комплексный IxDF-аудит</h2>
+
+<h3>Когда вызывать</h3>
+<ul>
+  <li>Нужен полный аудит раздела или продукта с числовой оценкой</li>
+  <li>Хотите получить приоритизированный роадмап UX-улучшений</li>
+  <li>Готовите отчёт по международным стандартам (ISO 9241-11)</li>
+  <li>Перед крупным редизайном — зафиксировать baseline</li>
+</ul>
+
+<h3>Три слоя оценки</h3>
+<div class="card-grid">
+  <div class="card">
+    <h4>7 UX-факторов (по Морвиллу, рейтинг 1–5)</h4>
+    <ul>
+      <li><strong>Useful</strong> — решает реальные задачи пользователей</li>
+      <li><strong>Usable</strong> — легко использовать эффективно</li>
+      <li><strong>Findable</strong> — контент и функции можно найти</li>
+      <li><strong>Credible</strong> — интерфейс вызывает доверие</li>
+      <li><strong>Desirable</strong> — пользователи хотят его использовать</li>
+      <li><strong>Accessible</strong> — работает для всех пользователей</li>
+      <li><strong>Valuable</strong> — ценность ясна и очевидна</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Health Score (0–100)</h4>
+    <ul>
+      <li><strong>85–100:</strong> Отлично — только полировка</li>
+      <li><strong>70–84:</strong> Хорошо — точечные улучшения</li>
+      <li><strong>55–69:</strong> Удовлетворительно — серьёзная работа</li>
+      <li><strong>40–54:</strong> Плохо — редизайн ключевых потоков</li>
+      <li><strong>&lt;40:</strong> Критично — фундаментальные проблемы</li>
+    </ul>
+    <p style="margin-top:8px;font-size:.85rem;">Формула: 40% UX-факторы + 35% юзабилити ISO + 25% 5 измерений взаимодействия</p>
+  </div>
+</div>
+
+<pre><button class="copy-btn" onclick="copy(this)">copy</button><code><span class="cmd-comment"># Пример запроса комплексного аудита</span>
+Используй /ux-audit-rethink
+Проведи аудит раздела управления абонентами
+Основные пользователи: операторы биллинга (опытные, ежедневное использование)
+Топ-5 задач: поиск абонента, просмотр баланса, добавление услуги,
+  создание финансовой операции, блокировка за долг</code></pre>
+
+<br><br>
+
+</main>
+</div>
+
+<a href="#top" class="scroll-top" id="scrollTop">↑</a>
+
+<script>
+// Copy button
+function copy(btn) {
+  const code = btn.parentElement.querySelector('code').innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = 'copied!';
+    setTimeout(() => btn.textContent = 'copy', 1500);
+  });
+}
+
+// Active nav link
+const sections = document.querySelectorAll('h2[id], h3[id]');
+const navLinks = document.querySelectorAll('nav a');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(a => a.classList.remove('active'));
+      const active = document.querySelector(`nav a[href="#${e.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+sections.forEach(s => obs.observe(s));
+
+// Scroll to top
+const scrollBtn = document.getElementById('scrollTop');
+window.addEventListener('scroll', () => {
+  scrollBtn.classList.toggle('visible', window.scrollY > 400);
+});
+</script>
+</body>
+</html>

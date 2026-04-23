@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Для разработчиков — СмИТ Биллинг v1.6.0</title>
+  <meta name="description" content="Портал разработчика СмИТ Биллинг: граф архитектуры 2524 модулей, wiki сообществ, god nodes, инструкции обновления графа.">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../css/style.css?v=222">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.26.0/dist/tabler-icons.min.css">
+  <link rel="stylesheet" href="../../css/search.css?v=222">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <button class="menu-toggle" aria-label="Меню"><i class="bi bi-list"></i></button>
+    <div class="logo">
+      <div class="logo-icon">С</div>
+      <div class="logo-text"><span class="logo-main">СмИТ Биллинг 1.6</span><span>Документация</span></div>
+    </div>
+  </div>
+  <div class="header-search">
+    <div class="docs-search-wrap">
+      <input type="search" id="docsSearch" class="docs-search-input" placeholder="Поиск по документации..." autocomplete="off">
+      <span class="docs-search-icon"><i class="bi bi-search"></i></span>
+      <div class="docs-search-results" id="docsSearchResults"></div>
+    </div>
+  </div>
+  <div class="header-right">
+    <button class="mobile-search-btn" aria-label="Поиск" title="Поиск по документации">
+      <i class="bi bi-search"></i>
+    </button>
+    <button class="theme-toggle" aria-label="Переключить тему" title="Светлая / тёмная тема">
+      <span class="icon-sun"><i class="bi bi-sun"></i></span>
+      <span class="icon-moon"><i class="bi bi-moon-stars"></i></span>
+    </button>
+  </div>
+</header>
+
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+<div class="search-overlay" id="searchOverlay" role="dialog" aria-label="Поиск по документации">
+  <div class="search-overlay-inner">
+    <i class="bi bi-search search-prefix-icon"></i>
+    <input type="search" id="docsSearchMobile" placeholder="Поиск по документации..." autocomplete="off">
+    <button class="search-overlay-close" aria-label="Закрыть" id="searchOverlayClose"><i class="bi bi-x-lg"></i></button>
+    <div class="docs-search-results search-overlay-results" id="docsSearchResultsMobile"></div>
+  </div>
+</div>
+
+<aside class="sidebar">
+  <nav>
+    <div class="nav-section">Разделы</div>
+    <ul>
+      <li><a href="../../index.html"><i class="ti ti-home"></i> Главная</a></li>
+      <li class="has-children">
+        <a href="../installation.html"><i class="ti ti-box"></i> Установка и интеграция <span class="arrow"><i class="bi bi-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="../installation.html#requirements">1. Системные требования</a></li>
+          <li><a href="../installation.html#docker-install">2. Установка Docker Compose</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="../billing.html"><i class="ti ti-settings"></i> Настройки биллинга <span class="arrow"><i class="bi bi-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="../billing.html#general">1. Общие настройки</a></li>
+          <li><a href="../billing.html#subscribers">2. Работа с абонентами</a></li>
+          <li><a href="../billing.html#tariffs">3. Тарификация</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="../server.html"><i class="ti ti-server"></i> Управление сервером <span class="arrow"><i class="bi bi-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="../server.html#server-setup">1. Настройка сервера</a></li>
+          <li><a href="../server.html#maintenance">2. Обслуживание</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="../equipment.html"><i class="ti ti-broadcast"></i> Интеграция с оборудованием <span class="arrow"><i class="bi bi-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="../equipment.html#internet">1. Интернет (NAS/BRAS)</a></li>
+          <li><a href="../equipment.html#voip">2. Телефония (VoIP)</a></li>
+          <li><a href="../equipment.html#iptv">3. IPTV</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="../sorm.html"><i class="ti ti-shield-lock"></i> Интеграция с СОРМ3 <span class="arrow"><i class="bi bi-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="../sorm.html#principle">1. Принцип работы</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="../api.html"><i class="ti ti-link"></i> API <span class="arrow"><i class="bi bi-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="../api.html#overview">1. Обзор API</a></li>
+          <li><a href="../api.html#rest-v2">3. REST API v2</a></li>
+          <li><a href="../api.html#mobile-api">9. Mobile API</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="../troubleshooting.html"><i class="ti ti-tool"></i> Решение проблем <span class="arrow"><i class="bi bi-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="../troubleshooting.html#general">1. Общие вопросы</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="../licensing.html"><i class="ti ti-file-description"></i> Лицензирование <span class="arrow"><i class="bi bi-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="../licensing.html#delivery">6. Порядок поставки</a></li>
+        </ul>
+      </li>
+      <li><a href="../contacts.html"><i class="ti ti-phone"></i> Контакты</a></li>
+    </ul>
+    <div class="nav-section">Разработчикам</div>
+    <ul>
+      <li class="has-children">
+        <a href="../../graphify/graph.html"><i class="ti ti-topology-star-3"></i> Архитектура кода <span class="arrow"><i class="bi bi-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="../../graphify/graph.html">Граф сообществ</a></li>
+          <li><a href="../../graphify/wiki/index.html">Wiki модулей</a></li>
+          <li><a href="index.html">Портал разработчика</a></li>
+          <li><a href="../../graphify/help.html">graphify CLI</a></li>
+        </ul>
+      </li>
+    </ul>
+    <button class="sidebar-theme-toggle" aria-label="Тема"><span class="icon-sun"><i class="ti ti-sun"></i></span><span class="icon-moon"><i class="ti ti-moon"></i></span><span class="sidebar-theme-label">Сменить тему</span></button>
+  </nav>
+</aside>
+
+<main class="content">
+  <div class="breadcrumb">
+    <a href="../../index.html">Документация</a> <span class="sep">/</span> Для разработчиков
+  </div>
+
+  <h1><i class="ti ti-topology-star-3"></i> Для разработчиков</h1>
+  <p>Инструменты анализа архитектуры кода СмИТ Биллинг: интерактивный граф зависимостей, wiki сообществ и справочник по graphify CLI.</p>
+
+  <div class="cards">
+    <a href="../../graphify/graph.html" class="card">
+      <div class="icon"><i class="ti ti-chart-bubble"></i></div>
+      <h3>Граф архитектуры</h3>
+      <p>Интерактивный граф 2524 модулей, разбитых на 25 сообществ. D3.js force simulation.</p>
+    </a>
+    <a href="../../graphify/wiki/index.html" class="card">
+      <div class="icon"><i class="ti ti-books"></i></div>
+      <h3>Wiki сообществ</h3>
+      <p>47 страниц с таблицами нод, типами, файлами и связями. Поиск по всем модулям.</p>
+    </a>
+    <a href="../../graphify/help.html" class="card">
+      <div class="icon"><i class="ti ti-terminal"></i></div>
+      <h3>graphify CLI</h3>
+      <p>Как обновлять граф, добавлять семантику, читать GRAPH_REPORT.md.</p>
+    </a>
+  </div>
+
+  <h2 id="god-nodes">God nodes — наиболее связанные модули</h2>
+  <p>Модули с наибольшим количеством входящих и исходящих рёбер в графе. Изменения в этих файлах затрагивают весь проект.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Модуль</th>
+        <th>Файл</th>
+        <th>Связей</th>
+        <th>Роль</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><code>BaseView</code></td><td><code>billing/views/form.py</code></td><td>197</td><td>Базовый view-класс всего admin</td></tr>
+      <tr><td><code>PaginatorFormMixin</code></td><td><code>billing/views/form.py</code></td><td>166</td><td>Пагинация во всех списках</td></tr>
+      <tr><td><code>SearchFormMixin</code></td><td><code>billing/views/form.py</code></td><td>160</td><td>Поиск</td></tr>
+      <tr><td><code>MsgStack</code></td><td><code>billing/models/stubs.py</code></td><td>159</td><td>Система уведомлений</td></tr>
+      <tr><td><code>Homes</code></td><td><code>billing/models/homes.py</code></td><td>149</td><td>Модель адресов (дерево)</td></tr>
+      <tr><td><code>FreeScoutClient</code></td><td><code>billing/services/freescout.py</code></td><td>138</td><td>Клиент поддержки</td></tr>
+      <tr><td><code>FinanceOperations</code></td><td><code>billing/models/finance_operations.py</code></td><td>130</td><td>Финансовые операции</td></tr>
+      <tr><td><code>AdminAccounts</code></td><td><code>billing/models/admin_accounts.py</code></td><td>127</td><td>Лицевые счета</td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="update-graph">Как обновить граф</h2>
+  <p>Граф хранится в <code>graphify-out/</code> внутри проекта <code>carbon_modern/</code>. Обновляется отдельно от основного кода.</p>
+
+  <pre><code># Только метки/цвета (без переиндексации, быстро):
+cd carbon_modern
+python graphify-out/run_labels.py
+
+# Полный ребилд после изменений кода:
+python graphify-out/run_pipeline.py
+python graphify-out/run_labels.py
+
+# Деплой в документацию:
+cd docs
+bash sync-docs.sh "dev: обновление графа архитектуры"</code></pre>
+
+  <h2 id="communities">Сообщества графа</h2>
+  <p>Граф разбит на 25 именованных сообществ алгоритмом Louvain. Каждое сообщество имеет собственную страницу в <a href="../../graphify/wiki/index.html">Wiki</a>.</p>
+
+  <table>
+    <thead>
+      <tr><th>ID</th><th>Название</th><th>Модулей</th><th>Ключевые файлы</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>0</td><td>Карточка абонента</td><td>325</td><td>billing/views/abonents.py</td></tr>
+      <tr><td>1</td><td>Личный кабинет</td><td>321</td><td>lk/views/</td></tr>
+      <tr><td>2</td><td>Финансы и деньги</td><td>274</td><td>billing/models/finance_operations.py</td></tr>
+      <tr><td>3</td><td>Поиск абонентов</td><td>238</td><td>billing/views/abonents.py (AbonentsSearchView)</td></tr>
+      <tr><td>4</td><td>Мобильный API</td><td>163</td><td>mobile_api/views/</td></tr>
+      <tr><td>5</td><td>Авторизация</td><td>152</td><td>billing/models/abonents.py, billing/views/auth.py</td></tr>
+      <tr><td>7</td><td>Блокировки</td><td>125</td><td>billing/services/firewall.py, billing/models/stubs.py</td></tr>
+      <tr><td>8</td><td>Резервные копии</td><td>110</td><td>billing/tasks/backup.py</td></tr>
+      <tr><td>11</td><td>Задачи биллинга</td><td>94</td><td>billing/tasks/billing_worker.py</td></tr>
+      <tr><td>14</td><td>Отчёты СОРМ</td><td>57</td><td>billing/tasks/sorm_export.py</td></tr>
+      <tr><td>15</td><td>Платёжные системы</td><td>48</td><td>lk/services/payment.py</td></tr>
+    </tbody>
+  </table>
+
+</main>
+
+<footer class="footer">
+  <span class="footer-full">&copy; 2026 ООО «СмИТ» — СмИТ Биллинг v1.6.0 | Документация для разработчиков</span>
+  <span class="footer-short">&copy; 2026 СмИТ Биллинг v1.6.0</span>
+</footer>
+
+<script src="../../js/main.js?v=220"></script>
+<script src="../../js/version.js"></script>
+<script src="../../js/search.js?v=220"></script>
+</body>
+</html>

@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<title>graphify — Карта архитектуры СмИТ Биллинг</title>
+<script src="https://unpkg.com/d3@7/dist/d3.min.js"></script>
+<style>
+:root {
+  --bg:#0f172a; --bg2:#1e293b; --bg3:#172033; --border:#334155;
+  --text:#e2e8f0; --text2:#94a3b8; --text3:#64748b;
+  --primary:#26a69a; --primary-l:#4db6ac;
+  --hover:#263348; --active-bg:#1e3a5f; --link-bg:#0f2d3a;
+  --edge:#334155; --font:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
+}
+[data-theme=light] {
+  --bg:#f4f6f9; --bg2:#fff; --bg3:#f0f4f8; --border:#e2e8f0;
+  --text:#1f2d3d; --text2:#475569; --text3:#94a3b8;
+  --primary:#00897b; --primary-l:#26a69a;
+  --hover:#e8f5e9; --active-bg:#e0f2f1; --link-bg:#e0f7f4;
+  --edge:#94a3b8;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font);
+  display:flex;height:100vh;overflow:hidden;transition:background .25s,color .25s}
+#graph-wrap{flex:1;height:100vh;position:relative;overflow:hidden}
+svg{width:100%;height:100%}
+/* edges */
+.link{stroke:var(--edge);stroke-opacity:.5;fill:none;transition:stroke .25s}
+.link.highlighted{stroke:var(--primary);stroke-opacity:.9}
+/* nodes */
+.node-g{cursor:pointer}
+.node-g circle{transition:filter .2s,r .2s}
+.node-g:hover circle{filter:brightness(1.2)}
+.node-g.selected circle{filter:brightness(1.35);stroke:#fff;stroke-width:3px}
+.node-label{pointer-events:none;text-anchor:middle;dominant-baseline:central}
+.node-name{font-size:11px;fill:var(--text);font-weight:600;pointer-events:none;
+  paint-order:stroke fill;stroke:var(--bg);stroke-width:3px;stroke-linejoin:round}
+[data-theme=light] .node-name{fill:var(--text)}
+.node-icon-g{pointer-events:none}
+.node-icon-g path{transition:stroke .25s}
+[data-theme=light] .node-icon-g path{stroke:rgba(255,255,255,0.85)}
+/* tooltip */
+#tooltip{position:fixed;display:none;background:var(--bg2);border:1px solid var(--border);
+  border-radius:8px;padding:10px 14px;font-size:12px;color:var(--text);
+  pointer-events:none;z-index:100;max-width:220px;box-shadow:0 4px 20px #0006}
+#tooltip b{color:var(--primary-l)}
+/* sidebar */
+#sidebar{width:310px;height:100vh;background:var(--bg2);border-left:1px solid var(--border);
+  display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;transition:background .25s}
+#sidebar-head{padding:14px 16px 10px;border-bottom:1px solid var(--border);
+  background:linear-gradient(135deg,var(--bg2),var(--bg3))}
+.head-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px}
+.logo{display:flex;align-items:center;gap:8px}
+.logo-icon{width:26px;height:26px;background:linear-gradient(135deg,#43a047,#26a69a);
+  border-radius:6px;display:flex;align-items:center;justify-content:center;
+  font-size:13px;color:#fff;font-weight:bold}
+.logo h3{margin:0;font-size:13px;font-weight:600;color:var(--primary-l)}
+#theme-btn{background:none;border:1px solid var(--border);border-radius:6px;
+  padding:3px 8px;cursor:pointer;font-size:14px;color:var(--text2);transition:.15s}
+#theme-btn:hover{background:var(--hover)}
+.stats{color:var(--text3);font-size:11px}.stats b{color:var(--text2)}
+#hint{padding:8px 16px;font-size:11px;color:var(--text3);
+  border-bottom:1px solid var(--border);line-height:1.7;background:var(--bg3)}
+.hint-row{display:flex;gap:5px}.hint-key{color:var(--primary-l);font-weight:600;white-space:nowrap}
+#legend{flex:1;overflow-y:auto;padding:4px 0}
+#legend::-webkit-scrollbar{width:4px}
+#legend::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+#legend-header{padding:7px 16px 3px;font-size:10px;font-weight:600;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--text3);display:flex;justify-content:space-between}
+.leg-row{display:flex;align-items:center;gap:7px;padding:5px 16px 5px 13px;cursor:pointer;
+  border-left:3px solid transparent;transition:.12s}
+.leg-row:hover{background:var(--hover)}
+.leg-row.active{background:var(--active-bg);border-left-color:var(--primary)}
+.dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.leg-icon{flex-shrink:0;display:flex;align-items:center;line-height:1}
+.leg-name{flex:1;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text2)}
+.leg-row.active .leg-name{color:var(--text)}
+.leg-cnt{font-size:11px;color:var(--text3);flex-shrink:0;min-width:22px;text-align:right}
+.leg-link{flex-shrink:0;color:var(--primary-l);text-decoration:none;font-size:12px;
+  padding:2px 6px;border-radius:4px;background:var(--link-bg);border:1px solid #26a69a44}
+.leg-link:hover{opacity:.8}
+#selected-detail{padding:13px 16px;border-top:1px solid var(--border);
+  font-size:12px;display:none;background:var(--bg3)}
+.sel-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.sel-icon-big{font-size:26px;line-height:1}
+.sel-name{font-weight:600;font-size:14px;color:var(--text)}
+.sel-badge{font-size:10px;background:#26a69a22;color:var(--primary-l);
+  border:1px solid #26a69a44;border-radius:10px;padding:1px 7px;margin-left:auto}
+.conn-item{display:flex;gap:6px;align-items:baseline;padding:2px 0;
+  border-bottom:1px solid var(--border)}
+.conn-name{color:var(--primary-l);flex:1}
+.conn-cnt{color:var(--text3);font-size:10px;white-space:nowrap}
+#sel-info{margin-bottom:10px;max-height:160px;overflow-y:auto}
+.open-btn{display:inline-flex;align-items:center;gap:5px;padding:7px 16px;
+  background:linear-gradient(135deg,#43a047,#26a69a);border-radius:6px;
+  color:#fff;text-decoration:none;font-size:12px;font-weight:500;transition:opacity .15s}
+.open-btn:hover{opacity:.85}
+
+/* Docs top nav bar */
+#docs-topnav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  height: 40px; background: var(--bg2); border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 12px; padding: 0 16px;
+  font-size: 13px;
+}
+#docs-topnav .dn-logo {
+  display: flex; align-items: center; gap: 7px; color: var(--text); font-weight: 600;
+  text-decoration: none; flex-shrink: 0;
+}
+#docs-topnav .dn-logo-icon {
+  width: 22px; height: 22px; background: linear-gradient(135deg,#43a047,#26a69a);
+  border-radius: 5px; display: flex; align-items: center; justify-content: center;
+  font-size: 12px; color: #fff; font-weight: bold; flex-shrink: 0;
+}
+#docs-topnav .dn-sep { color: var(--text3); font-size: 16px; }
+#docs-topnav .dn-links { display: flex; gap: 6px; }
+#docs-topnav .dn-link {
+  color: var(--text2); padding: 3px 9px; border: 1px solid var(--border);
+  border-radius: 5px; text-decoration: none; transition: all 0.15s; font-size: 12px;
+}
+#docs-topnav .dn-link:hover { color: var(--primary-l); border-color: var(--primary); }
+#docs-topnav .dn-spacer { flex: 1; }
+/* Push graph layout down */
+body { padding-top: 40px; }
+#graph-wrap { height: calc(100vh - 40px); }
+#sidebar { height: calc(100vh - 40px); }
+</style>
+</head>
+<body>
+
+<div id="docs-topnav">
+  <a href="../../index.html" class="dn-logo">
+    <div class="dn-logo-icon">С</div>
+    <span>СмИТ Биллинг</span>
+  </a>
+  <span class="dn-sep">/</span>
+  <div class="dn-links">
+    <a href="../../index.html" class="dn-link">← Документация</a>
+    <a href="../../pages/dev/index.html" class="dn-link">Разработчикам</a>
+    <a href="wiki/index.html" class="dn-link">Wiki</a>
+  </div>
+  <div class="dn-spacer"></div>
+</div>
+
+<div id="graph-wrap">
+  <svg id="svg"></svg>
+  <div id="tooltip"></div>
+</div>
+<div id="sidebar">
+  <div id="sidebar-head">
+    <div class="head-top">
+      <div class="logo"><div class="logo-icon">G</div><h3>graphify</h3></div>
+      <button id="theme-btn" title="Переключить тему">🌙</button>
+    </div>
+    <div class="stats">
+      <b>25</b> сообществ &nbsp;·&nbsp;
+      <b>2498</b> модулей &nbsp;·&nbsp;
+      <b>9003</b> связей
+    </div>
+  </div>
+  <div id="hint">
+    <div class="hint-row"><span class="hint-key">Размер</span>&nbsp;— кол-во модулей</div>
+    <div class="hint-row"><span class="hint-key">Линия</span>&nbsp;— перекрёстные вызовы</div>
+    <div class="hint-row"><span class="hint-key">Клик</span>&nbsp;— детали и связи</div>
+    <div class="hint-row"><span class="hint-key">Скролл</span>&nbsp;— масштаб &nbsp; <span class="hint-key">Тащи</span>&nbsp;— панорама</div>
+  </div>
+  <div id="legend">
+    <div id="legend-header"><span>Сообщество</span><span>Мод.</span></div>
+<div class="leg-row" data-cid="0" onclick="selectCommunity(0)"><span class="dot" style="background:#4e79a7"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#4e79a7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg></span><span class="leg-name">Карточка абонента</span><span class="leg-cnt">325</span><a class="leg-link" href="wiki/community_0.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="1" onclick="selectCommunity(1)"><span class="dot" style="background:#f28e2b"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#f28e2b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V21H3V9.5z M9 21v-6h6v6"/></svg></span><span class="leg-name">Личный кабинет</span><span class="leg-cnt">321</span><a class="leg-link" href="wiki/community_1.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="2" onclick="selectCommunity(2)"><span class="dot" style="background:#e15759"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#e15759" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1zm-1 5h20M7 16h2M11 16h4"/></svg></span><span class="leg-name">Финансы и деньги</span><span class="leg-cnt">274</span><a class="leg-link" href="wiki/community_2.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="3" onclick="selectCommunity(3)"><span class="dot" style="background:#76b7b2"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#76b7b2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5a6 6 0 1 0 0 12A6 6 0 0 0 11 5zm9 14l-4.35-4.35"/></svg></span><span class="leg-name">Поиск абонентов</span><span class="leg-cnt">238</span><a class="leg-link" href="wiki/community_3.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="4" onclick="selectCommunity(4)"><span class="dot" style="background:#59a14f"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#59a14f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm5 14v.01"/></svg></span><span class="leg-name">Мобильный API</span><span class="leg-cnt">163</span><a class="leg-link" href="wiki/community_4.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="5" onclick="selectCommunity(5)"><span class="dot" style="background:#edc948"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#edc948" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11V7a7 7 0 1 1 14 0v4M4 11h16a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1zm8 4v2"/></svg></span><span class="leg-name">Авторизация</span><span class="leg-cnt">152</span><a class="leg-link" href="wiki/community_5.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="6" onclick="selectCommunity(6)"><span class="dot" style="background:#b07aa1"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#b07aa1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zM2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg></span><span class="leg-name">ACL и соцсети</span><span class="leg-cnt">150</span><a class="leg-link" href="wiki/community_6.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="7" onclick="selectCommunity(7)"><span class="dot" style="background:#ff9da7"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#ff9da7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zM4.93 4.93l14.14 14.14"/></svg></span><span class="leg-name">Блокировки</span><span class="leg-cnt">125</span><a class="leg-link" href="wiki/community_7.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="8" onclick="selectCommunity(8)"><span class="dot" style="background:#9c755f"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#9c755f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c4.97 0 9 1.12 9 2.5v13C21 19.88 17 21 12 21s-9-1.12-9-2.5v-13C3 4.12 7.03 3 12 3zm9 4.5c0 1.38-4.03 2.5-9 2.5S3 8.88 3 7.5m18 5c0 1.38-4.03 2.5-9 2.5S3 13.88 3 12.5"/></svg></span><span class="leg-name">Резервные копии</span><span class="leg-cnt">110</span><a class="leg-link" href="wiki/community_8.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="9" onclick="selectCommunity(9)"><span class="dot" style="background:#bab0ac"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#bab0ac" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1zM8 19l-2 3M16 19l2 3M12 3l-4 4M12 3l4 4"/></svg></span><span class="leg-name">IPTV</span><span class="leg-cnt">108</span><a class="leg-link" href="wiki/community_9.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="10" onclick="selectCommunity(10)"><span class="dot" style="background:#d37295"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#d37295" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 10h16M4 14h10M4 18h10M14 14h6v4h-6z"/></svg></span><span class="leg-name">Фреймворк форм</span><span class="leg-cnt">99</span><a class="leg-link" href="wiki/community_10.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="11" onclick="selectCommunity(11)"><span class="dot" style="background:#fabfd2"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#fabfd2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12m-2 0a2 2 0 1 0 4 0 2 2 0 1 0-4 0M12 2v3m0 14v3M4.22 4.22l2.12 2.12m11.32 11.32 2.12 2.12M2 12h3m14 0h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg></span><span class="leg-name">Задачи биллинга</span><span class="leg-cnt">94</span><a class="leg-link" href="wiki/community_11.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="12" onclick="selectCommunity(12)"><span class="dot" style="background:#8cd17d"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#8cd17d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm0 0v6h6M9 13h6M9 17h4"/></svg></span><span class="leg-name">Шаблоны ЛК</span><span class="leg-cnt">61</span><a class="leg-link" href="wiki/community_12.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="13" onclick="selectCommunity(13)"><span class="dot" style="background:#b6992d"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#b6992d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h6v8H4zm10 0h6v4h-6zM4 16h6v4H4zm10-4h6v8h-6z"/></svg></span><span class="leg-name">Интерфейс</span><span class="leg-cnt">58</span><a class="leg-link" href="wiki/community_13.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="14" onclick="selectCommunity(14)"><span class="dot" style="background:#499894"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#499894" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L4 7v5c0 4.97 3.37 9.08 8 10 4.63-.92 8-5.03 8-10V7l-8-4zm-2 9l2 2 4-4"/></svg></span><span class="leg-name">Отчёты СОРМ</span><span class="leg-cnt">57</span><a class="leg-link" href="wiki/community_14.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="15" onclick="selectCommunity(15)"><span class="dot" style="background:#86bcb6"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#86bcb6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18v12H3zM3 10h18M7 14h2M13 14h4"/></svg></span><span class="leg-name">Платёжные системы</span><span class="leg-cnt">48</span><a class="leg-link" href="wiki/community_15.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="16" onclick="selectCommunity(16)"><span class="dot" style="background:#f1ce63"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#f1ce63" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm18 2l-10 7L2 6"/></svg></span><span class="leg-name">Сообщения</span><span class="leg-cnt">33</span><a class="leg-link" href="wiki/community_16.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="17" onclick="selectCommunity(17)"><span class="dot" style="background:#a0cbe8"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#a0cbe8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg></span><span class="leg-name">Мобильная авторизация</span><span class="leg-cnt">18</span><a class="leg-link" href="wiki/community_17.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="18" onclick="selectCommunity(18)"><span class="dot" style="background:#ffbe7d"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#ffbe7d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5a2 2 0 1 1 4 0 7 7 0 0 1 4 6v3l2 2H4l2-2v-3a7 7 0 0 1 4-6zM9 17v1a3 3 0 0 0 6 0v-1"/></svg></span><span class="leg-name">Push-уведомления</span><span class="leg-cnt">16</span><a class="leg-link" href="wiki/community_18.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="19" onclick="selectCommunity(19)"><span class="dot" style="background:#8CD3C7"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#8CD3C7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm6 0a4 4 0 0 1 0 8M1 21v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2m0-14a4 4 0 0 1 0 8"/></svg></span><span class="leg-name">Модель аккаунта</span><span class="leg-cnt">15</span><a class="leg-link" href="wiki/community_19.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="20" onclick="selectCommunity(20)"><span class="dot" style="background:#4e79a7"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#4e79a7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5v2m0 4v2m0 4v2M5 5h14a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V7a2 2 0 0 1 2-2z"/></svg></span><span class="leg-name">FreeScout Webhooks</span><span class="leg-cnt">10</span><a class="leg-link" href="wiki/community_20.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="21" onclick="selectCommunity(21)"><span class="dot" style="background:#f28e2b"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#f28e2b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L4 7v5c0 4.97 3.37 9.08 8 10 4.63-.92 8-5.03 8-10V7l-8-4z"/></svg></span><span class="leg-name">Авторизация ЛК</span><span class="leg-cnt">9</span><a class="leg-link" href="wiki/community_21.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="22" onclick="selectCommunity(22)"><span class="dot" style="background:#e15759"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#e15759" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 8l-4 4 4 4m10-8 4 4-4 4m-5-11-2 14"/></svg></span><span class="leg-name">Фильтры шаблонов</span><span class="leg-cnt">7</span><a class="leg-link" href="wiki/community_22.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="23" onclick="selectCommunity(23)"><span class="dot" style="background:#76b7b2"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#76b7b2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 4.5v9L12 21l-9-4.5v-9L12 3zm0 0v9m9-4.5L12 12m-9-4.5L12 12"/></svg></span><span class="leg-name">Пакет мобильного API</span><span class="leg-cnt">4</span><a class="leg-link" href="wiki/community_23.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="24" onclick="selectCommunity(24)"><span class="dot" style="background:#59a14f"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#59a14f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h16M6 16h12M12 4v4M8 12v4M16 12v4"/></svg></span><span class="leg-name">Конфигурация</span><span class="leg-cnt">3</span><a class="leg-link" href="wiki/community_24.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+  </div>
+  <div id="selected-detail">
+    <div class="sel-head">
+      <span class="sel-icon-big" id="sel-icon"></span>
+      <span class="sel-name" id="sel-name-text"></span>
+      <span class="sel-badge" id="sel-badge"></span>
+    </div>
+    <div id="sel-info"></div>
+    <a class="open-btn" id="sel-link" href="#" target="_blank">Открыть детальный граф →</a>
+  </div>
+</div>
+
+<script>
+const NODES = [{"id": 0, "label": "\u041a\u0430\u0440\u0442\u043e\u0447\u043a\u0430 \u0430\u0431\u043e\u043d\u0435\u043d\u0442\u0430", "icon": "user", "color": "#4e79a7", "r": 87.0, "count": 325}, {"id": 1, "label": "\u041b\u0438\u0447\u043d\u044b\u0439 \u043a\u0430\u0431\u0438\u043d\u0435\u0442", "icon": "home", "color": "#f28e2b", "r": 86.2, "count": 321}, {"id": 2, "label": "\u0424\u0438\u043d\u0430\u043d\u0441\u044b \u0438 \u0434\u0435\u043d\u044c\u0433\u0438", "icon": "credit-card", "color": "#e15759", "r": 76.8, "count": 274}, {"id": 3, "label": "\u041f\u043e\u0438\u0441\u043a \u0430\u0431\u043e\u043d\u0435\u043d\u0442\u043e\u0432", "icon": "search", "color": "#76b7b2", "r": 69.6, "count": 238}, {"id": 4, "label": "\u041c\u043e\u0431\u0438\u043b\u044c\u043d\u044b\u0439 API", "icon": "device-mobile", "color": "#59a14f", "r": 54.6, "count": 163}, {"id": 5, "label": "\u0410\u0432\u0442\u043e\u0440\u0438\u0437\u0430\u0446\u0438\u044f", "icon": "lock", "color": "#edc948", "r": 52.4, "count": 152}, {"id": 6, "label": "ACL \u0438 \u0441\u043e\u0446\u0441\u0435\u0442\u0438", "icon": "world", "color": "#b07aa1", "r": 52.0, "count": 150}, {"id": 7, "label": "\u0411\u043b\u043e\u043a\u0438\u0440\u043e\u0432\u043a\u0438", "icon": "ban", "color": "#ff9da7", "r": 47.0, "count": 125}, {"id": 8, "label": "\u0420\u0435\u0437\u0435\u0440\u0432\u043d\u044b\u0435 \u043a\u043e\u043f\u0438\u0438", "icon": "database", "color": "#9c755f", "r": 44.0, "count": 110}, {"id": 9, "label": "IPTV", "icon": "device-tv", "color": "#bab0ac", "r": 43.6, "count": 108}, {"id": 10, "label": "\u0424\u0440\u0435\u0439\u043c\u0432\u043e\u0440\u043a \u0444\u043e\u0440\u043c", "icon": "layout-list", "color": "#d37295", "r": 41.8, "count": 99}, {"id": 11, "label": "\u0417\u0430\u0434\u0430\u0447\u0438 \u0431\u0438\u043b\u043b\u0438\u043d\u0433\u0430", "icon": "settings", "color": "#fabfd2", "r": 40.8, "count": 94}, {"id": 12, "label": "\u0428\u0430\u0431\u043b\u043e\u043d\u044b \u041b\u041a", "icon": "file-text", "color": "#8cd17d", "r": 34.2, "count": 61}, {"id": 13, "label": "\u0418\u043d\u0442\u0435\u0440\u0444\u0435\u0439\u0441", "icon": "layout-dashboard", "color": "#b6992d", "r": 33.6, "count": 58}, {"id": 14, "label": "\u041e\u0442\u0447\u0451\u0442\u044b \u0421\u041e\u0420\u041c", "icon": "shield-check", "color": "#499894", "r": 33.4, "count": 57}, {"id": 15, "label": "\u041f\u043b\u0430\u0442\u0451\u0436\u043d\u044b\u0435 \u0441\u0438\u0441\u0442\u0435\u043c\u044b", "icon": "cash", "color": "#86bcb6", "r": 31.6, "count": 48}, {"id": 16, "label": "\u0421\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u044f", "icon": "mail", "color": "#f1ce63", "r": 28.6, "count": 33}, {"id": 17, "label": "\u041c\u043e\u0431\u0438\u043b\u044c\u043d\u0430\u044f \u0430\u0432\u0442\u043e\u0440\u0438\u0437\u0430\u0446\u0438\u044f", "icon": "key", "color": "#a0cbe8", "r": 25.6, "count": 18}, {"id": 18, "label": "Push-\u0443\u0432\u0435\u0434\u043e\u043c\u043b\u0435\u043d\u0438\u044f", "icon": "bell", "color": "#ffbe7d", "r": 25.2, "count": 16}, {"id": 19, "label": "\u041c\u043e\u0434\u0435\u043b\u044c \u0430\u043a\u043a\u0430\u0443\u043d\u0442\u0430", "icon": "users", "color": "#8CD3C7", "r": 25.0, "count": 15}, {"id": 20, "label": "FreeScout Webhooks", "icon": "ticket", "color": "#4e79a7", "r": 24.0, "count": 10}, {"id": 21, "label": "\u0410\u0432\u0442\u043e\u0440\u0438\u0437\u0430\u0446\u0438\u044f \u041b\u041a", "icon": "shield", "color": "#f28e2b", "r": 23.8, "count": 9}, {"id": 22, "label": "\u0424\u0438\u043b\u044c\u0442\u0440\u044b \u0448\u0430\u0431\u043b\u043e\u043d\u043e\u0432", "icon": "code", "color": "#e15759", "r": 23.4, "count": 7}, {"id": 23, "label": "\u041f\u0430\u043a\u0435\u0442 \u043c\u043e\u0431\u0438\u043b\u044c\u043d\u043e\u0433\u043e API", "icon": "package", "color": "#76b7b2", "r": 22.8, "count": 4}, {"id": 24, "label": "\u041a\u043e\u043d\u0444\u0438\u0433\u0443\u0440\u0430\u0446\u0438\u044f", "icon": "adjustments", "color": "#59a14f", "r": 22.6, "count": 3}];
+const LINKS = [{"source": 0, "target": 3, "weight": 196}, {"source": 3, "target": 5, "weight": 197}, {"source": 3, "target": 10, "weight": 79}, {"source": 0, "target": 5, "weight": 66}, {"source": 5, "target": 6, "weight": 28}, {"source": 5, "target": 10, "weight": 19}, {"source": 6, "target": 10, "weight": 33}, {"source": 10, "target": 11, "weight": 5}, {"source": 0, "target": 10, "weight": 52}, {"source": 0, "target": 6, "weight": 48}, {"source": 0, "target": 1, "weight": 101}, {"source": 0, "target": 13, "weight": 24}, {"source": 0, "target": 11, "weight": 56}, {"source": 3, "target": 6, "weight": 202}, {"source": 0, "target": 2, "weight": 19}, {"source": 3, "target": 11, "weight": 40}, {"source": 0, "target": 16, "weight": 7}, {"source": 0, "target": 8, "weight": 53}, {"source": 1, "target": 6, "weight": 35}, {"source": 2, "target": 6, "weight": 20}, {"source": 6, "target": 11, "weight": 2}, {"source": 1, "target": 2, "weight": 11}, {"source": 2, "target": 11, "weight": 7}, {"source": 0, "target": 7, "weight": 17}, {"source": 1, "target": 3, "weight": 69}, {"source": 5, "target": 17, "weight": 5}, {"source": 1, "target": 5, "weight": 16}, {"source": 5, "target": 11, "weight": 26}, {"source": 3, "target": 17, "weight": 6}, {"source": 1, "target": 8, "weight": 31}, {"source": 8, "target": 11, "weight": 6}, {"source": 6, "target": 13, "weight": 8}, {"source": 2, "target": 3, "weight": 65}, {"source": 0, "target": 4, "weight": 36}, {"source": 0, "target": 9, "weight": 10}, {"source": 0, "target": 14, "weight": 14}, {"source": 0, "target": 18, "weight": 5}, {"source": 0, "target": 17, "weight": 2}, {"source": 0, "target": 20, "weight": 3}, {"source": 0, "target": 15, "weight": 5}, {"source": 10, "target": 13, "weight": 2}, {"source": 11, "target": 13, "weight": 4}, {"source": 2, "target": 10, "weight": 5}, {"source": 8, "target": 10, "weight": 3}, {"source": 2, "target": 5, "weight": 15}, {"source": 1, "target": 13, "weight": 11}, {"source": 1, "target": 9, "weight": 17}, {"source": 1, "target": 11, "weight": 19}, {"source": 1, "target": 17, "weight": 3}, {"source": 1, "target": 4, "weight": 43}, {"source": 1, "target": 15, "weight": 15}, {"source": 5, "target": 13, "weight": 1}, {"source": 9, "target": 11, "weight": 1}, {"source": 3, "target": 9, "weight": 15}, {"source": 3, "target": 13, "weight": 2}, {"source": 4, "target": 13, "weight": 1}, {"source": 1, "target": 7, "weight": 26}, {"source": 7, "target": 13, "weight": 1}, {"source": 5, "target": 7, "weight": 19}, {"source": 8, "target": 17, "weight": 1}, {"source": 3, "target": 8, "weight": 8}, {"source": 2, "target": 8, "weight": 18}, {"source": 1, "target": 14, "weight": 11}, {"source": 1, "target": 10, "weight": 1}, {"source": 1, "target": 16, "weight": 9}, {"source": 1, "target": 18, "weight": 1}, {"source": 1, "target": 20, "weight": 2}, {"source": 4, "target": 11, "weight": 12}, {"source": 7, "target": 11, "weight": 5}, {"source": 3, "target": 7, "weight": 2}, {"source": 2, "target": 19, "weight": 2}, {"source": 3, "target": 19, "weight": 1}, {"source": 2, "target": 4, "weight": 1}, {"source": 3, "target": 18, "weight": 8}, {"source": 3, "target": 4, "weight": 77}, {"source": 2, "target": 13, "weight": 5}, {"source": 4, "target": 8, "weight": 4}, {"source": 2, "target": 9, "weight": 3}, {"source": 2, "target": 14, "weight": 3}, {"source": 2, "target": 16, "weight": 2}, {"source": 3, "target": 20, "weight": 5}, {"source": 3, "target": 16, "weight": 32}, {"source": 3, "target": 15, "weight": 17}, {"source": 4, "target": 5, "weight": 1}, {"source": 4, "target": 17, "weight": 3}, {"source": 4, "target": 15, "weight": 3}, {"source": 4, "target": 7, "weight": 2}];
+const ICONS = {"0": "user", "1": "home", "2": "credit-card", "3": "search", "4": "device-mobile", "5": "lock", "6": "world", "7": "ban", "8": "database", "9": "device-tv", "10": "layout-list", "11": "settings", "12": "file-text", "13": "layout-dashboard", "14": "shield-check", "15": "cash", "16": "mail", "17": "key", "18": "bell", "19": "users", "20": "ticket", "21": "shield", "22": "code", "23": "package", "24": "adjustments"};
+const ICON_PATHS = {"user": "M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z", "home": "M3 9.5L12 3l9 6.5V21H3V9.5z M9 21v-6h6v6", "credit-card": "M3 6h18a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1zm-1 5h20M7 16h2M11 16h4", "search": "M11 5a6 6 0 1 0 0 12A6 6 0 0 0 11 5zm9 14l-4.35-4.35", "device-mobile": "M7 4h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm5 14v.01", "lock": "M5 11V7a7 7 0 1 1 14 0v4M4 11h16a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1zm8 4v2", "world": "M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zM2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20", "ban": "M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zM4.93 4.93l14.14 14.14", "database": "M12 3c4.97 0 9 1.12 9 2.5v13C21 19.88 17 21 12 21s-9-1.12-9-2.5v-13C3 4.12 7.03 3 12 3zm9 4.5c0 1.38-4.03 2.5-9 2.5S3 8.88 3 7.5m18 5c0 1.38-4.03 2.5-9 2.5S3 13.88 3 12.5", "device-tv": "M3 7h18a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1zM8 19l-2 3M16 19l2 3M12 3l-4 4M12 3l4 4", "layout-list": "M4 6h16M4 10h16M4 14h10M4 18h10M14 14h6v4h-6z", "settings": "M12 12m-2 0a2 2 0 1 0 4 0 2 2 0 1 0-4 0M12 2v3m0 14v3M4.22 4.22l2.12 2.12m11.32 11.32 2.12 2.12M2 12h3m14 0h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12", "file-text": "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm0 0v6h6M9 13h6M9 17h4", "layout-dashboard": "M4 4h6v8H4zm10 0h6v4h-6zM4 16h6v4H4zm10-4h6v8h-6z", "shield-check": "M12 3L4 7v5c0 4.97 3.37 9.08 8 10 4.63-.92 8-5.03 8-10V7l-8-4zm-2 9l2 2 4-4", "cash": "M3 6h18v12H3zM3 10h18M7 14h2M13 14h4", "mail": "M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm18 2l-10 7L2 6", "key": "M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4", "bell": "M10 5a2 2 0 1 1 4 0 7 7 0 0 1 4 6v3l2 2H4l2-2v-3a7 7 0 0 1 4-6zM9 17v1a3 3 0 0 0 6 0v-1", "users": "M9 7a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm6 0a4 4 0 0 1 0 8M1 21v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2m0-14a4 4 0 0 1 0 8", "ticket": "M15 5v2m0 4v2m0 4v2M5 5h14a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V7a2 2 0 0 1 2-2z", "shield": "M12 3L4 7v5c0 4.97 3.37 9.08 8 10 4.63-.92 8-5.03 8-10V7l-8-4z", "code": "M7 8l-4 4 4 4m10-8 4 4-4 4m-5-11-2 14", "package": "M12 3l9 4.5v9L12 21l-9-4.5v-9L12 3zm0 0v9m9-4.5L12 12m-9-4.5L12 12", "adjustments": "M4 8h16M6 16h12M12 4v4M8 12v4M16 12v4", "building": "M3 21h18M5 21V7l7-4 7 4v14M9 21v-4h6v4M9 9h1v1H9zm5 0h1v1h-1zM9 13h1v1H9zm5 0h1v1h-1z", "link": "M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 1 0-5.66-5.66l-1.5 1.5M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1.5-1.5", "table": "M3 5h18v14H3zM3 10h18M3 15h18M8 5v14M13 5v14", "chart-bar": "M4 20h16M8 8v12M12 4v16M16 10v10", "trending-up": "M3 17l6-6 4 4 8-8M17 7h4v4", "calendar": "M4 5h16a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zM16 3v4M8 3v4M3 10h18", "layers-intersect": "M7 3h10v10H7zm4 4h10v10H11zm-4 4h10v10H7z", "tool": "M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z", "photo": "M15 8a1 1 0 1 0 2 0 1 1 0 0 0-2 0zM3 6h18v13H3zM3 13l5-5 4 4 3-3 5 4"};
+
+let selectedId = null;
+let theme = 'dark';
+
+const wrap = document.getElementById('graph-wrap');
+const svg  = d3.select('#svg');
+const root = svg.append('g');
+
+// ── zoom ──
+const zoom = d3.zoom().scaleExtent([0.3, 4]).on('zoom', e => root.attr('transform', e.transform));
+svg.call(zoom);
+
+// ── defs: radial gradients per node ──
+const defs = svg.append('defs');
+NODES.forEach(n => {
+  const g = defs.append('radialGradient')
+    .attr('id', 'grad' + n.id)
+    .attr('cx','35%').attr('cy','30%').attr('r','65%');
+  g.append('stop').attr('offset','0%').attr('stop-color', lighten(n.color, 0.35));
+  g.append('stop').attr('offset','100%').attr('stop-color', darken(n.color, 0.25));
+});
+
+function lighten(hex, amt) {
+  const c = d3.color(hex); if(!c) return hex;
+  return d3.rgb(Math.min(255,c.r+255*amt), Math.min(255,c.g+255*amt), Math.min(255,c.b+255*amt)).formatHex();
+}
+function darken(hex, amt) {
+  const c = d3.color(hex); if(!c) return hex;
+  return d3.rgb(Math.max(0,c.r-255*amt), Math.max(0,c.g-255*amt), Math.max(0,c.b-255*amt)).formatHex();
+}
+
+// ── link map for quick lookup ──
+const linkIndex = {};
+LINKS.forEach(l => {
+  const k1 = l.source + '-' + l.target, k2 = l.target + '-' + l.source;
+  linkIndex[k1] = l; linkIndex[k2] = l;
+});
+
+// ── draw links ──
+const linkSel = root.append('g').selectAll('line')
+  .data(LINKS).join('line')
+  .attr('class','link')
+  .attr('stroke-width', d => Math.max(1, Math.min(10, d.weight / 8)));
+
+// ── draw nodes ──
+const nodeSel = root.append('g').selectAll('g.node-g')
+  .data(NODES).join('g')
+  .attr('class','node-g')
+  .call(d3.drag()
+    .on('start', (e,d) => { if(!e.active) sim.alphaTarget(.3).restart(); d.fx=d.x; d.fy=d.y; })
+    .on('drag',  (e,d) => { d.fx=e.x; d.fy=e.y; })
+    .on('end',   (e,d) => { if(!e.active) sim.alphaTarget(0); d.fx=null; d.fy=null; }))
+  .on('click', (e,d) => { e.stopPropagation(); selectNode(d.id); })
+  .on('mouseover', showTooltip)
+  .on('mousemove', moveTooltip)
+  .on('mouseout',  hideTooltip);
+
+nodeSel.append('circle')
+  .attr('r', d => d.r)
+  .attr('fill', d => 'url(#grad' + d.id + ')')
+  .attr('stroke', d => darken(d.color, 0.1))
+  .attr('stroke-width', 2);
+
+// icon — centered inside circle
+nodeSel.each(function(d) {
+  const iconName = ICONS[d.id] || 'settings';
+  const pathData = ICON_PATHS[iconName] || ICON_PATHS['settings'];
+  const iconSize = Math.max(10, Math.min(24, d.r * 0.52));
+  const scale = iconSize / 24;
+  const tx = -12 * scale;
+  const ty = -12 * scale;
+  d3.select(this).append('g')
+    .attr('class', 'node-icon-g')
+    .attr('transform', `translate(${tx},${ty}) scale(${scale})`)
+    .attr('pointer-events', 'none')
+    .append('path')
+      .attr('d', pathData)
+      .attr('fill', 'none')
+      .attr('stroke', 'rgba(255,255,255,0.92)')
+      .attr('stroke-width', 1.8 / scale)
+      .attr('stroke-linecap', 'round')
+      .attr('stroke-linejoin', 'round');
+});
+// text label — outside circle, below
+nodeSel.append('text').attr('class','node-name')
+  .attr('y', d => d.r + 13)
+  .attr('font-size', '11px')
+  .each(function(d) {
+    const el = d3.select(this);
+    const words = d.label.split(' ');
+    if (words.length <= 2) {
+      el.text(d.label);
+    } else {
+      const mid = Math.ceil(words.length / 2);
+      el.append('tspan').attr('x',0).attr('dy',0).text(words.slice(0,mid).join(' '));
+      el.append('tspan').attr('x',0).attr('dy','1.2em').text(words.slice(mid).join(' '));
+    }
+  });
+
+// ── simulation ──
+const sim = d3.forceSimulation(NODES)
+  .force('link', d3.forceLink(LINKS).id(d=>d.id).distance(d => 60 + (d.source.r||30) + (d.target.r||30)).strength(0.4))
+  .force('charge', d3.forceManyBody().strength(d => -Math.pow(d.r,1.6)))
+  .force('collision', d3.forceCollide().radius(d => d.r + 12).iterations(3))
+  .force('center', d3.forceCenter(wrap.clientWidth/2, wrap.clientHeight/2))
+  .on('tick', ticked);
+
+function ticked() {
+  linkSel
+    .attr('x1', d=>d.source.x).attr('y1', d=>d.source.y)
+    .attr('x2', d=>d.target.x).attr('y2', d=>d.target.y);
+  nodeSel.attr('transform', d=>`translate(${d.x},${d.y})`);
+}
+
+// ── resize ──
+window.addEventListener('resize', () => {
+  sim.force('center', d3.forceCenter(wrap.clientWidth/2, wrap.clientHeight/2)).alpha(.1).restart();
+});
+
+// ── tooltip ──
+const tip = document.getElementById('tooltip');
+function makeIconSvg(id, size, color) {
+  const name = ICONS[id] || 'settings';
+  const p = ICON_PATHS[name] || ICON_PATHS['settings'];
+  return `<svg viewBox="0 0 24 24" width="${size}" height="${size}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="${p}"/></svg>`;
+}
+function showTooltip(e,d) {
+  const conns = LINKS.filter(l => l.source.id===d.id || l.target.id===d.id).length;
+  tip.innerHTML = `<b>${makeIconSvg(d.id,14,'var(--primary-l)')} ${d.label}</b><br>${d.count} модулей · ${conns} связей`;
+  tip.style.display = 'block';
+  moveTooltip(e);
+}
+function moveTooltip(e) {
+  tip.style.left = (e.clientX+14)+'px'; tip.style.top = (e.clientY-10)+'px';
+}
+function hideTooltip() { tip.style.display='none'; }
+
+// ── select ──
+function selectNode(id) {
+  selectedId = id;
+  nodeSel.classed('selected', d => d.id===id);
+  linkSel.classed('highlighted', d => d.source.id===id || d.target.id===id);
+  // sidebar
+  document.querySelectorAll('.leg-row').forEach(r=>r.classList.remove('active'));
+  const row = document.querySelector('.leg-row[data-cid="'+id+'"]');
+  if(row) { row.classList.add('active'); row.scrollIntoView({block:'nearest',behavior:'smooth'}); }
+  const nd = NODES.find(n=>n.id===id);
+  if(!nd) return;
+  document.getElementById('sel-icon').innerHTML = makeIconSvg(id, 26, nd.color);
+  document.getElementById('sel-name-text').textContent = nd.label;
+  document.getElementById('sel-badge').textContent = nd.count+' мод.';
+  const conns = LINKS.filter(l=>l.source.id===id||l.target.id===id)
+    .sort((a,b)=>b.weight-a.weight).slice(0,8);
+  let html = conns.map(l=>{
+    const other = l.source.id===id ? l.target : l.source;
+    return `<div class="conn-item"><span class="conn-name">${makeIconSvg(other.id,12,other.color)} ${other.label}</span><span class="conn-cnt">${l.weight} св.</span></div>`;
+  }).join('');
+  const total = LINKS.filter(l=>l.source.id===id||l.target.id===id).length;
+  if(total>8) html += `<div style="color:var(--text3);padding-top:3px">и ещё ${total-8}…</div>`;
+  document.getElementById('sel-info').innerHTML = html || '<span style="color:var(--text3)">Нет связей</span>';
+  document.getElementById('sel-link').href = 'graph_c'+id+'.html';
+  document.getElementById('selected-detail').style.display='block';
+}
+
+function selectCommunity(id) {
+  selectNode(id);
+  const nd = NODES.find(n=>n.id===id);
+  if(nd && nd.x) {
+    const w=wrap.clientWidth, h=wrap.clientHeight;
+    svg.transition().duration(500).call(zoom.transform,
+      d3.zoomIdentity.translate(w/2,h/2).scale(1.4).translate(-nd.x,-nd.y));
+  }
+}
+
+svg.on('click', () => {
+  selectedId=null;
+  nodeSel.classed('selected',false);
+  linkSel.classed('highlighted',false);
+  document.querySelectorAll('.leg-row').forEach(r=>r.classList.remove('active'));
+  document.getElementById('selected-detail').style.display='none';
+});
+
+// ── theme ──
+document.getElementById('theme-btn').addEventListener('click', () => {
+  theme = theme==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme',theme);
+  document.getElementById('theme-btn').textContent = theme==='dark'?'🌙':'☀️';
+});
+</script>
+</body>
+</html>
