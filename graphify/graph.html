@@ -45,23 +45,8 @@ svg{width:100%;height:100%}
   pointer-events:none;z-index:100;max-width:220px;box-shadow:0 4px 20px #0006}
 #tooltip b{color:var(--primary-l)}
 /* sidebar */
-#sidebar{width:310px;height:100vh;background:var(--bg2);border-left:1px solid var(--border);
+#sidebar{width:280px;height:100vh;background:var(--bg2);border-left:1px solid var(--border);
   display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;transition:background .25s}
-#sidebar-head{padding:14px 16px 10px;border-bottom:1px solid var(--border);
-  background:linear-gradient(135deg,var(--bg2),var(--bg3))}
-.head-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px}
-.logo{display:flex;align-items:center;gap:8px}
-.logo-icon{width:26px;height:26px;background:linear-gradient(135deg,#43a047,#26a69a);
-  border-radius:6px;display:flex;align-items:center;justify-content:center;
-  font-size:13px;color:#fff;font-weight:bold}
-.logo h3{margin:0;font-size:13px;font-weight:600;color:var(--primary-l)}
-#theme-btn{background:none;border:1px solid var(--border);border-radius:6px;
-  padding:3px 8px;cursor:pointer;font-size:14px;color:var(--text2);transition:.15s}
-#theme-btn:hover{background:var(--hover)}
-.stats{color:var(--text3);font-size:11px}.stats b{color:var(--text2)}
-#hint{padding:8px 16px;font-size:11px;color:var(--text3);
-  border-bottom:1px solid var(--border);line-height:1.7;background:var(--bg3)}
-.hint-row{display:flex;gap:5px}.hint-key{color:var(--primary-l);font-weight:600;white-space:nowrap}
 #legend{flex:1;overflow-y:auto;padding:4px 0}
 #legend::-webkit-scrollbar{width:4px}
 #legend::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
@@ -96,6 +81,14 @@ svg{width:100%;height:100%}
   color:#fff;text-decoration:none;font-size:12px;font-weight:500;transition:opacity .15s}
 .open-btn:hover{opacity:.85}
 
+/* graph-wrap gradient */
+#graph-wrap {
+  background: linear-gradient(160deg, #0d1b2e 0%, #0f172a 40%, #0d2336 100%);
+}
+[data-theme=light] #graph-wrap {
+  background: linear-gradient(160deg, #e8f4f8 0%, #f4f6f9 40%, #eaf4ee 100%);
+}
+
 /* Docs top nav bar */
 #docs-topnav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 500;
@@ -120,6 +113,23 @@ svg{width:100%;height:100%}
 }
 #docs-topnav .dn-link:hover { color: var(--primary-l); border-color: var(--primary); }
 #docs-topnav .dn-spacer { flex: 1; }
+#docs-topnav #theme-btn {
+  background: none; border: 1px solid var(--border); border-radius: 6px;
+  padding: 3px 9px; cursor: pointer; font-size: 14px; color: var(--text2);
+  transition: .15s; line-height: 1;
+}
+#docs-topnav #theme-btn:hover { background: var(--hover); }
+
+/* footer */
+#graph-footer {
+  position: fixed; bottom: 0; left: 0; right: 280px; z-index: 300;
+  height: 28px; display: flex; align-items: center; padding: 0 16px;
+  font-size: 11px; color: var(--text3);
+  background: linear-gradient(to top, var(--bg) 0%, transparent 100%);
+  pointer-events: none;
+}
+#graph-footer b { color: var(--text2); font-weight: 600; }
+
 /* Push graph layout down */
 body { padding-top: 40px; }
 #graph-wrap { height: calc(100vh - 40px); }
@@ -140,30 +150,17 @@ body { padding-top: 40px; }
     <a href="wiki/index.html" class="dn-link">Wiki</a>
   </div>
   <div class="dn-spacer"></div>
+  <button id="theme-btn" title="Переключить тему">🌙</button>
 </div>
 
 <div id="graph-wrap">
   <svg id="svg"></svg>
   <div id="tooltip"></div>
 </div>
+<div id="graph-footer">
+  <b>25</b>&nbsp;сообществ&nbsp;&nbsp;·&nbsp;&nbsp;<b>2498</b>&nbsp;модулей&nbsp;&nbsp;·&nbsp;&nbsp;<b>9003</b>&nbsp;связей
+</div>
 <div id="sidebar">
-  <div id="sidebar-head">
-    <div class="head-top">
-      <div class="logo"><div class="logo-icon">G</div><h3>graphify</h3></div>
-      <button id="theme-btn" title="Переключить тему">🌙</button>
-    </div>
-    <div class="stats">
-      <b>25</b> сообществ &nbsp;·&nbsp;
-      <b>2498</b> модулей &nbsp;·&nbsp;
-      <b>9003</b> связей
-    </div>
-  </div>
-  <div id="hint">
-    <div class="hint-row"><span class="hint-key">Размер</span>&nbsp;— кол-во модулей</div>
-    <div class="hint-row"><span class="hint-key">Линия</span>&nbsp;— перекрёстные вызовы</div>
-    <div class="hint-row"><span class="hint-key">Клик</span>&nbsp;— детали и связи</div>
-    <div class="hint-row"><span class="hint-key">Скролл</span>&nbsp;— масштаб &nbsp; <span class="hint-key">Тащи</span>&nbsp;— панорама</div>
-  </div>
   <div id="legend">
     <div id="legend-header"><span>Сообщество</span><span>Мод.</span></div>
 <div class="leg-row" data-cid="0" onclick="selectCommunity(0)"><span class="dot" style="background:#4e79a7"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#4e79a7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg></span><span class="leg-name">Карточка абонента</span><span class="leg-cnt">325</span><a class="leg-link" href="wiki/community_0.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
