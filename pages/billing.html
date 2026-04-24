@@ -1071,19 +1071,41 @@ docker compose up -d</code></pre>
 
   <!-- 3.1 Тарифы -->
   <h3 id="tarif-create">3.1. Тарифы</h3>
-  <p>Создание тарифного плана: перейдите в <strong>Тарификация &rarr; Тарифы</strong>.</p>
-  <img src="../img/section_tarifs.png" alt="Тарифы" class="screenshot">
+  <p>Управление тарифными планами: <strong>Тарификация &rarr; Тарифы</strong>. Список загружается через AJAX — мгновенный поиск, сортировка по столбцам, фильтр по линейке услуг и три таба: <em>Новые / В работе / Архив</em>.</p>
 
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs/tarif_list.png" alt="Список тарифов" class="screenshot">
+
+  <h4 id="tarif-list-features">Возможности списка</h4>
+  <ul>
+    <li><strong>Поиск</strong> — фильтрация по названию в реальном времени (debounce 300 мс)</li>
+    <li><strong>Линейка</strong> — выпадающий список линеек из БД (<code>UslugaRangeTypes</code>)</li>
+    <li><strong>Табы</strong> — Новые / В работе / Архив со счётчиками</li>
+    <li><strong>Столбцы</strong> — №, Название, Описание, Цена, Абон. (кол-во абонентов), Услуг (кол-во услуг), Линейка</li>
+    <li><strong>Сортировка</strong> — клик по заголовку столбца, иконки ▲▼</li>
+    <li><strong>Действия (⋯)</strong> — Редактировать, Дублировать, Архивировать / Разархивировать, Удалить</li>
+  </ul>
+
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs/tarif_list_search.png" alt="Поиск по тарифам" class="screenshot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs/tarif_list_dropdown.png" alt="Меню действий тарифа" class="screenshot">
 
   <h4 id="tarif-main">Вкладка «Тариф»</h4>
   <p>Основные параметры тарифного плана:</p>
   <ul>
     <li><strong>Название</strong> — уникальное имя тарифа (отображается абоненту)</li>
     <li><strong>Описание</strong> — подробное описание условий (отображается в ЛК и мобильном приложении)</li>
-    <li><strong>NAT по умолчанию</strong> — IP-адрес NAT для абонентов тарифа</li>
-    <li><strong>Введён в эксплуатацию</strong> — после включения тариф появляется в списке «В работе» (редактирование услуг блокируется)</li>
+    <li><strong>Введён в эксплуатацию</strong> — после включения тариф появляется в списке «В работе»</li>
     <li><strong>В архиве</strong> — тариф перемещается в раздел «Архив» и не доступен для назначения</li>
   </ul>
+
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs/tarif_edit_with_services.png" alt="Форма редактирования тарифа" class="screenshot">
+
+  <h4 id="tarif-services-inline">Услуги тарифа (инлайн)</h4>
+  <p>Под формой тарифа — карточка <strong>«Услуги тарифа»</strong> с таблицей привязанных услуг (<code>TarifUsersUsluga</code>): название, тип, цена. Кнопка <strong>«+ Добавить»</strong> открывает модальное окно с Select2-поиском по услугам.</p>
+
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs/tarif_edit_add_service_modal.png" alt="Модалка добавления услуги в тариф" class="screenshot">
+
+  <h4 id="tarif-radius-inline">RADIUS-параметры тарифа (инлайн)</h4>
+  <p>Ниже — карточка <strong>«RADIUS-параметры»</strong> (<code>TarifRadiusParams</code>): атрибут, оператор (<code>:= += == =</code>), значение. Поддерживает добавление, редактирование и удаление без перезагрузки страницы.</p>
 
   <h4 id="tarif-tab-change">Вкладка «Смена тарифа»</h4>
   <p>Настройки перехода абонентов на/с этого тарифа:</p>
