@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 293)</title>
+  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 295)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 293)">
+  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 295)">
   <meta property="og:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/billing.html">
   <meta property="og:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 293)">
+  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 295)">
   <meta name="twitter:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta name="twitter:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
   <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
@@ -2908,6 +2908,27 @@ chmod +x restore.sh
     <li><strong>Экспорт CSV</strong> — кнопка «Выгрузить» с текущими фильтрами (до 50 000 записей)</li>
   </ul>
 
+  <h4 id="audit-abonents">Аудит действий с абонентами (build 295)</h4>
+  <p>Все операции создания, редактирования и массовой обработки абонентов записываются в <code>AuditOperations</code> с <code>table_name='Abonents'</code>:</p>
+  <ul>
+    <li><strong>Создание (Quick Add)</strong> — детальная запись с типом (физ/юр.лицо), договором, тарифом, адресом, признаком создания учётки и количеством заполненных юр-реквизитов:
+      <br><code>Абонент создан (юр.лицо): ООО «Ромашка», договор 2026-001, тариф «SmitBusiness10», адрес «ул. Мира, 1», учётка login=2026-001, реквизитов заполнено: 8</code>
+    </li>
+    <li><strong>Создание (полная форма)</strong> — упрощённая запись с теми же ключевыми полями</li>
+    <li><strong>Редактирование</strong> — построчный diff изменённых полей в формате «Поле: было → стало»:
+      <br><code>Абонент изменён: ФИО/Название: «Иванов И.И.» → «Иванов Иван Иванович»; Тариф: «5» → «12»; Активен: да → нет</code>
+      <br>Аудируемые поля: ФИО/Название, Договор, Тариф, Адрес, Квартира/Офис, Подъезд, Email, Телефон, Активен, Юр.лицо, Удалён, Папка
+    </li>
+    <li><strong>Массовая операция</strong> (<code>POST /admin/Abonents/bulk_action/</code>) — одна запись на первого абонента из выбранных:
+      <br><code>Массовая операция: смена тарифа (87 абонентов) [IDs: 4501, 4502, 4503, 4504, 4505 …и ещё 82]</code>
+    </li>
+    <li><strong>Откат массовой операции</strong> (<code>POST /admin/Abonents/bulk_undo/</code>):
+      <br><code>Откат массовой операции: восстановлено 87 абонентов</code>
+    </li>
+  </ul>
+  <p>Helper'ы <code>_abonent_snapshot()</code>, <code>_abonent_diff()</code> в <code>billing/views/abonents.py</code> — снимают значения 12 ключевых полей до изменения и сравнивают с после; результат форматируется в человекочитаемые строки с обрезкой длинных значений до 60 символов.</p>
+
+
   <h3 id="payment-log">10.2. Журнал платежей</h3>
   <p>Журнал транзакций из платёжных систем, CSV-загрузок и веб-кассы. Типы результатов:</p>
   <ul>
@@ -3246,7 +3267,7 @@ chmod +x restore.sh
 
   <!-- ===== 9. Справочники ===== -->
   <h2 id="dictionaries">11. Справочники</h2>
-  <p>Справочники СмИТ Биллинг v1.6.0 (build 293) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
+  <p>Справочники СмИТ Биллинг v1.6.0 (build 295) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
   <div class="section-toc">
   <details open>
     <summary><strong>Содержание раздела</strong></summary>
@@ -3816,7 +3837,7 @@ ACL_BLOCKED_GROUPS = ACL_DISABLED</code></pre>
 
   <!-- ===== 14. Обзор безопасности ===== -->
   <h2 id="security">14. Обзор безопасности</h2>
-  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 293) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
+  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 295) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
 
   <h3>Сетевая изоляция</h3>
   <p><strong>Docker-контейнеризация</strong> — каждый сервис (web, db, redis, celery, nginx, freeradius) работает в изолированном Docker-контейнере с собственной сетью (172.28.0.0/16). Входящие соединения проходят через nginx reverse proxy, что предотвращает прямой доступ к внутренним сервисам.</p>
@@ -3949,7 +3970,7 @@ docker compose up -d</code></pre>
 
   <!-- ===== 16. Стороннее ПО ===== -->
   <h2 id="third-party">16. Стороннее ПО</h2>
-  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 293).</p>
+  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 295).</p>
 
   <!-- ===== 17. Смена языка ===== -->
   <h2 id="language">17. Смена языка</h2>
@@ -3957,7 +3978,7 @@ docker compose up -d</code></pre>
 
   <!-- ===== 18. Технологический стек ===== -->
   <h2 id="tech-stack">18. Технологический стек</h2>
-  <p>СмИТ Биллинг v1.6.0 (build 293) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
+  <p>СмИТ Биллинг v1.6.0 (build 295) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
 
   <h3>Почему PostgreSQL</h3>
   <p>PostgreSQL 16 выбран в качестве основной СУБД по ряду причин:</p>
@@ -4039,8 +4060,8 @@ docker compose ps
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 293)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">27.04.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 293)</span>&nbsp;|&nbsp;<span data-smit="updated">27.04.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 295)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">27.04.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 295)</span>&nbsp;|&nbsp;<span data-smit="updated">27.04.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=220"></script>
