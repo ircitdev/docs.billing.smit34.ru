@@ -161,7 +161,8 @@
         <ul class="submenu">
           <li><a href="equipment.html#internet">1. Интернет (NAS/BRAS)</a></li>
           <li class="sub-item"><a href="equipment.html#nas-modal">1.1. Модалка NAS</a></li>
-          <li class="sub-item"><a href="equipment.html#switch-modal">1.2. Модалка Switch</a></li>
+          <li class="sub-item"><a href="equipment.html#nas-online">1.2. Онлайн-абоненты NAS</a></li>
+          <li class="sub-item"><a href="equipment.html#switch-modal">1.3. Модалка Switch</a></li>
           <li class="sub-item"><a href="equipment.html#switch-types">1.3. Типы коммутаторов</a></li>
           <li class="sub-item"><a href="equipment.html#opt82-auth">1.4. OPT82-авторизация</a></li>
           <li><a href="equipment.html#voip">2. Телефония (VoIP)</a></li>
@@ -317,12 +318,37 @@ docker compose restart freeradius</code></pre>
 
   <div class="info-box">После сохранения NAS биллинг показывает баннер «Требуется перезапуск FreeRADIUS» — clients.conf обновляется при следующем старте контейнера.</div>
 
+  <!-- ===== NAS: онлайн абоненты ===== -->
+  <h3 id="nas-online">Онлайн-абоненты NAS</h3>
+  <p>Начиная с build 334, в столбце <strong>Онлайн</strong> таблицы NAS отображается кликабельная ссылка с числом активных сессий. Клик открывает модальное окно со списком абонентов, подключённых через данный NAS прямо сейчас.</p>
+
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v334/nas_list_with_online.png" alt="Список NAS — кликабельный счётчик онлайн" class="screenshot">
+
+  <p>Модальное окно «Онлайн на NAS» показывает до 200 активных сессий:</p>
+  <ul>
+    <li><strong>#</strong> — порядковый номер строки.</li>
+    <li><strong>Абонент</strong> — имя абонента, ссылка на карточку открывается в новой вкладке.</li>
+    <li><strong>Логин</strong> — учётная запись (Users.login).</li>
+    <li><strong>IP</strong> — назначенный абоненту IP-адрес.</li>
+    <li><strong>Начало сессии</strong> — время старта из <code>USERS_RADIUSAUTH.RADIUS_START</code>.</li>
+    <li><strong>Обновление</strong> — время последнего Accounting-Update.</li>
+  </ul>
+
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v334/nas_online_modal.png" alt="Модалка онлайн-абонентов NAS" class="screenshot">
+
+  <p>Кнопка <strong>Обновить</strong> перезагружает данные без закрытия окна. Если сессий больше 200 — отображается подсказка о лимите.</p>
+
+  <div class="info-box">
+    Данные берутся из таблицы <code>USERS_RADIUSAUTH</code> по условию <code>logged=1, user.nas_id=&lt;id&gt;</code>. Если сессия зависла (NAS не прислал Accounting-Stop), она всё равно будет отображаться — используйте кнопку «Sync» для принудительной синхронизации.
+  </div>
+
   <!-- ===== Switch модальное окно ===== -->
   <h3 id="switch-modal">Редактирование коммутаторов — модальное окно</h3>
   <p>Коммутаторы (<code>/admin/equipment/Switch/</code>) редактируются в модальном окне с двухколоночным макетом: слева — название и IP, справа — адрес установки (Select2), этаж, помещение.</p>
+  <p>Начиная с build 334, в таблице коммутаторов добавлена колонка <strong>Тип</strong> — отображает привязанный тип коммутатора (бейдж с названием). Тип определяет регулярные выражения для парсинга Option 82 и используется при OPT82-авторизации.</p>
 
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v329/equipment_switch_list.png" alt="Список коммутаторов" class="screenshot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v329/switch_modal_full.png" alt="Модалка коммутатора" class="screenshot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v334/switch_list_with_type.png" alt="Список коммутаторов с колонкой Тип" class="screenshot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v334/switch_modal_with_type.png" alt="Модалка коммутатора — поле Тип" class="screenshot">
 
   <!-- ===== Типы коммутаторов ===== -->
   <h2 id="switch-types">Типы коммутаторов</h2>
