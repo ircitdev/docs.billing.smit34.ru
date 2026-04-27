@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 295)</title>
+  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 296)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 295)">
+  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 296)">
   <meta property="og:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/billing.html">
   <meta property="og:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 295)">
+  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 296)">
   <meta name="twitter:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta name="twitter:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
   <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
@@ -3267,7 +3267,7 @@ chmod +x restore.sh
 
   <!-- ===== 9. Справочники ===== -->
   <h2 id="dictionaries">11. Справочники</h2>
-  <p>Справочники СмИТ Биллинг v1.6.0 (build 295) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
+  <p>Справочники СмИТ Биллинг v1.6.0 (build 296) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
   <div class="section-toc">
   <details open>
     <summary><strong>Содержание раздела</strong></summary>
@@ -3534,15 +3534,16 @@ ACL_BLOCKED_GROUPS = ACL_DISABLED</code></pre>
   <p>После каждой выгрузки можно отправлять уведомление в Telegram-группу. Настройки: Chat ID, Thread ID (для топиков), тестовая отправка.</p>
 
   <h4 id="sorm-reports">Отчёты СОРМ-3</h4>
-  <p>13 стандартных отчётов в формате СОРМ-3 (Приказ №573 от 29.10.2018):</p>
+  <p>14 стандартных отчётов в формате СОРМ-3 (Приказ №573 от 29.10.2018):</p>
   <table>
     <thead><tr><th>Префикс файла</th><th>Содержимое</th></tr></thead>
     <tbody>
-      <tr><td><code>ABONENT</code></td><td>ФИО, паспорт, адрес, телефон, email абонентов</td></tr>
+      <tr><td><code>ABONENT</code></td><td>ФИО / название организации, паспорт, адрес, телефон, email, ИНН, ОГРН. Категория (<code>individual</code>/<code>legal</code>) определяется по <code>Abonents.company</code> (build 295)</td></tr>
       <tr><td><code>ABONENT_IDENT</code></td><td>Логин, IP, MAC — идентификация абонентов</td></tr>
       <tr><td><code>ABONENT_SRV</code></td><td>Подключённые услуги и тарифы абонентов</td></tr>
       <tr><td><code>ABONENT_USER</code></td><td>Учётные записи (логин, IP, MAC)</td></tr>
       <tr><td><code>ABONENT_ADDR</code></td><td>Адреса подключения абонентов</td></tr>
+      <tr><td><strong><code>ABONENT_LEGAL</code></strong> <span class="badge bg-success" style="font-size:.7rem">build 296</span></td><td><strong>Реквизиты юридических лиц</strong> — только абоненты с <code>company=true</code>. 12 полей: ИНН, КПП, ОГРН, юридический/физический/почтовый адрес, р/с, Банк, БИК, к/с, В лице, Директор</td></tr>
       <tr><td><code>PAYMENT</code></td><td>Все финансовые операции (платежи, списания)</td></tr>
       <tr><td><code>SUPPLEMENTARY_SERVICE</code></td><td>Справочник дополнительных услуг</td></tr>
       <tr><td><code>REGIONS</code></td><td>Филиалы оператора связи</td></tr>
@@ -3554,6 +3555,36 @@ ACL_BLOCKED_GROUPS = ACL_DISABLED</code></pre>
     </tbody>
   </table>
   <p>Каждый отчёт генерирует файл вида <code>ABONENT_20260402_120000.csv</code> и выгружает его на FTP-сервер.</p>
+
+  <h5 id="sorm-legal-report">Отчёт ABONENT_LEGAL — реквизиты юридических лиц (build 296)</h5>
+  <p>Отдельный отчёт для юр.лиц со структурированными реквизитами организации. Колонки CSV (в порядке вывода):</p>
+  <ol>
+    <li><code>region_id</code> — идентификатор региона (всегда <code>1</code>)</li>
+    <li><code>contract_number</code> — номер договора</li>
+    <li><code>organization_name</code> — название организации (<code>Abonents.NAME</code>)</li>
+    <li><code>inn</code> — ИНН (12 цифр)</li>
+    <li><code>kpp</code> — КПП (9 цифр)</li>
+    <li><code>ogrn</code> — ОГРН (13 / 15 цифр)</li>
+    <li><code>legal_address</code> — юридический адрес</li>
+    <li><code>physical_address</code> — физический (фактический) адрес</li>
+    <li><code>postal_address</code> — почтовый адрес</li>
+    <li><code>bank_account</code> — расчётный счёт</li>
+    <li><code>bank_name</code> — банк</li>
+    <li><code>bik</code> — БИК</li>
+    <li><code>corr_account</code> — корреспондентский счёт</li>
+    <li><code>legal_person</code> — в лице (уполномоченное лицо)</li>
+    <li><code>director</code> — ФИО руководителя</li>
+    <li><code>begin_time</code> — дата создания записи</li>
+    <li><code>end_time</code> — дата отключения (NULL если активен)</li>
+  </ol>
+  <p>SQL фильтрует только активных абонентов с <code>COMPANY = true</code> и <code>DELETED = false</code>. Реквизиты вытягиваются через подзапросы к <code>UserAttributes</code> по имени атрибута. Для совместимости с legacy-данными EBS поля <code>bank_account</code> и <code>corr_account</code> ищутся по обеим графемам — кириллической «р/с»/«к/с» и латинской «р/c»/«к/c».</p>
+
+  <h5 id="sorm-update-reports">Обновление существующих СОРМ-конфигураций</h5>
+  <p>Для серверов где СОРМ уже настроен и отсутствует новый отчёт <code>ABONENT_LEGAL</code> — управляющая команда:</p>
+  <pre><code>python manage.py fix_sorm_reports          # обновить SQL и создать ABONENT_LEGAL
+python manage.py fix_sorm_reports --dry-run  # показать что будет сделано
+python manage.py fix_sorm_reports --no-create  # только обновить SQL без создания новых</code></pre>
+  <p>Команда обходит все SORM-конфигурации (<code>Sorm.objects.filter(is_deleted=False)</code>), обновляет SQL у существующих 13 отчётов под актуальную схему (<code>Abonents.company</code>, <code>DELETED=false</code>) и создаёт отсутствующий <code>ABONENT_LEGAL</code> с дефолтными настройками (расширение <code>csv</code>, period не задан).</p>
 
   <h4 id="sorm-reports-ui">Управление отчётами (build 88+)</h4>
   <p>Вкладка <em>Отчёты</em> на странице СОРМ (<code>/admin/equipment/sorm_list/1/reports/</code>). Все операции выполняются через модальные окна без перехода на другие страницы:</p>
@@ -3837,7 +3868,7 @@ ACL_BLOCKED_GROUPS = ACL_DISABLED</code></pre>
 
   <!-- ===== 14. Обзор безопасности ===== -->
   <h2 id="security">14. Обзор безопасности</h2>
-  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 295) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
+  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 296) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
 
   <h3>Сетевая изоляция</h3>
   <p><strong>Docker-контейнеризация</strong> — каждый сервис (web, db, redis, celery, nginx, freeradius) работает в изолированном Docker-контейнере с собственной сетью (172.28.0.0/16). Входящие соединения проходят через nginx reverse proxy, что предотвращает прямой доступ к внутренним сервисам.</p>
@@ -3970,7 +4001,7 @@ docker compose up -d</code></pre>
 
   <!-- ===== 16. Стороннее ПО ===== -->
   <h2 id="third-party">16. Стороннее ПО</h2>
-  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 295).</p>
+  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 296).</p>
 
   <!-- ===== 17. Смена языка ===== -->
   <h2 id="language">17. Смена языка</h2>
@@ -3978,7 +4009,7 @@ docker compose up -d</code></pre>
 
   <!-- ===== 18. Технологический стек ===== -->
   <h2 id="tech-stack">18. Технологический стек</h2>
-  <p>СмИТ Биллинг v1.6.0 (build 295) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
+  <p>СмИТ Биллинг v1.6.0 (build 296) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
 
   <h3>Почему PostgreSQL</h3>
   <p>PostgreSQL 16 выбран в качестве основной СУБД по ряду причин:</p>
@@ -4060,8 +4091,8 @@ docker compose ps
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 295)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">27.04.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 295)</span>&nbsp;|&nbsp;<span data-smit="updated">27.04.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 296)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">27.04.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 296)</span>&nbsp;|&nbsp;<span data-smit="updated">27.04.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=220"></script>
