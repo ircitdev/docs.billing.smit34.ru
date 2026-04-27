@@ -3532,6 +3532,7 @@ ACL_BLOCKED_GROUPS = ACL_DISABLED</code></pre>
       </li>
       <li><a href="#modal-service-edit">13.3. Редактирование услуги</a></li>
       <li><a href="#modal-service-add">13.4. Добавление услуги</a></li>
+      <li><a href="#modal-bonus-edit">13.5. Бонусы — отложенная активация</a></li>
     </ul>
   </details>
   </div>
@@ -3627,6 +3628,41 @@ ACL_BLOCKED_GROUPS = ACL_DISABLED</code></pre>
     <li><code>GET /admin/Abonents/{abonent_id}/uslugi_ajax/?cat_id=N</code> — услуги в категории</li>
     <li><code>POST /admin/Abonents/{abonent_id}/uslugi_ajax/</code> — создание услуги</li>
   </ul>
+
+  <!-- 13.5. Бонусы — отложенная активация -->
+  <h3 id="modal-bonus-edit">13.5. Бонусы — отложенная активация</h3>
+  <p>На вкладке <strong>«Бонусы»</strong> карточки абонента отображаются <code>UsersUsluga</code>, у которых шаблон услуги имеет <code>summa &lt; 0</code>, либо индивидуальная сумма отрицательная, либо в имени услуги встречается «бонус». Бонусы можно назначать с <strong>отложенной датой активации</strong> — в этом случае запись создаётся включённой, но в таблице помечается серым бейджем «с DD.MM.YYYY», а <code>billing_worker</code> учитывает её только после наступления указанной даты.</p>
+
+  <h4>Бейдж отложенной активации</h4>
+  <p>В таблице бонусов рядом с названием услуги показывается серый бейдж «с DD.MM.YYYY» для записей, у которых <code>enable_date &gt; now()</code>. Бейдж исчезает автоматически после наступления даты активации (поле <code>future</code> пересчитывается на каждом запросе).</p>
+  <img src="../img/v267/bonus_table_future.png" alt="Таблица бонусов с бейджем отложенной активации" class="screenshot">
+
+  <h4>Модалка редактирования (build 267+)</h4>
+  <p>Карандаш в строке открывает модалку <code>#bonEditModal</code>. Доступные для изменения поля:</p>
+  <ul>
+    <li><strong>Дата активации</strong> — <code>&lt;input type="datetime-local"&gt;</code> с кнопкой ❌ для очистки. Поле редактирует <code>UsersUsluga.enable_date</code>:
+      <ul>
+        <li>Будущая дата → бонус становится отложенным (бейдж «с DD.MM.YYYY», <code>billing_worker</code> пропускает запись).</li>
+        <li>Прошедшая дата или «сейчас» → бонус активен немедленно, бейдж пропадает.</li>
+        <li>Очистка (кнопка ❌ + Сохранить) → текущее значение даты сохраняется без изменений (пустое поле в payload бэкенд игнорирует, чтобы не перетереть исходную дату случайным сохранением). Чтобы перезаписать дату — выберите конкретное значение через календарь.</li>
+      </ul>
+    </li>
+    <li><strong>Комментарий</strong> — поле <code>UsersUsluga.comment</code> (≤ 256 символов).</li>
+    <li><strong>Включён</strong> — переключатель <code>UsersUsluga.enabled</code>. Удобно для временного отключения без удаления.</li>
+  </ul>
+  <img src="../img/v267/bonus_edit_modal.png" alt="Модалка редактирования бонуса" class="screenshot">
+
+  <h4>AJAX-эндпоинт</h4>
+  <ul>
+    <li><code>GET /admin/Abonents/{abonent_id}/bonuses_ajax/</code> — список бонусов (с полями <code>enable_date</code>, <code>enable_date_raw</code> для <code>datetime-local</code>, <code>future</code>).</li>
+    <li><code>POST /admin/Abonents/{abonent_id}/bonuses_ajax/</code> с <code>action=edit</code> — сохранение полей <code>comment</code>, <code>enabled</code>, <code>enable_date</code> (ISO-формат <code>YYYY-MM-DDTHH:MM</code>). Поле <code>summ</code> также поддерживается, но в текущей UI-модалке не выведено — для индивидуальной суммы используйте модалку «Редактирование услуги».</li>
+    <li><code>POST</code> с <code>action=add</code> — создание бонуса с опциональными <code>enable_date</code> + <code>end_date</code> + <code>summ</code>.</li>
+    <li><code>POST</code> с <code>action=toggle</code> — переключение <code>enabled</code> кликом по бейджу статуса в таблице (без открытия модалки).</li>
+    <li><code>POST</code> с <code>action=delete</code> — soft-delete (<code>deleted=true</code>).</li>
+  </ul>
+
+  <h4>Связь с monthly billing</h4>
+  <p>Celery-задача <code>billing_worker</code> при ежемесячном списании пропускает <code>UsersUsluga</code> с <code>enable_date &gt; now()</code> — поэтому отложенный бонус попадает в начисление только в первый расчётный день после даты активации. Это позволяет, например, зарегистрировать «компенсацию за электроэнергию» за следующий месяц заранее и не следить за датой вручную.</p>
 
 
   <!-- ===== 14. Обзор безопасности ===== -->
