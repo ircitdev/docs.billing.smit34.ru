@@ -5,8 +5,8 @@
 (function () {
   window.SMIT_DOC = {
     version: '1.6.0',
-    build: '214',
-    updated: '18.04.2026',
+    build: '293',
+    updated: '27.04.2026',
     year: '2026',
     company: 'ООО «СмИТ»',
   };

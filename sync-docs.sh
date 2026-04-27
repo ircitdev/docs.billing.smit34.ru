@@ -19,8 +19,62 @@ HERE="$(cd "$(dirname "$0")" && pwd)"
 MIRROR="$(cd "$HERE/../../docs" && pwd)"
 SERVER_PATH="/var/www/docs.billing.smit34.ru"
 
-echo "=== 1. Rebuild search index ==="
 if command -v py >/dev/null 2>&1; then PY=py; else PY=python3; fi
+
+echo "=== 0. Sync version.js fallback values into HTML ==="
+(cd "$HERE" && $PY - <<'PYEOF'
+"""Подменяет fallback-значения в HTML на актуальные из js/version.js.
+
+Источник истины — js/version.js. После запуска все вхождения <span data-smit="full">…</span>,
+<span data-smit="build">…</span>, <span data-smit="updated">…</span> и заголовков с
+"v1.6.0 (build NNN)" / "build NNN" в title/meta синхронизируются с переменными.
+"""
+import re, glob, os
+js = open('js/version.js', 'r', encoding='utf-8').read()
+def get(name):
+    m = re.search(r"%s:\s*'([^']+)'" % name, js)
+    return m.group(1) if m else None
+v = {
+    'version': get('version'),
+    'build':   get('build'),
+    'updated': get('updated'),
+    'year':    get('year'),
+    'company': get('company'),
+}
+if not all(v.values()):
+    print('  WARN: cannot parse js/version.js — skip')
+    raise SystemExit(0)
+full = 'v%s (build %s)' % (v['version'], v['build'])
+brand = 'СмИТ Биллинг %s' % v['version']
+patterns = [
+    # data-smit text fallback: capture the value tag and replace inner text
+    (r'(<span data-smit="full"[^>]*>)v[\d.]+\s*\(build\s+\d+\)(</span>)',     r'\g<1>%s\g<2>' % full),
+    (r'(<span data-smit="vversion"[^>]*>)v[\d.]+(</span>)',                    r'\g<1>v%s\g<2>' % v['version']),
+    (r'(<span data-smit="version"[^>]*>)[\d.]+(</span>)',                      r'\g<1>%s\g<2>' % v['version']),
+    (r'(<span data-smit="build"[^>]*>)\d+(</span>)',                           r'\g<1>%s\g<2>' % v['build']),
+    (r'(<span data-smit="vbuild"[^>]*>)build\s+\d+(</span>)',                  r'\g<1>build %s\g<2>' % v['build']),
+    (r'(<span data-smit="updated"[^>]*>)\d{2}\.\d{2}\.\d{4}(</span>)',         r'\g<1>%s\g<2>' % v['updated']),
+    (r'(<span data-smit="year"[^>]*>)\d{4}(</span>)',                          r'\g<1>%s\g<2>' % v['year']),
+    (r'(<span data-smit="brand"[^>]*>)[^<]*(</span>)',                         r'\g<1>%s\g<2>' % brand),
+    # <title>API — СмИТ Биллинг v1.6.0 (build NNN)</title>
+    (r'(СмИТ Биллинг\s+)v[\d.]+\s*\(build\s+\d+\)',                            r'\g<1>%s' % full),
+    # SVG/text inside index.html: "v1.6.0 · build 214"
+    (r'v[\d.]+\s*·\s*build\s+\d+',                                              'v%s · build %s' % (v['version'], v['build'])),
+]
+total = 0
+for f in glob.glob('index.html') + glob.glob('pages/*.html'):
+    src = open(f, 'r', encoding='utf-8').read()
+    new = src
+    for pat, repl in patterns:
+        new = re.sub(pat, repl, new)
+    if new != src:
+        open(f, 'w', encoding='utf-8').write(new)
+        total += 1
+print('  updated %d files (version=%s build=%s updated=%s)' % (total, v['version'], v['build'], v['updated']))
+PYEOF
+)
+
+echo "=== 1. Rebuild search index ==="
 (cd "$HERE" && $PY - <<'PYEOF'
 import re, json, os, glob, html
 pages = []
