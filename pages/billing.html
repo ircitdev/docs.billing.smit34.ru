@@ -1071,41 +1071,60 @@ docker compose up -d</code></pre>
 
   <!-- 3.1 Тарифы -->
   <h3 id="tarif-create">3.1. Тарифы</h3>
-  <p>Управление тарифными планами: <strong>Тарификация &rarr; Тарифы</strong>. Список загружается через AJAX — мгновенный поиск, сортировка по столбцам, фильтр по линейке услуг и три таба: <em>Новые / В работе / Архив</em>.</p>
+  <p>Управление тарифными планами: <strong>Тарификация &rarr; Тарифы</strong>. Список загружается через AJAX — мгновенный поиск, сортировка по столбцам, фильтр по линейке услуг и четыре таба: <em>Новые / В работе / Архив / Год</em>.</p>
 
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs/tarif_list.png" alt="Список тарифов" class="screenshot">
+  <img src="../img/v288/tarifs_list.png" alt="Список тарифов" class="screenshot">
 
-  <h4 id="tarif-list-features">Возможности списка</h4>
+  <h4 id="tarif-list-features">Возможности списка (build 288)</h4>
   <ul>
+    <li><strong>Toolbar в одну строку</strong> — слева кнопки <em>Мастер</em> и <em>+ Добавить</em>, табы статусов и счётчик «N тарифов»; справа фильтр <em>Все линейки</em> и поиск по названию</li>
+    <li><strong>Табы со счётчиками</strong> — <em>Новые</em> (тарифы без флага «введён в эксплуатацию»), <em>В работе</em>, <em>Архив</em>, <em>Год</em> (активные с обновлениями за текущий год)</li>
     <li><strong>Поиск</strong> — фильтрация по названию в реальном времени (debounce 300 мс)</li>
-    <li><strong>Линейка</strong> — выпадающий список линеек из БД (<code>UslugaRangeTypes</code>)</li>
-    <li><strong>Табы</strong> — Новые / В работе / Архив со счётчиками</li>
-    <li><strong>Столбцы</strong> — №, Название, Описание, Цена, Абон. (кол-во абонентов), Услуг (кол-во услуг), Линейка</li>
+    <li><strong>Линейка</strong> — выпадающий список линеек из БД (<code>UslugaRangeTypes</code>); фиксированная ширина, не разрастается</li>
+    <li><strong>Столбцы</strong> — №, Тариф, Описание, Цена, Абон. (кликабельная цифра), Услуг (кликабельная цифра), Линейка</li>
     <li><strong>Сортировка</strong> — клик по заголовку столбца, иконки ▲▼</li>
-    <li><strong>Действия (⋯)</strong> — Редактировать, Дублировать, Архивировать / Разархивировать, Удалить</li>
+    <li><strong>Действия</strong> — кнопка-шестерёнка <i class="fas fa-cog"></i> (поворачивается при наведении): Редактировать, Дублировать, Архивировать / Разархивировать, Удалить</li>
+    <li><strong>Цена</strong> рассчитывается из <code>Tarif.get_abon_sum()</code> = сумма <code>Usluga.PRICE</code> по всем привязанным <code>TarifUsersUsluga</code> с учётом <code>countt</code></li>
+    <li><strong>Все действия пишутся в Аудит</strong> (<code>AuditOperations</code>, <code>table_name=TARIF</code>)</li>
   </ul>
 
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs/tarif_list_search.png" alt="Поиск по тарифам" class="screenshot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs/tarif_list_dropdown.png" alt="Меню действий тарифа" class="screenshot">
+  <h4 id="tarif-modal">Модальное окно редактирования тарифа</h4>
+  <p>Клик по названию тарифа в списке открывает компактную модалку (Bootstrap 5, <code>modal-lg</code>) с четырьмя вкладками. Полная форма (legacy) доступна по кнопке <i class="fas fa-external-link-alt"></i> в шапке модалки.</p>
 
-  <h4 id="tarif-main">Вкладка «Тариф»</h4>
-  <p>Основные параметры тарифного плана:</p>
+  <h5 id="tarif-modal-main">Вкладка «Основное»</h5>
+  <p>Просмотр и редактирование ключевых полей тарифа:</p>
   <ul>
-    <li><strong>Название</strong> — уникальное имя тарифа (отображается абоненту)</li>
-    <li><strong>Описание</strong> — подробное описание условий (отображается в ЛК и мобильном приложении)</li>
-    <li><strong>Введён в эксплуатацию</strong> — после включения тариф появляется в списке «В работе»</li>
-    <li><strong>В архиве</strong> — тариф перемещается в раздел «Архив» и не доступен для назначения</li>
+    <li><strong>Цена</strong> — расчётная сумма по услугам тарифа (read-only, обновляется автоматически при изменении состава услуг)</li>
+    <li><strong>Название</strong> — обязательное поле</li>
+    <li><strong>Описание</strong> — текст для ЛК и мобильного приложения</li>
+    <li><strong>Линейка услуг</strong> — выбор из <code>UslugaRangeTypes</code> (Интернет / Комплексные пакеты и т. д.)</li>
+    <li><strong>Оператор связи</strong> — Select2 AJAX-поиск по абонентам из папки <code>/Abonents/9002/</code> (<em>Операторы</em>); по умолчанию подставляется ООО «СМИТ» (id 9009)</li>
+    <li><strong>Архивный</strong> и <strong>Отображать на сайте</strong> — флажки</li>
+    <li><strong>Скорости трафика (read-only)</strong> — для всех привязанных услуг типа «Трафик» выводятся максимальная входящая/исходящая скорость в Мбит/с (из полей <code>Usluga.RATE_IN</code>/<code>RATE_OUT</code>, kbps&divide;1000). Услуги с пустыми скоростями скрываются. Редактируется только в карточке самой услуги</li>
   </ul>
 
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs/tarif_edit_with_services.png" alt="Форма редактирования тарифа" class="screenshot">
+  <img src="../img/v288/tarif_modal_main.png" alt="Модалка тарифа: вкладка Основное" class="screenshot">
 
-  <h4 id="tarif-services-inline">Услуги тарифа (инлайн)</h4>
-  <p>Под формой тарифа — карточка <strong>«Услуги тарифа»</strong> с таблицей привязанных услуг (<code>TarifUsersUsluga</code>): название, тип, цена. Кнопка <strong>«+ Добавить»</strong> открывает модальное окно с Select2-поиском по услугам.</p>
+  <h5 id="tarif-modal-services">Вкладка «Услуги»</h5>
+  <p>Состав тарифа — таблица <code>TarifUsersUsluga</code>: №, Услуга (ссылка на карточку), Тип, Цена (с tooltip-источником: <code>summa</code> / <code>price</code> / не задана), кнопка удаления. Внизу — поле Select2-AJAX-поиска по услугам с кнопкой <strong>+ Добавить</strong> в одну строку.</p>
+  <p>При добавлении/удалении услуги цена в шапке модалки и колонка «Цена» в списке тарифов обновляются автоматически. Каждое действие фиксируется в <code>AuditOperations</code>.</p>
 
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs/tarif_edit_add_service_modal.png" alt="Модалка добавления услуги в тариф" class="screenshot">
+  <img src="../img/v288/tarif_modal_services.png" alt="Модалка тарифа: вкладка Услуги" class="screenshot">
 
-  <h4 id="tarif-radius-inline">RADIUS-параметры тарифа (инлайн)</h4>
-  <p>Ниже — карточка <strong>«RADIUS-параметры»</strong> (<code>TarifRadiusParams</code>): атрибут, оператор (<code>:= += == =</code>), значение. Поддерживает добавление, редактирование и удаление без перезагрузки страницы.</p>
+  <h5 id="tarif-modal-radius">Вкладка «RADIUS»</h5>
+  <p>Управление параметрами <code>TarifRadiusParams</code>: Название, Атрибут (например <code>Mikrotik-Rate-Limit</code>), Значение, Оператор (<code>:= += == =</code>). Inline-форма добавления внизу, удаление по крестику <i class="fas fa-times"></i>.</p>
+
+  <img src="../img/v288/tarif_modal_radius.png" alt="Модалка тарифа: вкладка RADIUS" class="screenshot">
+
+  <h5 id="tarif-modal-abonents">Вкладка «Абоненты»</h5>
+  <p>Список всех абонентов на текущем тарифе (<code>Abonents.tarif_id</code>, <code>deleted=False</code>, <code>is_folder=False</code>). Колонки: №, ФИО (ссылка на карточку абонента — открывается в новой вкладке), Договор, Адрес, Статус (вкл/выкл). Клиентский live-фильтр сверху ищет по ФИО / договору / адресу. Sticky thead, скролл внутри модалки.</p>
+  <p><strong>Быстрый доступ:</strong> клик по цифре в колонке <em>Абон.</em> на странице тарифов открывает модалку сразу с активной вкладкой «Абоненты».</p>
+
+  <img src="../img/v288/tarif_modal_abonents.png" alt="Модалка тарифа: вкладка Абоненты" class="screenshot">
+
+  <div class="info-box">
+    <strong>API:</strong> <code>GET/POST /admin/tarifs/tarif_simple/&lt;id&gt;/</code> (Основное), <code>GET/POST/DELETE /admin/tarifs/tarif_usluga/&lt;id&gt;/</code> (Услуги), <code>GET/POST/DELETE /admin/tarifs/tarif_radius/&lt;id&gt;/</code> (RADIUS), <code>GET /admin/tarifs/tarif_abonents/&lt;id&gt;/</code> (Абоненты).
+  </div>
 
   <h4 id="tarif-tab-change">Вкладка «Смена тарифа»</h4>
   <p>Настройки перехода абонентов на/с этого тарифа:</p>
