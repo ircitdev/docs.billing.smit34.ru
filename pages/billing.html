@@ -2708,6 +2708,32 @@ LIMIT 1;</code></pre>
   </table>
   <p>После обработки аккаунтинга отправляется Celery-задача <code>update_nas_stats</code> для обновления статистики NAS.</p>
 
+  <h4 id="radius-sessions-recovery">Recovery missed Accounting-Start (build 323)</h4>
+  <p>Если NAS шлёт только <code>Interim-Update</code> без предшествующего <code>Accounting-Start</code> (типичная ситуация при перезапуске биллинга или потере UDP-пакета), <code>_radius_sessions_update()</code> в <code>radius_python/internet.py</code> отрабатывает следующим образом:</p>
+  <ol>
+    <li>Пытается обновить <code>UPDATE_TIME</code> в <code>RADIUS_SESSIONS</code> по паре <code>(USER_ID, ACCT_SESSION_ID)</code>.</li>
+    <li>Если <code>rowcount=0</code> (записи нет) — закрывает все осиротевшие открытые сессии этого пользователя c <code>END_REASON='Recovered: missed Accounting-Start'</code> и создаёт новую запись через <code>_radius_sessions_start()</code>.</li>
+  </ol>
+  <p>Без этого корректирования старая запись от прошлого подключения висела в <code>RADIUS_SESSIONS</code> без <code>END_TIME</code> неделями, а UI «Монитор сессий» показывал устаревшие даты со статусом «Online».</p>
+
+  <h4 id="cleanup-stale-sessions">Авто-закрытие зависших сессий</h4>
+  <p>Celery-задача <code>cleanup_stale_sessions</code> (запускается ежечасно) выполняет три SQL-запроса:</p>
+  <ul>
+    <li><code>USERS_RADIUSAUTH SET LOGGED=0 WHERE LOGGED=1 AND RADIUS_UPDATE &lt; now()-60min</code> — снимает флаг online со «зомби»-сессий.</li>
+    <li><code>users SET LOGGED=false</code> — синхронизирует поле в основной таблице.</li>
+    <li><code>RADIUS_SESSIONS SET END_TIME=now(), END_REASON='Stale: no Interim-Update' WHERE END_TIME IS NULL AND UPDATE_TIME &lt; now()-60min</code> — закрывает зависшие открытые сессии в истории.</li>
+  </ul>
+
+  <h4 id="radius-disconnect">Сброс RADIUS-сессий из админки (build 323)</h4>
+  <p>Кнопка <i class="fas fa-power-off"></i> в шапке карточки абонента (<code>POST /admin/nas_api/abonent-disconnect/&lt;abonent_id&gt;/</code>):</p>
+  <ol>
+    <li>Шлёт CoA Disconnect-Request на NAS каждой учётной записи (<code>NasController.disconnect_user</code>).</li>
+    <li>Если у Users.nas стоит виртуальный <code>127.0.0.1</code> (FreeRADIUS, не реальный роутер) — пропускает основную ветку и идёт в fallback <code>_coa_disconnect_by_radiusauth</code>, который берёт реальный NAS_IP из последней открытой <code>RADIUS_SESSIONS</code> (там колонка заполняется из Accounting-пакета).</li>
+    <li>Независимо от ответа NAS приводит БД в офлайн: <code>Users.LOGGED=false</code>, <code>USERS_RADIUSAUTH.LOGGED=0</code>, <code>RADIUS_SESSIONS.END_TIME=now()</code> с <code>END_REASON='Admin reset'</code>.</li>
+  </ol>
+  <p>UI «Монитор сессий» сразу показывает offline даже если CoA не дошёл до NAS. Когда NAS пришлёт следующий Accounting-пакет (новая сессия с другим <code>ACCT_SESSION_ID</code>) — recovery автоматически создаст новую открытую запись.</p>
+  <p>Бейдж <span class="badge bg-success">Online</span> в Мониторе сессий теперь ставится только при совпадении <code>RADIUS_SESSIONS.acct_session_id</code> с <code>USERS_RADIUSAUTH.acct_session_id</code> и свежем <code>RADIUS_UPDATE</code> (&lt; 15 минут). Сортировка списка — по <code>UPDATE_TIME DESC</code> (свежие активные сверху).</p>
+
   <h3 id="radius-clients">8.4. Клиенты (NAS)</h3>
   <p>Список RADIUS-клиентов генерируется автоматически при старте контейнера скриптом <code>docker/freeradius/entrypoint.sh</code> из таблицы <code>nas</code> базы данных биллинга.</p>
   <table>
@@ -2907,6 +2933,17 @@ chmod +x restore.sh
     <li><strong>Бесконечная прокрутка</strong> — подгрузка по 50 записей без пагинации</li>
     <li><strong>Экспорт CSV</strong> — кнопка «Выгрузить» с текущими фильтрами (до 50 000 записей)</li>
   </ul>
+
+  <h4 id="abonent-address-fias">Создание адреса через ФИАС/DaData (build 297-301, 324)</h4>
+  <p>В Quick Add модалке и в карточке абонента (Информация → Контактная информация → Адрес) рядом с полем Адрес есть зелёная иконка <i class="fas fa-plus-circle text-success"></i> — клик открывает модалку создания нового адреса с подсказками ФИАС/DaData:</p>
+  <ul>
+    <li>Поиск по подстроке (от 3 символов) — подсказки в реальном времени из DaData API.</li>
+    <li>Автозаполнение: регион, район, город, улица, дом, индекс, координаты.</li>
+    <li>Тип объекта (жилой/нежилой/коммерческий) — выпадающий список.</li>
+    <li>После сохранения адрес автоматически подставляется в поле Select2 без перезагрузки страницы.</li>
+  </ul>
+  <p>Если пользователь ввёл что-то в Select2 поиске, но ничего не найдено — Select2 показывает ссылку <em>«Создать через ФИАС»</em> с пробросом введённого текста как prefill в модалку.</p>
+  <p>Универсальная модалка <code>billing/templates/includes/_address_modal.html</code> работает в двух режимах: <code>data-mode='redirect'</code> (переход на страницу созданного адреса) и <code>data-mode='event'</code> (custom event <code>address:selected</code> с <code>{id, text}</code> для встраивания в Select2). Настройки DaData ключей — <code>/admin/settings/integrations/?tab=address</code>.</p>
 
   <h4 id="audit-abonents">Аудит действий с абонентами (build 295)</h4>
   <p>Все операции создания, редактирования и массовой обработки абонентов записываются в <code>AuditOperations</code> с <code>table_name='Abonents'</code>:</p>
@@ -3186,7 +3223,7 @@ chmod +x restore.sh
   </ul>
   <img src="../img/v100/abonent_accounts_speed.png" alt="Аккаунты / Скорость" class="screenshot">
 
-  <h4>Вкладка «Финансовые операции» абонента (build 214)</h4>
+  <h4>Вкладка «Финансовые операции» абонента (build 324)</h4>
   <p>Вкладка «Операции» в карточке абонента получила фильтрацию по периоду:</p>
   <ul>
     <li><strong>Быстрые кнопки</strong> — «Сегодня», «Неделя», «Месяц», «3 мес», «Год», «Все»</li>
@@ -3338,7 +3375,7 @@ chmod +x restore.sh
 
   <h3 id="houses">11.7. Адреса</h3>
   <p>Справочник адресов подключения. Иерархическая структура: корень &rarr; город &rarr; улица &rarr; дом. Путь: <code>/admin/dictionary/Homes/</code>.</p>
-  <p>Начиная с build 214, список использует <strong>динамическую загрузку</strong>: все записи загружаются одним AJAX-запросом (<code>/admin/dictionary/homes_json/</code>), фильтрация, сортировка и поиск выполняются на клиенте. С build 214 список переведён на <strong>чанковый рендер</strong> (по 100 строк) с <strong>бесконечной прокруткой</strong>, что позволяет работать с 4000+ записей без задержек при открытии страницы.</p>
+  <p>Начиная с build 324, список использует <strong>динамическую загрузку</strong>: все записи загружаются одним AJAX-запросом (<code>/admin/dictionary/homes_json/</code>), фильтрация, сортировка и поиск выполняются на клиенте. С build 324 список переведён на <strong>чанковый рендер</strong> (по 100 строк) с <strong>бесконечной прокруткой</strong>, что позволяет работать с 4000+ записей без задержек при открытии страницы.</p>
   <img src="../img/v170/homes_list.png" alt="Справочник адресов: общий вид" class="screenshot">
 
   <h4 id="houses-toolbar">Панель инструментов</h4>
@@ -3395,7 +3432,7 @@ chmod +x restore.sh
     </tbody>
   </table>
 
-    <!-- 11.7a Точки подключения (build 214) -->
+    <!-- 11.7a Точки подключения (build 324) -->
   <h3 id="conn-points">11.7a. Точки подключения</h3>
   <p>Отдельная вкладка для работы с логическими узлами сети: посёлки, СНТ, станции, районы. Путь: <code>/admin/dictionary/conn_points_list/</code>.</p>
 
@@ -3543,7 +3580,7 @@ ACL_BLOCKED_GROUPS = ACL_DISABLED</code></pre>
       <tr><td><code>ABONENT_SRV</code></td><td>Подключённые услуги и тарифы абонентов</td></tr>
       <tr><td><code>ABONENT_USER</code></td><td>Учётные записи (логин, IP, MAC)</td></tr>
       <tr><td><code>ABONENT_ADDR</code></td><td>Адреса подключения абонентов</td></tr>
-      <tr><td><strong><code>ABONENT_LEGAL</code></strong> <span class="badge bg-success" style="font-size:.7rem">build 296</span></td><td><strong>Реквизиты юридических лиц</strong> — только абоненты с <code>company=true</code>. 12 полей: ИНН, КПП, ОГРН, юридический/физический/почтовый адрес, р/с, Банк, БИК, к/с, В лице, Директор</td></tr>
+      <tr><td><strong><code>ABONENT_LEGAL</code></strong> <span class="badge bg-success" style="font-size:.7rem">build 324</span></td><td><strong>Реквизиты юридических лиц</strong> — только абоненты с <code>company=true</code>. 12 полей: ИНН, КПП, ОГРН, юридический/физический/почтовый адрес, р/с, Банк, БИК, к/с, В лице, Директор</td></tr>
       <tr><td><code>PAYMENT</code></td><td>Все финансовые операции (платежи, списания)</td></tr>
       <tr><td><code>SUPPLEMENTARY_SERVICE</code></td><td>Справочник дополнительных услуг</td></tr>
       <tr><td><code>REGIONS</code></td><td>Филиалы оператора связи</td></tr>
@@ -3558,7 +3595,7 @@ ACL_BLOCKED_GROUPS = ACL_DISABLED</code></pre>
 
   <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/screenshots/legal_v296/sorm_reports_list.png" alt="Список 14 отчётов СОРМ-3 в админке" class="screenshot">
 
-  <h5 id="sorm-legal-report">Отчёт ABONENT_LEGAL — реквизиты юридических лиц (build 296)</h5>
+  <h5 id="sorm-legal-report">Отчёт ABONENT_LEGAL — реквизиты юридических лиц (build 324)</h5>
   <p>Отдельный отчёт для юр.лиц со структурированными реквизитами организации. Колонки CSV (в порядке вывода):</p>
   <ol>
     <li><code>region_id</code> — идентификатор региона (всегда <code>1</code>)</li>
@@ -3637,7 +3674,7 @@ python manage.py fix_sorm_reports --no-create  # только обновить S
 
   <!-- 13.1. Финансовые операции -->
   <h3 id="modal-finops">13.1. Финансовые операции — список и модал</h3>
-  <p>Раздел <strong>Абоненты → Финансовые операции</strong> (<code>/admin/Abonents/FinanceOperations/</code>) переработан в build 214: серверная пагинация под ~400 тыс. записей, фильтры, модальное добавление.</p>
+  <p>Раздел <strong>Абоненты → Финансовые операции</strong> (<code>/admin/Abonents/FinanceOperations/</code>) переработан в build 324: серверная пагинация под ~400 тыс. записей, фильтры, модальное добавление.</p>
   <ul>
     <li><strong>Фильтры</strong> — поиск по абоненту / описанию / номеру, тип операции (dropdown), диапазон дат «с … по». По умолчанию — текущий месяц.</li>
     <li><strong>Цветовые бейджи</strong> — зелёный для прихода, красный для расхода, серый для нулевой суммы. Строки сторнированных операций — зачёркнуты.</li>
@@ -3934,7 +3971,7 @@ python manage.py fix_sorm_reports --no-create  # только обновить S
     <li><strong>1</strong> — мажорная версия (поколение биллинга)</li>
     <li><strong>0</strong> — минорная версия (функциональный релиз)</li>
     <li><strong>0</strong> — патч-версия</li>
-    <li><strong>build 214</strong> — номер сборки (инкрементируется при каждом деплое)</li>
+    <li><strong>build 324</strong> — номер сборки (инкрементируется при каждом деплое)</li>
   </ul>
   <p>Версия отображается в футере: <strong>СмИТ Биллинг 1.6</strong>. Файл версии: <code>billing/version.py</code>.</p>
 
