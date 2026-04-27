@@ -3533,6 +3533,7 @@ ACL_BLOCKED_GROUPS = ACL_DISABLED</code></pre>
       <li><a href="#modal-service-edit">13.3. Редактирование услуги</a></li>
       <li><a href="#modal-service-add">13.4. Добавление услуги</a></li>
       <li><a href="#modal-bonus-edit">13.5. Бонусы — отложенная активация</a></li>
+      <li><a href="#usluga">13.6. Услуги/Бонусы — список и массовые действия</a></li>
     </ul>
   </details>
   </div>
@@ -3663,6 +3664,111 @@ ACL_BLOCKED_GROUPS = ACL_DISABLED</code></pre>
 
   <h4>Связь с monthly billing</h4>
   <p>Celery-задача <code>billing_worker</code> при ежемесячном списании пропускает <code>UsersUsluga</code> с <code>enable_date &gt; now()</code> — поэтому отложенный бонус попадает в начисление только в первый расчётный день после даты активации. Это позволяет, например, зарегистрировать «компенсацию за электроэнергию» за следующий месяц заранее и не следить за датой вручную.</p>
+
+  <!-- 13.6. Услуги/Бонусы — список и массовые действия -->
+  <h3 id="usluga">13.6. Услуги/Бонусы — список и массовые действия (build 268–275)</h3>
+  <p>Раздел «Тарификация &rarr; Услуги/Бонусы» (<code>/admin/tarifs/Usluga/</code>) полностью перепроектирован: собственный тулбар, вкладка «Все», 11 массовых действий, модалка управления типами услуг, аудит всех изменений, специальная вкладка «Шейпер» для трафиковых услуг.</p>
+
+  <img src="../img/v275/1_usluga_list.png" alt="Раздел Услуги/Бонусы — список" class="screenshot">
+
+  <h4>Вкладки по типам</h4>
+  <ul>
+    <li><strong>Все</strong> — выбрана по умолчанию, показывает все услуги без фильтра по типу. Появляется дополнительная колонка «Тип» в таблице.</li>
+    <li><strong>Абонентская плата, Трафик, IP телевидение, Стандартный, ...</strong> — фильтр по <code>Usluga.system_type</code>. Сортировка табов по убыванию количества услуг.</li>
+    <li><strong>Не определено</strong> — услуги без указанного типа (<code>system_type IS NULL</code>).</li>
+  </ul>
+
+  <h4>Колонки таблицы</h4>
+  <p>№ | Наименование | Тип (только в табе «Все») | Сумма | Метод | Тариф | ЛК | Действие.</p>
+  <ul>
+    <li><strong>Сумма</strong>: показывается <code>summa</code> с fallback на <code>price</code>. Если у услуги задана <code>usl_discount &gt; 0</code> — рядом зелёным <code>(-N%)</code>.</li>
+    <li><strong>Тариф</strong>: первый тариф из <code>TarifUsersUsluga</code> + бейдж «+N» если их больше; <strong>клик</strong> по названию подставляет его в поле поиска и фильтрует таблицу по этому тарифу.</li>
+    <li><strong>ЛК</strong>: галочка / крестик из <code>is_show_web</code>.</li>
+    <li><strong>Действие</strong>: <code>✎ Изменить</code> (открывает модалку) / <code>↗ Полная форма</code> / <code>🗑 Удалить</code> (soft-delete с подтверждением).</li>
+  </ul>
+
+  <h4>Поиск</h4>
+  <p>Поле справа от тулбара ищет одновременно по <strong>названию услуги</strong> и по <strong>названию тарифа</strong>, в котором она используется. Работает на стороне клиента (без перезагрузки страницы).</p>
+
+  <h4>Массовые действия</h4>
+  <p>Чекбокс в строке активирует кнопку <strong>«Действия (N)»</strong>, которая открывает выпадающее меню с 11 операциями:</p>
+
+  <img src="../img/v275/2_bulk_actions.png" alt="Массовые действия" class="screenshot">
+
+  <table>
+    <thead><tr><th>Действие</th><th>Описание</th><th>Аудит</th></tr></thead>
+    <tbody>
+      <tr><td>Восстановить из архива</td><td><code>archived=False</code></td><td>да</td></tr>
+      <tr><td>В архив</td><td><code>archived=True</code> — услуга скрыта в списках добавления</td><td>да</td></tr>
+      <tr><td>Тип услуги…</td><td>Изменить <code>system_type</code> через модалку выбора</td><td>да</td></tr>
+      <tr><td>Метод списания…</td><td>Изменить <code>usluga_abon_type</code> (Разово / Ежемесячно / ...)</td><td>да</td></tr>
+      <tr><td>Приоритет…</td><td>Установить <code>priority</code> (0–9999)</td><td>да</td></tr>
+      <tr><td>Тариф…</td><td>Привязать выбранные услуги к выбранным тарифам через <code>TarifUsersUsluga</code>; уже существующие связи пропускаются</td><td>да</td></tr>
+      <tr><td>Скидка…</td><td>Установить <code>usl_discount</code> в %</td><td>да</td></tr>
+      <tr><td>Показывать в ЛК</td><td><code>is_show_web=True</code></td><td>да</td></tr>
+      <tr><td>Скрыть в ЛК</td><td><code>is_show_web=False</code></td><td>да</td></tr>
+      <tr><td>Дублировать</td><td>Создаёт копии с суффиксом «(копия)» в имени</td><td>да (с ID новых)</td></tr>
+      <tr><td>Удалить (soft)</td><td>Soft-delete <code>deleted=True</code>. <strong>Защита</strong>: запрещено если услуга назначена активным абонентам — выдаётся ошибка с примерами ID</td><td>да</td></tr>
+    </tbody>
+  </table>
+
+  <p>Также рядом с поиском есть <strong>отдельная кнопка CSV</strong> — экспортирует выбранные услуги (или все видимые после фильтра) в файл <code>usluga_export.csv</code> с колонками: ID, Название, Тип, Метод, Сумма, Цена, Приоритет, Веб, Архив, Системная, Комментарий.</p>
+
+  <h4>Управление типами услуг</h4>
+  <p>Кнопка «Типы услуг» открывает модалку CRUD для справочника <code>usluga_type</code>:</p>
+
+  <img src="../img/v275/3_types_modal.png" alt="Модалка типов услуг" class="screenshot">
+
+  <ul>
+    <li>Добавить новый тип (поле сверху + кнопка).</li>
+    <li>Переименовать (inline-редактирование + кнопка <code>💾</code>).</li>
+    <li>Удалить (<code>🗑</code>) — заблокировано если в типе есть хотя бы одна услуга. Бейдж справа показывает количество.</li>
+  </ul>
+
+  <h4>Скидка на услугу</h4>
+  <p>Если у услуги задано <code>Usluga.usl_discount &gt; 0</code>, в колонке «Сумма» рядом с ценой отображается <span style="color:#28a745">(-N%)</span> зелёным:</p>
+
+  <img src="../img/v275/4_discount_badge.png" alt="Скидка на услугу" class="screenshot">
+
+  <h4>Вкладка «Шейпер» для типа «Трафик» (build 272)</h4>
+  <p>Для услуг с <code>system_type_id=9</code> (тип «Трафик») в модалке редактирования добавляется отдельная вкладка с параметрами HTB-шейпера. Появляется автоматически при выборе типа в селекте «Тип».</p>
+
+  <img src="../img/v275/5_shaper_tab.png" alt="Вкладка Шейпер" class="screenshot">
+
+  <p>9 полей сгруппированы по направлениям трафика:</p>
+  <ul>
+    <li><strong>↓ Входящий (download):</strong> RATE_IN (гарантированная), CEIL_IN (макс.), BURST_IN, CBURST_IN.</li>
+    <li><strong>↑ Исходящий (upload):</strong> RATE_OUT (гарантированная), CEIL_OUT (макс.), BURST_OUT, CBURST_OUT.</li>
+    <li><strong>BURST_THRESHOLD</strong> — индикатор «взрывного» режима (наличие значения = режим включён).</li>
+  </ul>
+  <p>Скорости в Кбит/с, буферы в байтах. Пустое поле = NULL. У каждого поля есть ⓘ-иконка с подсказкой.</p>
+
+  <h4>Аудит</h4>
+  <p>Все изменения через модалку и массовые операции пишутся в <code>AuditOperations</code> с <code>table_name='USLUGA'</code>:</p>
+  <ul>
+    <li><strong>Создание/изменение услуги</strong> — diff ключевых полей (название, тип, метод, сумма, цена, приоритет, архив, ЛК).</li>
+    <li><strong>Массовые операции</strong> — одна запись на операцию с количеством обработанных услуг и списком первых 20 ID.</li>
+    <li><strong>CRUD типов услуг</strong> — отдельные записи с <code>table_name='USLUGA_TYPE'</code>.</li>
+  </ul>
+
+  <h4>Backend endpoints</h4>
+  <ul>
+    <li><code>GET /admin/usluga_modal/{id}/</code> — данные услуги для модалки</li>
+    <li><code>POST /admin/usluga_modal/{id}/</code> — сохранение (включая шейпер)</li>
+    <li><code>POST /admin/usluga_modal/add/</code> — создание новой</li>
+    <li><code>GET /admin/usluga_types/</code> — список типов (<code>?with_counts=1</code> добавляет счётчик использований)</li>
+    <li><code>GET /admin/usluga_abon_types/</code> — список методов списания</li>
+    <li><code>POST /admin/usluga_types/crud/</code> — добавить / переименовать / удалить тип</li>
+    <li><code>POST /admin/usluga_bulk/</code> — массовые операции (action: archive/unarchive/hide_lk/show_lk/set_method/set_type/set_priority/set_discount/add_to_tarifs/duplicate/export_csv/delete)</li>
+  </ul>
+
+  <h4>Подсказка для разработчиков</h4>
+  <ul>
+    <li>Чекбоксы массового выбора используют классы <code>.bulk-check</code> + ID-переключатель <code>#bulk-check-all</code> — стиль выровнен с разделом «Глобальный поиск абонентов».</li>
+    <li>Видимость табов реализована через виртуальный <code>id='all'</code> (не ID из <code>usluga_type</code>) — <code>UslugaListView.make_context()</code> распознаёт его по сырому URL-параметру и фильтрует все услуги без указания <code>system_type</code>.</li>
+    <li>Колонка «Тип» появляется в таблице только в табе «Все», в специализированных табах она избыточна.</li>
+    <li>Для скрытия отдельных полей на полной форме (<code>/admin/tarifs/Usluga/&lt;id&gt;/</code>) используйте <code>FRAMEWORK_FORM_GROUP_FIELDS.SHOW_ON_FORM=0</code> — например, в build 273 так скрыто поле <code>SERVICE_TYPE</code>.</li>
+  </ul>
 
 
   <!-- ===== 14. Обзор безопасности ===== -->
