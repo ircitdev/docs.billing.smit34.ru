@@ -166,6 +166,7 @@
           <li class="sub-item"><a href="../pages/billing.html#shell-exec">7.9. Shell-команды</a></li>
           <li class="sub-item"><a href="../pages/billing.html#nas-management-api">7.10. NAS API</a></li>
           <li class="sub-item"><a href="../pages/billing.html#ip-allocation">7.11. Выделение IP</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#nas-ip-lifecycle">7.12. NAS IP lifecycle</a></li>
           <li><a href="../pages/billing.html#freeradius">8. FreeRADIUS</a></li>
           <li class="sub-item"><a href="../pages/billing.html#radius-arch">8.1. Архитектура</a></li>
           <li class="sub-item"><a href="../pages/billing.html#radius-auth">8.2. Авторизация</a></li>
@@ -2223,6 +2224,7 @@ Content-Type: application/json
     <li><a href="#shell-exec">7.9. Выполнение shell-команд</a></li>
     <li><a href="#nas-management-api">7.10. NAS Management API</a></li>
     <li><a href="#ip-allocation">7.11. Выделение IP из пула</a></li>
+    <li><a href="#nas-ip-lifecycle">7.12. NAS IP lifecycle и сброс сессий</a></li>
     </ul>
   </details>
   </div>
@@ -2637,6 +2639,47 @@ LIMIT 1;</code></pre>
   <div class="info-box">
     <strong>Примечание:</strong> Функция <code>generate_series</code> для типа <code>inet</code> доступна в PostgreSQL 10+. Для больших пулов (/16 и более) запрос может занять несколько секунд.
   </div>
+
+  <!-- 7.12 NAS IP lifecycle + broadcast disconnect -->
+  <h3 id="nas-ip-lifecycle">7.12. NAS IP lifecycle и сброс сессий (build 330)</h3>
+  <p>Комплекс механизмов для надёжного управления IP-адресами и RADIUS-сессиями в условиях нескольких NAS-устройств.</p>
+
+  <h4 id="ip-allocation-service">Централизованный сервис IP (<code>ip_allocation.py</code>)</h4>
+  <p>Сервис <code>billing/services/ip_allocation.py</code> заменяет inline-логику выдачи IP в <code>nas_api.py</code> и обеспечивает защиту от race condition при параллельных запросах:</p>
+  <ul>
+    <li><strong><code>collect_used_ips()</code></strong> — собирает занятые IP из трёх источников: <code>users.IP</code>, <code>users.SNATIP</code> (статический NAT), <code>RADIUS_SESSIONS.FRAMED_IP_ADDRESS</code> (активные сессии, bigint → строка)</li>
+    <li><strong><code>allocate_ip_from_pool(pool, user=None)</code></strong> — транзакционная выдача: <code>@transaction.atomic</code> + финальная проверка <code>Users.objects.filter(ip=ip_str).exists()</code> перед записью. Если <code>user=None</code> — режим предпросмотра без записи в БД</li>
+    <li><strong><code>find_duplicate_ips()</code></strong> — возвращает <code>{ip: [pks]}</code> для всех IP, назначенных более чем одному Users (исключает NULL и 0.0.0.0)</li>
+  </ul>
+
+  <h4 id="ip-duplicate-protection">Защита от дублей IP</h4>
+  <p>Дубли IP возникают при параллельных запросах на выдачу адреса или ручном редактировании. Система защищает на двух уровнях:</p>
+  <ul>
+    <li><strong>Форма Users</strong> — <code>Users.clean()</code> при ручном вводе IP проверяет уникальность и выдаёт ошибку: <em>«IP-адрес 10.x.x.x уже назначен пользователю login (#pk). Используйте кнопку «Выдать свободный IP»»</em></li>
+    <li><strong>Список Users</strong> — JS на стороне клиента подсчитывает повторения каждого IP; дубли подсвечиваются красным + бейдж <code>×N</code>. Клик по бейджу фильтрует таблицу по этому IP</li>
+    <li><strong>Диагностика</strong>: <code>manage.py find_ip_duplicates</code> — показывает все дубли; <code>--fix</code> — сбрасывает IP в NULL у «проигравших» (оставляет у пользователя с самой свежей <code>USERS_RADIUSAUTH.RADIUS_UPDATE</code>)</li>
+  </ul>
+
+  <h4 id="broadcast-disconnect">Сброс RADIUS-сессий broadcast'ом</h4>
+  <p>При нажатии «Сбросить RADIUS-сессии» в карточке абонента CoA Disconnect отправляется <strong>параллельно на все включённые NAS</strong>:</p>
+  <pre><code>disconnect_user(user_id, broadcast=True)   # по умолчанию
+disconnect_user(user_id, broadcast=False)  # только NAS из карточки Users</code></pre>
+  <p>Реализация: <code>ThreadPoolExecutor(max_workers=min(N, 20))</code> + <code>as_completed(timeout=10)</code> — максимум 10 секунд независимо от числа NAS. NAS с реальной сессией отвечает <code>Disconnect-ACK</code>, остальные — <code>Disconnect-NAK</code>.</p>
+  <p>UI показывает результат:</p>
+  <pre><code>Отключено сессий: 1
+Disconnect-ACK от: Malder
+NAS без сессии (NAK): CCR, JOY, Червленое, ...</code></pre>
+
+  <h4 id="auto-assign-nas">Авто-определение реального NAS (Celery task)</h4>
+  <p>Задача <code>auto_assign_real_nas</code> запускается раз в час (beat schedule <code>auto-assign-real-nas</code>):</p>
+  <ol>
+    <li>Находит Users с <code>nas_id = DEFAULT_NAS_ID</code> (из <code>VpnConst</code>), у которых <code>RADIUS_SESSIONS.START_TIME</code> старше 24 часов</li>
+    <li>Берёт <code>NAS_IP_ADDRESS</code> из последней сессии, ищет запись <code>Nas</code> по IP</li>
+    <li>Если текущий IP не входит в пул реального NAS — выдаёт новый через <code>allocate_ip_from_pools()</code></li>
+    <li>Обновляет <code>Users.nas_id</code> и <code>Users.ip</code>, пишет в <code>AuditOperations</code></li>
+    <li>Отправляет <code>disconnect_user.delay(user.pk, broadcast=True)</code> для переавторизации</li>
+  </ol>
+  <p><strong>Настройка:</strong> В <code>/admin/settings/VpnConst/</code> добавить запись с именем <code>DEFAULT_NAS_ID</code> и значением = ID NAS-заглушки (PreAuth NAS). Задача безопасна при отсутствии настройки — просто пишет info-лог и завершается.</p>
 
   <!-- ===== 8. FreeRADIUS ===== -->
   <h2 id="freeradius">8. FreeRADIUS / RADIUS</h2>
