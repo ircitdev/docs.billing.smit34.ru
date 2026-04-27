@@ -1073,15 +1073,15 @@ docker compose up -d</code></pre>
   <h3 id="tarif-create">3.1. Тарифы</h3>
   <p>Управление тарифными планами: <strong>Тарификация &rarr; Тарифы</strong>. Список загружается через AJAX — мгновенный поиск, сортировка по столбцам, фильтр по линейке услуг и четыре таба: <em>Новые / В работе / Архив / Год</em>.</p>
 
-  <img src="../img/v288/tarifs_list.png" alt="Список тарифов" class="screenshot">
+  <img src="../img/v291/tarifs_list.png" alt="Список тарифов с колонкой «Юр.лиц»" class="screenshot">
 
-  <h4 id="tarif-list-features">Возможности списка (build 288)</h4>
+  <h4 id="tarif-list-features">Возможности списка (build 291)</h4>
   <ul>
     <li><strong>Toolbar в одну строку</strong> — слева кнопки <em>Мастер</em> и <em>+ Добавить</em>, табы статусов и счётчик «N тарифов»; справа фильтр <em>Все линейки</em> и поиск по названию</li>
     <li><strong>Табы со счётчиками</strong> — <em>Новые</em> (тарифы без флага «введён в эксплуатацию»), <em>В работе</em>, <em>Архив</em>, <em>Год</em> (активные с обновлениями за текущий год)</li>
     <li><strong>Поиск</strong> — фильтрация по названию в реальном времени (debounce 300 мс)</li>
     <li><strong>Линейка</strong> — выпадающий список линеек из БД (<code>UslugaRangeTypes</code>); фиксированная ширина, не разрастается</li>
-    <li><strong>Столбцы</strong> — №, Тариф, Описание, Цена, Абон. (кликабельная цифра), Услуг (кликабельная цифра), Линейка</li>
+    <li><strong>Столбцы</strong> — №, Тариф, Описание, Цена, Абон. (кликабельная цифра), Услуг (кликабельная цифра), Линейка, <strong>Юр.лиц</strong> (зелёная галочка <i class="fas fa-check-circle text-success"></i> для тарифов для юридических лиц)</li>
     <li><strong>Сортировка</strong> — клик по заголовку столбца, иконки ▲▼</li>
     <li><strong>Действия</strong> — кнопка-шестерёнка <i class="fas fa-cog"></i> (поворачивается при наведении): Редактировать, Дублировать, Архивировать / Разархивировать, Удалить</li>
     <li><strong>Цена</strong> рассчитывается из <code>Tarif.get_abon_sum()</code> = сумма <code>Usluga.PRICE</code> по всем привязанным <code>TarifUsersUsluga</code> с учётом <code>countt</code></li>
@@ -1099,11 +1099,16 @@ docker compose up -d</code></pre>
     <li><strong>Описание</strong> — текст для ЛК и мобильного приложения</li>
     <li><strong>Линейка услуг</strong> — выбор из <code>UslugaRangeTypes</code> (Интернет / Комплексные пакеты и т. д.)</li>
     <li><strong>Оператор связи</strong> — Select2 AJAX-поиск по абонентам из папки <code>/Abonents/9002/</code> (<em>Операторы</em>); по умолчанию подставляется ООО «СМИТ» (id 9009)</li>
-    <li><strong>Архивный</strong> и <strong>Отображать на сайте</strong> — флажки</li>
+    <li><strong>Архивный</strong>, <strong>Отображать на сайте</strong>, <strong>Для юр.лиц</strong> <i class="fas fa-briefcase text-success"></i> — флажки. Флаг <em>«Для юр.лиц»</em> (<code>Tarif.is_business</code>, build 291) помечает тариф как предназначенный для юридических лиц. Все тарифы с подстрокой «Business» в названии активированы автоматически при миграции</li>
+    <li><strong>Сегментация абонентов</strong> (build 292): юр.лицам в модалке создания (Quick Add) видны <em>только тарифы для юр.лиц</em>, физ.лицам — все остальные. При выборе Business-тарифа чекбокс «Юр. лицо» проставляется автоматически. Все абоненты на Business-тарифах имеют <code>Abonents.company=True</code> (data-migration <code>0071</code>)</li>
     <li><strong>Скорости трафика (read-only)</strong> — для всех привязанных услуг типа «Трафик» выводятся максимальная входящая/исходящая скорость в Мбит/с (из полей <code>Usluga.RATE_IN</code>/<code>RATE_OUT</code>, kbps&divide;1000). Услуги с пустыми скоростями скрываются. Редактируется только в карточке самой услуги</li>
   </ul>
 
-  <img src="../img/v288/tarif_modal_main.png" alt="Модалка тарифа: вкладка Основное" class="screenshot">
+  <img src="../img/v291/tarif_modal_main.png" alt="Модалка тарифа: вкладка Основное (с чекбоксом «Для юр.лиц»)" class="screenshot">
+
+  <p>Модалка создания нового тарифа (кнопка <em>+ Добавить</em>) включает те же флажки <em>Архивный</em> и <em>Для юр.лиц</em>, плюс линейку услуг (build 291):</p>
+
+  <img src="../img/v291/tarif_add.png" alt="Модалка создания тарифа с чекбоксом «Для юр.лиц»" class="screenshot">
 
   <h5 id="tarif-modal-services">Вкладка «Услуги»</h5>
   <p>Состав тарифа — таблица <code>TarifUsersUsluga</code>: №, Услуга (ссылка на карточку), Тип, Цена (с tooltip-источником: <code>summa</code> / <code>price</code> / не задана), кнопка удаления. Внизу — поле Select2-AJAX-поиска по услугам с кнопкой <strong>+ Добавить</strong> в одну строку.</p>
@@ -3290,6 +3295,25 @@ chmod +x restore.sh
 
   <h3 id="requisites">11.6. Реквизиты</h3>
   <p>Банковские и юридические реквизиты оператора для формирования договоров, счетов и актов. ИНН, КПП, расчётный счёт, БИК, юридический адрес.</p>
+
+  <h4 id="legal-entity-requisites">Реквизиты абонентов-юр.лиц (build 292)</h4>
+  <p>Каталог <code>UserAttributes</code> содержит 12 атрибутов с флагом <code>default_person=True</code>:</p>
+  <ul>
+    <li><strong>ИНН</strong> (12 цифр), <strong>КПП</strong> (9 цифр), <strong>ОГРН</strong> (13/15 цифр)</li>
+    <li><strong>Юридический адрес</strong>, <strong>Физический адрес</strong>, <strong>Почтовый адрес</strong></li>
+    <li><strong>р/с</strong> (расчётный счёт), <strong>Банк</strong>, <strong>БИК</strong>, <strong>к/с</strong> (корреспондентский счёт)</li>
+    <li><strong>В лице</strong> (уполномоченное лицо), <strong>Директор</strong> (ФИО руководителя)</li>
+  </ul>
+  <p>Логика отображения:</p>
+  <ul>
+    <li>Карточка абонента → вкладка <strong>СОРМ → Реквизиты</strong>: для юр.лиц (<code>Abonents.company=True</code>) автоматически создаются пустые <code>AttributeValues</code> со всеми 12 атрибутами; для физ.лиц — атрибуты с <code>default_individual=True</code></li>
+    <li>Карточка абонента → вкладка <strong>СОРМ → СОРМ</strong>: для юр.лиц добавляется отдельная карточка «Реквизиты юр.лица» с группой полей в <code>row g-3</code> (12 полей)</li>
+    <li>Карточка абонента → вкладка <strong>Информация → Контактная информация → блок СОРМ</strong>: для юр.лиц mini-блок показывает <em>ИНН / КПП / ОГРН</em> в левой колонке и <em>В лице / Директор</em> в правой; форма редактирования содержит соответствующие поля</li>
+  </ul>
+  <p>Endpoint <code>GET/POST /admin/Abonents/&lt;id&gt;/sorm_data/</code> различает физ./юр.лица по <code>Abonents.company</code>. Для юр.лиц поля сохраняются в <code>AttributeValues</code> по имени атрибута (<code>UserAttributes.name__in=['ИНН','КПП',…]</code>).</p>
+  <img src="../img/v292/abonent_legal_requisites.png" alt="Вкладка Реквизиты для юр.лица" class="screenshot">
+  <img src="../img/v292/sorm_legal_block.png" alt="Карточка «Реквизиты юр.лица» на вкладке СОРМ" class="screenshot">
+  <img src="../img/v292/contact_info_legal.png" alt="Mini-блок СОРМ на Контактной информации для юр.лиц" class="screenshot">
 
   <h3 id="houses">11.7. Адреса</h3>
   <p>Справочник адресов подключения. Иерархическая структура: корень &rarr; город &rarr; улица &rarr; дом. Путь: <code>/admin/dictionary/Homes/</code>.</p>
