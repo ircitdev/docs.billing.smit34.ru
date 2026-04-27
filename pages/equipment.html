@@ -160,7 +160,9 @@
         <a href="equipment.html"><i class="ti ti-broadcast"></i> Интеграция с оборудованием <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
         <ul class="submenu">
           <li><a href="equipment.html#internet">1. Интернет (NAS/BRAS)</a></li>
-          <li class="sub-item"><a href="equipment.html#switch-types">1.1. Типы коммутаторов</a></li>
+          <li class="sub-item"><a href="equipment.html#nas-modal">1.1. Модалка NAS</a></li>
+          <li class="sub-item"><a href="equipment.html#switch-modal">1.2. Модалка Switch</a></li>
+          <li class="sub-item"><a href="equipment.html#switch-types">1.3. Типы коммутаторов</a></li>
           <li><a href="equipment.html#voip">2. Телефония (VoIP)</a></li>
           <li><a href="equipment.html#iptv">3. IPTV</a></li>
           <li class="sub-item"><a href="equipment.html#iptv-tvip">3.1. TVIP Media</a></li>
@@ -289,10 +291,45 @@ docker compose restart freeradius</code></pre>
     <li><a>Прочие (пользовательская схема)</a> <span class="desc">Интеграция любого RADIUS-совместимого оборудования</span></li>
   </ul>
 
+  <!-- ===== NAS модальное окно ===== -->
+  <h3 id="nas-modal">Редактирование NAS — модальное окно</h3>
+  <p>Начиная с build 329, все операции с NAS-устройствами выполняются в модальном окне (без перехода на отдельную страницу). Кнопка <i class="ti ti-pencil"></i> в строке таблицы открывает полнофункциональное окно редактирования.</p>
+
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v329/equipment_nas_list.png" alt="Список NAS" class="screenshot">
+
+  <p>Модальное окно содержит 6 вкладок:</p>
+  <ul>
+    <li><strong>Основное</strong> — название, IP-адрес, маска, тип NAS, адрес установки (Адрес Select2), включён / производственный.</li>
+    <li><strong>RADIUS</strong> — shared secret, CoA-пароль/порт, пароль пользователей, флаги NetFlow и поведения при блокировке.</li>
+    <li><strong>Авторизация</strong> — 11 методов авторизации (логин, MAC, OPT82, IP, VLAN и др.).</li>
+    <li><strong>Управление</strong> — параметры SSH/Telnet-подключения: тип, IP, порт, логин, пароль.</li>
+    <li><strong>IP-пулы</strong> — привязка пулов: основной, NAT, белый, Hotspot, DNS, VLAN-пул, следующий NAS.</li>
+    <li><strong>OSS / Скрипты</strong> — пути скриптов, интерфейсы для MikroTik / Cisco / Redback.</li>
+  </ul>
+
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v329/nas_modal_main.png" alt="NAS модалка — вкладка Основное" class="screenshot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v329/nas_modal_radius.png" alt="NAS модалка — вкладка RADIUS" class="screenshot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v329/nas_modal_auth.png" alt="NAS модалка — вкладка Авторизация" class="screenshot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v329/nas_modal_telnet.png" alt="NAS модалка — вкладка Управление" class="screenshot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v329/nas_modal_pulls.png" alt="NAS модалка — вкладка IP-пулы" class="screenshot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v329/nas_modal_oss.png" alt="NAS модалка — вкладка OSS" class="screenshot">
+
+  <div class="info-box">После сохранения NAS биллинг показывает баннер «Требуется перезапуск FreeRADIUS» — clients.conf обновляется при следующем старте контейнера.</div>
+
+  <!-- ===== Switch модальное окно ===== -->
+  <h3 id="switch-modal">Редактирование коммутаторов — модальное окно</h3>
+  <p>Коммутаторы (<code>/admin/equipment/Switch/</code>) редактируются в модальном окне с двухколоночным макетом: слева — название и IP, справа — адрес установки (Select2), этаж, помещение.</p>
+
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v329/equipment_switch_list.png" alt="Список коммутаторов" class="screenshot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v329/switch_modal_full.png" alt="Модалка коммутатора" class="screenshot">
+
   <!-- ===== Типы коммутаторов ===== -->
   <h2 id="switch-types">Типы коммутаторов</h2>
   <p>Справочник типов коммутаторов <code>/admin/equipment/SwitchType/</code> — настройка правил парсинга DHCP Option 82 для каждого типа оборудования. Используется при авторизации абонентов по коммутатору.</p>
-  <img src="../img/new_switch_type.png" alt="Типы коммутаторов — список" class="screenshot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v329/equipment_switchtype_list.png" alt="Типы коммутаторов — список" class="screenshot">
+  <p>С build 329 добавление и редактирование типов выполняется в модальном окне с двумя вкладками: <strong>Основные</strong> (название, признак «Порты с 0») и <strong>Opt82</strong> (поля парсинга). Изменения сохраняются без перезагрузки страницы.</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v329/switch_type_modal.png" alt="Модалка типа коммутатора" class="screenshot">
+
   <h4>Параметры Opt82</h4>
   <p>Каждая запись задаёт регулярные выражения для извлечения данных из поля Option 82:</p>
   <ul>
