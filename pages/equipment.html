@@ -163,6 +163,7 @@
           <li class="sub-item"><a href="equipment.html#nas-modal">1.1. Модалка NAS</a></li>
           <li class="sub-item"><a href="equipment.html#switch-modal">1.2. Модалка Switch</a></li>
           <li class="sub-item"><a href="equipment.html#switch-types">1.3. Типы коммутаторов</a></li>
+          <li class="sub-item"><a href="equipment.html#opt82-auth">1.4. OPT82-авторизация</a></li>
           <li><a href="equipment.html#voip">2. Телефония (VoIP)</a></li>
           <li><a href="equipment.html#iptv">3. IPTV</a></li>
           <li class="sub-item"><a href="equipment.html#iptv-tvip">3.1. TVIP Media</a></li>
@@ -342,6 +343,80 @@ docker compose restart freeradius</code></pre>
     <li><strong>PARS_HW_SERIAL</strong> — серийный номер устройства</li>
     <li><strong>Порты с 0</strong> — нумерация портов начинается с 0 (не с 1)</li>
   </ul>
+
+  <!-- ===== OPT82 авторизация ===== -->
+  <h2 id="opt82-auth">OPT82-авторизация</h2>
+  <p>OPT82 (DHCP Option 82) — механизм авторизации абонентов по физическому расположению в сети: система определяет, к какому <strong>коммутатору</strong> и на какой <strong>порт</strong> подключён клиент, без необходимости знать его логин или MAC-адрес.</p>
+
+  <h3>Как это работает</h3>
+  <ol>
+    <li>Абонент подключает устройство к порту коммутатора и посылает DHCP-запрос.</li>
+    <li>Коммутатор добавляет в DHCP-пакет поле <strong>Option 82</strong> — информацию о своём IP-адресе и номере порта (формат зависит от производителя).</li>
+    <li>DHCP-запрос попадает на NAS/BRAS, который перенаправляет его в <strong>FreeRADIUS</strong> биллинга.</li>
+    <li>FreeRADIUS парсит Option 82 с помощью регулярных выражений из <strong>Типа коммутатора</strong> (PARS_SWIP, PARS_PORT, PARS_VLAN).</li>
+    <li>Извлечённый IP коммутатора и номер порта ищутся в таблице <code>SwitchPorts</code> → находится привязанная <strong>учётная запись абонента</strong> (Users).</li>
+    <li>Биллинг авторизует абонента и возвращает RADIUS-атрибуты (IP из пула, скорость и т.д.).</li>
+  </ol>
+
+  <div class="info-box">
+    <strong>Ключевое отличие от логин-авторизации:</strong> при OPT82 логин и пароль не нужны — биллинг идентифицирует абонента по физическому порту коммутатора.
+  </div>
+
+  <h3>Шаг 1 — Тип авторизации в учётной записи абонента</h3>
+  <p>В карточке абонента откройте вкладку <strong>Учётные записи</strong> → кнопка редактирования учётной записи → вкладка <strong>Основные</strong>. В поле <strong>Тип авторизации</strong> выберите <code>по OPT82</code>.</p>
+  <p>Доступные типы авторизации (поле <code>auth_type</code> в таблице Users):</p>
+  <ul>
+    <li><code>по ip static</code> — по статическому IP</li>
+    <li><code>по CarbonAgent</code> — агент на устройстве</li>
+    <li><code>через веб</code> — веб-авторизация</li>
+    <li><code>любая через RADIUS</code> — стандартный RADIUS (логин/пароль)</li>
+    <li><strong><code>по OPT82</code></strong> — авторизация по порту коммутатора ← выбрать этот</li>
+    <li><code>по ip+radius</code> — комбинированный</li>
+    <li><code>по vpn pptp, pppoe</code> — PPPoE/PPTP</li>
+  </ul>
+
+  <h3>Шаг 2 — Привязка к порту коммутатора</h3>
+  <p>В той же карточке учётной записи перейдите на вкладку <strong>Сеть</strong>. Здесь три поля для OPT82:</p>
+  <ul>
+    <li><strong>SWITCH</strong> — выберите коммутатор из справочника (<code>/admin/equipment/Switch/</code>). Список фильтруется по мере ввода.</li>
+    <li><strong>PORT</strong> — номер физического порта на коммутаторе (целое число).</li>
+    <li><strong>VLAN</strong> — VLAN-тег (опционально, если сеть использует VLAN-сегментацию).</li>
+  </ul>
+  <p>После сохранения в таблице <code>SwitchPorts</code> создаётся запись: <code>switch_id + port_num → user_id</code>. Именно по ней FreeRADIUS находит абонента при авторизации.</p>
+
+  <h3>Шаг 3 — Коммутатор в справочнике</h3>
+  <p>Перейдите в <strong>Оборудование → Коммутаторы</strong> (<code>/admin/equipment/Switch/</code>). Убедитесь, что коммутатор добавлен с корректным <strong>IP-адресом</strong> — именно этот IP будет извлекаться из Option 82 и сравниваться с записями справочника.</p>
+  <p>Поля коммутатора:</p>
+  <ul>
+    <li><strong>Название</strong> — произвольное имя для отображения.</li>
+    <li><strong>IP-адрес</strong> — IP коммутатора (должен совпадать с тем, что он пишет в Option 82).</li>
+    <li><strong>Адрес установки</strong> — физический адрес из справочника Адреса (опционально, для удобства).</li>
+    <li><strong>Этаж / Помещение</strong> — уточнение расположения.</li>
+  </ul>
+
+  <h3>Шаг 4 — Тип коммутатора (шаблоны парсинга)</h3>
+  <p>Перейдите в <strong>Оборудование → Типы коммутаторов</strong> (<code>/admin/equipment/SwitchType/</code>). Каждый производитель по-своему кодирует данные в Option 82. Тип коммутатора задаёт регулярные выражения для их извлечения.</p>
+  <p>Проверьте, что для вашего оборудования создан тип с правильно заполненными полями <strong>PARS_SWIP</strong> (IP коммутатора) и <strong>PARS_PORT</strong> (номер порта). Если данных недостаточно — добавьте <strong>PARS_VLAN</strong> для VLAN-авторизации.</p>
+
+  <h3>Шаг 5 — Флаги OPT82 на NAS</h3>
+  <p>В карточке NAS (<strong>Оборудование → NAS</strong> → вкладка <strong>Авторизация</strong>) включите нужные флаги:</p>
+  <ul>
+    <li><strong>auth_opt82_switch_ip</strong> — авторизация по IP коммутатора из Option 82.</li>
+    <li><strong>auth_opt82_port</strong> — уточнение по номеру порта.</li>
+    <li><strong>auth_opt82_vlan</strong> — уточнение по VLAN.</li>
+  </ul>
+  <p>Обычно включают все три для максимальной точности идентификации.</p>
+
+  <h3>Итоговая схема привязки</h3>
+  <table>
+    <thead><tr><th>Сущность</th><th>Где настраивать</th><th>Что задаётся</th></tr></thead>
+    <tbody>
+      <tr><td>Учётная запись абонента</td><td>Карточка абонента → Учётные записи → вкладки Основные + Сеть</td><td>Тип авторизации = «по OPT82», SWITCH + PORT + VLAN</td></tr>
+      <tr><td>Коммутатор</td><td><code>/admin/equipment/Switch/</code></td><td>Название, IP-адрес коммутатора, адрес установки</td></tr>
+      <tr><td>Тип коммутатора</td><td><code>/admin/equipment/SwitchType/</code></td><td>Регулярные выражения PARS_SWIP / PARS_PORT / PARS_VLAN</td></tr>
+      <tr><td>NAS</td><td>Карточка NAS → вкладка Авторизация</td><td>Флаги auth_opt82_switch_ip / auth_opt82_port / auth_opt82_vlan</td></tr>
+    </tbody>
+  </table>
 
   <!-- ===== Телефония ===== -->
   <h2 id="voip">Телефония</h2>
