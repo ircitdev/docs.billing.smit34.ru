@@ -119,6 +119,10 @@
           <li class="sub-item"><a href="../pages/billing.html#storno">3.4. Сторно</a></li>
           <li class="sub-item"><a href="../pages/billing.html#recommended-payment">3.5. Рекомендуемый платёж</a></li>
           <li class="sub-item"><a href="../pages/billing.html#services">3.6. Услуги</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#system-services" style="padding-left:2.4rem">— Системные услуги</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#service-traffic-block" style="padding-left:2.4rem">— Блокировка трафика</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#service-finops-link" style="padding-left:2.4rem">— Связь с FinOps</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#service-cleanup" style="padding-left:2.4rem">— Массовое удаление</a></li>
           <li class="sub-item"><a href="../pages/billing.html#penalties">3.7. Пени и штрафы</a></li>
           <li class="sub-item"><a href="../pages/billing.html#disconnection">3.8. Отключения</a></li>
           <li class="sub-item"><a href="../pages/billing.html#service-versioning">3.9. Версионность</a></li>
@@ -1269,7 +1273,165 @@ curl "http://169.254.80.82:8082/rest_api/v2/Users/" \
   <p>Услуги настраиваются в <strong>Тарификация &rarr; Услуги/Бонусы</strong>.</p>
 
   <h4>Типы услуг</h4>
-  <p>Стандартный, Турбокнопка, Бонусный трафик, Форсаж, Подписка, Пакет Мб, IP Телефония, IP Телевидение, Абонентская плата, Трафик, Скидка/наценка, Обещанный платеж, Пакет услуг, Системный.</p>
+  <p>Стандартный, Подписка, IP Телевидение, Абонентская плата, Трафик, Обещанный платеж, Системный, Бонусы.</p>
+  <div class="info-box">
+    Типы <strong>IP телефония</strong>, <strong>Пакет МБ</strong>, <strong>Пакет услуг</strong>, <strong>Видеонаблюдение</strong>
+    были удалены в build 349 — они не использовались в SmIT-конфигурации. При необходимости их можно вернуть: настройки &rarr;
+    <code>UslugaType</code>.
+  </div>
+
+  <h4 id="system-services">Системные услуги — фиксированные ID, нельзя удалять</h4>
+  <p>В системе зарезервированы услуги с отрицательными ID (<code>pk &lt; 0</code>) и несколько ID с особым значением.
+  Они <strong>вызываются кодом по фиксированному ID</strong> — изменение или удаление приведёт к падению биллинга.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Название</th>
+        <th>Когда вызывается</th>
+        <th>Где в коде</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>-6</code></td>
+        <td>Абонентская плата за добровольную блокировку</td>
+        <td>Списание при включении абонентом «Каникул» в ЛК</td>
+        <td><code>lk/views/voluntary_block.py</code></td>
+      </tr>
+      <tr>
+        <td><code>-5</code></td>
+        <td>Комиссия за обещанный платёж</td>
+        <td>Снятие 5×30 ₽ за каждый день ОП</td>
+        <td><code>billing/tasks/promise_pay.py</code></td>
+      </tr>
+      <tr>
+        <td><code>-4</code></td>
+        <td>Обещанный платёж: Системный</td>
+        <td>Активация ОП в админке/ЛК/мобильном API</td>
+        <td><code>billing/views/abonents.py:uslugi_add_ajax</code></td>
+      </tr>
+      <tr>
+        <td><code>-3</code></td>
+        <td>Постоплата: Системный</td>
+        <td>Включение постоплатного режима у юр.лиц</td>
+        <td><code>billing/services/postpaid.py</code></td>
+      </tr>
+      <tr>
+        <td><code>-2</code></td>
+        <td>Vidmax: Системный</td>
+        <td>Видеонаблюдение Carbon legacy (не используется в SmIT)</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><code>-1</code></td>
+        <td>Стоимость смены тарифа</td>
+        <td>Списание при выборе нового тарифа абонентом</td>
+        <td><code>billing/views/abonents.py:tariff_change</code></td>
+      </tr>
+      <tr>
+        <td><code>30353</code></td>
+        <td>Обещанный платёж (5 дней, 30 руб/день)</td>
+        <td>Текущий шаблон ОП — лимит = месячная стоимость тарифа</td>
+        <td><code>billing/services/promise_pay.py</code>, <code>system_type=11</code></td>
+      </tr>
+      <tr>
+        <td><code>30280</code></td>
+        <td>Обещанный платёж (SMIT 15 дней)</td>
+        <td>Альтернативный шаблон на 15 дней</td>
+        <td>—</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="warning-box">
+    <strong>Никогда не удалять</strong> услуги с <code>pk &lt; 0</code>, <code>30353</code>, <code>30280</code>,
+    а также любые услуги со словами «Системный» или «Обещанный» в названии. При попытке массового удаления
+    через админку добавляйте эти ID в список исключений.
+  </div>
+
+  <h4 id="service-traffic-block">Услуга «Блокировка трафика»</h4>
+  <p>Услуга <strong>«Блокировка трафика»</strong> (тип <code>Системный</code>, <code>system_type=13</code>) — назначается
+  абоненту автоматически при срабатывании финансовой блокировки (<code>b_negbal</code> через
+  <code>billing.tasks.abonent_block</code>).</p>
+
+  <p>Что делает:</p>
+  <ul>
+    <li>В FreeRADIUS <code>radius_python/internet.py:authorize()</code> возвращается <code>RLM_MODULE_REJECT</code> &rarr;
+    NAS не пропускает трафик абонента.</li>
+    <li>Запускается <code>disconnect_user.delay(user.pk)</code> &rarr; CoA Disconnect разрывает текущую сессию.</li>
+    <li>В ЛК показывается баннер «Услуги отключены — недостаточно средств» (<code>VpnConst 170010</code>).</li>
+  </ul>
+
+  <p>Услуга <strong>не списывается</strong> и не имеет цены — это <em>маркер состояния блокировки</em>.
+  Удаление её записи у абонента не снимает блок: блок управляется через таблицу <code>ABONENTS_BLOCK</code> и поле
+  <code>users.enabled</code>. Чтобы разблокировать абонента — пополните баланс или вызовите
+  <code>Abonents.unblock(flags=['b_negbal'])</code> в shell.</p>
+
+  <h4 id="service-finops-link">Связь услуг с финансовыми операциями</h4>
+  <p>Каждое движение по балансу (списание абонплаты, активация бонуса, обещанный платёж, разовая услуга)
+  записывается в <code>FinanceOperations</code> с FK <code>usluga_id</code> &rarr; <code>Usluga</code>. Это
+  <strong>журнал бухгалтерии</strong>, по которому строятся:</p>
+
+  <ul>
+    <li>Вкладка «Операции» в карточке абонента</li>
+    <li>Отчёт <code>/admin/reports/PayLog/</code> (419K+ записей)</li>
+    <li>СОРМ-3 выгрузки <code>P_PAYMENT</code>, <code>SUPPLEMENTARY_SERVICE</code></li>
+    <li>Экспорт в 1С и сверка с банком</li>
+  </ul>
+
+  <div class="warning-box">
+    Поле <code>FinanceOperations.usluga</code> — <code>on_delete=PROTECT</code>. Django <strong>не даст</strong>
+    удалить <code>Usluga</code>, на которую кто-то ссылается из FinOps. Это защита от потери истории платежей —
+    иначе в отчётах появились бы строки «начислено 850 ₽ за неизвестную услугу», а СОРМ-выгрузка ломалась бы
+    на пустых полях услуги.
+  </div>
+
+  <h4 id="service-cleanup">Массовое удаление неиспользуемых услуг</h4>
+  <p>Услуга считается неиспользуемой, если она <strong>не</strong> привязана:</p>
+
+  <ol>
+    <li>Через <code>UsersUsluga</code> (нет ни одного абонента с этой услугой, в т.ч. отключённых)</li>
+    <li>Через <code>TarifUsersUsluga</code> (не входит в шаблон ни одного тарифа)</li>
+    <li>Через <code>FinanceOperations</code> (нет ни одной записи в журнале платежей)</li>
+  </ol>
+
+  <p>Шаблон проверки в <code>manage.py shell</code>:</p>
+
+  <pre><code>from billing.models import Usluga, UsersUsluga, FinanceOperations
+from billing.models.stubs import TarifUsersUsluga
+
+uu  = set(UsersUsluga.objects.values_list('usluga_id', flat=True))
+tuu = set(TarifUsersUsluga.objects.values_list('usluga_id', flat=True))
+fop = set(FinanceOperations.objects.exclude(usluga__isnull=True)
+                                   .values_list('usluga_id', flat=True))
+used = uu | tuu | fop
+
+PROTECTED = {30353, 30280, -6, -5, -4, -3, -2, -1}
+candidates = (Usluga.objects
+    .exclude(pk__in=used)
+    .exclude(pk__lt=0)               # Carbon legacy системные
+    .exclude(pk__in=PROTECTED)
+    .exclude(name__icontains='Системный')
+    .exclude(name__icontains='Обещанный'))
+
+print('К удалению:', candidates.count())</code></pre>
+
+  <p>Перед массовым удалением <strong>обязательно</strong> делайте бэкап:</p>
+
+  <pre><code>docker exec app-db-1 sh -c \
+    'pg_dump -U carbon -t \"USLUGA\" -t \"USERS_USLUGA\" -t \"TARIF_USERS_USLUGA\" \
+     -Fc carbon &gt; /var/backups/carbon/usluga_pre_cleanup_$(date +%Y%m%d_%H%M%S).dump'</code></pre>
+
+  <p>Откат:</p>
+
+  <pre><code>docker exec app-db-1 pg_restore -U carbon -d carbon -t USLUGA --clean \
+    /var/backups/carbon/usluga_pre_cleanup_YYYYMMDD_HHMMSS.dump</code></pre>
+
+  <p>На testbill в build 349 такая чистка удалила <strong>367 услуг</strong> (508 → 141): шаблоны абонплат
+  для архивированных тарифов после очистки 72 тарифов в build 342, тестовые услуги (<code>radius_test</code>,
+  <code>Тест5</code>, <code>2021 ТВ TVIP Тест</code>, <code>Турбо: Пример</code>) и забытые с миграции EBS.</p>
 
   <h4>Вкладка «Основные»</h4>
   <ul>
