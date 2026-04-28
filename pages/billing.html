@@ -3871,6 +3871,7 @@ python manage.py fix_sorm_reports --no-create  # только обновить S
       </li>
       <li><a href="#modal-service-edit">13.3. Редактирование услуги</a></li>
       <li><a href="#modal-service-add">13.4. Добавление услуги</a></li>
+      <li><a href="#bonuses-tab">13.4а. Вкладка «Бонусы» — как работает</a></li>
       <li><a href="#modal-bonus-edit">13.5. Бонусы — отложенная активация</a></li>
       <li><a href="#usluga">13.6. Услуги/Бонусы — список и массовые действия</a></li>
     </ul>
@@ -3967,6 +3968,127 @@ python manage.py fix_sorm_reports --no-create  # только обновить S
     <li><code>GET /admin/Abonents/{abonent_id}/uslugi_ajax/</code> — список категорий (<code>system_type</code>) с количеством услуг</li>
     <li><code>GET /admin/Abonents/{abonent_id}/uslugi_ajax/?cat_id=N</code> — услуги в категории</li>
     <li><code>POST /admin/Abonents/{abonent_id}/uslugi_ajax/</code> — создание услуги</li>
+  </ul>
+
+  <!-- 13.4а. Вкладка Бонусы — как работает -->
+  <h3 id="bonuses-tab">13.4а. Вкладка «Бонусы» в карточке абонента</h3>
+  <p>Открывается на карточке абонента <code>/admin/Abonents/&lt;id&gt;/?tab=tab3013</code>. Показывает все промо-начисления и компенсации абонента.</p>
+
+  <h4>Что такое бонус технически</h4>
+  <p>В системе <strong>бонус — это та же самая <code>Usluga</code></strong>, но с особенностью: <strong>сумма отрицательная</strong>. В обычной финансовой логике биллинга:</p>
+  <ul>
+    <li><code>summa = +500 ₽</code> → списать 500 ₽ с абонента (расход)</li>
+    <li><code>summa = -500 ₽</code> → <strong>начислить</strong> 500 ₽ абоненту (приход)</li>
+  </ul>
+  <p>Поэтому в БД у бонусов <code>UsersUsluga.summ &lt; 0</code> или шаблонный <code>Usluga.summa &lt; 0</code>. На UI знак скрывается — оператор видит «<strong class="text-success">+123 ₽</strong>» (зелёным с плюсом).</p>
+
+  <h4 id="bonuses-filter">Фильтр попадания записи на вкладку</h4>
+  <p>В таблицу попадают <code>UsersUsluga</code> при выполнении любого условия (build 364):</p>
+  <ol>
+    <li><code>Usluga.system_type_id = 17</code> (тип «<strong>Бонусы</strong>», точный признак — см. <code>/admin/tarifs/Usluga/?tab=tab17</code>)</li>
+    <li><strong>ИЛИ</strong> отрицательная <code>summa</code> в шаблоне услуги или <code>UsersUsluga.summ</code></li>
+    <li><strong>ИЛИ</strong> в имени услуги встречается «бонус» (legacy compat для старых записей)</li>
+  </ol>
+  <p>Услуга с <code>summa = 0</code> в шаблоне (например «Ежемесячный бонус (!!!"-" - начисление)») считается «контейнером» — реальная сумма хранится <strong>индивидуально</strong> в <code>UsersUsluga.summ</code> у конкретного абонента.</p>
+
+  <h4 id="bonuses-types">Типы бонусов</h4>
+  <p>Тип определяется наличием поля <code>UsersUsluga.sched_date</code>:</p>
+  <table>
+    <thead>
+      <tr><th>Тип</th><th>Бейдж</th><th>Условие</th><th>Поведение billing_worker</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Ежемесячный</strong></td><td>🔄 мес.</td><td><code>sched_date</code> задан</td><td>Перед каждой <code>sched_date</code> начисляет бонус снова, сдвигает дату на следующий месяц</td></tr>
+      <tr><td><strong>Разовый</strong></td><td>⚡ раз.</td><td><code>sched_date</code> пуст</td><td>Списывается один раз при активации, после этого <code>enabled = False</code></td></tr>
+    </tbody>
+  </table>
+
+  <h4 id="bonuses-cascade">Каскад определения суммы</h4>
+  <pre><code>if uu.summ != 0:                  # 1. Индивидуальная (приоритет)
+    amount = uu.summ
+elif u.summa != 0:                # 2. Шаблонная summa
+    amount = u.summa
+elif u.price != 0:                # 3. Шаблонная price
+    amount = u.price
+else:
+    amount = 0
+</code></pre>
+  <p>Сумма хранится в БД с коэффициентом <code>×10^10</code> (см. раздел <a href="#money-rounding">«Округление сумм»</a>). Например <code>-1230000000000 ÷ 10^10 = -123 ₽</code>.</p>
+
+  <h4 id="bonuses-lifecycle">Жизненный цикл бонуса</h4>
+  <ol>
+    <li><strong>Создание</strong> — оператор кликает «+ Добавить бонус», выбирает шаблон, указывает сумму. Создаётся <code>UsersUsluga(usluga_id=..., summ=-X, abonent=..., enabled=True)</code></li>
+    <li><strong>Списание/начисление</strong> — <code>billing_worker</code> (Celery beat, ежедневно):
+      <ul>
+        <li>Если <code>sched_date &lt;= today</code> и <code>enabled=True</code> → создаётся <code>FinanceOperations(op_summa=-X)</code>, баланс обновляется (отрицательный <code>summ</code> → плюс на счёт)</li>
+        <li>Для <strong>ежемесячного</strong>: <code>sched_date</code> сдвигается на следующий период</li>
+        <li>Для <strong>разового</strong>: <code>enabled=False</code> после первого списания</li>
+      </ul>
+    </li>
+    <li><strong>Будущая активация</strong> — если <code>enable_date &gt; now</code> → бонус показан с бейджем <i class="fas fa-clock"></i> «с DD.MM.YYYY», <code>billing_worker</code> пропускает его до этой даты</li>
+    <li><strong>Окончание</strong> — если <code>end_time &lt;= today</code> → бонус деактивируется автоматически</li>
+    <li><strong>Удаление</strong> — оператор жмёт 🗑 → <code>deleted=True</code>, бонус скрывается из таблицы (но в БД остаётся для аудита/СОРМ)</li>
+  </ol>
+
+  <h4 id="bonuses-summary">Сводка над таблицей (build 364)</h4>
+  <ul>
+    <li>🎁 <strong>Всего</strong> — общее количество записей</li>
+    <li>✓ <strong>Активных</strong> — <code>enabled=True</code> и <code>enable_date</code> уже наступила</li>
+    <li>🕐 <strong>Будущих</strong> — <code>enable_date &gt; now</code> (отложенные)</li>
+    <li>⏸ <strong>Выкл.</strong> — <code>enabled=False</code></li>
+    <li>⏳ <strong>Истекают</strong> — <code>end_time</code> в ближайшие 14 дней</li>
+    <li>💰 <strong>В месяц</strong> — сумма всех ежемесячных активных бонусов (только <code>recurring</code>)</li>
+  </ul>
+
+  <h4 id="bonuses-chips">Chip-фильтры (build 364)</h4>
+  <p>Над таблицей 7 кнопок-чипов с client-side фильтрацией (без перезагрузки):</p>
+  <ul>
+    <li><strong>Все</strong> / <strong>Активные</strong> / <strong>Будущие</strong> / <strong>Истекают</strong> / <strong>Выкл.</strong></li>
+    <li><strong>Ежемесячные</strong> (по <code>bonus_type=recurring</code>) / <strong>Разовые</strong> (по <code>bonus_type=one-time</code>)</li>
+  </ul>
+  <p>Фильтры работают на основе <code>data-*</code> атрибутов строк (<code>data-enabled</code>, <code>data-future</code>, <code>data-expiring</code>, <code>data-bon-type</code>) — изменения мгновенные.</p>
+
+  <h4 id="bonuses-examples">Типичные сценарии саппорта</h4>
+  <table>
+    <thead><tr><th>Задача</th><th>Что создать</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Акция «−500 ₽/мес на 6 месяцев»</td>
+        <td>Ежемесячный бонус: <code>summ=-500</code>, <code>end_time = +6 мес</code></td>
+      </tr>
+      <tr>
+        <td>Подарить разово 1000 ₽</td>
+        <td>Разовый бонус: <code>summ=-1000</code>, <code>enabled=True</code> → следующий цикл <code>billing_worker</code> начислит и автоматически выключит</td>
+      </tr>
+      <tr>
+        <td>Вернуть половину тарифа</td>
+        <td>Ежемесячный бонус: <code>summ = -(тариф/2)</code>, <code>enable_date = первое следующего месяца</code></td>
+      </tr>
+      <tr>
+        <td>Компенсация за электроэнергию</td>
+        <td>Шаблон <code>Usluga «Компенсация за электроинергию»</code> (<code>system_type=17</code>, <code>summa=-300</code>) уже есть — добавить как разовый</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4 id="bonuses-files">Где это в коде</h4>
+  <table>
+    <thead><tr><th>Что</th><th>Файл</th></tr></thead>
+    <tbody>
+      <tr><td>View вкладки</td><td><code>billing/views/abonents.py:add_bonus_tab</code></td></tr>
+      <tr><td>Шаблон</td><td><code>billing/templates/abonents_form/bonuses.html</code></td></tr>
+      <tr><td>AJAX CRUD</td><td><code>bonuses_ajax</code> в <code>billing/views/abonents.py</code></td></tr>
+      <tr><td>Списание (Celery)</td><td><code>billing/tasks/billing_worker.py</code></td></tr>
+      <tr><td>Бонусные шаблоны</td><td><code>/admin/tarifs/Usluga/?tab=tab17</code> — система типов «Бонусы»</td></tr>
+    </tbody>
+  </table>
+
+  <h4 id="bonuses-special">Особенности и подводные камни</h4>
+  <ul>
+    <li><strong>Сумма всегда отрицательная</strong> — это <strong>проектная конвенция</strong>. Если оператор по ошибке введёт положительную сумму — бонус превратится в списание. Защит на UI пока нет.</li>
+    <li><strong>«Бонус» в имени</strong> — старые шаблоны (миграция Carbon 4) использовали этот суффикс. Сейчас это legacy, новые услуги используют только знак суммы и <code>system_type=17</code>.</li>
+    <li><strong>EBS bonus costs migration</strong> (build 101) — при миграции из EBS поле <code>billservice_accountaddonservice.cost</code> не переносилось → <code>UsersUsluga.summ=NULL</code> → <code>billing_worker</code> не списывал. Парсер <code>extract_ebs_bonuses.py</code> восстановил суммы для 1412 записей.</li>
+    <li><strong>Future activation</strong> (build 267) — поле <code>enable_date</code> позволяет создать бонус «начнёт работать с 1 мая» — он будет в таблице с серым бейджем, но <code>billing_worker</code> пропускает его до этой даты.</li>
   </ul>
 
   <!-- 13.5. Бонусы — отложенная активация -->
