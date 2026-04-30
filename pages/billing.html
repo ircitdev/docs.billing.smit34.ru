@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 393)</title>
+  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 398)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 393)">
+  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 398)">
   <meta property="og:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/billing.html">
   <meta property="og:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 393)">
+  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 398)">
   <meta name="twitter:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta name="twitter:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
   <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
@@ -2520,6 +2520,7 @@ Content-Type: application/json
     <li><a href="#nas-ip-lifecycle">7.12. NAS IP lifecycle и сброс сессий (build 330)</a></li>
     <li><a href="#ip-pool-fallback">7.13. Fallback-цепочка при исчерпании IP-пула (build 371)</a></li>
     <li><a href="#nas-resync">7.14. Синхронизация NAS после ручной правки (build 371)</a></li>
+    <li><a href="#nas-monitoring">7.15. NAS-мониторинг и алерты (build 395)</a></li>
     </ul>
   </details>
   </div>
@@ -3114,6 +3115,77 @@ NAS без сессии (NAK): CCR, JOY, Червленое, ...</code></pre>
     </tbody>
   </table>
 
+  <h3 id="nas-monitoring">7.15. NAS-мониторинг и алерты (build 395)</h3>
+  <p>Биллинг автоматически проверяет доступность всех включённых NAS, ведёт историю падений и восстановлений, отправляет алерты в Telegram. Реализовано в рамках плана <code>2026-04-29_План_NAS_мониторинг_и_алерты.md</code>.</p>
+
+  <h4>Дашборд состояния NAS</h4>
+  <p>URL: <code>/admin/equipment/nas_status/</code> (доступен через сайдбар «Оборудование → 💓 Состояние NAS»).</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/v395/nas_status_dashboard.png" alt="Дашборд состояния NAS" class="screenshot">
+  <p>На странице:</p>
+  <ul>
+    <li><strong>Сводка</strong> — total / UP / DOWN большими числами с цветовыми бейджами</li>
+    <li><strong>Таблица текущего состояния</strong> — по каждому NAS: статус, простой за 24 часа в минутах, uptime за 7 и 30 дней в %, время последнего DOWN/UP события</li>
+    <li><strong>История событий</strong> — последние 50 переходов DOWN/UP по всем NAS</li>
+    <li><strong>Цветовая шкала uptime</strong> — зелёный (≥99,5%), оранжевый (95–99,5%), красный (&lt;95%)</li>
+  </ul>
+
+  <h4 id="nas-monitoring-throttling">Throttling логов</h4>
+  <p>До build 395 каждый тик <code>nas-check-alive</code> писал WARNING для каждого DOWN-устройства, что давало сотни строк/час в <code>error.log</code>. Теперь:</p>
+  <ul>
+    <li><strong>WARNING пишется только при переходе UP → DOWN</strong> — первое обнаружение падения</li>
+    <li><strong>Reminder «still DOWN»</strong> — раз в <code>NAS_DOWN_REMINDER_HOURS</code> часов (default 1)</li>
+    <li><strong>INFO пишется при переходе DOWN → UP</strong> — с указанием длительности простоя</li>
+    <li>UP → UP не логируется вовсе (штатная работа)</li>
+  </ul>
+  <p>Логика в <code>billing/tasks/nas_sync.py::_check_and_log_nas_state()</code>, состояние in-memory в <code>_nas_state</code> per Celery worker.</p>
+
+  <h4 id="nas-monitoring-alerts">Telegram-алерты</h4>
+  <p>Используется существующий механизм <code>_send_alarm(msg, 'nas_down')</code> с проверкой <code>TELEGRAM_ALARM_NAS_DOWN</code> toggle и поддержкой Telegram-proxy.</p>
+  <table>
+    <thead><tr><th>Когда</th><th>Что отправляется</th></tr></thead>
+    <tbody>
+    <tr><td>В тике <code>nas-check-alive</code> появились новые падения</td><td>Single-shot DOWN-сводка со списком всех NAS</td></tr>
+    <tr><td>NAS down дольше <code>NAS_ALERT_DOWN_MINUTES</code> минут</td><td>Алерт «🔴 NAS не отвечает > N мин» (один за эпизод)</td></tr>
+    <tr><td>NAS перешёл DOWN → UP, и ранее ушёл DOWN-алерт</td><td>«✅ NAS восстановлен» с указанием downtime</td></tr>
+    </tbody>
+  </table>
+  <p>Глобальный выключатель — <code>NAS_ALERT_TELEGRAM_ENABLED</code>.</p>
+
+  <h4 id="nas-monitoring-storage">История в БД</h4>
+  <p>Таблица <code>NAS_STATUS_LOG</code> (модель <code>billing.models.stubs.NasStatusLog</code>):</p>
+  <ul>
+    <li><code>NAS_ID</code> — FK на <code>nas</code> (CASCADE)</li>
+    <li><code>EVENT_TYPE</code> — <code>down</code> или <code>up</code></li>
+    <li><code>EVENT_TIME</code> — время события</li>
+    <li><code>DOWNTIME_SECONDS</code> — длительность простоя (только для UP-событий)</li>
+    <li><code>DETAIL</code> — детали (зарезервировано)</li>
+    <li>Index: <code>(NAS_ID, EVENT_TIME DESC)</code></li>
+  </ul>
+  <p>Каждое событие также пишется в <code>AuditOperations</code> через <code>billing.services.audit_log.write_audit(table_name='NAS_STATUS_LOG', object_id=log_pk)</code>.</p>
+
+  <h4 id="nas-monitoring-settings">Настройки в VpnConst</h4>
+  <table>
+    <thead><tr><th>Имя</th><th>Default</th><th>Назначение</th></tr></thead>
+    <tbody>
+    <tr><td><code>COA_TIMEOUT_SECONDS</code></td><td>10</td><td>Timeout для <code>radclient</code>/CoA Disconnect (применяется в <code>nas_control.py::send_coa_disconnect</code> и в fallback из <code>nas_sync.py</code>)</td></tr>
+    <tr><td><code>NAS_ALERT_DOWN_MINUTES</code></td><td>5</td><td>Через сколько минут DOWN отправлять Telegram-алерт</td></tr>
+    <tr><td><code>NAS_ALERT_TELEGRAM_ENABLED</code></td><td>1</td><td>Глобальный выключатель алертов NAS</td></tr>
+    <tr><td><code>NAS_DOWN_REMINDER_HOURS</code></td><td>1</td><td>Частота напоминаний «still DOWN» в логе</td></tr>
+    </tbody>
+  </table>
+
+  <h4 id="nas-monitoring-schedule">Расписание задач</h4>
+  <table>
+    <thead><tr><th>Задача</th><th>Период</th><th>Назначение</th></tr></thead>
+    <tbody>
+    <tr><td><code>nas-check-alive</code></td><td>900с (15 мин)</td><td>Ping всех включённых NAS, throttling WARNING, запись в <code>NAS_STATUS_LOG</code></td></tr>
+    <tr><td><code>nas-alert-check</code></td><td>900с (15 мин)</td><td>Проверяет <code>_nas_state</code>, шлёт алерт «down &gt; N мин»</td></tr>
+    </tbody>
+  </table>
+
+  <h4 id="nas-monitoring-report">SQL-отчёт «NAS uptime за 30 дней»</h4>
+  <p>Создаётся миграцией <code>0090_nas_monitoring</code> в <code>AdminCustomReports</code>. Доступен в разделе «Отчёты → Библиотека». Колонки: ID NAS, название, IP, количество падений за 30 дней, общий простой в минутах, uptime в %.</p>
+
   <!-- ===== 8. FreeRADIUS ===== -->
   <h2 id="freeradius">8. FreeRADIUS / RADIUS</h2>
   <p>СмИТ Биллинг 1.6 включает встроенный сервер FreeRADIUS для авторизации и аккаунтинга абонентов интернета, VoIP и IPTV. Сервис работает как отдельный Docker-контейнер в составе стека.</p>
@@ -3387,6 +3459,7 @@ chmod +x restore.sh
     <li><a href="#audit-report">10.5. Формирование отчёта по аудитам</a></li>
     <li><a href="#dev-reports">10.6. Разработка и логи</a></li>
     <li><a href="#staff-logging">10.6А. Логирование действий персонала</a></li>
+    <li><a href="#logging-channels">10.6Б. Logging channels (build 395)</a></li>
     <li><a href="#reports-improvements">10.7. Улучшения раздела Отчёты</a></li>
     <li><a href="#monthly-billing">10.8. Месячное списание</a></li>
     <li><a href="#menu-improvements">10.9. Навигация и меню</a></li>
@@ -3661,6 +3734,48 @@ chmod +x restore.sh
     <li><strong>sorm.log</strong> — FTP-выгрузка СОРМ: подключение, авторизация, загрузка файлов</li>
   </ul>
   <p>Все логи доступны через раздел «Серверные логи» и через CLI (<code>docker exec app-web-1 cat /var/log/django/staff.log</code>).</p>
+
+  <h3 id="logging-channels">10.6Б. Logging channels (build 395)</h3>
+  <p>Реализован план <code>2026-04-29_План_Логирование_по_каналам.md</code>. Каждый из 5 ранее «пустых» каналов вкладки <em>Серверные логи</em> теперь реально наполняется.</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/v395/logs_channels.png" alt="Серверные логи — все каналы наполняются" class="screenshot">
+
+  <h4 id="logging-fix">Что было исправлено</h4>
+  <ul>
+    <li><strong>celery_beat.log</strong> — beat запускался с <code>-l warning</code> и молчал. Сменено на <code>-l info</code>, теперь видны все «Sending due task ...»</li>
+    <li><strong>radius.log</strong> — уже наполнялся через <code>radius_python/billing_tools/radius.py::_get_radius_file_log()</code> (<code>RotatingFileHandler</code> 10MB × 5). Дополнительно зарегистрирован Django-side logger <code>radius</code></li>
+    <li><strong>payment.log</strong> — переведён с <code>FileHandler</code> на <code>RotatingFileHandler</code> в <code>config/settings.py</code>. Все 3 платёжных модуля (<code>lk/services/payment.py</code>, <code>lk/views/payments.py</code>, <code>mobile_api/views/finance.py</code>) уже логируют через <code>getLogger('payment')</code></li>
+    <li><strong>nginx_access.log / nginx_error.log</strong> — <code>docker/nginx/carbon.conf</code> уже настроен на <code>/var/log/django/nginx_*.log</code>. Volume <code>log_data</code> смонтирован в nginx-контейнер. Файлы заполняются с первого HTTP-запроса через nginx</li>
+    <li><strong>sorm.log, staff.log</strong> — также переведены на <code>RotatingFileHandler</code> (10MB × 5)</li>
+  </ul>
+
+  <h4 id="logging-create">Создание файлов</h4>
+  <p>Файлы touch'атся в двух местах, чтобы <code>dictConfig</code> не падал при первом импорте Django (volume <code>log_data</code> может быть пустым или принадлежать другому контейнеру):</p>
+  <ul>
+    <li><code>Dockerfile</code> CMD (web/celery-контейнеры) — touch+chmod 666 для всех 9 логов перед <code>gunicorn</code></li>
+    <li><code>docker/freeradius/entrypoint.sh</code> — touch+chmod 666 для тех же файлов перед <code>freeradius</code></li>
+  </ul>
+
+  <h4 id="logging-rotation">Ротация</h4>
+  <p>Handler'ы <code>payment</code>, <code>sorm</code>, <code>staff</code>, <code>radius</code> используют <code>logging.handlers.RotatingFileHandler</code> с параметрами <code>maxBytes=10MB</code>, <code>backupCount=5</code>. Каждый канал занимает максимум 50 МБ диска. Default-handler <code>file</code> (error.log) пока остаётся <code>FileHandler</code> и ротируется через рестарт контейнера.</p>
+
+  <h4 id="logging-channels-table">Список каналов</h4>
+  <table>
+    <thead><tr><th>Файл</th><th>Logger</th><th>Источник</th></tr></thead>
+    <tbody>
+    <tr><td><code>error.log</code></td><td><code>django</code> / <code>billing</code></td><td>Все ошибки + общие info</td></tr>
+    <tr><td><code>payment.log</code></td><td><code>payment</code> (+alias <code>payments</code>)</td><td>YooKassa/W1/Generic webhook</td></tr>
+    <tr><td><code>radius.log</code></td><td><code>radius</code> + внутренний <code>radius.file</code></td><td>FreeRADIUS-Python authorize/accounting</td></tr>
+    <tr><td><code>sorm.log</code></td><td><code>sorm</code></td><td>СОРМ FTP-экспорт</td></tr>
+    <tr><td><code>staff.log</code></td><td><code>staff</code></td><td>Действия сотрудников + AUDIT</td></tr>
+    <tr><td><code>celery_worker.log</code></td><td>(<code>celery -f</code>)</td><td>Celery worker tasks</td></tr>
+    <tr><td><code>celery_beat.log</code></td><td>(<code>celery beat -f -l info</code>)</td><td>Celery beat scheduler</td></tr>
+    <tr><td><code>freeradius.log</code></td><td>(FreeRADIUS native)</td><td>FreeRADIUS C-side debug</td></tr>
+    <tr><td><code>nginx_access.log</code></td><td>(nginx <code>access_log combined</code>)</td><td>HTTP-запросы (без cookies)</td></tr>
+    <tr><td><code>nginx_error.log</code></td><td>(nginx <code>error_log warn</code>)</td><td>Nginx ошибки</td></tr>
+    <tr><td><code>gunicorn_access.log</code></td><td>(gunicorn config)</td><td>Запросы к Gunicorn worker</td></tr>
+    <tr><td><code>gunicorn_error.log</code></td><td>(gunicorn config)</td><td>Ошибки Gunicorn</td></tr>
+    </tbody>
+  </table>
 
   <!-- ===== 10.7. Улучшения раздела Отчёты ===== -->
   <h3 id="reports-improvements">10.7. Улучшения раздела Отчёты</h3>
@@ -3965,7 +4080,7 @@ chmod +x restore.sh
 
   <!-- ===== 9. Справочники ===== -->
   <h2 id="dictionaries">11. Справочники</h2>
-  <p>Справочники СмИТ Биллинг v1.6.0 (build 393) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
+  <p>Справочники СмИТ Биллинг v1.6.0 (build 398) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
   <div class="section-toc">
   <details open>
     <summary><strong>Содержание раздела</strong></summary>
@@ -4871,7 +4986,7 @@ else:
   </details>
   </div>
 
-  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 393) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
+  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 398) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
 
   <h3 id="setevaya-izolyatsiya">Сетевая изоляция</h3>
   <p><strong>Docker-контейнеризация</strong> — каждый сервис (web, db, redis, celery, nginx, freeradius) работает в изолированном Docker-контейнере с собственной сетью (172.28.0.0/16). Входящие соединения проходят через nginx reverse proxy, что предотвращает прямой доступ к внутренним сервисам.</p>
@@ -5015,7 +5130,7 @@ docker compose up -d</code></pre>
 
   <!-- ===== 16. Стороннее ПО ===== -->
   <h2 id="third-party">16. Стороннее ПО</h2>
-  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 393).</p>
+  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 398).</p>
 
   <!-- ===== 17. Смена языка ===== -->
   <h2 id="language">17. Смена языка</h2>
@@ -5036,7 +5151,7 @@ docker compose up -d</code></pre>
   </details>
   </div>
 
-  <p>СмИТ Биллинг v1.6.0 (build 393) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
+  <p>СмИТ Биллинг v1.6.0 (build 398) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
 
   <h3 id="pochemu-postgresql">Почему PostgreSQL</h3>
   <p>PostgreSQL 16 выбран в качестве основной СУБД по ряду причин:</p>
@@ -5279,8 +5394,8 @@ STARTED_AT, FINISHED_AT, EBS_LAST_TX_ID, STATS_JSON, DUMP_FILE, ERROR_MSG</code>
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 393)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">30.04.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 393)</span>&nbsp;|&nbsp;<span data-smit="updated">30.04.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 398)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">30.04.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 398)</span>&nbsp;|&nbsp;<span data-smit="updated">30.04.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=220"></script>
