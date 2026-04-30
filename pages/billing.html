@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 398)</title>
+  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 401)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 398)">
+  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 401)">
   <meta property="og:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/billing.html">
   <meta property="og:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 398)">
+  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 401)">
   <meta name="twitter:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta name="twitter:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
   <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
@@ -134,7 +134,11 @@
           <li class="sub-item"><a href="../pages/billing.html#penalties">3.7. Пени и штрафы</a></li>
           <li class="sub-item"><a href="../pages/billing.html#disconnection">3.8. Отключения</a></li>
           <li class="sub-item"><a href="../pages/billing.html#service-versioning">3.9. Версионность</a></li>
-          <li class="sub-item"><a href="../pages/billing.html#bonus-system">3.16. Бонусы</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#loyalty">3.16. Лояльность</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#loyalty-catalog" style="padding-left:2.4rem">— Каталог программ</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#loyalty-tab" style="padding-left:2.4rem">— Назначение абоненту</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#loyalty-billing" style="padding-left:2.4rem">— Применение в биллинге</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#loyalty-auto" style="padding-left:2.4rem">— Авто-назначение</a></li>
           <li><a href="../pages/billing.html#messaging">4. Отправка сообщений</a></li>
           <li class="sub-item"><a href="../pages/billing.html#mail-domain">4.1. Домен почты</a></li>
           <li class="sub-item"><a href="../pages/billing.html#messaging-system">4.2. Система сообщений</a></li>
@@ -1177,7 +1181,7 @@ docker compose up -d</code></pre>
     <li><a href="#rules-networks">3.13. Правила и сети</a></li>
     <li><a href="#time-based">3.14. Работа услуги в определённые часы</a></li>
     <li><a href="#equipment-accounting">3.15. Учёт оборудования абонентов</a></li>
-    <li><a href="#bonus-system">3.16. Система бонусов</a></li>
+    <li><a href="#loyalty">3.16. Программы лояльности</a></li>
     </ul>
   </details>
   </div>
@@ -1672,14 +1676,78 @@ print('К удалению:', candidates.count())</code></pre>
   <h3 id="equipment-accounting">3.15. Учёт оборудования абонентов</h3>
   <p>Оборудование, проданное или сданное в аренду абонентам, учитывается через <strong>Оборудование &rarr; Прочее</strong>. Обязательное поле: «Описание» (используется как название).</p>
 
-  <!-- 3.16 Система бонусов -->
-  <h3 id="bonus-system">3.16. Система бонусов</h3>
+  <!-- 3.16 Программы лояльности -->
+  <h3 id="loyalty">3.16. Программы лояльности</h3>
+  <p>Программы лояльности применяются к абоненту автоматически при ежемесячном расчёте: либо снижают плату на заданный процент, либо начисляют фиксированный бонус на лицевой счёт. Управление каталогом — <a href="/admin/tarifs/Loyaltys/" target="_blank" rel="noopener"><strong>Тарификация → Лояльность</strong></a>.</p>
+
+  <h4 id="loyalty-catalog">3.16.1. Каталог программ</h4>
+  <p>В каталоге настраиваются параметры программы:</p>
+  <ul>
+    <li><strong>Название</strong> и <strong>описание</strong> — отображаются в карточке абонента и в тултипе.</li>
+    <li><strong>Приоритет</strong> — при наличии нескольких активных программ у абонента берётся та, у которой <code>priority</code> выше.</li>
+    <li><strong>Линейка услуг</strong> и <strong>оператор</strong> — справочные поля, ограничивают применение к нужной линейке.</li>
+    <li><strong>Тип вознаграждения</strong>:
+      <ul>
+        <li>«— Нет —» — программа без авто-эффекта (информационный ярлык, для отчётности и СОРМ).</li>
+        <li>«Скидка %» — снижает ежемесячную плату на указанный процент. Всегда применяется ежемесячно.</li>
+        <li>«Бонус ₽» — однократно (или ежемесячно, если включён переключатель «Ежемесячно») зачисляет указанную сумму на лицевой счёт.</li>
+      </ul>
+    </li>
+  </ul>
+  <figure>
+    <img src="/img/v401/loyalty_catalog_list.png" alt="Каталог программ лояльности с колонкой «Скидка / Бонус»" loading="lazy" />
+    <figcaption>Каталог Тарификация → Лояльность с колонкой «Скидка / Бонус» (build 401)</figcaption>
+  </figure>
+  <figure>
+    <img src="/img/v401/loyalty_catalog_modal_reward.png" alt="Модалка редактирования программы — блок «Тип вознаграждения»" loading="lazy" />
+    <figcaption>Модалка программы: переключатель «— Нет — / Скидка % / Бонус ₽» и поле «Размер»</figcaption>
+  </figure>
+
+  <h4 id="loyalty-tab">3.16.2. Назначение абоненту</h4>
+  <p>Карточка абонента → вкладка <strong>Лояльность</strong>. На вкладке отображаются:</p>
+  <ul>
+    <li><strong>Сводка-бар</strong> с пятью кликабельными бейджами (Всего / Активные / Будущие / Истекают / Завершены) — клик фильтрует таблицу. Бейдж «Скидка X%» показывает максимальную активную скидку из назначенных программ.</li>
+    <li><strong>Чип-фильтры</strong>: Все / Активные / Будущие / Истекают / Завершены.</li>
+    <li><strong>Таблица записей</strong> с колонками «Программа» (с тултипом по описанию), «Скидка / Бонус», «Приоритет» (цветовое кодирование), «Линейка», «Период» (с-до), «Статус» (Активна / Будущая / Истекает / Завершена).</li>
+    <li><strong>Кнопка «+ Добавить»</strong> открывает модалку с выбором программы и датами (Дата начала / Следующая дата / Дата окончания).</li>
+  </ul>
+  <figure>
+    <img src="/img/v401/loyalty_tab_full.png" alt="Вкладка Лояльность абонента — все статусы" loading="lazy" />
+    <figcaption>Вкладка «Лояльность» с разными статусами записей</figcaption>
+  </figure>
+  <figure>
+    <img src="/img/v401/loyalty_tab_filter_active.png" alt="Фильтрация по чипу «Активные»" loading="lazy" />
+    <figcaption>Чип-фильтр «Активные» — таблица сужается до активных программ</figcaption>
+  </figure>
+
+  <h4 id="loyalty-billing">3.16.3. Применение в биллинге</h4>
+  <p>В <code>billing_worker</code> при расчёте каждой <code>UsersUsluga</code>:</p>
   <ol>
-    <li><strong>Добавьте валюту «Баллы»:</strong> Справочники &rarr; Валюты &rarr; Добавить. Укажите название и курс конвертации к рублям.</li>
-    <li><strong>Настройте курс для оператора:</strong> Абоненты &rarr; Операторы связи &rarr; Настройки биллинга &rarr; «Курс конвертации баллов».</li>
-    <li><strong>Создайте программу лояльности:</strong> Тарификация &rarr; Лояльность &rarr; Добавить. На вкладке «Скидки» задайте условия и ставку начисления баллов.</li>
+    <li>Считается базовая сумма списания из каскада <code>UsersUsluga.summ → Usluga.summa → Usluga.price → шаблон тарифа</code>.</li>
+    <li>Если сумма положительная (платная услуга) — применяется скидка: <code>max(Loyaltys.discount_percent, Abonents.discount)</code> по всем активным программам абонента (берётся максимум, не сумма). Скидка 100% → списание не происходит.</li>
+    <li>После списания проверяются «готовые» бонусы: <code>Loyaltys.bonus_amount</code> с активной <code>AbonentsLoyalty</code>. Для разовых — пока <code>next_date IS NULL</code>; для ежемесячных — пока <code>next_date &le; now</code>.</li>
+    <li>Каждый бонус начисляется атомарно: <code>FinanceOperations(op_summa = +bonus, op_type=32)</code> + <code>account.ostatok += bonus</code> + обновление <code>processed_date / next_date</code> + запись в <code>AuditOperations</code>.</li>
   </ol>
-  <p>Баллы начисляются пропорционально списаниям по услугам. Конвертация через вкладку «Операции» &rarr; «Конвертация баллов».</p>
+  <p><strong>Бонусы и компенсации не дисконтируются</strong> — скидка применяется только к положительным <code>charge_amount</code>.</p>
+
+  <h4 id="loyalty-auto">3.16.4. Авто-назначение и авто-окончание</h4>
+  <p>Раз в сутки выполняются Celery-задачи:</p>
+  <ul>
+    <li><code>auto-assign-loyalty-by-tenure</code> — для активных абонентов считает стаж от самой ранней <code>UsersUsluga.create_date</code> (fallback <code>Abonents.create_date</code>) и назначает максимальный достигнутый порог (5 / 3 / 1 года). Сопоставление пороги → программы — через <code>VpnConst</code> (рекомендуемый способ): <code>LOYALTY_TENURE_5Y_ID</code>, <code>LOYALTY_TENURE_3Y_ID</code>, <code>LOYALTY_TENURE_1Y_ID</code>. Если эти настройки не заданы, задача ищет программы по подстроке в названии («5 лет», «3 года», «1 год»).</li>
+    <li><code>expire-loyalty-records</code> — удаляет <code>AbonentsLoyalty</code> с <code>end_date &lt; now</code>. Каждое удаление пишется в <code>AuditOperations</code>; drill-down в журнале аудита ведёт обратно на вкладку «Лояльность».</li>
+  </ul>
+
+  <h4 id="loyalty-backfill">3.16.5. Заполнение скидок для существующих программ</h4>
+  <p>Команда <code>manage.py backfill_loyalty_discounts</code> сопоставляет названия программ с типовыми правилами и заполняет <code>discount_percent / bonus_amount / recurring</code>:</p>
+  <ul>
+    <li>«1 год» → 5%, ежемесячно</li>
+    <li>«3 года» → 10%, ежемесячно</li>
+    <li>«5 лет» → 15%, ежемесячно</li>
+    <li>«МКД / Многоквартирный дом» → 5%, ежемесячно</li>
+    <li>«Социальный тариф» → 30%, ежемесячно</li>
+    <li>«Приведи друга / Реферал» → 200 ₽, разово</li>
+  </ul>
+  <p>По умолчанию — dry-run (только показывает таблицу подбора). Флаг <code>--apply</code> применяет изменения, <code>--force</code> перезаписывает уже заполненные значения.</p>
 
   <!-- ===== 4. Отправка сообщений ===== -->
   <h2 id="messaging">4. Отправка сообщений</h2>
@@ -4083,7 +4151,7 @@ chmod +x restore.sh
 
   <!-- ===== 9. Справочники ===== -->
   <h2 id="dictionaries">11. Справочники</h2>
-  <p>Справочники СмИТ Биллинг v1.6.0 (build 398) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
+  <p>Справочники СмИТ Биллинг v1.6.0 (build 401) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
   <div class="section-toc">
   <details open>
     <summary><strong>Содержание раздела</strong></summary>
@@ -5031,7 +5099,7 @@ else:
   </details>
   </div>
 
-  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 398) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
+  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 401) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
 
   <h3 id="setevaya-izolyatsiya">Сетевая изоляция</h3>
   <p><strong>Docker-контейнеризация</strong> — каждый сервис (web, db, redis, celery, nginx, freeradius) работает в изолированном Docker-контейнере с собственной сетью (172.28.0.0/16). Входящие соединения проходят через nginx reverse proxy, что предотвращает прямой доступ к внутренним сервисам.</p>
@@ -5175,7 +5243,7 @@ docker compose up -d</code></pre>
 
   <!-- ===== 16. Стороннее ПО ===== -->
   <h2 id="third-party">16. Стороннее ПО</h2>
-  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 398).</p>
+  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 401).</p>
 
   <!-- ===== 17. Смена языка ===== -->
   <h2 id="language">17. Смена языка</h2>
@@ -5196,7 +5264,7 @@ docker compose up -d</code></pre>
   </details>
   </div>
 
-  <p>СмИТ Биллинг v1.6.0 (build 398) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
+  <p>СмИТ Биллинг v1.6.0 (build 401) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
 
   <h3 id="pochemu-postgresql">Почему PostgreSQL</h3>
   <p>PostgreSQL 16 выбран в качестве основной СУБД по ряду причин:</p>
@@ -5439,8 +5507,8 @@ STARTED_AT, FINISHED_AT, EBS_LAST_TX_ID, STATS_JSON, DUMP_FILE, ERROR_MSG</code>
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 398)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">30.04.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 398)</span>&nbsp;|&nbsp;<span data-smit="updated">30.04.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 401)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">30.04.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 401)</span>&nbsp;|&nbsp;<span data-smit="updated">30.04.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=220"></script>
