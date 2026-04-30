@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Интеграция с СОРМ3 — СмИТ Биллинг v1.6.0 (build 414)</title>
+  <title>Интеграция с СОРМ3 — СмИТ Биллинг v1.6.0 (build 417)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v1.6.0 (build 414)">
+  <meta property="og:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v1.6.0 (build 417)">
   <meta property="og:description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/sorm.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v1.6.0 (build 414)">
+  <meta name="twitter:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v1.6.0 (build 417)">
   <meta name="twitter:description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
@@ -254,7 +254,11 @@
   <li><a href="#principle">Принцип работы</a></li>
   <li><a href="#integrated">Интегрированные решения</a></li>
   <li><a href="#pending">Ожидающие интеграции</a></li>
-  <li><a href="#setup">Настройка подключения</a></li>
+  <li><a href="#setup">Настройка подключения</a>
+    <ul>
+      <li><a href="#sorm-add-modal">Модальное окно «Добавить СОРМ» <span class="badge bg-success" style="font-size:.65rem">build 415-417</span></a></li>
+    </ul>
+  </li>
   <li><a href="#reports">Отчёты и SQL</a></li>
   <li><a href="#schedule">Расписание автоматической выгрузки</a></li>
   <li><a href="#manual-run">Управление отчётами (build 88+)</a></li>
@@ -304,22 +308,45 @@
 
   <h2 id="setup">Настройка подключения</h2>
 
-  <p>Перейдите в раздел <strong>Оборудование → СОРМ</strong> и создайте новую запись. Заполните параметры FTP-подключения:</p>
+  <p>Перейдите в раздел <strong>Оборудование → Настройки СОРМ</strong> (<code>/admin/equipment/sorm_list/</code>) и нажмите <strong>«+&nbsp;Добавить»</strong>. Откроется модальное окно с формой создания новой конфигурации — без перехода на отдельную страницу.</p>
 
-  <table>
-    <thead><tr><th>Поле</th><th>Описание</th></tr></thead>
+  <h3 id="sorm-add-modal">Модальное окно «Добавить настройку СОРМ» <span class="badge bg-success" style="font-size:.7rem">build 415-417</span></h3>
+
+  <p>Форма разделена на 4 секции и содержит подсказки <em>(серая иконка <code>i</code> рядом с подписью каждого поля)</em> — наведите курсор для пояснения значения и формата.</p>
+
+  <p><img src="../img/v416/sorm_add_modal_open.png" alt="Модальное окно «Добавить настройку СОРМ»" style="max-width:100%;border:1px solid var(--border-color);border-radius:6px"></p>
+
+  <p><strong>Tooltip-подсказка</strong> (пример для поля «Хост»):</p>
+  <p><img src="../img/v416/sorm_add_modal_tooltip.png" alt="Tooltip-подсказка у поля Хост" style="max-width:100%;border:1px solid var(--border-color);border-radius:6px"></p>
+
+  <h4>Секции и поля модалки</h4>
+
+  <table class="data-table">
+    <thead><tr><th>Секция</th><th>Поле</th><th>Описание / подсказка из tooltip</th></tr></thead>
     <tbody>
-      <tr><td><code>FTP хост</code></td><td>IP-адрес или доменное имя FTP-сервера СОРМ-системы</td></tr>
-      <tr><td><code>FTP порт</code></td><td>Порт FTP (по умолчанию 21)</td></tr>
-      <tr><td><code>FTP пользователь</code></td><td>Логин для подключения к FTP</td></tr>
-      <tr><td><code>FTP пароль</code></td><td>Пароль для подключения к FTP</td></tr>
-      <tr><td><code>FTP путь</code></td><td>Директория на FTP куда загружаются файлы (например <code>/sorm/data/</code>). Если директория не существует — создаётся автоматически</td></tr>
-      <tr><td><code>Активный режим FTP</code></td><td>Включите если FTP-сервер требует активного режима (PORT). По умолчанию используется пассивный режим (PASV)</td></tr>
-      <tr><td><code>Кодировка</code></td><td>UTF-8 или Windows-1251 — в зависимости от требований СОРМ-системы</td></tr>
-      <tr><td><code>Разделитель</code></td><td>Разделитель полей в CSV (по умолчанию <code>;</code>)</td></tr>
-      <tr><td><code>Кавычки в CSV</code></td><td>Оборачивать все значения в кавычки (<code>QUOTE_ALL</code>)</td></tr>
+      <tr><td rowspan="2"><strong>Основные</strong></td><td><code>Наименование</code> <span class="text-danger">*</span></td><td>Произвольное имя конфигурации, используется в списке и в логах. Пример: «СОРМ-3 регион Волгоград» или «СОРМ резервный»</td></tr>
+      <tr><td><code>Вендор оборудования</code> <span class="text-danger">*</span></td><td>Поставщик СОРМ-3 системы: СигналТек, НОРСИ&nbsp;2020, СпецТехПитон, МФИ&nbsp;Софт, Элком&nbsp;НТ, VAS&nbsp;Experts. Влияет на список и формат отчётов</td></tr>
+
+      <tr><td rowspan="6"><strong>FTP-сервер</strong></td><td><code>Хост</code></td><td>IP-адрес или DNS-имя FTP-сервера, куда заливаются CSV-файлы. Если пусто — выгрузка только локально, без отправки</td></tr>
+      <tr><td><code>Порт</code></td><td>TCP-порт FTP. Стандартный — 21. Меняйте только если приёмная сторона использует нестандартный порт</td></tr>
+      <tr><td><code>Пользователь</code></td><td>Имя FTP-аккаунта, выданное оператором СОРМ для загрузки файлов</td></tr>
+      <tr><td><code>Пароль</code></td><td>Пароль FTP-аккаунта. Хранится в БД в открытом виде, доступ к настройкам — только администратору</td></tr>
+      <tr><td><code>Каталог</code></td><td>Путь к каталогу на FTP, куда сохраняются файлы. По умолчанию <code>/</code>. Указывается относительно корня FTP-аккаунта</td></tr>
+      <tr><td><code>Активный режим</code></td><td>Активный FTP (PORT) — соединение для данных открывает сервер. Пассивный (PASV, по умолчанию) — клиент. Включайте только если приёмная сторона требует именно PORT</td></tr>
+
+      <tr><td rowspan="4"><strong>Формат файлов</strong></td><td><code>Разделитель</code></td><td>Символ-разделитель колонок в CSV. Стандарт СОРМ-3 — точка с запятой <code>;</code>. Для табуляции — <code>\t</code></td></tr>
+      <tr><td><code>Кодировка</code></td><td>UTF-8 — современный стандарт. Windows-1251 — для старых СОРМ-приёмников, не понимающих UTF</td></tr>
+      <tr><td><code>Формат даты</code></td><td>Шаблон вывода даты/времени по правилам Python <code>strftime</code>. По умолчанию <code>%Y-%m-%d&nbsp;%H:%M:%S</code></td></tr>
+      <tr><td><code>Заключать в кавычки</code></td><td>Если включено — каждое значение оборачивается двойными кавычками. Включайте только если приёмник этого требует</td></tr>
+
+      <tr><td rowspan="2"><strong>Расписание</strong></td><td><code>Часовой пояс</code></td><td>Зона из базы IANA (<code>Europe/Volgograd</code>, <code>Europe/Moscow</code>, <code>Asia/Yekaterinburg</code> и т.&nbsp;д.). Время выгрузки и метки в файлах считаются по этому поясу</td></tr>
+      <tr><td><code>Время выгрузки</code></td><td>Когда (по указанному поясу) запускается ежедневная выгрузка. <strong>Пустое поле — автозапуск отключён</strong>, доступен только ручной запуск кнопкой ▶</td></tr>
     </tbody>
   </table>
+
+  <div class="info-box">
+    <strong>После сохранения</strong> модалка закроется и вы попадёте на карточку нового СОРМ-конфига (<code>/admin/equipment/sorm_list/&lt;id&gt;/</code>) — там можно создать отчёты, запустить «Первоначальную настройку» и проверить готовность данных.
+  </div>
 
   <h2 id="reports">Отчёты и SQL</h2>
 
@@ -632,8 +659,8 @@ python manage.py merge_sorm_attribute_dups --by-name --apply</code></pre>
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 414)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">30.04.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 414)</span>&nbsp;|&nbsp;<span data-smit="updated">30.04.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 417)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">30.04.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 417)</span>&nbsp;|&nbsp;<span data-smit="updated">30.04.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=220"></script>
