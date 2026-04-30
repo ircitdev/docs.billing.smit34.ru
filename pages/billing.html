@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 413)</title>
+  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 414)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 413)">
+  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 414)">
   <meta property="og:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/billing.html">
   <meta property="og:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 413)">
+  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 414)">
   <meta name="twitter:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta name="twitter:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
   <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
@@ -3260,11 +3260,15 @@ NAS без сессии (NAK): CCR, JOY, Червленое, ...</code></pre>
     </tbody>
   </table>
 
-  <h3 id="nas-monitoring">7.15. NAS-мониторинг и алерты (build 395)</h3>
+  <h3 id="nas-monitoring">7.15. NAS-мониторинг и алерты (build 395, расширено в 414)</h3>
     <div class="section-toc">
     <details open>
       <summary><strong>Содержание раздела</strong></summary>
       <ul>
+      <li><a href="#nas-list">Список NAS — UX (build 414)</a></li>
+      <li><a href="#nas-status">Дашборд состояния NAS</a></li>
+      <li><a href="#nas-status-table">Таблица текущего состояния (sparkline 24h, SLA)</a></li>
+      <li><a href="#nas-status-history">История событий (группировка по дням, фильтры)</a></li>
       <li><a href="#nas-monitoring-throttling">Throttling логов</a></li>
       <li><a href="#nas-monitoring-alerts">Telegram-алерты</a></li>
       <li><a href="#nas-monitoring-storage">История в БД</a></li>
@@ -3275,17 +3279,43 @@ NAS без сессии (NAK): CCR, JOY, Червленое, ...</code></pre>
     </details>
     </div>
 
-  <p>Биллинг автоматически проверяет доступность всех включённых NAS, ведёт историю падений и восстановлений, отправляет алерты в Telegram. Реализовано в рамках плана <code>2026-04-29_План_NAS_мониторинг_и_алерты.md</code>.</p>
+  <p>Биллинг автоматически проверяет доступность всех включённых NAS, ведёт историю падений и восстановлений, отправляет алерты в Telegram. Реализовано в рамках плана <code>2026-04-29_План_NAS_мониторинг_и_алерты.md</code>. UX страниц расширен в build 414 (план <code>2026-04-30_План_UX_NAS_список_и_мониторинг.md</code>).</p>
 
-  <h4>Дашборд состояния NAS</h4>
-  <p>URL: <code>/admin/equipment/nas_status/</code> (доступен через сайдбар «Оборудование → 💓 Состояние NAS»).</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/v395/nas_status_dashboard.png" alt="Дашборд состояния NAS" class="screenshot">
-  <p>На странице:</p>
+  <h4 id="nas-list">Список NAS — UX (build 414)</h4>
+  <p>URL: <code>/admin/equipment/Nas/</code>. Список NAS-устройств с интегрированным статусом UP/DOWN — оператору не нужно открывать дашборд, чтобы понять, что какой-то NAS упал.</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/nas_ux_v414/nas_list.png" alt="Список NAS с KPI и чипами" class="screenshot">
   <ul>
-    <li><strong>Сводка</strong> — total / UP / DOWN большими числами с цветовыми бейджами</li>
-    <li><strong>Таблица текущего состояния</strong> — по каждому NAS: статус, простой за 24 часа в минутах, uptime за 7 и 30 дней в %, время последнего DOWN/UP события</li>
-    <li><strong>История событий</strong> — последние 50 переходов DOWN/UP по всем NAS</li>
-    <li><strong>Цветовая шкала uptime</strong> — зелёный (≥99,5%), оранжевый (95–99,5%), красный (&lt;95%)</li>
+    <li><strong>KPI-cards</strong> над таблицей — Всего / UP / DOWN / Онлайн абонентов. Справа — ссылка-карта «Мониторинг →» на дашборд состояния и «Справка» — эта страница</li>
+    <li><strong>Колонка «Состояние»</strong> — UP / DOWN N мин / OFF (для выключенных) с тултипом длительности. Источник — последнее событие из <code>NasStatusLog</code></li>
+    <li><strong>Чипы-фильтры</strong> со счётчиками: <em>Все · 🟢 UP · 🔴 DOWN · ⚠ Без RADIUS · ⚠ Без SSH · 🏷 PROD · 💤 Выключенные</em>. URL-shareable через <code>?chip=down|up|no_radius|no_ssh|prod|disabled</code></li>
+    <li><strong>Кнопка «Перезапустить RADIUS»</strong> в toolbar + автоматический warning-bar при наличии флага <code>radius_dirty</code> в кеше (выставляется при save/delete NAS, сбрасывается после успешного перезапуска)</li>
+    <li><strong>Progress-bar</strong> в колонке «Онлайн» — цветовая индикация загрузки: <em>зелёный &lt;75%, оранжевый 75–90%, красный ≥90%</em>. Двойное кодирование (бар + число)</li>
+    <li><strong>Подсветка строк по серьёзности</strong>: красноватый фон для DOWN, opacity для выключенных, оранжевая полоса слева для NAS без RADIUS secret или SSH-логина, зелёная полоса для PROD</li>
+  </ul>
+
+  <h4 id="nas-status">Дашборд состояния NAS</h4>
+  <p>URL: <code>/admin/equipment/nas_status/</code> (доступен через сайдбар «Оборудование → 💓 Состояние NAS»).</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/nas_ux_v414/nas_status.png" alt="Дашборд состояния NAS с алертом и sparkline" class="screenshot">
+
+  <h4 id="nas-status-table">Таблица текущего состояния</h4>
+  <ul>
+    <li><strong>Auto-refresh</strong> — dropdown «Авто-обновление: Выкл / 30с / 60с / 5мин» в шапке (build 414). Под капотом — JSON-endpoint <code>?json=1</code>, обновляется только tbody+KPI без полного reload. Состояние сохраняется в <code>localStorage.nas_status_refresh_sec</code>, рядом с dropdown показывается «Обновлено: N сек назад»</li>
+    <li><strong>Алерт-баннер при DOWN</strong> — если есть NAS в состоянии DOWN, поверх таблицы красный баннер со списком имён, IP, длительности и количества затронутых абонентов. Кнопка «Скрыть» с дедупом в <code>sessionStorage</code></li>
+    <li><strong>Сводка</strong> — total / UP / DOWN / Затронутых абонентов большими числами с цветовыми бейджами</li>
+    <li><strong>Колонка «24ч паттерн»</strong> (build 414) — sparkline из 24 столбиков по часам: зелёный = up в этот час, оранжевый = частичный простой 5–50%, красный = ≥50% часа в простое. Помогает отличить «5 коротких сбоев» (проблема сети) от «одно длинное падение» (проблема NAS)</li>
+    <li><strong>Колонка «Затронуто»</strong> (build 414) — число активных учёток на NAS (источник <code>UsersRadiusauth where logged=1</code>). Клик переходит на <code>/admin/equipment/Nas/?nas_online=&lt;id&gt;</code> и открывает существующую модалку online-абонентов</li>
+    <li><strong>SLA-цели</strong> (build 414) — настраиваются через VpnConst <code>NAS_SLA_TARGET_PCT</code> (default 99.5) и <code>NAS_SLA_WARNING_PCT</code> (default 99.0). Тултип на цифре uptime поясняет: «✅ Соответствует SLA» / «⚠ Ниже SLA, выше предупреждения» / «❌ Критично». В шапке видна текущая SLA-цель</li>
+    <li><strong>Цветовая шкала uptime</strong> — зелёный (≥<code>NAS_SLA_TARGET_PCT</code>), оранжевый (между warning и target), красный (&lt;<code>NAS_SLA_WARNING_PCT</code>)</li>
+    <li><strong>Telegram-индикатор</strong> (build 414) — бейдж «🔔 Telegram: алерты ВКЛ/ВЫКЛ» в шапке, кликабелен для перехода в настройки интеграции</li>
+    <li><strong>Экспорт CSV</strong> (build 414) — кнопка «📊 Экспорт» в шапке, endpoint <code>GET /admin/equipment/nas_status/export/?period=24h|7d|30d</code>. CSV с BOM (для Excel), разделитель <code>;</code>, колонки: ID, Название, IP, Падений, Простой минут, Uptime %, SLA</li>
+  </ul>
+
+  <h4 id="nas-status-history">История событий</h4>
+  <ul>
+    <li>Последние 50 переходов DOWN/UP по всем NAS</li>
+    <li><strong>Группировка по дням</strong> (build 414) — sticky-headers с датой и счётчиком: «02 мая 2026 — 50 событий (50 DOWN / 0 UP)». Помогает находить инциденты конкретного дня в плотном списке</li>
+    <li><strong>Чипы-фильтры</strong> (build 414) — кнопочная группа «Все / DOWN / UP» в шапке карточки. Заголовки дней без видимых событий скрываются автоматически</li>
+    <li>Длительность простоя в человекочитаемом формате: «47 сек», «3 мин», «1ч 12м» — в зависимости от величины</li>
   </ul>
 
   <h4 id="nas-monitoring-throttling">Throttling логов</h4>
@@ -3330,6 +3360,8 @@ NAS без сессии (NAK): CCR, JOY, Червленое, ...</code></pre>
     <tr><td><code>NAS_ALERT_DOWN_MINUTES</code></td><td>5</td><td>Через сколько минут DOWN отправлять Telegram-алерт</td></tr>
     <tr><td><code>NAS_ALERT_TELEGRAM_ENABLED</code></td><td>1</td><td>Глобальный выключатель алертов NAS</td></tr>
     <tr><td><code>NAS_DOWN_REMINDER_HOURS</code></td><td>1</td><td>Частота напоминаний «still DOWN» в логе</td></tr>
+    <tr><td><code>NAS_SLA_TARGET_PCT</code></td><td>99.5</td><td>Целевой uptime для зелёной SLA-метки на дашборде (build 414)</td></tr>
+    <tr><td><code>NAS_SLA_WARNING_PCT</code></td><td>99.0</td><td>Порог для оранжевой SLA-метки (ниже него — красная)</td></tr>
     </tbody>
   </table>
 
@@ -4257,7 +4289,7 @@ chmod +x restore.sh
 
   <!-- ===== 9. Справочники ===== -->
   <h2 id="dictionaries">11. Справочники</h2>
-  <p>Справочники СмИТ Биллинг v1.6.0 (build 413) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
+  <p>Справочники СмИТ Биллинг v1.6.0 (build 414) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
   <div class="section-toc">
   <details open>
     <summary><strong>Содержание раздела</strong></summary>
@@ -5414,7 +5446,7 @@ else:
   </details>
   </div>
 
-  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 413) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
+  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 414) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
 
   <h3 id="setevaya-izolyatsiya">Сетевая изоляция</h3>
   <p><strong>Docker-контейнеризация</strong> — каждый сервис (web, db, redis, celery, nginx, freeradius) работает в изолированном Docker-контейнере с собственной сетью (172.28.0.0/16). Входящие соединения проходят через nginx reverse proxy, что предотвращает прямой доступ к внутренним сервисам.</p>
@@ -5558,7 +5590,7 @@ docker compose up -d</code></pre>
 
   <!-- ===== 16. Стороннее ПО ===== -->
   <h2 id="third-party">16. Стороннее ПО</h2>
-  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 413).</p>
+  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 414).</p>
 
   <!-- ===== 17. Смена языка ===== -->
   <h2 id="language">17. Смена языка</h2>
@@ -5579,7 +5611,7 @@ docker compose up -d</code></pre>
   </details>
   </div>
 
-  <p>СмИТ Биллинг v1.6.0 (build 413) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
+  <p>СмИТ Биллинг v1.6.0 (build 414) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
 
   <h3 id="pochemu-postgresql">Почему PostgreSQL</h3>
   <p>PostgreSQL 16 выбран в качестве основной СУБД по ряду причин:</p>
@@ -6343,8 +6375,8 @@ STARTED_AT, FINISHED_AT, EBS_LAST_TX_ID, STATS_JSON, DUMP_FILE, ERROR_MSG</code>
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 413)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">30.04.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 413)</span>&nbsp;|&nbsp;<span data-smit="updated">30.04.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 414)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">30.04.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 414)</span>&nbsp;|&nbsp;<span data-smit="updated">30.04.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=220"></script>
