@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 417)</title>
+  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 418)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 417)">
+  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 418)">
   <meta property="og:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/billing.html">
   <meta property="og:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 417)">
+  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 418)">
   <meta name="twitter:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta name="twitter:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
   <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
@@ -1206,7 +1206,14 @@ docker compose up -d</code></pre>
     <details open>
       <summary><strong>Содержание раздела</strong></summary>
       <ul>
-      <li><a href="#tarif-list-features">Возможности списка (build 291)</a></li>
+      <li><a href="#tarif-list-features">Возможности списка (build 418)</a>
+        <ul>
+          <li><a href="#tarif-list-bulk">Bulk-операции</a></li>
+          <li><a href="#tarif-list-columns">Столбцы и плотность</a></li>
+          <li><a href="#tarif-list-csv">CSV-экспорт</a></li>
+          <li><a href="#tarif-list-a11y">A11y и шорткаты</a></li>
+        </ul>
+      </li>
       <li><a href="#tarif-modal">Модальное окно редактирования тарифа</a></li>
       <li><a href="#tarif-tab-change">Вкладка «Смена тарифа»</a></li>
       <li><a href="#tarif-options">Вкладка «Опции»</a></li>
@@ -1218,18 +1225,52 @@ docker compose up -d</code></pre>
 
   <img src="../img/v291/tarifs_list.png" alt="Список тарифов с колонкой «Юр.лиц»" class="screenshot">
 
-  <h4 id="tarif-list-features">Возможности списка (build 291)</h4>
+  <h4 id="tarif-list-features">Возможности списка (build 418)</h4>
+  <p class="muted">Якорь раздела: <code>#tarif-list-features</code> (info-иконка в шапке страницы).</p>
+
+  <h5 id="tarif-list-bulk">Bulk-операции (build 418)</h5>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v418/tarif_bulk.png" alt="Список тарифов: bulk-toolbar при выборе строк" class="screenshot">
   <ul>
-    <li><strong>Toolbar в одну строку</strong> — слева кнопки <em>Мастер</em> и <em>+ Добавить</em>, табы статусов и счётчик «N тарифов»; справа фильтр <em>Все линейки</em> и поиск по названию</li>
-    <li><strong>Табы со счётчиками</strong> — <em>Новые</em> (тарифы без флага «введён в эксплуатацию»), <em>В работе</em>, <em>Архив</em>, <em>Год</em> (активные с обновлениями за текущий год)</li>
-    <li><strong>Поиск</strong> — фильтрация по названию в реальном времени (debounce 300 мс)</li>
-    <li><strong>Линейка</strong> — выпадающий список линеек из БД (<code>UslugaRangeTypes</code>); фиксированная ширина, не разрастается</li>
-    <li><strong>Столбцы</strong> — №, Тариф, Описание, Цена, Абон. (кликабельная цифра), Услуг (кликабельная цифра), Линейка, <strong>Юр.лиц</strong> (зелёная галочка <i class="fas fa-check-circle text-success"></i> для тарифов для юридических лиц)</li>
-    <li><strong>Сортировка</strong> — клик по заголовку столбца, иконки ▲▼</li>
-    <li><strong>Действия</strong> — кнопка-шестерёнка <i class="fas fa-cog"></i> (поворачивается при наведении): Редактировать, Дублировать, Архивировать / Разархивировать, Удалить</li>
-    <li><strong>Цена</strong> рассчитывается из <code>Tarif.get_abon_sum()</code> = сумма <code>Usluga.PRICE</code> по всем привязанным <code>TarifUsersUsluga</code> с учётом <code>countt</code></li>
-    <li><strong>Все действия пишутся в Аудит</strong> (<code>AuditOperations</code>, <code>table_name=TARIF</code>)</li>
+    <li><strong>Чекбокс в каждой строке</strong> + master-чекбокс в шапке («выбрать все видимые», корректно работает в indeterminate-состоянии)</li>
+    <li><strong>Bulk-toolbar</strong> появляется при выборе хотя бы одного тарифа — синий блок с действиями: <em>В архив</em> / <em>Из архива</em> / <em>Линейка…</em> / <em>CSV</em> / <em>Удалить</em></li>
+    <li><strong>Удаление</strong> блокируется на сервере, если у тарифа есть активные абоненты (<code>deleted=False</code>) — оператор получает понятный список заблокированных ID</li>
+    <li><strong>Сменить линейку</strong> открывает модалку с выбором <code>UslugaRangeTypes</code> или «без линейки»</li>
+    <li><strong>Undo-баннер</strong> — после успешного bulk показывается зелёная плашка «Готово: N тариф(ов) обработано» (auto-hide через 6 сек)</li>
+    <li>Все bulk-операции пишутся в <code>AuditOperations</code> с <code>table_name='TARIF'</code></li>
   </ul>
+
+  <h5 id="tarif-list-columns">Столбцы и плотность</h5>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v418/tarif_list.png" alt="Список тарифов — обычный режим, build 418" class="screenshot">
+  <ul>
+    <li><strong>Колонка «№» убрана</strong> (build 418) — ID показывается в tooltip имени тарифа</li>
+    <li><strong>Тариф</strong> — кликабельное имя открывает модалку редактирования; заголовок tooltip несёт <code>ID #N</code></li>
+    <li><strong>Описание</strong> — обрезается ellipsis'ом, скрывается в compact-режиме</li>
+    <li><strong>Цена</strong> — расчётная (<code>Tarif.get_abon_sum()</code>); если пусто, отображается курсивный <code>—</code> с tooltip-объяснением «Цена берётся из услуг тарифа: <code>Usluga.summa → price → 0</code>»</li>
+    <li><strong>Абон.</strong> — основное число (всего активных + заблок.) с разбивкой <span style="color:#b45309">▼N</span> — количество заблокированных. Tooltip: <em>Активных: X / Заблок.: Y / Всего: Z</em>. Клик открывает модалку с вкладкой «Абоненты».</li>
+    <li><strong>Привяз.</strong> — счётчик услуг через <code>TarifUsersUsluga</code> (раньше «Услуг»; переименовано во избежание путаницы с типом «Услуга»)</li>
+    <li><strong>Линейка</strong>, <strong>Юр.лиц</strong> — как раньше</li>
+    <li><strong>Compact-режим</strong> (кнопка <i class="fas fa-compress-arrows-alt"></i> в правом углу toolbar) — уменьшает padding на 30 %, скрывает «Описание». Состояние сохраняется в <code>localStorage.tarif_density_compact</code>.</li>
+  </ul>
+
+  <h5 id="tarif-list-csv">CSV-экспорт (build 418)</h5>
+  <ul>
+    <li>Кнопка <i class="fas fa-file-csv text-success"></i> <strong>CSV</strong> в правой части toolbar</li>
+    <li>Без выбора — экспортирует <strong>видимый срез</strong> (текущий tab + фильтр + поиск)</li>
+    <li>С выбранными — экспортирует только выбранные ID</li>
+    <li>Формат: UTF-8 BOM + разделитель <code>;</code> (Excel RU «из коробки»). Колонки: ID / Тариф / Описание / Цена ₽ / Активных / Заблок. / Всего / Привязок услуг / Линейка / Юр.лиц / Архив</li>
+    <li>Endpoint: <code>GET /admin/tarifs/tarif_csv/?ids=...</code> или <code>?tab=...&amp;range_id=...&amp;q=...</code></li>
+  </ul>
+
+  <h5 id="tarif-list-a11y">A11y и быстрые шорткаты (build 418)</h5>
+  <ul>
+    <li><strong>Ctrl+K</strong> / <kbd>/</kbd> — фокус в поле поиска (работает с любого места страницы, кроме открытых модалок и input)</li>
+    <li><strong>Активная сортировка</strong> — синий цвет заголовка + жирный + видимая стрелка ▲/▼; в тёмной теме — голубой <code>#6ea8fe</code></li>
+    <li><strong>aria-pressed</strong> — на чипах статуса (Новые/В работе/Архив/Год) с переключением при выборе</li>
+    <li><strong>aria-label</strong> на каждой иконочной кнопке (CSV, density, чекбокс «выбрать все»)</li>
+    <li><strong>scope=col</strong> на всех заголовках; визуально-скрытый «Действия» вместо пустого <code>&lt;th&gt;</code></li>
+  </ul>
+
+  <p>Все действия пишутся в Аудит (<code>AuditOperations</code>, <code>table_name=TARIF</code>).</p>
 
   <h4 id="tarif-modal">Модальное окно редактирования тарифа</h4>
   <p>Клик по названию тарифа в списке открывает компактную модалку (Bootstrap 5, <code>modal-lg</code>) с четырьмя вкладками. Полная форма (legacy) доступна по кнопке <i class="fas fa-external-link-alt"></i> в шапке модалки.</p>
@@ -3283,7 +3324,7 @@ NAS без сессии (NAK): CCR, JOY, Червленое, ...</code></pre>
 
   <h4 id="nas-list">Список NAS — UX (build 414)</h4>
   <p>URL: <code>/admin/equipment/Nas/</code>. Список NAS-устройств с интегрированным статусом UP/DOWN — оператору не нужно открывать дашборд, чтобы понять, что какой-то NAS упал.</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/nas_ux_v414/nas_list.png" alt="Список NAS с KPI и чипами" class="screenshot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/nas_ux_v414/nas_list.png?v=418" alt="Список NAS с KPI и чипами" class="screenshot">
   <ul>
     <li><strong>KPI-cards</strong> над таблицей — Всего / UP / DOWN / Онлайн абонентов. Справа — ссылка-карта «Мониторинг →» на дашборд состояния и «Справка» — эта страница</li>
     <li><strong>Колонка «Состояние»</strong> — UP / DOWN N мин / OFF (для выключенных) с тултипом длительности. Источник — последнее событие из <code>NasStatusLog</code></li>
@@ -3295,7 +3336,7 @@ NAS без сессии (NAK): CCR, JOY, Червленое, ...</code></pre>
 
   <h4 id="nas-status">Дашборд состояния NAS</h4>
   <p>URL: <code>/admin/equipment/nas_status/</code> (доступен через сайдбар «Оборудование → 💓 Состояние NAS»).</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/nas_ux_v414/nas_status.png" alt="Дашборд состояния NAS с алертом и sparkline" class="screenshot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/nas_ux_v414/nas_status.png?v=418" alt="Дашборд состояния NAS с алертом и sparkline" class="screenshot">
 
   <h4 id="nas-status-table">Таблица текущего состояния</h4>
   <ul>
@@ -4289,7 +4330,7 @@ chmod +x restore.sh
 
   <!-- ===== 9. Справочники ===== -->
   <h2 id="dictionaries">11. Справочники</h2>
-  <p>Справочники СмИТ Биллинг v1.6.0 (build 417) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
+  <p>Справочники СмИТ Биллинг v1.6.0 (build 418) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
   <div class="section-toc">
   <details open>
     <summary><strong>Содержание раздела</strong></summary>
@@ -5325,9 +5366,43 @@ else:
   <p>Celery-задача <code>billing_worker</code> при ежемесячном списании пропускает <code>UsersUsluga</code> с <code>enable_date &gt; now()</code> — поэтому отложенный бонус попадает в начисление только в первый расчётный день после даты активации. Это позволяет, например, зарегистрировать «компенсацию за электроэнергию» за следующий месяц заранее и не следить за датой вручную.</p>
 
   <!-- 13.6. Услуги/Бонусы — список и массовые действия -->
-  <h3 id="usluga">13.6. Услуги/Бонусы — список и массовые действия (build 268–275)</h3>
+  <h3 id="usluga">13.6. Услуги/Бонусы — список и массовые действия (build 268–418)</h3>
   <p>Раздел «Тарификация &rarr; Услуги/Бонусы» (<code>/admin/tarifs/Usluga/</code>) полностью перепроектирован: собственный тулбар, вкладка «Все», 11 массовых действий, модалка управления типами услуг, аудит всех изменений, специальная вкладка «Шейпер» для трафиковых услуг.</p>
 
+  <h4 id="usluga-list-features">Возможности списка (build 418)</h4>
+  <p class="muted">Якорь раздела: <code>#usluga-list-features</code> (info-иконка в шапке страницы).</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v418/usluga_list.png" alt="Список услуг — таблица build 418" class="screenshot">
+  <ul>
+    <li><strong>Эфф. цена</strong> (build 418) — каскад <code>Usluga.summa → price → 0</code> с цветовым кодированием источника:
+      <ul>
+        <li>обычный текст — берётся из <code>summa</code> (шаблонная сумма)</li>
+        <li>оранжевый цвет с подчёркиванием — fallback из <code>price</code> (тарифная цена)</li>
+        <li>курсивный <code>—</code> — обе суммы пустые. Tooltip объясняет источник.</li>
+      </ul>
+    </li>
+    <li><strong>Метод как иконка</strong> (build 418) — <i class="fas fa-sync text-success"></i> «Ежемесячно» / <i class="fas fa-bolt text-primary"></i> «Разово». Текст метода — в tooltip + <code>visually-hidden</code> для screen reader. Колонка стала на 50&nbsp;px уже.</li>
+    <li><strong>В ЛК</strong> (build 418, переименовано из «ЛК») — <i class="fas fa-info-circle"></i> в заголовке объясняет что это <code>Usluga.is_show_web</code>: видимость услуги в личном кабинете абонента</li>
+    <li><strong>Колонка №</strong> убрана (build 418) — ID показывается в tooltip имени услуги</li>
+    <li><strong>Префикс «Услуга из…: Тип»</strong> на типизированных вкладках усечён через шаблонный фильтр <code>cut</code> — на вкладке «Трафик» имя становится короче без потери смысла (тариф уже виден в отдельной колонке)</li>
+  </ul>
+
+  <h5 id="usluga-list-orphans">Чип «Не привязанные» (build 418)</h5>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v418/usluga_orphans.png" alt="Чип Не привязанные с count и фильтром" class="screenshot">
+  <ul>
+    <li>Чип <i class="fas fa-unlink"></i> <strong>Не привязанные</strong> в toolbar показывает количество услуг-«сирот» — без <code>TarifUsersUsluga</code> и без активных <code>UsersUsluga</code>.</li>
+    <li>Клик по чипу → URL получает <code>?chip=orphan</code>, в списке остаются только сироты. Каждая строка помечена бейджем <span style="background:#fff3cd;color:#b45309;border:1px solid #f6c878;font-size:.7rem;padding:1px 6px;border-radius:8px"><i class="fas fa-unlink"></i> без связей</span> и оранжевым цветом названия.</li>
+    <li><strong>Use case</strong> — cleanup перед удалением (последний раз в build 273 удалили 367 услуг, чип помогает увидеть кандидатов до). Удалить можно через bulk-меню (action=delete).</li>
+    <li>Поле <code>is_orphan</code> вычисляется в Python в <code>UslugaListView.make_context</code> — отдельный SQL не нужен, проходит за один проход по списку.</li>
+  </ul>
+
+  <h5 id="usluga-list-search">Поиск и шорткаты (build 418)</h5>
+  <ul>
+    <li><strong>Поиск</strong> теперь работает по <strong>имени услуги</strong>, <strong>имени тарифа</strong> ИЛИ <strong>ID</strong> (точное совпадение или префикс). Полезно когда оператор знает только <code>Usluga.id=30353</code> для обещанного платежа.</li>
+    <li><strong>Ctrl+K</strong> / <kbd>/</kbd> — фокус в поле поиска</li>
+    <li>Placeholder обновлён: «Поиск (Ctrl+K): имя / тариф / ID»</li>
+  </ul>
+
+  <h4>Старая версия (build 268–275, для справки)</h4>
   <img src="../img/v275/1_usluga_list.png" alt="Раздел Услуги/Бонусы — список" class="screenshot">
 
   <h4>Вкладки по типам</h4>
@@ -5446,7 +5521,7 @@ else:
   </details>
   </div>
 
-  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 417) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
+  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 418) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
 
   <h3 id="setevaya-izolyatsiya">Сетевая изоляция</h3>
   <p><strong>Docker-контейнеризация</strong> — каждый сервис (web, db, redis, celery, nginx, freeradius) работает в изолированном Docker-контейнере с собственной сетью (172.28.0.0/16). Входящие соединения проходят через nginx reverse proxy, что предотвращает прямой доступ к внутренним сервисам.</p>
@@ -5590,7 +5665,7 @@ docker compose up -d</code></pre>
 
   <!-- ===== 16. Стороннее ПО ===== -->
   <h2 id="third-party">16. Стороннее ПО</h2>
-  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 417).</p>
+  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 418).</p>
 
   <!-- ===== 17. Смена языка ===== -->
   <h2 id="language">17. Смена языка</h2>
@@ -5611,7 +5686,7 @@ docker compose up -d</code></pre>
   </details>
   </div>
 
-  <p>СмИТ Биллинг v1.6.0 (build 417) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
+  <p>СмИТ Биллинг v1.6.0 (build 418) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
 
   <h3 id="pochemu-postgresql">Почему PostgreSQL</h3>
   <p>PostgreSQL 16 выбран в качестве основной СУБД по ряду причин:</p>
@@ -6375,8 +6450,8 @@ STARTED_AT, FINISHED_AT, EBS_LAST_TX_ID, STATS_JSON, DUMP_FILE, ERROR_MSG</code>
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 417)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">30.04.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 417)</span>&nbsp;|&nbsp;<span data-smit="updated">30.04.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 418)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">30.04.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 418)</span>&nbsp;|&nbsp;<span data-smit="updated">30.04.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=220"></script>
