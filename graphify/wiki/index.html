@@ -147,6 +147,93 @@ tbody tr:hover { background: var(--bg3); }
   padding-bottom: 8px; border-bottom: 1px solid var(--border);
 }
 
+/* Tabs (Таблица / Схема) */
+.wiki-tabs {
+  display: inline-flex; gap: 0; margin: 18px 0 18px;
+  border-bottom: 2px solid var(--border);
+  padding: 0; flex-wrap: wrap;
+}
+.wiki-tab-btn {
+  background: none; border: none; padding: 9px 16px;
+  font: inherit; font-size: 14px; color: var(--text2);
+  cursor: pointer; position: relative; bottom: -2px;
+  border-bottom: 2px solid transparent;
+  display: inline-flex; align-items: center; gap: 7px;
+  transition: color .15s, border-color .15s;
+}
+.wiki-tab-btn:hover { color: var(--text); }
+.wiki-tab-btn.active {
+  color: var(--primary-l); border-bottom-color: var(--primary);
+  font-weight: 600;
+}
+.wiki-tab-btn .ti { font-size: 16px; line-height: 1; }
+.wiki-tab-btn .tab-badge {
+  font-size: 10px; padding: 1px 6px; border-radius: 8px;
+  background: var(--bg3); color: var(--text3); font-weight: 500;
+}
+.tab-content[hidden] { display: none; }
+
+/* Schema tab — vis-network container + UI */
+.schema-toolbar {
+  display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap;
+  align-items: center; font-size: 12px; color: var(--text2);
+}
+.schema-toolbar button {
+  background: var(--bg2); border: 1px solid var(--border); color: var(--text);
+  padding: 5px 12px; border-radius: 6px; font-size: 12px;
+  cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+  transition: background .15s, border-color .15s;
+}
+.schema-toolbar button:hover { background: var(--bg3); border-color: var(--primary); }
+.schema-toolbar button.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+.schema-toolbar .schema-search {
+  flex: 1; min-width: 180px; max-width: 320px;
+  background: var(--bg2); border: 1px solid var(--border); color: var(--text);
+  padding: 5px 10px; border-radius: 6px; font-size: 12px;
+}
+.schema-toolbar .schema-search:focus { outline: none; border-color: var(--primary); }
+.schema-toolbar .schema-hint { color: var(--text3); margin-left: auto; font-size: 11px; }
+
+#visGraph {
+  width: 100%; height: 640px;
+  background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+  overflow: hidden; position: relative;
+}
+#visGraph .vis-loading {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  color: var(--text2); font-size: 13px;
+}
+#visGraph .vis-loading::before {
+  content: ''; width: 18px; height: 18px; margin-right: 8px;
+  border: 2.5px solid var(--border); border-top-color: var(--primary);
+  border-radius: 50%; animation: visSpin 0.8s linear infinite;
+}
+@keyframes visSpin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  #visGraph .vis-loading::before { animation: none; }
+}
+
+#visInfo {
+  margin-top: 14px; padding: 12px 14px;
+  background: var(--bg2); border: 1px solid var(--border); border-radius: 8px;
+  font-size: 13px; min-height: 60px;
+}
+#visInfo .vi-empty { color: var(--text3); }
+#visInfo .vi-title { font-weight: 600; margin-bottom: 6px; }
+#visInfo .vi-meta { color: var(--text2); font-size: 12px; margin-bottom: 4px; font-family: monospace; word-break: break-all; }
+#visInfo .vi-neighbors { color: var(--text2); font-size: 12px; }
+#visInfo .vi-neighbors a {
+  color: var(--primary-l); text-decoration: none; cursor: pointer;
+  margin-right: 4px; padding: 1px 6px; border-radius: 3px;
+  background: var(--bg3); display: inline-block; margin-bottom: 4px;
+  border: 1px solid var(--border);
+}
+#visInfo .vi-neighbors a:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+@media (max-width: 680px) {
+  #visGraph { height: 480px; }
+}
+
 /* Modal */
 .modal-backdrop {
   display: none; position: fixed; inset: 0;
