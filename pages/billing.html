@@ -171,6 +171,8 @@
           <li class="sub-item"><a href="../pages/billing.html#nas-management-api">7.10. NAS API</a></li>
           <li class="sub-item"><a href="../pages/billing.html#ip-allocation">7.11. Выделение IP</a></li>
           <li class="sub-item"><a href="../pages/billing.html#nas-ip-lifecycle">7.12. NAS IP lifecycle</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#ip-pool-fallback">7.13. IP pool fallback</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#nas-resync">7.14. NAS resync</a></li>
           <li><a href="../pages/billing.html#freeradius">8. FreeRADIUS</a></li>
           <li class="sub-item"><a href="../pages/billing.html#radius-arch">8.1. Архитектура</a></li>
           <li class="sub-item"><a href="../pages/billing.html#radius-auth">8.2. Авторизация</a></li>
@@ -2387,6 +2389,8 @@ Content-Type: application/json
     <li><a href="#nas-management-api">7.10. NAS Management API</a></li>
     <li><a href="#ip-allocation">7.11. Выделение IP из пула</a></li>
     <li><a href="#nas-ip-lifecycle">7.12. NAS IP lifecycle и сброс сессий</a></li>
+    <li><a href="#ip-pool-fallback">7.13. Fallback-цепочка при исчерпании IP-пула</a></li>
+    <li><a href="#nas-resync">7.14. Синхронизация NAS после ручной правки</a></li>
     </ul>
   </details>
   </div>
@@ -2842,6 +2846,115 @@ NAS без сессии (NAK): CCR, JOY, Червленое, ...</code></pre>
     <li>Отправляет <code>disconnect_user.delay(user.pk, broadcast=True)</code> для переавторизации</li>
   </ol>
   <p><strong>Настройка:</strong> В <code>/admin/settings/VpnConst/</code> добавить запись с именем <code>DEFAULT_NAS_ID</code> и значением = ID NAS-заглушки (PreAuth NAS). Задача безопасна при отсутствии настройки — просто пишет info-лог и завершается.</p>
+
+  <!-- ===== 7.13. IP pool fallback (build 371) ===== -->
+  <h3 id="ip-pool-fallback">7.13. Fallback-цепочка при исчерпании IP-пула (build 371)</h3>
+  <p>Когда основной пул адресов заканчивается, система автоматически проходит по 5-уровневой цепочке fallback'ов вместо тихого возврата <code>None</code>:</p>
+  <ol>
+    <li><strong>Перебор основных пулов NAS</strong> — <code>pull → nat_pull → white_pull → hotspot_pull</code> (как в build 330)</li>
+    <li><strong>Глобальный fallback-пул</strong> — VpnConst <code>FALLBACK_IP_POOL_ID</code> (если задан, 0 = выключено). Резервный пул, не привязанный к конкретному NAS</li>
+    <li><strong>Reclaim IP у offline-абонентов</strong> — VpnConst <code>IP_RECLAIM_OFFLINE_DAYS</code> (если &gt; 0). Забирает IP у Users, у которых <code>enabled=False</code> ИЛИ последняя <code>RADIUS_SESSIONS.START_TIME</code> старше N дней. Защита: не reclaim'ит активные сессии (<code>END_TIME IS NULL</code>)</li>
+    <li><strong>Audit + Telegram-алерт</strong> — запись в <code>AuditOperations</code> (<code>table_name='IP_PULL'</code>) и сообщение через <code>_send_alarm</code>. Дедуп по парам <code>{pool_id, дата}</code> — не более одного алерта в сутки на пул</li>
+    <li><strong>Возврат <code>None</code></strong> — обратная совместимость с <code>_assign_real_nas_for_user</code></li>
+  </ol>
+
+  <h4 id="ip-pool-vpnconst-settings">Настройки VpnConst</h4>
+  <p>Миграция <code>0079_ip_pool_fallback_settings</code> добавляет 4 ключа (тип RADIUS):</p>
+  <table>
+    <thead><tr><th>Ключ</th><th>Default</th><th>Назначение</th></tr></thead>
+    <tbody>
+    <tr><td><code>FALLBACK_IP_POOL_ID</code></td><td>0</td><td>ID резервного пула (<code>IpPull.pk</code>). 0 = выключено</td></tr>
+    <tr><td><code>IP_POOL_LOW_THRESHOLD_PCT</code></td><td>90</td><td>Порог занятости в %, при котором пул считается опасным</td></tr>
+    <tr><td><code>IP_POOL_TELEGRAM_ALERT</code></td><td>1</td><td>Отправлять ли алерт в Telegram (1/0)</td></tr>
+    <tr><td><code>IP_RECLAIM_OFFLINE_DAYS</code></td><td>0</td><td>Забирать IP у offline-абонентов через N дней (0 = выкл)</td></tr>
+    </tbody>
+  </table>
+
+  <h4 id="ip-pool-stats-ui">Статистика пулов в UI</h4>
+  <p><strong>Endpoint</strong> <code>GET /admin/dictionary/ip_pull_stats/?force=1</code> — возвращает статистику всех пулов с кешем 60с:</p>
+  <pre><code>{
+  "items": {pool_id: {total, used, free, pct_used, exhausted, name, enabled, is_fallback, is_danger}},
+  "summary": {total_pools, danger_count, exhausted_count, total_used, total_capacity, pct_used},
+  "danger_top": [...top-3 опасных...],
+  "threshold_pct": 90,
+  "fallback_pool_id": 0
+}</code></pre>
+
+  <p><strong>Список пулов</strong> (<a href="/admin/dictionary/IpPull/">/admin/dictionary/IpPull/</a>) — две новые AJAX-колонки:</p>
+  <ul>
+    <li><strong>«Свободно»</strong> — <code>«N / M»</code> или красный бейдж <code>ИСЧЕРПАН</code> если <code>free=0</code></li>
+    <li><strong>«% занято»</strong> — цветной progress-bar (зелёный &lt;75%, оранжевый 75-90%, красный ≥90%) + numeric value</li>
+    <li>Бейдж <code>FALLBACK</code> (синий) рядом с именем пула, если он указан в <code>FALLBACK_IP_POOL_ID</code></li>
+  </ul>
+
+  <p style="margin-top:1em">
+    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ip_pool_v371/ip_pull_list_with_columns.png"
+         alt="Колонки «Свободно» и «% занято» в списке пулов"
+         style="max-width:100%; border:1px solid #ddd; border-radius:6px"/>
+  </p>
+
+  <h4 id="ip-pool-dashboard-widget">Dashboard-виджет «IP-пулы»</h4>
+  <p>На главной странице (<a href="/admin/welcome/">/admin/welcome/</a>) отображается компактная карточка «IP-пулы» с агрегированной статистикой:</p>
+  <ul>
+    <li>Сводка <code>Используется N из M (X%) • K пулов</code></li>
+    <li>Бейджи: 🚨 Исчерпано (если есть), ⚠ Опасно (если есть), ✓ В норме (иначе)</li>
+    <li>Топ-3 опасных пула с прогресс-барами и кликабельными именами</li>
+  </ul>
+  <p>Виджет автоматически скрывается, если пулов нет.</p>
+
+  <p style="margin-top:1em">
+    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ip_pool_v371/dashboard_ip_pools_widget.png"
+         alt="Dashboard виджет IP-пулы"
+         style="max-width:100%; border:1px solid #ddd; border-radius:6px"/>
+  </p>
+
+  <h4 id="ip-pool-monitor-beat">Celery beat — мониторинг ежечасно</h4>
+  <p>Задача <code>ip-pool-monitor</code> (<code>billing/tasks/ip_pool_monitor.py</code>) запускается раз в час. При обнаружении пулов с <code>pct_used &gt;= IP_POOL_LOW_THRESHOLD_PCT</code> или исчерпанных — отправляет <strong>одну агрегированную нотификацию в Telegram в день</strong> (дедуп по <code>cache:ip_pool_monitor:alert:{date}</code>):</p>
+  <pre><code>IP-пулы — мониторинг
+🚨 Исчерпано пулов: 1 — "name1" (#3)
+⚠ "name2" (#4) — занято 94.0% (свободно 5 из 83)</code></pre>
+
+  <!-- ===== 7.14. NAS resync (build 371) ===== -->
+  <h3 id="nas-resync">7.14. Синхронизация NAS после ручной правки (build 371)</h3>
+  <p>Build 371 исправляет два бага в <code>auto_assign_real_nas</code>, из-за которых ручная правка <code>Users.nas_id</code> или <code>Users.ip</code> не подхватывалась автоматически:</p>
+
+  <h4 id="nas-resync-bug">Корневая причина бага</h4>
+  <ul>
+    <li><strong>Баг 1 — окно «назад вместо вперёд»</strong>: SQL-запрос имел <code>WHERE rs."START_TIME" &lt; cutoff</code>, то есть искал <em>давние</em> сессии (старше 24ч). После ручной правки свежая сессия (10мин назад) <strong>НЕ попадала</strong> в выборку → задача о ней не знала</li>
+    <li><strong>Баг 2 — ранний выход без проверки IP</strong>: <code>if user.nas_id == real_nas.pk: return</code> — если админ правил только IP (с правильным NAS), задача выходила без действий, IP не выравнивался</li>
+  </ul>
+
+  <h4 id="nas-resync-fixes">Исправления</h4>
+  <ol>
+    <li><strong>Окно инвертировано</strong> — теперь <code>WHERE rs."START_TIME" &gt;= window_start</code> (свежие сессии за период delta). Реакция ≤1 минуты на ручную правку</li>
+    <li><strong>IP-проверка даже при совпадении nas_id</strong> — <code>ip_already_valid = (not old_ip or not nas_pools or _ip_in_any_pool(old_ip, nas_pools))</code></li>
+    <li><strong>Beat <code>nas_resync_recent</code></strong> (schedule=300с = 5 мин) — лёгкая задача для недавно правленных учёток. Берёт <code>Users.updatetime &gt;= now()-15min</code> (limit 500), вызывает <code>_assign_real_nas_for_user</code>. Гарантирует синхронизацию ≤5 минут</li>
+    <li><strong>Audit с временем последней сессии</strong> — описание операции содержит <code>[последняя RADIUS-сессия: YYYY-MM-DD HH:MM]</code> для diagnostics</li>
+  </ol>
+
+  <h4 id="nas-resync-button">Кнопка «Применить сейчас»</h4>
+  <p>В модалке учётной записи (карточка абонента → вкладка «Учётные записи» → кнопка «✏ Редактировать» → вкладка «Сеть») рядом с label «NAS» появилась кнопка <strong>«🔄 Применить сейчас»</strong>. При нажатии — синхронный вызов <code>POST /admin/nas_api/&lt;user_id&gt;/resync/</code>, результат отображается toast-сообщением:</p>
+  <ul>
+    <li><strong>changed</strong>: <em>«✓ Синхронизировано: NAS X → Y, IP A → B»</em></li>
+    <li><strong>in_sync</strong>: <em>«✓ Уже синхронизировано (последняя сессия: ...)»</em></li>
+    <li><strong>no_session</strong>: <em>«⚠ Свежей RADIUS-сессии нет — попробуйте через 1-2 минуты после реавторизации абонента»</em></li>
+  </ul>
+
+  <p style="margin-top:1em">
+    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ip_pool_v371/users_modal_resync_button.png"
+         alt="Кнопка «Применить сейчас» в модалке учётки"
+         style="max-width:100%; border:1px solid #ddd; border-radius:6px"/>
+  </p>
+
+  <h4 id="nas-resync-schedule">Расписание задач</h4>
+  <table>
+    <thead><tr><th>Задача</th><th>Период</th><th>Назначение</th></tr></thead>
+    <tbody>
+    <tr><td><code>auto-assign-real-nas</code></td><td>60с</td><td>Полный обход (все Users с расхождением nas)</td></tr>
+    <tr><td><code>nas-resync-recent</code></td><td>300с (5 мин)</td><td>Лёгкая проверка только недавно правленных учёток</td></tr>
+    <tr><td><code>ip-pool-monitor</code></td><td>3600с (1 ч)</td><td>Мониторинг занятости IP-пулов</td></tr>
+    </tbody>
+  </table>
 
   <!-- ===== 8. FreeRADIUS ===== -->
   <h2 id="freeradius">8. FreeRADIUS / RADIUS</h2>
