@@ -625,14 +625,12 @@ docker compose up -d</code></pre>
     <li><a href="#ip-addresses">Распределение IP-адресов</a></li>
     <li><a href="#subscriber-tree">Дерево пользователей</a></li>
     <li><a href="#contracts">Договоры</a></li>
-    <li><a href="#search">Поиск и массовое изменение</a></li>
+    <li><a href="#search">Поиск по абонентам</a></li>
     <li><a href="#statistics">Статистика, аудит, диагностика</a></li>
     <li><a href="#finance-operations">Финансовые операции. Учёт НДС</a></li>
     <li><a href="#templates">Шаблоны абонентов и учётных записей</a></li>
     <li><a href="#block-types">Типы блокировок пользователей</a></li>
-    <li><a href="#termination">Расторжение договора</a>
-      <ul><li><a href="#abonent-restore">Восстановление из корзины</a></li></ul>
-    </li>
+    <li><a href="#termination">Расторжение договора</a></li>
     <li><a href="#edit-subscriber">Редактирование абонента</a></li>
     <li><a href="#grace-period">Льготный период оплаты</a></li>
     <li><a href="#retroactive">Подключение абонента задним числом</a></li>
@@ -646,6 +644,7 @@ docker compose up -d</code></pre>
     </ul>
   </details>
   </div>
+
 
   <ul class="child-pages">
     <li><a href="#create-subscriber">Создание абонента</a></li>
@@ -1881,6 +1880,7 @@ MSG_EMAIL_ENABLED=True</code></pre>
     <li><a href="#lk-auth">6.1. Авторизация</a></li>
     <li><a href="#lk-settings">6.2. Настройки интеграций</a></li>
     <li><a href="#lk-telegram">6.3. Telegram-бот для уведомлений</a></li>
+    <li><a href="#telegram-admin-bot">6.12. Telegram-бот для операторов (admin bot)</a></li>
     <li><a href="#lk-payments">6.4. Оплата через YooKassa</a></li>
     <li><a href="#lk-mobile-app">6.5. Мобильное приложение</a></li>
     <li><a href="#lk-support">6.6. Поддержка через FreeScout</a></li>
@@ -1889,10 +1889,10 @@ MSG_EMAIL_ENABLED=True</code></pre>
     <li><a href="#lk-deploy">6.9. Развёртывание и SSL</a></li>
     <li><a href="#lk-firebase">6.10. Firebase Push-уведомления</a></li>
     <li><a href="#lk-claude-ai">6.11. Claude AI — конфигурация AI-ассистента</a></li>
-    <li><a href="#telegram-admin-bot">6.12. Telegram-бот для операторов (admin bot)</a></li>
     </ul>
   </details>
   </div>
+
 
 
   <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;margin:16px 0">
@@ -2388,12 +2388,13 @@ Content-Type: application/json
     <li><a href="#shell-exec">7.9. Выполнение shell-команд</a></li>
     <li><a href="#nas-management-api">7.10. NAS Management API</a></li>
     <li><a href="#ip-allocation">7.11. Выделение IP из пула</a></li>
-    <li><a href="#nas-ip-lifecycle">7.12. NAS IP lifecycle и сброс сессий</a></li>
-    <li><a href="#ip-pool-fallback">7.13. Fallback-цепочка при исчерпании IP-пула</a></li>
-    <li><a href="#nas-resync">7.14. Синхронизация NAS после ручной правки</a></li>
+    <li><a href="#nas-ip-lifecycle">7.12. NAS IP lifecycle и сброс сессий (build 330)</a></li>
+    <li><a href="#ip-pool-fallback">7.13. Fallback-цепочка при исчерпании IP-пула (build 371)</a></li>
+    <li><a href="#nas-resync">7.14. Синхронизация NAS после ручной правки (build 371)</a></li>
     </ul>
   </details>
   </div>
+
 
 
   <!-- 7.1 rtsh -->
@@ -3217,14 +3218,15 @@ chmod +x restore.sh
     <li><a href="#director-report">10.4. Отчёт для директора</a></li>
     <li><a href="#audit-report">10.5. Формирование отчёта по аудитам</a></li>
     <li><a href="#dev-reports">10.6. Разработка и логи</a></li>
+    <li><a href="#staff-logging">10.6А. Логирование действий персонала</a></li>
     <li><a href="#reports-improvements">10.7. Улучшения раздела Отчёты</a></li>
     <li><a href="#monthly-billing">10.8. Месячное списание</a></li>
-    <li><a href="#staff-logging">10.6А. Логирование действий персонала</a></li>
     <li><a href="#menu-improvements">10.9. Навигация и меню</a></li>
     <li><a href="#staff-management">10.10. Профиль и управление персоналом</a></li>
     </ul>
   </details>
   </div>
+
 
 
   <h3 id="audit">10.1. Аудит</h3>
@@ -3634,6 +3636,7 @@ chmod +x restore.sh
     <li><a href="#ip-pools">11.5. Пулы IP-адресов</a></li>
     <li><a href="#requisites">11.6. Реквизиты</a></li>
     <li><a href="#houses">11.7. Адреса</a></li>
+    <li><a href="#conn-points">11.7a. Точки подключения</a></li>
     <li><a href="#greetings">11.8. Поздравления</a></li>
     <li><a href="#acl">11.9. ACL группы и списки</a></li>
     <li><a href="#periods">11.10. Периоды</a></li>
@@ -3643,6 +3646,7 @@ chmod +x restore.sh
     </ul>
   </details>
   </div>
+
 
 
   <img src="../img/new_dictionaries.png" alt="Справочники биллинга" class="screenshot">
@@ -3973,26 +3977,22 @@ python manage.py fix_sorm_reports --no-create  # только обновить S
   <!-- ===== 13. Модальные окна и карточки редактирования ===== -->
   <h2 id="modal-dialogs">13. Модальные окна и карточки редактирования</h2>
   <p>В СмИТ Биллинг v1.5 модальные окна используются для быстрого создания и редактирования записей без перехода между страницами. Каждый модал имеет единый стиль: шапка с иконкой, табы (если требуется), валидация на клиенте и сервере, сохранение через AJAX.</p>
-
   <div class="section-toc">
   <details open>
     <summary><strong>Содержание раздела</strong></summary>
     <ul>
-      <li><a href="#modal-finops">13.1. Финансовые операции — список и модал создания</a></li>
-      <li><a href="#modal-users">13.2. Учётная запись — модал с вкладками</a>
-        <ul>
-          <li><a href="#create-address">13.2а. Быстрое создание адреса</a></li>
-          <li><a href="#users-inline-actions">13.2.1. Таблица «Аккаунты» — inline-операции (build 373-374)</a></li>
-        </ul>
-      </li>
-      <li><a href="#modal-service-edit">13.3. Редактирование услуги</a></li>
-      <li><a href="#modal-service-add">13.4. Добавление услуги</a></li>
-      <li><a href="#bonuses-tab">13.4а. Вкладка «Бонусы» — как работает</a></li>
-      <li><a href="#modal-bonus-edit">13.5. Бонусы — отложенная активация</a></li>
-      <li><a href="#usluga">13.6. Услуги/Бонусы — список и массовые действия</a></li>
+    <li><a href="#modal-finops">13.1. Финансовые операции — список и модал</a></li>
+    <li><a href="#modal-users">13.2. Учётная запись — модал с вкладками</a></li>
+    <li><a href="#users-inline-actions">13.2.1. Таблица «Аккаунты» — inline-операции (build 373-374)</a></li>
+    <li><a href="#modal-service-edit">13.3. Редактирование услуги</a></li>
+    <li><a href="#modal-service-add">13.4. Добавление услуги</a></li>
+    <li><a href="#bonuses-tab">13.4а. Вкладка «Бонусы» в карточке абонента</a></li>
+    <li><a href="#modal-bonus-edit">13.5. Бонусы — отложенная активация</a></li>
+    <li><a href="#usluga">13.6. Услуги/Бонусы — список и массовые действия (build 268–275)</a></li>
     </ul>
   </details>
   </div>
+
 
   <!-- 13.1. Финансовые операции -->
   <h3 id="modal-finops">13.1. Финансовые операции — список и модал</h3>

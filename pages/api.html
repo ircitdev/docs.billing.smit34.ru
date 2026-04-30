@@ -484,6 +484,22 @@ curl -s -b cookies.txt -X DELETE \
 
   <!-- ============================================ -->
   <h2 id="payments-api">Платёжные API (ЮKassa и Wallet One)</h2>
+  <div class="section-toc">
+  <details open>
+    <summary><strong>Содержание раздела</strong></summary>
+    <ul>
+    <li><a href="#payments-endpoints">Полный список endpoint</a></li>
+    <li><a href="#payments-flow">Схема прохождения платежа</a></li>
+    <li><a href="#payments-create">Инициация платежа</a></li>
+    <li><a href="#yookassa-rest">ЮKassa — REST API v3</a></li>
+    <li><a href="#yookassa-http">ЮKassa — HTTP-протокол (Yandex.Kassa legacy)</a></li>
+    <li><a href="#w1-api">Wallet One (W1)</a></li>
+    <li><a href="#payments-settings">Настройки (.env или БД через админ-панель)</a></li>
+    <li><a href="#payments-finops">Запись в FinanceOperations</a></li>
+    </ul>
+  </details>
+  </div>
+
 
   <p>Биллинг поддерживает две платёжные системы: <strong>ЮKassa</strong> (REST API v3 и HTTP-протокол «старой» Yandex.Kassa) и <strong>Wallet One (W1)</strong>. Все платежи проходят через единый сервис <code>lk/services/payment.py</code>.</p>
 

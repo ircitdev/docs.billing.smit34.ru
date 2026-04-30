@@ -245,6 +245,20 @@
 
   <!-- ===== 1. Настройка сервера ===== -->
   <h2 id="server-setup">Настройка сервера</h2>
+  <div class="section-toc">
+  <details open>
+    <summary><strong>Содержание раздела</strong></summary>
+    <ul>
+    <li><a href="#network">Настройки сети</a></li>
+    <li><a href="#security">Безопасность</a></li>
+    <li><a href="#watchdog">Настройки watchdog</a></li>
+    <li><a href="#error-notifications">Система уведомлений об ошибках</a></li>
+    <li><a href="#time-settings">Настройка времени</a></li>
+    <li><a href="#file-settings">Настройки (в файле)</a></li>
+    </ul>
+  </details>
+  </div>
+
 
   <p>Первоначальная настройка сервера выполняется через веб-интерфейс управления или через конфигурационные файлы. Ниже описаны основные подразделы настройки.</p>
 
@@ -272,6 +286,23 @@
 
   <!-- ===== 2. Сервисное обслуживание ===== -->
   <h2 id="maintenance">Сервисное обслуживание</h2>
+  <div class="section-toc">
+  <details open>
+    <summary><strong>Содержание раздела</strong></summary>
+    <ul>
+    <li><a href="#update">Обновление биллинга</a></li>
+    <li><a href="#backup">Резервное копирование</a></li>
+    <li><a href="#hardware-replace">Замена оборудования</a></li>
+    <li><a href="#reboot">Выключение/перезагрузка</a></li>
+    <li><a href="#db-failover">Отказоустойчивость БД</a></li>
+    <li><a href="#monitoring">Система мониторинга</a></li>
+    <li><a href="#abonent-count">Количество абонентов</a></li>
+    <li><a href="#license-expand">Расширение лицензии</a></li>
+    <li><a href="#reactivation">Повторная активация</a></li>
+    </ul>
+  </details>
+  </div>
+
 
   <p>Регулярные операции обслуживания для обеспечения стабильной работы биллинговой системы.</p>
 
@@ -355,6 +386,20 @@ docker compose exec -T db psql -U carbon carbon &lt; backup.sql</code></pre>
 
   <!-- ===== 3. Управление модулями ===== -->
   <h2 id="modules">Управление модулями</h2>
+  <div class="section-toc">
+  <details open>
+    <summary><strong>Содержание раздела</strong></summary>
+    <ul>
+    <li><a href="#diagnostics">Диагностика</a></li>
+    <li><a href="#module-web">Web (Django + Gunicorn)</a></li>
+    <li><a href="#module-celery">Celery (фоновые задачи)</a></li>
+    <li><a href="#module-collector">Collector</a></li>
+    <li><a href="#module-zabbix">Zabbix</a></li>
+    <li><a href="#module-hooks">Хуки/firewall</a></li>
+    </ul>
+  </details>
+  </div>
+
 
   <p>Система состоит из Docker-контейнеров, управляемых через Docker Compose:</p>
 
