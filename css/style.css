@@ -943,6 +943,37 @@ pre code {
 .screenshot { max-width: 720px; }
 .content-image { max-width: 840px; }
 
+/* Screenshot pair — light/dark side by side */
+.screenshot-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 12px 0;
+  max-width: 900px;
+}
+.screenshot-pair .screenshot,
+.screenshot-pair img {
+  margin: 0;
+  max-width: 100%;
+  width: 100%;
+}
+.screenshot-pair figcaption {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 4px;
+}
+.screenshot-pair figure { margin: 0; }
+@media (max-width: 768px) {
+  .screenshot-pair { grid-template-columns: 1fr; }
+}
+
+/* Mobile screenshot — narrow column */
+.screenshot.is-mobile { max-width: 280px; }
+@media (max-width: 768px) {
+  .screenshot.is-mobile { max-width: 100%; }
+}
+
 /* Section TOC */
 .section-toc {
   background: var(--bg-card);
