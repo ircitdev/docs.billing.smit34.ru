@@ -231,6 +231,34 @@ tbody tr:hover { background: var(--bg3); }
   background: var(--bg2); border-left: 1px solid var(--border);
   display: flex; flex-direction: column; overflow: hidden;
 }
+.schema-help {
+  padding: 12px 14px; border-bottom: 1px solid var(--border);
+  font-size: 12px; color: var(--text2); line-height: 1.5;
+  background: linear-gradient(180deg, var(--bg3) 0%, transparent 100%);
+}
+.schema-help-title {
+  font-weight: 600; color: var(--text); display: flex; align-items: center;
+  gap: 6px; margin-bottom: 6px; font-size: 12.5px;
+}
+.schema-help-title .ti { font-size: 14px; color: var(--primary-l); }
+.schema-help ul {
+  list-style: none; padding: 0; margin: 4px 0 0;
+}
+.schema-help ul li {
+  padding: 2px 0 2px 16px; position: relative; font-size: 11.5px;
+}
+.schema-help ul li::before {
+  content: '·'; position: absolute; left: 6px; color: var(--primary-l); font-weight: 700;
+}
+.schema-help ul li b { color: var(--text); font-weight: 500; }
+.schema-help-toggle {
+  display: inline-block; margin-top: 6px; cursor: pointer;
+  color: var(--primary-l); font-size: 11px; user-select: none;
+}
+.schema-help-toggle:hover { text-decoration: underline; }
+.schema-help[data-collapsed="true"] ul,
+.schema-help[data-collapsed="true"] .schema-help-intro { display: none; }
+
 .schema-search-wrap {
   padding: 12px; border-bottom: 1px solid var(--border);
 }
@@ -596,6 +624,20 @@ body { padding-top: var(--header-height); }
 
       <!-- Sidebar справа -->
       <aside class="schema-sidebar">
+        <div class="schema-help" id="schemaHelp">
+          <div class="schema-help-title">
+            <i class="ti ti-info-circle"></i>
+            <span>Карта зависимостей модуля</span>
+          </div>
+          <div class="schema-help-intro">Узлы — классы, функции и файлы; рёбра — import-связи между ними. Размер узла растёт с числом связей.</div>
+          <ul>
+            <li><b>Клик</b> по узлу — детали, путь и соседи в этой панели</li>
+            <li><b>Колесо</b> — зум, <b>drag</b> — перемещать всю карту</li>
+            <li><b>Поиск</b> ниже — список совпадений, клик переносит к узлу</li>
+            <li><b>Сброс</b> — в исходный масштаб; <b>Физика</b> — оживить раскладку; <b>Подписи</b> — скрыть/показать имена</li>
+          </ul>
+          <span class="schema-help-toggle" id="schemaHelpToggle">Скрыть подсказку</span>
+        </div>
         <div class="schema-search-wrap">
           <input type="search" class="schema-search" id="schemaSearch" placeholder="Поиск ноды...">
         </div>
@@ -681,7 +723,7 @@ document.querySelectorAll('.dtn-theme-btn').forEach(btn => {
 })();
 
 
-const NODES = [{"id": "mobile_api_views_webhooks_py", "label": "webhooks.py", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L1", "degree": 10, "neighbors": [{"id": "webhooks_notify_agent_assigned", "label": "_notify_agent_assigned()", "cid": "20"}, {"id": "django_views_decorators_http", "label": "django_views_decorators_http", "cid": ""}, {"id": "webhooks_freescout_webhook", "label": "freescout_webhook()", "cid": "20"}, {"id": "webhooks_log_ticket_closed", "label": "_log_ticket_closed()", "cid": "20"}, {"id": "django_http", "label": "django_http", "cid": ""}, {"id": "webhooks_rationale_1", "label": "Webhook handlers for external service callbacks.", "cid": "20"}, {"id": "webhooks_send_push_for_ticket_reply", "label": "_send_push_for_ticket_reply()", "cid": "20"}, {"id": "django_views_decorators_csrf", "label": "django_views_decorators_csrf", "cid": ""}, {"id": "json", "label": "json", "cid": ""}, {"id": "logging", "label": "logging", "cid": ""}]}, {"id": "webhooks_freescout_webhook", "label": "freescout_webhook()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L14", "degree": 6, "neighbors": [{"id": "mobile_api_views_webhooks_py", "label": "webhooks.py", "cid": "20"}, {"id": "webhooks_notify_agent_assigned", "label": "_notify_agent_assigned()", "cid": "20"}, {"id": "webhooks_log_ticket_closed", "label": "_log_ticket_closed()", "cid": "20"}, {"id": "webhooks_rationale_15", "label": "FreeScout webhook — handles various conversation events.      Configure in FreeS", "cid": "20"}, {"id": "usluga_uslugachangeview_get", "label": ".get()", "cid": "1"}, {"id": "webhooks_send_push_for_ticket_reply", "label": "_send_push_for_ticket_reply()", "cid": "20"}]}, {"id": "webhooks_log_ticket_closed", "label": "_log_ticket_closed()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L116", "degree": 4, "neighbors": [{"id": "mobile_api_views_webhooks_py", "label": "webhooks.py", "cid": "20"}, {"id": "form_searchqueryset_filter", "label": ".filter()", "cid": "0"}, {"id": "webhooks_freescout_webhook", "label": "freescout_webhook()", "cid": "20"}, {"id": "webhooks_rationale_117", "label": "Log ticket closure to abonent activity (AuditOperations).", "cid": "20"}]}, {"id": "webhooks_notify_agent_assigned", "label": "_notify_agent_assigned()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L75", "degree": 5, "neighbors": [{"id": "mobile_api_views_webhooks_py", "label": "webhooks.py", "cid": "20"}, {"id": "webhooks_freescout_webhook", "label": "freescout_webhook()", "cid": "20"}, {"id": "webhooks_rationale_76", "label": "Notify operator via Telegram when ticket is assigned to them.", "cid": "20"}, {"id": "usluga_uslugachangeview_post", "label": ".post()", "cid": "1"}, {"id": "form_searchqueryset_filter", "label": ".filter()", "cid": "0"}]}, {"id": "webhooks_rationale_1", "label": "Webhook handlers for external service callbacks.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L1", "degree": 2, "neighbors": [{"id": "mobile_api_views_webhooks_py", "label": "webhooks.py", "cid": "20"}, {"id": "stubs_auditoperations", "label": "AuditOperations", "cid": "3"}]}, {"id": "webhooks_rationale_117", "label": "Log ticket closure to abonent activity (AuditOperations).", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L117", "degree": 2, "neighbors": [{"id": "stubs_auditoperations", "label": "AuditOperations", "cid": "3"}, {"id": "webhooks_log_ticket_closed", "label": "_log_ticket_closed()", "cid": "20"}]}, {"id": "webhooks_rationale_15", "label": "FreeScout webhook — handles various conversation events.      Configure in FreeS", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L15", "degree": 2, "neighbors": [{"id": "stubs_auditoperations", "label": "AuditOperations", "cid": "3"}, {"id": "webhooks_freescout_webhook", "label": "freescout_webhook()", "cid": "20"}]}, {"id": "webhooks_rationale_57", "label": "Send push notification to abonent when support replies.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L57", "degree": 2, "neighbors": [{"id": "stubs_auditoperations", "label": "AuditOperations", "cid": "3"}, {"id": "webhooks_send_push_for_ticket_reply", "label": "_send_push_for_ticket_reply()", "cid": "20"}]}, {"id": "webhooks_rationale_76", "label": "Notify operator via Telegram when ticket is assigned to them.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L76", "degree": 2, "neighbors": [{"id": "stubs_auditoperations", "label": "AuditOperations", "cid": "3"}, {"id": "webhooks_notify_agent_assigned", "label": "_notify_agent_assigned()", "cid": "20"}]}, {"id": "webhooks_send_push_for_ticket_reply", "label": "_send_push_for_ticket_reply()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L56", "degree": 4, "neighbors": [{"id": "mobile_api_views_webhooks_py", "label": "webhooks.py", "cid": "20"}, {"id": "form_searchqueryset_filter", "label": ".filter()", "cid": "0"}, {"id": "webhooks_rationale_57", "label": "Send push notification to abonent when support replies.", "cid": "20"}, {"id": "webhooks_freescout_webhook", "label": "freescout_webhook()", "cid": "20"}]}];
+const NODES = [{"id": "mobile_api_views_webhooks_py", "label": "webhooks.py", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L1", "degree": 10, "neighbors": [{"id": "django_views_decorators_csrf", "label": "django_views_decorators_csrf", "cid": ""}, {"id": "django_views_decorators_http", "label": "django_views_decorators_http", "cid": ""}, {"id": "webhooks_freescout_webhook", "label": "freescout_webhook()", "cid": "20"}, {"id": "webhooks_notify_agent_assigned", "label": "_notify_agent_assigned()", "cid": "20"}, {"id": "logging", "label": "logging", "cid": ""}, {"id": "webhooks_log_ticket_closed", "label": "_log_ticket_closed()", "cid": "20"}, {"id": "webhooks_rationale_1", "label": "Webhook handlers for external service callbacks.", "cid": "20"}, {"id": "webhooks_send_push_for_ticket_reply", "label": "_send_push_for_ticket_reply()", "cid": "20"}, {"id": "json", "label": "json", "cid": ""}, {"id": "django_http", "label": "django_http", "cid": ""}]}, {"id": "webhooks_freescout_webhook", "label": "freescout_webhook()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L14", "degree": 6, "neighbors": [{"id": "webhooks_notify_agent_assigned", "label": "_notify_agent_assigned()", "cid": "20"}, {"id": "mobile_api_views_webhooks_py", "label": "webhooks.py", "cid": "20"}, {"id": "webhooks_log_ticket_closed", "label": "_log_ticket_closed()", "cid": "20"}, {"id": "usluga_uslugachangeview_get", "label": ".get()", "cid": "1"}, {"id": "webhooks_send_push_for_ticket_reply", "label": "_send_push_for_ticket_reply()", "cid": "20"}, {"id": "webhooks_rationale_15", "label": "FreeScout webhook — handles various conversation events.      Configure in FreeS", "cid": "20"}]}, {"id": "webhooks_log_ticket_closed", "label": "_log_ticket_closed()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L116", "degree": 4, "neighbors": [{"id": "form_searchqueryset_filter", "label": ".filter()", "cid": "0"}, {"id": "webhooks_rationale_117", "label": "Log ticket closure to abonent activity (AuditOperations).", "cid": "20"}, {"id": "webhooks_freescout_webhook", "label": "freescout_webhook()", "cid": "20"}, {"id": "mobile_api_views_webhooks_py", "label": "webhooks.py", "cid": "20"}]}, {"id": "webhooks_notify_agent_assigned", "label": "_notify_agent_assigned()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L75", "degree": 5, "neighbors": [{"id": "webhooks_freescout_webhook", "label": "freescout_webhook()", "cid": "20"}, {"id": "mobile_api_views_webhooks_py", "label": "webhooks.py", "cid": "20"}, {"id": "webhooks_rationale_76", "label": "Notify operator via Telegram when ticket is assigned to them.", "cid": "20"}, {"id": "usluga_uslugachangeview_post", "label": ".post()", "cid": "1"}, {"id": "form_searchqueryset_filter", "label": ".filter()", "cid": "0"}]}, {"id": "webhooks_rationale_1", "label": "Webhook handlers for external service callbacks.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L1", "degree": 2, "neighbors": [{"id": "stubs_auditoperations", "label": "AuditOperations", "cid": "3"}, {"id": "mobile_api_views_webhooks_py", "label": "webhooks.py", "cid": "20"}]}, {"id": "webhooks_rationale_117", "label": "Log ticket closure to abonent activity (AuditOperations).", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L117", "degree": 2, "neighbors": [{"id": "stubs_auditoperations", "label": "AuditOperations", "cid": "3"}, {"id": "webhooks_log_ticket_closed", "label": "_log_ticket_closed()", "cid": "20"}]}, {"id": "webhooks_rationale_15", "label": "FreeScout webhook — handles various conversation events.      Configure in FreeS", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L15", "degree": 2, "neighbors": [{"id": "stubs_auditoperations", "label": "AuditOperations", "cid": "3"}, {"id": "webhooks_freescout_webhook", "label": "freescout_webhook()", "cid": "20"}]}, {"id": "webhooks_rationale_57", "label": "Send push notification to abonent when support replies.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L57", "degree": 2, "neighbors": [{"id": "stubs_auditoperations", "label": "AuditOperations", "cid": "3"}, {"id": "webhooks_send_push_for_ticket_reply", "label": "_send_push_for_ticket_reply()", "cid": "20"}]}, {"id": "webhooks_rationale_76", "label": "Notify operator via Telegram when ticket is assigned to them.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L76", "degree": 2, "neighbors": [{"id": "stubs_auditoperations", "label": "AuditOperations", "cid": "3"}, {"id": "webhooks_notify_agent_assigned", "label": "_notify_agent_assigned()", "cid": "20"}]}, {"id": "webhooks_send_push_for_ticket_reply", "label": "_send_push_for_ticket_reply()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L56", "degree": 4, "neighbors": [{"id": "form_searchqueryset_filter", "label": ".filter()", "cid": "0"}, {"id": "webhooks_rationale_57", "label": "Send push notification to abonent when support replies.", "cid": "20"}, {"id": "webhooks_freescout_webhook", "label": "freescout_webhook()", "cid": "20"}, {"id": "mobile_api_views_webhooks_py", "label": "webhooks.py", "cid": "20"}]}];
 const RELATED = [{"cid": "3", "label": "Поиск абонентов", "color": "#76b7b2", "count": 5, "icon": "search"}, {"cid": "0", "label": "Карточка абонента", "color": "#4e79a7", "count": 3, "icon": "user"}, {"cid": "1", "label": "Личный кабинет", "color": "#f28e2b", "count": 2, "icon": "home"}];
 
 // Render related communities
@@ -1046,7 +1088,26 @@ async function loadSchema() {
   }
 }
 
+function initSchemaHelpToggle() {
+  const help = document.getElementById('schemaHelp');
+  const toggle = document.getElementById('schemaHelpToggle');
+  if (!help || !toggle) return;
+  const STORAGE_KEY = 'schemaHelpCollapsed';
+  const collapsed = localStorage.getItem(STORAGE_KEY) === '1';
+  function apply(v) {
+    help.dataset.collapsed = v ? 'true' : 'false';
+    toggle.textContent = v ? 'Показать подсказку' : 'Скрыть подсказку';
+  }
+  apply(collapsed);
+  toggle.addEventListener('click', () => {
+    const next = help.dataset.collapsed !== 'true';
+    apply(next);
+    localStorage.setItem(STORAGE_KEY, next ? '1' : '0');
+  });
+}
+
 function populateSidebar() {
+  initSchemaHelpToggle();
   const stats = visGraphData.stats || {};
   const nodesN = stats.nodes || visGraphData.nodes.length;
   const edgesN = stats.edges || visGraphData.edges.length;
