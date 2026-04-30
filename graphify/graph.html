@@ -48,10 +48,11 @@ svg{width:100%;height:100%}
 .link.dimmed{stroke-opacity:.06}
 /* tooltip */
 #tooltip{position:fixed;display:none;background:var(--bg2);border:1px solid var(--border);
-  border-radius:8px;padding:8px 12px;font-size:12px;color:var(--text);
-  pointer-events:none;z-index:100;max-width:220px;box-shadow:0 4px 20px #0006;line-height:1.45}
-#tooltip b{color:var(--primary-l);display:inline-flex;align-items:center;gap:5px}
-#tooltip svg{flex-shrink:0;vertical-align:middle}
+  border-radius:6px;padding:6px 9px;font-size:11px;color:var(--text);
+  pointer-events:none;z-index:100;max-width:200px;box-shadow:0 4px 20px #0006;line-height:1.4}
+#tooltip b{color:var(--primary-l);display:inline-flex;align-items:center;gap:4px;font-size:11.5px}
+#tooltip svg{flex-shrink:0;vertical-align:middle;width:9px;height:9px;opacity:.9}
+#tooltip .tip-meta{color:var(--text2);font-size:10.5px}
 /* sidebar */
 #sidebar{width:280px;height:100vh;background:var(--bg2);border-left:1px solid var(--border);
   display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;transition:background .25s}
@@ -76,6 +77,12 @@ svg{width:100%;height:100%}
 .leg-link:hover{opacity:.8}
 .leg-link.disabled{color:var(--text3);background:transparent;border-color:transparent;cursor:not-allowed;opacity:.4}
 .leg-link.disabled:hover{opacity:.4}
+/* isolated communities — slightly faded + warning icon hint */
+.leg-row[data-isolated="1"] .leg-name{opacity:.7}
+.leg-row[data-isolated="1"] .leg-icon::after{content:'';position:absolute;width:7px;height:7px;border-radius:50%;background:#f59e0b;border:1.5px solid var(--bg2);transform:translate(8px,-8px)}
+.leg-row[data-isolated="1"] .leg-icon{position:relative}
+.leg-divider{padding:8px 16px 4px;font-size:9.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);border-top:1px solid var(--border);margin-top:6px;display:flex;align-items:center;gap:6px}
+.leg-divider .ld-dot{width:6px;height:6px;border-radius:50%;background:#f59e0b}
 #selected-detail{padding:13px 16px;border-top:1px solid var(--border);
   font-size:12px;display:none;background:var(--bg3)}
 .sel-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
@@ -253,7 +260,7 @@ body { margin: 0; padding-top: var(--header-height) !important;
 <div class="leg-row" data-cid="9" onclick="selectCommunity(9)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#bab0ac" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1zM8 19l-2 3M16 19l2 3M12 3l-4 4M12 3l4 4"/></svg></span><span class="leg-name">IPTV</span><span class="leg-cnt">108</span><a class="leg-link" href="wiki/community_9.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
 <div class="leg-row" data-cid="10" onclick="selectCommunity(10)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#d37295" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 10h16M4 14h10M4 18h10M14 14h6v4h-6z"/></svg></span><span class="leg-name">Фреймворк форм</span><span class="leg-cnt">99</span><a class="leg-link" href="wiki/community_10.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
 <div class="leg-row" data-cid="11" onclick="selectCommunity(11)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#fabfd2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12m-2 0a2 2 0 1 0 4 0 2 2 0 1 0-4 0M12 2v3m0 14v3M4.22 4.22l2.12 2.12m11.32 11.32 2.12 2.12M2 12h3m14 0h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg></span><span class="leg-name">Задачи биллинга</span><span class="leg-cnt">94</span><a class="leg-link" href="wiki/community_11.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
-<div class="leg-row" data-cid="12" onclick="selectCommunity(12)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#8cd17d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm0 0v6h6M9 13h6M9 17h4"/></svg></span><span class="leg-name">Шаблоны ЛК</span><span class="leg-cnt">61</span><a class="leg-link" href="wiki/community_12.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-isolated="1" data-cid="12" onclick="selectCommunity(12)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#8cd17d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm0 0v6h6M9 13h6M9 17h4"/></svg></span><span class="leg-name">Шаблоны ЛК</span><span class="leg-cnt">61</span><a class="leg-link" href="wiki/community_12.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
 <div class="leg-row" data-cid="13" onclick="selectCommunity(13)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#b6992d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h6v8H4zm10 0h6v4h-6zM4 16h6v4H4zm10-4h6v8h-6z"/></svg></span><span class="leg-name">Интерфейс</span><span class="leg-cnt">58</span><a class="leg-link" href="wiki/community_13.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
 <div class="leg-row" data-cid="14" onclick="selectCommunity(14)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#499894" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L4 7v5c0 4.97 3.37 9.08 8 10 4.63-.92 8-5.03 8-10V7l-8-4zm-2 9l2 2 4-4"/></svg></span><span class="leg-name">Отчёты СОРМ</span><span class="leg-cnt">57</span><a class="leg-link" href="wiki/community_14.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
 <div class="leg-row" data-cid="15" onclick="selectCommunity(15)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#86bcb6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18v12H3zM3 10h18M7 14h2M13 14h4"/></svg></span><span class="leg-name">Платёжные системы</span><span class="leg-cnt">48</span><a class="leg-link" href="wiki/community_15.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
@@ -262,10 +269,10 @@ body { margin: 0; padding-top: var(--header-height) !important;
 <div class="leg-row" data-cid="18" onclick="selectCommunity(18)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#ffbe7d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5a2 2 0 1 1 4 0 7 7 0 0 1 4 6v3l2 2H4l2-2v-3a7 7 0 0 1 4-6zM9 17v1a3 3 0 0 0 6 0v-1"/></svg></span><span class="leg-name">Push-уведомления</span><span class="leg-cnt">16</span><a class="leg-link" href="wiki/community_18.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
 <div class="leg-row" data-cid="19" onclick="selectCommunity(19)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#8CD3C7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm6 0a4 4 0 0 1 0 8M1 21v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2m0-14a4 4 0 0 1 0 8"/></svg></span><span class="leg-name">Модель аккаунта</span><span class="leg-cnt">15</span><a class="leg-link" href="wiki/community_19.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
 <div class="leg-row" data-cid="20" onclick="selectCommunity(20)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#4e79a7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5v2m0 4v2m0 4v2M5 5h14a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V7a2 2 0 0 1 2-2z"/></svg></span><span class="leg-name">FreeScout Webhooks</span><span class="leg-cnt">10</span><a class="leg-link" href="wiki/community_20.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
-<div class="leg-row" data-cid="21" onclick="selectCommunity(21)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#f28e2b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L4 7v5c0 4.97 3.37 9.08 8 10 4.63-.92 8-5.03 8-10V7l-8-4z"/></svg></span><span class="leg-name">Авторизация ЛК</span><span class="leg-cnt">9</span><span class="leg-link disabled" title="Wiki недоступна (мелкое сообщество)" onclick="event.stopPropagation()">·</span></div>
-<div class="leg-row" data-cid="22" onclick="selectCommunity(22)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#e15759" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 8l-4 4 4 4m10-8 4 4-4 4m-5-11-2 14"/></svg></span><span class="leg-name">Фильтры шаблонов</span><span class="leg-cnt">7</span><span class="leg-link disabled" title="Wiki недоступна (мелкое сообщество)" onclick="event.stopPropagation()">·</span></div>
-<div class="leg-row" data-cid="23" onclick="selectCommunity(23)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#76b7b2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 4.5v9L12 21l-9-4.5v-9L12 3zm0 0v9m9-4.5L12 12m-9-4.5L12 12"/></svg></span><span class="leg-name">Пакет мобильного API</span><span class="leg-cnt">4</span><span class="leg-link disabled" title="Wiki недоступна (мелкое сообщество)" onclick="event.stopPropagation()">·</span></div>
-<div class="leg-row" data-cid="24" onclick="selectCommunity(24)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#59a14f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h16M6 16h12M12 4v4M8 12v4M16 12v4"/></svg></span><span class="leg-name">Конфигурация</span><span class="leg-cnt">3</span><span class="leg-link disabled" title="Wiki недоступна (мелкое сообщество)" onclick="event.stopPropagation()">·</span></div>
+<div class="leg-row" data-isolated="1" data-cid="21" onclick="selectCommunity(21)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#f28e2b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L4 7v5c0 4.97 3.37 9.08 8 10 4.63-.92 8-5.03 8-10V7l-8-4z"/></svg></span><span class="leg-name">Авторизация ЛК</span><span class="leg-cnt">9</span><span class="leg-link disabled" title="Wiki недоступна (мелкое сообщество)" onclick="event.stopPropagation()">·</span></div>
+<div class="leg-row" data-isolated="1" data-cid="22" onclick="selectCommunity(22)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#e15759" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 8l-4 4 4 4m10-8 4 4-4 4m-5-11-2 14"/></svg></span><span class="leg-name">Фильтры шаблонов</span><span class="leg-cnt">7</span><span class="leg-link disabled" title="Wiki недоступна (мелкое сообщество)" onclick="event.stopPropagation()">·</span></div>
+<div class="leg-row" data-isolated="1" data-cid="23" onclick="selectCommunity(23)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#76b7b2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 4.5v9L12 21l-9-4.5v-9L12 3zm0 0v9m9-4.5L12 12m-9-4.5L12 12"/></svg></span><span class="leg-name">Пакет мобильного API</span><span class="leg-cnt">4</span><span class="leg-link disabled" title="Wiki недоступна (мелкое сообщество)" onclick="event.stopPropagation()">·</span></div>
+<div class="leg-row" data-isolated="1" data-cid="24" onclick="selectCommunity(24)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#59a14f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h16M6 16h12M12 4v4M8 12v4M16 12v4"/></svg></span><span class="leg-name">Конфигурация</span><span class="leg-cnt">3</span><span class="leg-link disabled" title="Wiki недоступна (мелкое сообщество)" onclick="event.stopPropagation()">·</span></div>
   </div>
   <div id="selected-detail">
     <div class="sel-head">
@@ -428,7 +435,10 @@ function makeIconSvg(id, size, color) {
 }
 function showTooltip(e,d) {
   const conns = LINKS.filter(l => l.source.id===d.id || l.target.id===d.id).length;
-  tip.innerHTML = `<b>${makeIconSvg(d.id,11,'var(--primary-l)')} ${d.label}</b><br>${d.count} модулей · ${conns} связей`;
+  const connText = conns === 0
+    ? '<span style="color:#f59e0b">без межмодульных связей</span>'
+    : `${conns} связей`;
+  tip.innerHTML = `<b>${makeIconSvg(d.id,9,'var(--primary-l)')} ${d.label}</b><br><span class="tip-meta">${d.count} модулей · ${connText}</span>`;
   tip.style.display = 'block';
   moveTooltip(e);
 }
@@ -446,11 +456,12 @@ function selectNode(id) {
     if (l.source.id === id) connectedIds.add(l.target.id);
     else if (l.target.id === id) connectedIds.add(l.source.id);
   });
-  // selection / highlighting / dim
+  const isIsolated = connectedIds.size === 1; // только сам узел
+  // selection / highlighting / dim — не диммим если узел изолирован (бессмысленно)
   nodeSel.classed('selected', d => d.id===id);
-  nodeSel.classed('dimmed',   d => !connectedIds.has(d.id));
+  nodeSel.classed('dimmed',   d => !isIsolated && !connectedIds.has(d.id));
   linkSel.classed('highlighted', d => d.source.id===id || d.target.id===id);
-  linkSel.classed('dimmed',      d => d.source.id!==id && d.target.id!==id);
+  linkSel.classed('dimmed',      d => !isIsolated && d.source.id!==id && d.target.id!==id);
   // sidebar
   document.querySelectorAll('.leg-row').forEach(r=>r.classList.remove('active'));
   const row = document.querySelector('.leg-row[data-cid="'+id+'"]');
@@ -468,7 +479,16 @@ function selectNode(id) {
   }).join('');
   const total = LINKS.filter(l=>l.source.id===id||l.target.id===id).length;
   if(total>8) html += `<div style="color:var(--text3);padding-top:3px">и ещё ${total-8}…</div>`;
-  document.getElementById('sel-info').innerHTML = html || '<span style="color:var(--text3)">Нет связей</span>';
+  if (!html) {
+    document.getElementById('sel-info').innerHTML =
+      '<div style="padding:6px 8px;background:#f59e0b22;border:1px solid #f59e0b55;border-radius:6px;color:var(--text2);font-size:11px;line-height:1.4">' +
+      '<b style="color:#f59e0b;display:block;margin-bottom:3px">Нет межмодульных связей</b>' +
+      'graphify видит связи только через Python <code>import</code>. Этот кластер ' +
+      'связан с другими через Django-шаблоны / URL-маршруты / Celery-задачи — ' +
+      'их парсер AST не отслеживает.</div>';
+  } else {
+    document.getElementById('sel-info').innerHTML = html;
+  }
   // disable wiki link for missing communities (id >= 21)
   const wikiBtn = document.getElementById('sel-link');
   if (id >= 21) {
