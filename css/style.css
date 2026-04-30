@@ -239,6 +239,35 @@ a:hover { color: var(--primary-dark); text-decoration: underline; }
 :root .theme-toggle .icon-sun { display: none; }
 :root .theme-toggle .icon-moon { display: inline; }
 
+/* Header navigation buttons (Граф / Wiki and similar) */
+.header-nav-link {
+  background: rgba(255, 255, 255, .12);
+  border: 1px solid rgba(255, 255, 255, .25);
+  color: var(--text-white);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background .2s, transform .2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  line-height: 1;
+}
+.header-nav-link:hover {
+  background: rgba(255, 255, 255, .25);
+  text-decoration: none;
+  color: var(--text-white);
+  transform: translateY(-1px);
+}
+.header-nav-link .hnl-ico {
+  font-size: 16px;
+  line-height: 1;
+}
+
 /* Sidebar */
 .sidebar {
   position: fixed;
@@ -1116,6 +1145,10 @@ pre code {
   .mobile-search-btn { display: inline-flex; }
   /* Hide inline header search on mobile, use overlay instead */
   .header-search { display: none; }
+
+  /* Header nav buttons: keep icons, drop text labels */
+  .header-nav-link .hnl-txt { display: none; }
+  .header-nav-link { padding: 6px 10px; }
 
   .sidebar {
     width: min(85vw, 320px);
