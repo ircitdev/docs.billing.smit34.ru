@@ -243,7 +243,7 @@
           <li><a href="../pages/billing.html#ebs-sync">19. Синхронизация с EBS</a></li>
           <li><a href="../pages/billing.html#ui-improvements">20. UI-улучшения дашборда</a></li>
           <li><a href="../pages/billing.html#design-system">21. Дизайн-система</a></li>
-          <li><a href="../pages/billing.html#sorm-ux">22. СОРМ — UX-улучшения</a></li>
+          <li><a href="../pages/billing.html#sorm">22. СОРМ</a></li>
         </ul>
       </li>
 
@@ -417,7 +417,7 @@
   <li><a href="#ebs-sync">19. Синхронизация с EBS (build 367–393)</a></li>
   <li><a href="#ui-improvements">20. UI-улучшения дашборда (build 386–393)</a></li>
   <li><a href="#design-system">21. Дизайн-система (build 408–411)</a></li>
-  <li><a href="#sorm-ux">22. СОРМ — UX-улучшения (build 412–413)</a></li>
+  <li><a href="#sorm">22. СОРМ — выгрузка на сервера РКН</a></li>
   </ul>
 </details>
 </div>
@@ -5855,7 +5855,7 @@ STARTED_AT, FINISHED_AT, EBS_LAST_TX_ID, STATS_JSON, DUMP_FILE, ERROR_MSG</code>
     <ul>
     <li><a href="#design-tokens">21.1. CSS-токены (:root)</a></li>
     <li><a href="#smit-components">21.2. Унифицированные компоненты</a></li>
-    <li><a href="#smit-screens">21.3. Где применено (build 413)</a></li>
+    <li><a href="#smit-screens">21.3. Где применено (build 414)</a></li>
     <li><a href="#a11y-features">21.4. A11y-улучшения</a></li>
     <li><a href="#design-migration">21.5. Миграция legacy на новые токены</a></li>
     <li><a href="#design-files">21.6. Где смотреть и как использовать</a></li>
@@ -5874,7 +5874,7 @@ STARTED_AT, FINISHED_AT, EBS_LAST_TX_ID, STATS_JSON, DUMP_FILE, ERROR_MSG</code>
   <p>Полные отчёты:</p>
   <ul>
     <li><a href="/admin/reports/dev/?tab=reports&amp;file=%D0%9E%D1%82%D1%87%D1%91%D1%82%D1%8B%2F2026-04-30_UX_%D0%B0%D1%83%D0%B4%D0%B8%D1%82_%D0%BF%D0%BE%D0%BB%D0%BD%D1%8B%D0%B9_%D0%BF%D1%80%D0%BE%D0%B3%D0%BE%D0%BD_build408.md">UX-аудит полный прогон build 408</a></li>
-    <li>Sprint 4 (build 413) — миграция ключевых экранов на единые компоненты</li>
+    <li>Sprint 4 (build 414) — миграция ключевых экранов на единые компоненты</li>
   </ul>
 
   <h3 id="design-tokens">21.1. CSS-токены (:root)</h3>
@@ -5934,7 +5934,7 @@ STARTED_AT, FINISHED_AT, EBS_LAST_TX_ID, STATS_JSON, DUMP_FILE, ERROR_MSG</code>
     </tbody>
   </table>
 
-  <h3 id="smit-screens">21.3. Где применено (build 413)</h3>
+  <h3 id="smit-screens">21.3. Где применено (build 414)</h3>
 
   <p><strong>Глобальный поиск</strong> (<a href="/admin/Abonents/search/">/admin/Abonents/search/</a>) — toolbar + 4 stat-карточки + 7 чипов. Светлая и тёмная темы рядом:</p>
   <div class="screenshot-pair">
@@ -6033,7 +6033,7 @@ STARTED_AT, FINISHED_AT, EBS_LAST_TX_ID, STATS_JSON, DUMP_FILE, ERROR_MSG</code>
     (settings, dictionaries, equipment)</li>
   </ul>
 
-  <p>В Sprint 4 (build 413) переключены: <code>search.html</code>,
+  <p>В Sprint 4 (build 414) переключены: <code>search.html</code>,
   <code>accounts_list.html</code>, <code>finops_list.html</code>,
   <code>operations_inline.html</code>. Остальные могут использовать новые
   компоненты по запросу.</p>
@@ -6068,149 +6068,276 @@ STARTED_AT, FINISHED_AT, EBS_LAST_TX_ID, STATS_JSON, DUMP_FILE, ERROR_MSG</code>
     &lt;/div&gt;
 &lt;/div&gt;</code></pre>
 
-  <h2 id="sorm-ux">22. СОРМ — UX-улучшения (build 412–413)</h2>
+  <h2 id="sorm">22. СОРМ — выгрузка на сервера РКН</h2>
 
-  <p>Compliance с Роскомнадзором — самая высокорисковая функция системы:
-  неработающая выгрузка означает штрафы и риск отзыва лицензии оператора связи.
-  В Sprint 1+2 мы добавили <strong>safety, audit trail и self-service диагностику</strong>
-  чтобы оператор мог за минуту понять «всё ли работает».</p>
+  <p>Раздел: <strong>Оборудование → Настройки СОРМ</strong> (URL
+  <a href="/admin/equipment/sorm_list/">/admin/equipment/sorm_list/</a>).</p>
 
-  <p>План: <a href="/admin/reports/dev/?tab=reports&amp;file=%D0%9F%D0%BB%D0%B0%D0%BD%D1%8B%2F2026-04-30_UX_%D0%A1%D0%9E%D0%A0%D0%9C.md">2026-04-30_UX_СОРМ.md</a>.
-  Health Score: 70 → 88/100 (Excellent).</p>
+  <p>Оператор связи обязан передавать в Роскомнадзор данные об абонентах,
+  платежах, услугах. Биллинг автоматически формирует CSV-отчёты по схеме
+  поставщика СОРМ-3 оборудования и загружает их на FTP-сервер РКН по
+  расписанию.</p>
 
-  <h3 id="sorm-list-overview">22.1. Список конфигов СОРМ — расширенная таблица</h3>
+  <h3 id="sorm-list">22.1. Список конфигураций</h3>
 
-  <p><a href="/admin/equipment/sorm_list/">/admin/equipment/sorm_list/</a> теперь
-  показывает все ключевые метрики каждой конфигурации:</p>
+  <p>На главной странице раздела — таблица всех настроек СОРМ.
+  В одной системе обычно одна конфигурация, но можно создать несколько
+  (например, для разных регионов).</p>
 
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/sorm_v413/sorm_doc_01_list.png" alt="Список конфигураций СОРМ"></p>
+
+  <p>Таблица показывает по каждой конфигурации:</p>
   <ul>
-    <li><strong>Vendor</strong> через <code>.smit-badge.is-info</code> (СигналТек / НОРСИ 2020 / СпецТехПитон / МФИ Софт / Элком НТ / VAS Experts)</li>
-    <li><strong>FTP</strong> — host:port + path (с warning если не задан)</li>
-    <li><strong>Расписание</strong> — время выгрузки или «вручную»</li>
-    <li><strong>Отчётов</strong> — счётчик активных <code>SormReport</code></li>
-    <li><strong>Последняя выгрузка</strong> — дата/время + статус (✓/⚠/✗/⏳) + N/M файлов</li>
-    <li><strong>Готовность данных</strong> — бейдж 🟢/🟡/🔴 в шапке (читает <code>SormReadinessCheck</code>)</li>
-    <li><strong>3 кнопки действий</strong> в каждой строке: ⚙ Настроить · ▶ Выгрузить сейчас · 🗑 Удалить</li>
+    <li><strong>Vendor</strong> — поставщик СОРМ-оборудования: СигналТек, НОРСИ 2020, СпецТехПитон, МФИ Софт, Элком НТ, VAS Experts</li>
+    <li><strong>FTP</strong> — хост и путь выгрузки на стенде РКН (если не задан — предупреждение)</li>
+    <li><strong>Расписание</strong> — время автоматической выгрузки</li>
+    <li><strong>Отчётов</strong> — количество настроенных <code>SormReport</code> (по дефолту 14)</li>
+    <li><strong>Последняя выгрузка</strong> — дата/время + значок статуса (✓ успех, ⚠ частично, ✗ ошибка, ⏳ идёт) + сколько файлов из общего числа</li>
   </ul>
 
-  <h3 id="sorm-readiness">22.2. Кеш проверки готовности (<code>SormReadinessCheck</code>)</h3>
+  <p>Кнопки в строке: <strong>⚙</strong> открыть настройки, <strong>▶</strong>
+  запустить выгрузку сейчас, <strong>🗑</strong> удалить конфигурацию.</p>
 
-  <p>Кнопка «Проверить готовность данных» сохраняет результат в БД (модель
-  <code>SormReadinessCheck</code> — миграция <code>0099</code>). На странице списка
-  показывается персистентный бейдж:</p>
+  <p>В шапке слева — кнопка <strong>Проверить готовность</strong> (анализирует
+  пропуски обязательных полей у абонентов, см. <a href="#sorm-readiness">22.2</a>).
+  Результат проверки кешируется и виден в виде бейджа справа.</p>
 
+  <h3 id="sorm-readiness">22.2. Проверка готовности данных</h3>
+
+  <p>Перед выгрузкой полезно проверить — все ли обязательные поля заполнены
+  у активных абонентов. Кнопка <strong>Проверить готовность</strong> запускает
+  анализ <code>UserAttributes</code> и показывает список пропусков.</p>
+
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/sorm_v413/sorm_doc_07_readiness.png" alt="Модал проверки готовности данных"></p>
+
+  <p>Например, если у юр.лиц не заполнены ИНН, КПП, ОГРН, Директор — система
+  покажет точное число абонентов с каждым пропуском и в каком отчёте СОРМ это
+  поле используется. Выгрузка не блокируется, но РКН может вернуть файл с замечанием.</p>
+
+  <p>Бейдж результата (рядом с кнопкой):</p>
   <ul>
-    <li>🟢 <strong>Все данные готовы</strong> — нет проблем</li>
-    <li>🟡 <strong>Пропусков: N</strong> — есть пропуски значений у активных абонентов (≤100)</li>
-    <li>🔴 <strong>Проблем: N мета + M data</strong> — критические проблемы метаданных или >100 пропусков</li>
-    <li>⚪ <strong>Не проверялось</strong> — кеш пуст</li>
+    <li>🟢 <strong>Все данные готовы</strong> — пропусков нет</li>
+    <li>🟡 <strong>Пропусков: N</strong> — есть пропуски (≤100)</li>
+    <li>🔴 <strong>Проблем: N мета + M data</strong> — критические проблемы метаданных или &gt;100 пропусков</li>
+    <li>⚪ <strong>Не проверялось</strong> — проверка ни разу не запускалась</li>
   </ul>
 
-  <p>Раньше результат проверки исчезал после закрытия модалки, теперь оператор
-  может в любой момент видеть «когда последний раз проверяли» (timestamp рядом с бейджем).</p>
+  <p>Бейдж сохраняется между сессиями — рядом показывается timestamp последней
+  проверки.</p>
 
-  <h3 id="sorm-detail-tabs">22.3. Detail-страница — under-tabs (5 вкладок)</h3>
+  <h3 id="sorm-basic">22.3. Основные настройки</h3>
 
-  <p><a href="/admin/equipment/sorm_list/1/">/admin/equipment/sorm_list/&lt;id&gt;/</a>
-  переписана со sticky save bar и пятью под-вкладками (URL <code>#tab-X</code>):</p>
+  <p>Открывается при клике на имя конфигурации. Содержит пять под-вкладок:
+  <strong>Основные · FTP · Уведомления · Отчёты · История</strong>.</p>
 
-  <ol>
-    <li><strong>Основные</strong> (<code>#tab-basic</code>) — имя, кодировка, разделитель,
-    формат даты с dropdown-шаблонами (ISO/RU/compact), часовой пояс через <code>&lt;datalist&gt;</code>
-    с 12 РФ tz, vendor radio-cards с confirm при смене</li>
-    <li><strong>FTP</strong> (<code>#tab-ftp</code>) — host/port/user/password (с 👁 toggle)
-    /path/active mode + кнопка «Проверить FTP» с расширенной диагностикой</li>
-    <li><strong>Уведомления</strong> (<code>#tab-tg</code>) — Chat ID с HTML5 валидацией
-    <code>pattern="-?\d+"</code>, ссылка на @userinfobot</li>
-    <li><strong>Отчёты</strong> (<code>#tab-reports</code>) — таблица всех 14 отчётов с
-    inline периодичностью + кнопка ▶ для запуска отдельного отчёта</li>
-    <li><strong>История</strong> (<code>#tab-history</code>) — журнал всех выгрузок с
-    polling статуса для running</li>
-  </ol>
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/sorm_v413/sorm_doc_02_basic.png" alt="Вкладка Основные"></p>
 
-  <h3 id="sorm-manual-run">22.4. Ручной запуск выгрузки</h3>
-
-  <p>Endpoint <code>POST /admin/equipment/sorm_list/&lt;sorm_id&gt;/run-now/</code>:</p>
-
-  <ol>
-    <li>Создаёт <code>SormExportLog</code> запись со <code>status=running</code>, <code>trigger=manual</code></li>
-    <li>Записывает в <code>AuditOperations</code> «кто запустил выгрузку»</li>
-    <li>Запускает Celery-задачу <code>export_sorm_reports(sorm_id, export_log_id)</code></li>
-    <li>Задача проходит по всем активным <code>SormReport</code>, выгружает каждый на FTP,
-    обновляет <code>SormExportLog</code>: <code>files_total/files_ok/total_rows/total_bytes/status</code></li>
-    <li>В конце — Telegram-нотификация (если <code>SORM_TELEGRAM_ENABLED=1</code>)</li>
-  </ol>
-
-  <p>На UI кнопка «▶ Выгрузить сейчас» — confirm-модалка с предупреждением о нагрузке на DB,
-  затем переключение на вкладку «История» с polling каждые 5 сек.</p>
-
-  <h3 id="sorm-export-log">22.5. Журнал выгрузок (<code>SormExportLog</code>)</h3>
-
-  <p>Audit trail для проверок РКН — таблица:</p>
+  <p><strong>Что задаётся:</strong></p>
 
   <table>
     <thead>
       <tr><th>Поле</th><th>Описание</th></tr>
     </thead>
     <tbody>
-      <tr><td><code>started_at</code> / <code>finished_at</code></td><td>Время начала/окончания + расчёт duration</td></tr>
-      <tr><td><code>trigger</code></td><td>schedule / manual / api</td></tr>
-      <tr><td><code>status</code></td><td>running / success / partial / failed</td></tr>
-      <tr><td><code>files_total</code> / <code>files_ok</code></td><td>Сколько отчётов запланировано / выгружено</td></tr>
-      <tr><td><code>total_rows</code> / <code>total_bytes</code></td><td>Суммарный размер</td></tr>
-      <tr><td><code>ftp_uploaded</code></td><td>Файлы реально загружены на FTP сервера РКН</td></tr>
-      <tr><td><code>telegram_sent</code></td><td>Уведомление отправлено</td></tr>
-      <tr><td><code>error_msg</code></td><td>Топ-20 ошибок (для diagnostics)</td></tr>
-      <tr><td><code>started_by</code></td><td>username оператора (для manual run)</td></tr>
+      <tr><td>Наименование</td><td>Произвольное имя конфигурации (видно в списке)</td></tr>
+      <tr><td>Кодировка</td><td>UTF-8 (стандарт) или Windows-1251 (для legacy РКН-стендов)</td></tr>
+      <tr><td>Разделитель</td><td>Один символ. Обычно <code>;</code> для CSV, <code>\t</code> для TSV</td></tr>
+      <tr><td>Формат даты</td><td>strftime-spec. Рядом dropdown с шаблонами: ISO <code>%Y-%m-%d %H:%M:%S</code>, RU <code>%d.%m.%Y %H:%M</code>, compact <code>%Y%m%d_%H%M%S</code></td></tr>
+      <tr><td>Часовой пояс</td><td>Из datalist (12 РФ часовых поясов от Калининграда до Камчатки) либо вписать вручную</td></tr>
+      <tr><td>Время выгрузки</td><td>Час дня, когда Celery beat автоматически запускает выгрузку</td></tr>
+      <tr><td>Оборачивать значения в кавычки</td><td>Включить если в данных могут быть запятые/кавычки/переводы строк (защита от ошибок парсера РКН)</td></tr>
+      <tr><td>Вендор СОРМ</td><td>Радио-выбор из 6 поставщиков. Смена vendor требует подтверждения и сброса схемы отчётов</td></tr>
     </tbody>
   </table>
 
-  <p>UI таблицы: вкладка «История» рендерит последние 50 записей с цветовым кодированием
-  status (зелёный success / оранжевый partial / красный failed / синий running).
-  Если есть running — auto-poll каждые 5 сек.</p>
-
-  <h3 id="sorm-ftp-diag">22.6. Расширенная диагностика FTP</h3>
-
-  <p>Кнопка «Проверить FTP» теперь возвращает полный отчёт в модалке:</p>
-
+  <p>Кнопки внизу:</p>
   <ul>
-    <li><strong>Latency</strong> — общее время в мс</li>
-    <li><strong>Banner</strong> — приветствие FTP-сервера</li>
-    <li><strong>Этапы проверки</strong> — TCP подключение / Авторизация / CWD каждый
-    подкаталог пути / Листинг — каждый шаг с timestamp и сообщением</li>
-    <li><strong>Тип ошибки</strong> — class name (FTPError / TimeoutError / OSError)</li>
-    <li><strong>Файлы в каталоге</strong> — первые 10 имён (если успех)</li>
-    <li><strong>Кнопка «Скопировать диагностику»</strong> — JSON для саппорта</li>
+    <li><strong>Сохранить</strong> — сохранить изменения формы</li>
+    <li><strong>↻ Дефолты схемы vendor</strong> — переустановить SQL и схему всех 14 отчётов под выбранного поставщика. <strong>Текущие настройки отчётов будут перезаписаны</strong> — требуется подтверждение</li>
+    <li><strong>📇 Создать реквизит «Тип документа»</strong> — добавить в <code>UserAttributes</code> стандартный набор типов документов (паспорт, ИНН, СНИЛС и т.д.) если их ещё нет в системе</li>
   </ul>
 
-  <h3 id="sorm-inline-reports">22.7. Inline-управление отчётами</h3>
+  <p>В шапке справа — кнопка <strong>▶ Выгрузить сейчас</strong> запускает
+  ручную выгрузку всех отчётов на FTP (см. <a href="#sorm-run-now">22.7</a>).</p>
 
-  <p>Каждый из 14 отчётов в табе «Отчёты» имеет inline-controls:</p>
+  <h3 id="sorm-ftp">22.4. Подключение к FTP-серверу РКН</h3>
+
+  <p>Параметры доступа предоставляет поставщик СОРМ-оборудования. Запросите
+  у их техподдержки: хост, пользователь, пароль, путь.</p>
+
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/sorm_v413/sorm_doc_03_ftp.png" alt="Вкладка FTP"></p>
 
   <ul>
-    <li><strong>Period select</strong> — Вручную / Каждые 10 минут / Каждый час /
-    Ежедневно / Ежемесячно. Сохраняется через <code>POST /reports/&lt;id&gt;/set-period/</code>
-    с audit-записью</li>
-    <li><strong>▶ Run</strong> — запуск этого отдельного отчёта (с FTP-выгрузкой)</li>
-    <li><strong>⚙ Cog</strong> — переход на полную страницу настроек SQL/схемы отчёта</li>
+    <li><strong>FTP хост</strong> — IP или DNS-имя сервера РКН</li>
+    <li><strong>Порт</strong> — обычно 21</li>
+    <li><strong>Пользователь / Пароль</strong> — для авторизации. Кнопка 👁 показывает пароль</li>
+    <li><strong>Путь выгрузки</strong> — каталог на сервере, обычно <code>/sorm/</code>. Корень сервера — <code>/</code></li>
+    <li><strong>Активный режим FTP</strong> — большинство FTP работают в Passive (выкл). Active включают если сервер РКН не отвечает на data-port</li>
   </ul>
 
-  <h3 id="sorm-files">22.8. Файлы реализации</h3>
+  <p>Кнопка <strong>Проверить FTP</strong> запускает диагностику: открывает
+  TCP-соединение, авторизуется, делает CWD по каждой части пути, листинг файлов.
+  Результат показывает в модалке с этапами проверки и временем каждого шага
+  в миллисекундах. При ошибке выводится тип исключения и сообщение FTP-сервера —
+  можно скопировать диагностический JSON и отдать саппорту.</p>
+
+  <h3 id="sorm-telegram">22.5. Уведомления в Telegram</h3>
+
+  <p>После каждой выгрузки можно отправлять отчёт в Telegram-чат — удобно для
+  оперативного контроля что СОРМ доходит до РКН.</p>
+
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/sorm_v413/sorm_doc_04_telegram.png" alt="Вкладка Уведомления Telegram"></p>
 
   <ul>
-    <li><strong>Models</strong>: <code>billing/models/sorm.py</code> — добавлены
-    <code>SormReadinessCheck</code> + <code>SormExportLog</code></li>
-    <li><strong>Migration</strong>: <code>billing/migrations/0099_sorm_readiness_export_log.py</code></li>
-    <li><strong>Views</strong>: <code>billing/views/sorm.py</code> — расширены
-    <code>sorm_list_view</code> + <code>sorm_validate_data_api</code> (запись в кеш) + новые
-    <code>sorm_run_now</code> + <code>sorm_export_log_api</code> + <code>report_set_period_ajax</code></li>
-    <li><strong>FTP test</strong>: <code>billing/views/sorm_settings.py::sorm_settings_test_ftp</code> —
-    добавлены steps[] + latency_ms</li>
-    <li><strong>Task</strong>: <code>billing/tasks/sorm_export.py::export_sorm_reports(sorm_id, export_log_id)</code> —
-    обёртка вокруг <code>run_report_export</code> с обновлением SormExportLog + Telegram</li>
-    <li><strong>Templates</strong>: <code>billing/templates/sorm/sorm_lists.html</code> +
-    <code>sorm_main.html</code> (полностью переписан под under-tabs)</li>
-    <li><strong>URLs</strong>: 3 новых route в <code>billing/urls.py</code></li>
+    <li><strong>Отправлять отчёт после каждой выгрузки</strong> — главный переключатель</li>
+    <li><strong>Chat ID</strong> — числовой ID Telegram-чата. Для супергруппы начинается с <code>-100</code>. Узнать через <a href="https://t.me/userinfobot" target="_blank" rel="noopener">@userinfobot</a></li>
+    <li><strong>Thread ID</strong> — необязательно. ID топика в супергруппе с включёнными темами</li>
+  </ul>
+
+  <p>Кнопка <strong>Тест отправки</strong> отправляет тестовое сообщение в
+  указанный чат — позволяет убедиться что бот добавлен и Chat ID/Thread ID
+  верные.</p>
+
+  <p>Бот для отправки берётся из общих настроек: <a href="/admin/settings/integrations/?tab=telegram">Настройки → Интеграции → Telegram</a>.
+  Прокси для api.telegram.org тоже наследуется оттуда.</p>
+
+  <h3 id="sorm-reports">22.6. Список отчётов</h3>
+
+  <p>Стандартный набор — 14 отчётов СОРМ-3: ABONENT, ABONENT_IDENT,
+  ABONENT_SRV, ABONENT_USER, ABONENT_ADDR, PAYMENT, SUPPLEMENTARY_SERVICE,
+  REGIONS, DOC_TYPE, PAY_TYPE и другие. У каждого свой SQL-запрос и префикс
+  имени файла.</p>
+
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/sorm_v413/sorm_doc_05_reports.png" alt="Вкладка Отчёты"></p>
+
+  <p>В каждой строке:</p>
+  <ul>
+    <li><strong>Префикс файла</strong> — например <code>ABONENT_USER</code></li>
+    <li><strong>Расширение</strong> — обычно <code>.csv</code></li>
+    <li><strong>Описание</strong> — что выгружает отчёт</li>
+    <li><strong>Периодичность</strong> — выпадающий список: Вручную / Каждые 10 минут / Каждый час / Ежедневно / Ежемесячно. Меняется одним кликом, изменение сохраняется и пишется в аудит</li>
+    <li><strong>▶</strong> — запустить только этот отчёт сейчас (выгрузить на FTP)</li>
+    <li><strong>⚙</strong> — открыть полную страницу настроек отчёта (SQL-запрос, схема, дополнительные поля)</li>
+  </ul>
+
+  <p>Кнопка <strong>Управление отчётами</strong> в правом верхнем углу — переход
+  на список всех отчётов с возможностью добавить/удалить/восстановить.</p>
+
+  <h3 id="sorm-run-now">22.7. Ручной запуск выгрузки</h3>
+
+  <p>Кнопка <strong>▶ Выгрузить сейчас</strong> в шапке detail-страницы
+  запускает выгрузку всех отчётов конфигурации немедленно (минуя расписание).</p>
+
+  <p>Что происходит:</p>
+  <ol>
+    <li>Создаётся запись в <code>SormExportLog</code> со статусом <code>running</code></li>
+    <li>Запись добавляется в журнал аудита (кто запустил)</li>
+    <li>Celery-задача проходит по всем активным отчётам, выполняет SQL,
+    формирует CSV, загружает на FTP</li>
+    <li>По мере прогресса обновляется <code>files_ok</code>, <code>total_rows</code>, <code>total_bytes</code></li>
+    <li>В конце статус меняется на <code>success</code> / <code>partial</code> / <code>failed</code></li>
+    <li>Если включены Telegram-уведомления — отправляется сообщение с итогами</li>
+  </ol>
+
+  <p>UI после запуска переключает на вкладку <strong>История</strong> и
+  поллит endpoint каждые 5 секунд пока есть активная (running) выгрузка.</p>
+
+  <p><strong>Внимание</strong>: выгрузка нагружает БД (большие SQL-запросы по
+  всем абонентам) и FTP. Запускать вручную лучше в нерабочие часы или в
+  диагностических целях — обычно достаточно ежедневной автоматической.</p>
+
+  <h3 id="sorm-history">22.8. История выгрузок</h3>
+
+  <p>Журнал последних 50 запусков — для compliance-аудита и быстрой
+  диагностики «что выгружали и доходили ли файлы до РКН».</p>
+
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/sorm_v413/sorm_doc_06_history.png" alt="Вкладка История выгрузок"></p>
+
+  <p>Колонки:</p>
+  <table>
+    <thead>
+      <tr><th>Колонка</th><th>Что показывает</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Дата</td><td>Время начала выгрузки (по timezone сервера)</td></tr>
+      <tr><td>Триггер</td><td>Расписание / Вручную / API — кто или что запустил</td></tr>
+      <tr><td>Длит.</td><td>Время выполнения (секунды или минуты)</td></tr>
+      <tr><td>Файлов</td><td>Сколько отчётов из общего числа выгружено успешно</td></tr>
+      <tr><td>Строк</td><td>Суммарно строк во всех файлах</td></tr>
+      <tr><td>Размер</td><td>Суммарный размер файлов (Б / КБ / МБ)</td></tr>
+      <tr><td>FTP</td><td>✓ если файлы реально загружены на FTP-сервер РКН</td></tr>
+      <tr><td>TG</td><td>✓ если Telegram-уведомление было отправлено</td></tr>
+      <tr><td>Статус</td><td>Цветовая иконка: <span style="color:#198754">✓ Успех</span> / <span style="color:#fd7e14">⚠ Частично</span> / <span style="color:#dc3545">✗ Провал</span> / <span style="color:#0dcaf0">🌀 Идёт</span></td></tr>
+      <tr><td>Кто</td><td>username оператора (для ручных запусков)</td></tr>
+    </tbody>
+  </table>
+
+  <p>Если в выгрузке были ошибки — под строкой раскрывается их текст (топ-20).</p>
+
+  <p>Кнопка ↻ в правом верхнем углу — обновить список вручную. Если в журнале
+  есть выгрузка со статусом «Идёт» — список обновляется автоматически каждые
+  5 секунд.</p>
+
+  <h3 id="sorm-schedule">22.9. Автоматическое расписание</h3>
+
+  <p>Celery beat-задача <code>run_scheduled_sorm_exports</code> запускается каждые
+  10 минут и проверяет какие отчёты пора выгрузить:</p>
+
+  <ul>
+    <li><strong>Каждые 10 минут</strong> — выгружается каждым тиком beat</li>
+    <li><strong>Каждый час</strong> — в первые 10 минут каждого часа</li>
+    <li><strong>Ежедневно</strong> — в 00:00 — 00:10 каждого дня</li>
+    <li><strong>Ежемесячно</strong> — 1-го числа в 00:00 — 00:10</li>
+    <li><strong>Вручную</strong> — игнорируется автоматикой, запускается только кнопкой ▶</li>
+  </ul>
+
+  <p>Поле «Время выгрузки» на вкладке «Основные» влияет на удобство — обычно
+  ставят утренние часы (например 09:00) чтобы при проблеме оператор увидел в
+  начале рабочего дня.</p>
+
+  <h3 id="sorm-data-model">22.10. Структуры данных</h3>
+
+  <table>
+    <thead>
+      <tr><th>Таблица</th><th>Назначение</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>sorm</code></td><td>Конфигурация (имя, vendor, FTP, разделитель, формат даты, часовой пояс)</td></tr>
+      <tr><td><code>sorm_report</code></td><td>Отчёт (имя, периодичность, SQL-запрос, префикс файла, расширение)</td></tr>
+      <tr><td><code>sorm_readiness_check</code></td><td>Кеш проверки готовности (timestamp, has_problems, meta_issues_count, data_issues_count, summary_json)</td></tr>
+      <tr><td><code>sorm_export_log</code></td><td>Журнал выгрузок (started_at/finished_at, trigger, status, files_total/files_ok, total_rows/total_bytes, ftp_uploaded, telegram_sent, error_msg, started_by)</td></tr>
+    </tbody>
+  </table>
+
+  <p>Таблицы <code>sorm_readiness_check</code> и <code>sorm_export_log</code>
+  созданы миграцией <code>0099_sorm_readiness_export_log</code>.</p>
+
+  <h3 id="sorm-endpoints">22.11. URL-эндпоинты</h3>
+
+  <table>
+    <thead><tr><th>URL</th><th>Назначение</th></tr></thead>
+    <tbody>
+      <tr><td><code>GET /admin/equipment/sorm_list/</code></td><td>Список конфигураций</td></tr>
+      <tr><td><code>GET /admin/equipment/sorm_list/&lt;id&gt;/</code></td><td>Detail с под-вкладками</td></tr>
+      <tr><td><code>GET /admin/equipment/sorm_list/validate/</code></td><td>Проверка готовности данных</td></tr>
+      <tr><td><code>POST /admin/equipment/sorm_list/&lt;id&gt;/run-now/</code></td><td>Ручной запуск всех отчётов</td></tr>
+      <tr><td><code>GET /admin/equipment/sorm_list/&lt;id&gt;/export-log/?limit=N</code></td><td>История выгрузок (JSON)</td></tr>
+      <tr><td><code>POST /admin/equipment/sorm_list/&lt;id&gt;/reports/&lt;rid&gt;/set-period/</code></td><td>Изменить периодичность отдельного отчёта</td></tr>
+      <tr><td><code>POST /admin/equipment/sorm_list/&lt;id&gt;/reports/&lt;rid&gt;/ajax/run/</code></td><td>Запустить один отчёт</td></tr>
+      <tr><td><code>POST /admin/settings/sorm/test_ftp/</code></td><td>Проверка FTP-подключения</td></tr>
+      <tr><td><code>POST /admin/settings/sorm/save_tg/</code></td><td>Сохранить настройки Telegram</td></tr>
+      <tr><td><code>POST /admin/settings/sorm/test_tg/</code></td><td>Тестовое сообщение в Telegram</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="sorm-cli">22.12. Команды управления</h3>
+
+  <p>Из контейнера web (<code>docker exec app-web-1 python manage.py ...</code>):</p>
+
+  <ul>
+    <li><code>sorm_run_export &lt;sorm_id&gt;</code> — запустить выгрузку всех отчётов одной конфигурации</li>
+    <li><code>sorm_run_report &lt;report_id&gt;</code> — запустить один отчёт по ID</li>
+    <li><code>sorm_validate_meta</code> — проверка метаданных <code>UserAttributes</code> без UI</li>
   </ul>
 
 </main>
