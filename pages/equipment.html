@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Интеграция с оборудованием — СмИТ Биллинг v1.6.0 (build 381)</title>
+  <title>Интеграция с оборудованием — СмИТ Биллинг v1.6.0 (build 393)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Интеграция с оборудованием — СмИТ Биллинг v1.6.0 (build 381)">
+  <meta property="og:title" content="Интеграция с оборудованием — СмИТ Биллинг v1.6.0 (build 393)">
   <meta property="og:description" content="NAS/BRAS, коммутаторы, VoIP-шлюзы, IPTV, FreeRADIUS с rlm_python3, абонентское оборудование.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/equipment.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
@@ -14,12 +14,12 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Интеграция с оборудованием — СмИТ Биллинг v1.6.0 (build 381)">
+  <meta name="twitter:title" content="Интеграция с оборудованием — СмИТ Биллинг v1.6.0 (build 393)">
   <meta name="twitter:description" content="NAS/BRAS, коммутаторы, VoIP-шлюзы, IPTV, FreeRADIUS с rlm_python3, абонентское оборудование.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="NAS/BRAS, коммутаторы, VoIP-шлюзы, IPTV, FreeRADIUS с rlm_python3, абонентское оборудование.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=383">
+  <link rel="stylesheet" href="../css/style.css?v=391">
   <link rel="stylesheet" href="../css/search.css?v=222">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.26.0/dist/tabler-icons.min.css">
@@ -263,7 +263,7 @@
 </div>
 
 
-  <p>Раздел описывает интеграцию СмИТ Биллинг v1.6.0 (build 381) с сетевым оборудованием: NAS/BRAS-серверами, коммутаторами, VoIP-шлюзами, IPTV-системами и абонентским оборудованием.</p>
+  <p>Раздел описывает интеграцию СмИТ Биллинг v1.6.0 (build 393) с сетевым оборудованием: NAS/BRAS-серверами, коммутаторами, VoIP-шлюзами, IPTV-системами и абонентским оборудованием.</p>
 
   <div class="welcome-image">
     <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/robot_integrat.jpg" alt="Интеграция с оборудованием" loading="lazy">
@@ -507,7 +507,7 @@ docker compose restart freeradius</code></pre>
   </div>
 
 
-  <p>Типовой план интеграции VoIP-оборудования с СмИТ Биллинг v1.6.0 (build 381) занимает <strong>20-30 минут</strong> и состоит из 7 этапов:</p>
+  <p>Типовой план интеграции VoIP-оборудования с СмИТ Биллинг v1.6.0 (build 393) занимает <strong>20-30 минут</strong> и состоит из 7 этапов:</p>
 
   <ol>
     <li>Настройка OSS-схемы подключения к VoIP-шлюзу/АТС.</li>
@@ -565,7 +565,7 @@ docker compose restart freeradius</code></pre>
 
 
 
-  <p>СмИТ Биллинг v1.6.0 (build 381) интегрируется с IPTV-платформами для автоматического управления аккаунтами абонентов, ТВ-пакетами и блокировками. Интеграция работает в двух режимах:</p>
+  <p>СмИТ Биллинг v1.6.0 (build 393) интегрируется с IPTV-платформами для автоматического управления аккаунтами абонентов, ТВ-пакетами и блокировками. Интеграция работает в двух режимах:</p>
   <ul>
     <li><strong>Событийный</strong> — при блокировке/разблокировке абонента или переключении услуги биллинг мгновенно синхронизирует состояние с IPTV-платформой.</li>
     <li><strong>Периодический</strong> — ежедневная полная сверка через Celery Beat для устранения рассинхронизаций.</li>
@@ -696,8 +696,8 @@ IptvApiLog.objects.filter(success=False).order_by('-created_at')[:10]</code></pr
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 381)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">30.04.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 381)</span>&nbsp;|&nbsp;<span data-smit="updated">30.04.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 393)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">30.04.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 393)</span>&nbsp;|&nbsp;<span data-smit="updated">30.04.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=220"></script>

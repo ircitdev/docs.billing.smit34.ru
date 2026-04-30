@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 381)</title>
+  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 393)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 381)">
+  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 393)">
   <meta property="og:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/billing.html">
   <meta property="og:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
@@ -14,12 +14,12 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 381)">
+  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 393)">
   <meta name="twitter:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta name="twitter:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
   <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=383">
+  <link rel="stylesheet" href="../css/style.css?v=391">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.26.0/dist/tabler-icons.min.css">
   <link rel="stylesheet" href="../css/search.css?v=222">
@@ -202,6 +202,7 @@
           <li class="sub-item"><a href="../pages/billing.html#monthly-billing">10.8. Месячное списание</a></li>
           <li class="sub-item"><a href="../pages/billing.html#menu-improvements">10.9. Навигация</a></li>
           <li class="sub-item"><a href="../pages/billing.html#staff-management">10.10. Персонал</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#staff-and-access">10.11. Доступ и роли</a></li>
           <li><a href="../pages/billing.html#dictionaries">11. Справочники</a></li>
           <li class="sub-item"><a href="../pages/billing.html#phone-pools">11.1. Пулы номеров</a></li>
           <li class="sub-item"><a href="../pages/billing.html#subscriber-statuses">11.2. Статусы</a></li>
@@ -228,6 +229,8 @@
           <li><a href="../pages/billing.html#third-party">16. Стороннее ПО</a></li>
           <li><a href="../pages/billing.html#language">17. Смена языка</a></li>
           <li><a href="../pages/billing.html#tech-stack">18. Технологический стек</a></li>
+          <li><a href="../pages/billing.html#ebs-sync">19. Синхронизация с EBS</a></li>
+          <li><a href="../pages/billing.html#ui-improvements">20. UI-улучшения дашборда</a></li>
         </ul>
       </li>
 
@@ -391,6 +394,8 @@
   <li><a href="#third-party">16. Стороннее ПО</a></li>
   <li><a href="#language">17. Смена языка</a></li>
   <li><a href="#tech-stack">18. Технологический стек</a></li>
+  <li><a href="#ebs-sync">19. Синхронизация с EBS</a></li>
+  <li><a href="#ui-improvements">20. UI-улучшения дашборда</a></li>
   </ul>
 </details>
 </div>
@@ -3386,6 +3391,14 @@ chmod +x restore.sh
     <li><a href="#monthly-billing">10.8. Месячное списание</a></li>
     <li><a href="#menu-improvements">10.9. Навигация и меню</a></li>
     <li><a href="#staff-management">10.10. Профиль и управление персоналом</a></li>
+    <li><a href="#staff-and-access">10.11. Персонал и доступ — единый таб</a>
+        <ul>
+          <li><a href="#staff-list">Персонал</a></li>
+          <li><a href="#permissions-models">Доступ к моделям</a></li>
+          <li><a href="#permissions-folders">Доступ к папкам абонентов</a></li>
+          <li><a href="#interface-settings">Интерфейс</a></li>
+        </ul>
+    </li>
     </ul>
   </details>
   </div>
@@ -3795,9 +3808,164 @@ chmod +x restore.sh
     <li><strong>Кликабельное ФИО</strong> — переход на профиль сотрудника (root/суперпользователь)</li>
   </ul>
 
+  <h3 id="staff-and-access">10.11. Персонал и доступ — единый таб</h3>
+  <p>Раздел объединяет 4 экрана управления сотрудниками и их правами в один таб (<a href="https://testbill.smit34.ru/admin/settings/staff/">/admin/settings/staff/</a> и связанные). Все 4 страницы перекрёстно связаны через таб-бар сверху, info-иконка <i class="fas fa-info-circle text-info"></i> справа в таб-баре ведёт на якорь этой документации соответствующий активной вкладке.</p>
+  <p class="text-muted"><em>Build 391 (01.05.2026): полная матрица прав на 80 моделей, whitelist-директивы для ролей интерфейса, фикс «фантомных» get_or_create.</em></p>
+
+  <table class="data-table">
+    <thead><tr><th>Страница</th><th>Что хранит</th><th>Якорь docs</th></tr></thead>
+    <tbody>
+      <tr><td><a href="https://testbill.smit34.ru/admin/settings/staff/">Персонал</a></td><td>Сотрудники (auth_user, is_staff=true) + UserProfile.interface_id</td><td><a href="#staff-list">#staff-list</a></td></tr>
+      <tr><td><a href="https://testbill.smit34.ru/admin/settings/interface_settings/">Интерфейс</a></td><td>Какие поля видны/скрыты/read-only для роли (FRAMEWORK_FORM_GROUP_FIELDS.INTERFACE_ID)</td><td><a href="#interface-settings">#interface-settings</a></td></tr>
+      <tr><td><a href="https://testbill.smit34.ru/admin/settings/permission_settings/">Доступ к моделям</a></td><td>CRUD-права группы Django на модель (BILLING_MODEL_PERMISSION)</td><td><a href="#permissions-models">#permissions-models</a></td></tr>
+      <tr><td><a href="https://testbill.smit34.ru/admin/settings/abonent_group_permissions/">Доступ к абонентам</a></td><td>Какие папки абонентов видит группа (abonent_group_access)</td><td><a href="#permissions-folders">#permissions-folders</a></td></tr>
+    </tbody>
+  </table>
+
+  <h4>Группы и роли — как они связаны</h4>
+  <p>В системе две независимые сущности:</p>
+  <ul>
+    <li><strong>Группы Django</strong> (<code>auth_group</code>) — определяют CRUD-права на модели и доступ к папкам абонентов. 5 системных групп: <code>root</code> (Администратор), <code>manager</code> (Менеджер), <code>readonly</code> (Директор), <code>cash</code> (Бухгалтер), <code>reports</code> (Отчётность). Технические имена локализуются template-фильтром <code>{{ group.name|group_label }}</code>.</li>
+    <li><strong>Роли интерфейса</strong> (<code>INTERFACE</code>) — определяют видимость полей в формах. 5 ролей: Администратор (id=1), Менеджер (id=2), Директор (id=3), Бухгалтер (id=4), ФСБ (id=5). У сотрудника они задаются независимо: один human может быть в группе <code>manager</code> и иметь роль интерфейса «Менеджер», или отдельно — например, в группе <code>cash</code>, но с ролью «Бухгалтер».</li>
+  </ul>
+
+  <h4 id="staff-list">Персонал</h4>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/screenshots/staff_v388/staff_list.png" alt="Персонал — список сотрудников" class="screenshot">
+  <p>Список сотрудников с фильтрами по статусу (активен/неактивен) и группе. Имена групп показаны в локализованном виде: «Администратор», «Менеджер», «Директор», «Бухгалтер», «Отчётность».</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/screenshots/staff_v388/staff_edit_modal.png" alt="Модалка редактирования сотрудника" class="screenshot">
+  <p>Модалка редактирования содержит поля: логин, ФИО, email, телефон, пароль, <strong>Группа</strong> (multi-select — определяет права на модели/папки), <strong>Роль интерфейса</strong> (определяет видимость полей форм), флаги «Активен» / «Суперпользователь».</p>
+  <p><strong>Роль интерфейса</strong> хранится в <code>UserProfile.interface_id</code> (миграция <code>0089_userprofile_interface</code>). NULL = базовый набор (<code>FRAMEWORK_FORM_GROUP_FIELDS</code> с <code>INTERFACE_ID IS NULL</code>). Подхватывается автоматически в <code>safe_globals.get_groups_from_model(user=...)</code> при отрисовке формы.</p>
+
+  <h4 id="permissions-models">Доступ к моделям</h4>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/screenshots/perms_v390/manager_overview.png" alt="Доступ к моделям — Менеджер" class="screenshot">
+  <p>Хранится в <code>BILLING_MODEL_PERMISSION (group_id, model_name, can_view, can_edit, can_delete)</code>. Проверяется через <code>BillingAuthBackend.has_perm(user, 'billing_model_permission.modelperm_&lt;Model&gt;_&lt;r|w|a|d&gt;')</code>:</p>
+  <ul>
+    <li><code>r</code> = <code>can_view</code>, <code>w</code>/<code>a</code> = <code>can_edit</code>, <code>d</code> = <code>can_delete</code></li>
+    <li>Суперпользователь — всегда True. Неактивные — всегда False</li>
+    <li>Если записи нет в матрице — fallback default ALLOW (для backward compat). Управляется <code>VpnConst PERMISSION_DEFAULT_DENY</code> (default 0); при значении 1 — отсутствие записи трактуется как deny</li>
+    <li>Берётся максимум прав из всех групп пользователя по <code>model_name</code></li>
+  </ul>
+
+  <h5>Текущая матрица на testbill (build 391)</h5>
+  <p>309 строк прав, 80 моделей × 5 групп. Покрывает <strong>все</strong> пункты <code>MENU_LIST</code> + псевдо-модели <code>system_settings</code>, <code>payment_settings</code>, <code>integrations</code>, <code>messaging_settings</code>, <code>iptv_mappings</code>, <code>staff</code>, <code>license</code>, <code>backup</code>, <code>mass_actions</code>, <code>DiagnosticCommands</code>.</p>
+  <table class="data-table">
+    <thead><tr><th>Группа</th><th>View</th><th>Edit</th><th>Delete</th><th>Стратегия</th></tr></thead>
+    <tbody>
+      <tr><td><strong>root</strong> (Админ)</td><td>80</td><td>80</td><td>77</td><td>Полный доступ ко всему</td></tr>
+      <tr><td><strong>manager</strong> (Менеджер)</td><td>59</td><td>33</td><td>9</td><td>Операционка: абоненты, услуги, NAS, Switch, сообщения. Скрыто: staff, license, backup, system_settings, payment_settings, integrations, СОРМ</td></tr>
+      <tr><td><strong>readonly</strong> (Директор)</td><td>68</td><td>9</td><td>9</td><td>Read-only почти всё. Скрыто: NAS, Switch, staff, backup, mass_actions</td></tr>
+      <tr><td><strong>cash</strong> (Бухгалтер)</td><td>43</td><td>18</td><td>10</td><td>Финансы: AdminAccounts, FinanceOperations (rwd), PayLog (rw), AtolConfig, payment_settings (rw). Скрыто: NAS, Switch, Users, Hdsk, СОРМ, system_settings, integrations</td></tr>
+      <tr><td><strong>reports</strong> (Отчётность)</td><td>59</td><td>11</td><td>10</td><td>AdminCustomReports rwd, остальное — view. Скрыто: NAS не нужен, СОРМ запрещён, settings скрыты</td></tr>
+    </tbody>
+  </table>
+
+  <h5>Экраны раздела «Настройки» по группам</h5>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/screenshots/perms_v390/cash_settings.png" alt="Бухгалтер — раздел Настройки" class="screenshot">
+  <p><em>Бухгалтер — видны Платёжные системы (rw), Фискализация (rw), Шаблоны печати (r). Скрыты integrations, staff, backup.</em></p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/screenshots/perms_v390/manager_settings.png" alt="Менеджер — раздел Настройки" class="screenshot">
+  <p><em>Менеджер — видны Сообщения, IPTV-пакеты, Шаблоны печати (r). Скрыты Настройки системы, Платёжные системы, Интеграции, Персонал, Лицензия, Резервные копии, Диагностика, Массовые действия.</em></p>
+
+  <h5>Конкретные модели — пример (Менеджер)</h5>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/screenshots/perms_v390/manager_tarif.png" alt="Менеджер → Tarif: только чтение" class="screenshot">
+  <p><em>Менеджер → Tarif: только «Разрешено чтение». Изменение/добавление/удаление запрещены.</em></p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/screenshots/perms_v390/manager_nas.png" alt="Менеджер → NAS: rw" class="screenshot">
+  <p><em>Менеджер → NAS: чтение и изменение разрешены, удаление запрещено.</em></p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/screenshots/perms_v390/manager_staff.png" alt="Менеджер → staff: всё запрещено" class="screenshot">
+  <p><em>Менеджер → staff (Персонал): все 4 чекбокса пустые. Управление сотрудниками — только Администратор.</em></p>
+
+  <h5>Команда наполнения</h5>
+  <pre><code>manage.py seed_group_permissions [--apply] [--reset] [--matrix path] [--group name]</code></pre>
+  <ul>
+    <li>Источник — YAML <code>billing/fixtures/permissions_matrix.yaml</code></li>
+    <li>Без <code>--apply</code> — dry-run с показом diff</li>
+    <li>С <code>--reset</code> — удаляет все существующие записи и наполняет заново</li>
+    <li>С <code>--group name</code> — применить только к одной группе</li>
+  </ul>
+
+  <p><strong>Важно (фикс build 391)</strong>: открытие страницы <code>/admin/settings/permission_settings/</code> больше не создаёт «фантомные» записи с <code>can_view=True</code>. Раньше view через <code>get_or_create(defaults={'can_view': True})</code> при просмотре формы создавала запись просто от просмотра, что переопределяло seed-матрицу. Теперь при отсутствии записи форма показывает пустые права, и запись создаётся ТОЛЬКО при сохранении (POST).</p>
+
+  <h4 id="permissions-folders">Доступ к папкам абонентов</h4>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/screenshots/staff_v388/abonent_group_permissions.png" alt="Доступ к папкам абонентов" class="screenshot">
+  <p>Хранится в <code>abonent_group_access (group_id, abonent_id)</code>. Проверка через <code>Abonents.is_django_group_have_access(group)</code> — фильтр в querysets абонентов.</p>
+  <ul>
+    <li>Дерево папок — рекурсивный <code>folder_tree.html</code> include с чекбоксами</li>
+    <li>Каскад: установка чекбокса на родительскую папку рекурсивно даёт доступ ко всем потомкам</li>
+  </ul>
+
+  <h5>Команда наполнения</h5>
+  <pre><code>manage.py seed_abonent_folder_access [--apply] [--reset] [--group name]</code></pre>
+  <p>Дефолтная политика: root — все папки, manager — кроме «Корзина»/«Служебная группа», readonly — основные («Все», «Абоненты», «SMIT»), cash — «Все»/«Абоненты»/«SMIT», reports — только «Все».</p>
+
+  <h4 id="interface-settings">Интерфейс — настройки полей форм для роли</h4>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/screenshots/staff_v388/interface_settings.png" alt="Интерфейс — список 5 ролей" class="screenshot">
+  <p>Хранится в <code>FRAMEWORK_FORM_GROUP_FIELDS (table_name, field_name, group_id, sub_group_id, field_order, show_on_form, show_on_form_list, read_only, selected, interface_id)</code>:</p>
+  <ul>
+    <li><strong>Базовый набор</strong> — строки с <code>INTERFACE_ID IS NULL</code>. Применяется ко всем пользователям без явной роли</li>
+    <li><strong>Ролевые переопределения</strong> — строки с <code>INTERFACE_ID = N</code>. При выборе роли (<code>UserProfile.interface_id</code>) merge базы и роли: ролевые ключи <code>(table_name, field_name)</code> затирают базовые</li>
+    <li><strong>Создание/удаление ролей</strong> — кнопка «+ Создать роль» внизу левой панели на <a href="https://testbill.smit34.ru/admin/settings/interface_settings/">/admin/settings/interface_settings/</a>; кнопка <i class="fas fa-trash-alt text-danger"></i> рядом с каждой ролью. Удаление блокируется если на роль ссылается хоть один <code>UserProfile</code> или есть строки в <code>FRAMEWORK_FORM_GROUP_FIELDS</code> (HTTP 400 с понятным текстом)</li>
+  </ul>
+
+  <h5 id="interface-settings-roles">Стратегия по ролям (build 389+)</h5>
+  <p>Каждая роль — это базовый набор (2526 строк) + точечные ролевые скрытия/read-only согласно <code>role_overrides.yaml</code>. YAML поддерживает 4 декларативные директивы на уровне таблицы:</p>
+  <table class="data-table">
+    <thead><tr><th>Директива</th><th>Эффект</th></tr></thead>
+    <tbody>
+      <tr><td><code>_hide_all: true</code></td><td>Скрыть ВСЕ поля таблицы (show_on_form=0). Эквивалент «таблица не должна быть доступна роли»</td></tr>
+      <tr><td><code>_readonly_all: true</code></td><td>Сделать все поля read_only=1, оставив их видимыми</td></tr>
+      <tr><td><code>_whitelist: [F1, F2, ...]</code></td><td>Оставить ТОЛЬКО эти поля (остальные скрыть)</td></tr>
+      <tr><td><code>_whitelist_ro: [F1, F2, ...]</code></td><td>Оставить ТОЛЬКО эти поля + сделать их read_only=1</td></tr>
+    </tbody>
+  </table>
+
+  <h5>Финальная видимость полей (количество видимых полей по таблицам)</h5>
+  <table class="data-table">
+    <thead><tr><th>Таблица</th><th>Админ</th><th>Менеджер</th><th>Директор</th><th>Бухгалтер</th><th>ФСБ</th></tr></thead>
+    <tbody>
+      <tr><td>ABONENTS</td><td>81</td><td>49</td><td>50 RO</td><td>33 RO</td><td><strong>18 RO</strong></td></tr>
+      <tr><td>USERS</td><td>14</td><td>14</td><td>14 RO</td><td><strong>скрыт</strong></td><td>6 RO</td></tr>
+      <tr><td>TARIF</td><td>45</td><td>42</td><td>42 RO</td><td>42 RO</td><td><strong>скрыт</strong></td></tr>
+      <tr><td>USLUGA</td><td>122</td><td>122</td><td>1 RO</td><td>1 RO</td><td><strong>скрыт</strong></td></tr>
+      <tr><td>FINANCE_OPERATIONS</td><td>20</td><td>20</td><td>20 RO</td><td>20</td><td><strong>скрыт</strong></td></tr>
+      <tr><td>NAS</td><td>92</td><td>92</td><td><strong>скрыт</strong></td><td><strong>скрыт</strong></td><td><strong>скрыт</strong></td></tr>
+      <tr><td>SWITCH</td><td>15</td><td>15</td><td><strong>скрыт</strong></td><td><strong>скрыт</strong></td><td><strong>скрыт</strong></td></tr>
+      <tr><td>VPN_CONST</td><td>4</td><td><strong>скрыт</strong></td><td><strong>скрыт</strong></td><td><strong>скрыт</strong></td><td><strong>скрыт</strong></td></tr>
+    </tbody>
+  </table>
+
+  <h5>Пример: ФСБ — только идентификация</h5>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/screenshots/roles_v389/fsb_abonents.png" alt="ФСБ → ABONENTS" class="screenshot">
+  <p><em>ФСБ → ABONENTS: 18 разрешённых полей (NAME, CONTRACT_NUMBER, HOME, EMAIL, TARIF, COMPANY) — все read-only. Остальные галочки сняты.</em></p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/screenshots/roles_v389/fsb_tarif.png" alt="ФСБ → TARIF: всё скрыто" class="screenshot">
+  <p><em>ФСБ → TARIF: все галочки сняты (<code>_hide_all</code>). Финансовые/тарифные/RADIUS-данные ФСБ не видит.</em></p>
+
+  <h5>Пример: Бухгалтер — финансы, без RADIUS</h5>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/screenshots/roles_v389/cash_users.png" alt="Бухгалтер → USERS: скрыто" class="screenshot">
+  <p><em>Бухгалтер → USERS: все поля скрыты — RADIUS-учётки бухгалтеру не нужны.</em></p>
+
+  <h5>Команды наполнения ролей</h5>
+  <pre><code>manage.py copy_interface_settings --from 1 --to 2,3,4,5 [--apply] [--reset]</code></pre>
+  <p>Копирует базовый набор из роли 1 (Администратор) в указанные. С <code>--reset</code> сначала удаляет старые строки целевой роли. Применено: 9842 строки скопировано в роли 2/3/4/5.</p>
+  <pre><code>manage.py seed_role_overrides [--apply] [--yaml path] [--interface N]</code></pre>
+  <p>Применяет YAML <code>billing/fixtures/role_overrides.yaml</code>. Применено: 1196 правок в build 389. Поддерживает директивы <code>_hide_all</code>, <code>_readonly_all</code>, <code>_whitelist</code>, <code>_whitelist_ro</code>.</p>
+
+  <h4>Workflow назначения роли пользователю</h4>
+  <ol>
+    <li>Открыть <a href="https://testbill.smit34.ru/admin/settings/staff/">/admin/settings/staff/</a>, найти сотрудника, нажать <i class="fas fa-pen"></i></li>
+    <li>В модалке выбрать <strong>Группу</strong> (определяет CRUD-права на модели и доступ к папкам) и <strong>Роль интерфейса</strong> (определяет видимость полей форм)</li>
+    <li>Сохранить. После следующего входа пользователь увидит ограниченный набор полей в формах и нужные ему модели в меню</li>
+  </ol>
+
+  <h4>Откат и бэкапы</h4>
+  <p>Перед каждым <code>--apply</code> рекомендуется сделать снимок таблиц:</p>
+  <pre><code>docker exec app-db-1 sh -c 'pg_dump -U carbon -d carbon \
+  -t "\"BILLING_MODEL_PERMISSION\"" -t abonent_group_access \
+  -t "\"FRAMEWORK_FORM_GROUP_FIELDS\"" -t "\"INTERFACE\"" \
+  --data-only -Fc -f /var/backups/carbon/access_$(date +%Y%m%d_%H%M%S).dump'</code></pre>
+  <p>Откат — <code>pg_restore --data-only --clean &lt;dump&gt;</code>.</p>
+
   <!-- ===== 9. Справочники ===== -->
   <h2 id="dictionaries">11. Справочники</h2>
-  <p>Справочники СмИТ Биллинг v1.6.0 (build 381) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
+  <p>Справочники СмИТ Биллинг v1.6.0 (build 393) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
   <div class="section-toc">
   <details open>
     <summary><strong>Содержание раздела</strong></summary>
@@ -4703,7 +4871,7 @@ else:
   </details>
   </div>
 
-  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 381) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
+  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 393) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
 
   <h3 id="setevaya-izolyatsiya">Сетевая изоляция</h3>
   <p><strong>Docker-контейнеризация</strong> — каждый сервис (web, db, redis, celery, nginx, freeradius) работает в изолированном Docker-контейнере с собственной сетью (172.28.0.0/16). Входящие соединения проходят через nginx reverse proxy, что предотвращает прямой доступ к внутренним сервисам.</p>
@@ -4847,7 +5015,7 @@ docker compose up -d</code></pre>
 
   <!-- ===== 16. Стороннее ПО ===== -->
   <h2 id="third-party">16. Стороннее ПО</h2>
-  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 381).</p>
+  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 393).</p>
 
   <!-- ===== 17. Смена языка ===== -->
   <h2 id="language">17. Смена языка</h2>
@@ -4868,7 +5036,7 @@ docker compose up -d</code></pre>
   </details>
   </div>
 
-  <p>СмИТ Биллинг v1.6.0 (build 381) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
+  <p>СмИТ Биллинг v1.6.0 (build 393) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
 
   <h3 id="pochemu-postgresql">Почему PostgreSQL</h3>
   <p>PostgreSQL 16 выбран в качестве основной СУБД по ряду причин:</p>
@@ -4947,11 +5115,172 @@ docker compose ps
     <li><strong>10 Celery-задач</strong> — 7 модулей фоновых процессов</li>
   </ul>
 
+  <h2 id="ebs-sync">19. Синхронизация с EBS (build 367–393)</h2>
+  <p>СмИТ Биллинг 1.6.0 поддерживает регулярную синхронизацию транзакций и балансов
+  абонентов с внешним биллингом EBS («Эксперт-Биллинг-Сервис»). Используется при
+  поэтапной миграции с EBS на СмИТ — пока EBS активен и принимает платежи, СмИТ
+  автоматически забирает свежие операции и поддерживает балансы 1-в-1.</p>
+
+  <h3 id="ebs-sync-arch">19.1. Архитектура</h3>
+  <p>Синхронизация работает в двух режимах:</p>
+  <ul>
+    <li><strong>Initial sync</strong> — однократный полный импорт всех транзакций и
+    балансов EBS (при первом запуске на новом сервере).</li>
+    <li><strong>Incremental sync</strong> — Celery beat-задачи каждые 10 минут забирают
+    новые транзакции, раз в час делают reconcile балансов.</li>
+  </ul>
+  <p>EBS используется в режиме <strong>read-only</strong>: соединение с EBS PostgreSQL
+  выполняется командой <code>SET TRANSACTION READ ONLY</code> на уровне клиента. Никакие
+  данные в EBS не пишутся.</p>
+  <p><strong>Идемпотентный маркер:</strong> поле <code>finance_operations.OPERATOR_PAY_ID</code>
+  хранит EBS transaction.id, <code>OPERATOR_NAME='EBS'</code>. Повторный запуск
+  пропускает уже завезённые транзакции.</p>
+
+  <h3 id="ebs-sync-settings">19.2. Настройки</h3>
+  <p>Раздел <a href="/admin/settings/system/?tab=params">/admin/settings/system/?tab=params</a> →
+  вкладка «Учёт»:</p>
+  <ul>
+    <li><code>EBS_SYNC_ENABLED</code> (toggle) — включает регулярную синхронизацию.
+    По умолчанию выключено.</li>
+    <li><code>BILLING_CHARGES_HOUR</code> (0–23) — час суток для ежемесячных списаний
+    абонплаты. По умолчанию 9 (9:00 утра). Сумма списания не зависит от часа — это
+    только удобство для оператора поддержки: к утру абонент уже видит списание.</li>
+  </ul>
+  <p>Параметры подключения к EBS — в <code>.env</code>:
+  <code>EBS_DB_HOST</code>, <code>EBS_DB_PORT</code>, <code>EBS_DB_USER</code>,
+  <code>EBS_DB_PASSWORD</code>, <code>EBS_DB_NAME</code>.</p>
+
+  <h3 id="ebs-sync-command">19.3. Команда manage.py sync_from_ebs</h3>
+  <pre><code class="language-bash">manage.py sync_from_ebs --action &lt;action&gt; [--apply] [--limit N] [--run-id UUID]
+
+Действия:
+  diagnose       # отчёт без записи (счётчики, маппинг типов, расхождения)
+  wipe           # pg_dump полной БД + DELETE finance_operations + OSTATOK=0
+  accounts       # создать недостающих абонентов из EBS (113 на момент v1.6.0)
+  transactions   # завезти все транзакции EBS как finance_operations (идемпотентно)
+  reconcile      # выровнять OSTATOK к EBS.ballance (UPSERT финопов «Перенос остатка»)
+  rollback       # откат по run_id</code></pre>
+
+  <h4 id="ebs-sync-mapping">Маппинг типов транзакций</h4>
+  <p>Все 12 EBS type_id точно совпадают с <code>fin_types.OP_DESCR</code> — маппинг автоматический:</p>
+  <table>
+    <thead><tr><th>EBS type_id</th><th>fin_types.TYPE_ID</th><th>Название</th></tr></thead>
+    <tbody>
+      <tr><td>payments.w1ru</td><td>37</td><td>Единая касса (Wallet One)</td></tr>
+      <tr><td>SBERBANK_BILL</td><td>33</td><td>Сбербанк РФ</td></tr>
+      <tr><td>payments.alfa</td><td>50</td><td>Альфа-Банк</td></tr>
+      <tr><td>payments.ev_bank</td><td>49</td><td>Экспресс-Волга Банк</td></tr>
+      <tr><td>PROMISE_PAYMENT</td><td>31</td><td>Обещанный платёж</td></tr>
+      <tr><td>PROMISE_DEBIT</td><td>32</td><td>Списание ОП</td></tr>
+      <tr><td>MANUAL_TRANSACTION</td><td>7</td><td>Ручная проводка</td></tr>
+      <tr><td>alfahand / volgaexhand / qiwihand</td><td>51 / 52 / 53</td><td>Ручные проводки банков</td></tr>
+      <tr><td>USERBLOCK_PAYMENT</td><td>27</td><td>Списание за блокировку</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="ebs-sync-reconcile">19.4. Reconcile (Вариант C — перенос остатка в начало истории)</h3>
+  <p>Reconcile выравнивает баланс к EBS.ballance путём создания корректировочного
+  финопа. Особенность СмИТ Биллинг 1.6.0:</p>
+  <ul>
+    <li><strong>Дата корректировки</strong> = (первая транзакция абонента − 1 день).
+    Если у абонента нет других транзакций — fallback на <code>2014-11-26</code> (начало
+    истории EBS).</li>
+    <li><strong>Описание</strong> = «Перенос остатка из EBS на дату миграции».</li>
+    <li><strong>UPSERT</strong> — при повторных запусках reconcile обновляет
+    существующий финоп переноса (добавляет дельту), не создаёт дубль.</li>
+  </ul>
+  <p>Это сделано для того, чтобы абонент в ЛК увидел корректировку <strong>в самом
+  начале своей истории</strong> (как «начальный остаток при миграции с EBS»), а не
+  сегодняшней операцией с минусовой суммой за 12 лет накопленных списаний.</p>
+
+  <h3 id="ebs-sync-celery">19.5. Celery beat расписание</h3>
+  <pre><code>'ebs-sync-incremental':  каждые 600 сек (10 мин) — импорт новых транзакций
+'ebs-reconcile-hourly':  каждые 3600 сек (1 час) — сверка балансов</code></pre>
+  <p>Обе задачи проверяют <code>VpnConst.EBS_SYNC_ENABLED</code> и сразу выходят с
+  <code>{'skipped': True}</code> если выключено.</p>
+
+  <h3 id="ebs-sync-dashboard">19.6. Виджет «EBS Синхронизация» на дашборде</h3>
+  <p>На <a href="/admin/welcome/">/admin/welcome/</a> рядом с виджетом IP-пулов
+  отображается состояние EBS-синхронизации (видно только если
+  <code>EBS_SYNC_ENABLED=1</code>):</p>
+  <ul>
+    <li>Время последнего импорта + сколько транзакций забрано</li>
+    <li>Время последнего reconcile + сколько корректировок</li>
+    <li>ETA следующего запуска (оставшиеся секунды до 600-сек интервала)</li>
+    <li>Бейджи: ✓ В синхроне / 📥 +N (импорт) / ⚠ Ошибка</li>
+  </ul>
+  <p>Endpoint: <code>GET /admin/ebs_sync_status/</code> → JSON со всеми полями.</p>
+
+  <h3 id="ebs-sync-state">19.7. Аудит запусков (EBS_SYNC_STATE)</h3>
+  <p>Каждый запуск создаёт запись в таблице <code>EBS_SYNC_STATE</code>:</p>
+  <pre><code>RUN_ID (uuid), ACTION, DRY_RUN, STATUS (running/done/failed/rolled_back),
+STARTED_AT, FINISHED_AT, EBS_LAST_TX_ID, STATS_JSON, DUMP_FILE, ERROR_MSG</code></pre>
+  <p>По run_id можно откатить любой этап:
+  <code>manage.py sync_from_ebs --action rollback --run-id &lt;UUID&gt;</code>.</p>
+
+  <h2 id="ui-improvements">20. UI-улучшения дашборда (build 386–393)</h2>
+
+  <h3 id="dashboard-arpu">20.1. Блок «Показатели» с ARPU</h3>
+  <p>На <a href="/admin/welcome/">/admin/welcome/</a> в среднем ряду карточка
+  «Показатели» с четырьмя метриками:</p>
+  <ul>
+    <li><strong>ARPU (30 дней)</strong> — средний доход на абонента за месяц</li>
+    <li><strong>ARPU (квартал)</strong> — за 90 дней</li>
+    <li><strong>ARPU (год)</strong> — за 365 дней</li>
+    <li><strong>Средний платёж</strong> — sum(op_summa) / count за 30 дней</li>
+  </ul>
+
+  <h3 id="dashboard-nas-users">20.2. Блок «Абоненты NAS»</h3>
+  <p>В среднем ряду на дашборде показано сколько активных RADIUS-сессий на каждом NAS
+  (источник — <code>USERS_RADIUSAUTH.LOGGED=1</code> + <code>users.NAS_ID</code>).
+  NAS без активных сессий <strong>не отображаются</strong>.</p>
+
+  <h3 id="dashboard-promise">20.3. Блок «Об.платежи» (build 393)</h3>
+  <p>Отдельный виджет на дашборде с топ-10 активных обещанных платежей,
+  отсортированных по дате окончания (ближайшие сверху). Цветовое кодирование:</p>
+  <ul>
+    <li><span style="background:#dc3545;color:#fff;padding:2px 6px;border-radius:3px">красный</span> —
+    истекает сегодня или завтра</li>
+    <li><span style="background:#ffc107;color:#000;padding:2px 6px;border-radius:3px">жёлтый</span> —
+    2–3 дня</li>
+    <li><span style="background:#6c757d;color:#fff;padding:2px 6px;border-radius:3px">серый</span> —
+    более 3 дней</li>
+  </ul>
+  <p>Кнопка «Все об.платежи» ведёт на
+  <a href="/admin/Abonents/search/?chip=promise_pay">/admin/Abonents/search/?chip=promise_pay</a>
+  — глобальный поиск с активной chip-фильтром по абонентам с ОП.</p>
+
+  <h3 id="dashboard-load">20.4. Виджет «Нагрузка»</h3>
+  <p>В блоке «О системе» внизу справа на дашборде показываются актуальные CPU/RAM/диск
+  через библиотеку <code>psutil</code> (5.x). Отображается:</p>
+  <ul>
+    <li>CPU в процентах + количество ядер</li>
+    <li>RAM в процентах + общий объём в ГБ</li>
+    <li>Диск в процентах + общий объём в ГБ</li>
+  </ul>
+
+  <h3 id="dark-theme">20.5. Тёмная тема и игры (build 385)</h3>
+  <p>Новые настройки во вкладке «Интерфейс»
+  <a href="/admin/settings/system/?tab=params">/admin/settings/system/?tab=params</a>:</p>
+  <ul>
+    <li><strong>DARK_THEME_DEFAULT</strong> (toggle) — для впервые зашедших сотрудников
+    интерфейс открывается в тёмной теме. Каждый сотрудник может переключить иконкой
+    🌙/☀ в шапке (выбор сохраняется в localStorage).</li>
+    <li><strong>ALLOW_STAFF_GAMES</strong> (toggle) — показывать пункт «Игры»
+    (тетрис, флэппи, пакмен и др.) в dropdown профиля. По умолчанию выключено.</li>
+  </ul>
+
+  <h3 id="settings-descriptions">20.6. Описания всех настроек</h3>
+  <p>В build 384 добавлены описания ко всем 60+ карточкам настроек системы во всех
+  семи вкладках (RADIUS, Валюта, Личный кабинет, Общие, Сообщения, Учёт, Интерфейс).
+  Каждое описание объясняет: что делает галка, когда применяется, на что влияет.
+  Особо опасные настройки помечены <code>⚠️ ВНИМАНИЕ</code>.</p>
+
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 381)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">30.04.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 381)</span>&nbsp;|&nbsp;<span data-smit="updated">30.04.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 393)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">30.04.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 393)</span>&nbsp;|&nbsp;<span data-smit="updated">30.04.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=220"></script>
