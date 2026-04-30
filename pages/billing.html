@@ -19,7 +19,7 @@
   <meta name="twitter:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
   <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=222">
+  <link rel="stylesheet" href="../css/style.css?v=223">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.26.0/dist/tabler-icons.min.css">
   <link rel="stylesheet" href="../css/search.css?v=222">
@@ -361,6 +361,32 @@
   </div>
 
   <h1>Биллинг. Основные настройки биллинга</h1>
+<div class="page-toc">
+<details open>
+  <summary><strong>Содержание страницы</strong></summary>
+  <ul>
+  <li><a href="#general">1. Общие настройки биллинга</a></li>
+  <li><a href="#subscribers">2. Работа с абонентами</a></li>
+  <li><a href="#tariffs">3. Тарификация и услуги</a></li>
+  <li><a href="#messaging">4. Отправка сообщений</a></li>
+  <li><a href="#payments">5. Платёжные системы, web-касса, API, 1С</a></li>
+  <li><a href="#cabinet">6. Личный кабинет абонента</a></li>
+  <li><a href="#oss-bss">7. OSS.BSS — управление NAS и развёртывание</a></li>
+  <li><a href="#freeradius">8. FreeRADIUS / RADIUS</a></li>
+  <li><a href="#backup-system">9. Резервное копирование</a></li>
+  <li><a href="#reports">10. Отчёты</a></li>
+  <li><a href="#dictionaries">11. Справочники</a></li>
+  <li><a href="#additional">12. Дополнительные настройки</a></li>
+  <li><a href="#modal-dialogs">13. Модальные окна и карточки редактирования</a></li>
+  <li><a href="#security">14. Обзор безопасности</a></li>
+  <li><a href="#versioning">15. Версионность и обновления</a></li>
+  <li><a href="#third-party">16. Стороннее ПО</a></li>
+  <li><a href="#language">17. Смена языка</a></li>
+  <li><a href="#tech-stack">18. Технологический стек</a></li>
+  </ul>
+</details>
+</div>
+
 
   <p>Раздел описывает работу с абонентами, настройку тарификации, установку и базовую конфигурацию системы СмИТ Биллинг 1.6.</p>
 
@@ -570,6 +596,16 @@ docker compose up -d</code></pre>
 
   <!-- 1.6 Права доступа -->
   <h3 id="access-control">1.6. Права доступа</h3>
+    <div class="section-toc">
+    <details open>
+      <summary><strong>Содержание раздела</strong></summary>
+      <ul>
+      <li><a href="#permission-settings-ui">Настройка прав доступа к моделям</a></li>
+      <li><a href="#abonent-group-access">Доступ к папкам абонентов</a></li>
+      </ul>
+    </details>
+    </div>
+
   <p>Управление правами доступа к биллингу включает настройку ограничений по IP, управление администраторами и иерархические права на папки абонентов.</p>
   <img src="../img/section_permissions.png" alt="Права доступа" class="screenshot">
 
@@ -768,6 +804,21 @@ docker compose up -d</code></pre>
 
     <!-- Поиск по абонентам (v1.6.0 BUILD 213) -->
   <h3 id="search">Поиск по абонентам</h3>
+    <div class="section-toc">
+    <details open>
+      <summary><strong>Содержание раздела</strong></summary>
+      <ul>
+      <li><a href="#search-top">Верхняя панель</a></li>
+      <li><a href="#search-query">Строка поиска + быстрые фильтры</a></li>
+      <li><a href="#search-filters">Расширенные фильтры (вторая строка)</a></li>
+      <li><a href="#search-table">Таблица результатов</a></li>
+      <li><a href="#search-bulk">Массовые операции (кнопка «Действия»)</a></li>
+      <li><a href="#search-mobile">Мобильная версия</a></li>
+      <li><a href="#search-api">CSV-экспорт и бесконечная подгрузка</a></li>
+      </ul>
+    </details>
+    </div>
+
   <p>Раздел <code>/admin/Abonents/search/</code> — единая точка поиска и массовых операций с абонентами. Заменяет прежние «быстрый поиск» и «расширенный поиск».</p>
 
   <img src="../img/search_v213/search_overview.png" alt="Поиск по абонентам — общий вид" class="screenshot">
@@ -1077,6 +1128,18 @@ docker compose up -d</code></pre>
 
   <!-- 3.1 Тарифы -->
   <h3 id="tarif-create">3.1. Тарифы</h3>
+    <div class="section-toc">
+    <details open>
+      <summary><strong>Содержание раздела</strong></summary>
+      <ul>
+      <li><a href="#tarif-list-features">Возможности списка (build 291)</a></li>
+      <li><a href="#tarif-modal">Модальное окно редактирования тарифа</a></li>
+      <li><a href="#tarif-tab-change">Вкладка «Смена тарифа»</a></li>
+      <li><a href="#tarif-options">Вкладка «Опции»</a></li>
+      </ul>
+    </details>
+    </div>
+
   <p>Управление тарифными планами: <strong>Тарификация &rarr; Тарифы</strong>. Список загружается через AJAX — мгновенный поиск, сортировка по столбцам, фильтр по линейке услуг и четыре таба: <em>Новые / В работе / Архив / Год</em>.</p>
 
   <img src="../img/v291/tarifs_list.png" alt="Список тарифов с колонкой «Юр.лиц»" class="screenshot">
@@ -1271,6 +1334,18 @@ curl "http://169.254.80.82:8082/rest_api/v2/Users/" \
 
   <!-- 3.6 Услуги -->
   <h3 id="services">3.6. Услуги</h3>
+    <div class="section-toc">
+    <details open>
+      <summary><strong>Содержание раздела</strong></summary>
+      <ul>
+      <li><a href="#system-services">Системные услуги — фиксированные ID, нельзя удалять</a></li>
+      <li><a href="#service-traffic-block">Услуга «Блокировка трафика»</a></li>
+      <li><a href="#service-finops-link">Связь услуг с финансовыми операциями</a></li>
+      <li><a href="#service-cleanup">Массовое удаление неиспользуемых услуг</a></li>
+      </ul>
+    </details>
+    </div>
+
   <p>Услуги настраиваются в <strong>Тарификация &rarr; Услуги/Бонусы</strong>.</p>
 
   <h4>Типы услуг</h4>
@@ -2809,6 +2884,18 @@ LIMIT 1;</code></pre>
 
   <!-- 7.12 NAS IP lifecycle + broadcast disconnect -->
   <h3 id="nas-ip-lifecycle">7.12. NAS IP lifecycle и сброс сессий (build 330)</h3>
+    <div class="section-toc">
+    <details open>
+      <summary><strong>Содержание раздела</strong></summary>
+      <ul>
+      <li><a href="#ip-allocation-service">Централизованный сервис IP (ip_allocation.py)</a></li>
+      <li><a href="#ip-duplicate-protection">Защита от дублей IP</a></li>
+      <li><a href="#broadcast-disconnect">Сброс RADIUS-сессий broadcast'ом</a></li>
+      <li><a href="#auto-assign-nas">Авто-определение реального NAS (Celery task)</a></li>
+      </ul>
+    </details>
+    </div>
+
   <p>Комплекс механизмов для надёжного управления IP-адресами и RADIUS-сессиями в условиях нескольких NAS-устройств.</p>
 
   <h4 id="ip-allocation-service">Централизованный сервис IP (<code>ip_allocation.py</code>)</h4>
@@ -2850,6 +2937,18 @@ NAS без сессии (NAK): CCR, JOY, Червленое, ...</code></pre>
 
   <!-- ===== 7.13. IP pool fallback (build 371) ===== -->
   <h3 id="ip-pool-fallback">7.13. Fallback-цепочка при исчерпании IP-пула (build 371)</h3>
+    <div class="section-toc">
+    <details open>
+      <summary><strong>Содержание раздела</strong></summary>
+      <ul>
+      <li><a href="#ip-pool-vpnconst-settings">Настройки VpnConst</a></li>
+      <li><a href="#ip-pool-stats-ui">Статистика пулов в UI</a></li>
+      <li><a href="#ip-pool-dashboard-widget">Dashboard-виджет «IP-пулы»</a></li>
+      <li><a href="#ip-pool-monitor-beat">Celery beat — мониторинг ежечасно</a></li>
+      </ul>
+    </details>
+    </div>
+
   <p>Когда основной пул адресов заканчивается, система автоматически проходит по 5-уровневой цепочке fallback'ов вместо тихого возврата <code>None</code>:</p>
   <ol>
     <li><strong>Перебор основных пулов NAS</strong> — <code>pull → nat_pull → white_pull → hotspot_pull</code> (как в build 330)</li>
@@ -2917,6 +3016,18 @@ NAS без сессии (NAK): CCR, JOY, Червленое, ...</code></pre>
 
   <!-- ===== 7.14. NAS resync (build 371) ===== -->
   <h3 id="nas-resync">7.14. Синхронизация NAS после ручной правки (build 371)</h3>
+    <div class="section-toc">
+    <details open>
+      <summary><strong>Содержание раздела</strong></summary>
+      <ul>
+      <li><a href="#nas-resync-bug">Корневая причина бага</a></li>
+      <li><a href="#nas-resync-fixes">Исправления</a></li>
+      <li><a href="#nas-resync-button">Кнопка «Применить сейчас»</a></li>
+      <li><a href="#nas-resync-schedule">Расписание задач</a></li>
+      </ul>
+    </details>
+    </div>
+
   <p>Build 371 исправляет два бага в <code>auto_assign_real_nas</code>, из-за которых ручная правка <code>Users.nas_id</code> или <code>Users.ip</code> не подхватывалась автоматически:</p>
 
   <h4 id="nas-resync-bug">Корневая причина бага</h4>
@@ -3016,6 +3127,17 @@ NAS без сессии (NAK): CCR, JOY, Червленое, ...</code></pre>
   <p>При старте FreeRADIUS функция <code>internet.py:_setup_django()</code> инициализирует Django ORM. Файл лога <code>/var/log/django/error.log</code> создаётся до вызова <code>django.setup()</code> — FreeRADIUS работает от пользователя <code>freerad</code>.</p>
 
   <h3 id="radius-accounting">8.3. Аккаунтинг</h3>
+    <div class="section-toc">
+    <details open>
+      <summary><strong>Содержание раздела</strong></summary>
+      <ul>
+      <li><a href="#radius-sessions-recovery">Recovery missed Accounting-Start (build 323)</a></li>
+      <li><a href="#cleanup-stale-sessions">Авто-закрытие зависших сессий</a></li>
+      <li><a href="#radius-disconnect">Сброс RADIUS-сессий из админки (build 323)</a></li>
+      </ul>
+    </details>
+    </div>
+
   <p>Функция <code>internet.py:accounting()</code> обрабатывает пакеты Start / Interim-Update / Stop:</p>
   <table>
     <thead><tr><th>Тип пакета</th><th>Действие</th></tr></thead>
@@ -3230,6 +3352,16 @@ chmod +x restore.sh
 
 
   <h3 id="audit">10.1. Аудит</h3>
+    <div class="section-toc">
+    <details open>
+      <summary><strong>Содержание раздела</strong></summary>
+      <ul>
+      <li><a href="#abonent-address-fias">Создание адреса через ФИАС/DaData (build 297-301, 324)</a></li>
+      <li><a href="#audit-abonents">Аудит действий с абонентами (build 295)</a></li>
+      </ul>
+    </details>
+    </div>
+
   <p>Полнофункциональный журнал аудита с бесконечной прокруткой и серверной фильтрацией. URL: <code>/admin/reports/AuditOperations/</code></p>
   <img src="../img/v221/audit_full.png" alt="Аудит операций" class="screenshot">
 
@@ -3696,6 +3828,19 @@ chmod +x restore.sh
   <img src="../img/v292/contact_info_legal.png" alt="Mini-блок СОРМ на Контактной информации для юр.лиц" class="screenshot">
 
   <h3 id="houses">11.7. Адреса</h3>
+    <div class="section-toc">
+    <details open>
+      <summary><strong>Содержание раздела</strong></summary>
+      <ul>
+      <li><a href="#houses-toolbar">Панель инструментов</a></li>
+      <li><a href="#houses-columns">Колонки и сортировка</a></li>
+      <li><a href="#houses-mobile">Мобильная версия</a></li>
+      <li><a href="#houses-api">Публичный API адресов</a></li>
+      <li><a href="#houses-endpoints">Служебные endpoint-ы (авторизованные)</a></li>
+      </ul>
+    </details>
+    </div>
+
   <p>Справочник адресов подключения. Иерархическая структура: корень &rarr; город &rarr; улица &rarr; дом. Путь: <code>/admin/dictionary/Homes/</code>.</p>
   <p>Начиная с build 324, список использует <strong>динамическую загрузку</strong>: все записи загружаются одним AJAX-запросом (<code>/admin/dictionary/homes_json/</code>), фильтрация, сортировка и поиск выполняются на клиенте. С build 324 список переведён на <strong>чанковый рендер</strong> (по 100 строк) с <strong>бесконечной прокруткой</strong>, что позволяет работать с 4000+ записей без задержек при открытии страницы.</p>
   <img src="../img/v170/homes_list.png" alt="Справочник адресов: общий вид" class="screenshot">
@@ -3854,6 +3999,20 @@ ACL_BLOCKED_GROUPS = ACL_DISABLED</code></pre>
   <p>Конфигурация сроков хранения данных в базе. Старые данные могут быть перенесены в архив или удалены при закрытии периода.</p>
 
   <h3 id="sorm-access">12.4. СОРМ — выгрузка данных</h3>
+    <div class="section-toc">
+    <details open>
+      <summary><strong>Содержание раздела</strong></summary>
+      <ul>
+      <li><a href="#sorm-settings">Настройки СОРМ</a></li>
+      <li><a href="#sorm-ftp">FTP-подключение</a></li>
+      <li><a href="#sorm-format">Формат выгрузки</a></li>
+      <li><a href="#sorm-telegram">Telegram-уведомления</a></li>
+      <li><a href="#sorm-reports">Отчёты СОРМ-3</a></li>
+      <li><a href="#sorm-reports-ui">Управление отчётами (build 88+)</a></li>
+      </ul>
+    </details>
+    </div>
+
 
   <h4 id="sorm-settings">Настройки СОРМ</h4>
   <p>Настройки СОРМ объединены в двухколоночный интерфейс на странице <strong>Оборудование &rarr; Настройки СОРМ</strong> (<code>/admin/equipment/sorm_list/1/</code>):</p>
@@ -4039,6 +4198,20 @@ python manage.py fix_sorm_reports --no-create  # только обновить S
 
   <!-- 13.2.1. Inline-операции в таблице (build 373-374) -->
   <h3 id="users-inline-actions">13.2.1. Таблица «Аккаунты» — inline-операции (build 373-374)</h3>
+    <div class="section-toc">
+    <details open>
+      <summary><strong>Содержание раздела</strong></summary>
+      <ul>
+      <li><a href="#users-inline-pwd">Inline-редактирование пароля (build 373, L2-2)</a></li>
+      <li><a href="#users-inline-mac">MAC tooltip + click-to-copy (build 373, L2-3)</a></li>
+      <li><a href="#users-inline-reset">Сброс зависшей сессии (build 373, L3-1)</a></li>
+      <li><a href="#users-inline-test-auth">Тест авторизации через freeradius (build 374, L3-2)</a></li>
+      <li><a href="#users-inline-drawer">Drawer-панель деталей (build 374, L3-3)</a></li>
+      <li><a href="#users-inline-endpoints">AJAX-эндпоинты (build 373-374)</a></li>
+      </ul>
+    </details>
+    </div>
+
   <p>В таблице учётных записей в карточке абонента доступны быстрые операции без открытия полной модалки. Actions-колонка содержит <strong>6 кнопок</strong>:</p>
 
   <table class="param-table">
@@ -4196,6 +4369,23 @@ python manage.py fix_sorm_reports --no-create  # только обновить S
 
   <!-- 13.4а. Вкладка Бонусы — как работает -->
   <h3 id="bonuses-tab">13.4а. Вкладка «Бонусы» в карточке абонента</h3>
+    <div class="section-toc">
+    <details open>
+      <summary><strong>Содержание раздела</strong></summary>
+      <ul>
+      <li><a href="#bonuses-filter">Фильтр попадания записи на вкладку</a></li>
+      <li><a href="#bonuses-types">Типы бонусов</a></li>
+      <li><a href="#bonuses-cascade">Каскад определения суммы</a></li>
+      <li><a href="#bonuses-lifecycle">Жизненный цикл бонуса</a></li>
+      <li><a href="#bonuses-summary">Сводка над таблицей (build 364)</a></li>
+      <li><a href="#bonuses-chips">Chip-фильтры (build 364)</a></li>
+      <li><a href="#bonuses-examples">Типичные сценарии саппорта</a></li>
+      <li><a href="#bonuses-files">Где это в коде</a></li>
+      <li><a href="#bonuses-special">Особенности и подводные камни</a></li>
+      </ul>
+    </details>
+    </div>
+
   <p>Открывается на карточке абонента <code>/admin/Abonents/&lt;id&gt;/?tab=tab3013</code>. Показывает все промо-начисления и компенсации абонента.</p>
 
   <h4>Что такое бонус технически</h4>

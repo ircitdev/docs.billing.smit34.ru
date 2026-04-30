@@ -958,6 +958,51 @@ pre code {
   .section-toc ul { columns: 1; }
 }
 
+/* Page-level TOC (одна на страницу, после <h1>) — наследует визуал section-toc */
+.page-toc {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0;
+  margin: 1.25rem 0 1.5rem;
+  max-width: 920px;
+  box-shadow: 0 1px 3px var(--shadow);
+  border-left: 4px solid var(--primary);
+}
+.page-toc details { margin: 0; }
+.page-toc summary {
+  padding: .8rem 1.2rem;
+  cursor: pointer;
+  font-size: .95rem;
+  font-weight: 600;
+  color: var(--primary-dark);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-light);
+  border-radius: 10px 10px 0 0;
+  list-style: none;
+}
+[data-theme="dark"] .page-toc summary { color: var(--primary); }
+.page-toc summary::before { content: "📖 "; }
+.page-toc summary::-webkit-details-marker { display: none; }
+.page-toc details[open] summary { border-radius: 10px 10px 0 0; }
+.page-toc details:not([open]) summary { border-bottom: none; border-radius: 10px; }
+.page-toc ul {
+  padding: .65rem 1.2rem .65rem 1.6rem;
+  margin: 0;
+  columns: 2;
+  column-gap: 2.5rem;
+}
+.page-toc li {
+  font-size: .88rem;
+  line-height: 1.85;
+  break-inside: avoid;
+}
+.page-toc li a { color: var(--text); text-decoration: none; }
+.page-toc li a:hover { color: var(--primary); text-decoration: underline; }
+@media (max-width: 768px) {
+  .page-toc ul { columns: 1; }
+}
+
 /* Video containers */
 .video-container {
   position: relative;
