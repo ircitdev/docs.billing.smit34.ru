@@ -4648,20 +4648,34 @@ else:
 
   <!-- ===== 14. Обзор безопасности ===== -->
   <h2 id="security">14. Обзор безопасности</h2>
+  <div class="section-toc">
+  <details open>
+    <summary><strong>Содержание раздела</strong></summary>
+    <ul>
+    <li><a href="#setevaya-izolyatsiya">Сетевая изоляция</a></li>
+    <li><a href="#kontrol-dostupa">Контроль доступа</a></li>
+    <li><a href="#rekomendatsii-po-vlan">Рекомендации по VLAN</a></li>
+    <li><a href="#zaschita-ssh">Защита SSH</a></li>
+    <li><a href="#mezhsetevoy-ekran">Межсетевой экран</a></li>
+    <li><a href="#fizicheskaya-bezopasnost">Физическая безопасность</a></li>
+    </ul>
+  </details>
+  </div>
+
   <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 334) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
 
-  <h3>Сетевая изоляция</h3>
+  <h3 id="setevaya-izolyatsiya">Сетевая изоляция</h3>
   <p><strong>Docker-контейнеризация</strong> — каждый сервис (web, db, redis, celery, nginx, freeradius) работает в изолированном Docker-контейнере с собственной сетью (172.28.0.0/16). Входящие соединения проходят через nginx reverse proxy, что предотвращает прямой доступ к внутренним сервисам.</p>
   <p><strong>Изоляция личного кабинета</strong> — личный кабинет абонента может быть развёрнут на отдельном сервере-реплике, полностью изолированном от основного биллинга. Даже в случае компрометации ЛК, злоумышленник не получит доступ к мастер-серверу.</p>
 
-  <h3>Контроль доступа</h3>
+  <h3 id="kontrol-dostupa">Контроль доступа</h3>
   <p><strong>API-доступ</strong> — все запросы к API авторизуются по токену. Рекомендуется ограничивать доступ по IP-адресам и использовать отдельные токены для каждой интеграции.</p>
   <p><strong>Права администраторов</strong> — система поддерживает гранулярные права доступа. Каждому администратору можно назначить доступ только к необходимым разделам.</p>
 
-  <h3>Рекомендации по VLAN</h3>
+  <h3 id="rekomendatsii-po-vlan">Рекомендации по VLAN</h3>
   <p>Рекомендуется размещать управляющий интерфейс биллинга в отдельном VLAN, недоступном из абонентской сети. Абоненты должны иметь доступ только к личному кабинету и порталу авторизации.</p>
 
-  <h3>Защита SSH</h3>
+  <h3 id="zaschita-ssh">Защита SSH</h3>
   <ul>
     <li>Смените стандартный порт SSH (22) на нестандартный</li>
     <li>Отключите вход по паролю, используйте только ключи</li>
@@ -4669,14 +4683,25 @@ else:
     <li>Используйте fail2ban для защиты от перебора</li>
   </ul>
 
-  <h3>Межсетевой экран</h3>
+  <h3 id="mezhsetevoy-ekran">Межсетевой экран</h3>
   <p>Настройте файрвол (iptables/nftables) таким образом, чтобы были открыты только необходимые порты: HTTP/HTTPS для веб-интерфейса, RADIUS-порты для NAS, SSH для администрирования. Все остальные порты должны быть закрыты.</p>
 
-  <h3>Физическая безопасность</h3>
+  <h3 id="fizicheskaya-bezopasnost">Физическая безопасность</h3>
   <p>Сервер биллинга должен находиться в защищённом помещении с контролем доступа. Рекомендуется использование ИБП (UPS) и резервного канала связи.</p>
 
   <!-- ===== 15. Версионность и обновления ===== -->
   <h2 id="versioning">15. Версионность и обновления</h2>
+  <div class="section-toc">
+  <details open>
+    <summary><strong>Содержание раздела</strong></summary>
+    <ul>
+    <li><a href="#format-versii">Формат версии</a></li>
+    <li><a href="#skrinshoty-v1-6-0-build-221">Скриншоты v1.6.0 (build 221)</a></li>
+    <li><a href="#protsess-obnovleniya">Процесс обновления</a></li>
+    </ul>
+  </details>
+  </div>
+
   <p>СмИТ Биллинг 1.6 использует систему веток для управления стабильностью и обновлениями.</p>
 
   <table class="data-table">
@@ -4706,7 +4731,7 @@ else:
     </tbody>
   </table>
 
-  <h3>Формат версии</h3>
+  <h3 id="format-versii">Формат версии</h3>
   <p>Номер версии имеет формат <code>1.0.0</code> (build <code>37</code>), где:</p>
   <ul>
     <li><strong>1</strong> — мажорная версия (поколение биллинга)</li>
@@ -4730,7 +4755,7 @@ else:
     </ul>
   </div>
 
-  <h3>Скриншоты v1.6.0 (build 221)</h3>
+  <h3 id="skrinshoty-v1-6-0-build-221">Скриншоты v1.6.0 (build 221)</h3>
   <h4>Десктоп</h4>
   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(400px,1fr));gap:12px;margin-bottom:20px">
     <div><img src="../img/v100/abonents_folder.png" alt="Папка абонентов" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Папка абонентов с поиском</div></div>
@@ -4759,7 +4784,7 @@ else:
     <div><img src="../img/v100/mobile_backup.png" alt="Мобильные бэкапы" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Бэкапы</div></div>
   </div>
 
-  <h3>Процесс обновления</h3>
+  <h3 id="protsess-obnovleniya">Процесс обновления</h3>
   <p>Обновление выполняется через Docker-образы и Django-миграции:</p>
   <pre><code># 1. Создать бэкап БД
 docker compose exec db pg_dump -U carbon carbon &gt; backup_$(date +%Y%m%d).sql
@@ -4789,9 +4814,22 @@ docker compose up -d</code></pre>
 
   <!-- ===== 18. Технологический стек ===== -->
   <h2 id="tech-stack">18. Технологический стек</h2>
+  <div class="section-toc">
+  <details open>
+    <summary><strong>Содержание раздела</strong></summary>
+    <ul>
+    <li><a href="#pochemu-postgresql">Почему PostgreSQL</a></li>
+    <li><a href="#arhitektura-sistemy">Архитектура системы</a></li>
+    <li><a href="#celery-zadachi-fonovye-protsessy">Celery-задачи (фоновые процессы)</a></li>
+    <li><a href="#docker-servisy">Docker-сервисы</a></li>
+    <li><a href="#klyuchevye-metriki">Ключевые метрики</a></li>
+    </ul>
+  </details>
+  </div>
+
   <p>СмИТ Биллинг v1.6.0 (build 334) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
 
-  <h3>Почему PostgreSQL</h3>
+  <h3 id="pochemu-postgresql">Почему PostgreSQL</h3>
   <p>PostgreSQL 16 выбран в качестве основной СУБД по ряду причин:</p>
   <ul>
     <li><strong>Бесплатная лицензия</strong> — PostgreSQL License (свободная, без ограничений на коммерческое использование)</li>
@@ -4803,7 +4841,7 @@ docker compose up -d</code></pre>
     <li><strong>Индустриальный стандарт</strong> — используется в банковских системах, телекоме, госструктурах по всему миру</li>
   </ul>
 
-  <h3>Архитектура системы</h3>
+  <h3 id="arhitektura-sistemy">Архитектура системы</h3>
   <table class="data-table">
     <thead>
       <tr>
@@ -4830,7 +4868,7 @@ docker compose up -d</code></pre>
     </tbody>
   </table>
 
-  <h3>Celery-задачи (фоновые процессы)</h3>
+  <h3 id="celery-zadachi-fonovye-protsessy">Celery-задачи (фоновые процессы)</h3>
   <p>Вместо отдельных демонов все фоновые процессы реализованы как Celery-задачи с настраиваемым расписанием:</p>
   <table class="data-table">
     <thead><tr><th>Задача</th><th>Интервал</th><th>Описание</th></tr></thead>
@@ -4847,7 +4885,7 @@ docker compose up -d</code></pre>
     </tbody>
   </table>
 
-  <h3>Docker-сервисы</h3>
+  <h3 id="docker-servisy">Docker-сервисы</h3>
   <p>Система разворачивается как набор Docker-контейнеров:</p>
   <pre><code># Запуск всех сервисов
 docker compose up -d
@@ -4858,7 +4896,7 @@ docker compose ps
 # Сервисы: db (PostgreSQL 16), redis (Redis 7), web (Django/Gunicorn),
 # celery, celery-beat, freeradius, nginx</code></pre>
 
-  <h3>Ключевые метрики</h3>
+  <h3 id="klyuchevye-metriki">Ключевые метрики</h3>
   <ul>
     <li><strong>37+ моделей данных</strong> — полная схема биллинга в Django ORM</li>
     <li><strong>18 миграций</strong> — версионирование схемы БД через Django Migrations</li>

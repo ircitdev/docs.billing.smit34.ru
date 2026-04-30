@@ -288,8 +288,19 @@
 
   <!-- ============================================ -->
   <h2 id="auth">Аутентификация</h2>
+  <div class="section-toc">
+  <details open>
+    <summary><strong>Содержание раздела</strong></summary>
+    <ul>
+    <li><a href="#login-cherez-web-poluchenie-sessii">Логин через Web (получение сессии)</a></li>
+    <li><a href="#api-login-json">API-логин (JSON)</a></li>
+    <li><a href="#logaut">Логаут</a></li>
+    </ul>
+  </details>
+  </div>
 
-  <h3>Логин через Web (получение сессии)</h3>
+
+  <h3 id="login-cherez-web-poluchenie-sessii">Логин через Web (получение сессии)</h3>
   <p>Двухшаговый процесс: получение CSRF-токена, затем POST с логином и паролем.</p>
 
   <pre><code># Шаг 1: получить CSRF-токен
@@ -304,14 +315,14 @@ curl -s -c cookies.txt -b cookies.txt \
   -o /dev/null -w "%{http_code}"
 # 302 = успешный вход</code></pre>
 
-  <h3>API-логин (JSON)</h3>
+  <h3 id="api-login-json">API-логин (JSON)</h3>
   <p>Альтернативный способ — получение сессионного хэша через GET-параметры:</p>
 
   <pre><code>curl -s "https://billing.example.com/admin/?api=1&amp;username=admin&amp;password=YOUR_PASSWORD&amp;format=json"
 # Ответ: {"hash": "session_hash_hex"}
 # 401 = неверные учётные данные</code></pre>
 
-  <h3>Логаут</h3>
+  <h3 id="logaut">Логаут</h3>
   <pre><code># Web-логаут
 curl -s -b cookies.txt "https://billing.example.com/admin/logout"
 
@@ -321,10 +332,27 @@ curl -s -b cookies.txt -X POST "https://billing.example.com/rest_api/logout"
 
   <!-- ============================================ -->
   <h2 id="rest-v2">REST API v2</h2>
+  <div class="section-toc">
+  <details open>
+    <summary><strong>Содержание раздела</strong></summary>
+    <ul>
+    <li><a href="#spisok-zapisey">Список записей</a></li>
+    <li><a href="#filtratsiya">Фильтрация</a></li>
+    <li><a href="#sortirovka">Сортировка</a></li>
+    <li><a href="#vybor-poley">Выбор полей</a></li>
+    <li><a href="#poluchenie-odnoy-zapisi">Получение одной записи</a></li>
+    <li><a href="#sozdanie-zapisi-post">Создание записи (POST)</a></li>
+    <li><a href="#obnovlenie-zapisi-put">Обновление записи (PUT)</a></li>
+    <li><a href="#udalenie-zapisi-delete">Удаление записи (DELETE)</a></li>
+    <li><a href="#dostupnye-modeli">Доступные модели</a></li>
+    </ul>
+  </details>
+  </div>
+
 
   <p>Универсальный CRUD-интерфейс для работы с любой моделью биллинга. Поддерживает фильтрацию, сортировку, пагинацию и выбор полей.</p>
 
-  <h3>Список записей</h3>
+  <h3 id="spisok-zapisey">Список записей</h3>
   <pre><code># Получить список абонентов (первые 100)
 curl -s -b cookies.txt \
   "https://billing.example.com/rest_api/v2/Abonents/?limit=100&amp;offset=0"</code></pre>
@@ -347,7 +375,7 @@ curl -s -b cookies.txt \
   ]
 }</code></pre>
 
-  <h3>Фильтрация</h3>
+  <h3 id="filtratsiya">Фильтрация</h3>
   <pre><code># Абоненты с тарифом ID=131, только активные
 curl -s -b cookies.txt \
   "https://billing.example.com/rest_api/v2/Abonents/?tarif=131&amp;enabled=true"
@@ -356,7 +384,7 @@ curl -s -b cookies.txt \
 curl -s -b cookies.txt \
   "https://billing.example.com/rest_api/v2/Abonents/?name__icontains=иванов"</code></pre>
 
-  <h3>Сортировка</h3>
+  <h3 id="sortirovka">Сортировка</h3>
   <pre><code># Сортировка по имени (А→Я)
 curl -s -b cookies.txt \
   "https://billing.example.com/rest_api/v2/Abonents/?ordering=name"
@@ -365,16 +393,16 @@ curl -s -b cookies.txt \
 curl -s -b cookies.txt \
   "https://billing.example.com/rest_api/v2/Abonents/?ordering=-account__ostatok"</code></pre>
 
-  <h3>Выбор полей</h3>
+  <h3 id="vybor-poley">Выбор полей</h3>
   <pre><code># Вернуть только id, name и contract_number
 curl -s -b cookies.txt \
   "https://billing.example.com/rest_api/v2/Abonents/?fields=id,name,contract_number"</code></pre>
 
-  <h3>Получение одной записи</h3>
+  <h3 id="poluchenie-odnoy-zapisi">Получение одной записи</h3>
   <pre><code>curl -s -b cookies.txt \
   "https://billing.example.com/rest_api/v2/Abonents/5552/"</code></pre>
 
-  <h3>Создание записи (POST)</h3>
+  <h3 id="sozdanie-zapisi-post">Создание записи (POST)</h3>
   <pre><code>curl -s -b cookies.txt -X POST \
   "https://billing.example.com/rest_api/v2/Abonents/" \
   -H "Content-Type: application/json" \
@@ -386,19 +414,19 @@ curl -s -b cookies.txt \
   }'
 # Ответ: 201 Created + JSON объекта</code></pre>
 
-  <h3>Обновление записи (PUT)</h3>
+  <h3 id="obnovlenie-zapisi-put">Обновление записи (PUT)</h3>
   <pre><code>curl -s -b cookies.txt -X PUT \
   "https://billing.example.com/rest_api/v2/Abonents/5552/" \
   -H "Content-Type: application/json" \
   -d '{"email": "updated@example.com"}'
 # Ответ: 200 OK + обновлённый JSON</code></pre>
 
-  <h3>Удаление записи (DELETE)</h3>
+  <h3 id="udalenie-zapisi-delete">Удаление записи (DELETE)</h3>
   <pre><code>curl -s -b cookies.txt -X DELETE \
   "https://billing.example.com/rest_api/v2/Abonents/5552/"
 # Ответ: 204 No Content</code></pre>
 
-  <h3>Доступные модели</h3>
+  <h3 id="dostupnye-modeli">Доступные модели</h3>
   <table>
     <thead>
       <tr><th>Модель</th><th>Описание</th></tr>
@@ -421,10 +449,21 @@ curl -s -b cookies.txt \
 
   <!-- ============================================ -->
   <h2 id="promise-pay">Обещанный платёж</h2>
+  <div class="section-toc">
+  <details open>
+    <summary><strong>Содержание раздела</strong></summary>
+    <ul>
+    <li><a href="#get-status-obeschannogo-platezha">GET — Статус обещанного платежа</a></li>
+    <li><a href="#post-dobavit-obeschannyy-platezh">POST — Добавить обещанный платёж</a></li>
+    <li><a href="#delete-udalit-obeschannyy-platezh">DELETE — Удалить обещанный платёж</a></li>
+    </ul>
+  </details>
+  </div>
+
 
   <p>Специализированный эндпоинт для управления обещанными платежами абонентов.</p>
 
-  <h3>GET — Статус обещанного платежа</h3>
+  <h3 id="get-status-obeschannogo-platezha">GET — Статус обещанного платежа</h3>
   <pre><code>curl -s -b cookies.txt \
   "https://billing.example.com/rest_api/v2/promise_pay/5552/"</code></pre>
 
@@ -447,7 +486,7 @@ curl -s -b cookies.txt \
   ]
 }</code></pre>
 
-  <h3>POST — Добавить обещанный платёж</h3>
+  <h3 id="post-dobavit-obeschannyy-platezh">POST — Добавить обещанный платёж</h3>
   <pre><code># С параметрами по умолчанию (сумма и срок из настроек)
 curl -s -b cookies.txt -X POST \
   "https://billing.example.com/rest_api/v2/promise_pay/5552/" \
@@ -482,7 +521,7 @@ curl -s -b cookies.txt -X POST \
   "end_time": "2026-03-15T12:00:00"
 }</code></pre>
 
-  <h3>DELETE — Удалить обещанный платёж</h3>
+  <h3 id="delete-udalit-obeschannyy-platezh">DELETE — Удалить обещанный платёж</h3>
   <pre><code># Удалить предоплату (по умолчанию)
 curl -s -b cookies.txt -X DELETE \
   "https://billing.example.com/rest_api/v2/promise_pay/5552/"
@@ -788,15 +827,27 @@ WMI_MERCHANT_ID=123456
 
   <!-- ============================================ -->
   <h2 id="soap">SOAP API</h2>
+  <div class="section-toc">
+  <details open>
+    <summary><strong>Содержание раздела</strong></summary>
+    <ul>
+    <li><a href="#wsdl">WSDL</a></li>
+    <li><a href="#endpointy">Эндпоинты</a></li>
+    <li><a href="#get-user-hash-autentifikatsiya">get_user_hash — Аутентификация</a></li>
+    <li><a href="#pay-usr-act2-provedenie-platezha">pay_usr_act2 — Проведение платежа</a></li>
+    </ul>
+  </details>
+  </div>
+
 
   <p>SOAP-интерфейс на базе фреймворка <strong>Spyne</strong>. Используется для интеграции с платёжными системами, 1С и кассовым ПО.</p>
 
-  <h3>WSDL</h3>
+  <h3 id="wsdl">WSDL</h3>
   <pre><code># Получить WSDL-описание сервисов
 curl -s "https://billing.example.com/api/?wsdl"
 curl -s "https://billing.example.com/api/fiscal/?wsdl"</code></pre>
 
-  <h3>Эндпоинты</h3>
+  <h3 id="endpointy">Эндпоинты</h3>
   <table>
     <thead>
       <tr><th>URL</th><th>Сервис</th><th>Методы</th></tr>
@@ -812,7 +863,7 @@ curl -s "https://billing.example.com/api/fiscal/?wsdl"</code></pre>
     </tbody>
   </table>
 
-  <h3>get_user_hash — Аутентификация</h3>
+  <h3 id="get-user-hash-autentifikatsiya">get_user_hash — Аутентификация</h3>
   <pre><code>curl -s -X POST "https://billing.example.com/api/" \
   -H "Content-Type: text/xml" \
   -d '&lt;?xml version="1.0" encoding="UTF-8"?&gt;
@@ -838,7 +889,7 @@ curl -s "https://billing.example.com/api/fiscal/?wsdl"</code></pre>
 
   <p>Ответ: <code>{hash: "32-byte-hex-session-token"}</code> — токен для SSO, хранится 1 час.</p>
 
-  <h3>pay_usr_act2 — Проведение платежа</h3>
+  <h3 id="pay-usr-act2-provedenie-platezha">pay_usr_act2 — Проведение платежа</h3>
   <pre><code>curl -s -X POST "https://billing.example.com/api/fiscal/" \
   -H "Content-Type: text/xml" \
   -d '&lt;?xml version="1.0" encoding="UTF-8"?&gt;
@@ -873,10 +924,21 @@ curl -s "https://billing.example.com/api/fiscal/?wsdl"</code></pre>
 
   <!-- ============================================ -->
   <h2 id="web-api">Web API (управление абонентами)</h2>
+  <div class="section-toc">
+  <details open>
+    <summary><strong>Содержание раздела</strong></summary>
+    <ul>
+    <li><a href="#blokirovka-abonenta">Блокировка абонента</a></li>
+    <li><a href="#razblokirovka-abonenta">Разблокировка абонента</a></li>
+    <li><a href="#otklyuchenie-vosstanovlenie">Отключение / Восстановление</a></li>
+    </ul>
+  </details>
+  </div>
+
 
   <p>Эндпоинты для управления абонентами через HTTP POST. Требуют авторизацию (cookie) и CSRF-токен. Возвращают HTTP 302 (redirect) при успехе.</p>
 
-  <h3>Блокировка абонента</h3>
+  <h3 id="blokirovka-abonenta">Блокировка абонента</h3>
   <pre><code>CSRF=$(grep csrftoken cookies.txt | awk '{print $NF}')
 curl -s -b cookies.txt -X POST \
   "https://billing.example.com/admin/abonents/block/5552/" \
@@ -885,13 +947,13 @@ curl -s -b cookies.txt -X POST \
   -o /dev/null -w "%{http_code}"
 # 302 = успех</code></pre>
 
-  <h3>Разблокировка абонента</h3>
+  <h3 id="razblokirovka-abonenta">Разблокировка абонента</h3>
   <pre><code>curl -s -b cookies.txt -X POST \
   "https://billing.example.com/admin/abonents/unblock/5552/" \
   -d "csrfmiddlewaretoken=$CSRF" \
   -H "Referer: https://billing.example.com/admin/Abonents/5552/"</code></pre>
 
-  <h3>Отключение / Восстановление</h3>
+  <h3 id="otklyuchenie-vosstanovlenie">Отключение / Восстановление</h3>
   <pre><code># Отключить абонента
 curl -s -b cookies.txt -X POST \
   "https://billing.example.com/admin/abonents/reconnect/5552/" \
@@ -906,10 +968,22 @@ curl -s -b cookies.txt -X POST \
 
   <!-- ============================================ -->
   <h2 id="ajax">AJAX-эндпоинты</h2>
+  <div class="section-toc">
+  <details open>
+    <summary><strong>Содержание раздела</strong></summary>
+    <ul>
+    <li><a href="#poluchit-ip-iz-pula">Получить IP из пула</a></li>
+    <li><a href="#informatsiya-o-mac-adrese">Информация о MAC-адресе</a></li>
+    <li><a href="#porty-kommutatora">Порты коммутатора</a></li>
+    <li><a href="#utility">Утилиты</a></li>
+    </ul>
+  </details>
+  </div>
+
 
   <p>JSON-эндпоинты для асинхронных запросов из веб-интерфейса. Требуют авторизацию (cookie).</p>
 
-  <h3>Получить IP из пула</h3>
+  <h3 id="poluchit-ip-iz-pula">Получить IP из пула</h3>
   <pre><code># Из любого свободного пула
 curl -s -b cookies.txt "https://billing.example.com/admin/ajax/ippull_get/"
 
@@ -917,17 +991,17 @@ curl -s -b cookies.txt "https://billing.example.com/admin/ajax/ippull_get/"
 curl -s -b cookies.txt "https://billing.example.com/admin/ajax/ippull_get/1/"</code></pre>
   <p>Ответ: <code>{"msg": "ok", "ip": "10.0.0.5", "mask": "255.255.255.0"}</code></p>
 
-  <h3>Информация о MAC-адресе</h3>
+  <h3 id="informatsiya-o-mac-adrese">Информация о MAC-адресе</h3>
   <pre><code>curl -s -b cookies.txt \
   "https://billing.example.com/admin/ajax/user_getinfo/?user_id=123&amp;cmd=GetMac"</code></pre>
   <p>Ответ: <code>{"msg": "ok", "mac": "AA:BB:CC:DD:EE:FF"}</code></p>
 
-  <h3>Порты коммутатора</h3>
+  <h3 id="porty-kommutatora">Порты коммутатора</h3>
   <pre><code>curl -s -b cookies.txt \
   "https://billing.example.com/admin/ajax/user_get_switch_port_list/?user_id=123&amp;switch_id=1"</code></pre>
   <p>Ответ: <code>[{"pk": 1, "name": "Port 1", "selected": false}, ...]</code></p>
 
-  <h3>Утилиты</h3>
+  <h3 id="utility">Утилиты</h3>
   <table>
     <thead>
       <tr><th>Метод</th><th>URL</th><th>Описание</th></tr>
@@ -942,6 +1016,21 @@ curl -s -b cookies.txt "https://billing.example.com/admin/ajax/ippull_get/1/"</c
 
   <!-- ============================================ -->
   <h2 id="mobile-api">Mobile API</h2>
+  <div class="section-toc">
+  <details open>
+    <summary><strong>Содержание раздела</strong></summary>
+    <ul>
+    <li><a href="#autentifikatsiya">Аутентификация</a></li>
+    <li><a href="#akkaunt">Аккаунт</a></li>
+    <li><a href="#finansy">Финансы</a></li>
+    <li><a href="#podderzhka-freescout">Поддержка (FreeScout)</a></li>
+    <li><a href="#uslugi">Услуги</a></li>
+    <li><a href="#push-uvedomleniya">Push-уведомления</a></li>
+    <li><a href="#svodnaya-tablitsa-endpointov">Сводная таблица эндпоинтов</a></li>
+    </ul>
+  </details>
+  </div>
+
 
   <p>REST API для мобильного приложения абонента. Аутентификация через JWT-токены (без cookies/CSRF). Все суммы возвращаются в рублях (деление на 10<sup>10</sup> выполняется на стороне сервера).</p>
 
@@ -952,7 +1041,7 @@ curl -s -b cookies.txt "https://billing.example.com/admin/ajax/ippull_get/1/"</c
     <strong>Стек:</strong> Django REST Framework + djangorestframework-simplejwt
   </div>
 
-  <h3>Аутентификация</h3>
+  <h3 id="autentifikatsiya">Аутентификация</h3>
 
   <pre><code># Логин — получить JWT-токены
 curl -s -X POST "https://billing.example.com/mobile-api/v1/auth/login" \
@@ -972,7 +1061,7 @@ curl -s -X POST "https://billing.example.com/mobile-api/v1/auth/refresh" \
   -H "Content-Type: application/json" \
   -d '{"refresh": "eyJhbGciOiJIUzI1NiIs..."}'</code></pre>
 
-  <h3>Аккаунт</h3>
+  <h3 id="akkaunt">Аккаунт</h3>
 
   <pre><code># Статус абонента (баланс, тариф, блокировки)
 curl -s "https://billing.example.com/mobile-api/v1/account/status" \
@@ -1026,7 +1115,7 @@ curl -s -X POST "https://billing.example.com/mobile-api/v1/account/voluntary_blo
   -H "Content-Type: application/json" \
   -d '{"enable": true}'</code></pre>
 
-  <h3>Финансы</h3>
+  <h3 id="finansy">Финансы</h3>
 
   <pre><code># История платежей (пагинация + фильтры)
 curl -s "https://billing.example.com/mobile-api/v1/finance/history?period=month&amp;page=1&amp;per_page=25" \
@@ -1069,7 +1158,7 @@ curl -s -X POST "https://billing.example.com/mobile-api/v1/finance/pay" \
 # Ответ (REST API v3): {"redirect_url": "https://yookassa.ru/checkout/..."}
 # Ответ (HTTP-протокол): {"form_post": true, "action": "https://yoomoney.ru/eshop.xml", "fields": {...}}</code></pre>
 
-  <h3>Поддержка (FreeScout)</h3>
+  <h3 id="podderzhka-freescout">Поддержка (FreeScout)</h3>
 
   <pre><code># Список тикетов
 curl -s "https://billing.example.com/mobile-api/v1/support/tickets" \
@@ -1091,7 +1180,7 @@ curl -s -X POST "https://billing.example.com/mobile-api/v1/support/tickets/59808
   -H "Content-Type: application/json" \
   -d '{"body": "Спасибо, проблема решена"}'</code></pre>
 
-  <h3>Услуги</h3>
+  <h3 id="uslugi">Услуги</h3>
 
   <pre><code># Список активных услуг
 curl -s "https://billing.example.com/mobile-api/v1/services/list" \
@@ -1103,7 +1192,7 @@ curl -s -X POST "https://billing.example.com/mobile-api/v1/services/toggle" \
   -H "Content-Type: application/json" \
   -d '{"service_id": 123, "enable": false}'</code></pre>
 
-  <h3>Push-уведомления</h3>
+  <h3 id="push-uvedomleniya">Push-уведомления</h3>
 
   <pre><code># Зарегистрировать FCM-токен
 curl -s -X POST "https://billing.example.com/mobile-api/v1/push/register" \
@@ -1111,7 +1200,7 @@ curl -s -X POST "https://billing.example.com/mobile-api/v1/push/register" \
   -H "Content-Type: application/json" \
   -d '{"token": "fcm_token_here", "platform": "android"}'</code></pre>
 
-  <h3>Сводная таблица эндпоинтов</h3>
+  <h3 id="svodnaya-tablitsa-endpointov">Сводная таблица эндпоинтов</h3>
   <table>
     <thead>
       <tr><th>Метод</th><th>Путь</th><th>Описание</th></tr>

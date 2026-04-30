@@ -89,6 +89,22 @@
 
   <!-- ═══════════ v1.6.0 build 324 ═══════════ -->
   <h2 id="v1-6-0-b324">v1.6.0 (build 324) — 27 апреля 2026</h2>
+  <div class="section-toc">
+  <details open>
+    <summary><strong>Содержание раздела</strong></summary>
+    <ul>
+    <li><a href="#radius-sessii-build-323">RADIUS / Сессии (build 323)</a></li>
+    <li><a href="#adresa-fias-dadata-build-297-301-324">Адреса / ФИАС / DaData (build 297-301, 324)</a></li>
+    <li><a href="#yur-litsa-sorm-build-290-296">Юр.лица / СОРМ (build 290-296)</a></li>
+    <li><a href="#ux-audit-sprint-12-3-build-289-290">UX Audit Sprint 1+2-3 (build 289-290)</a></li>
+    <li><a href="#tarify-uslugi-build-255-288">Тарифы / Услуги (build 255-288)</a></li>
+    <li><a href="#dashbord-build-250-260">Дашборд (build ~250-260)</a></li>
+    <li><a href="#freeradius-nas-build-258-323">FreeRADIUS / NAS (build 258, 323)</a></li>
+    <li><a href="#prochee">Прочее</a></li>
+    </ul>
+  </details>
+  </div>
+
 
   <div class="info-box">
     <strong>GitHub:</strong> <a href="https://github.com/ircitdev/SmitBilling/releases/tag/v1.6.0-build324" target="_blank">v1.6.0-build324</a><br>
@@ -96,7 +112,7 @@
     <strong>Период:</strong> build 215 → 324 (110 билдов, ~2 недели)
   </div>
 
-  <h3>RADIUS / Сессии (build 323)</h3>
+  <h3 id="radius-sessii-build-323">RADIUS / Сессии (build 323)</h3>
   <ul>
     <li><strong>Сброс RADIUS-сессий</strong> — кнопка ⏻ в шапке карточки абонента теперь работает: помимо CoA Disconnect на NAS принудительно приводит БД в офлайн (<code>Users.LOGGED=false</code>, <code>USERS_RADIUSAUTH.LOGGED=0</code>, <code>RADIUS_SESSIONS.END_TIME=now()</code> с <code>END_REASON='Admin reset'</code>).</li>
     <li><strong>Recovery missed Accounting-Start</strong> — если NAS шлёт только Interim-Update (без Start), <code>_radius_sessions_update</code> теперь закрывает осиротевшие открытые сессии и создаёт новую запись.</li>
@@ -104,7 +120,7 @@
     <li><strong>cleanup_stale_sessions</strong> (Celery beat ежечасно) — закрывает зависшие <code>RADIUS_SESSIONS</code> с <code>UPDATE_TIME &lt; now()-60min</code>.</li>
   </ul>
 
-  <h3>Адреса / ФИАС / DaData (build 297-301, 324)</h3>
+  <h3 id="adresa-fias-dadata-build-297-301-324">Адреса / ФИАС / DaData (build 297-301, 324)</h3>
   <ul>
     <li><strong>Создание адреса через ФИАС/DaData</strong> в Quick Add модалке абонента — иконка ⊕ рядом с полем Адрес, подсказки в реальном времени.</li>
     <li><strong>build 324:</strong> та же иконка ⊕ добавлена в карточку абонента (Информация → Контактная информация → Адрес).</li>
@@ -112,7 +128,7 @@
     <li><strong>DaData admin UI</strong> — настройка ключей в SystemSettings.</li>
   </ul>
 
-  <h3>Юр.лица / СОРМ (build 290-296)</h3>
+  <h3 id="yur-litsa-sorm-build-290-296">Юр.лица / СОРМ (build 290-296)</h3>
   <ul>
     <li><strong><code>Tarif.is_business</code></strong> — флаг «Для юр.лиц», в Quick Add фильтрует тарифы по флажку «Юр. лицо».</li>
     <li><strong>Реквизиты юр.лица</strong> — 12 атрибутов (ИНН, КПП, ОГРН, юр./физ./почт. адреса, р/с, Банк, БИК, к/с, В лице, Директор) автогенерятся при первом открытии вкладки.</li>
@@ -121,14 +137,14 @@
     <li><strong>Поддержка кириллической «с»</strong> в р/с и к/с (build 293).</li>
   </ul>
 
-  <h3>UX Audit Sprint 1+2-3 (build 289-290)</h3>
+  <h3 id="ux-audit-sprint-12-3-build-289-290">UX Audit Sprint 1+2-3 (build 289-290)</h3>
   <ul>
     <li><strong>Sprint 1:</strong> <code>focus-visible</code>, <code>prefers-reduced-motion</code>, color independence (иконки направления к суммам), bulk-confirm modal с превью имён и подтверждением количества.</li>
     <li><strong>Sprint 2-3:</strong> bulk undo (snapshot полей в cache 1ч), единый поиск navbar+страница, Ctrl+K hotkey, унификация «Баланс»/«Остаток» → «Баланс», auto-refresh дашборда (30с/60с/5мин), перестановка иерархии дашборда.</li>
     <li>Health Score: 72 → ~88/100 (Excellent).</li>
   </ul>
 
-  <h3>Тарифы / Услуги (build 255-288)</h3>
+  <h3 id="tarify-uslugi-build-255-288">Тарифы / Услуги (build 255-288)</h3>
   <ul>
     <li><strong>Список тарифов</strong> — полный редизайн (BS5, custom toolbar, expanded views), модалка редактирования с 4 вкладками.</li>
     <li><strong>Список услуг</strong> — toolbar с фильтрами, bulk actions, types modal, audit, shaper.</li>
@@ -136,21 +152,21 @@
     <li><strong>Бонусы</strong> — редактирование <code>enable_date</code> в модалке, бейдж «с DD.MM.YYYY» для будущей активации.</li>
   </ul>
 
-  <h3>Дашборд (build ~250-260)</h3>
+  <h3 id="dashbord-build-250-260">Дашборд (build ~250-260)</h3>
   <ul>
     <li><strong>ApexCharts + KPI-карточки</strong> — revenue, ARPU, новые/churn с дельтами за период.</li>
     <li><strong>Heatmap</strong> распределения активностей по часам/дням.</li>
     <li><strong>Top tariffs bar chart</strong>.</li>
   </ul>
 
-  <h3>FreeRADIUS / NAS (build 258, 323)</h3>
+  <h3 id="freeradius-nas-build-258-323">FreeRADIUS / NAS (build 258, 323)</h3>
   <ul>
     <li><strong>CoA Disconnect after unblock</strong> — после снятия блокировки NAS получает Disconnect-Request, чтобы абонент переавторизовался без таймаута сессии.</li>
     <li>Виртуальный NAS <code>127.0.0.1</code> (наш FreeRADIUS) пропускается в <code>disconnect_user</code> — сразу идёт fallback по <code>RADIUS_SESSIONS</code>.</li>
     <li>Fallback CoA: NAS_IP теперь берётся из <code>RADIUS_SESSIONS</code> (там колонка реально существует).</li>
   </ul>
 
-  <h3>Прочее</h3>
+  <h3 id="prochee">Прочее</h3>
   <ul>
     <li><strong>graphify wiki</strong> — knowledge graph 7407 нод, 36122 рёбер, 636 communities, доступен на <code>docs.billing.smit34.ru/graphify/</code>.</li>
     <li><strong>68 design/a11y skills</strong> установлены в <code>~/.claude/skills/</code>.</li>
@@ -171,10 +187,21 @@
 
   <!-- ─── NAS Развёртывание ─── -->
   <h2 id="nas-deploy">NAS Развёртывание (OSS)</h2>
+  <div class="section-toc">
+  <details open>
+    <summary><strong>Содержание раздела</strong></summary>
+    <ul>
+    <li><a href="#obschaya-shema-raboty">Общая схема работы</a></li>
+    <li><a href="#pod-vkladki">Под-вкладки</a></li>
+    <li><a href="#modalnoe-okno-vyvoda-komand">Модальное окно вывода команд</a></li>
+    </ul>
+  </details>
+  </div>
+
 
   <p>Вкладка <strong>«Развёртывание»</strong> в карточке NAS позволяет управлять конфигурацией MikroTik и другого оборудования. Полностью воспроизводит функционал Carbon Billing 4.</p>
 
-  <h3>Общая схема работы</h3>
+  <h3 id="obschaya-shema-raboty">Общая схема работы</h3>
   <pre><code>1. Инициализация    → rtsh cfg init &lt;scheme&gt;   → создаёт структуру каталогов
 2. Заполнение данных → rtsh cfg fill &lt;ip&gt;       → заполняет .ini из биллинга
 3. Скачать текущую   → rtsh cfg download        → загружает конфиг с оборудования
@@ -182,7 +209,7 @@
 5. Загрузка          → rtsh cfg upload          → загружает конфигурацию на NAS
 6. Сохранение        → rtsh cfg save            → коммит в git-историю</code></pre>
 
-  <h3>Под-вкладки</h3>
+  <h3 id="pod-vkladki">Под-вкладки</h3>
 
   <h4>Управление</h4>
   <p>5 шагов развёртывания + дополнительные команды (status, diff, log, acl upload).</p>
@@ -202,16 +229,29 @@
   <h4>Download cfg</h4>
   <p>Файлы текущей конфигурации, скачанные с оборудования через <code>rtsh cfg download</code>. Только для просмотра.</p>
 
-  <h3>Модальное окно вывода команд</h3>
+  <h3 id="modalnoe-okno-vyvoda-komand">Модальное окно вывода команд</h3>
   <p>При нажатии на любую кнопку (rtsh cfg init, fill, make и др.) открывается модальное окно с выводом команды в реальном времени. Кнопки «Скачать вывод» и «Закрыть».</p>
   <img src="../img/nas_shell_modal.png" alt="Вывод команды" style="max-width:100%;border:1px solid #dee2e6;border-radius:8px;margin:10px 0">
 
   <!-- ─── OSS утилиты ─── -->
   <h2 id="oss-tools">OSS утилиты</h2>
+  <div class="section-toc">
+  <details open>
+    <summary><strong>Содержание раздела</strong></summary>
+    <ul>
+    <li><a href="#rtsh-glavnaya-utilita">rtsh — главная утилита</a></li>
+    <li><a href="#oss-komandy">OSS команды</a></li>
+    <li><a href="#oss-shemy-44-sht">OSS схемы (44 шт.)</a></li>
+    <li><a href="#struktura-katalogov-nas">Структура каталогов NAS</a></li>
+    <li><a href="#docker-konfiguratsiya">Docker конфигурация</a></li>
+    </ul>
+  </details>
+  </div>
+
 
   <p>Утилиты для управления конфигурациями NAS-устройств, перенесённые из Carbon Billing 4.</p>
 
-  <h3>rtsh — главная утилита</h3>
+  <h3 id="rtsh-glavnaya-utilita">rtsh — главная утилита</h3>
   <p>Расположение: <code>/usr/local/bin/rtsh</code> (bash-скрипт).</p>
   <pre><code>rtsh cfg init &lt;scheme_name&gt;  — инициализировать каталог управления
 rtsh cfg fill &lt;ip&gt;          — заполнить .ini данными из биллинга
@@ -225,7 +265,7 @@ rtsh cfg log                — журнал изменений
 rtsh acl upload             — загрузить ACL-листы на оборудование
 rtsh list scheme            — список доступных схем</code></pre>
 
-  <h3>OSS команды</h3>
+  <h3 id="oss-komandy">OSS команды</h3>
   <p>18 скриптов в <code>/usr/local/bin/oss/</code>:</p>
   <table>
     <tr><th>Команда</th><th>Описание</th></tr>
@@ -247,7 +287,7 @@ rtsh list scheme            — список доступных схем</code><
     <tr><td>cfgparse.py</td><td>Парсер конфигураций</td></tr>
   </table>
 
-  <h3>OSS схемы (44 шт.)</h3>
+  <h3 id="oss-shemy-44-sht">OSS схемы (44 шт.)</h3>
   <p>Расположение: <code>/usr/local/share/oss/</code>. Каждая схема содержит набор .ini шаблонов, .tmplt шаблонов и скриптов для конкретного типа оборудования.</p>
   <table>
     <tr><th>Схема</th><th>Описание</th></tr>
@@ -265,7 +305,7 @@ rtsh list scheme            — список доступных схем</code><
     <tr><td colspan="2"><em>... и 33 другие схемы</em></td></tr>
   </table>
 
-  <h3>Структура каталогов NAS</h3>
+  <h3 id="struktura-katalogov-nas">Структура каталогов NAS</h3>
   <pre><code>/var/oss/&lt;nas_name&gt;/
 ├── main.ini             ← основной конфиг (IP, секрет, порты)
 ├── firewall.ini         ← настройки файрвола
@@ -285,7 +325,7 @@ rtsh list scheme            — список доступных схем</code><
 ├── uinit.d/             ← пользовательские init-скрипты
 └── .git/                ← история изменений</code></pre>
 
-  <h3>Docker конфигурация</h3>
+  <h3 id="docker-konfiguratsiya">Docker конфигурация</h3>
   <ul>
     <li><strong>Dockerfile</strong> — <code>COPY oss_tools/</code> (rtsh, oss_bin, oss_share) + <code>apt install git rsync</code></li>
     <li><strong>Volume</strong> <code>oss_data:/var/oss</code> — данные сохраняются между перезапусками</li>

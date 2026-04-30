@@ -317,11 +317,22 @@ docker compose exec web python manage.py collectstatic --noinput</code></pre>
 docker compose exec web python manage.py loaddata initial_data</code></pre>
 
   <h2 id="equip-integration">Этап 4. Интеграция с оборудованием</h2>
+  <div class="section-toc">
+  <details open>
+    <summary><strong>Содержание раздела</strong></summary>
+    <ul>
+    <li><a href="#internet">Интернет</a></li>
+    <li><a href="#telefoniya">Телефония</a></li>
+    <li><a href="#iptv">IPTV</a></li>
+    </ul>
+  </details>
+  </div>
 
-  <h3>Интернет</h3>
+
+  <h3 id="internet">Интернет</h3>
   <p>Интегрируйте интернет-маршрутизаторы и оборудование NAS, следуя разделу документации по интеграции интернет-оборудования. Доступны руководства быстрой интеграции, включая настройку MikroTik.</p>
 
-  <h3>Телефония</h3>
+  <h3 id="telefoniya">Телефония</h3>
   <p>Типовой план внедрения VoIP:</p>
   <ol>
     <li>Настройте оборудование: сервисы, политики, профили, номера пользователей</li>
@@ -333,7 +344,7 @@ docker compose exec web python manage.py loaddata initial_data</code></pre>
     <li>Протестируйте: звонки с положительным балансом, недостаточный баланс, отключение абонента во время звонка, корректность тарификации</li>
   </ol>
 
-  <h3>IPTV</h3>
+  <h3 id="iptv">IPTV</h3>
   <p>Трёхэтапный процесс:</p>
   <ol>
     <li>Настройка оборудования по выбранной схеме</li>
@@ -353,21 +364,35 @@ docker compose exec web python manage.py loaddata initial_data</code></pre>
   <!-- ===== Видеоинструкции ===== -->
 
   <h2 id="video">Видеоинструкции</h2>
+  <div class="section-toc">
+  <details open>
+    <summary><strong>Содержание раздела</strong></summary>
+    <ul>
+    <li><a href="#ustanovka">Установка</a></li>
+    <li><a href="#nastroyka-sistemy">Настройка системы</a></li>
+    <li><a href="#rabota-s-abonentami">Работа с абонентами</a></li>
+    <li><a href="#tarifikatsiya">Тарификация</a></li>
+    <li><a href="#integratsiya">Интеграция</a></li>
+    <li><a href="#dopolnitelno">Дополнительно</a></li>
+    </ul>
+  </details>
+  </div>
+
   <p>Видеоуроки по работе с системой СмИТ Биллинг v1.6.0 (build 334).</p>
 
-  <h3>Установка</h3>
+  <h3 id="ustanovka">Установка</h3>
   <div class="video-container">
     <iframe src="https://rutube.ru/play/embed/6dc6eee9f04a3c2de662332f1e01378a" frameborder="0" allowfullscreen></iframe>
   </div>
   <p>Установка СмИТ Биллинг v1.6.0 (build 334)</p>
 
-  <h3>Настройка системы</h3>
+  <h3 id="nastroyka-sistemy">Настройка системы</h3>
   <div class="video-container">
     <iframe src="https://rutube.ru/play/embed/2cb41602a5c724cfed0f8d0cb56fd7e5" frameborder="0" allowfullscreen></iframe>
   </div>
   <p>Создание администратора биллинга</p>
 
-  <h3>Работа с абонентами</h3>
+  <h3 id="rabota-s-abonentami">Работа с абонентами</h3>
   <div class="video-container">
     <iframe src="https://rutube.ru/play/embed/adb95bb1127338b436c9761e18cd9825" frameborder="0" allowfullscreen></iframe>
   </div>
@@ -388,13 +413,13 @@ docker compose exec web python manage.py loaddata initial_data</code></pre>
   </div>
   <p>ФИАС в СмИТ Биллинг v1.6.0 (build 334)</p>
 
-  <h3>Тарификация</h3>
+  <h3 id="tarifikatsiya">Тарификация</h3>
   <div class="video-container">
     <iframe src="https://rutube.ru/play/embed/67d7f7e98f4bb1eec74e7c51ee96808c" frameborder="0" allowfullscreen></iframe>
   </div>
   <p>Создание тарифов и услуг</p>
 
-  <h3>Интеграция</h3>
+  <h3 id="integratsiya">Интеграция</h3>
   <div class="video-container">
     <iframe src="https://rutube.ru/play/embed/31e34c51fc23b895adf68ac283e66437" frameborder="0" allowfullscreen></iframe>
   </div>
@@ -405,7 +430,7 @@ docker compose exec web python manage.py loaddata initial_data</code></pre>
   </div>
   <p>Финансовые операции</p>
 
-  <h3>Дополнительно</h3>
+  <h3 id="dopolnitelno">Дополнительно</h3>
   <div class="video-container">
     <iframe src="https://rutube.ru/play/embed/3e38e3644e9ca3494ef26655a4b651ee" frameborder="0" allowfullscreen></iframe>
   </div>

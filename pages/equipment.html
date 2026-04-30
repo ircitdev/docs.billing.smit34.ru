@@ -271,12 +271,14 @@
   <details open>
     <summary><strong>Содержание раздела</strong></summary>
     <ul>
+    <li><a href="#podderzhivaemoe-internet-oborudovanie">Поддерживаемое интернет-оборудование</a></li>
     <li><a href="#nas-modal">Редактирование NAS — модальное окно</a></li>
     <li><a href="#nas-online">Онлайн-абоненты NAS</a></li>
     <li><a href="#switch-modal">Редактирование коммутаторов — модальное окно</a></li>
     </ul>
   </details>
   </div>
+
 
 
   <p>Для интеграции нестандартного NAS-оборудования с СмИТ Биллинг 1.6 используется пользовательская схема. Процесс интеграции состоит из 5 шагов:</p>
@@ -303,7 +305,7 @@ docker compose restart freeradius</code></pre>
     FreeRADIUS работает в отдельном Docker-контейнере с модулем <code>rlm_python3</code>. Три виртуальных сервера: default (интернет, порты 1812/1813), voip (2812/2813), iptv (6812/6813).
   </div>
 
-  <h3>Поддерживаемое интернет-оборудование</h3>
+  <h3 id="podderzhivaemoe-internet-oborudovanie">Поддерживаемое интернет-оборудование</h3>
   <ul class="child-pages">
     <li><a>Mikrotik RouterOS</a> <span class="desc">RADIUS-авторизация, PPPoE, Hotspot, DHCP</span></li>
     <li><a>Cisco IOS / IOS-XE</a> <span class="desc">AAA, PPPoE, IP Subscriber</span></li>
@@ -384,7 +386,7 @@ docker compose restart freeradius</code></pre>
   <p>С build 329 добавление и редактирование типов выполняется в модальном окне с двумя вкладками: <strong>Основные</strong> (название, признак «Порты с 0») и <strong>Opt82</strong> (поля парсинга). Изменения сохраняются без перезагрузки страницы.</p>
   <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v329/switch_type_modal.png" alt="Модалка типа коммутатора" class="screenshot">
 
-  <h4>Параметры Opt82</h4>
+  <h3 id="opt82-params">Параметры Opt82</h3>
   <p>Каждая запись задаёт регулярные выражения для извлечения данных из поля Option 82:</p>
   <ul>
     <li><strong>PARS_SWIP</strong> — парсинг IP-адреса коммутатора</li>
@@ -399,9 +401,24 @@ docker compose restart freeradius</code></pre>
 
   <!-- ===== OPT82 авторизация ===== -->
   <h2 id="opt82-auth">OPT82-авторизация</h2>
+  <div class="section-toc">
+  <details open>
+    <summary><strong>Содержание раздела</strong></summary>
+    <ul>
+    <li><a href="#kak-eto-rabotaet">Как это работает</a></li>
+    <li><a href="#shag-1-tip-avtorizatsii-v-uchetnoy-zapisi-abonenta">Шаг 1 — Тип авторизации в учётной записи абонента</a></li>
+    <li><a href="#shag-2-privyazka-k-portu-kommutatora">Шаг 2 — Привязка к порту коммутатора</a></li>
+    <li><a href="#shag-3-kommutator-v-spravochnike">Шаг 3 — Коммутатор в справочнике</a></li>
+    <li><a href="#shag-4-tip-kommutatora-shablony-parsinga">Шаг 4 — Тип коммутатора (шаблоны парсинга)</a></li>
+    <li><a href="#shag-5-flagi-opt82-na-nas">Шаг 5 — Флаги OPT82 на NAS</a></li>
+    <li><a href="#itogovaya-shema-privyazki">Итоговая схема привязки</a></li>
+    </ul>
+  </details>
+  </div>
+
   <p>OPT82 (DHCP Option 82) — механизм авторизации абонентов по физическому расположению в сети: система определяет, к какому <strong>коммутатору</strong> и на какой <strong>порт</strong> подключён клиент, без необходимости знать его логин или MAC-адрес.</p>
 
-  <h3>Как это работает</h3>
+  <h3 id="kak-eto-rabotaet">Как это работает</h3>
   <ol>
     <li>Абонент подключает устройство к порту коммутатора и посылает DHCP-запрос.</li>
     <li>Коммутатор добавляет в DHCP-пакет поле <strong>Option 82</strong> — информацию о своём IP-адресе и номере порта (формат зависит от производителя).</li>
@@ -415,7 +432,7 @@ docker compose restart freeradius</code></pre>
     <strong>Ключевое отличие от логин-авторизации:</strong> при OPT82 логин и пароль не нужны — биллинг идентифицирует абонента по физическому порту коммутатора.
   </div>
 
-  <h3>Шаг 1 — Тип авторизации в учётной записи абонента</h3>
+  <h3 id="shag-1-tip-avtorizatsii-v-uchetnoy-zapisi-abonenta">Шаг 1 — Тип авторизации в учётной записи абонента</h3>
   <p>В карточке абонента откройте вкладку <strong>Учётные записи</strong> → кнопка редактирования учётной записи → вкладка <strong>Основные</strong>. В поле <strong>Тип авторизации</strong> выберите <code>по OPT82</code>.</p>
   <p>Доступные типы авторизации (поле <code>auth_type</code> в таблице Users):</p>
   <ul>
@@ -428,7 +445,7 @@ docker compose restart freeradius</code></pre>
     <li><code>по vpn pptp, pppoe</code> — PPPoE/PPTP</li>
   </ul>
 
-  <h3>Шаг 2 — Привязка к порту коммутатора</h3>
+  <h3 id="shag-2-privyazka-k-portu-kommutatora">Шаг 2 — Привязка к порту коммутатора</h3>
   <p>В той же карточке учётной записи перейдите на вкладку <strong>Сеть</strong>. Здесь три поля для OPT82:</p>
   <ul>
     <li><strong>SWITCH</strong> — выберите коммутатор из справочника (<code>/admin/equipment/Switch/</code>). Список фильтруется по мере ввода.</li>
@@ -437,7 +454,7 @@ docker compose restart freeradius</code></pre>
   </ul>
   <p>После сохранения в таблице <code>SwitchPorts</code> создаётся запись: <code>switch_id + port_num → user_id</code>. Именно по ней FreeRADIUS находит абонента при авторизации.</p>
 
-  <h3>Шаг 3 — Коммутатор в справочнике</h3>
+  <h3 id="shag-3-kommutator-v-spravochnike">Шаг 3 — Коммутатор в справочнике</h3>
   <p>Перейдите в <strong>Оборудование → Коммутаторы</strong> (<code>/admin/equipment/Switch/</code>). Убедитесь, что коммутатор добавлен с корректным <strong>IP-адресом</strong> — именно этот IP будет извлекаться из Option 82 и сравниваться с записями справочника.</p>
   <p>Поля коммутатора:</p>
   <ul>
@@ -447,11 +464,11 @@ docker compose restart freeradius</code></pre>
     <li><strong>Этаж / Помещение</strong> — уточнение расположения.</li>
   </ul>
 
-  <h3>Шаг 4 — Тип коммутатора (шаблоны парсинга)</h3>
+  <h3 id="shag-4-tip-kommutatora-shablony-parsinga">Шаг 4 — Тип коммутатора (шаблоны парсинга)</h3>
   <p>Перейдите в <strong>Оборудование → Типы коммутаторов</strong> (<code>/admin/equipment/SwitchType/</code>). Каждый производитель по-своему кодирует данные в Option 82. Тип коммутатора задаёт регулярные выражения для их извлечения.</p>
   <p>Проверьте, что для вашего оборудования создан тип с правильно заполненными полями <strong>PARS_SWIP</strong> (IP коммутатора) и <strong>PARS_PORT</strong> (номер порта). Если данных недостаточно — добавьте <strong>PARS_VLAN</strong> для VLAN-авторизации.</p>
 
-  <h3>Шаг 5 — Флаги OPT82 на NAS</h3>
+  <h3 id="shag-5-flagi-opt82-na-nas">Шаг 5 — Флаги OPT82 на NAS</h3>
   <p>В карточке NAS (<strong>Оборудование → NAS</strong> → вкладка <strong>Авторизация</strong>) включите нужные флаги:</p>
   <ul>
     <li><strong>auth_opt82_switch_ip</strong> — авторизация по IP коммутатора из Option 82.</li>
@@ -460,7 +477,7 @@ docker compose restart freeradius</code></pre>
   </ul>
   <p>Обычно включают все три для максимальной точности идентификации.</p>
 
-  <h3>Итоговая схема привязки</h3>
+  <h3 id="itogovaya-shema-privyazki">Итоговая схема привязки</h3>
   <table>
     <thead><tr><th>Сущность</th><th>Где настраивать</th><th>Что задаётся</th></tr></thead>
     <tbody>
@@ -473,6 +490,16 @@ docker compose restart freeradius</code></pre>
 
   <!-- ===== Телефония ===== -->
   <h2 id="voip">Телефония</h2>
+  <div class="section-toc">
+  <details open>
+    <summary><strong>Содержание раздела</strong></summary>
+    <ul>
+    <li><a href="#podderzhivaemye-oss-shemy">Поддерживаемые OSS-схемы</a></li>
+    <li><a href="#podderzhivaemye-parsery-cdr">Поддерживаемые парсеры CDR</a></li>
+    </ul>
+  </details>
+  </div>
+
 
   <p>Типовой план интеграции VoIP-оборудования с СмИТ Биллинг v1.6.0 (build 334) занимает <strong>20-30 минут</strong> и состоит из 7 этапов:</p>
 
@@ -486,7 +513,7 @@ docker compose restart freeradius</code></pre>
     <li>Запуск сервиса в эксплуатацию.</li>
   </ol>
 
-  <h3>Поддерживаемые OSS-схемы</h3>
+  <h3 id="podderzhivaemye-oss-shemy">Поддерживаемые OSS-схемы</h3>
   <ul>
     <li><strong>Unitel TS-004</strong> — цифровая АТС, CDR через файловый обмен.</li>
     <li><strong>Asterisk</strong> — открытая IP-АТС, CDR через CSV/RADIUS.</li>
@@ -495,7 +522,7 @@ docker compose restart freeradius</code></pre>
     <li><strong>Avaya</strong> — корпоративная АТС, CDR через SFTP.</li>
   </ul>
 
-  <h3>Поддерживаемые парсеры CDR</h3>
+  <h3 id="podderzhivaemye-parsery-cdr">Поддерживаемые парсеры CDR</h3>
   <table>
     <thead>
       <tr><th>Парсер</th><th>Формат</th></tr>
@@ -525,9 +552,11 @@ docker compose restart freeradius</code></pre>
     <li><a href="#iptv-lfstream">LFStream (Смотрёшка)</a></li>
     <li><a href="#iptv-mappings">Маппинг IPTV-пакетов</a></li>
     <li><a href="#iptv-sync">Синхронизация</a></li>
+    <li><a href="#drugie-podderzhivaemye-iptv-platformy">Другие поддерживаемые IPTV-платформы</a></li>
     </ul>
   </details>
   </div>
+
 
 
   <p>СмИТ Биллинг v1.6.0 (build 334) интегрируется с IPTV-платформами для автоматического управления аккаунтами абонентов, ТВ-пакетами и блокировками. Интеграция работает в двух режимах:</p>
@@ -627,7 +656,7 @@ docker compose restart freeradius</code></pre>
 from billing.models.iptv import IptvApiLog
 IptvApiLog.objects.filter(success=False).order_by('-created_at')[:10]</code></pre>
 
-  <h3>Другие поддерживаемые IPTV-платформы</h3>
+  <h3 id="drugie-podderzhivaemye-iptv-platformy">Другие поддерживаемые IPTV-платформы</h3>
   <ul>
     <li><strong>IPTVPortal</strong> — облачная платформа интерактивного ТВ.</li>
     <li><strong>Infomir Ministra (Stalker)</strong> — middleware для STB-приставок.</li>
