@@ -4119,17 +4119,59 @@ chmod +x restore.sh
   <p>Справочник валют для мультивалютных операций. Каждая валюта имеет название, сокращение и курс конвертации. Используется для бонусных систем и операторов с мультивалютным учётом.</p>
 
   <h3 id="vlan-pools">11.4. Пулы VLAN</h3>
-  <p>Управление пулами VLAN для автоматического распределения VLAN-тегов абонентам. Привязка к NAS-устройствам и группам абонентов.</p>
+  <p>Управление пулами VLAN для автоматического распределения VLAN-тегов абонентам. Привязка к оператору связи (FK на абонентов из папки 9002 «Операторы»). Путь: <code>/admin/dictionary/VlanPull/</code>.</p>
+
+  <h4 id="vlan-pools-modal">Модалка добавления и редактирования VLAN-пула (build 318)</h4>
+  <p>Список переведён на кастомный AJAX-шаблон с поиском, счётчиком записей и кнопкой <strong>«+ VLAN-пул»</strong>. Редактирование открывается в модальном окне без перехода на отдельную страницу.</p>
+  <p>Поля модалки:</p>
+  <ul>
+    <li><strong>Название</strong> — обязательное</li>
+    <li><strong>Начальный VLAN</strong> и <strong>Конечный VLAN</strong> — целые числа в диапазоне 1..4094 (валидация: <code>start &le; end</code>, оба указаны или оба пустые)</li>
+    <li><strong>Оператор связи</strong> — FK с выбором из абонентов папки «Операторы» (9002)</li>
+    <li><strong>Размер пула</strong> — read-only hint, обновляется в реальном времени (<code>end - start + 1</code>)</li>
+  </ul>
+  <p>В таблице списка отображается: ID, Название, Диапазон <code>start—end</code>, Размер (бейдж), Оператор связи. Поиск работает по названию и числовым полям.</p>
+  <p>Backend endpoints: <code>GET /admin/dictionary/vlan_pull_json/</code>, <code>GET|POST|DELETE /admin/dictionary/vlan_pull_crud/&lt;id&gt;/</code>. Каждое CRUD-действие пишется в <code>AuditOperations</code> с <code>table_name='VLAN_PULL'</code>.</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v318/vlan_pull_list.png" alt="Список VLAN-пулов" class="screenshot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v318/vlan_pull_modal.png" alt="Модалка добавления VLAN-пула" class="screenshot">
 
   <h3 id="ip-pools">11.5. Пулы IP-адресов</h3>
-  <p>Создание и управление пулами IP-адресов. Параметры пула:</p>
+  <p>Создание и управление пулами IP-адресов. Система автоматически отслеживает занятые и свободные адреса (см. <a href="#ip-pool-fallback">7.13. Fallback-цепочка</a>). Путь: <code>/admin/dictionary/IpPull/</code>.</p>
+
+  <h4 id="ip-pools-modal">Модалка добавления и редактирования IP-пула (build 318)</h4>
+  <p>Список оставлен с прежними AJAX-колонками «Свободно» и «% занято» (build 346), но добавлена кнопка <strong>«+ IP-пул»</strong> и иконка-карандаш теперь открывает <strong>модальное окно с 4 вкладками</strong> вместо отдельной страницы. В шапке модалки — ссылка <strong>«Полная форма»</strong> для перехода на legacy-страницу <code>/admin/dictionary/IpPull/&lt;id&gt;/</code> когда нужны редко используемые поля.</p>
+
+  <p><strong>Вкладка 1 — Основное:</strong> название (обяз.), начальный/конечный IP, маска <code>/N</code>, переключатель «Включён». В реальном времени показывается размер диапазона (<code>end - start + 1</code>) и подсветка некорректного диапазона красной рамкой.</p>
+
+  <p><strong>Вкладка 2 — Сеть:</strong> шлюз, адрес сети, обратный шлюз (NAT), политика выдачи. Все IP-поля валидируются на сервере через <code>ipaddress.ip_address</code>.</p>
+
+  <p><strong>Вкладка 3 — DHCP / Hotspot:</strong> переключатели «Hotspot пул» и «Генерировать DHCP-подсеть», textarea для аргументов DHCP (<code>option …</code>).</p>
+
+  <p><strong>Вкладка 4 — Связи:</strong> Select2 AJAX для:</p>
   <ul>
-    <li>Начальный и конечный адреса диапазона</li>
-    <li>Шлюз, маска подсети</li>
-    <li>Настройки DHCP (генерация конфигурации подсетей)</li>
-    <li>Кэш адресов, цепочка пулов</li>
+    <li><strong>Следующий пул</strong> (chain) — поиск по другим IpPull, исключая текущий, с защитой от циклических связей</li>
+    <li><strong>Оператор связи</strong> — поиск по абонентам в папке 9002</li>
+    <li><strong>Кому слать уведомления</strong> — поиск по любым абонентам (минимум 2 символа)</li>
+    <li><strong>Привязка к коммутатору</strong> — поиск по справочнику Switch (с IP в подписи)</li>
+    <li><strong>Текущий указатель</strong> — read-only поле для информации</li>
   </ul>
-  <p>Система автоматически отслеживает занятые и свободные адреса. Пулы привязываются к NAS или группам абонентов.</p>
+
+  <p><strong>Серверная валидация:</strong></p>
+  <ul>
+    <li><code>start_ip &le; end_ip</code>, версии IP должны совпадать (<code>v4</code> с <code>v4</code>, <code>v6</code> с <code>v6</code>)</li>
+    <li><strong>Маска</strong> в диапазоне 0..32 для IPv4 или 0..128 для IPv6</li>
+    <li><strong>Защита от циклов</strong> в <code>next_pull</code> chain — сохранение блокируется если новая связь приведёт обратно к текущему пулу</li>
+    <li><strong>Warning о пересечении</strong> — если включённый пул пересекается с другими активными пулами, показывается жёлтый алерт; сохранение НЕ блокируется (иногда требуется намеренное перекрытие)</li>
+    <li><strong>Защита удаления</strong> — нельзя удалить пул, на который ссылаются <code>Users.pull_id</code>, <code>Homes.pull_id</code> или другие пулы через <code>next_pull_id</code></li>
+  </ul>
+
+  <p>Backend endpoints: <code>GET /admin/dictionary/ip_pull_json/</code>, <code>GET|POST|DELETE /admin/dictionary/ip_pull_crud/&lt;id&gt;/</code>, <code>GET /admin/dictionary/ip_pull_select_json/?q=&exclude=&lt;id&gt;</code>. Каждое CRUD-действие пишется в <code>AuditOperations</code> с <code>table_name='IP_PULL'</code>.</p>
+
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v318/ip_pull_list_with_button.png" alt="Список IP-пулов с кнопкой добавления" class="screenshot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v318/ip_pull_modal_main.png" alt="Модалка IP-пула: вкладка Основное" class="screenshot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v318/ip_pull_modal_network.png" alt="Модалка IP-пула: вкладка Сеть" class="screenshot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v318/ip_pull_modal_dhcp.png" alt="Модалка IP-пула: вкладка DHCP / Hotspot" class="screenshot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v318/ip_pull_modal_links.png" alt="Модалка IP-пула: вкладка Связи" class="screenshot">
 
   <h3 id="requisites">11.6. Реквизиты</h3>
   <p>Банковские и юридические реквизиты оператора для формирования договоров, счетов и актов. ИНН, КПП, расчётный счёт, БИК, юридический адрес.</p>
