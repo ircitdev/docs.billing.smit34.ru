@@ -146,7 +146,13 @@ tbody tr:hover { background: var(--bg3); }
   cursor: pointer; line-height: 1;
 }
 .modal-close:hover { color: var(--text); }
-.modal-title { font-size: 16px; font-weight: 700; margin-bottom: 16px; padding-right: 28px; }
+.modal-title { font-size: 16px; font-weight: 700; margin-bottom: 10px; padding-right: 28px; }
+.modal-desc { font-size: 13px; color: var(--text2); line-height: 1.45; margin-bottom: 14px; padding: 8px 10px; background: var(--bg3); border-left: 3px solid var(--primary); border-radius: 4px; }
+.modal-meta-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.modal-meta-row .mm-chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; background: var(--bg3); border: 1px solid var(--border); border-radius: 14px; font-size: 11.5px; }
+.modal-meta-row .mm-key { color: var(--text3); text-transform: uppercase; letter-spacing: 0.04em; font-size: 10px; font-weight: 600; }
+.modal-meta-row .mm-val { color: var(--text); font-family: monospace; }
+.modal-meta-row .badge { font-size: 10.5px; padding: 1px 8px; }
 .modal-field { margin-bottom: 10px; font-size: 13px; }
 .modal-field .mf-label { color: var(--text2); font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 3px; }
 .modal-field .mf-val { font-family: monospace; word-break: break-all; }
@@ -385,7 +391,7 @@ document.querySelectorAll('.dtn-theme-btn').forEach(btn => {
 });
 
 
-const NODES = [{"id": "admin_accounts_balance", "label": "balance()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\admin_accounts.py", "short_path": "models/admin_accounts.py", "source_location": "L126", "degree": 1, "neighbors": [{"id": "billing_models_admin_accounts_py", "label": "admin_accounts.py", "cid": "19"}]}, {"id": "admin_accounts_balance_adjust", "label": "balance_adjust()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\admin_accounts.py", "short_path": "models/admin_accounts.py", "source_location": "L131", "degree": 1, "neighbors": [{"id": "billing_models_admin_accounts_py", "label": "admin_accounts.py", "cid": "19"}]}, {"id": "admin_accounts_balance_buh", "label": "balance_buh()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\admin_accounts.py", "short_path": "models/admin_accounts.py", "source_location": "L121", "degree": 1, "neighbors": [{"id": "billing_models_admin_accounts_py", "label": "admin_accounts.py", "cid": "19"}]}, {"id": "admin_accounts_credit_adjust_rub", "label": "credit_adjust_rub()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\admin_accounts.py", "short_path": "models/admin_accounts.py", "source_location": "L117", "degree": 2, "neighbors": [{"id": "billing_models_admin_accounts_py", "label": "admin_accounts.py", "cid": "19"}, {"id": "admin_accounts_money", "label": "_money()", "cid": "19"}]}, {"id": "admin_accounts_credit_rub", "label": "credit_rub()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\admin_accounts.py", "short_path": "models/admin_accounts.py", "source_location": "L113", "degree": 2, "neighbors": [{"id": "billing_models_admin_accounts_py", "label": "admin_accounts.py", "cid": "19"}, {"id": "admin_accounts_money", "label": "_money()", "cid": "19"}]}, {"id": "admin_accounts_debit_rub", "label": "debit_rub()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\admin_accounts.py", "short_path": "models/admin_accounts.py", "source_location": "L109", "degree": 2, "neighbors": [{"id": "billing_models_admin_accounts_py", "label": "admin_accounts.py", "cid": "19"}, {"id": "admin_accounts_money", "label": "_money()", "cid": "19"}]}, {"id": "admin_accounts_meta", "label": "Meta", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\admin_accounts.py", "short_path": "models/admin_accounts.py", "source_location": "L93", "degree": 1, "neighbors": [{"id": "billing_models_admin_accounts_py", "label": "admin_accounts.py", "cid": "19"}]}, {"id": "admin_accounts_money", "label": "_money()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\admin_accounts.py", "short_path": "models/admin_accounts.py", "source_location": "L99", "degree": 5, "neighbors": [{"id": "admin_accounts_debit_rub", "label": "debit_rub()", "cid": "19"}, {"id": "admin_accounts_credit_adjust_rub", "label": "credit_adjust_rub()", "cid": "19"}, {"id": "billing_models_admin_accounts_py", "label": "admin_accounts.py", "cid": "19"}, {"id": "admin_accounts_ostatok_rub", "label": "ostatok_rub()", "cid": "19"}, {"id": "admin_accounts_credit_rub", "label": "credit_rub()", "cid": "19"}]}, {"id": "admin_accounts_moneyformfield", "label": "MoneyFormField", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\admin_accounts.py", "short_path": "models/admin_accounts.py", "source_location": "L13", "degree": 4, "neighbors": [{"id": "admin_accounts_moneyformfield_clean", "label": ".clean()", "cid": "19"}, {"id": "admin_accounts_rationale_14", "label": "Form field that displays DB money (×10^10) as human rubles.", "cid": "19"}, {"id": "admin_accounts_moneyformfield_prepare_value", "label": ".prepare_value()", "cid": "19"}, {"id": "billing_models_admin_accounts_py", "label": "admin_accounts.py", "cid": "19"}]}, {"id": "admin_accounts_moneyformfield_clean", "label": ".clean()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\admin_accounts.py", "short_path": "models/admin_accounts.py", "source_location": "L26", "degree": 1, "neighbors": [{"id": "admin_accounts_moneyformfield", "label": "MoneyFormField", "cid": "19"}]}, {"id": "admin_accounts_moneyformfield_prepare_value", "label": ".prepare_value()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\admin_accounts.py", "short_path": "models/admin_accounts.py", "source_location": "L16", "degree": 1, "neighbors": [{"id": "admin_accounts_moneyformfield", "label": "MoneyFormField", "cid": "19"}]}, {"id": "admin_accounts_ostatok_rub", "label": "ostatok_rub()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\admin_accounts.py", "short_path": "models/admin_accounts.py", "source_location": "L105", "degree": 2, "neighbors": [{"id": "billing_models_admin_accounts_py", "label": "admin_accounts.py", "cid": "19"}, {"id": "admin_accounts_money", "label": "_money()", "cid": "19"}]}, {"id": "admin_accounts_rationale_1", "label": "Модель лицевых счётов — конвертирована из admin/abstract_models.py (AdminAccount", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\admin_accounts.py", "short_path": "models/admin_accounts.py", "source_location": "L1", "degree": 1, "neighbors": [{"id": "billing_models_admin_accounts_py", "label": "admin_accounts.py", "cid": "19"}]}, {"id": "admin_accounts_rationale_14", "label": "Form field that displays DB money (×10^10) as human rubles.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\admin_accounts.py", "short_path": "models/admin_accounts.py", "source_location": "L14", "degree": 1, "neighbors": [{"id": "admin_accounts_moneyformfield", "label": "MoneyFormField", "cid": "19"}]}, {"id": "billing_models_admin_accounts_py", "label": "admin_accounts.py", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\admin_accounts.py", "short_path": "models/admin_accounts.py", "source_location": "L1", "degree": 18, "neighbors": [{"id": "admin_accounts_debit_rub", "label": "debit_rub()", "cid": "19"}, {"id": "admin_accounts_credit_adjust_rub", "label": "credit_adjust_rub()", "cid": "19"}, {"id": "admin_accounts_moneyfield", "label": "MoneyField", "cid": "2"}, {"id": "admin_accounts_balance_buh", "label": "balance_buh()", "cid": "19"}, {"id": "admin_accounts_balance_adjust", "label": "balance_adjust()", "cid": "19"}, {"id": "admin_accounts_money", "label": "_money()", "cid": "19"}, {"id": "billing_models_init_py", "label": "__init__.py", "cid": "2"}, {"id": "decimal", "label": "decimal", "cid": ""}, {"id": "django_db", "label": "django_db", "cid": ""}, {"id": "admin_accounts_rationale_1", "label": "Модель лицевых счётов — конвертирована из admin/abstract_models.py (AdminAccount", "cid": "19"}, {"id": "admin_accounts_moneyformfield", "label": "MoneyFormField", "cid": "19"}, {"id": "admin_accounts_meta", "label": "Meta", "cid": "19"}, {"id": "admin_accounts_balance", "label": "balance()", "cid": "19"}, {"id": "admin_accounts_ostatok_rub", "label": "ostatok_rub()", "cid": "19"}, {"id": "django", "label": "django", "cid": ""}]}];
+const NODES = [{"id": "admin_accounts_balance", "label": "balance()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\admin_accounts.py", "short_path": "models/admin_accounts.py", "source_location": "L126", "degree": 1, "neighbors": [{"id": "billing_models_admin_accounts_py", "label": "admin_accounts.py", "cid": "19"}]}, {"id": "admin_accounts_balance_adjust", "label": "balance_adjust()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\admin_accounts.py", "short_path": "models/admin_accounts.py", "source_location": "L131", "degree": 1, "neighbors": [{"id": "billing_models_admin_accounts_py", "label": "admin_accounts.py", "cid": "19"}]}, {"id": "admin_accounts_balance_buh", "label": "balance_buh()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\admin_accounts.py", "short_path": "models/admin_accounts.py", "source_location": "L121", "degree": 1, "neighbors": [{"id": "billing_models_admin_accounts_py", "label": "admin_accounts.py", "cid": "19"}]}, {"id": "admin_accounts_credit_adjust_rub", "label": "credit_adjust_rub()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\admin_accounts.py", "short_path": "models/admin_accounts.py", "source_location": "L117", "degree": 2, "neighbors": [{"id": "admin_accounts_money", "label": "_money()", "cid": "19"}, {"id": "billing_models_admin_accounts_py", "label": "admin_accounts.py", "cid": "19"}]}, {"id": "admin_accounts_credit_rub", "label": "credit_rub()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\admin_accounts.py", "short_path": "models/admin_accounts.py", "source_location": "L113", "degree": 2, "neighbors": [{"id": "admin_accounts_money", "label": "_money()", "cid": "19"}, {"id": "billing_models_admin_accounts_py", "label": "admin_accounts.py", "cid": "19"}]}, {"id": "admin_accounts_debit_rub", "label": "debit_rub()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\admin_accounts.py", "short_path": "models/admin_accounts.py", "source_location": "L109", "degree": 2, "neighbors": [{"id": "admin_accounts_money", "label": "_money()", "cid": "19"}, {"id": "billing_models_admin_accounts_py", "label": "admin_accounts.py", "cid": "19"}]}, {"id": "admin_accounts_meta", "label": "Meta", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\admin_accounts.py", "short_path": "models/admin_accounts.py", "source_location": "L93", "degree": 1, "neighbors": [{"id": "billing_models_admin_accounts_py", "label": "admin_accounts.py", "cid": "19"}]}, {"id": "admin_accounts_money", "label": "_money()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\admin_accounts.py", "short_path": "models/admin_accounts.py", "source_location": "L99", "degree": 5, "neighbors": [{"id": "admin_accounts_debit_rub", "label": "debit_rub()", "cid": "19"}, {"id": "admin_accounts_ostatok_rub", "label": "ostatok_rub()", "cid": "19"}, {"id": "billing_models_admin_accounts_py", "label": "admin_accounts.py", "cid": "19"}, {"id": "admin_accounts_credit_adjust_rub", "label": "credit_adjust_rub()", "cid": "19"}, {"id": "admin_accounts_credit_rub", "label": "credit_rub()", "cid": "19"}]}, {"id": "admin_accounts_moneyformfield", "label": "MoneyFormField", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\admin_accounts.py", "short_path": "models/admin_accounts.py", "source_location": "L13", "degree": 4, "neighbors": [{"id": "admin_accounts_rationale_14", "label": "Form field that displays DB money (×10^10) as human rubles.", "cid": "19"}, {"id": "admin_accounts_moneyformfield_clean", "label": ".clean()", "cid": "19"}, {"id": "admin_accounts_moneyformfield_prepare_value", "label": ".prepare_value()", "cid": "19"}, {"id": "billing_models_admin_accounts_py", "label": "admin_accounts.py", "cid": "19"}]}, {"id": "admin_accounts_moneyformfield_clean", "label": ".clean()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\admin_accounts.py", "short_path": "models/admin_accounts.py", "source_location": "L26", "degree": 1, "neighbors": [{"id": "admin_accounts_moneyformfield", "label": "MoneyFormField", "cid": "19"}]}, {"id": "admin_accounts_moneyformfield_prepare_value", "label": ".prepare_value()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\admin_accounts.py", "short_path": "models/admin_accounts.py", "source_location": "L16", "degree": 1, "neighbors": [{"id": "admin_accounts_moneyformfield", "label": "MoneyFormField", "cid": "19"}]}, {"id": "admin_accounts_ostatok_rub", "label": "ostatok_rub()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\admin_accounts.py", "short_path": "models/admin_accounts.py", "source_location": "L105", "degree": 2, "neighbors": [{"id": "admin_accounts_money", "label": "_money()", "cid": "19"}, {"id": "billing_models_admin_accounts_py", "label": "admin_accounts.py", "cid": "19"}]}, {"id": "admin_accounts_rationale_1", "label": "Модель лицевых счётов — конвертирована из admin/abstract_models.py (AdminAccount", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\admin_accounts.py", "short_path": "models/admin_accounts.py", "source_location": "L1", "degree": 1, "neighbors": [{"id": "billing_models_admin_accounts_py", "label": "admin_accounts.py", "cid": "19"}]}, {"id": "admin_accounts_rationale_14", "label": "Form field that displays DB money (×10^10) as human rubles.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\admin_accounts.py", "short_path": "models/admin_accounts.py", "source_location": "L14", "degree": 1, "neighbors": [{"id": "admin_accounts_moneyformfield", "label": "MoneyFormField", "cid": "19"}]}, {"id": "billing_models_admin_accounts_py", "label": "admin_accounts.py", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\billing\\models\\admin_accounts.py", "short_path": "models/admin_accounts.py", "source_location": "L1", "degree": 18, "neighbors": [{"id": "admin_accounts_meta", "label": "Meta", "cid": "19"}, {"id": "admin_accounts_adminaccounts", "label": "AdminAccounts", "cid": "3"}, {"id": "decimal", "label": "decimal", "cid": ""}, {"id": "admin_accounts_money", "label": "_money()", "cid": "19"}, {"id": "admin_accounts_debit_rub", "label": "debit_rub()", "cid": "19"}, {"id": "admin_accounts_ostatok_rub", "label": "ostatok_rub()", "cid": "19"}, {"id": "admin_accounts_moneyformfield", "label": "MoneyFormField", "cid": "19"}, {"id": "admin_accounts_credit_adjust_rub", "label": "credit_adjust_rub()", "cid": "19"}, {"id": "admin_accounts_balance", "label": "balance()", "cid": "19"}, {"id": "billing_models_init_py", "label": "__init__.py", "cid": "2"}, {"id": "admin_accounts_rationale_1", "label": "Модель лицевых счётов — конвертирована из admin/abstract_models.py (AdminAccount", "cid": "19"}, {"id": "django_db", "label": "django_db", "cid": ""}, {"id": "admin_accounts_balance_adjust", "label": "balance_adjust()", "cid": "19"}, {"id": "django", "label": "django", "cid": ""}, {"id": "admin_accounts_balance_buh", "label": "balance_buh()", "cid": "19"}]}];
 const RELATED = [{"cid": "2", "label": "Финансы и деньги", "color": "#e15759", "count": 2, "icon": "credit-card"}, {"cid": "3", "label": "Поиск абонентов", "color": "#76b7b2", "count": 1, "icon": "search"}];
 
 // Render related communities
@@ -494,29 +500,82 @@ document.getElementById('nodeSearch').addEventListener('input', e => {
   searchTimer2 = setTimeout(render, 100);
 });
 
+// ── Helpers: укоротить путь файла + сгенерить чел.-понятное описание ────
+function trimPath(p) {
+  if (!p) return '—';
+  // Нормализуем к /
+  const u = String(p).replace(/\\/g, '/');
+  // Срезаем общий префикс до /carbon_modern/ или /app/
+  let i = u.lastIndexOf('/carbon_modern/');
+  if (i >= 0) return u.slice(i + '/carbon_modern/'.length);
+  i = u.lastIndexOf('/app/');
+  if (i >= 0) return u.slice(i + '/app/'.length);
+  return u;
+}
+function describeNode(n) {
+  // По file_type + label / suffix даём короткое чел.-описание на русском
+  const ft = n.file_type || 'code';
+  const lbl = n.label || '';
+  if (ft === 'rationale') return 'Архитектурное решение или обоснование подхода.';
+  if (ft === 'document')  return 'Документ или комментарий к коду.';
+  // Для code — пытаемся определить тип сущности по имени
+  // Длинные подписи (>=40 симв) выглядят как уже сгенерённые описания — возвращаем как есть
+  if (lbl.length >= 40 && /[\.,—:!?]/.test(lbl)) return lbl;
+  // Файлы (расширение)
+  if (/\.py$/.test(lbl)) return 'Python-модуль (исходный файл).';
+  if (/\.html$/.test(lbl)) return 'Django-шаблон HTML.';
+  if (/\.(js|ts)$/.test(lbl)) return 'Скрипт фронтенда.';
+  if (/\.(css|scss)$/.test(lbl)) return 'Стили оформления.';
+  if (/\.(md|rst|txt)$/.test(lbl)) return 'Текстовая документация.';
+  // Классы по суффиксу
+  const suffix = (re) => re.test(lbl);
+  const base = lbl.replace(/^_+|_+$/g, '');
+  if (suffix(/View$/))         return 'Представление Django (обработчик HTTP-запроса).';
+  if (suffix(/Form$/))         return 'Форма ввода / валидации данных.';
+  if (suffix(/Serializer$/))   return 'DRF-сериализатор для REST API.';
+  if (suffix(/Mixin$/))        return 'Миксин — переиспользуемый набор полей/методов.';
+  if (suffix(/Manager$/))      return 'Менеджер модели Django (custom QuerySet).';
+  if (suffix(/Queryset$|QuerySet$/)) return 'Кастомный QuerySet модели.';
+  if (suffix(/Service$/))      return 'Сервисный слой бизнес-логики.';
+  if (suffix(/Task$/))         return 'Celery-задача (фоновое выполнение).';
+  if (suffix(/Handler$/))      return 'Обработчик события или сигнала.';
+  if (suffix(/Backend$/))      return 'Бэкенд-адаптер (auth, storage и т.п.).';
+  if (suffix(/Widget$/))       return 'UI-виджет формы или шаблона.';
+  if (suffix(/Field$/))        return 'Кастомное поле модели или формы.';
+  if (suffix(/Filter$/))       return 'Фильтр (django-filter / queryset filter).';
+  if (suffix(/Adapter$/))      return 'Адаптер интеграции со сторонним сервисом.';
+  if (suffix(/Client$/))       return 'HTTP-клиент к внешнему API.';
+  if (suffix(/Helper$|Utils?$/)) return 'Утилиты — вспомогательные функции.';
+  if (suffix(/Config$/))       return 'Конфигурация приложения / модуля.';
+  if (suffix(/Middleware$/))   return 'Django middleware (обработка request/response).';
+  if (suffix(/Command$/))      return 'Management-команда manage.py.';
+  if (suffix(/Test|Tests$/))   return 'Юнит-тесты или тестовые сценарии.';
+  if (suffix(/Migration$/))    return 'Миграция схемы БД.';
+  if (suffix(/Webhook$/))      return 'Обработчик входящего webhook.';
+  if (suffix(/Modal$|Dialog$/)) return 'Модальное окно UI.';
+  if (suffix(/^[A-Z][a-z]+[A-Z]/) && /^[A-Z]/.test(lbl)) {
+    return 'Класс модели или сущность Django ORM.';
+  }
+  if (/^[a-z_]+$/.test(lbl) && lbl.includes('_')) return 'Функция или модуль (snake_case).';
+  return '—';
+}
+
 // Modal
 function openModal(n) {
   document.getElementById('modalTitle').textContent = n.label;
+  const desc = describeNode(n);
+  const path = trimPath(n.source_file || '');
   document.getElementById('modalBody').innerHTML = `
-    <div class="modal-field">
-      <div class="mf-label">ID</div>
-      <div class="mf-val">${escHtml(n.id)}</div>
+    ${desc && desc !== '—' ? `<div class="modal-desc">${escHtml(desc)}</div>` : ''}
+    <div class="modal-meta-row">
+      <div class="mm-chip"><span class="mm-key">ID</span><span class="mm-val">${escHtml(n.id)}</span></div>
+      <div class="mm-chip"><span class="mm-key">Тип</span>${badgeHtml(n.file_type)}</div>
+      <div class="mm-chip"><span class="mm-key">Позиция</span><span class="mm-val">${escHtml(n.source_location || '—')}</span></div>
+      <div class="mm-chip"><span class="mm-key">Рёбер</span><span class="mm-val degree-num">${n.degree}</span></div>
     </div>
     <div class="modal-field">
-      <div class="mf-label">Тип</div>
-      <div>${badgeHtml(n.file_type)}</div>
-    </div>
-    <div class="modal-field">
-      <div class="mf-label">Файл (полный путь)</div>
-      <div class="mf-val">${escHtml(n.source_file || '—')}</div>
-    </div>
-    <div class="modal-field">
-      <div class="mf-label">Позиция</div>
-      <div class="mf-val">${escHtml(n.source_location || '—')}</div>
-    </div>
-    <div class="modal-field">
-      <div class="mf-label">Степень (рёбер)</div>
-      <div class="mf-val degree-num">${n.degree}</div>
+      <div class="mf-label">Файл</div>
+      <div class="mf-val">${escHtml(path)}</div>
     </div>
   `;
   const nbrs = n.neighbors || [];
