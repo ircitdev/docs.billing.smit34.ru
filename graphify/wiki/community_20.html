@@ -174,31 +174,42 @@ tbody tr:hover { background: var(--bg3); }
 }
 .tab-content[hidden] { display: none; }
 
-/* Schema tab — vis-network container + UI */
-.schema-toolbar {
-  display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap;
-  align-items: center; font-size: 12px; color: var(--text2);
+/* Schema tab — graph layout: graph слева, sidebar справа */
+.schema-layout {
+  display: flex; gap: 0;
+  height: 720px; max-height: calc(100vh - 200px); min-height: 540px;
+  background: var(--bg2);
+  border: 1px solid var(--border); border-radius: 8px;
+  overflow: hidden;
 }
-.schema-toolbar button {
-  background: var(--bg2); border: 1px solid var(--border); color: var(--text);
-  padding: 5px 12px; border-radius: 6px; font-size: 12px;
-  cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
-  transition: background .15s, border-color .15s;
+.schema-graph-pane {
+  flex: 1; min-width: 0; position: relative;
+  background: var(--bg3);
 }
-.schema-toolbar button:hover { background: var(--bg3); border-color: var(--primary); }
-.schema-toolbar button.active { background: var(--primary); color: #fff; border-color: var(--primary); }
-.schema-toolbar .schema-search {
-  flex: 1; min-width: 180px; max-width: 320px;
+.schema-toolbar-overlay {
+  position: absolute; top: 12px; left: 12px; z-index: 10;
+  display: flex; gap: 6px; flex-wrap: wrap; align-items: center;
+}
+.schema-toolbar-overlay button {
   background: var(--bg2); border: 1px solid var(--border); color: var(--text);
   padding: 5px 10px; border-radius: 6px; font-size: 12px;
+  cursor: pointer; display: inline-flex; align-items: center; gap: 5px;
+  transition: background .15s, border-color .15s;
+  box-shadow: 0 1px 4px rgba(0,0,0,.15);
 }
-.schema-toolbar .schema-search:focus { outline: none; border-color: var(--primary); }
-.schema-toolbar .schema-hint { color: var(--text3); margin-left: auto; font-size: 11px; }
+.schema-toolbar-overlay button:hover { background: var(--bg3); border-color: var(--primary); }
+.schema-toolbar-overlay button.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+.schema-graph-stats {
+  position: absolute; bottom: 10px; left: 12px; z-index: 10;
+  font-size: 11px; color: var(--text3);
+  background: var(--bg2); border: 1px solid var(--border);
+  padding: 3px 9px; border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.15);
+}
 
 #visGraph {
-  width: 100%; height: 640px;
-  background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
-  overflow: hidden; position: relative;
+  width: 100%; height: 100%;
 }
 #visGraph .vis-loading {
   position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
@@ -214,25 +225,88 @@ tbody tr:hover { background: var(--bg3); }
   #visGraph .vis-loading::before { animation: none; }
 }
 
-#visInfo {
-  margin-top: 14px; padding: 12px 14px;
-  background: var(--bg2); border: 1px solid var(--border); border-radius: 8px;
-  font-size: 13px; min-height: 60px;
+/* Right sidebar */
+.schema-sidebar {
+  width: 280px; flex-shrink: 0;
+  background: var(--bg2); border-left: 1px solid var(--border);
+  display: flex; flex-direction: column; overflow: hidden;
 }
-#visInfo .vi-empty { color: var(--text3); }
-#visInfo .vi-title { font-weight: 600; margin-bottom: 6px; }
-#visInfo .vi-meta { color: var(--text2); font-size: 12px; margin-bottom: 4px; font-family: monospace; word-break: break-all; }
-#visInfo .vi-neighbors { color: var(--text2); font-size: 12px; }
-#visInfo .vi-neighbors a {
-  color: var(--primary-l); text-decoration: none; cursor: pointer;
-  margin-right: 4px; padding: 1px 6px; border-radius: 3px;
-  background: var(--bg3); display: inline-block; margin-bottom: 4px;
-  border: 1px solid var(--border);
+.schema-search-wrap {
+  padding: 12px; border-bottom: 1px solid var(--border);
 }
-#visInfo .vi-neighbors a:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+.schema-search {
+  width: 100%; box-sizing: border-box;
+  background: var(--bg3); border: 1px solid var(--border); color: var(--text);
+  padding: 7px 10px; border-radius: 6px; font-size: 13px; outline: none;
+}
+.schema-search:focus { border-color: var(--primary); }
+.schema-search-results {
+  max-height: 160px; overflow-y: auto; padding: 4px 12px;
+  border-bottom: 1px solid var(--border); display: none;
+  font-size: 12px;
+}
+.schema-search-results.visible { display: block; }
+.schema-search-results .ssi {
+  padding: 4px 6px; cursor: pointer; border-radius: 4px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  color: var(--text2);
+}
+.schema-search-results .ssi:hover { background: var(--bg3); color: var(--primary-l); }
 
-@media (max-width: 680px) {
-  #visGraph { height: 480px; }
+.schema-info-panel {
+  padding: 14px; border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.schema-info-panel .si-empty { color: var(--text3); font-style: italic; font-size: 12px; }
+.schema-info-panel .si-section-title {
+  font-size: 11px; color: var(--text3); margin-bottom: 7px;
+  text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;
+}
+.schema-info-panel .si-name { font-weight: 600; color: var(--text); margin-bottom: 4px; word-break: break-word; }
+.schema-info-panel .si-alt { color: var(--text2); font-size: 12px; margin-bottom: 8px; }
+.schema-info-panel .si-field { margin: 4px 0; font-size: 12px; color: var(--text2); }
+.schema-info-panel .si-field b { color: var(--text); font-weight: 500; }
+.schema-info-panel .si-field code {
+  background: var(--bg3); padding: 1px 5px; border-radius: 3px;
+  font-size: 11px; color: var(--text); word-break: break-all;
+}
+.schema-info-panel .si-neighbors { margin-top: 10px; max-height: 200px; overflow-y: auto; }
+.schema-info-panel .si-nb-item {
+  display: block; padding: 4px 7px; margin: 2px 0;
+  border-radius: 4px; cursor: pointer; font-size: 12px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  border-left: 3px solid var(--border);
+  color: var(--text2);
+  text-decoration: none;
+}
+.schema-info-panel .si-nb-item:hover {
+  background: var(--bg3); color: var(--primary-l);
+  border-left-color: var(--primary);
+}
+
+.schema-legend {
+  flex: 1; overflow-y: auto; padding: 12px;
+}
+.schema-legend .si-section-title { margin-bottom: 8px; }
+.schema-legend .leg-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 4px 0; font-size: 12px; color: var(--text2);
+}
+.schema-legend .leg-dot {
+  width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+}
+
+.schema-footer-count {
+  padding: 9px 12px; font-size: 11px; color: var(--text3);
+  border-top: 1px solid var(--border); background: var(--bg3);
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .schema-layout { flex-direction: column; height: auto; max-height: none; }
+  .schema-graph-pane { height: 480px; flex: none; }
+  .schema-sidebar { width: 100%; border-left: none; border-top: 1px solid var(--border); }
+  .schema-legend { max-height: 200px; }
 }
 
 /* Modal */
@@ -508,15 +582,38 @@ body { padding-top: var(--header-height); }
 
   <!-- TAB: Схема (lazy-loaded) -->
   <div class="tab-content" data-content="schema" hidden>
-    <div class="schema-toolbar">
-      <input type="search" class="schema-search" id="schemaSearch" placeholder="Найти ноду на схеме...">
-      <button id="schemaResetBtn" title="Сбросить позиции и зум"><i class="ti ti-refresh"></i> Сброс</button>
-      <button id="schemaPhysicsBtn" class="active" title="Включить/выключить физическую симуляцию"><i class="ti ti-atom-2"></i> Физика</button>
-      <button id="schemaLabelsBtn" title="Показать/скрыть подписи"><i class="ti ti-text-recognition"></i> Подписи</button>
-      <span class="schema-hint">Клик — детали · Колесо — зум · Drag — перемещение</span>
+    <div class="schema-layout">
+      <!-- Graph pane слева -->
+      <div class="schema-graph-pane">
+        <div class="schema-toolbar-overlay">
+          <button id="schemaResetBtn" title="Сбросить позиции и зум"><i class="ti ti-refresh"></i> Сброс</button>
+          <button id="schemaPhysicsBtn" class="active" title="Включить/выключить физику"><i class="ti ti-atom-2"></i> Физика</button>
+          <button id="schemaLabelsBtn" class="active" title="Показать/скрыть подписи"><i class="ti ti-text-recognition"></i> Подписи</button>
+        </div>
+        <div id="visGraph"><div class="vis-loading">Загрузка схемы…</div></div>
+        <div class="schema-graph-stats" id="schemaStatsBadge">— нод · — связей</div>
+      </div>
+
+      <!-- Sidebar справа -->
+      <aside class="schema-sidebar">
+        <div class="schema-search-wrap">
+          <input type="search" class="schema-search" id="schemaSearch" placeholder="Поиск ноды...">
+        </div>
+        <div class="schema-search-results" id="schemaSearchResults"></div>
+
+        <div class="schema-info-panel" id="schemaInfoPanel">
+          <div class="si-section-title">О ноде</div>
+          <div class="si-empty">Кликните по узлу графа, чтобы увидеть детали.</div>
+        </div>
+
+        <div class="schema-legend" id="schemaLegend">
+          <div class="si-section-title">Связанные модули</div>
+          <div id="schemaLegendList" class="si-empty" style="font-style:italic">Загружается…</div>
+        </div>
+
+        <div class="schema-footer-count" id="schemaFooterCount">— нод · — связей</div>
+      </aside>
     </div>
-    <div id="visGraph"><div class="vis-loading">Загрузка схемы…</div></div>
-    <div id="visInfo"><span class="vi-empty">Кликните по ноде, чтобы увидеть детали и соседей.</span></div>
   </div>
 </div>
 
@@ -584,7 +681,7 @@ document.querySelectorAll('.dtn-theme-btn').forEach(btn => {
 })();
 
 
-const NODES = [{"id": "mobile_api_views_webhooks_py", "label": "webhooks.py", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L1", "degree": 10, "neighbors": [{"id": "webhooks_notify_agent_assigned", "label": "_notify_agent_assigned()", "cid": "20"}, {"id": "webhooks_log_ticket_closed", "label": "_log_ticket_closed()", "cid": "20"}, {"id": "webhooks_send_push_for_ticket_reply", "label": "_send_push_for_ticket_reply()", "cid": "20"}, {"id": "logging", "label": "logging", "cid": ""}, {"id": "webhooks_rationale_1", "label": "Webhook handlers for external service callbacks.", "cid": "20"}, {"id": "json", "label": "json", "cid": ""}, {"id": "django_views_decorators_http", "label": "django_views_decorators_http", "cid": ""}, {"id": "django_views_decorators_csrf", "label": "django_views_decorators_csrf", "cid": ""}, {"id": "webhooks_freescout_webhook", "label": "freescout_webhook()", "cid": "20"}, {"id": "django_http", "label": "django_http", "cid": ""}]}, {"id": "webhooks_freescout_webhook", "label": "freescout_webhook()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L14", "degree": 6, "neighbors": [{"id": "webhooks_notify_agent_assigned", "label": "_notify_agent_assigned()", "cid": "20"}, {"id": "webhooks_log_ticket_closed", "label": "_log_ticket_closed()", "cid": "20"}, {"id": "webhooks_send_push_for_ticket_reply", "label": "_send_push_for_ticket_reply()", "cid": "20"}, {"id": "mobile_api_views_webhooks_py", "label": "webhooks.py", "cid": "20"}, {"id": "usluga_uslugachangeview_get", "label": ".get()", "cid": "1"}, {"id": "webhooks_rationale_15", "label": "FreeScout webhook — handles various conversation events.      Configure in FreeS", "cid": "20"}]}, {"id": "webhooks_log_ticket_closed", "label": "_log_ticket_closed()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L116", "degree": 4, "neighbors": [{"id": "webhooks_freescout_webhook", "label": "freescout_webhook()", "cid": "20"}, {"id": "webhooks_rationale_117", "label": "Log ticket closure to abonent activity (AuditOperations).", "cid": "20"}, {"id": "form_searchqueryset_filter", "label": ".filter()", "cid": "0"}, {"id": "mobile_api_views_webhooks_py", "label": "webhooks.py", "cid": "20"}]}, {"id": "webhooks_notify_agent_assigned", "label": "_notify_agent_assigned()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L75", "degree": 5, "neighbors": [{"id": "usluga_uslugachangeview_post", "label": ".post()", "cid": "1"}, {"id": "mobile_api_views_webhooks_py", "label": "webhooks.py", "cid": "20"}, {"id": "webhooks_freescout_webhook", "label": "freescout_webhook()", "cid": "20"}, {"id": "webhooks_rationale_76", "label": "Notify operator via Telegram when ticket is assigned to them.", "cid": "20"}, {"id": "form_searchqueryset_filter", "label": ".filter()", "cid": "0"}]}, {"id": "webhooks_rationale_1", "label": "Webhook handlers for external service callbacks.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L1", "degree": 2, "neighbors": [{"id": "stubs_auditoperations", "label": "AuditOperations", "cid": "3"}, {"id": "mobile_api_views_webhooks_py", "label": "webhooks.py", "cid": "20"}]}, {"id": "webhooks_rationale_117", "label": "Log ticket closure to abonent activity (AuditOperations).", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L117", "degree": 2, "neighbors": [{"id": "webhooks_log_ticket_closed", "label": "_log_ticket_closed()", "cid": "20"}, {"id": "stubs_auditoperations", "label": "AuditOperations", "cid": "3"}]}, {"id": "webhooks_rationale_15", "label": "FreeScout webhook — handles various conversation events.      Configure in FreeS", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L15", "degree": 2, "neighbors": [{"id": "webhooks_freescout_webhook", "label": "freescout_webhook()", "cid": "20"}, {"id": "stubs_auditoperations", "label": "AuditOperations", "cid": "3"}]}, {"id": "webhooks_rationale_57", "label": "Send push notification to abonent when support replies.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L57", "degree": 2, "neighbors": [{"id": "webhooks_send_push_for_ticket_reply", "label": "_send_push_for_ticket_reply()", "cid": "20"}, {"id": "stubs_auditoperations", "label": "AuditOperations", "cid": "3"}]}, {"id": "webhooks_rationale_76", "label": "Notify operator via Telegram when ticket is assigned to them.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L76", "degree": 2, "neighbors": [{"id": "webhooks_notify_agent_assigned", "label": "_notify_agent_assigned()", "cid": "20"}, {"id": "stubs_auditoperations", "label": "AuditOperations", "cid": "3"}]}, {"id": "webhooks_send_push_for_ticket_reply", "label": "_send_push_for_ticket_reply()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L56", "degree": 4, "neighbors": [{"id": "webhooks_freescout_webhook", "label": "freescout_webhook()", "cid": "20"}, {"id": "form_searchqueryset_filter", "label": ".filter()", "cid": "0"}, {"id": "webhooks_rationale_57", "label": "Send push notification to abonent when support replies.", "cid": "20"}, {"id": "mobile_api_views_webhooks_py", "label": "webhooks.py", "cid": "20"}]}];
+const NODES = [{"id": "mobile_api_views_webhooks_py", "label": "webhooks.py", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L1", "degree": 10, "neighbors": [{"id": "webhooks_notify_agent_assigned", "label": "_notify_agent_assigned()", "cid": "20"}, {"id": "django_views_decorators_http", "label": "django_views_decorators_http", "cid": ""}, {"id": "webhooks_freescout_webhook", "label": "freescout_webhook()", "cid": "20"}, {"id": "webhooks_log_ticket_closed", "label": "_log_ticket_closed()", "cid": "20"}, {"id": "django_http", "label": "django_http", "cid": ""}, {"id": "webhooks_rationale_1", "label": "Webhook handlers for external service callbacks.", "cid": "20"}, {"id": "webhooks_send_push_for_ticket_reply", "label": "_send_push_for_ticket_reply()", "cid": "20"}, {"id": "django_views_decorators_csrf", "label": "django_views_decorators_csrf", "cid": ""}, {"id": "json", "label": "json", "cid": ""}, {"id": "logging", "label": "logging", "cid": ""}]}, {"id": "webhooks_freescout_webhook", "label": "freescout_webhook()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L14", "degree": 6, "neighbors": [{"id": "mobile_api_views_webhooks_py", "label": "webhooks.py", "cid": "20"}, {"id": "webhooks_notify_agent_assigned", "label": "_notify_agent_assigned()", "cid": "20"}, {"id": "webhooks_log_ticket_closed", "label": "_log_ticket_closed()", "cid": "20"}, {"id": "webhooks_rationale_15", "label": "FreeScout webhook — handles various conversation events.      Configure in FreeS", "cid": "20"}, {"id": "usluga_uslugachangeview_get", "label": ".get()", "cid": "1"}, {"id": "webhooks_send_push_for_ticket_reply", "label": "_send_push_for_ticket_reply()", "cid": "20"}]}, {"id": "webhooks_log_ticket_closed", "label": "_log_ticket_closed()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L116", "degree": 4, "neighbors": [{"id": "mobile_api_views_webhooks_py", "label": "webhooks.py", "cid": "20"}, {"id": "form_searchqueryset_filter", "label": ".filter()", "cid": "0"}, {"id": "webhooks_freescout_webhook", "label": "freescout_webhook()", "cid": "20"}, {"id": "webhooks_rationale_117", "label": "Log ticket closure to abonent activity (AuditOperations).", "cid": "20"}]}, {"id": "webhooks_notify_agent_assigned", "label": "_notify_agent_assigned()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L75", "degree": 5, "neighbors": [{"id": "mobile_api_views_webhooks_py", "label": "webhooks.py", "cid": "20"}, {"id": "webhooks_freescout_webhook", "label": "freescout_webhook()", "cid": "20"}, {"id": "webhooks_rationale_76", "label": "Notify operator via Telegram when ticket is assigned to them.", "cid": "20"}, {"id": "usluga_uslugachangeview_post", "label": ".post()", "cid": "1"}, {"id": "form_searchqueryset_filter", "label": ".filter()", "cid": "0"}]}, {"id": "webhooks_rationale_1", "label": "Webhook handlers for external service callbacks.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L1", "degree": 2, "neighbors": [{"id": "mobile_api_views_webhooks_py", "label": "webhooks.py", "cid": "20"}, {"id": "stubs_auditoperations", "label": "AuditOperations", "cid": "3"}]}, {"id": "webhooks_rationale_117", "label": "Log ticket closure to abonent activity (AuditOperations).", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L117", "degree": 2, "neighbors": [{"id": "stubs_auditoperations", "label": "AuditOperations", "cid": "3"}, {"id": "webhooks_log_ticket_closed", "label": "_log_ticket_closed()", "cid": "20"}]}, {"id": "webhooks_rationale_15", "label": "FreeScout webhook — handles various conversation events.      Configure in FreeS", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L15", "degree": 2, "neighbors": [{"id": "stubs_auditoperations", "label": "AuditOperations", "cid": "3"}, {"id": "webhooks_freescout_webhook", "label": "freescout_webhook()", "cid": "20"}]}, {"id": "webhooks_rationale_57", "label": "Send push notification to abonent when support replies.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L57", "degree": 2, "neighbors": [{"id": "stubs_auditoperations", "label": "AuditOperations", "cid": "3"}, {"id": "webhooks_send_push_for_ticket_reply", "label": "_send_push_for_ticket_reply()", "cid": "20"}]}, {"id": "webhooks_rationale_76", "label": "Notify operator via Telegram when ticket is assigned to them.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L76", "degree": 2, "neighbors": [{"id": "stubs_auditoperations", "label": "AuditOperations", "cid": "3"}, {"id": "webhooks_notify_agent_assigned", "label": "_notify_agent_assigned()", "cid": "20"}]}, {"id": "webhooks_send_push_for_ticket_reply", "label": "_send_push_for_ticket_reply()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\webhooks.py", "short_path": "views/webhooks.py", "source_location": "L56", "degree": 4, "neighbors": [{"id": "mobile_api_views_webhooks_py", "label": "webhooks.py", "cid": "20"}, {"id": "form_searchqueryset_filter", "label": ".filter()", "cid": "0"}, {"id": "webhooks_rationale_57", "label": "Send push notification to abonent when support replies.", "cid": "20"}, {"id": "webhooks_freescout_webhook", "label": "freescout_webhook()", "cid": "20"}]}];
 const RELATED = [{"cid": "3", "label": "Поиск абонентов", "color": "#76b7b2", "count": 5, "icon": "search"}, {"cid": "0", "label": "Карточка абонента", "color": "#4e79a7", "count": 3, "icon": "user"}, {"cid": "1", "label": "Личный кабинет", "color": "#f28e2b", "count": 2, "icon": "home"}];
 
 // Render related communities
@@ -942,9 +1039,43 @@ async function loadSchema() {
     cont.innerHTML = '';
     renderSchema();
     initSchemaControls();
+    populateSidebar();
   } catch (e) {
     cont.innerHTML = '<div class="vis-loading" style="color:#dc3545">Ошибка загрузки схемы: ' + escHtml(e.message) + '</div>';
     console.error(e);
+  }
+}
+
+function populateSidebar() {
+  const stats = visGraphData.stats || {};
+  const nodesN = stats.nodes || visGraphData.nodes.length;
+  const edgesN = stats.edges || visGraphData.edges.length;
+  // Footer + overlay-badge
+  const footerEl = document.getElementById('schemaFooterCount');
+  if (footerEl) footerEl.textContent = nodesN + ' нод · ' + edgesN + ' связей';
+  const badgeEl = document.getElementById('schemaStatsBadge');
+  if (badgeEl) badgeEl.textContent = nodesN + ' нод · ' + edgesN + ' связей';
+  // Связанные модули — берём из RELATED, который уже есть в JS-окружении
+  const legendEl = document.getElementById('schemaLegendList');
+  if (legendEl) {
+    if (Array.isArray(RELATED) && RELATED.length) {
+      legendEl.innerHTML = '';
+      legendEl.classList.remove('si-empty');
+      legendEl.removeAttribute('style');
+      RELATED.slice(0, 12).forEach(r => {
+        const a = document.createElement('a');
+        a.href = 'community_' + r.cid + '.html';
+        a.className = 'leg-item';
+        a.style.color = 'var(--text2)';
+        a.style.textDecoration = 'none';
+        a.innerHTML = '<span class="leg-dot" style="background:' + r.color + '"></span>' +
+                      '<span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + escHtml(r.label) + '</span>' +
+                      '<span style="color:var(--text3);font-size:11px">' + r.count + '</span>';
+        legendEl.appendChild(a);
+      });
+    } else {
+      legendEl.textContent = 'Нет связей с другими модулями';
+    }
   }
 }
 
@@ -1003,28 +1134,35 @@ function showNodeInfo(nodeId) {
   if (!n) return;
   const conns = visGraphData.edges.filter(e => e.from === nodeId || e.to === nodeId);
   const neighbors = conns.map(e => e.from === nodeId ? e.to : e.from);
-  const neighborSet = [...new Set(neighbors)].slice(0, 30);
+  const neighborSet = [...new Set(neighbors)];
   const path = trimPath(n.source_file || '');
   const altName = humanizeName(n.label);
-  let html = '';
-  html += '<div class="vi-title">' + escHtml(n.label) +
-          (altName ? ' <span style="color:var(--text2);font-weight:400">— ' + escHtml(altName) + '</span>' : '') + '</div>';
-  html += '<div class="vi-meta">' + escHtml(path) + (n.source_location ? ' · <b>' + escHtml(n.source_location) + '</b>' : '') + '</div>';
-  html += '<div class="vi-meta">Связей: <b>' + (n.degree || conns.length) + '</b> · Тип: ' + badgeHtml(n.file_type || 'code') + '</div>';
+  const panel = document.getElementById('schemaInfoPanel');
+  let html = '<div class="si-section-title">О ноде</div>';
+  html += '<div class="si-name">' + escHtml(n.label) + '</div>';
+  if (altName) html += '<div class="si-alt">— ' + escHtml(altName) + '</div>';
+  html += '<div class="si-field">Тип: ' + badgeHtml(n.file_type || 'code') + '</div>';
+  html += '<div class="si-field">Связей: <b>' + (n.degree || conns.length) + '</b></div>';
+  if (n.source_location) html += '<div class="si-field">Позиция: <b>' + escHtml(n.source_location) + '</b></div>';
+  if (path && path !== '—') html += '<div class="si-field"><code>' + escHtml(path) + '</code></div>';
   if (neighborSet.length) {
-    html += '<div class="vi-neighbors" style="margin-top:8px"><b>Соседи (' + neighborSet.length + '):</b><br>';
-    html += neighborSet.map(nbId => {
+    html += '<div class="si-section-title" style="margin-top:14px">Соседи (' + neighborSet.length + ')</div>';
+    html += '<div class="si-neighbors">';
+    neighborSet.forEach(nbId => {
       const nb = visGraphData.nodes.find(x => x.id === nbId);
       const lbl = nb ? (humanizeName(nb.label) || nb.label) : nbId;
-      const display = lbl.length > 35 ? lbl.slice(0,35)+'…' : lbl;
-      return '<a data-jump="' + escHtml(nbId) + '" title="' + escHtml(nb ? nb.label : nbId) + '">' + escHtml(display) + '</a>';
-    }).join(' ');
+      const display = lbl.length > 38 ? lbl.slice(0,38)+'…' : lbl;
+      const color = nb && nb.color && nb.color.background ? nb.color.background : 'var(--border)';
+      html += '<span class="si-nb-item" data-jump="' + escHtml(nbId) +
+              '" style="border-left-color:' + color + '" title="' + escHtml(nb ? nb.label : nbId) + '">' +
+              escHtml(display) + '</span>';
+    });
     html += '</div>';
   }
-  document.getElementById('visInfo').innerHTML = html;
-  document.getElementById('visInfo').querySelectorAll('a[data-jump]').forEach(a => {
-    a.addEventListener('click', () => {
-      const id = a.dataset.jump;
+  panel.innerHTML = html;
+  panel.querySelectorAll('[data-jump]').forEach(el => {
+    el.addEventListener('click', () => {
+      const id = el.dataset.jump;
       visNetwork.selectNodes([id]);
       visNetwork.focus(id, { animation: { duration: 400, easingFunction: 'easeInOutQuad' }, scale: 1.2 });
       showNodeInfo(id);
@@ -1033,25 +1171,57 @@ function showNodeInfo(nodeId) {
 }
 
 function clearNodeInfo() {
-  document.getElementById('visInfo').innerHTML = '<span class="vi-empty">Кликните по ноде, чтобы увидеть детали и соседей.</span>';
+  document.getElementById('schemaInfoPanel').innerHTML =
+    '<div class="si-section-title">О ноде</div>' +
+    '<div class="si-empty">Кликните по узлу графа, чтобы увидеть детали.</div>';
 }
 
 function initSchemaControls() {
-  // Search
+  // Search with dropdown results
   const search = document.getElementById('schemaSearch');
-  if (search) {
+  const results = document.getElementById('schemaSearchResults');
+  if (search && results) {
     search.addEventListener('input', () => {
       const q = search.value.trim().toLowerCase();
-      if (!q) { visNetwork.unselectAll(); return; }
+      if (!q) {
+        results.classList.remove('visible');
+        results.innerHTML = '';
+        visNetwork.unselectAll();
+        return;
+      }
       const matches = visGraphData.nodes.filter(n =>
         (n.label || '').toLowerCase().includes(q) ||
         (n.id || '').toLowerCase().includes(q)
-      );
-      if (!matches.length) return;
+      ).slice(0, 30);
+      if (!matches.length) {
+        results.innerHTML = '<div class="ssi" style="color:var(--text3)">Ничего не найдено</div>';
+        results.classList.add('visible');
+        return;
+      }
+      results.innerHTML = matches.map(n => {
+        const alt = humanizeName(n.label);
+        const lbl = alt || n.label;
+        const display = lbl.length > 32 ? lbl.slice(0,32)+'…' : lbl;
+        return '<div class="ssi" data-jump="' + escHtml(n.id) +
+               '" title="' + escHtml(n.label) + '">' + escHtml(display) + '</div>';
+      }).join('');
+      results.classList.add('visible');
+      results.querySelectorAll('[data-jump]').forEach(el => {
+        el.addEventListener('click', () => {
+          const id = el.dataset.jump;
+          visNetwork.selectNodes([id]);
+          visNetwork.focus(id, { animation: true, scale: 1.4 });
+          showNodeInfo(id);
+          search.value = '';
+          results.classList.remove('visible');
+        });
+      });
       visNetwork.selectNodes(matches.map(m => m.id));
-      if (matches.length === 1) {
-        visNetwork.focus(matches[0].id, { animation: true, scale: 1.3 });
-        showNodeInfo(matches[0].id);
+    });
+    // Close dropdown on outside click
+    document.addEventListener('click', e => {
+      if (!search.contains(e.target) && !results.contains(e.target)) {
+        results.classList.remove('visible');
       }
     });
   }
@@ -1068,11 +1238,11 @@ function initSchemaControls() {
     physBtn.classList.toggle('active', on);
     visNetwork.setOptions({ physics: { enabled: on } });
   });
-  // Labels toggle
+  // Labels toggle (active = подписи видны)
   let labelsOn = true;
   document.getElementById('schemaLabelsBtn').addEventListener('click', () => {
     labelsOn = !labelsOn;
-    document.getElementById('schemaLabelsBtn').classList.toggle('active', !labelsOn);
+    document.getElementById('schemaLabelsBtn').classList.toggle('active', labelsOn);
     const updates = visGraphData.nodes.map(n => ({
       id: n.id,
       font: { size: labelsOn ? 11 : 0, color: getThemeColors().label }
