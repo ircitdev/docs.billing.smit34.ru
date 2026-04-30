@@ -3980,7 +3980,10 @@ python manage.py fix_sorm_reports --no-create  # только обновить S
     <ul>
       <li><a href="#modal-finops">13.1. Финансовые операции — список и модал создания</a></li>
       <li><a href="#modal-users">13.2. Учётная запись — модал с вкладками</a>
-        <ul><li><a href="#create-address">13.2а. Быстрое создание адреса</a></li></ul>
+        <ul>
+          <li><a href="#create-address">13.2а. Быстрое создание адреса</a></li>
+          <li><a href="#users-inline-actions">13.2.1. Таблица «Аккаунты» — inline-операции (build 373-374)</a></li>
+        </ul>
       </li>
       <li><a href="#modal-service-edit">13.3. Редактирование услуги</a></li>
       <li><a href="#modal-service-add">13.4. Добавление услуги</a></li>
@@ -4032,6 +4035,114 @@ python manage.py fix_sorm_reports --no-create  # только обновить S
     <li><code>POST /admin/users_api/{id}/</code> с <code>_delete=1</code> — удаление</li>
     <li><code>POST /admin/users_api/</code> — создание (с <code>abonent_id</code>)</li>
     <li><code>GET /admin/users_radius/{id}/</code> — последние RADIUS-сессии</li>
+  </ul>
+
+  <!-- 13.2.1. Inline-операции в таблице (build 373-374) -->
+  <h3 id="users-inline-actions">13.2.1. Таблица «Аккаунты» — inline-операции (build 373-374)</h3>
+  <p>В таблице учётных записей в карточке абонента доступны быстрые операции без открытия полной модалки. Actions-колонка содержит <strong>6 кнопок</strong>:</p>
+
+  <table class="param-table">
+    <thead><tr><th>Иконка</th><th>Действие</th><th>Условие</th><th>Build</th></tr></thead>
+    <tbody>
+    <tr><td><i class="fas fa-pencil-alt text-primary"></i></td><td>Редактировать (модалка с 4 вкладками)</td><td>всегда</td><td>v1.5</td></tr>
+    <tr><td><i class="fas fa-plug text-warning"></i></td><td>Отсоединить (CoA Disconnect)</td><td>logged + nas</td><td>build 354</td></tr>
+    <tr><td><i class="fas fa-sync-alt text-secondary"></i></td><td>Сбросить зависшую сессию</td><td>logged</td><td>build 373 (L3-1)</td></tr>
+    <tr><td><i class="fas fa-vial text-info"></i></td><td>Тест авторизации (radtest)</td><td>всегда</td><td>build 374 (L3-2)</td></tr>
+    <tr><td><i class="fas fa-list-alt"></i></td><td>Подробнее (drawer)</td><td>всегда</td><td>build 374 (L3-3)</td></tr>
+    <tr><td><i class="fas fa-trash text-danger"></i></td><td>Удалить</td><td>всегда</td><td>v1.5</td></tr>
+    </tbody>
+  </table>
+
+  <p style="margin-top:1em">
+    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/users_inline_v373/users_table_inline_features.png"
+         alt="Таблица «Аккаунты» с MAC-иконкой, VLAN, трафиком и 6 кнопками actions"
+         style="max-width:100%; border:1px solid #ddd; border-radius:6px"/>
+  </p>
+
+  <h4 id="users-inline-pwd">Inline-редактирование пароля (build 373, L2-2)</h4>
+  <ul>
+    <li><strong>Один клик</strong> на маске <code>••••••</code> — toggle reveal (показать/скрыть текущий пароль)</li>
+    <li><strong>Двойной клик</strong> — переход в edit-mode: input + 3 кнопки:
+      <ul>
+        <li><i class="fas fa-dice"></i> — сгенерировать случайный 10-символьный пароль (а-z + 2-9, без visually-confusable)</li>
+        <li><i class="fas fa-check text-success"></i> — сохранить</li>
+        <li><i class="fas fa-times"></i> — отмена</li>
+      </ul>
+    </li>
+    <li>Keyboard: <kbd>Enter</kbd> = save, <kbd>Esc</kbd> = cancel</li>
+    <li>После save — visual feedback: фон поля <code>#d4edda</code> на 2 секунды</li>
+    <li>Endpoint: <code>POST /admin/users_api/{id}/change_psw/</code> body <code>{psw: '...'}</code> (валидация ≤64 симв.)</li>
+    <li>Audit-запись: <em>«Пароль изменён через inline-edit для login=X (было N симв., стало M симв.)»</em></li>
+  </ul>
+
+  <p style="margin-top:1em">
+    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/users_inline_v373/users_pwd_edit_mode.png"
+         alt="Режим inline-редактирования пароля"
+         style="max-width:100%; border:1px solid #ddd; border-radius:6px"/>
+  </p>
+
+  <h4 id="users-inline-mac">MAC tooltip + click-to-copy (build 373, L2-3)</h4>
+  <p>Рядом с IP-адресом отображается иконка <i class="fas fa-network-wired text-muted"></i> (если есть данные о MAC из последней RADIUS-сессии). Hover показывает MAC, клик копирует его в clipboard через <code>navigator.clipboard.writeText()</code> с fallback на <code>document.execCommand('copy')</code>.</p>
+
+  <h4 id="users-inline-reset">Сброс зависшей сессии (build 373, L3-1)</h4>
+  <p>Кнопка <i class="fas fa-sync-alt"></i> — для случаев когда NAS не прислал Accounting-Stop (NAS reboot, network drop) и флаг <code>USERS_RADIUSAUTH.LOGGED=1</code> «застрял».</p>
+  <ul>
+    <li>Endpoint: <code>POST /admin/users_api/{id}/reset_session/</code></li>
+    <li>Действия в одной транзакции:
+      <ol>
+        <li><code>UPDATE USERS_RADIUSAUTH SET LOGGED=0 WHERE USER_ID=? AND LOGGED=1</code> (RETURNING для was_logged)</li>
+        <li><code>UPDATE RADIUS_SESSIONS SET END_TIME=now(), END_REASON='Manual-reset-by-operator' WHERE END_TIME IS NULL</code></li>
+        <li><code>disconnect_user.delay(broadcast=True)</code> — best-effort CoA на случай если NAS физически держит сессию</li>
+      </ol>
+    </li>
+    <li>Audit: <em>«Сброс зависшей сессии для login=X (was_logged=true, закрыто сессий=N)»</em></li>
+  </ul>
+
+  <h4 id="users-inline-test-auth">Тест авторизации через freeradius (build 374, L3-2)</h4>
+  <p>Кнопка <i class="fas fa-vial text-info"></i> — отправляет RADIUS Access-Request на <code>freeradius:1812</code> и показывает результат в модалке. Используется <strong>pyrad-клиент</strong> (без RPC, без docker exec) с inline-словарём атрибутов.</p>
+
+  <ul>
+    <li>Endpoint: <code>POST /admin/users_api/{id}/test_auth/</code></li>
+    <li>Возможные коды ответа: <code>Accept</code> (зелёный) / <code>Reject</code> (красный) / <code>Timeout</code> (жёлтый) / <code>DNSError</code> / <code>Skipped</code> (нет логина или пароля)</li>
+    <li>Декодирование атрибутов: bytes→IP (4 байта) или UTF-8 string. Resolved attribute names (Framed-IP-Address, Mikrotik-Rate-Limit и т.д.)</li>
+    <li>Поддержка VENDOR Mikrotik (14988): Rate-Limit, Address-List</li>
+    <li>5s timeout × 2 retries</li>
+    <li>Audit-запись: <em>«Тест авторизации login=X → Accept (NAS=Y, server=freeradius:1812)»</em></li>
+  </ul>
+
+  <p><strong>Требование</strong>: web-контейнер должен иметь доступ к freeradius как RADIUS-клиент. На testbill в <code>.env</code> установлен <code>RADIUS_WILDCARD_ENABLED=1</code> — <code>docker/freeradius/entrypoint.sh</code> добавляет в <code>clients.conf</code> запись <code>client wildcard { ipaddr=0.0.0.0/0; secret=smitsecretkey }</code>. На production это можно отключить и добавить точечную запись для IP web-контейнера.</p>
+
+  <p style="margin-top:1em">
+    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/users_inline_v374/users_test_auth_modal.png"
+         alt="Модалка результата теста авторизации"
+         style="max-width:100%; border:1px solid #ddd; border-radius:6px"/>
+  </p>
+
+  <h4 id="users-inline-drawer">Drawer-панель деталей (build 374, L3-3)</h4>
+  <p>Кнопка <i class="fas fa-list-alt"></i> — открывает Bootstrap offcanvas (560px справа) с полной информацией об учётке:</p>
+
+  <ul>
+    <li><strong>Шапка</strong> — статус-бейдж (Online/Offline/Disabled), баланс абонента (₽), IP, MAC, NAS, VLAN, ссылка на абонента, comment</li>
+    <li><strong>Последние 5 сессий</strong> — таблица: Старт / Длит (форматированная: 2ч 5м) / IN / OUT / Конец (end_reason или зелёный кружок для active)</li>
+    <li><strong>Трафик за 30 дней</strong> — суммарные IN/OUT в МБ/ГБ + кол-во сессий + <strong>inline bar-chart на чистом CSS</strong> (без chart.js): 30 столбиков, зелёный=in, оранжевый=out, height пропорционально max. Tooltip на hover каждого столбика с датой и значениями</li>
+    <li><strong>История смен пароля</strong> — последние 10 audit-записей (<code>AuditOperations.DESCR ILIKE '%пароль%'</code>)</li>
+    <li><strong>Сетевые привязки</strong> — NAS (имя+IP), Пул IP (имя+диапазон), Switch (имя)</li>
+  </ul>
+
+  <p>Endpoint: <code>GET /admin/users_api/{id}/details/</code></p>
+
+  <p style="margin-top:1em">
+    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/users_inline_v374/users_drawer_details.png"
+         alt="Drawer-панель с деталями учётки"
+         style="max-width:100%; border:1px solid #ddd; border-radius:6px"/>
+  </p>
+
+  <h4 id="users-inline-endpoints">AJAX-эндпоинты (build 373-374)</h4>
+  <ul>
+    <li><code>POST /admin/users_api/{id}/change_psw/</code> body <code>{psw}</code> — inline-смена пароля (build 373)</li>
+    <li><code>POST /admin/users_api/{id}/reset_session/</code> — сброс зависшей сессии (build 373)</li>
+    <li><code>POST /admin/users_api/{id}/test_auth/</code> — radtest через pyrad (build 374)</li>
+    <li><code>GET /admin/users_api/{id}/details/</code> — JSON для drawer-панели (build 374)</li>
   </ul>
 
   <!-- 13.3. Редактирование услуги -->
