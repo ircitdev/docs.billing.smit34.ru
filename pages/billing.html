@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 406)</title>
+  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 410)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 406)">
+  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 410)">
   <meta property="og:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/billing.html">
   <meta property="og:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 406)">
+  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 410)">
   <meta name="twitter:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta name="twitter:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
   <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
@@ -225,6 +225,9 @@
           <li class="sub-item"><a href="../pages/billing.html#holidays">11.11. Выходные</a></li>
           <li class="sub-item"><a href="../pages/billing.html#connection-points">11.12. Точки подкл.</a></li>
           <li class="sub-item"><a href="../pages/billing.html#subnets">11.13. Подсети</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#units">11.14. Единицы изм.</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#report-types">11.15. Типы отчётов</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#user-attributes">11.16. Реквизиты</a></li>
           <li><a href="../pages/billing.html#additional">12. Дополнительные настройки</a></li>
           <li class="sub-item"><a href="../pages/billing.html#agent-schemes">12.1. Агентские схемы</a></li>
           <li class="sub-item"><a href="../pages/billing.html#billing-slave">12.2. Дочерний сервер</a></li>
@@ -4197,7 +4200,7 @@ chmod +x restore.sh
 
   <!-- ===== 9. Справочники ===== -->
   <h2 id="dictionaries">11. Справочники</h2>
-  <p>Справочники СмИТ Биллинг v1.6.0 (build 406) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
+  <p>Справочники СмИТ Биллинг v1.6.0 (build 410) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
   <div class="section-toc">
   <details open>
     <summary><strong>Содержание раздела</strong></summary>
@@ -4216,6 +4219,9 @@ chmod +x restore.sh
     <li><a href="#holidays">11.11. Выходные дни</a></li>
     <li><a href="#connection-points">11.12. Точки подключения</a></li>
     <li><a href="#subnets">11.13. Подсети</a></li>
+    <li><a href="#units">11.14. Единицы измерения</a></li>
+    <li><a href="#report-types">11.15. Типы отчётов</a></li>
+    <li><a href="#user-attributes">11.16. Реквизиты абонентов</a></li>
     </ul>
   </details>
   </div>
@@ -4231,7 +4237,20 @@ chmod +x restore.sh
   <p>Настройка статусов: активен, заблокирован, расторгнут, ленивый, должник, злостный должник. Статусы влияют на отображение в дереве и поведение системы.</p>
 
   <h3 id="currencies">11.3. Валюты</h3>
-  <p>Справочник валют для мультивалютных операций. Каждая валюта имеет название, сокращение и курс конвертации. Используется для бонусных систем и операторов с мультивалютным учётом.</p>
+  <p>Справочник валют для мультивалютных операций. Каждая валюта имеет название, сокращение и курс конвертации. Используется для бонусных систем и операторов с мультивалютным учётом. Путь: <code>/admin/dictionary/Currency/</code>.</p>
+
+  <h4 id="currency-modal">Модалка добавления и редактирования валюты (build 402)</h4>
+  <p>Список переведён на AJAX-шаблон с поиском и кнопкой <strong>«+ Валюта»</strong>. Редактирование — в модальном окне.</p>
+  <p>Поля модалки:</p>
+  <ul>
+    <li><strong>Код</strong> (обяз.) — краткое: RUB, USD, EUR (max 32 символа)</li>
+    <li><strong>Название</strong> — полное: Российский рубль, Доллар США (max 256)</li>
+    <li><strong>Сервер обновления курса</strong> — URL для автоматического получения курса (например <code>https://www.cbr-xml-daily.ru/daily_json.js</code>)</li>
+    <li><strong>Основная валюта</strong> (toggle) — при включении флаг автоматически снимается с других валют (только одна основная)</li>
+  </ul>
+  <p>В таблице: счётчик «Используется» — N абонентов / N тарифов с этой валютой. <strong>Защита удаления</strong>: нельзя удалить валюту если она основная или используется в Abonents/Tarif.</p>
+  <p>Backend endpoints: <code>GET /admin/dictionary/currency_json/</code>, <code>GET|POST|DELETE /admin/dictionary/currency_crud/&lt;id&gt;/</code>. Audit-лог пишется в <code>AuditOperations</code> с <code>table_name='CURRENCY'</code>.</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/refs_v407/currency_list.png" alt="Список валют" class="screenshot">
 
   <h3 id="vlan-pools">11.4. Пулы VLAN</h3>
   <p>Управление пулами VLAN для автоматического распределения VLAN-тегов абонентам. Привязка к оператору связи (FK на абонентов из папки 9002 «Операторы»). Путь: <code>/admin/dictionary/VlanPull/</code>.</p>
@@ -4432,23 +4451,160 @@ chmod +x restore.sh
   <h3 id="greetings">11.8. Поздравления</h3>
   <p>Шаблоны поздравительных сообщений для автоматической рассылки (день рождения и др.).</p>
 
-  <h3 id="acl">11.9. ACL группы и списки</h3>
-  <p>ACL-группы используются для управления доступом к сетевым ресурсам. Применяются при развёртывании оборудования (Cisco ISG, RedBack, Mikrotik). Конфигурация:</p>
-  <pre><code># config/acl.py или переменные окружения (.env)
-ACL_NEGBAL_GROUPS = ACL_BLOCKED
-ACL_BLOCKED_GROUPS = ACL_DISABLED</code></pre>
+  <h3 id="acl">11.9. ACL группы и списки разрешённых сайтов</h3>
+  <p>Справочник для управления walled-garden (мягкая блокировка) — список адресов, доступных абоненту в период минусового баланса, добровольной приостановки или административной блокировки. Раздел: <code>/admin/dictionary/AclGroups/</code> + <code>/admin/dictionary/Acl/?tab=1</code>.</p>
+  <p>Архитектура:</p>
+  <ul>
+    <li><strong>AclGroups</strong> — группы (например «Отрицат. баланс», «При блоке», «Социальный»)</li>
+    <li><strong>Acl</strong> — отдельные правила (адрес/домен) с FK на группу + чекбокс активности</li>
+  </ul>
+  <p>На текущий момент справочник работает в режиме хранения данных — реальная walled-garden ещё не подключена к FreeRADIUS. План полной реализации — <em>dev_reports/Планы/2026-04-30_Captive_Portal_Финблокировка.md</em>.</p>
+
+  <h4 id="acl-groups-modal">Модалка ACL-групп (build 400)</h4>
+  <p>Список групп с AJAX-таблицей: счётчик правил (вкл/всего), кнопка «Открыть правила» в каждой строке, защита удаления — нельзя удалить группу с правилами.</p>
+  <ul>
+    <li>Поле <strong>Наименование</strong> — обяз.</li>
+    <li>Подсчёт правил выводится цветным бейджем: зелёный (все включены), жёлтый (часть), серый (нет активных)</li>
+    <li>Backend endpoints: <code>GET /admin/dictionary/acl_groups_json/</code>, <code>GET|POST|DELETE /admin/dictionary/acl_groups_crud/&lt;id&gt;/</code></li>
+  </ul>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/refs_v407/acl_groups.png" alt="Список ACL-групп" class="screenshot">
+
+  <h4 id="acl-rules-modal">Модалка ACL-правил (build 400)</h4>
+  <p>Список правил с расширенными возможностями:</p>
+  <ul>
+    <li><strong>Pill-фильтр групп</strong> над таблицей — клик по pill оставляет только правила выбранной группы. По умолчанию активна «Все группы»</li>
+    <li><strong>Чекбокс-выделение</strong> в первой колонке + master-checkbox в шапке</li>
+    <li><strong>Bulk-действия</strong>: «Включить», «Выключить», «Удалить», «Перенести в группу» — кнопка «Действия ▾» появляется при выделении ≥ 1 правила</li>
+    <li><strong>Toggle Вкл/Выкл</strong> в actions каждой строки — быстрое переключение без открытия модалки</li>
+    <li>Поля: Группа (FK), Адрес (домен/IP, обяз.), Комментарий, Активно</li>
+    <li>Backend endpoints: <code>GET /admin/dictionary/acl_json/</code>, <code>GET|POST|DELETE /admin/dictionary/acl_crud/&lt;id&gt;/</code>, <code>POST /admin/dictionary/acl_toggle/&lt;id&gt;/</code>, <code>POST /admin/dictionary/acl_bulk/</code> с action ∈ {enable, disable, delete, move_group}</li>
+  </ul>
+  <p>Имена групп с префиксами в скобках (например <code>free_internet(Социальный интернет)</code>) показываются как <em>«Социальный интернет»</em> в UI — backend hel‌per <code>_pretty_group_name</code> вытаскивает текст из последних скобок. Полное имя видно в tooltip.</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/refs_v407/acl_list.png" alt="Списки разрешённых сайтов с pill-фильтром групп" class="screenshot">
+  <p><strong>Реестр социальных ресурсов</strong>: группа <code>Социальный</code> (id=248003) автоматически обновляется из реестра РКН по адресу <code>https://billing.smit34.ru/dump_social.xml</code> (зеркало <code>vigruzki2.carbonsoft.ru</code>) — кнопка обновления в UI вызывает <code>AclSocial.fill_social_resources()</code> → парсит XML → обновляет правила группы.</p>
 
   <h3 id="periods">11.10. Периоды</h3>
-  <p>Настройка тарификационных периодов: месяц, квартал, год. Определяют интервалы списания и формирования отчётов.</p>
+  <p>Справочник периодов активности услуг — определяет в какие дни недели и в какое время суток услуга считается активной. Используется через FK <code>Usluga.work_period</code>. Путь: <code>/admin/dictionary/Period/</code>.</p>
+
+  <h4 id="period-modal">Модалка периода с временным диапазоном (build 403)</h4>
+  <p>Каждый период имеет:</p>
+  <ul>
+    <li><strong>Название</strong> (обяз.) — например «Дневной», «Ночной», «Рабочие дни»</li>
+    <li><strong>Время начала</strong> и <strong>Время окончания</strong> (HH:MM) — пустые = «весь день»; если <code>start &gt; end</code> — период перешагивает полночь (например 22:00→06:00 для «Ночного»)</li>
+    <li><strong>Дни недели активности</strong> — 7 кнопок-pills (Пн..Вс) с пресетами «Все», «Будни», «Очистить»</li>
+  </ul>
+  <p>Цветовая индикация в списке:</p>
+  <ul>
+    <li>🟢 «весь день» — серым курсивом</li>
+    <li>⚫ <code>06:00–22:00</code> — обычный диапазон чёрным monospace</li>
+    <li>🟣 <code>22:00–06:00 ↻</code> — overnight (через полночь) фиолетовым</li>
+  </ul>
+  <p>Backend endpoints: <code>GET /admin/dictionary/period_json/</code>, <code>GET|POST|DELETE /admin/dictionary/period_crud/&lt;id&gt;/</code>. Защита удаления — если период используется в <code>Usluga.work_period</code>.</p>
+  <p>Базовые периоды засеяны миграцией <code>0094_period_time_range</code>: Круглосуточно (00:00-23:59 все), Рабочие дни (Пн-Пт), Выходные (Сб-Вс), Дневной (06:00-22:00 все), Ночной (22:00-06:00 все).</p>
+  <p><strong>Примечание</strong>: на текущий момент Period — справочник без логики использования в biller'е. План интеграции с <code>billing_worker</code>, шейпером и RADIUS — см. <em>dev_reports/Планы/2026-04-30_Услуги_и_Периоды.md</em>.</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/refs_v407/period_list.png" alt="Список периодов с временными диапазонами" class="screenshot">
 
   <h3 id="holidays">11.11. Выходные дни</h3>
-  <p>Календарь выходных и праздничных дней. Влияет на расчёт услуг с временными условиями и график рассылки уведомлений.</p>
+  <p>Справочник государственных праздников и переносов рабочих дней. Используется в <code>billing_worker</code> для пропуска списаний в нерабочие дни (опционально), а также как источник «не рабочих дат» для <code>Period</code>. Путь: <code>/admin/dictionary/Weekends/</code>.</p>
+
+  <h4 id="weekends-modal">Календарный UI выходных дней (build 405)</h4>
+  <p>Список переписан с табличного вида на <strong>интерактивный календарь</strong> на 12 месяцев в адаптивной сетке (4×3 на десктопе, 2×6 на планшетах, 1×12 на мобильных).</p>
+  <p>Цветовая кодировка:</p>
+  <ul>
+    <li>Суббота/воскресенье — красным цветом (но без заливки)</li>
+    <li>Праздники из БД — красная заливка с белой точкой в углу</li>
+    <li>Сегодня — зелёная outline-рамка</li>
+    <li>Прошедшие даты — приглушены (opacity 55%)</li>
+  </ul>
+  <p>Управление:</p>
+  <ul>
+    <li><strong>Клик по любому дню</strong> = открыть модалку добавления (если день пустой) или редактирования (если уже есть запись)</li>
+    <li><strong>Переключатель года</strong> (pill-кнопки): -1, текущий, +1, плюс все годы из БД</li>
+    <li><strong>Импорт праздников РФ</strong> — массово добавить все государственные праздники + переносы за выбранный год (доступны 2026, 2027). Без перезаписи существующих</li>
+    <li><strong>Очистить год</strong> — массовое удаление всех записей года с подтверждением</li>
+    <li>Свёрнутый список таблицей под календарём — для быстрого редактирования</li>
+  </ul>
+  <p>Backend: <code>GET /admin/dictionary/weekends_json/?year=2026</code>, <code>GET|POST|DELETE /admin/dictionary/weekends_crud/&lt;id&gt;/</code>, <code>POST /admin/dictionary/weekends_bulk/ {action,year}</code>. Audit-лог — <code>table_name='WEEKENDS'</code>.</p>
+  <p>Миграция <code>0095_weekends_actual_dates</code> очистила устаревшие данные 2012-2013 и засеяла актуальные праздники РФ 2026-2027.</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/refs_v407/weekends_calendar.png" alt="Календарь выходных дней" class="screenshot">
 
   <h3 id="connection-points">11.12. Точки подключения</h3>
   <p>Справочник точек подключения абонентов к сети оператора (узлы доступа, коммутаторы, порты).</p>
 
   <h3 id="subnets">11.13. Подсети</h3>
   <p>Управление подсетями и сетевой адресацией. Используется для правил тарификации трафика и распределения IP-адресов.</p>
+
+  <h3 id="units">11.14. Единицы измерения</h3>
+  <p>Справочник единиц измерения для услуг (Гигабайт, Минута, Канал, Штук). Используется через FK <code>Usluga.unit</code>. Путь: <code>/admin/dictionary/Units/</code>.</p>
+
+  <h4 id="units-modal">Модалка единиц измерения (build 402)</h4>
+  <p>Поля:</p>
+  <ul>
+    <li><strong>Название</strong> — Гигабайт, Минута, Канал (max 256)</li>
+    <li><strong>Краткое</strong> — ГБ, мин, шт (max 32)</li>
+    <li><strong>Код</strong> — необязательное, для интеграции с ОКЕИ или внешними системами (max 32)</li>
+  </ul>
+  <p>Колонка «Услуг» — счётчик услуг с этой единицей. <strong>Защита удаления</strong>: нельзя удалить если используется в Usluga.</p>
+  <p>Backend: <code>GET /admin/dictionary/units_json/</code>, <code>GET|POST|DELETE /admin/dictionary/units_crud/&lt;id&gt;/</code>. Audit-лог — <code>table_name='UNITS'</code>.</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/refs_v407/units_list.png" alt="Список единиц измерения" class="screenshot">
+
+  <h3 id="report-types">11.15. Типы отчётов</h3>
+  <p>Справочник категорий для пользовательских SQL-отчётов в разделе «Отчёты». Используется через FK <code>AdminCustomReports.report_type</code>. Путь: <code>/admin/dictionary/AdminCustomReportsType/</code>.</p>
+
+  <h4 id="report-type-modal">Модалка типов отчётов (build 402)</h4>
+  <p>Поля:</p>
+  <ul>
+    <li><strong>Название</strong> — обяз. (max 1024). Например: «ЦОК», «Бухгалтерия», «Техподдержка», «Телефония»</li>
+  </ul>
+  <p>Колонка «Отчётов» показывает счётчик связанных отчётов. При удалении типа с привязанными отчётами — <code>SET_NULL</code> (отчёты сохраняются, но без типа); UI показывает confirm с предупреждением.</p>
+  <p>Backend: <code>GET /admin/dictionary/report_type_json/</code>, <code>GET|POST|DELETE /admin/dictionary/report_type_crud/&lt;id&gt;/</code>. Audit — <code>table_name='ADMIN_CUSTOM_REPORTS_TYPE'</code>.</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/refs_v407/report_types_list.png" alt="Список типов отчётов" class="screenshot">
+
+  <h3 id="user-attributes">11.16. Реквизиты абонентов</h3>
+  <p>Справочник динамических полей для абонентов (EAV-паттерн). Каждая запись определяет «шаблон поля»: имя, тип, поведение. Значения хранятся в <code>AttributeValues</code> (61923 записи на testbill). Используется в карточке абонента (вкладки «Информация» и «Реквизиты») и в СОРМ-отчётах. Путь: <code>/admin/dictionary/UserAttributes/</code>.</p>
+
+  <h4>Модалка реквизита (build 405-407)</h4>
+  <p>Расширенная модалка с 4 секциями:</p>
+  <ol>
+    <li><strong>Основные</strong>: Название (обяз.), Описание, Порядок</li>
+    <li><strong>Тип данных</strong>: 7 типов (Текст / Флаг / Список / Модель / Дата / Время / Файл) + динамическое поле <code>type_attr</code> с подсказкой:
+      <ul>
+        <li>Список: <code>да,нет,не знаю</code> (через запятую)</li>
+        <li>Модель: <code>billing.Tarif</code> (имя Django-модели)</li>
+        <li>Файл: <code>.pdf,.jpg,.png</code> (маска расширений)</li>
+      </ul>
+    </li>
+    <li><strong>Автозаполнение</strong>: чекбоксы «Создавать автоматически для физ.лица / юр.лица» — управляют wizard'ом создания нового абонента (соответствующий <code>AttributeValue</code> создаётся пустым)</li>
+    <li><strong>Дополнительно</strong>: «Использовать поиск при выборе», «Проверять на уникальность», «Системный (read-only)», «Участвует в СОРМ-отчётах», «Доп. отображать в подгруппе» (FK на FrameworkFormGroups)</li>
+  </ol>
+
+  <h4 id="user-attributes-sorm">Защита СОРМ-реквизитов (build 407)</h4>
+  <p>Поле <code>is_sorm</code> помечает реквизиты, на которые завязаны СОРМ-отчёты в <code>billing/views/sorm.py</code> (отчёты ABONENT, ABONENT_LEGAL, ABONENT_IDENT строят SQL по точному имени реквизита через <code>WHERE NAME='ИНН'</code>).</p>
+  <p>Защита:</p>
+  <ul>
+    <li>В таблице — колонка <strong>«СОРМ»</strong> 🛡 с красным значком, строка подсвечивается светло-розовым</li>
+    <li>Чекбокс <strong>«Участвует в СОРМ-отчётах»</strong> в модалке (с предупреждением)</li>
+    <li>Фильтр <strong>«🛡 СОРМ»</strong> в toolbar — показать только защищённые реквизиты</li>
+    <li><strong>Запрет переименования</strong>: попытка изменить имя СОРМ-атрибута возвращает HTTP 400 с <code>sorm_rename_blocked=true</code>; UI показывает confirm-диалог с явным предупреждением что отчёты сломаются. После повторного подтверждения отправляет с <code>force_sorm_rename=true</code></li>
+  </ul>
+  <p>Миграция <code>0096_user_attributes_is_sorm</code> отметила <strong>24 СОРМ-реквизита</strong> на testbill: ИНН, КПП, ОГРН, Юридический/Физический/Почтовый адрес, р/с (две графемы), Банк, БИК, к/с (две графемы), В лице, Директор × 2, Паспорт серия-номер/№/серия/дата выдачи/кем выдан/когда выдан/регистрация, Когда выдан, Адрес регистрации, Место рождения, Дата рождения.</p>
+
+  <h4>Фильтры и сортировка</h4>
+  <ul>
+    <li><strong>Multi-select dropdown «Все типы»</strong> — выбор нескольких типов одновременно (стиль как фильтр «Тариф» на странице абонентов): чекбоксы + кнопки «Применить» / «Сбросить»</li>
+    <li>Чекбокс «Физ.лиц» — только реквизиты с <code>default_individual=True</code></li>
+    <li>Чекбокс «Юр.лиц» — только реквизиты с <code>default_person=True</code></li>
+    <li>Чекбокс «🛡 СОРМ» — только защищённые реквизиты</li>
+    <li>Поиск по названию и описанию</li>
+  </ul>
+
+  <h4>Защита удаления и счётчик использования</h4>
+  <p>Колонка «Использ.» показывает количество <code>AttributeValues</code> с этим атрибутом. При удалении атрибута, который имеет значения — backend требует <code>?force=1</code>, UI показывает confirm с предупреждением: «Будут удалены значения у N абонентов. Это действие необратимо». Системные (<code>system=1</code>) удалить нельзя — кнопка корзины заменена на 🔒.</p>
+
+  <p>Backend: <code>GET /admin/dictionary/user_attributes_json/</code>, <code>GET|POST|DELETE /admin/dictionary/user_attributes_crud/&lt;id&gt;/</code>, <code>POST /admin/dictionary/user_attributes_reorder/</code>. Audit — <code>table_name='USER_ATTRIBUTES'</code>.</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/refs_v407/user_attributes_list.png" alt="Справочник реквизитов с фильтрами и СОРМ-отметками" class="screenshot">
+
+  <p>Полная версия плана развития (метаданные, SQL-генератор отчётов, валидация перед выгрузкой) — <em>dev_reports/Планы/2026-04-30_СОРМ_метаданные_рефакторинг.md</em>.</p>
 
   <!-- ===== 12. Дополнительные настройки ===== -->
   <h2 id="additional">12. Дополнительные настройки</h2>
@@ -5145,7 +5301,7 @@ else:
   </details>
   </div>
 
-  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 406) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
+  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 410) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
 
   <h3 id="setevaya-izolyatsiya">Сетевая изоляция</h3>
   <p><strong>Docker-контейнеризация</strong> — каждый сервис (web, db, redis, celery, nginx, freeradius) работает в изолированном Docker-контейнере с собственной сетью (172.28.0.0/16). Входящие соединения проходят через nginx reverse proxy, что предотвращает прямой доступ к внутренним сервисам.</p>
@@ -5289,7 +5445,7 @@ docker compose up -d</code></pre>
 
   <!-- ===== 16. Стороннее ПО ===== -->
   <h2 id="third-party">16. Стороннее ПО</h2>
-  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 406).</p>
+  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 410).</p>
 
   <!-- ===== 17. Смена языка ===== -->
   <h2 id="language">17. Смена языка</h2>
@@ -5310,7 +5466,7 @@ docker compose up -d</code></pre>
   </details>
   </div>
 
-  <p>СмИТ Биллинг v1.6.0 (build 406) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
+  <p>СмИТ Биллинг v1.6.0 (build 410) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
 
   <h3 id="pochemu-postgresql">Почему PostgreSQL</h3>
   <p>PostgreSQL 16 выбран в качестве основной СУБД по ряду причин:</p>
@@ -5553,8 +5709,8 @@ STARTED_AT, FINISHED_AT, EBS_LAST_TX_ID, STATS_JSON, DUMP_FILE, ERROR_MSG</code>
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 406)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">30.04.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 406)</span>&nbsp;|&nbsp;<span data-smit="updated">30.04.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 410)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">30.04.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 410)</span>&nbsp;|&nbsp;<span data-smit="updated">30.04.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=220"></script>
