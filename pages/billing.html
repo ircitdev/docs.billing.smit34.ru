@@ -2787,21 +2787,13 @@ FirewallService.unblock_ip(nas, '10.0.0.1')</code></pre>
 
   <h4>FreeScout: входящие тикеты</h4>
   <p>Все обращения из ЛК, мобильного приложения и AI-чата попадают во входящие FreeScout. Операторы работают с ними как с обычной перепиской.</p>
-  <img src="../img/freescout_inbox.png" alt="FreeScout — входящие тикеты" class="screenshot">
-
-  <h4>FreeScout: переписка с абонентом</h4>
+<h4>FreeScout: переписка с абонентом</h4>
   <p>Внутри тикета — полная история переписки с абонентом. Боковая панель показывает данные клиента из биллинга (договор, тариф, баланс) через модуль CarbonBilling.</p>
-  <img src="../img/freescout_conversation.png" alt="FreeScout — переписка с абонентом" class="screenshot">
-
-  <h4>Модули FreeScout</h4>
+<h4>Модули FreeScout</h4>
   <p>На сервере установлены модули: <strong>ClaudeAI</strong> (AI-ответы на обращения), <strong>CarbonBilling</strong> (данные абонента в sidebar), <strong>VkIntegration</strong>, <strong>TelegramIntegration</strong>, и 30+ стандартных модулей.</p>
-  <img src="../img/freescout_modules.png" alt="Модули FreeScout" class="screenshot">
-
-  <h4>ClaudeAI: автоответы на обращения</h4>
+<h4>ClaudeAI: автоответы на обращения</h4>
   <p>Модуль ClaudeAI автоматически отвечает на обращения абонентов с помощью Claude API. Если ИИ не может решить вопрос, тикет эскалируется оператору. Настройки: <code>/claudeai/settings</code> в FreeScout.</p>
-  <img src="../img/freescout_claudeai_settings.png" alt="ClaudeAI — настройки" class="screenshot">
-
-  <h4>Синхронизация данных</h4>
+<h4>Синхронизация данных</h4>
   <p>Абоненты биллинга автоматически синхронизируются как клиенты FreeScout (ежедневно в 03:00 через Celery). Команда для ручного запуска:</p>
   <pre><code># Синхронизация всех абонентов
 python manage.py sync_abonents_to_freescout
@@ -3892,10 +3884,10 @@ chmod +x restore.sh
 
   <p>Справочник адресов подключения. Иерархическая структура: корень &rarr; город &rarr; улица &rarr; дом. Путь: <code>/admin/dictionary/Homes/</code>.</p>
   <p>Начиная с build 324, список использует <strong>динамическую загрузку</strong>: все записи загружаются одним AJAX-запросом (<code>/admin/dictionary/homes_json/</code>), фильтрация, сортировка и поиск выполняются на клиенте. С build 324 список переведён на <strong>чанковый рендер</strong> (по 100 строк) с <strong>бесконечной прокруткой</strong>, что позволяет работать с 4000+ записей без задержек при открытии страницы.</p>
-  <img src="../img/v170/homes_list.png" alt="Справочник адресов: общий вид" class="screenshot">
+  <img src="../img/homes_v381/homes_list.png" alt="Справочник адресов: общий вид" class="screenshot">
 
   <h4 id="houses-toolbar">Панель инструментов</h4>
-  <img src="../img/v170/homes_list_district.png" alt="Панель фильтров адресов" class="screenshot">
+  <img src="../img/homes_v381/homes_list_district.png" alt="Панель фильтров адресов" class="screenshot">
   <p>Одна строка фильтров над таблицей (слева направо):</p>
   <ul>
     <li><strong>Текстовый поиск</strong> — по названию, полному адресу, городу, району, улице, дому, индексу, точке подключения (инкрементально, без кнопки «Применить»)</li>
@@ -3909,7 +3901,7 @@ chmod +x restore.sh
   </ul>
 
   <h4 id="houses-columns">Колонки и сортировка</h4>
-  <img src="../img/v170/homes_list_filter.png" alt="Текстовый поиск по адресам" class="screenshot">
+  <img src="../img/homes_v381/homes_list_filter.png" alt="Текстовый поиск по адресам" class="screenshot">
   <p>Доступные колонки (клик по заголовку — сортировка ▲▼, повторный клик — реверс):</p>
   <ol>
     <li><strong>#</strong> — ID записи (по умолчанию — новые сверху)</li>
@@ -3925,7 +3917,7 @@ chmod +x restore.sh
   </ol>
 
   <h4 id="houses-mobile">Мобильная версия</h4>
-  <img src="../img/v170/homes_list_mobile.png" alt="Справочник адресов на мобильном" class="screenshot" style="max-width:360px">
+  <img src="../img/homes_v381/homes_list_mobile.png" alt="Справочник адресов на мобильном" class="screenshot" style="max-width:360px">
   <p>На узких экранах таблица сворачивается в одну колонку: под названием автоматически выводится строка «<em>Город, Район, Улица Дом</em>». Панель фильтров оборачивается на несколько строк через <code>flex-wrap</code>.</p>
 
   <h4 id="houses-api">Публичный API адресов</h4>
