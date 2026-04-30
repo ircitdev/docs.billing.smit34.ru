@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 411)</title>
+  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 413)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 411)">
+  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 413)">
   <meta property="og:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/billing.html">
   <meta property="og:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 411)">
+  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 413)">
   <meta name="twitter:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta name="twitter:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
   <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
@@ -243,6 +243,7 @@
           <li><a href="../pages/billing.html#ebs-sync">19. Синхронизация с EBS</a></li>
           <li><a href="../pages/billing.html#ui-improvements">20. UI-улучшения дашборда</a></li>
           <li><a href="../pages/billing.html#design-system">21. Дизайн-система</a></li>
+          <li><a href="../pages/billing.html#sorm-ux">22. СОРМ — UX-улучшения</a></li>
         </ul>
       </li>
 
@@ -391,9 +392,6 @@
   </div>
 
   <img src="../img/new_dashboard.png" alt="Интерфейс биллинга — Dashboard" class="screenshot">
-
-  
-
 <div class="page-toc">
 <details open>
   <summary><strong>Содержание страницы</strong></summary>
@@ -416,12 +414,14 @@
   <li><a href="#third-party">16. Стороннее ПО</a></li>
   <li><a href="#language">17. Смена языка</a></li>
   <li><a href="#tech-stack">18. Технологический стек</a></li>
-  <li><a href="#ebs-sync">19. Синхронизация с EBS</a></li>
-  <li><a href="#ui-improvements">20. UI-улучшения дашборда</a></li>
-  <li><a href="#design-system">21. Дизайн-система</a></li>
+  <li><a href="#ebs-sync">19. Синхронизация с EBS (build 367–393)</a></li>
+  <li><a href="#ui-improvements">20. UI-улучшения дашборда (build 386–393)</a></li>
+  <li><a href="#design-system">21. Дизайн-система (build 408–411)</a></li>
+  <li><a href="#sorm-ux">22. СОРМ — UX-улучшения (build 412–413)</a></li>
   </ul>
 </details>
 </div>
+
 
 <!-- ===== 1. Общие настройки биллинга ===== -->
   <h2 id="general">1. Общие настройки биллинга</h2>
@@ -431,12 +431,7 @@
     <summary><strong>Содержание раздела</strong></summary>
     <ul>
     <li><a href="#admin-ip">1.1. IP адрес компьютера администратора</a></li>
-    <li><a href="#system-settings">1.2. Настройки системы (единая страница)</a>
-      <ul>
-        <li><a href="#system-settings-params">1.2.1. Вкладка «Параметры»</a></li>
-        <li><a href="#branding">1.2.2. Вкладка «Брендинг»</a></li>
-      </ul>
-    </li>
+    <li><a href="#system-settings">1.2. Настройки системы</a></li>
     <li><a href="#ssl-admin">1.3. Добавление SSL-сертификата для HTTPS</a></li>
     <li><a href="#user-interfaces">1.4. Интерфейсы пользователей биллинга</a></li>
     <li><a href="#db-cleanup">1.5. Очистка базы данных. Удаление демо-данных</a></li>
@@ -447,6 +442,7 @@
   </div>
 
 
+
   <!-- 1.1 IP адрес администратора -->
   <h3 id="admin-ip">1.1. IP адрес компьютера администратора</h3>
   <p>Для настройки IP-адреса администратора перейдите в веб-интерфейс СмИТ Биллинг 1.6: <strong>Настройки &rarr; Настройки (в файле) &rarr; Управление абонентами и тарифами</strong>. Измените параметр <code>admin_ip</code>.</p>
@@ -454,6 +450,16 @@
 
   <!-- 1.2 Настройки системы (унифицированная страница, build 372+) -->
   <h3 id="system-settings">1.2. Настройки системы</h3>
+    <div class="section-toc">
+    <details open>
+      <summary><strong>Содержание раздела</strong></summary>
+      <ul>
+      <li><a href="#system-settings-params">1.2.1. Вкладка «Параметры»</a></li>
+      <li><a href="#branding">1.2.2. Вкладка «Брендинг»</a></li>
+      </ul>
+    </details>
+    </div>
+
   <p>Единая страница системных настроек: <strong>Настройки → Настройки системы</strong> (URL <code>/admin/settings/system/</code>). Объединяет параметры биллинга и брендинг компании. Переключение между разделами — вкладки «Параметры» и «Брендинг» в верхней части страницы.</p>
 
   <div class="info-box">
@@ -1685,6 +1691,23 @@ print('К удалению:', candidates.count())</code></pre>
 
   <!-- 3.16 Программы лояльности -->
   <h3 id="loyalty">3.16. Программы лояльности</h3>
+    <div class="section-toc">
+    <details open>
+      <summary><strong>Содержание раздела</strong></summary>
+      <ul>
+      <li><a href="#loyalty-catalog">3.16.1. Каталог программ</a></li>
+      <li><a href="#loyalty-modal-params">3.16.2. Модалка программы — вкладка «Параметры»</a></li>
+      <li><a href="#loyalty-modal-abonents">3.16.3. Модалка программы — вкладка «Абоненты»</a></li>
+      <li><a href="#loyalty-bulk-assign">3.16.4. Массовое назначение группе абонентов</a></li>
+      <li><a href="#loyalty-tab">3.16.5. Назначение абоненту вручную (вкладка «Лояльность»)</a></li>
+      <li><a href="#loyalty-billing">3.16.6. Применение в биллинге</a></li>
+      <li><a href="#loyalty-auto">3.16.7. Авто-назначение и авто-окончание</a></li>
+      <li><a href="#loyalty-backfill">3.16.8. Заполнение скидок для существующих программ</a></li>
+      <li><a href="#loyalty-examples">3.16.9. Примеры использования</a></li>
+      </ul>
+    </details>
+    </div>
+
   <p>Программы лояльности применяются к абоненту автоматически при ежемесячном расчёте: либо снижают плату на заданный процент, либо начисляют фиксированный бонус на лицевой счёт. Управление каталогом — <a href="/admin/tarifs/Loyaltys/" target="_blank" rel="noopener"><strong>Тарификация → Лояльность</strong></a>.</p>
 
   <h4 id="loyalty-catalog">3.16.1. Каталог программ</h4>
@@ -3238,6 +3261,20 @@ NAS без сессии (NAK): CCR, JOY, Червленое, ...</code></pre>
   </table>
 
   <h3 id="nas-monitoring">7.15. NAS-мониторинг и алерты (build 395)</h3>
+    <div class="section-toc">
+    <details open>
+      <summary><strong>Содержание раздела</strong></summary>
+      <ul>
+      <li><a href="#nas-monitoring-throttling">Throttling логов</a></li>
+      <li><a href="#nas-monitoring-alerts">Telegram-алерты</a></li>
+      <li><a href="#nas-monitoring-storage">История в БД</a></li>
+      <li><a href="#nas-monitoring-settings">Настройки в VpnConst</a></li>
+      <li><a href="#nas-monitoring-schedule">Расписание задач</a></li>
+      <li><a href="#nas-monitoring-report">SQL-отчёт «NAS uptime за 30 дней»</a></li>
+      </ul>
+    </details>
+    </div>
+
   <p>Биллинг автоматически проверяет доступность всех включённых NAS, ведёт историю падений и восстановлений, отправляет алерты в Telegram. Реализовано в рамках плана <code>2026-04-29_План_NAS_мониторинг_и_алерты.md</code>.</p>
 
   <h4>Дашборд состояния NAS</h4>
@@ -3586,17 +3623,11 @@ chmod +x restore.sh
     <li><a href="#monthly-billing">10.8. Месячное списание</a></li>
     <li><a href="#menu-improvements">10.9. Навигация и меню</a></li>
     <li><a href="#staff-management">10.10. Профиль и управление персоналом</a></li>
-    <li><a href="#staff-and-access">10.11. Персонал и доступ — единый таб</a>
-        <ul>
-          <li><a href="#staff-list">Персонал</a></li>
-          <li><a href="#permissions-models">Доступ к моделям</a></li>
-          <li><a href="#permissions-folders">Доступ к папкам абонентов</a></li>
-          <li><a href="#interface-settings">Интерфейс</a></li>
-        </ul>
-    </li>
+    <li><a href="#staff-and-access">10.11. Персонал и доступ — единый таб</a></li>
     </ul>
   </details>
   </div>
+
 
 
 
@@ -3858,6 +3889,18 @@ chmod +x restore.sh
   <p>Все логи доступны через раздел «Серверные логи» и через CLI (<code>docker exec app-web-1 cat /var/log/django/staff.log</code>).</p>
 
   <h3 id="logging-channels">10.6Б. Logging channels (build 395)</h3>
+    <div class="section-toc">
+    <details open>
+      <summary><strong>Содержание раздела</strong></summary>
+      <ul>
+      <li><a href="#logging-fix">Что было исправлено</a></li>
+      <li><a href="#logging-create">Создание файлов</a></li>
+      <li><a href="#logging-rotation">Ротация</a></li>
+      <li><a href="#logging-channels-table">Список каналов</a></li>
+      </ul>
+    </details>
+    </div>
+
   <p>Реализован план <code>2026-04-29_План_Логирование_по_каналам.md</code>. Каждый из 5 ранее «пустых» каналов вкладки <em>Серверные логи</em> теперь реально наполняется.</p>
   <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/v395/logs_channels.png" alt="Серверные логи — все каналы наполняются" class="screenshot">
 
@@ -4046,6 +4089,18 @@ chmod +x restore.sh
   </ul>
 
   <h3 id="staff-and-access">10.11. Персонал и доступ — единый таб</h3>
+    <div class="section-toc">
+    <details open>
+      <summary><strong>Содержание раздела</strong></summary>
+      <ul>
+      <li><a href="#staff-list">Персонал</a></li>
+      <li><a href="#permissions-models">Доступ к моделям</a></li>
+      <li><a href="#permissions-folders">Доступ к папкам абонентов</a></li>
+      <li><a href="#interface-settings">Интерфейс — настройки полей форм для роли</a></li>
+      </ul>
+    </details>
+    </div>
+
   <p>Раздел объединяет 4 экрана управления сотрудниками и их правами в один таб (<a href="https://testbill.smit34.ru/admin/settings/staff/">/admin/settings/staff/</a> и связанные). Все 4 страницы перекрёстно связаны через таб-бар сверху, info-иконка <i class="fas fa-info-circle text-info"></i> справа в таб-баре ведёт на якорь этой документации соответствующий активной вкладке.</p>
   <p class="text-muted"><em>Build 391 (01.05.2026): полная матрица прав на 80 моделей, whitelist-директивы для ролей интерфейса, фикс «фантомных» get_or_create.</em></p>
 
@@ -4202,7 +4257,7 @@ chmod +x restore.sh
 
   <!-- ===== 9. Справочники ===== -->
   <h2 id="dictionaries">11. Справочники</h2>
-  <p>Справочники СмИТ Биллинг v1.6.0 (build 411) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
+  <p>Справочники СмИТ Биллинг v1.6.0 (build 413) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
   <div class="section-toc">
   <details open>
     <summary><strong>Содержание раздела</strong></summary>
@@ -4216,7 +4271,7 @@ chmod +x restore.sh
     <li><a href="#houses">11.7. Адреса</a></li>
     <li><a href="#conn-points">11.7a. Точки подключения</a></li>
     <li><a href="#greetings">11.8. Поздравления</a></li>
-    <li><a href="#acl">11.9. ACL группы и списки</a></li>
+    <li><a href="#acl">11.9. ACL группы и списки разрешённых сайтов</a></li>
     <li><a href="#periods">11.10. Периоды</a></li>
     <li><a href="#holidays">11.11. Выходные дни</a></li>
     <li><a href="#connection-points">11.12. Точки подключения</a></li>
@@ -4227,6 +4282,7 @@ chmod +x restore.sh
     </ul>
   </details>
   </div>
+
 
 
 
@@ -4454,6 +4510,16 @@ chmod +x restore.sh
   <p>Шаблоны поздравительных сообщений для автоматической рассылки (день рождения и др.).</p>
 
   <h3 id="acl">11.9. ACL группы и списки разрешённых сайтов</h3>
+    <div class="section-toc">
+    <details open>
+      <summary><strong>Содержание раздела</strong></summary>
+      <ul>
+      <li><a href="#acl-groups-modal">Модалка ACL-групп (build 400)</a></li>
+      <li><a href="#acl-rules-modal">Модалка ACL-правил (build 400)</a></li>
+      </ul>
+    </details>
+    </div>
+
   <p>Справочник для управления walled-garden (мягкая блокировка) — список адресов, доступных абоненту в период минусового баланса, добровольной приостановки или административной блокировки. Раздел: <code>/admin/dictionary/AclGroups/</code> + <code>/admin/dictionary/Acl/?tab=1</code>.</p>
   <p>Архитектура:</p>
   <ul>
@@ -4655,6 +4721,7 @@ chmod +x restore.sh
     </div>
 
 
+
   <h4 id="sorm-settings">Настройки СОРМ</h4>
   <p>Настройки СОРМ объединены в двухколоночный интерфейс на странице <strong>Оборудование &rarr; Настройки СОРМ</strong> (<code>/admin/equipment/sorm_list/1/</code>):</p>
   <ul>
@@ -4739,6 +4806,50 @@ chmod +x restore.sh
     <li><code>end_time</code> — дата отключения (NULL если активен)</li>
   </ol>
   <p>SQL фильтрует только активных абонентов с <code>COMPANY = true</code> и <code>DELETED = false</code>. Реквизиты вытягиваются через подзапросы к <code>UserAttributes</code> по имени атрибута. Для совместимости с legacy-данными EBS поля <code>bank_account</code> и <code>corr_account</code> ищутся по обеим графемам — кириллической «р/с»/«к/с» и латинской «р/c»/«к/c».</p>
+
+  <h5 id="sorm-metadata">СОРМ-метаданные на UserAttributes <span class="badge bg-success" style="font-size:.7rem">build 410-411</span></h5>
+  <p>Раньше SQL-запрос отчёта <code>ABONENT_LEGAL</code> содержал <strong>захардкоженные имена реквизитов</strong> в условиях <code>WHERE NAME='ИНН'</code>. Любое переименование атрибута в <code>/admin/dictionary/UserAttributes/</code> молча ломало выгрузку — отчёт продолжал работать, но возвращал NULL для всех абонентов.</p>
+  <p>Начиная с build 410 SQL отчётов СОРМ генерируется автоматически через <code>billing.services.sorm_sql.SormReportBuilder</code> на основе <strong>метаданных</strong>, которые хранятся прямо в записях <code>UserAttributes</code>:</p>
+  <table class="data-table">
+    <thead><tr><th>Поле</th><th>Тип</th><th>Назначение</th></tr></thead>
+    <tbody>
+      <tr><td><code>is_sorm</code></td><td>BOOLEAN</td><td>Атрибут участвует в СОРМ-отчётности (build 407)</td></tr>
+      <tr><td><code>sorm_field_code</code></td><td>VARCHAR(64)</td><td>Техническое имя колонки в SQL и CSV: <code>inn</code>, <code>kpp</code>, <code>legal_address</code>, <code>director</code>...</td></tr>
+      <tr><td><code>sorm_report_types</code></td><td>VARCHAR(255)</td><td>CSV-список типов отчётов где участвует поле: <code>ABONENT,ABONENT_LEGAL</code></td></tr>
+      <tr><td><code>sorm_required</code></td><td>BOOLEAN</td><td>Обязательное для pre-flight валидации (ИНН/КПП/ОГРН/Директор у юр.лиц)</td></tr>
+      <tr><td><code>sorm_alt_names</code></td><td>VARCHAR(512)</td><td>Альтернативные имена через <code>;</code> — для исторических дублей графем (например <code>р/с;р/c</code>)</td></tr>
+    </tbody>
+  </table>
+  <p>Builder читает все <code>UserAttributes</code> с <code>is_sorm=True</code> и непустым <code>sorm_field_code</code> для нужного типа отчёта, упорядочивает их по <code>order_no</code> и собирает SELECT-подзапросы. Для атрибутов с <code>sorm_alt_names</code> используется <code>WHERE NAME IN (...)</code> вместо <code>=</code> — что покрывает обе графемы одновременно.</p>
+  <div class="info-box">
+    <strong>Преимущество:</strong> переименование атрибута в админке больше не ломает выгрузку — builder ищет по <code>sorm_field_code</code>. UI <code>/admin/dictionary/UserAttributes/</code> показывает красный щит <i class="fas fa-shield-alt text-danger"></i> для СОРМ-атрибутов и блокирует переименование без явного подтверждения <code>force_sorm_rename</code>.
+  </div>
+  <p>Управление метаданными в UI: открыть атрибут в модалке <code>/admin/dictionary/UserAttributes/</code>, включить чекбокс «Участвует в СОРМ-отчётах» — появится секция «СОРМ-метаданные» с 4 полями (техническое имя, типы отчётов через checkbox, обязательное поле, альтернативные имена для графем).</p>
+
+  <h5 id="sorm-preflight">Pre-flight валидация перед выгрузкой <span class="badge bg-success" style="font-size:.7rem">build 410</span></h5>
+  <p>На странице <code>/admin/equipment/sorm_list/</code> добавлена кнопка <strong>«Проверить готовность»</strong>. Она вызывает endpoint <code>GET /admin/equipment/sorm_list/validate/</code> и показывает в модалке две группы проблем:</p>
+  <ul>
+    <li><strong>Проблемы метаданных</strong> (<code>meta_issues</code>) — атрибуты без <code>sorm_field_code</code>, дублирующиеся коды в одном отчёте, недопустимые символы (регэкс <code>^[a-z][a-z0-9_]*$</code>).</li>
+    <li><strong>Пропуски обязательных полей</strong> (<code>data_issues</code>) — таблица «Отчёт / Поле / field_code / Без значения». Для каждого <code>sorm_required=True</code> атрибута считается сколько активных абонентов <strong>без</strong> заполненного значения.</li>
+  </ul>
+  <p>Юр-поля (<code>ABONENT_LEGAL</code>) проверяются только у юр.лиц (<code>company=True</code>); физ-поля (<code>passport_series_number</code>, <code>birth_date</code>) — только у физических лиц. Это позволяет получить осмысленные числа пропусков без ложных срабатываний.</p>
+  <p>В build 412 на странице добавлен <strong>бейдж готовности</strong> в верхней панели — показывает время последней проверки и сводный статус (зелёный «Все данные готовы» / жёлтый «Пропусков: N» / красный «Проблем: M meta + N data»).</p>
+  <p>Pre-flight также интегрирован в Celery-задачу <code>run_report_export</code>: перед запуском выгрузки в логах появится warning <code>EXPORT pre-flight: meta-issues=N missing-values=M</code>. Выгрузка <strong>не блокируется</strong> — это информационный сигнал для оператора.</p>
+
+  <h5 id="sorm-dedup">Слияние дубликатов СОРМ-атрибутов</h5>
+  <p>На некоторых базах (миграция из EBS / Carbon 4) могут быть <strong>два атрибута с одинаковым именем</strong> — например «Директор» с <code>id=10</code> и <code>id=-219000</code>. Builder в таком случае <strong>не детерминирован</strong> — берёт через <code>LIMIT 1</code> любое попавшееся значение.</p>
+  <p>Команда <code>manage.py merge_sorm_attribute_dups</code> находит группы с одинаковым <code>sorm_field_code</code>, выбирает каноническую запись (наименьший положительный pk), переносит все <code>AttributeValues</code> с дублей на канонический и удаляет дубли:</p>
+  <pre><code># Dry-run — только показать что будет сделано:
+python manage.py merge_sorm_attribute_dups
+
+# Применить (ОБЯЗАТЕЛЬНО pg_dump перед):
+python manage.py merge_sorm_attribute_dups --apply
+
+# Только одна группа:
+python manage.py merge_sorm_attribute_dups --field-code director --apply
+
+# Группировка по name (для legacy без field_code):
+python manage.py merge_sorm_attribute_dups --by-name --apply</code></pre>
 
   <h5 id="sorm-update-reports">Обновление существующих СОРМ-конфигураций</h5>
   <p>Для серверов где СОРМ уже настроен и отсутствует новый отчёт <code>ABONENT_LEGAL</code> — управляющая команда:</p>
@@ -5303,7 +5414,7 @@ else:
   </details>
   </div>
 
-  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 411) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
+  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 413) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
 
   <h3 id="setevaya-izolyatsiya">Сетевая изоляция</h3>
   <p><strong>Docker-контейнеризация</strong> — каждый сервис (web, db, redis, celery, nginx, freeradius) работает в изолированном Docker-контейнере с собственной сетью (172.28.0.0/16). Входящие соединения проходят через nginx reverse proxy, что предотвращает прямой доступ к внутренним сервисам.</p>
@@ -5447,7 +5558,7 @@ docker compose up -d</code></pre>
 
   <!-- ===== 16. Стороннее ПО ===== -->
   <h2 id="third-party">16. Стороннее ПО</h2>
-  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 411).</p>
+  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 413).</p>
 
   <!-- ===== 17. Смена языка ===== -->
   <h2 id="language">17. Смена языка</h2>
@@ -5468,7 +5579,7 @@ docker compose up -d</code></pre>
   </details>
   </div>
 
-  <p>СмИТ Биллинг v1.6.0 (build 411) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
+  <p>СмИТ Биллинг v1.6.0 (build 413) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
 
   <h3 id="pochemu-postgresql">Почему PostgreSQL</h3>
   <p>PostgreSQL 16 выбран в качестве основной СУБД по ряду причин:</p>
@@ -5548,6 +5659,21 @@ docker compose ps
   </ul>
 
   <h2 id="ebs-sync">19. Синхронизация с EBS (build 367–393)</h2>
+  <div class="section-toc">
+  <details open>
+    <summary><strong>Содержание раздела</strong></summary>
+    <ul>
+    <li><a href="#ebs-sync-arch">19.1. Архитектура</a></li>
+    <li><a href="#ebs-sync-settings">19.2. Настройки</a></li>
+    <li><a href="#ebs-sync-command">19.3. Команда manage.py sync_from_ebs</a></li>
+    <li><a href="#ebs-sync-reconcile">19.4. Reconcile (Вариант C — перенос остатка в начало истории)</a></li>
+    <li><a href="#ebs-sync-celery">19.5. Celery beat расписание</a></li>
+    <li><a href="#ebs-sync-dashboard">19.6. Виджет «EBS Синхронизация» на дашборде</a></li>
+    <li><a href="#ebs-sync-state">19.7. Аудит запусков (EBS_SYNC_STATE)</a></li>
+    </ul>
+  </details>
+  </div>
+
   <p>СмИТ Биллинг 1.6.0 поддерживает регулярную синхронизацию транзакций и балансов
   абонентов с внешним биллингом EBS («Эксперт-Биллинг-Сервис»). Используется при
   поэтапной миграции с EBS на СмИТ — пока EBS активен и принимает платежи, СмИТ
@@ -5651,6 +5777,20 @@ STARTED_AT, FINISHED_AT, EBS_LAST_TX_ID, STATS_JSON, DUMP_FILE, ERROR_MSG</code>
   <code>manage.py sync_from_ebs --action rollback --run-id &lt;UUID&gt;</code>.</p>
 
   <h2 id="ui-improvements">20. UI-улучшения дашборда (build 386–393)</h2>
+  <div class="section-toc">
+  <details open>
+    <summary><strong>Содержание раздела</strong></summary>
+    <ul>
+    <li><a href="#dashboard-arpu">20.1. Блок «Показатели» с ARPU</a></li>
+    <li><a href="#dashboard-nas-users">20.2. Блок «Абоненты NAS»</a></li>
+    <li><a href="#dashboard-promise">20.3. Блок «Об.платежи» (build 393)</a></li>
+    <li><a href="#dashboard-load">20.4. Виджет «Нагрузка»</a></li>
+    <li><a href="#dark-theme">20.5. Тёмная тема и игры (build 385)</a></li>
+    <li><a href="#settings-descriptions">20.6. Описания всех настроек</a></li>
+    </ul>
+  </details>
+  </div>
+
 
   <h3 id="dashboard-arpu">20.1. Блок «Показатели» с ARPU</h3>
   <p>На <a href="/admin/welcome/">/admin/welcome/</a> в среднем ряду карточка
@@ -5709,6 +5849,20 @@ STARTED_AT, FINISHED_AT, EBS_LAST_TX_ID, STATS_JSON, DUMP_FILE, ERROR_MSG</code>
   Особо опасные настройки помечены <code>⚠️ ВНИМАНИЕ</code>.</p>
 
   <h2 id="design-system">21. Дизайн-система (build 408–411)</h2>
+  <div class="section-toc">
+  <details open>
+    <summary><strong>Содержание раздела</strong></summary>
+    <ul>
+    <li><a href="#design-tokens">21.1. CSS-токены (:root)</a></li>
+    <li><a href="#smit-components">21.2. Унифицированные компоненты</a></li>
+    <li><a href="#smit-screens">21.3. Где применено (build 413)</a></li>
+    <li><a href="#a11y-features">21.4. A11y-улучшения</a></li>
+    <li><a href="#design-migration">21.5. Миграция legacy на новые токены</a></li>
+    <li><a href="#design-files">21.6. Где смотреть и как использовать</a></li>
+    </ul>
+  </details>
+  </div>
+
 
   <p>В апреле 2026 проведён полный UX-аудит интерфейса админ-панели по фреймворку
   IxDF (Morville's UX Honeycomb + ISO 9241-11 + 5 Dimensions of Interaction Design)
@@ -5720,7 +5874,7 @@ STARTED_AT, FINISHED_AT, EBS_LAST_TX_ID, STATS_JSON, DUMP_FILE, ERROR_MSG</code>
   <p>Полные отчёты:</p>
   <ul>
     <li><a href="/admin/reports/dev/?tab=reports&amp;file=%D0%9E%D1%82%D1%87%D1%91%D1%82%D1%8B%2F2026-04-30_UX_%D0%B0%D1%83%D0%B4%D0%B8%D1%82_%D0%BF%D0%BE%D0%BB%D0%BD%D1%8B%D0%B9_%D0%BF%D1%80%D0%BE%D0%B3%D0%BE%D0%BD_build408.md">UX-аудит полный прогон build 408</a></li>
-    <li>Sprint 4 (build 411) — миграция ключевых экранов на единые компоненты</li>
+    <li>Sprint 4 (build 413) — миграция ключевых экранов на единые компоненты</li>
   </ul>
 
   <h3 id="design-tokens">21.1. CSS-токены (:root)</h3>
@@ -5780,7 +5934,7 @@ STARTED_AT, FINISHED_AT, EBS_LAST_TX_ID, STATS_JSON, DUMP_FILE, ERROR_MSG</code>
     </tbody>
   </table>
 
-  <h3 id="smit-screens">21.3. Где применено (build 411)</h3>
+  <h3 id="smit-screens">21.3. Где применено (build 413)</h3>
 
   <p><strong>Глобальный поиск</strong> (<a href="/admin/Abonents/search/">/admin/Abonents/search/</a>) — toolbar + 4 stat-карточки + 7 чипов. Светлая и тёмная темы рядом:</p>
   <div class="screenshot-pair">
@@ -5879,7 +6033,7 @@ STARTED_AT, FINISHED_AT, EBS_LAST_TX_ID, STATS_JSON, DUMP_FILE, ERROR_MSG</code>
     (settings, dictionaries, equipment)</li>
   </ul>
 
-  <p>В Sprint 4 (build 411) переключены: <code>search.html</code>,
+  <p>В Sprint 4 (build 413) переключены: <code>search.html</code>,
   <code>accounts_list.html</code>, <code>finops_list.html</code>,
   <code>operations_inline.html</code>. Остальные могут использовать новые
   компоненты по запросу.</p>
@@ -5914,11 +6068,156 @@ STARTED_AT, FINISHED_AT, EBS_LAST_TX_ID, STATS_JSON, DUMP_FILE, ERROR_MSG</code>
     &lt;/div&gt;
 &lt;/div&gt;</code></pre>
 
+  <h2 id="sorm-ux">22. СОРМ — UX-улучшения (build 412–413)</h2>
+
+  <p>Compliance с Роскомнадзором — самая высокорисковая функция системы:
+  неработающая выгрузка означает штрафы и риск отзыва лицензии оператора связи.
+  В Sprint 1+2 мы добавили <strong>safety, audit trail и self-service диагностику</strong>
+  чтобы оператор мог за минуту понять «всё ли работает».</p>
+
+  <p>План: <a href="/admin/reports/dev/?tab=reports&amp;file=%D0%9F%D0%BB%D0%B0%D0%BD%D1%8B%2F2026-04-30_UX_%D0%A1%D0%9E%D0%A0%D0%9C.md">2026-04-30_UX_СОРМ.md</a>.
+  Health Score: 70 → 88/100 (Excellent).</p>
+
+  <h3 id="sorm-list-overview">22.1. Список конфигов СОРМ — расширенная таблица</h3>
+
+  <p><a href="/admin/equipment/sorm_list/">/admin/equipment/sorm_list/</a> теперь
+  показывает все ключевые метрики каждой конфигурации:</p>
+
+  <ul>
+    <li><strong>Vendor</strong> через <code>.smit-badge.is-info</code> (СигналТек / НОРСИ 2020 / СпецТехПитон / МФИ Софт / Элком НТ / VAS Experts)</li>
+    <li><strong>FTP</strong> — host:port + path (с warning если не задан)</li>
+    <li><strong>Расписание</strong> — время выгрузки или «вручную»</li>
+    <li><strong>Отчётов</strong> — счётчик активных <code>SormReport</code></li>
+    <li><strong>Последняя выгрузка</strong> — дата/время + статус (✓/⚠/✗/⏳) + N/M файлов</li>
+    <li><strong>Готовность данных</strong> — бейдж 🟢/🟡/🔴 в шапке (читает <code>SormReadinessCheck</code>)</li>
+    <li><strong>3 кнопки действий</strong> в каждой строке: ⚙ Настроить · ▶ Выгрузить сейчас · 🗑 Удалить</li>
+  </ul>
+
+  <h3 id="sorm-readiness">22.2. Кеш проверки готовности (<code>SormReadinessCheck</code>)</h3>
+
+  <p>Кнопка «Проверить готовность данных» сохраняет результат в БД (модель
+  <code>SormReadinessCheck</code> — миграция <code>0099</code>). На странице списка
+  показывается персистентный бейдж:</p>
+
+  <ul>
+    <li>🟢 <strong>Все данные готовы</strong> — нет проблем</li>
+    <li>🟡 <strong>Пропусков: N</strong> — есть пропуски значений у активных абонентов (≤100)</li>
+    <li>🔴 <strong>Проблем: N мета + M data</strong> — критические проблемы метаданных или >100 пропусков</li>
+    <li>⚪ <strong>Не проверялось</strong> — кеш пуст</li>
+  </ul>
+
+  <p>Раньше результат проверки исчезал после закрытия модалки, теперь оператор
+  может в любой момент видеть «когда последний раз проверяли» (timestamp рядом с бейджем).</p>
+
+  <h3 id="sorm-detail-tabs">22.3. Detail-страница — under-tabs (5 вкладок)</h3>
+
+  <p><a href="/admin/equipment/sorm_list/1/">/admin/equipment/sorm_list/&lt;id&gt;/</a>
+  переписана со sticky save bar и пятью под-вкладками (URL <code>#tab-X</code>):</p>
+
+  <ol>
+    <li><strong>Основные</strong> (<code>#tab-basic</code>) — имя, кодировка, разделитель,
+    формат даты с dropdown-шаблонами (ISO/RU/compact), часовой пояс через <code>&lt;datalist&gt;</code>
+    с 12 РФ tz, vendor radio-cards с confirm при смене</li>
+    <li><strong>FTP</strong> (<code>#tab-ftp</code>) — host/port/user/password (с 👁 toggle)
+    /path/active mode + кнопка «Проверить FTP» с расширенной диагностикой</li>
+    <li><strong>Уведомления</strong> (<code>#tab-tg</code>) — Chat ID с HTML5 валидацией
+    <code>pattern="-?\d+"</code>, ссылка на @userinfobot</li>
+    <li><strong>Отчёты</strong> (<code>#tab-reports</code>) — таблица всех 14 отчётов с
+    inline периодичностью + кнопка ▶ для запуска отдельного отчёта</li>
+    <li><strong>История</strong> (<code>#tab-history</code>) — журнал всех выгрузок с
+    polling статуса для running</li>
+  </ol>
+
+  <h3 id="sorm-manual-run">22.4. Ручной запуск выгрузки</h3>
+
+  <p>Endpoint <code>POST /admin/equipment/sorm_list/&lt;sorm_id&gt;/run-now/</code>:</p>
+
+  <ol>
+    <li>Создаёт <code>SormExportLog</code> запись со <code>status=running</code>, <code>trigger=manual</code></li>
+    <li>Записывает в <code>AuditOperations</code> «кто запустил выгрузку»</li>
+    <li>Запускает Celery-задачу <code>export_sorm_reports(sorm_id, export_log_id)</code></li>
+    <li>Задача проходит по всем активным <code>SormReport</code>, выгружает каждый на FTP,
+    обновляет <code>SormExportLog</code>: <code>files_total/files_ok/total_rows/total_bytes/status</code></li>
+    <li>В конце — Telegram-нотификация (если <code>SORM_TELEGRAM_ENABLED=1</code>)</li>
+  </ol>
+
+  <p>На UI кнопка «▶ Выгрузить сейчас» — confirm-модалка с предупреждением о нагрузке на DB,
+  затем переключение на вкладку «История» с polling каждые 5 сек.</p>
+
+  <h3 id="sorm-export-log">22.5. Журнал выгрузок (<code>SormExportLog</code>)</h3>
+
+  <p>Audit trail для проверок РКН — таблица:</p>
+
+  <table>
+    <thead>
+      <tr><th>Поле</th><th>Описание</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>started_at</code> / <code>finished_at</code></td><td>Время начала/окончания + расчёт duration</td></tr>
+      <tr><td><code>trigger</code></td><td>schedule / manual / api</td></tr>
+      <tr><td><code>status</code></td><td>running / success / partial / failed</td></tr>
+      <tr><td><code>files_total</code> / <code>files_ok</code></td><td>Сколько отчётов запланировано / выгружено</td></tr>
+      <tr><td><code>total_rows</code> / <code>total_bytes</code></td><td>Суммарный размер</td></tr>
+      <tr><td><code>ftp_uploaded</code></td><td>Файлы реально загружены на FTP сервера РКН</td></tr>
+      <tr><td><code>telegram_sent</code></td><td>Уведомление отправлено</td></tr>
+      <tr><td><code>error_msg</code></td><td>Топ-20 ошибок (для diagnostics)</td></tr>
+      <tr><td><code>started_by</code></td><td>username оператора (для manual run)</td></tr>
+    </tbody>
+  </table>
+
+  <p>UI таблицы: вкладка «История» рендерит последние 50 записей с цветовым кодированием
+  status (зелёный success / оранжевый partial / красный failed / синий running).
+  Если есть running — auto-poll каждые 5 сек.</p>
+
+  <h3 id="sorm-ftp-diag">22.6. Расширенная диагностика FTP</h3>
+
+  <p>Кнопка «Проверить FTP» теперь возвращает полный отчёт в модалке:</p>
+
+  <ul>
+    <li><strong>Latency</strong> — общее время в мс</li>
+    <li><strong>Banner</strong> — приветствие FTP-сервера</li>
+    <li><strong>Этапы проверки</strong> — TCP подключение / Авторизация / CWD каждый
+    подкаталог пути / Листинг — каждый шаг с timestamp и сообщением</li>
+    <li><strong>Тип ошибки</strong> — class name (FTPError / TimeoutError / OSError)</li>
+    <li><strong>Файлы в каталоге</strong> — первые 10 имён (если успех)</li>
+    <li><strong>Кнопка «Скопировать диагностику»</strong> — JSON для саппорта</li>
+  </ul>
+
+  <h3 id="sorm-inline-reports">22.7. Inline-управление отчётами</h3>
+
+  <p>Каждый из 14 отчётов в табе «Отчёты» имеет inline-controls:</p>
+
+  <ul>
+    <li><strong>Period select</strong> — Вручную / Каждые 10 минут / Каждый час /
+    Ежедневно / Ежемесячно. Сохраняется через <code>POST /reports/&lt;id&gt;/set-period/</code>
+    с audit-записью</li>
+    <li><strong>▶ Run</strong> — запуск этого отдельного отчёта (с FTP-выгрузкой)</li>
+    <li><strong>⚙ Cog</strong> — переход на полную страницу настроек SQL/схемы отчёта</li>
+  </ul>
+
+  <h3 id="sorm-files">22.8. Файлы реализации</h3>
+
+  <ul>
+    <li><strong>Models</strong>: <code>billing/models/sorm.py</code> — добавлены
+    <code>SormReadinessCheck</code> + <code>SormExportLog</code></li>
+    <li><strong>Migration</strong>: <code>billing/migrations/0099_sorm_readiness_export_log.py</code></li>
+    <li><strong>Views</strong>: <code>billing/views/sorm.py</code> — расширены
+    <code>sorm_list_view</code> + <code>sorm_validate_data_api</code> (запись в кеш) + новые
+    <code>sorm_run_now</code> + <code>sorm_export_log_api</code> + <code>report_set_period_ajax</code></li>
+    <li><strong>FTP test</strong>: <code>billing/views/sorm_settings.py::sorm_settings_test_ftp</code> —
+    добавлены steps[] + latency_ms</li>
+    <li><strong>Task</strong>: <code>billing/tasks/sorm_export.py::export_sorm_reports(sorm_id, export_log_id)</code> —
+    обёртка вокруг <code>run_report_export</code> с обновлением SormExportLog + Telegram</li>
+    <li><strong>Templates</strong>: <code>billing/templates/sorm/sorm_lists.html</code> +
+    <code>sorm_main.html</code> (полностью переписан под under-tabs)</li>
+    <li><strong>URLs</strong>: 3 новых route в <code>billing/urls.py</code></li>
+  </ul>
+
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 411)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">30.04.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 411)</span>&nbsp;|&nbsp;<span data-smit="updated">30.04.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 413)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">30.04.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 413)</span>&nbsp;|&nbsp;<span data-smit="updated">30.04.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=220"></script>

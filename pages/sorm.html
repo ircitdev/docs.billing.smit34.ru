@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Интеграция с СОРМ3 — СмИТ Биллинг v1.6.0 (build 411)</title>
+  <title>Интеграция с СОРМ3 — СмИТ Биллинг v1.6.0 (build 413)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v1.6.0 (build 411)">
+  <meta property="og:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v1.6.0 (build 413)">
   <meta property="og:description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/sorm.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v1.6.0 (build 411)">
+  <meta name="twitter:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v1.6.0 (build 413)">
   <meta name="twitter:description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
@@ -247,9 +247,6 @@
   <div class="welcome-image">
     <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/robot_sorm.jpg" alt="Интеграция с СОРМ" loading="lazy">
   </div>
-
-  
-
 <div class="page-toc">
 <details open>
   <summary><strong>Содержание страницы</strong></summary>
@@ -261,10 +258,15 @@
   <li><a href="#reports">Отчёты и SQL</a></li>
   <li><a href="#schedule">Расписание автоматической выгрузки</a></li>
   <li><a href="#manual-run">Управление отчётами (build 88+)</a></li>
+  <li><a href="#metadata">СОРМ-метаданные UserAttributes build 410-411</a></li>
+  <li><a href="#preflight">Pre-flight валидация перед выгрузкой build 410</a></li>
+  <li><a href="#dedup">Дубликаты атрибутов и команда merge</a></li>
+  <li><a href="#api">REST API проверки готовности</a></li>
   <li><a href="#children">Схемы настройки</a></li>
   </ul>
 </details>
 </div>
+
 
 <img src="../img/p112754989_BillingSormFSB_scheme.png" alt="Схема интеграции СОРМ3 с биллингом" class="content-image">
 
@@ -405,6 +407,216 @@
     Если FTP-хост не задан, при выборе «FTP» будет выведено сообщение об ошибке. Убедитесь что параметры FTP заполнены в настройках СОРМ-записи.
   </div>
 
+  <h2 id="metadata">СОРМ-метаданные UserAttributes <span class="badge bg-success" style="font-size:.75rem">build 410-411</span></h2>
+  <div class="section-toc">
+  <details open>
+    <summary><strong>Содержание раздела</strong></summary>
+    <ul>
+    <li><a href="#upravlenie-metadannymi-v-ui">Управление метаданными в UI</a></li>
+    <li><a href="#tekuschaya-karta-metadannyh-build-411">Текущая карта метаданных (build 411)</a></li>
+    </ul>
+  </details>
+  </div>
+
+
+  <p>До build 410 SQL-запрос отчёта <code>ABONENT_LEGAL</code> содержал <strong>захардкоженные имена реквизитов</strong> в условиях <code>WHERE NAME='ИНН'</code>, <code>'КПП'</code>, <code>'ОГРН'</code>, и т.д. Любое переименование атрибута в <code>/admin/dictionary/UserAttributes/</code> молча ломало выгрузку — отчёт продолжал работать, но возвращал NULL для всех абонентов.</p>
+
+  <p>Начиная с build 410 SQL отчётов СОРМ генерируется автоматически через сервис <code>billing.services.sorm_sql.SormReportBuilder</code>, который читает <strong>метаданные</strong> прямо из записей <code>UserAttributes</code>:</p>
+
+  <table>
+    <thead><tr><th>Поле</th><th>Тип</th><th>Назначение</th></tr></thead>
+    <tbody>
+      <tr><td><code>is_sorm</code></td><td>BOOLEAN</td><td>Атрибут участвует в СОРМ-отчётности (build 407)</td></tr>
+      <tr><td><code>sorm_field_code</code></td><td>VARCHAR(64)</td><td>Техническое имя колонки в SQL/CSV: <code>inn</code>, <code>kpp</code>, <code>legal_address</code>, <code>director</code>, <code>passport_issued_by</code>...</td></tr>
+      <tr><td><code>sorm_report_types</code></td><td>VARCHAR(255)</td><td>CSV-список типов отчётов: <code>ABONENT,ABONENT_LEGAL,ABONENT_IDENT,ABONENT_USER,ABONENT_ADDR</code></td></tr>
+      <tr><td><code>sorm_required</code></td><td>BOOLEAN</td><td>Обязательное поле — pre-flight предупредит о пропусках значений</td></tr>
+      <tr><td><code>sorm_alt_names</code></td><td>VARCHAR(512)</td><td>Альтернативные имена через <code>;</code> для исторических дублей графем (например <code>р/с;р/c</code>)</td></tr>
+    </tbody>
+  </table>
+
+  <p>Builder выбирает все <code>UserAttributes</code> где <code>is_sorm=True</code>, <code>sorm_field_code != ''</code> и тип отчёта присутствует в <code>sorm_report_types</code>, упорядочивает по <code>order_no</code> и собирает SELECT-подзапросы. Для атрибутов с <code>sorm_alt_names</code> используется <code>WHERE NAME IN (...)</code> — это покрывает обе графемы одновременно (например на одной БД хранятся записи и с кириллической «р/с», и с латинской «р/c»).</p>
+
+  <div class="info-box">
+    <strong>Защита от случайного переименования:</strong> UI <code>/admin/dictionary/UserAttributes/</code> показывает красный щит <i class="fas fa-shield-alt" style="color:#dc3545"></i> для СОРМ-атрибутов и блокирует переименование без явного подтверждения. Запрос изменения имени возвращает HTTP 400 с флагом <code>sorm_rename_blocked: true</code>; UI просит подтвердить через диалог с предупреждением. Поле <code>sorm_field_code</code> валидируется регэкспом <code>^[a-z][a-z0-9_]*$</code>.
+  </div>
+
+  <h3 id="upravlenie-metadannymi-v-ui">Управление метаданными в UI</h3>
+
+  <p>Открыть атрибут в модалке <code>/admin/dictionary/UserAttributes/</code> и включить чекбокс <strong>«Участвует в СОРМ-отчётах»</strong> — появится секция <strong>«СОРМ-метаданные»</strong> с 4 полями:</p>
+
+  <ul>
+    <li><strong>Техническое имя поля</strong> — латинские буквы/цифры/<code>_</code>, первый символ — буква. Будет именем колонки в SQL и CSV-выгрузке.</li>
+    <li><strong>Альтернативные имена графем</strong> — для исторических дублей (например <code>р/с;р/c</code> где <code>с</code> кириллическое и <code>c</code> латинское).</li>
+    <li><strong>Типы СОРМ-отчётов</strong> — multi-checkbox: ABONENT / ABONENT_LEGAL / ABONENT_IDENT / ABONENT_USER / ABONENT_ADDR. В каких отчётах поле появляется как колонка.</li>
+    <li><strong>Обязательное поле</strong> — pre-flight валидация заблокирует выгрузку (выдаст предупреждение) при отсутствии значения у активных абонентов.</li>
+  </ul>
+
+  <p>В таблице атрибутов цветовая индикация:</p>
+
+  <ul>
+    <li><i class="fas fa-shield-alt" style="color:#dc3545"></i> <strong>Красный щит</strong> + tooltip с <code>field_code</code> — атрибут полноценно настроен для СОРМ.</li>
+    <li><i class="fas fa-shield-alt" style="color:#ffc107"></i> <strong>Жёлтый щит</strong> — флаг <code>is_sorm=True</code>, но <code>sorm_field_code</code> пустой. Builder его пропустит — нужно дозаполнить метаданные.</li>
+    <li>Серая точка — обычный (не СОРМ) атрибут.</li>
+  </ul>
+
+  <h3 id="tekuschaya-karta-metadannyh-build-411">Текущая карта метаданных (build 411)</h3>
+
+  <p>Миграции <code>0097_user_attributes_sorm_meta</code> и <code>0098_sorm_meta_extra_legacy</code> заполняют метаданные для 23 атрибутов из коробки:</p>
+
+  <table>
+    <thead><tr><th>field_code</th><th>Атрибут</th><th>Отчёты</th><th>Required</th><th>Alt names</th></tr></thead>
+    <tbody>
+      <tr><td><code>inn</code></td><td>ИНН</td><td>ABONENT, ABONENT_LEGAL</td><td>да</td><td>—</td></tr>
+      <tr><td><code>kpp</code></td><td>КПП</td><td>ABONENT_LEGAL</td><td>да</td><td>—</td></tr>
+      <tr><td><code>ogrn</code></td><td>ОГРН</td><td>ABONENT, ABONENT_LEGAL</td><td>да</td><td>—</td></tr>
+      <tr><td><code>legal_address</code></td><td>Юридический адрес</td><td>ABONENT_LEGAL</td><td>—</td><td>—</td></tr>
+      <tr><td><code>physical_address</code></td><td>Физический адрес</td><td>ABONENT_LEGAL</td><td>—</td><td>—</td></tr>
+      <tr><td><code>postal_address</code></td><td>Почтовый адрес</td><td>ABONENT_LEGAL</td><td>—</td><td>—</td></tr>
+      <tr><td><code>bank_account</code></td><td>р/с (или р/c)</td><td>ABONENT_LEGAL</td><td>—</td><td><code>р/с;р/c</code></td></tr>
+      <tr><td><code>bank_name</code></td><td>Банк</td><td>ABONENT_LEGAL</td><td>—</td><td>—</td></tr>
+      <tr><td><code>bik</code></td><td>БИК</td><td>ABONENT_LEGAL</td><td>—</td><td>—</td></tr>
+      <tr><td><code>corr_account</code></td><td>к/с (или к/c)</td><td>ABONENT_LEGAL</td><td>—</td><td><code>к/с;к/c</code></td></tr>
+      <tr><td><code>legal_person</code></td><td>В лице</td><td>ABONENT_LEGAL</td><td>—</td><td>—</td></tr>
+      <tr><td><code>director</code></td><td>Директор</td><td>ABONENT_LEGAL</td><td>да</td><td>—</td></tr>
+      <tr><td><code>passport_series_number</code></td><td>Паспорт серия-номер</td><td>ABONENT, ABONENT_IDENT</td><td>да</td><td>—</td></tr>
+      <tr><td><code>passport_issue_date</code></td><td>Паспорт дата выдачи</td><td>ABONENT_IDENT</td><td>—</td><td>—</td></tr>
+      <tr><td><code>passport_issued_by</code></td><td>Паспорт кем выдан <span class="badge bg-info" style="font-size:.7rem">build 411</span></td><td>ABONENT_IDENT</td><td>—</td><td>—</td></tr>
+      <tr><td><code>passport_issued_by_date</code></td><td>Когда выдан</td><td>ABONENT_IDENT</td><td>—</td><td>—</td></tr>
+      <tr><td><code>passport_registration</code></td><td>Паспорт регистрация <span class="badge bg-info" style="font-size:.7rem">build 411</span></td><td>ABONENT_IDENT, ABONENT_USER</td><td>—</td><td>—</td></tr>
+      <tr><td><code>reg_address</code></td><td>Адрес регистрации</td><td>ABONENT, ABONENT_USER</td><td>—</td><td>—</td></tr>
+      <tr><td><code>birth_date</code></td><td>Дата рождения</td><td>ABONENT, ABONENT_IDENT</td><td>да</td><td>—</td></tr>
+      <tr><td><code>birth_place</code></td><td>Место рождения</td><td>ABONENT_IDENT</td><td>—</td><td>—</td></tr>
+      <tr><td><code>passport_series_legacy</code></td><td>Паспорт серия (legacy)</td><td>ABONENT_IDENT</td><td>—</td><td>—</td></tr>
+      <tr><td><code>passport_number_legacy</code></td><td>Паспорт № (legacy)</td><td>ABONENT_IDENT</td><td>—</td><td>—</td></tr>
+      <tr><td><code>passport_issue_date_legacy</code></td><td>Паспорт когда выдан (legacy)</td><td>ABONENT_IDENT</td><td>—</td><td>—</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <strong>Legacy-поля:</strong> миграция 0098 пометила 5 устаревших атрибутов (id 13-17 на testbill — «Паспорт №», «Паспорт серия», «Паспорт регистрация», «Паспорт кем выдан», «Паспорт когда выдан») для совместимости. Главное — поле «Паспорт кем выдан» (3417 заполненных значений на проде), его отсутствие означало бы потерю данных для РКН.
+  </div>
+
+  <h2 id="preflight">Pre-flight валидация перед выгрузкой <span class="badge bg-success" style="font-size:.75rem">build 410</span></h2>
+  <div class="section-toc">
+  <details open>
+    <summary><strong>Содержание раздела</strong></summary>
+    <ul>
+    <li><a href="#problemy-metadannyh-meta-issues">Проблемы метаданных (meta_issues)</a></li>
+    <li><a href="#propuski-obyazatelnyh-poley-data-issues">Пропуски обязательных полей (data_issues)</a></li>
+    <li><a href="#beydzh-gotovnosti-na-stranitse-build-412">Бейдж готовности на странице build 412</a></li>
+    <li><a href="#pre-flight-v-celery-zadache-vygruzki">Pre-flight в Celery-задаче выгрузки</a></li>
+    </ul>
+  </details>
+  </div>
+
+
+  <p>На странице <code>/admin/equipment/sorm_list/</code> добавлена кнопка <strong>«Проверить готовность»</strong>. Она вызывает endpoint <code>GET /admin/equipment/sorm_list/validate/</code> и показывает в модалке две группы проблем:</p>
+
+  <h3 id="problemy-metadannyh-meta-issues">Проблемы метаданных (<code>meta_issues</code>)</h3>
+  <ul>
+    <li><code>missing_field_code</code> — атрибут с <code>is_sorm=True</code>, но <code>sorm_field_code</code> пустой. Builder его пропустит, данные потеряются в выгрузке.</li>
+    <li><code>invalid_field_code</code> — <code>field_code</code> не соответствует регэкспу <code>^[a-z][a-z0-9_]*$</code>. Чаще всего — пробелы, кириллица, тире.</li>
+    <li><code>duplicate_field_code</code> — два разных атрибута имеют один и тот же <code>field_code</code> в одном и том же отчёте. Builder выберет один через <code>LIMIT 1</code> непредсказуемо.</li>
+  </ul>
+
+  <h3 id="propuski-obyazatelnyh-poley-data-issues">Пропуски обязательных полей (<code>data_issues</code>)</h3>
+
+  <p>Для каждого <code>sorm_required=True</code> атрибута проверяется сколько активных абонентов <strong>без</strong> заполненного значения. Юр-поля (<code>ABONENT_LEGAL</code>) проверяются только у юр.лиц (<code>company=True</code>); физ-поля (<code>passport_series_number</code>, <code>birth_date</code>) — только у физических лиц.</p>
+
+  <p>Пример вывода на проде testbill (build 411):</p>
+
+  <table>
+    <thead><tr><th>report_type</th><th>field_code</th><th>attribute_name</th><th>missing</th></tr></thead>
+    <tbody>
+      <tr><td>ABONENT_LEGAL</td><td><code>director</code></td><td>Директор</td><td>280</td></tr>
+      <tr><td>ABONENT_LEGAL</td><td><code>inn</code></td><td>ИНН</td><td>241</td></tr>
+      <tr><td>ABONENT_LEGAL</td><td><code>kpp</code></td><td>КПП</td><td>280</td></tr>
+      <tr><td>ABONENT_LEGAL</td><td><code>ogrn</code></td><td>ОГРН</td><td>242</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    Pre-flight <strong>не блокирует выгрузку</strong> — это информационный сигнал. Оператор сам решает: дозаполнить пропуски в карточках абонентов или запустить выгрузку как есть. РКН может вернуть файл с замечанием, поэтому удобнее закрыть критичные пробелы заранее.
+  </div>
+
+  <h3 id="beydzh-gotovnosti-na-stranitse-build-412">Бейдж готовности на странице <span class="badge bg-success" style="font-size:.7rem">build 412</span></h3>
+
+  <p>В верхней панели страницы <code>/admin/equipment/sorm_list/</code> появился сводный бейдж готовности — показывает результат последней проверки и время:</p>
+
+  <ul>
+    <li><i class="fas fa-check-circle" style="color:#198754"></i> <strong>Все данные готовы</strong> — нет ни meta_issues, ни data_issues.</li>
+    <li><i class="fas fa-exclamation-triangle" style="color:#ffc107"></i> <strong>Пропусков: N</strong> — есть data_issues (значения), но метаданные в порядке.</li>
+    <li><i class="fas fa-times-circle" style="color:#dc3545"></i> <strong>Проблем: M meta + N data</strong> — есть проблемы метаданных, требует исправления до выгрузки.</li>
+  </ul>
+
+  <h3 id="pre-flight-v-celery-zadache-vygruzki">Pre-flight в Celery-задаче выгрузки</h3>
+
+  <p>Pre-flight также интегрирован в <code>billing.tasks.sorm_export.run_report_export</code>: перед запуском выгрузки в логах появляется warning:</p>
+
+  <pre><code>EXPORT pre-flight: report=33 meta-issues=0
+EXPORT pre-flight: report=33 missing-values=1043 in 4 fields</code></pre>
+
+  <p>Сообщение в результате задачи также обогащается строкой <code>pre-flight: пропуски в 4 полях (1043 абонентов)</code> — оператор увидит её в UI запуска отчёта.</p>
+
+  <h2 id="dedup">Дубликаты атрибутов и команда merge</h2>
+
+  <p>На некоторых базах (миграция из EBS / Carbon 4) могут быть <strong>два атрибута с одинаковым именем</strong> — например «Директор» с <code>id=10</code> и <code>id=-219000</code>. Без дедупликации builder выбирает значение через <code>LIMIT 1</code> <strong>непредсказуемо</strong> — для одного абонента может выгрузиться значение из дубля, для другого — из канонической записи.</p>
+
+  <p>Команда <code>manage.py merge_sorm_attribute_dups</code> группирует атрибуты по <code>sorm_field_code</code>, выбирает каноническую запись (наименьший положительный pk) и переносит все <code>AttributeValues</code> с дублей через <code>UPDATE attribute_id=...</code>:</p>
+
+  <pre><code># Dry-run — только показать что будет сделано:
+python manage.py merge_sorm_attribute_dups
+
+# Применить (ОБЯЗАТЕЛЬНО pg_dump перед!):
+python manage.py merge_sorm_attribute_dups --apply
+
+# Только одна группа:
+python manage.py merge_sorm_attribute_dups --field-code director --apply
+
+# Группировка по name (для legacy без field_code):
+python manage.py merge_sorm_attribute_dups --by-name --apply</code></pre>
+
+  <p>Пример вывода (testbill, build 411):</p>
+
+  <pre><code>Найдено 1 групп дубликатов:
+
+  Группа «director» (2 записей):
+    id= -219000  name='Директор'  values=97
+    id=      10  name='Директор'  values=96  ←canonical
+    → перенесено 97 AttributeValues, удалено 1 дублей
+
+Готово: удалено 1 дубликатов, перенесено 97 значений на canonical-записи.</code></pre>
+
+  <h2 id="api">REST API проверки готовности</h2>
+
+  <p>Endpoint <code>GET /admin/equipment/sorm_list/validate/</code> возвращает JSON со структурой:</p>
+
+  <pre><code>{
+  "ok": true,
+  "has_problems": true,
+  "meta_issues": [
+    {
+      "kind": "missing_field_code",
+      "attribute_id": 13,
+      "attribute_name": "Паспорт №",
+      "message": "СОРМ-атрибут без sorm_field_code"
+    }
+  ],
+  "data_issues": [
+    {
+      "report_type": "ABONENT_LEGAL",
+      "field_code": "inn",
+      "attribute_name": "ИНН",
+      "attribute_id": 4,
+      "missing": 241
+    }
+  ]
+}</code></pre>
+
+  <p>Аутентификация: стандартная сессионная (Django <code>@login_required</code>). Доступен любому залогиненному пользователю; выдаёт информацию которая не зависит от прав абонент-папок.</p>
+
+  <p>Это удобный endpoint для интеграций — например, мониторинг (Zabbix / Grafana) может опрашивать его через cron и алёртить когда <code>has_problems == true</code> или когда <code>data_issues</code> содержит обязательные поля с большим числом пропусков.</p>
+
   <h2 id="children">Схемы настройки</h2>
 
   <ul class="child-pages">
@@ -420,8 +632,8 @@
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 411)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">30.04.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 411)</span>&nbsp;|&nbsp;<span data-smit="updated">30.04.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 413)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">30.04.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 413)</span>&nbsp;|&nbsp;<span data-smit="updated">30.04.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=220"></script>

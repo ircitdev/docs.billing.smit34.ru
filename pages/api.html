@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>API — СмИТ Биллинг v1.6.0 (build 411)</title>
+  <title>API — СмИТ Биллинг v1.6.0 (build 413)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="API — СмИТ Биллинг v1.6.0 (build 411)">
+  <meta property="og:title" content="API — СмИТ Биллинг v1.6.0 (build 413)">
   <meta property="og:description" content="REST API v2, SOAP API, обещанный платёж, управление абонентами. Примеры запросов curl и JSON.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/api.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="API — СмИТ Биллинг v1.6.0 (build 411)">
+  <meta name="twitter:title" content="API — СмИТ Биллинг v1.6.0 (build 413)">
   <meta name="twitter:description" content="REST API v2, SOAP API, обещанный платёж, управление абонентами. Примеры запросов curl и JSON.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="REST API v2, SOAP API, обещанный платёж, управление абонентами. Примеры запросов curl и JSON.">
@@ -250,9 +250,6 @@
            style="width:100%;border-radius:8px;display:block"
            onended="this.outerHTML='<img src=&apos;https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/robot_api.jpg&apos; style=&apos;width:100%;border-radius:8px;display:block&apos; alt=&apos;&apos;>'"></video>
   </div>
-
-  
-
 <div class="page-toc">
 <details open>
   <summary><strong>Содержание страницы</strong></summary>
@@ -264,12 +261,14 @@
   <li><a href="#payments-api">Платёжные API (ЮKassa и Wallet One)</a></li>
   <li><a href="#soap">SOAP API</a></li>
   <li><a href="#web-api">Web API (управление абонентами)</a></li>
+  <li><a href="#sorm-api">СОРМ API build 410-411</a></li>
   <li><a href="#ajax">AJAX-эндпоинты</a></li>
   <li><a href="#mobile-api">Mobile API</a></li>
   <li><a href="#errors">Коды ошибок</a></li>
   </ul>
 </details>
 </div>
+
 
 <div class="info-box">
     <strong>Базовый URL:</strong> <code>https://your-billing-server.example.com</code><br>
@@ -975,6 +974,197 @@ curl -s -b cookies.txt -X POST \
   -H "Referer: https://billing.example.com/admin/Abonents/5552/"</code></pre>
 
   <!-- ============================================ -->
+  <h2 id="sorm-api">СОРМ API <span class="badge bg-success" style="font-size:.7rem">build 410-411</span></h2>
+  <p>Endpoint'ы для интеграции внешних систем (мониторинг, скрипты pre-deploy) с механизмом проверки готовности СОРМ-данных. Полное описание раздела — на странице <a href="sorm.html#metadata">Интеграция с СОРМ3 → СОРМ-метаданные</a>.</p>
+  <div class="section-toc">
+  <details open>
+    <summary><strong>Содержание раздела</strong></summary>
+    <ul>
+    <li><a href="#sorm-validate">GET /admin/equipment/sorm_list/validate/ — pre-flight проверка</a></li>
+    <li><a href="#sorm-attributes-crud">CRUD UserAttributes с СОРМ-метаданными</a></li>
+    <li><a href="#sorm-builder-python">SormReportBuilder — Python API</a></li>
+    </ul>
+  </details>
+  </div>
+
+
+  <h3 id="sorm-validate">GET <code>/admin/equipment/sorm_list/validate/</code> — pre-flight проверка</h3>
+
+  <p>Проверяет полноту СОРМ-данных перед запуском выгрузки. Возвращает JSON с двумя секциями:</p>
+  <ul>
+    <li><code>meta_issues</code> — проблемы метаданных <code>UserAttributes</code></li>
+    <li><code>data_issues</code> — отсутствие значений у активных абонентов для обязательных полей</li>
+  </ul>
+
+  <p><strong>Аутентификация:</strong> Django session cookie (<code>@login_required</code>). Любой залогиненный пользователь.</p>
+
+  <h4>Запрос</h4>
+  <pre><code>curl -s -b cookies.txt \
+  "https://billing.example.com/admin/equipment/sorm_list/validate/" \
+  -H "Accept: application/json"</code></pre>
+
+  <h4>Ответ (200 OK)</h4>
+  <pre><code>{
+  "ok": true,
+  "has_problems": true,
+  "meta_issues": [
+    {
+      "kind": "missing_field_code",
+      "attribute_id": 13,
+      "attribute_name": "Паспорт №",
+      "message": "СОРМ-атрибут без sorm_field_code"
+    },
+    {
+      "kind": "duplicate_field_code",
+      "report_type": "ABONENT_LEGAL",
+      "sorm_field_code": "director",
+      "attribute_ids": [10, -219000],
+      "attribute_names": ["Директор", "Директор"],
+      "message": "В отчёте ABONENT_LEGAL sorm_field_code «director» используется у 2 реквизитов: Директор, Директор"
+    }
+  ],
+  "data_issues": [
+    {
+      "report_type": "ABONENT_LEGAL",
+      "field_code": "inn",
+      "attribute_name": "ИНН",
+      "attribute_id": 4,
+      "missing": 241
+    }
+  ]
+}</code></pre>
+
+  <h4>Поля meta_issues</h4>
+  <table>
+    <thead><tr><th>kind</th><th>Описание</th></tr></thead>
+    <tbody>
+      <tr><td><code>missing_field_code</code></td><td>Атрибут с <code>is_sorm=True</code>, но <code>sorm_field_code</code> пустой. Builder его пропустит — данные потеряются в выгрузке</td></tr>
+      <tr><td><code>invalid_field_code</code></td><td><code>field_code</code> не соответствует регэкспу <code>^[a-z][a-z0-9_]*$</code> (пробелы, кириллица, тире и т.д.)</td></tr>
+      <tr><td><code>duplicate_field_code</code></td><td>Два разных атрибута имеют один и тот же <code>field_code</code> в одном отчёте. Builder выберет один через <code>LIMIT 1</code> непредсказуемо</td></tr>
+      <tr><td><code>exception</code></td><td>Внутренняя ошибка builder при попытке валидации. Поле <code>message</code> содержит текст исключения</td></tr>
+    </tbody>
+  </table>
+
+  <h4>Поля data_issues</h4>
+  <table>
+    <thead><tr><th>Поле</th><th>Тип</th><th>Описание</th></tr></thead>
+    <tbody>
+      <tr><td><code>report_type</code></td><td>string</td><td>Тип СОРМ-отчёта где обнаружены пропуски: <code>ABONENT_LEGAL</code>, <code>ABONENT</code>, <code>ABONENT_IDENT</code> и т.д.</td></tr>
+      <tr><td><code>field_code</code></td><td>string</td><td>Техническое имя поля (<code>sorm_field_code</code>)</td></tr>
+      <tr><td><code>attribute_name</code></td><td>string</td><td>Имя реквизита из <code>UserAttributes.NAME</code></td></tr>
+      <tr><td><code>attribute_id</code></td><td>int</td><td>PK атрибута</td></tr>
+      <tr><td><code>missing</code></td><td>int</td><td>Сколько активных абонентов <strong>без</strong> заполненного значения этого поля</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    Юр-поля (<code>ABONENT_LEGAL</code>) проверяются только у юр.лиц (<code>company=True</code>); физ-поля (<code>passport_series_number</code>, <code>birth_date</code>) — только у физических лиц. Это исключает ложные срабатывания.
+  </div>
+
+  <h4>Использование в мониторинге</h4>
+  <p>Endpoint удобен для интеграции с Zabbix / Grafana / собственными скриптами cron. Пример Bash-обёртки которая вернёт ненулевой exit code если есть проблемы:</p>
+  <pre><code>#!/bin/bash
+# sorm_check.sh — алертит если есть проблемы метаданных или критические пропуски
+RESPONSE=$(curl -s -b /etc/sorm/cookies.txt \
+  "https://billing.example.com/admin/equipment/sorm_list/validate/")
+META=$(echo "$RESPONSE" | jq '.meta_issues | length')
+DATA=$(echo "$RESPONSE" | jq '.data_issues | length')
+if [ "$META" -gt 0 ]; then
+  echo "CRITICAL: $META проблем метаданных"
+  exit 2
+fi
+if [ "$DATA" -gt 0 ]; then
+  echo "WARNING: $DATA полей с пропусками"
+  exit 1
+fi
+echo "OK: все СОРМ-данные готовы"
+exit 0</code></pre>
+
+  <h3 id="sorm-attributes-crud">CRUD UserAttributes с СОРМ-метаданными</h3>
+
+  <p>Endpoint <code>/admin/dictionary/user_attributes_crud/[id]/</code> поддерживает GET/POST/DELETE и принимает 4 поля СОРМ-метаданных. Используется UI <code>/admin/dictionary/UserAttributes/</code>.</p>
+
+  <h4>GET — получение метаданных одного атрибута</h4>
+  <pre><code>curl -s -b cookies.txt \
+  "https://billing.example.com/admin/dictionary/user_attributes_crud/4/"
+
+# Ответ:
+{
+  "ok": true,
+  "id": 4,
+  "name": "ИНН",
+  "type_id": 1,
+  "is_sorm": true,
+  "sorm_field_code": "inn",
+  "sorm_report_types": "ABONENT,ABONENT_LEGAL",
+  "sorm_required": true,
+  "sorm_alt_names": "",
+  "use_count": 280,
+  ...
+}</code></pre>
+
+  <h4>POST — создать или обновить атрибут</h4>
+  <pre><code>curl -s -b cookies.txt -X POST \
+  "https://billing.example.com/admin/dictionary/user_attributes_crud/4/" \
+  -H "Content-Type: application/json" \
+  -H "X-CSRFToken: $CSRF" \
+  -d '{
+    "name": "ИНН",
+    "type_id": 1,
+    "is_sorm": true,
+    "sorm_field_code": "inn",
+    "sorm_report_types": "ABONENT,ABONENT_LEGAL",
+    "sorm_required": true,
+    "sorm_alt_names": ""
+  }'</code></pre>
+
+  <h4>Защита от случайного переименования</h4>
+  <p>Если попытаться переименовать СОРМ-атрибут (изменить <code>name</code>), сервер возвращает <strong>HTTP 400</strong> с флагом <code>sorm_rename_blocked: true</code>:</p>
+  <pre><code>{
+  "ok": false,
+  "error": "«ИНН» — реквизит из СОРМ-отчётности. Переименование сломает SQL-запросы в billing/views/sorm.py (`WHERE NAME=...`). Подтвердите force_sorm_rename=true если уверены.",
+  "sorm_rename_blocked": true
+}</code></pre>
+  <p>Чтобы всё-таки переименовать — повторить запрос с дополнительным полем <code>"force_sorm_rename": true</code> в JSON.</p>
+
+  <h4>Валидация sorm_field_code</h4>
+  <ul>
+    <li>Регэксп: <code>^[a-z][a-z0-9_]*$</code> — латинские буквы/цифры/<code>_</code>, первый символ — буква.</li>
+    <li>Уникальность <code>(report_type, field_code)</code> — нельзя 2 атрибута с одинаковым <code>inn</code> в одном отчёте. Backend ищет конфликты по каждому типу из <code>sorm_report_types</code>.</li>
+    <li>При нарушении — HTTP 400 с понятным текстом ошибки в поле <code>error</code>.</li>
+  </ul>
+
+  <h3 id="sorm-builder-python">SormReportBuilder — Python API</h3>
+
+  <p>Класс <code>billing.services.sorm_sql.SormReportBuilder</code> — программный API для генерации SQL и валидации метаданных. Используется внутри <code>billing.views.sorm</code> и Celery-задачи <code>run_report_export</code>, но доступен для скриптов и shell-сессий.</p>
+
+  <pre><code>from billing.services.sorm_sql import (
+    SormReportBuilder,
+    validate_sorm_data,
+)
+
+# Сгенерировать SQL для отчёта ABONENT_LEGAL
+sql = SormReportBuilder('ABONENT_LEGAL').build_sql()
+
+# Получить порядок колонок CSV
+codes = SormReportBuilder('ABONENT_LEGAL').get_field_codes()
+# ['inn', 'kpp', 'ogrn', 'legal_address', ...]
+
+# Список поддерживаемых типов отчётов
+SormReportBuilder.supported_report_types()
+# ['ABONENT_LEGAL']  # на build 411 только этот тип имеет builder-шаблон
+
+# Валидация метаданных (без обращения к БД абонентов)
+issues = SormReportBuilder.validate_meta()
+# [{'kind': 'missing_field_code', 'attribute_id': 13, ...}, ...]
+
+# Валидация заполнения данных у активных абонентов
+data_issues = validate_sorm_data(['ABONENT_LEGAL'])
+# [{'report_type': 'ABONENT_LEGAL', 'field_code': 'inn', 'missing': 241}, ...]</code></pre>
+
+  <p><strong>Исключения:</strong> <code>SormReportBuilderError</code> поднимается если тип отчёта не поддержан, либо нет ни одного СОРМ-атрибута с <code>sorm_field_code</code> для этого типа, либо у атрибута пустой <code>field_code</code>. В коде <code>billing/views/sorm.py</code> используется graceful fallback на захардкоженный legacy SQL — если builder упадёт, выгрузка продолжит работать.</p>
+
+  <!-- ============================================ -->
   <h2 id="ajax">AJAX-эндпоинты</h2>
   <div class="section-toc">
   <details open>
@@ -1262,8 +1452,8 @@ curl -s -X POST "https://billing.example.com/mobile-api/v1/push/register" \
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 411)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">30.04.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 411)</span>&nbsp;|&nbsp;<span data-smit="updated">30.04.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 413)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">30.04.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 413)</span>&nbsp;|&nbsp;<span data-smit="updated">30.04.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=220"></script>
