@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Community 17 — Мобильная авторизация | graphify</title>
+<title>Модуль 17 — Мобильная авторизация | graphify</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.26.0/dist/tabler-icons.min.css">
 <style>
 
@@ -82,14 +82,33 @@ tr:last-child td { border-bottom: none; }
 tbody tr { transition: background 0.1s; }
 tbody tr:hover { background: var(--bg3); }
 
-/* Badges */
+/* Badges — цветовая маркировка типов нод */
 .badge {
-  display: inline-block; padding: 2px 8px; border-radius: 12px;
+  display: inline-block; padding: 2px 9px; border-radius: 12px;
   font-size: 11px; font-weight: 600; white-space: nowrap;
+  border: 1px solid transparent;
 }
-.badge-code { background: rgba(78,121,167,0.25); color: #93c5fd; }
-.badge-rationale { background: rgba(148,163,184,0.15); color: var(--text2); }
-.badge-document { background: rgba(89,161,79,0.2); color: #86efac; }
+/* code → синий: Python/JS-исходники */
+.badge-code     { background: rgba(78, 121, 167, 0.22); color: #93c5fd; border-color: rgba(78,121,167,.35); }
+/* rationale → серый: архитектурные обоснования */
+.badge-rationale{ background: rgba(148, 163, 184, 0.18); color: #cbd5e1; border-color: rgba(148,163,184,.3); }
+/* document → зелёный: документация / readme */
+.badge-document { background: rgba(89, 161, 79, 0.22);  color: #86efac; border-color: rgba(89,161,79,.35); }
+/* template → фиолетовый: HTML-шаблоны */
+.badge-template { background: rgba(176, 122, 161, 0.22); color: #d8b4fe; border-color: rgba(176,122,161,.35); }
+/* config → оранжевый: yaml/json/ini */
+.badge-config   { background: rgba(245, 158, 11, 0.18); color: #fbbf24; border-color: rgba(245,158,11,.35); }
+/* test → жёлтый */
+.badge-test     { background: rgba(234, 179, 8, 0.18); color: #fde047; border-color: rgba(234,179,8,.35); }
+/* style → розовый */
+.badge-style    { background: rgba(244, 114, 182, 0.18); color: #f9a8d4; border-color: rgba(244,114,182,.35); }
+[data-theme=light] .badge-code     { color: #1e40af; }
+[data-theme=light] .badge-rationale{ color: #475569; }
+[data-theme=light] .badge-document { color: #166534; }
+[data-theme=light] .badge-template { color: #7e22ce; }
+[data-theme=light] .badge-config   { color: #b45309; }
+[data-theme=light] .badge-test     { color: #a16207; }
+[data-theme=light] .badge-style    { color: #be185d; }
 
 /* Community icon (card & legend) — square with themed SVG */
 .com-dot {
@@ -146,7 +165,8 @@ tbody tr:hover { background: var(--bg3); }
   cursor: pointer; line-height: 1;
 }
 .modal-close:hover { color: var(--text); }
-.modal-title { font-size: 16px; font-weight: 700; margin-bottom: 10px; padding-right: 28px; }
+.modal-title { font-size: 16px; font-weight: 700; margin-bottom: 10px; padding-right: 28px; line-height: 1.35; }
+.modal-title .modal-alt-name { color: var(--text2); font-weight: 400; font-size: 13px; }
 .modal-desc { font-size: 13px; color: var(--text2); line-height: 1.45; margin-bottom: 14px; padding: 8px 10px; background: var(--bg3); border-left: 3px solid var(--primary); border-radius: 4px; }
 .modal-meta-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
 .modal-meta-row .mm-chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; background: var(--bg3); border: 1px solid var(--border); border-radius: 14px; font-size: 11.5px; }
@@ -182,8 +202,27 @@ tbody tr:hover { background: var(--bg3); }
 
 /* Stat row */
 .stat-row { display: flex; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
-.stat-item { color: var(--text2); font-size: 13px; }
+.stat-item { color: var(--text2); font-size: 13px; position: relative; }
 .stat-item strong { color: var(--text); font-size: 22px; display: block; }
+/* «?»-tooltip — нативный title через ::after не отрисуется на mobile, поэтому JS-tooltip */
+.help-q {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text3); font-size: 9px; font-weight: 700;
+  margin-left: 4px; cursor: help; vertical-align: middle;
+  transition: background .15s, color .15s;
+}
+.help-q:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+.help-tip {
+  position: fixed; max-width: 280px;
+  background: var(--bg2); color: var(--text); border: 1px solid var(--border);
+  border-radius: 6px; padding: 8px 11px; font-size: 12px; line-height: 1.45;
+  box-shadow: 0 4px 16px rgba(0,0,0,.35); z-index: 5000; pointer-events: none;
+  display: none;
+}
+.help-tip.visible { display: block; }
+.help-tip b { color: var(--primary-l); }
 
 /* Empty */
 .empty { color: var(--text3); text-align: center; padding: 32px; font-size: 14px; }
@@ -304,7 +343,7 @@ body { padding-top: var(--header-height); }
     <a href="../graph.html" class="dtn-link" title="Граф зависимостей">
       <i class="ti ti-topology-star-3 dtn-ico"></i><span class="dtn-txt">Граф</span>
     </a>
-    <a href="index.html" class="dtn-link" title="Wiki сообществ">
+    <a href="index.html" class="dtn-link" title="Wiki модулей">
       <i class="ti ti-notebook dtn-ico"></i><span class="dtn-txt">Wiki</span>
     </a>
     <a href="../help.html" class="dtn-link" title="graphify CLI">
@@ -325,23 +364,23 @@ body { padding-top: var(--header-height); }
     <div class="comm-icon" style="background:#a0cbe8;"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg></div>
     <div style="flex:1;min-width:0;">
       <div class="comm-name">Мобильная авторизация</div>
-      <div class="comm-id">Community #17</div>
+      <div class="comm-id">Модуль #17</div>
       <div class="comm-desc-hdr">Mobile-авторизация: JWT, Telegram OAuth, VK OAuth, login по договору.</div>
       <div style="margin-top:10px;">
-        <a href="index.html" class="dtn-link" style="font-size:12px;padding:4px 10px;">← Все сообщества</a>
+        <a href="index.html" class="dtn-link" style="font-size:12px;padding:4px 10px;">← Все модули</a>
       </div>
     </div>
   </div>
 
   <!-- Stats -->
   <div class="stat-row">
-    <div class="stat-item"><strong>18</strong> нод</div>
-    <div class="stat-item"><strong>28</strong> внутренних рёбер</div>
-    <div class="stat-item"><strong>22</strong> внешних рёбер</div>
+    <div class="stat-item"><strong>18</strong> нод <span class="help-q" data-help="<b>Ноды</b> — модули, файлы и классы внутри одного модуля архитектуры. Один узел графа = один Python-файл, класс или функция. Тестовые ноды (из tests/) скрыты.">?</span></div>
+    <div class="stat-item"><strong>28</strong> внутренних связей <span class="help-q" data-help="<b>Внутренние связи</b> — import-зависимости между нодами одного модуля. Чем больше — тем плотнее кластер «варится в собственном соку».">?</span></div>
+    <div class="stat-item"><strong>22</strong> внешних связей <span class="help-q" data-help="<b>Внешние связи</b> — import-зависимости к нодам других модулей. Показывают, где модуль контактирует с остальной системой.">?</span></div>
   </div>
 
   <!-- Related communities -->
-  <div class="section-heading">Связанные сообщества</div>
+  <div class="section-heading">Связанные модули <span class="help-q" data-help="<b>Связанные модули</b> — другие модули графа, к которым ведут внешние связи. Чипы отсортированы по количеству общих связей. Клик — перейти на их wiki-страницу.">?</span></div>
   <div class="related-grid" id="relatedGrid"></div>
 
   <!-- Node search -->
@@ -358,7 +397,7 @@ body { padding-top: var(--header-height); }
         <th data-col="label">Название <i class="sort-icon"></i></th>
         <th data-col="file_type">Тип <i class="sort-icon"></i></th>
         <th data-col="short_path">Файл <i class="sort-icon"></i></th>
-        <th data-col="degree">Степень <i class="sort-icon"></i></th>
+        <th data-col="degree">Связей <i class="sort-icon"></i></th>
       </tr></thead>
       <tbody id="nodesTbody"></tbody>
     </table>
@@ -390,14 +429,53 @@ document.querySelectorAll('.dtn-theme-btn').forEach(btn => {
   });
 });
 
+// «?» help tooltip — общий handler для всех .help-q элементов
+(function setupHelpTooltip() {
+  const tip = document.createElement('div');
+  tip.className = 'help-tip';
+  document.body.appendChild(tip);
+  let activeEl = null;
+  function show(el) {
+    activeEl = el;
+    tip.innerHTML = el.dataset.help || '';
+    const r = el.getBoundingClientRect();
+    tip.classList.add('visible');
+    // Позиционируем над элементом, если выше есть место, иначе снизу
+    const tipR = tip.getBoundingClientRect();
+    let top = r.top - tipR.height - 8;
+    if (top < 8) top = r.bottom + 8;
+    let left = r.left + r.width / 2 - tipR.width / 2;
+    if (left < 8) left = 8;
+    if (left + tipR.width > window.innerWidth - 8) left = window.innerWidth - tipR.width - 8;
+    tip.style.left = left + 'px';
+    tip.style.top  = top  + 'px';
+  }
+  function hide() { activeEl = null; tip.classList.remove('visible'); }
+  document.addEventListener('mouseover', e => {
+    const el = e.target.closest('.help-q');
+    if (el && el !== activeEl) show(el);
+  });
+  document.addEventListener('mouseout', e => {
+    const el = e.target.closest('.help-q');
+    if (el && el === activeEl) hide();
+  });
+  // Click toggle (mobile)
+  document.addEventListener('click', e => {
+    const el = e.target.closest('.help-q');
+    if (!el) { if (activeEl) hide(); return; }
+    e.stopPropagation();
+    if (el === activeEl) hide(); else show(el);
+  });
+})();
 
-const NODES = [{"id": "anonratethrottle", "label": "AnonRateThrottle", "file_type": "code", "source_file": "", "short_path": "—", "source_location": "", "degree": 1, "neighbors": [{"id": "throttling_mobileloginthrottle", "label": "MobileLoginThrottle", "cid": "17"}]}, {"id": "auth_authenticate_subscriber", "label": "authenticate_subscriber()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\views\\auth.py", "short_path": "views/auth.py", "source_location": "L9", "degree": 4, "neighbors": [{"id": "lk_views_auth_py", "label": "auth.py", "cid": "17"}, {"id": "form_searchqueryset_filter", "label": ".filter()", "cid": "0"}, {"id": "auth_login_view", "label": "login_view()", "cid": "17"}, {"id": "auth_rationale_10", "label": "Authenticate subscriber by Users.login + Users.psw (plaintext).", "cid": "17"}]}, {"id": "auth_find_billing_user", "label": "_find_billing_user()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\auth.py", "short_path": "views/auth.py", "source_location": "L19", "degree": 4, "neighbors": [{"id": "form_searchqueryset_filter", "label": ".filter()", "cid": "0"}, {"id": "auth_login_view", "label": "login_view()", "cid": "17"}, {"id": "auth_rationale_20", "label": "Find billing Users by contract_number or login (with/without leading zero).", "cid": "17"}, {"id": "mobile_api_views_auth_py", "label": "auth.py", "cid": "17"}]}, {"id": "auth_login_view", "label": "login_view()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\views\\auth.py", "short_path": "views/auth.py", "source_location": "L50", "degree": 10, "neighbors": [{"id": "lk_views_auth_py", "label": "auth.py", "cid": "17"}, {"id": "mobile_api_views_auth_py", "label": "auth.py", "cid": "17"}, {"id": "serializers_loginserializer", "label": "LoginSerializer", "cid": "17"}, {"id": "helpdesk_plaintextwidget_render", "label": ".render()", "cid": "1"}, {"id": "serializers_tokenserializer", "label": "TokenSerializer", "cid": "17"}, {"id": "auth_rationale_55", "label": "POST /mobile-api/v1/auth/login     Authenticate subscriber by contract/login +", "cid": "17"}, {"id": "auth_verify_telegram_data", "label": "_verify_telegram_data()", "cid": "17"}, {"id": "auth_find_billing_user", "label": "_find_billing_user()", "cid": "17"}, {"id": "auth_authenticate_subscriber", "label": "authenticate_subscriber()", "cid": "17"}, {"id": "usluga_uslugachangeview_get", "label": ".get()", "cid": "1"}]}, {"id": "auth_logout_view", "label": "logout_view()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\views\\auth.py", "short_path": "views/auth.py", "source_location": "L97", "degree": 1, "neighbors": [{"id": "lk_views_auth_py", "label": "auth.py", "cid": "17"}]}, {"id": "auth_rationale_1", "label": "Mobile API authentication views.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\auth.py", "short_path": "views/auth.py", "source_location": "L1", "degree": 15, "neighbors": [{"id": "mobile_api_views_auth_py", "label": "auth.py", "cid": "17"}, {"id": "lookups_homes", "label": "Homes", "cid": "3"}, {"id": "stubs_abonentsblock", "label": "AbonentsBlock", "cid": "3"}, {"id": "admin_accounts_adminaccounts", "label": "AdminAccounts", "cid": "3"}, {"id": "form_changeview", "label": "ChangeView", "cid": "5"}, {"id": "serializers_loginserializer", "label": "LoginSerializer", "cid": "17"}, {"id": "throttling_mobileloginthrottle", "label": "MobileLoginThrottle", "cid": "17"}, {"id": "serializers_tokenserializer", "label": "TokenSerializer", "cid": "17"}, {"id": "remote_auth_stack_remoteauthstack", "label": "RemoteAuthStack", "cid": "5"}, {"id": "stubs_hdsk", "label": "Hdsk", "cid": "5"}, {"id": "finance_operations_financeoperations", "label": "FinanceOperations", "cid": "3"}, {"id": "billing_views_auth_py", "label": "auth.py", "cid": "5"}, {"id": "abonents_abonents", "label": "Abonents", "cid": "5"}]}, {"id": "auth_rationale_10", "label": "Authenticate subscriber by Users.login + Users.psw (plaintext).", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\views\\auth.py", "short_path": "views/auth.py", "source_location": "L10", "degree": 2, "neighbors": [{"id": "auth_authenticate_subscriber", "label": "authenticate_subscriber()", "cid": "17"}, {"id": "models_socialauth", "label": "SocialAuth", "cid": "3"}]}, {"id": "auth_rationale_20", "label": "Find billing Users by contract_number or login (with/without leading zero).", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\auth.py", "short_path": "views/auth.py", "source_location": "L20", "degree": 4, "neighbors": [{"id": "throttling_mobileloginthrottle", "label": "MobileLoginThrottle", "cid": "17"}, {"id": "serializers_loginserializer", "label": "LoginSerializer", "cid": "17"}, {"id": "serializers_tokenserializer", "label": "TokenSerializer", "cid": "17"}, {"id": "auth_find_billing_user", "label": "_find_billing_user()", "cid": "17"}]}, {"id": "auth_rationale_24", "label": "Verify Telegram Login Widget data using bot token.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\views\\auth.py", "short_path": "views/auth.py", "source_location": "L24", "degree": 2, "neighbors": [{"id": "auth_verify_telegram_data", "label": "_verify_telegram_data()", "cid": "17"}, {"id": "models_socialauth", "label": "SocialAuth", "cid": "3"}]}, {"id": "auth_rationale_55", "label": "POST /mobile-api/v1/auth/login     Authenticate subscriber by contract/login +", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\auth.py", "short_path": "views/auth.py", "source_location": "L55", "degree": 4, "neighbors": [{"id": "auth_login_view", "label": "login_view()", "cid": "17"}, {"id": "serializers_loginserializer", "label": "LoginSerializer", "cid": "17"}, {"id": "throttling_mobileloginthrottle", "label": "MobileLoginThrottle", "cid": "17"}, {"id": "serializers_tokenserializer", "label": "TokenSerializer", "cid": "17"}]}, {"id": "auth_verify_telegram_data", "label": "_verify_telegram_data()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\views\\auth.py", "short_path": "views/auth.py", "source_location": "L23", "degree": 5, "neighbors": [{"id": "lk_views_auth_py", "label": "auth.py", "cid": "17"}, {"id": "profile_profile_view", "label": "profile_view()", "cid": "8"}, {"id": "auth_rationale_24", "label": "Verify Telegram Login Widget data using bot token.", "cid": "17"}, {"id": "auth_login_view", "label": "login_view()", "cid": "17"}, {"id": "usluga_uslugachangeview_get", "label": ".get()", "cid": "1"}]}, {"id": "lk_views_auth_py", "label": "auth.py", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\views\\auth.py", "short_path": "views/auth.py", "source_location": "L1", "degree": 10, "neighbors": [{"id": "django_shortcuts", "label": "django_shortcuts", "cid": ""}, {"id": "hmac", "label": "hmac", "cid": ""}, {"id": "django_views_decorators_http", "label": "django_views_decorators_http", "cid": ""}, {"id": "hashlib", "label": "hashlib", "cid": ""}, {"id": "time", "label": "time", "cid": ""}, {"id": "auth_verify_telegram_data", "label": "_verify_telegram_data()", "cid": "17"}, {"id": "auth_logout_view", "label": "logout_view()", "cid": "17"}, {"id": "django_conf", "label": "django_conf", "cid": ""}, {"id": "auth_authenticate_subscriber", "label": "authenticate_subscriber()", "cid": "17"}, {"id": "auth_login_view", "label": "login_view()", "cid": "17"}]}, {"id": "mobile_api_throttling_py", "label": "throttling.py", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\throttling.py", "short_path": "mobile_api/throttling.py", "source_location": "L1", "degree": 4, "neighbors": [{"id": "throttling_mobileuserthrottle", "label": "MobileUserThrottle", "cid": "4"}, {"id": "throttling_mobileloginthrottle", "label": "MobileLoginThrottle", "cid": "17"}, {"id": "rest_framework_throttling", "label": "rest_framework_throttling", "cid": ""}, {"id": "throttling_rationale_1", "label": "Rate limiting for mobile API.", "cid": "17"}]}, {"id": "mobile_api_views_auth_py", "label": "auth.py", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\auth.py", "short_path": "views/auth.py", "source_location": "L1", "degree": 12, "neighbors": [{"id": "rest_framework_decorators", "label": "rest_framework_decorators", "cid": ""}, {"id": "hmac", "label": "hmac", "cid": ""}, {"id": "auth_rationale_1", "label": "Mobile API authentication views.", "cid": "17"}, {"id": "mobile_api_throttling", "label": "mobile_api_throttling", "cid": ""}, {"id": "auth_login_view", "label": "login_view()", "cid": "17"}, {"id": "mobile_api_serializers", "label": "mobile_api_serializers", "cid": ""}, {"id": "rest_framework_response", "label": "rest_framework_response", "cid": ""}, {"id": "rest_framework", "label": "rest_framework", "cid": ""}, {"id": "auth_find_billing_user", "label": "_find_billing_user()", "cid": "17"}, {"id": "django_contrib_auth", "label": "django_contrib_auth", "cid": ""}, {"id": "rest_framework_simplejwt_tokens", "label": "rest_framework_simplejwt_tokens", "cid": ""}, {"id": "rest_framework_permissions", "label": "rest_framework_permissions", "cid": ""}]}, {"id": "serializers_loginserializer", "label": "LoginSerializer", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\serializers.py", "short_path": "mobile_api/serializers.py", "source_location": "L15", "degree": 5, "neighbors": [{"id": "auth_rationale_1", "label": "Mobile API authentication views.", "cid": "17"}, {"id": "mobile_api_serializers_py", "label": "serializers.py", "cid": "4"}, {"id": "auth_rationale_55", "label": "POST /mobile-api/v1/auth/login     Authenticate subscriber by contract/login +", "cid": "17"}, {"id": "auth_rationale_20", "label": "Find billing Users by contract_number or login (with/without leading zero).", "cid": "17"}, {"id": "auth_login_view", "label": "login_view()", "cid": "17"}]}, {"id": "serializers_tokenserializer", "label": "TokenSerializer", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\serializers.py", "short_path": "mobile_api/serializers.py", "source_location": "L20", "degree": 5, "neighbors": [{"id": "auth_rationale_1", "label": "Mobile API authentication views.", "cid": "17"}, {"id": "mobile_api_serializers_py", "label": "serializers.py", "cid": "4"}, {"id": "auth_rationale_55", "label": "POST /mobile-api/v1/auth/login     Authenticate subscriber by contract/login +", "cid": "17"}, {"id": "auth_rationale_20", "label": "Find billing Users by contract_number or login (with/without leading zero).", "cid": "17"}, {"id": "auth_login_view", "label": "login_view()", "cid": "17"}]}, {"id": "throttling_mobileloginthrottle", "label": "MobileLoginThrottle", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\throttling.py", "short_path": "mobile_api/throttling.py", "source_location": "L9", "degree": 5, "neighbors": [{"id": "auth_rationale_1", "label": "Mobile API authentication views.", "cid": "17"}, {"id": "auth_rationale_55", "label": "POST /mobile-api/v1/auth/login     Authenticate subscriber by contract/login +", "cid": "17"}, {"id": "auth_rationale_20", "label": "Find billing Users by contract_number or login (with/without leading zero).", "cid": "17"}, {"id": "mobile_api_throttling_py", "label": "throttling.py", "cid": "17"}, {"id": "anonratethrottle", "label": "AnonRateThrottle", "cid": "17"}]}, {"id": "throttling_rationale_1", "label": "Rate limiting for mobile API.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\throttling.py", "short_path": "mobile_api/throttling.py", "source_location": "L1", "degree": 1, "neighbors": [{"id": "mobile_api_throttling_py", "label": "throttling.py", "cid": "17"}]}];
+
+const NODES = [{"id": "anonratethrottle", "label": "AnonRateThrottle", "file_type": "code", "source_file": "", "short_path": "—", "source_location": "", "degree": 1, "neighbors": [{"id": "throttling_mobileloginthrottle", "label": "MobileLoginThrottle", "cid": "17"}]}, {"id": "auth_authenticate_subscriber", "label": "authenticate_subscriber()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\views\\auth.py", "short_path": "views/auth.py", "source_location": "L9", "degree": 4, "neighbors": [{"id": "auth_login_view", "label": "login_view()", "cid": "17"}, {"id": "auth_rationale_10", "label": "Authenticate subscriber by Users.login + Users.psw (plaintext).", "cid": "17"}, {"id": "form_searchqueryset_filter", "label": ".filter()", "cid": "0"}, {"id": "lk_views_auth_py", "label": "auth.py", "cid": "17"}]}, {"id": "auth_find_billing_user", "label": "_find_billing_user()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\auth.py", "short_path": "views/auth.py", "source_location": "L19", "degree": 4, "neighbors": [{"id": "auth_login_view", "label": "login_view()", "cid": "17"}, {"id": "mobile_api_views_auth_py", "label": "auth.py", "cid": "17"}, {"id": "form_searchqueryset_filter", "label": ".filter()", "cid": "0"}, {"id": "auth_rationale_20", "label": "Find billing Users by contract_number or login (with/without leading zero).", "cid": "17"}]}, {"id": "auth_login_view", "label": "login_view()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\views\\auth.py", "short_path": "views/auth.py", "source_location": "L50", "degree": 10, "neighbors": [{"id": "auth_rationale_55", "label": "POST /mobile-api/v1/auth/login     Authenticate subscriber by contract/login +", "cid": "17"}, {"id": "auth_find_billing_user", "label": "_find_billing_user()", "cid": "17"}, {"id": "usluga_uslugachangeview_get", "label": ".get()", "cid": "1"}, {"id": "auth_authenticate_subscriber", "label": "authenticate_subscriber()", "cid": "17"}, {"id": "lk_views_auth_py", "label": "auth.py", "cid": "17"}, {"id": "auth_verify_telegram_data", "label": "_verify_telegram_data()", "cid": "17"}, {"id": "helpdesk_plaintextwidget_render", "label": ".render()", "cid": "1"}, {"id": "serializers_loginserializer", "label": "LoginSerializer", "cid": "17"}, {"id": "serializers_tokenserializer", "label": "TokenSerializer", "cid": "17"}, {"id": "mobile_api_views_auth_py", "label": "auth.py", "cid": "17"}]}, {"id": "auth_logout_view", "label": "logout_view()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\views\\auth.py", "short_path": "views/auth.py", "source_location": "L97", "degree": 1, "neighbors": [{"id": "lk_views_auth_py", "label": "auth.py", "cid": "17"}]}, {"id": "auth_rationale_1", "label": "Mobile API authentication views.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\auth.py", "short_path": "views/auth.py", "source_location": "L1", "degree": 15, "neighbors": [{"id": "admin_accounts_adminaccounts", "label": "AdminAccounts", "cid": "3"}, {"id": "serializers_tokenserializer", "label": "TokenSerializer", "cid": "17"}, {"id": "throttling_mobileloginthrottle", "label": "MobileLoginThrottle", "cid": "17"}, {"id": "stubs_abonentsblock", "label": "AbonentsBlock", "cid": "3"}, {"id": "finance_operations_financeoperations", "label": "FinanceOperations", "cid": "3"}, {"id": "billing_views_auth_py", "label": "auth.py", "cid": "5"}, {"id": "form_changeview", "label": "ChangeView", "cid": "5"}, {"id": "stubs_hdsk", "label": "Hdsk", "cid": "5"}, {"id": "serializers_loginserializer", "label": "LoginSerializer", "cid": "17"}, {"id": "lookups_homes", "label": "Homes", "cid": "3"}, {"id": "mobile_api_views_auth_py", "label": "auth.py", "cid": "17"}, {"id": "remote_auth_stack_remoteauthstack", "label": "RemoteAuthStack", "cid": "5"}, {"id": "abonents_abonents", "label": "Abonents", "cid": "5"}]}, {"id": "auth_rationale_10", "label": "Authenticate subscriber by Users.login + Users.psw (plaintext).", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\views\\auth.py", "short_path": "views/auth.py", "source_location": "L10", "degree": 2, "neighbors": [{"id": "auth_authenticate_subscriber", "label": "authenticate_subscriber()", "cid": "17"}, {"id": "models_socialauth", "label": "SocialAuth", "cid": "3"}]}, {"id": "auth_rationale_20", "label": "Find billing Users by contract_number or login (with/without leading zero).", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\auth.py", "short_path": "views/auth.py", "source_location": "L20", "degree": 4, "neighbors": [{"id": "throttling_mobileloginthrottle", "label": "MobileLoginThrottle", "cid": "17"}, {"id": "serializers_tokenserializer", "label": "TokenSerializer", "cid": "17"}, {"id": "auth_find_billing_user", "label": "_find_billing_user()", "cid": "17"}, {"id": "serializers_loginserializer", "label": "LoginSerializer", "cid": "17"}]}, {"id": "auth_rationale_24", "label": "Verify Telegram Login Widget data using bot token.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\views\\auth.py", "short_path": "views/auth.py", "source_location": "L24", "degree": 2, "neighbors": [{"id": "models_socialauth", "label": "SocialAuth", "cid": "3"}, {"id": "auth_verify_telegram_data", "label": "_verify_telegram_data()", "cid": "17"}]}, {"id": "auth_rationale_55", "label": "POST /mobile-api/v1/auth/login     Authenticate subscriber by contract/login +", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\auth.py", "short_path": "views/auth.py", "source_location": "L55", "degree": 4, "neighbors": [{"id": "auth_login_view", "label": "login_view()", "cid": "17"}, {"id": "serializers_tokenserializer", "label": "TokenSerializer", "cid": "17"}, {"id": "throttling_mobileloginthrottle", "label": "MobileLoginThrottle", "cid": "17"}, {"id": "serializers_loginserializer", "label": "LoginSerializer", "cid": "17"}]}, {"id": "auth_verify_telegram_data", "label": "_verify_telegram_data()", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\views\\auth.py", "short_path": "views/auth.py", "source_location": "L23", "degree": 5, "neighbors": [{"id": "auth_login_view", "label": "login_view()", "cid": "17"}, {"id": "usluga_uslugachangeview_get", "label": ".get()", "cid": "1"}, {"id": "auth_rationale_24", "label": "Verify Telegram Login Widget data using bot token.", "cid": "17"}, {"id": "lk_views_auth_py", "label": "auth.py", "cid": "17"}, {"id": "profile_profile_view", "label": "profile_view()", "cid": "8"}]}, {"id": "lk_views_auth_py", "label": "auth.py", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\lk\\views\\auth.py", "short_path": "views/auth.py", "source_location": "L1", "degree": 10, "neighbors": [{"id": "auth_login_view", "label": "login_view()", "cid": "17"}, {"id": "hmac", "label": "hmac", "cid": ""}, {"id": "auth_authenticate_subscriber", "label": "authenticate_subscriber()", "cid": "17"}, {"id": "django_shortcuts", "label": "django_shortcuts", "cid": ""}, {"id": "auth_verify_telegram_data", "label": "_verify_telegram_data()", "cid": "17"}, {"id": "auth_logout_view", "label": "logout_view()", "cid": "17"}, {"id": "time", "label": "time", "cid": ""}, {"id": "django_views_decorators_http", "label": "django_views_decorators_http", "cid": ""}, {"id": "django_conf", "label": "django_conf", "cid": ""}, {"id": "hashlib", "label": "hashlib", "cid": ""}]}, {"id": "mobile_api_throttling_py", "label": "throttling.py", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\throttling.py", "short_path": "mobile_api/throttling.py", "source_location": "L1", "degree": 4, "neighbors": [{"id": "throttling_mobileuserthrottle", "label": "MobileUserThrottle", "cid": "4"}, {"id": "rest_framework_throttling", "label": "rest_framework_throttling", "cid": ""}, {"id": "throttling_mobileloginthrottle", "label": "MobileLoginThrottle", "cid": "17"}, {"id": "throttling_rationale_1", "label": "Rate limiting for mobile API.", "cid": "17"}]}, {"id": "mobile_api_views_auth_py", "label": "auth.py", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\views\\auth.py", "short_path": "views/auth.py", "source_location": "L1", "degree": 12, "neighbors": [{"id": "rest_framework_decorators", "label": "rest_framework_decorators", "cid": ""}, {"id": "auth_login_view", "label": "login_view()", "cid": "17"}, {"id": "auth_find_billing_user", "label": "_find_billing_user()", "cid": "17"}, {"id": "hmac", "label": "hmac", "cid": ""}, {"id": "django_contrib_auth", "label": "django_contrib_auth", "cid": ""}, {"id": "auth_rationale_1", "label": "Mobile API authentication views.", "cid": "17"}, {"id": "mobile_api_throttling", "label": "mobile_api_throttling", "cid": ""}, {"id": "rest_framework_permissions", "label": "rest_framework_permissions", "cid": ""}, {"id": "mobile_api_serializers", "label": "mobile_api_serializers", "cid": ""}, {"id": "rest_framework", "label": "rest_framework", "cid": ""}, {"id": "rest_framework_simplejwt_tokens", "label": "rest_framework_simplejwt_tokens", "cid": ""}, {"id": "rest_framework_response", "label": "rest_framework_response", "cid": ""}]}, {"id": "serializers_loginserializer", "label": "LoginSerializer", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\serializers.py", "short_path": "mobile_api/serializers.py", "source_location": "L15", "degree": 5, "neighbors": [{"id": "mobile_api_serializers_py", "label": "serializers.py", "cid": "4"}, {"id": "auth_login_view", "label": "login_view()", "cid": "17"}, {"id": "auth_rationale_55", "label": "POST /mobile-api/v1/auth/login     Authenticate subscriber by contract/login +", "cid": "17"}, {"id": "auth_rationale_1", "label": "Mobile API authentication views.", "cid": "17"}, {"id": "auth_rationale_20", "label": "Find billing Users by contract_number or login (with/without leading zero).", "cid": "17"}]}, {"id": "serializers_tokenserializer", "label": "TokenSerializer", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\serializers.py", "short_path": "mobile_api/serializers.py", "source_location": "L20", "degree": 5, "neighbors": [{"id": "mobile_api_serializers_py", "label": "serializers.py", "cid": "4"}, {"id": "auth_login_view", "label": "login_view()", "cid": "17"}, {"id": "auth_rationale_55", "label": "POST /mobile-api/v1/auth/login     Authenticate subscriber by contract/login +", "cid": "17"}, {"id": "auth_rationale_1", "label": "Mobile API authentication views.", "cid": "17"}, {"id": "auth_rationale_20", "label": "Find billing Users by contract_number or login (with/without leading zero).", "cid": "17"}]}, {"id": "throttling_mobileloginthrottle", "label": "MobileLoginThrottle", "file_type": "code", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\throttling.py", "short_path": "mobile_api/throttling.py", "source_location": "L9", "degree": 5, "neighbors": [{"id": "auth_rationale_55", "label": "POST /mobile-api/v1/auth/login     Authenticate subscriber by contract/login +", "cid": "17"}, {"id": "auth_rationale_1", "label": "Mobile API authentication views.", "cid": "17"}, {"id": "mobile_api_throttling_py", "label": "throttling.py", "cid": "17"}, {"id": "anonratethrottle", "label": "AnonRateThrottle", "cid": "17"}, {"id": "auth_rationale_20", "label": "Find billing Users by contract_number or login (with/without leading zero).", "cid": "17"}]}, {"id": "throttling_rationale_1", "label": "Rate limiting for mobile API.", "file_type": "rationale", "source_file": "D:\\DevTools\\Database\\2026Carbon\\carbon_modern\\mobile_api\\throttling.py", "short_path": "mobile_api/throttling.py", "source_location": "L1", "degree": 1, "neighbors": [{"id": "mobile_api_throttling_py", "label": "throttling.py", "cid": "17"}]}];
 const RELATED = [{"cid": "3", "label": "Поиск абонентов", "color": "#76b7b2", "count": 7, "icon": "search"}, {"cid": "5", "label": "Авторизация", "color": "#edc948", "count": 6, "icon": "lock"}, {"cid": "4", "label": "Мобильный API", "color": "#59a14f", "count": 3, "icon": "device-mobile"}, {"cid": "1", "label": "Личный кабинет", "color": "#f28e2b", "count": 3, "icon": "home"}, {"cid": "0", "label": "Карточка абонента", "color": "#4e79a7", "count": 2, "icon": "user"}, {"cid": "8", "label": "Резервные копии", "color": "#9c755f", "count": 1, "icon": "database"}];
 
 // Render related communities
 const relGrid = document.getElementById('relatedGrid');
 if (RELATED.length === 0) {
-  relGrid.innerHTML = '<span style="color:var(--text3);font-size:13px;">Нет связей с другими сообществами</span>';
+  relGrid.innerHTML = '<span style="color:var(--text3);font-size:13px;">Нет связей с другими модулями</span>';
 } else {
   RELATED.forEach(r => {
     const a = document.createElement('a');
@@ -414,10 +492,84 @@ function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 function badgeHtml(ft) {
-  if (ft === 'code') return '<span class="badge badge-code">code</span>';
-  if (ft === 'rationale') return '<span class="badge badge-rationale">rationale</span>';
-  if (ft === 'document') return '<span class="badge badge-document">document</span>';
+  // Русские названия + цветовая маркировка
+  const map = {
+    code:      ['Код',         'badge-code'],
+    rationale: ['Обоснование', 'badge-rationale'],
+    document:  ['Документ',    'badge-document'],
+    template:  ['Шаблон',      'badge-template'],
+    config:    ['Конфиг',      'badge-config'],
+    test:      ['Тест',        'badge-test'],
+    tests:     ['Тест',        'badge-test'],
+    style:     ['Стиль',       'badge-style'],
+  };
+  const m = map[ft];
+  if (m) return '<span class="badge ' + m[1] + '">' + m[0] + '</span>';
   return '<span class="badge">' + escHtml(ft) + '</span>';
+}
+
+// Переводит длинные английские label-ы (сгенерённые семантическим extract-ом)
+// на русский по словарю-эвристике. Возвращает альтернативное имя или '' если перевод не найден.
+function humanizeName(label) {
+  if (!label) return '';
+  const lbl = String(label);
+  // Если название уже на кириллице — пропускаем
+  if (/[А-Яа-яЁё]/.test(lbl)) return '';
+  // Слишком короткое (имя класса/функции) — без перевода
+  if (lbl.length < 25) return '';
+  // Словарь популярных шаблонов «Английский → Русский»
+  const dict = [
+    [/^Send notification about[^.]+/i,      'Отправка уведомления о событии'],
+    [/^Send Telegram[^.]+/i,                'Отправка сообщения в Telegram'],
+    [/^Send email[^.]+/i,                   'Отправка email-уведомления'],
+    [/^Send SMS[^.]+/i,                     'Отправка SMS-уведомления'],
+    [/^Generate (PDF|export|report|invoice)[^.]+/i, 'Генерация отчёта/документа'],
+    [/^Render (template|form|page)[^.]+/i,  'Рендер шаблона/страницы'],
+    [/^Get list of[^.]+/i,                  'Получить список'],
+    [/^List of[^.]+/i,                      'Список'],
+    [/^Return (list|set|dict|json)[^.]+/i,  'Возврат структурированных данных'],
+    [/^Returns? (json|response|html|csv)[^.]+/i, 'Возврат данных API'],
+    [/^Build (context|payload|request)[^.]+/i, 'Сборка запроса/контекста'],
+    [/^Common context[^.]+/i,               'Общий контекст шаблона'],
+    [/^Universal context[^.]+/i,            'Универсальный контекст'],
+    [/^Creates?\s/i,                        'Создание сущности'],
+    [/^Updates?\s/i,                        'Обновление сущности'],
+    [/^Deletes?\s/i,                        'Удаление сущности'],
+    [/^Imports?\s/i,                        'Импорт данных'],
+    [/^Exports?\s/i,                        'Экспорт данных'],
+    [/^Sync(s|hronize)?\s/i,                'Синхронизация'],
+    [/^Validate[^.]+/i,                     'Валидация данных'],
+    [/^Process (payment|webhook|request)[^.]+/i, 'Обработка платежа/webhook'],
+    [/^Handle (webhook|event|signal)[^.]+/i,'Обработчик события'],
+    [/^Celery beat task[^.]+/i,             'Периодическая Celery-задача'],
+    [/^Celery (task|worker)[^.]+/i,         'Celery-задача (фоновая)'],
+    [/^POST\s/i,                            'POST-обработчик'],
+    [/^GET\s/i,                             'GET-обработчик'],
+    [/^Redirect to[^.]+/i,                  'Редирект на другой URL'],
+    [/^Redirect[^.]*/i,                     'Редирект'],
+    [/^Test (connection|FTP|SSH|API)[^.]+/i,'Проверка соединения'],
+    [/^Run (script|command|task)[^.]+/i,    'Запуск скрипта/команды'],
+    [/^Show (form|page|dialog)[^.]+/i,      'Отображение формы/страницы'],
+    [/^Save\s/i,                            'Сохранение'],
+    [/^Load\s/i,                            'Загрузка'],
+    [/^Apply (filter|migration|settings)[^.]+/i, 'Применение настроек/миграции'],
+    [/^Migrate[^.]+/i,                      'Миграция данных/схемы'],
+    [/^Build (config|payload|context)[^.]+/i, 'Сборка структуры'],
+    [/^Compute[^.]+/i,                      'Вычисление'],
+    [/^Calculate[^.]+/i,                    'Расчёт'],
+    [/^Check[^.]+/i,                        'Проверка'],
+    [/^Init[^.]+/i,                         'Инициализация'],
+    [/^TODO:?\s/i,                          'TODO: задача в коде'],
+    [/^FIXME:?\s/i,                         'FIXME: исправить'],
+    [/^Helper[^.]+/i,                       'Вспомогательная функция'],
+    [/^Universal\s/i,                       'Универсальный обработчик'],
+    [/^Write (CSV|JSON|XML)[^.]+/i,         'Запись в CSV/JSON/XML'],
+    [/^Core (export|import|logic)[^.]+/i,   'Основная логика модуля'],
+  ];
+  for (const [re, ru] of dict) {
+    if (re.test(lbl)) return ru;
+  }
+  return '';
 }
 
 // Table state
@@ -461,8 +613,12 @@ function render() {
   }
   empty.style.display = 'none';
   tbody.innerHTML = filteredNodes.map((n, i) => {
-    const lbl = n.label.length > 70 ? n.label.slice(0,70)+'…' : n.label;
-    return `<tr data-idx="${i}" style="cursor:pointer;" title="Кликните для деталей">
+    // Если есть человеческий перевод — показываем его как label, оригинал в title для tooltip
+    const altName = humanizeName(n.label);
+    const baseLbl = altName || n.label;
+    const lbl = baseLbl.length > 70 ? baseLbl.slice(0,70)+'…' : baseLbl;
+    const titleAttr = altName ? `title="${escHtml(n.label)}"` : '';
+    return `<tr data-idx="${i}" style="cursor:pointer;" ${titleAttr || 'title="Кликните для деталей"'}>
       <td style="font-size:12px;font-family:monospace;">${escHtml(lbl)}</td>
       <td>${badgeHtml(n.file_type)}</td>
       <td class="file-path">${escHtml(n.short_path || '—')}</td>
@@ -562,7 +718,11 @@ function describeNode(n) {
 
 // Modal
 function openModal(n) {
-  document.getElementById('modalTitle').textContent = n.label;
+  // Заголовок: оригинальное имя + (если есть) альтернативный перевод серым шрифтом
+  const altName = humanizeName(n.label);
+  const titleEl = document.getElementById('modalTitle');
+  titleEl.innerHTML = escHtml(n.label) +
+    (altName ? ' <span class="modal-alt-name">— ' + escHtml(altName) + '</span>' : '');
   const desc = describeNode(n);
   const path = trimPath(n.source_file || '');
   document.getElementById('modalBody').innerHTML = `
@@ -571,7 +731,7 @@ function openModal(n) {
       <div class="mm-chip"><span class="mm-key">ID</span><span class="mm-val">${escHtml(n.id)}</span></div>
       <div class="mm-chip"><span class="mm-key">Тип</span>${badgeHtml(n.file_type)}</div>
       <div class="mm-chip"><span class="mm-key">Позиция</span><span class="mm-val">${escHtml(n.source_location || '—')}</span></div>
-      <div class="mm-chip"><span class="mm-key">Рёбер</span><span class="mm-val degree-num">${n.degree}</span></div>
+      <div class="mm-chip"><span class="mm-key">Связей</span><span class="mm-val degree-num">${n.degree}</span></div>
     </div>
     <div class="modal-field">
       <div class="mf-label">Файл</div>
@@ -581,7 +741,12 @@ function openModal(n) {
   const nbrs = n.neighbors || [];
   const nbrsHtml = nbrs.length
     ? `<div class="mn-title">Соседние ноды (${nbrs.length}):</div>` +
-      nbrs.map(nb => `<span class="neighbor-chip" title="${escHtml(nb.id)}">${escHtml(nb.label.length > 40 ? nb.label.slice(0,40)+'…' : nb.label)}</span>`).join('')
+      nbrs.map(nb => {
+        const alt = humanizeName(nb.label);
+        const text = alt || nb.label;
+        const display = text.length > 40 ? text.slice(0,40)+'…' : text;
+        return `<span class="neighbor-chip" title="${escHtml(nb.id + (alt ? '  —  ' + nb.label : ''))}">${escHtml(display)}</span>`;
+      }).join('')
     : '<div class="mn-title" style="color:var(--text3);">Нет соседних нод</div>';
   document.getElementById('modalNeighbors').innerHTML = nbrsHtml;
   document.getElementById('nodeModal').classList.add('open');
