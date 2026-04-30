@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 410)</title>
+  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 411)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 410)">
+  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 411)">
   <meta property="og:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/billing.html">
   <meta property="og:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 410)">
+  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 411)">
   <meta name="twitter:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta name="twitter:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
   <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
@@ -242,6 +242,7 @@
           <li><a href="../pages/billing.html#tech-stack">18. Технологический стек</a></li>
           <li><a href="../pages/billing.html#ebs-sync">19. Синхронизация с EBS</a></li>
           <li><a href="../pages/billing.html#ui-improvements">20. UI-улучшения дашборда</a></li>
+          <li><a href="../pages/billing.html#design-system">21. Дизайн-система</a></li>
         </ul>
       </li>
 
@@ -417,6 +418,7 @@
   <li><a href="#tech-stack">18. Технологический стек</a></li>
   <li><a href="#ebs-sync">19. Синхронизация с EBS</a></li>
   <li><a href="#ui-improvements">20. UI-улучшения дашборда</a></li>
+  <li><a href="#design-system">21. Дизайн-система</a></li>
   </ul>
 </details>
 </div>
@@ -4200,7 +4202,7 @@ chmod +x restore.sh
 
   <!-- ===== 9. Справочники ===== -->
   <h2 id="dictionaries">11. Справочники</h2>
-  <p>Справочники СмИТ Биллинг v1.6.0 (build 410) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
+  <p>Справочники СмИТ Биллинг v1.6.0 (build 411) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
   <div class="section-toc">
   <details open>
     <summary><strong>Содержание раздела</strong></summary>
@@ -5301,7 +5303,7 @@ else:
   </details>
   </div>
 
-  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 410) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
+  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 411) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
 
   <h3 id="setevaya-izolyatsiya">Сетевая изоляция</h3>
   <p><strong>Docker-контейнеризация</strong> — каждый сервис (web, db, redis, celery, nginx, freeradius) работает в изолированном Docker-контейнере с собственной сетью (172.28.0.0/16). Входящие соединения проходят через nginx reverse proxy, что предотвращает прямой доступ к внутренним сервисам.</p>
@@ -5445,7 +5447,7 @@ docker compose up -d</code></pre>
 
   <!-- ===== 16. Стороннее ПО ===== -->
   <h2 id="third-party">16. Стороннее ПО</h2>
-  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 410).</p>
+  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 411).</p>
 
   <!-- ===== 17. Смена языка ===== -->
   <h2 id="language">17. Смена языка</h2>
@@ -5466,7 +5468,7 @@ docker compose up -d</code></pre>
   </details>
   </div>
 
-  <p>СмИТ Биллинг v1.6.0 (build 410) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
+  <p>СмИТ Биллинг v1.6.0 (build 411) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
 
   <h3 id="pochemu-postgresql">Почему PostgreSQL</h3>
   <p>PostgreSQL 16 выбран в качестве основной СУБД по ряду причин:</p>
@@ -5706,11 +5708,187 @@ STARTED_AT, FINISHED_AT, EBS_LAST_TX_ID, STATS_JSON, DUMP_FILE, ERROR_MSG</code>
   Каждое описание объясняет: что делает галка, когда применяется, на что влияет.
   Особо опасные настройки помечены <code>⚠️ ВНИМАНИЕ</code>.</p>
 
+  <h2 id="design-system">21. Дизайн-система (build 408–411)</h2>
+
+  <p>В апреле 2026 проведён полный UX-аудит интерфейса админ-панели по фреймворку
+  IxDF (Morville's UX Honeycomb + ISO 9241-11 + 5 Dimensions of Interaction Design)
+  и WCAG 2.1 Level AA. Результат — единая дизайн-система с CSS-токенами, общими
+  компонентами и скрытыми a11y-улучшениями.</p>
+
+  <p><strong>Health Score</strong>: 88 → <strong>91/100 (Excellent)</strong>.</p>
+
+  <p>Полные отчёты:</p>
+  <ul>
+    <li><a href="/admin/reports/dev/?tab=reports&amp;file=%D0%9E%D1%82%D1%87%D1%91%D1%82%D1%8B%2F2026-04-30_UX_%D0%B0%D1%83%D0%B4%D0%B8%D1%82_%D0%BF%D0%BE%D0%BB%D0%BD%D1%8B%D0%B9_%D0%BF%D1%80%D0%BE%D0%B3%D0%BE%D0%BD_build408.md">UX-аудит полный прогон build 408</a></li>
+    <li>Sprint 4 (build 411) — миграция ключевых экранов на единые компоненты</li>
+  </ul>
+
+  <h3 id="design-tokens">21.1. CSS-токены (:root)</h3>
+
+  <p>В <code>billing/static/css/theme-smit.css</code> объявлен <code>:root</code> блок
+  с переменными, на которые опирается весь UI. Без этих токенов 51+ правил вида
+  <code>color: var(--brand-primary)</code> рендерились с <em>inherit</em> — выглядели
+  непредсказуемо.</p>
+
+  <ul>
+    <li><strong>Brand</strong>: <code>--brand-primary</code> (#43b77a),
+    <code>--brand-primary-dark</code>, <code>--brand-accent</code></li>
+    <li><strong>Семантика</strong>: <code>--status-success</code>,
+    <code>--status-warning</code>, <code>--status-danger</code>,
+    <code>--status-info</code>, <code>--status-neutral</code></li>
+    <li><strong>Поверхности</strong>: <code>--surface-page</code>,
+    <code>--surface-card</code>, <code>--surface-toolbar</code> — переопределяются
+    для тёмной темы</li>
+    <li><strong>Текст</strong>: <code>--text-primary</code>,
+    <code>--text-secondary</code>, <code>--text-muted</code></li>
+    <li><strong>Радиусы</strong>: <code>--radius-xs</code> (3px) →
+    <code>--radius-pill</code> (999px)</li>
+    <li><strong>Отступы</strong>: 8-pt шкала <code>--space-1</code> (4px) →
+    <code>--space-6</code> (32px)</li>
+    <li><strong>Тени</strong>: <code>--shadow-sm/md/lg</code> с автоадаптацией
+    под тёмную тему</li>
+    <li><strong>Типографика</strong>: <code>--font-ui</code>, <code>--font-mono</code>,
+    <code>--font-size-xs/sm/md/lg</code></li>
+    <li><strong>Focus &amp; motion</strong>: <code>--focus-outline</code>,
+    <code>--focus-ring</code></li>
+  </ul>
+
+  <p>Тёмная тема активируется через <code>body.dark-theme</code> /
+  <code>body[data-theme="dark"]</code>. Дополнительно поддерживается
+  <code>@media (prefers-color-scheme: dark)</code> для авто-режима.</p>
+
+  <h3 id="smit-components">21.2. Унифицированные компоненты</h3>
+
+  <p>Все элементы интерфейса теперь опираются на общие классы с префиксом
+  <code>.smit-*</code>. Старые классы (<code>.chip-btn</code>,
+  <code>.acc-stat</code>, <code>.fo-badge</code> и т.д.) сохранены как fallback.</p>
+
+  <table>
+    <thead>
+      <tr><th>Компонент</th><th>Класс</th><th>Назначение</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Бейдж статуса</td><td><code>.smit-badge</code> + <code>.is-success/.is-warning/.is-danger/.is-info/.is-neutral</code></td><td>Финоперации, статусы блокировок, FreeScout-тикеты, бонусы</td></tr>
+      <tr><td>Фильтр-чип</td><td><code>.smit-chip</code> + <code>aria-pressed</code></td><td>Глобальный поиск (7 чипов), счета (3 чипа), любые toggle-фильтры</td></tr>
+      <tr><td>Шапка-toolbar</td><td><code>.smit-toolbar</code> + <code>.smit-toolbar-title</code> + <code>.smit-toolbar-spacer</code></td><td>Шапка любого списка (h5 + actions)</td></tr>
+      <tr><td>KPI-карточка</td><td><code>.smit-stats &gt; .smit-stat</code></td><td>Группа статистических метрик в шапке (с иконкой + лейблом + значением)</td></tr>
+      <tr><td>Loading overlay</td><td><code>.smit-loading</code></td><td>Overlay со спиннером для AJAX-операций (учитывает <code>prefers-reduced-motion</code>)</td></tr>
+      <tr><td>Skeleton</td><td><code>.smit-skeleton</code></td><td>Shimmer placeholder для строки таблицы</td></tr>
+      <tr><td>Empty state</td><td><code>.smit-empty</code> + <code>.empty-icon/.empty-title/.empty-hint</code></td><td>«Нет данных» с иллюстрацией</td></tr>
+      <tr><td>Унификация модалок</td><td><code>.modal-content/.modal-header/.modal-body/.modal-footer</code></td><td>Общие радиусы, тени, padding для 12+ модалок</td></tr>
+      <tr><td>Таблица</td><td><code>table.smit-table</code></td><td>Header uppercase + tabular-nums + brand hover</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="smit-screens">21.3. Где применено (build 411)</h3>
+
+  <p><strong>Глобальный поиск</strong> (<a href="/admin/Abonents/search/">/admin/Abonents/search/</a>) — toolbar + 4 stat-карточки + 7 чипов:</p>
+  <p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ux_v411/search_light.png" alt="Глобальный поиск (light theme): smit-toolbar с 4 stat-карточками и 7 чипами фильтров"></p>
+
+  <p><strong>Список счетов</strong> (<a href="/admin/Abonents/AdminAccounts/">/admin/Abonents/AdminAccounts/</a>) — toolbar + 5 stat-карточек + 3 чипа фильтров:</p>
+  <p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ux_v411/accounts_light.png" alt="Список счетов: единая шапка с KPI-карточками и chips-фильтрами"></p>
+
+  <p><strong>Тёмная тема</strong> — те же компоненты автоматически адаптируются
+  через токены поверхностей и текста:</p>
+  <p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ux_v411/search_dark.png" alt="Глобальный поиск в тёмной теме"></p>
+  <p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ux_v411/accounts_dark.png" alt="Список счетов в тёмной теме"></p>
+
+  <p><strong>FinanceOperations</strong> (<a href="/admin/Abonents/FinanceOperations/">/admin/Abonents/FinanceOperations/</a>) — единый toolbar:</p>
+  <p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ux_v411/finops_light.png" alt="Список финопераций с единым smit-toolbar"></p>
+
+  <p><strong>Вкладка «Операции» абонента</strong> — бейджи приход/расход
+  на pill-форме с иконками-стрелками (color independence):</p>
+  <p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ux_v411/operations_light.png" alt="Вкладка операций абонента с smit-badge приход/расход"></p>
+
+  <p><strong>Дашборд</strong> (<a href="/admin/welcome/">/admin/welcome/</a>) —
+  цветные stat-карточки сохранены как фирменный элемент дашборда (light + dark):</p>
+  <p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ux_v411/welcome_light.png" alt="Дашборд в светлой теме"></p>
+  <p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ux_v411/welcome_dark.png" alt="Дашборд в тёмной теме"></p>
+
+  <p><strong>Mobile</strong> — тач-таргеты и плотность адаптированы (414×896 px):</p>
+  <p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ux_v411/search_mobile.png" alt="Глобальный поиск на мобильном" style="max-width:320px"></p>
+
+  <h3 id="a11y-features">21.4. A11y-улучшения</h3>
+
+  <ul>
+    <li><strong>Skip-link</strong> «Перейти к содержимому» в начале <code>&lt;body&gt;</code> —
+    клавиатурный пользователь нажимает <kbd>Tab</kbd> и сразу попадает к
+    <code>#main-content</code>, минуя 12 nav-link шапки. Соответствует WCAG 2.4.1
+    Bypass Blocks (Level A).</li>
+    <li><strong>ARIA-live region</strong> <code>#smit-aria-live</code> +
+    helper <code>window.smit.announce(message)</code> — для AJAX-уведомлений
+    (bulk-actions, save в модалках). Screen reader проговаривает изменения.</li>
+    <li><strong>Focus-visible</strong> — единый зелёный outline 2px solid на всех
+    интерактивных элементах: <code>.btn</code>, <code>.nav-link</code>,
+    <code>.smit-chip</code>, <code>.smit-stat</code>, ссылки в таблицах,
+    Select2-контейнер.</li>
+    <li><strong>Color independence</strong> — бейджи приход/расход показывают
+    направление иконкой (↓/↑), не только цветом. То же для статусов абонента
+    (галочка/крест).</li>
+    <li><strong>Touch targets</strong> — на ≤767px чипы, кнопки в toolbar и
+    op-period получают <code>min-height: 38px</code> (близко к WCAG 2.5.5 AAA).</li>
+    <li><strong>prefers-reduced-motion</strong> — все анимации
+    (<code>.smit-loading</code> spinner, <code>.smit-skeleton</code> shimmer,
+    header gradient) автоматически отключаются.</li>
+    <li><strong>aria-pressed</strong> — все toggle-чипы синхронизируют
+    состояние с DOM (<code>true/false</code>) при клике.</li>
+  </ul>
+
+  <p><strong>Skip-link в действии</strong> (показан при фокусе клавиатурой):</p>
+  <p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ux_v411/skip_link_focus.png" alt="Skip-link появляется при фокусе клавиатурой"></p>
+
+  <h3 id="design-migration">21.5. Миграция legacy на новые токены</h3>
+
+  <p>Старые классы (<code>.chip-btn</code>, <code>.acc-stat</code>,
+  <code>.acc-chip-btn</code>, <code>.fo-badge</code>) <strong>не удалены</strong> —
+  работают как fallback. Это позволяет:</p>
+  <ul>
+    <li>Постепенно мигрировать остальные шаблоны без breaking changes</li>
+    <li>Третьим разработчикам видеть оба паттерна одновременно</li>
+    <li>Избежать регрессий в редко используемых страницах
+    (settings, dictionaries, equipment)</li>
+  </ul>
+
+  <p>В Sprint 4 (build 411) переключены: <code>search.html</code>,
+  <code>accounts_list.html</code>, <code>finops_list.html</code>,
+  <code>operations_inline.html</code>. Остальные могут использовать новые
+  компоненты по запросу.</p>
+
+  <h3 id="design-files">21.6. Где смотреть и как использовать</h3>
+
+  <ul>
+    <li><strong>CSS</strong>: <code>billing/static/css/theme-smit.css</code>
+    (раздел «UX AUDIT — Spring 2026, build 408» после строки 2422)</li>
+    <li><strong>Skip-link разметка</strong>: <code>billing/templates/base_adminlte.html</code></li>
+    <li><strong>Примеры</strong>: <code>search.html</code>, <code>accounts_list.html</code></li>
+    <li><strong>Helper JS</strong>: <code>window.smit.announce(message)</code> —
+    глобально доступен из любого скрипта</li>
+  </ul>
+
+  <p><strong>Пример использования бейджа</strong>:</p>
+  <pre><code>&lt;span class="smit-badge is-success"&gt;
+    &lt;i class="fas fa-check-circle"&gt;&lt;/i&gt; Активен
+&lt;/span&gt;</code></pre>
+
+  <p><strong>Пример toolbar со статистикой</strong>:</p>
+  <pre><code>&lt;div class="smit-toolbar"&gt;
+    &lt;div class="smit-toolbar-title"&gt;
+        &lt;i class="fas fa-list"&gt;&lt;/i&gt; Заголовок
+    &lt;/div&gt;
+    &lt;div class="smit-toolbar-spacer"&gt;&lt;/div&gt;
+    &lt;div class="smit-stats"&gt;
+        &lt;div class="smit-stat is-success"&gt;
+            &lt;span class="stat-label"&gt;Активных&lt;/span&gt;
+            &lt;span class="stat-value"&gt;100&lt;/span&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 410)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">30.04.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 410)</span>&nbsp;|&nbsp;<span data-smit="updated">30.04.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 411)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">30.04.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 411)</span>&nbsp;|&nbsp;<span data-smit="updated">30.04.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=220"></script>
