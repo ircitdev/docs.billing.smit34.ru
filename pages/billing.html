@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 418)</title>
+  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 428)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 418)">
+  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 428)">
   <meta property="og:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/billing.html">
   <meta property="og:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
@@ -14,12 +14,12 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 418)">
+  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 428)">
   <meta name="twitter:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta name="twitter:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
   <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=391">
+  <link rel="stylesheet" href="../css/style.css?v=428">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.26.0/dist/tabler-icons.min.css">
   <link rel="stylesheet" href="../css/search.css?v=222">
@@ -1206,7 +1206,7 @@ docker compose up -d</code></pre>
     <details open>
       <summary><strong>Содержание раздела</strong></summary>
       <ul>
-      <li><a href="#tarif-list-features">Возможности списка (build 418)</a>
+      <li><a href="#tarif-list-features">Возможности списка (build 428)</a>
         <ul>
           <li><a href="#tarif-list-bulk">Bulk-операции</a></li>
           <li><a href="#tarif-list-columns">Столбцы и плотность</a></li>
@@ -1225,10 +1225,10 @@ docker compose up -d</code></pre>
 
   <img src="../img/v291/tarifs_list.png" alt="Список тарифов с колонкой «Юр.лиц»" class="screenshot">
 
-  <h4 id="tarif-list-features">Возможности списка (build 418)</h4>
+  <h4 id="tarif-list-features">Возможности списка (build 428)</h4>
   <p class="muted">Якорь раздела: <code>#tarif-list-features</code> (info-иконка в шапке страницы).</p>
 
-  <h5 id="tarif-list-bulk">Bulk-операции (build 418)</h5>
+  <h5 id="tarif-list-bulk">Bulk-операции (build 428)</h5>
   <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v418/tarif_bulk.png" alt="Список тарифов: bulk-toolbar при выборе строк" class="screenshot">
   <ul>
     <li><strong>Чекбокс в каждой строке</strong> + master-чекбокс в шапке («выбрать все видимые», корректно работает в indeterminate-состоянии)</li>
@@ -1240,9 +1240,9 @@ docker compose up -d</code></pre>
   </ul>
 
   <h5 id="tarif-list-columns">Столбцы и плотность</h5>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v418/tarif_list.png" alt="Список тарифов — обычный режим, build 418" class="screenshot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v418/tarif_list.png" alt="Список тарифов — обычный режим, build 428" class="screenshot">
   <ul>
-    <li><strong>Колонка «№» убрана</strong> (build 418) — ID показывается в tooltip имени тарифа</li>
+    <li><strong>Колонка «№» убрана</strong> (build 428) — ID показывается в tooltip имени тарифа</li>
     <li><strong>Тариф</strong> — кликабельное имя открывает модалку редактирования; заголовок tooltip несёт <code>ID #N</code></li>
     <li><strong>Описание</strong> — обрезается ellipsis'ом, скрывается в compact-режиме</li>
     <li><strong>Цена</strong> — расчётная (<code>Tarif.get_abon_sum()</code>); если пусто, отображается курсивный <code>—</code> с tooltip-объяснением «Цена берётся из услуг тарифа: <code>Usluga.summa → price → 0</code>»</li>
@@ -1252,7 +1252,7 @@ docker compose up -d</code></pre>
     <li><strong>Compact-режим</strong> (кнопка <i class="fas fa-compress-arrows-alt"></i> в правом углу toolbar) — уменьшает padding на 30 %, скрывает «Описание». Состояние сохраняется в <code>localStorage.tarif_density_compact</code>.</li>
   </ul>
 
-  <h5 id="tarif-list-csv">CSV-экспорт (build 418)</h5>
+  <h5 id="tarif-list-csv">CSV-экспорт (build 428)</h5>
   <ul>
     <li>Кнопка <i class="fas fa-file-csv text-success"></i> <strong>CSV</strong> в правой части toolbar</li>
     <li>Без выбора — экспортирует <strong>видимый срез</strong> (текущий tab + фильтр + поиск)</li>
@@ -1261,7 +1261,7 @@ docker compose up -d</code></pre>
     <li>Endpoint: <code>GET /admin/tarifs/tarif_csv/?ids=...</code> или <code>?tab=...&amp;range_id=...&amp;q=...</code></li>
   </ul>
 
-  <h5 id="tarif-list-a11y">A11y и быстрые шорткаты (build 418)</h5>
+  <h5 id="tarif-list-a11y">A11y и быстрые шорткаты (build 428)</h5>
   <ul>
     <li><strong>Ctrl+K</strong> / <kbd>/</kbd> — фокус в поле поиска (работает с любого места страницы, кроме открытых модалок и input)</li>
     <li><strong>Активная сортировка</strong> — синий цвет заголовка + жирный + видимая стрелка ▲/▼; в тёмной теме — голубой <code>#6ea8fe</code></li>
@@ -4330,7 +4330,7 @@ chmod +x restore.sh
 
   <!-- ===== 9. Справочники ===== -->
   <h2 id="dictionaries">11. Справочники</h2>
-  <p>Справочники СмИТ Биллинг v1.6.0 (build 418) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
+  <p>Справочники СмИТ Биллинг v1.6.0 (build 428) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
   <div class="section-toc">
   <details open>
     <summary><strong>Содержание раздела</strong></summary>
@@ -4438,6 +4438,84 @@ chmod +x restore.sh
   <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v318/ip_pull_modal_dhcp.png" alt="Модалка IP-пула: вкладка DHCP / Hotspot" class="screenshot">
   <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v318/ip_pull_modal_links.png" alt="Модалка IP-пула: вкладка Связи" class="screenshot">
 
+  <h4 id="ip-pools-list-features">UX-рестайл списка IP-пулов (build 420)</h4>
+  <p>Полный редизайн страницы <code>/admin/dictionary/IpPull/</code> по плану <a href="https://github.com/ircitdev/SmitBilling/blob/master/dev_reports/Планы/2026-05-02_План_UX_IP_VLAN_пулы.md">2026-05-02_План_UX_IP_VLAN_пулы</a>.</p>
+
+  <h5 id="ip-pools-kpi">KPI-cards и фильтрация</h5>
+  <p>Над таблицей — 6 KPI-карточек: <strong>Всего пулов</strong> / <strong>Активных</strong> / <strong>&lt; 75% занято</strong> / <strong>75–90%</strong> / <strong>≥ 90% / исчерпан</strong> / <strong>Свободно IP всего</strong>. Клик по карточке фильтрует таблицу. Под KPI — segmented-control «Все · Активные · Неактивные» (single-select, дефолт «Все») + 6 toggle-чипов: «Свободно &lt;10%», «Опасные (&gt;75%)», «Без шлюза», «Hotspot», «Без привязки», «Fallback».</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ux_pools_v420/ip_pull_desktop.png" alt="Список IP-пулов с KPI-cards" class="screenshot">
+
+  <h5 id="ip-pools-sort">Сортировка по умолчанию и кликабельные заголовки</h5>
+  <p>Дефолт — <code>% занято desc</code>: критические пулы наверху сразу при загрузке. Кликабельные <code>&lt;th&gt;</code> с <code>aria-sort</code> + индикаторами ▲/▼ для колонок Название, Диапазон IP, Свободно, % занято. Клавиши <code>Enter</code>/<code>Space</code> на заголовке — то же действие.</p>
+
+  <h5 id="ip-pools-bindings">Колонка «Привязка к NAS»</h5>
+  <p>Backend (<code>billing/views/ip_pool_stats.py::_build_nas_bindings</code>) собирает для каждого пула список enabled NAS, использующих его через любое из 4 полей (<code>pull_id</code>, <code>nat_pull_id</code>, <code>white_pull_id</code>, <code>hotspot_pull_id</code>) или через <code>Users.nas_id</code>. Top-3 показываются как кликабельные бейджи с числом абонентов, остальные сворачиваются в <code>+N</code>. Пулы без привязок помечаются плашкой «не используется» и фильтруются чипом «Без привязки».</p>
+
+  <h5 id="ip-pools-bulk">Bulk-операции и undo</h5>
+  <p>Чекбокс в первой колонке + master-чекбокс с indeterminate-состоянием. Bulk-toolbar появляется при выборе ≥ 1 строки: <strong>Включить · Выключить · CSV · Удалить</strong>. Удаление каждого пула проверяется на сервере: если есть <code>Users.pull_id</code>, <code>Homes.pull_id</code> или <code>next_pull_id</code> — пул пропускается с понятным сообщением.</p>
+  <p>Для bulk enable/disable формируется снапшот в Django cache (TTL 1 час) и возвращается <code>undo_token</code>. На странице появляется жёлтый баннер «Можно откатить» с автоисчезновением через 8 секунд. Клик «Откатить» восстанавливает состояние через <code>POST /admin/dictionary/ip_pull_bulk_undo/</code>.</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ux_pools_v420/ip_pull_bulk.png" alt="Bulk-toolbar при выборе 3 пулов" class="screenshot">
+
+  <h5 id="ip-pools-csv">CSV-экспорт</h5>
+  <p>Кнопка <strong>«CSV»</strong> в шапке экспортирует все пулы; в bulk-toolbar — только выбранные. Формат — UTF-8 с BOM, разделитель <code>;</code> (Excel RU открывает без танцев с кодировкой). Колонки: ID, Название, Начальный IP, Конечный IP, Маска, Шлюз, Сеть, Размер, Использовано, Свободно, % занято, NAS-привязки, Включён, Hotspot, Fallback. Endpoint: <code>GET /admin/dictionary/ip_pull_csv/?ids=1,2,3</code>.</p>
+
+  <h5 id="ip-pools-mask-autofill">Автовычисление маски и адреса сети</h5>
+  <p>В <code>ip_pull_crud</code> POST функция <code>_derive_mask_and_network()</code> автоматически вычисляет минимальную маску, покрывающую диапазон <code>[start..end]</code>, и адрес сети. Заполняются только пустые поля — то, что пользователь ввёл вручную, не перезаписывается.</p>
+  <p>Для разовой простановки маски существующим пулам без записи (например, после миграции из EBS, где эти поля не переносились) — команда <code>manage.py backfill_ip_pool_mask</code>:</p>
+  <pre><code>python manage.py backfill_ip_pool_mask --analyze   # dry-run
+python manage.py backfill_ip_pool_mask --apply     # применить
+python manage.py backfill_ip_pool_mask --force --apply  # перезаписать существующие</code></pre>
+  <p>На testbill (build 420) команда обработала все 26 пулов: маски <code>/16</code>, <code>/21</code>, <code>/24</code>, <code>/25</code>, <code>/28</code> вычислены корректно по реальным диапазонам.</p>
+
+  <h5 id="ip-pools-a11y">A11y и mobile</h5>
+  <p>Все иконочные кнопки получили <code>aria-label</code>. Сортируемые заголовки — <code>aria-sort="ascending|descending|none"</code>. KPI-карточки и чипы — <code>aria-pressed</code>. Шорткат <code>Ctrl+K</code> или <code>/</code> фокусит поиск из любой части страницы. Горизонтальное удаление через <code>confirm()</code> заменено на Bootstrap-modal с показом ошибки от сервера.</p>
+  <p>На <code>≤ md</code> (768 px) таблица превращается в стек карточек: каждый пул — отдельная карточка с метками-заголовками перед каждым значением (через CSS <code>::before { content: attr(data-label) }</code>), прогресс-бар на всю ширину, действия внизу.</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ux_pools_v420/ip_pull_mobile.png" alt="IP-пулы на mobile (≤ 768 px) — card-layout" class="screenshot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ux_pools_v420/ip_pull_modal_dhcp.png" alt="Модалка IP-пула: DHCP-таб с help-text под textarea" class="screenshot">
+
+  <h4 id="vlan-pools-list-features">UX-рестайл списка VLAN-пулов (build 420)</h4>
+  <p>Те же UX-улучшения применены к <code>/admin/dictionary/VlanPull/</code>:</p>
+
+  <h5 id="vlan-pools-stats">Статистика использования</h5>
+  <p>Endpoint <code>vlan_pull_list_json</code> расширен: для каждого пула считается число использованных VLAN-тегов через <code>Users.router_vlan</code> на NAS, привязанных к этому VLAN-пулу (<code>Nas.vlan_pull_id</code>). Возвращаются поля <code>used_count</code>, <code>free_count</code>, <code>pct_used</code>, <code>nas_bindings</code> (top-3) и <code>summary</code> с агрегатами для KPI-cards.</p>
+  <p>Над таблицей — 5 KPI-карточек (Всего / &lt; 75% / 75–90% / ≥ 90% / Свободно тегов). Под ними — описательный блок «VLAN-пулы определяют диапазоны VLAN-тегов для абонентов и юр.лиц…» с info-иконкой на этот раздел.</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ux_pools_v420/vlan_pull_desktop.png" alt="Список VLAN-пулов с KPI и chip оператора" class="screenshot">
+
+  <h5 id="vlan-pools-bindings">Колонки «Использовано» и «Привязка к NAS»</h5>
+  <p>«Использовано» — количество уникальных тегов в диапазоне пула + прогресс-бар по тем же порогам, что у IP. «Привязка к NAS» — список NAS, у которых <code>vlan_pull_id</code> указывает на этот пул. Если оператор у всех пулов один (<code>single_operator_name</code>), колонка «Оператор связи» скрывается, а в шапку добавляется чип с именем оператора как контекст.</p>
+
+  <h5 id="vlan-pools-modal-flow">Bulk и mobile</h5>
+  <p>Bulk-toolbar: <strong>CSV · Удалить</strong> (enable/disable не применимо к VLAN — у модели нет поля <code>enabled</code>). Удаление пула, к которому привязан хотя бы один NAS, блокируется на сервере. CSV — тот же формат, endpoint <code>GET /admin/dictionary/vlan_pull_csv/?ids=…</code>.</p>
+  <p>Mobile (<code>≤ 768 px</code>): card-layout по тому же паттерну, что у IP — каждый пул как карточка с метками <code>НАЗВАНИЕ:</code>, <code>ДИАПАЗОН:</code>, <code>РАЗМЕР:</code>, <code>ИСПОЛЬЗОВАНО:</code>, <code>% ЗАНЯТО:</code>.</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ux_pools_v420/vlan_pull_mobile.png" alt="VLAN-пулы на mobile" class="screenshot">
+
+  <h4 id="ip-pools-gateway-autofill">Автоподстановка шлюза (build 422)</h4>
+  <p>Реальная проблема: после миграции с EBS у всех 26 IP-пулов на testbill поле <code>GATEWAY</code> было пустым, хотя <code>NETWORK_ADDRESS</code> и <code>MASK</code> заполнены. Для большинства подсетей шлюз — это <strong>«адрес сети + 1»</strong> (классический паттерн «.1»). Build 422 закрывает дыру тремя уровнями автоматизации.</p>
+
+  <h5>Уровень 1 — inline-предложение в модалке</h5>
+  <p>При вводе диапазона <code>start..end</code> и автовычисленной маски в модалке IP-пула под полем «Шлюз» появляется подсказка <strong>🪄 предложение: <code>100.99.40.1</code></strong> и кнопка <strong>Подставить</strong>. Хелпер <code>ipUpdateGatewaySuggestion()</code> в шаблоне <code>ip_pull_list.html</code> следит за изменениями полей <code>start_ip</code> / <code>end_ip</code> / <code>mask</code> / <code>network</code> и пересчитывает в реальном времени.</p>
+  <p>Если поле «Шлюз» пустое — placeholder показывает предложенное значение с пометкой «(предложение)». Если оператор вводит свой шлюз — кнопка «Подставить» автоматически скрывается.</p>
+
+  <h5>Уровень 2 — автоподстановка при сохранении</h5>
+  <p>В <code>ip_pull_crud</code> POST: если оператор оставил поле <code>gateway</code> пустым и заданы <code>network_address</code>+<code>mask</code>, backend вызывает <code>_derive_gateway()</code> и подставляет <code>network + 1</code>. Если шлюз задан явно — не трогается.</p>
+  <p>Защита от граничных случаев в <code>_derive_gateway()</code>:</p>
+  <ul>
+    <li><code>/31</code> и <code>/32</code> подсети — возвращает <code>None</code> (нет смысла)</li>
+    <li>Адрес совпадает с <code>broadcast</code> или <code>network_address</code> — <code>None</code></li>
+    <li>Адрес вне подсети <code>network/mask</code> — <code>None</code></li>
+    <li>Поддержка IPv4 и IPv6</li>
+  </ul>
+
+  <h5>Уровень 3 — bulk-кнопка «Авто-шлюз»</h5>
+  <p>В toolbar страницы <code>/admin/dictionary/IpPull/</code> при наличии пулов-кандидатов появляется жёлтая кнопка <strong>🪄 Авто-шлюз <em>N</em></strong>, где <em>N</em> — счётчик пулов без шлюза, для которых можно автоматически подставить значение.</p>
+  <img src="../img/v422/ippull_toolbar_with_autofill_btn.png" alt="Кнопка «Авто-шлюз» в toolbar IP-пулов" class="screenshot">
+  <p>Клик открывает модалку предпросмотра: таблица с колонками <strong>#</strong>, <strong>Название</strong>, <strong>Сеть</strong>, <strong>Маска</strong>, <strong>Будет шлюз</strong> и кнопка <strong>Применить ко всем (<em>N</em>)</strong>.</p>
+  <img src="../img/v422/ippull_autofill_modal.png" alt="Модалка автоподстановки шлюза с предпросмотром" class="screenshot">
+  <p>Endpoint: <code>GET|POST /admin/dictionary/ip_pull_autofill_gateways/</code>. GET — preview списка кандидатов, POST — применение. Каждое обновление пишется в <code>AuditOperations</code> с <code>table_name='IP_PULL'</code> и текстом «<em>IP-пул #1 «SmIT-Внутренние» — авто-шлюз 100.77.0.1 (сеть 100.77.0.0/16)</em>».</p>
+  <p><strong>Результат на testbill:</strong> 26 пулов из 26 (100%) обработаны корректно. Сложные случаи отработаны правильно: <code>46.243.178.128/25</code> → <code>46.243.178.129</code> (а не <code>.1</code>), <code>46.243.178.96/28</code> → <code>46.243.178.97</code>.</p>
+
+  <img src="../img/v422/ippull_after_autofill.png" alt="Список IP-пулов после применения автоподстановки — все шлюзы заполнены" class="screenshot">
+
   <h3 id="requisites">11.6. Реквизиты</h3>
   <p>Банковские и юридические реквизиты оператора для формирования договоров, счетов и актов. ИНН, КПП, расчётный счёт, БИК, юридический адрес.</p>
 
@@ -4466,7 +4544,9 @@ chmod +x restore.sh
       <summary><strong>Содержание раздела</strong></summary>
       <ul>
       <li><a href="#houses-toolbar">Панель инструментов</a></li>
-      <li><a href="#houses-columns">Колонки и сортировка</a></li>
+      <li><a href="#houses-kpi-chips">KPI и быстрые фильтры (build 425)</a></li>
+      <li><a href="#houses-columns">Колонки таблицы</a></li>
+      <li><a href="#houses-edit-modal">Модальное редактирование (build 426–428)</a></li>
       <li><a href="#houses-mobile">Мобильная версия</a></li>
       <li><a href="#houses-api">Публичный API адресов</a></li>
       <li><a href="#houses-endpoints">Служебные endpoint-ы (авторизованные)</a></li>
@@ -4475,26 +4555,36 @@ chmod +x restore.sh
     </div>
 
   <p>Справочник адресов подключения. Иерархическая структура: корень &rarr; город &rarr; улица &rarr; дом. Путь: <code>/admin/dictionary/Homes/</code>.</p>
-  <p>Начиная с build 324, список использует <strong>динамическую загрузку</strong>: все записи загружаются одним AJAX-запросом (<code>/admin/dictionary/homes_json/</code>), фильтрация, сортировка и поиск выполняются на клиенте. С build 324 список переведён на <strong>чанковый рендер</strong> (по 100 строк) с <strong>бесконечной прокруткой</strong>, что позволяет работать с 4000+ записей без задержек при открытии страницы.</p>
-  <img src="../img/homes_v381/homes_list.png" alt="Справочник адресов: общий вид" class="screenshot">
+  <p>Список использует <strong>динамическую загрузку</strong>: все записи возвращаются одним AJAX-запросом (<code>/admin/dictionary/homes_json/</code>), фильтрация и сортировка выполняются на клиенте. Чанковый рендер (по 100 строк) с бесконечной прокруткой позволяет работать с 4000+ записей без задержек.</p>
+  <p>Начиная с build 425, KPI-бейджи и фильтры-чипы объединены в одну строку с использованием <strong>фирменного зелёного цвета</strong> <code>#43b77a</code> вместо синего <code>#0d6efd</code>.</p>
+  <img src="../img/v425/homes_one_row.png" alt="Справочник адресов: общий вид build 425" class="screenshot">
 
   <h4 id="houses-toolbar">Панель инструментов</h4>
-  <img src="../img/homes_v381/homes_list_district.png" alt="Панель фильтров адресов" class="screenshot">
-  <p>Одна строка фильтров над таблицей (слева направо):</p>
+  <p>Одна компактная строка фильтров над таблицей (build 421):</p>
   <ul>
-    <li><strong>Текстовый поиск</strong> — по названию, полному адресу, городу, району, улице, дому, индексу, точке подключения (инкрементально, без кнопки «Применить»)</li>
-    <li><strong>Все обл. и города</strong> — выпадающий список с количеством адресов в каждом городе</li>
-    <li><strong>Все районы</strong> — фильтр по административному району (независим от города)</li>
+    <li><strong>Текстовый поиск</strong> (Ctrl+K) — по названию, полному адресу, городу, району, улице, дому, индексу, точке подключения (инкрементально)</li>
+    <li><strong>Все города</strong> — выпадающий список с количеством адресов в каждом городе</li>
+    <li><strong>Все районы</strong> — фильтр по административному району</li>
     <li><strong>Все улицы</strong> — динамически обновляется в зависимости от выбранного города</li>
-    <li><strong>Все точки подкл.</strong> — фильтр по точке подключения (узлу) из справочника ConnectionPoints</li>
-    <li><strong>С датой подкл.</strong> — чекбокс, скрывает адреса без заполненной даты подключения</li>
-    <li><strong>Счётчик</strong> — формат «<em>показано</em> / <em>отфильтровано</em> (всего <em>N</em>)» обновляется при каждом изменении фильтра</li>
+    <li><strong>Ещё</strong> — кнопка-аккордеон, разворачивает дополнительные фильтры (например, по точке подключения)</li>
+    <li><strong>Счётчик</strong> «Показано: <em>N</em> из <em>M</em>» — обновляется при каждом изменении фильтра</li>
     <li><strong>CSV</strong> — выгрузка текущей выборки с учётом фильтров; UTF-8 BOM, разделитель «;», имя файла <code>addresses_YYYY-MM-DD.csv</code></li>
   </ul>
 
-  <h4 id="houses-columns">Колонки и сортировка</h4>
-  <img src="../img/homes_v381/homes_list_filter.png" alt="Текстовый поиск по адресам" class="screenshot">
-  <p>Доступные колонки (клик по заголовку — сортировка ▲▼, повторный клик — реверс):</p>
+  <h4 id="houses-kpi-chips">KPI и быстрые фильтры (build 425)</h4>
+  <p>Под основной строкой — единая полоса фильтров-чипов с собственными счётчиками:</p>
+  <ul>
+    <li><strong>Все: 4 277</strong> — общее количество адресов (активный по умолчанию)</li>
+    <li><strong>👥 С абонентами: 3 279</strong> — есть хотя бы один активный абонент</li>
+    <li><strong>📡 С точками: 4 163</strong> — есть привязанная точка подключения</li>
+    <li><strong>⚪ Пустые</strong> — без абонентов и точек (кандидаты на удаление)</li>
+    <li><strong>📅 С датой подкл.</strong> — заполнено поле <code>connect_date</code></li>
+  </ul>
+  <p>Справа — общая сводка <strong>👤 Абонентов: 5 569</strong> (агрегированный счётчик активных абонентов на всех адресах).</p>
+  <p>Активный чип подсвечен фирменным зелёным <code>#43b77a</code>. Backend возвращает summary одним полем в JSON-ответе.</p>
+
+  <h4 id="houses-columns">Колонки таблицы</h4>
+  <p>Доступные колонки (клик по заголовку — сортировка ▲▼, повторный клик — реверс; <code>aria-sort</code> поддерживается):</p>
   <ol>
     <li><strong>#</strong> — ID записи (по умолчанию — новые сверху)</li>
     <li><strong>Название / Полный адрес</strong> — жирный короткий label + серый полный адрес</li>
@@ -4502,15 +4592,37 @@ chmod +x restore.sh
     <li><strong>Район</strong> — скрыт на экранах &lt; lg</li>
     <li><strong>Улица</strong> — скрыт на экранах &lt; md</li>
     <li><strong>Дом</strong> — номер + литера, скрыт на экранах &lt; lg</li>
-    <li><strong>Индекс</strong> — почтовый, скрыт на экранах &lt; lg</li>
-    <li><strong>Точка подкл.</strong> — связанный узел, скрыт на экранах &lt; lg</li>
+    <li><strong>👥 Абон.</strong> (build 421) — кликабельный бейдж с количеством абонентов; клик ведёт в <a href="#search">глобальный поиск</a> с фильтром по этому адресу</li>
+    <li><strong>📡 Точки</strong> (build 421) — кликабельный бейдж с количеством точек подключения; клик ведёт в справочник ConnectionPoints</li>
     <li><strong>Подключение</strong> — дата, скрыта на экранах &lt; xl</li>
-    <li><strong>Действие</strong> — карандаш, открывает карточку адреса</li>
+    <li><strong>Действие</strong> — зелёный карандаш, открывает <a href="#houses-edit-modal">модальное окно редактирования</a></li>
   </ol>
+  <p>Бейджи «Абон.» и «Точки» вычисляются на сервере (<code>annotate(Count)</code> через <code>billing/views/home.py:homes_list_json</code>), без N+1.</p>
+
+  <h4 id="houses-edit-modal">Модальное редактирование (build 426–428)</h4>
+  <p>Клик по карандашу <i class="fas fa-pencil-alt text-success"></i> в правой колонке таблицы открывает модальное окно с <strong>полным набором из 31 поля</strong> модели <code>Homes</code>. Это заменяет старый переход на отдельную страницу <code>/admin/dictionary/Homes/&lt;id&gt;/</code> (она остаётся доступной по иконке <i class="fas fa-external-link-alt"></i> в шапке модалки — на случай редких или внешних плагинов).</p>
+  <img src="../img/v426/homes_edit_main.png" alt="Модалка редактирования адреса: вкладка Основные" class="screenshot">
+
+  <p>Поля сгруппированы по 5 вкладкам:</p>
+  <ol>
+    <li><strong>Основные</strong> — Название, Краткое название, Полное название (read-only автоформирование), Родительский адрес (Select2 AJAX по дереву), Тип объекта, Тип наименования</li>
+    <li><strong>Адрес</strong> — 14 полей: Страна, Регион + тип, Район + тип, Город + тип, Населённый пункт + тип, Улица + тип, Номер дома + тип, Литера + тип, Почтовый индекс</li>
+    <li><strong>Гео и связи</strong> — Широта/Долгота, IP-пул (Select2), Оператор (Select2 по папке 9002), Управляющая компания, Управдом, Подъездов, Квартир, Дата подключения</li>
+    <li><strong>ФИАС</strong> — КЛАДР ID, ФИАС синхронизация (статус), Дата синхронизации (read-only), Полный адрес ФИАС, ОКАТО</li>
+    <li><strong>Служебные</strong> — ID при импорте, бейджи со статистикой связей (Абонентов / Точек / Дочерних), кнопка «Удалить адрес»</li>
+  </ol>
+
+  <p><strong>Tooltip-подсказки (build 428).</strong> К каждой подписи поля добавлена голубая i-иконка <i class="fas fa-info-circle text-info"></i>; на наведение/клик/focus показывается всплывающая подсказка с пояснением. Тексты адаптированы под русский контекст: формат, источник данных, область применения.</p>
+  <img src="../img/v428/tooltip_okato.png" alt="Tooltip с пояснением для поля ОКАТО" class="screenshot">
+  <p>Триггеры срабатывают одинаково на десктопе (наведение), тач-устройствах (тап) и при клавиатурной навигации (Tab → Enter/Space).</p>
+
+  <p><strong>Удаление.</strong> На вкладке «Служебные» доступна кнопка «Удалить адрес». Backend защищён: возвращает HTTP 400 при наличии любых связей (абонентов, точек подключения, дочерних адресов в дереве):</p>
+  <pre><code class="hljs">"Адрес используется: 5 абонентов, 3 точек подключения. Удаление запрещено."</code></pre>
+  <p>Защита от самоссылки: при попытке выбрать собственный ID в поле «Родительский адрес» backend вернёт ошибку.</p>
 
   <h4 id="houses-mobile">Мобильная версия</h4>
   <img src="../img/homes_v381/homes_list_mobile.png" alt="Справочник адресов на мобильном" class="screenshot" style="max-width:360px">
-  <p>На узких экранах таблица сворачивается в одну колонку: под названием автоматически выводится строка «<em>Город, Район, Улица Дом</em>». Панель фильтров оборачивается на несколько строк через <code>flex-wrap</code>.</p>
+  <p>На узких экранах таблица сворачивается в одну колонку: под названием автоматически выводится строка «<em>Город, Район, Улица Дом</em>». Панель фильтров оборачивается на несколько строк через <code>flex-wrap</code>. Модалка редактирования адаптирует ширину к viewport через <code>modal-xl</code>.</p>
 
   <h4 id="houses-api">Публичный API адресов</h4>
   <p>Для интеграции с внешними лендингами и чат-ботами работают два открытых endpoint-а (без авторизации, с CORS):</p>
@@ -4525,56 +4637,102 @@ chmod +x restore.sh
     <thead><tr><th>URL</th><th>Назначение</th></tr></thead>
     <tbody>
       <tr><td><code>/admin/dictionary/Homes/</code></td><td>Список адресов (данная страница)</td></tr>
-      <tr><td><code>/admin/dictionary/homes_json/</code></td><td>JSON всех адресов для клиентской фильтрации</td></tr>
-      <tr><td><code>/admin/dictionary/Homes/&lt;id&gt;/</code></td><td>Карточка адреса (редактирование)</td></tr>
+      <tr><td><code>/admin/dictionary/homes_json/</code></td><td>JSON всех адресов + summary (build 421)</td></tr>
+      <tr><td><code>/admin/dictionary/homes_full_crud/&lt;pk&gt;/</code></td><td><strong>build 426:</strong> модальное GET/POST/DELETE с полным набором полей</td></tr>
+      <tr><td><code>/admin/dictionary/home_type_name_select/</code></td><td><strong>build 426:</strong> Select2 endpoint для типов (улица/город/район)</td></tr>
+      <tr><td><code>/admin/dictionary/home_types_select/</code></td><td><strong>build 426:</strong> Select2 endpoint для HomeTypes</td></tr>
+      <tr><td><code>/admin/dictionary/Homes/&lt;id&gt;/</code></td><td>Старая полная карточка адреса (доступна через 🔗 в модалке)</td></tr>
       <tr><td><code>/admin/ajax/homes_select2_search/</code></td><td>Select2 AJAX для FK-полей «Адрес» в формах</td></tr>
       <tr><td><code>/admin/ajax/homes_create/</code></td><td>Создание адреса через POST (inline из карточки абонента)</td></tr>
     </tbody>
   </table>
 
-    <!-- 11.7a Точки подключения (build 324) -->
+    <!-- 11.7a Точки подключения -->
   <h3 id="conn-points">11.7a. Точки подключения</h3>
-  <p>Отдельная вкладка для работы с логическими узлами сети: посёлки, СНТ, станции, районы. Путь: <code>/admin/dictionary/conn_points_list/</code>.</p>
+    <div class="section-toc">
+    <details open>
+      <summary><strong>Содержание раздела</strong></summary>
+      <ul>
+      <li><a href="#cp-overview">Что это</a></li>
+      <li><a href="#cp-toolbar">Панель инструментов и фильтры</a></li>
+      <li><a href="#cp-columns">Колонки таблицы (build 423)</a></li>
+      <li><a href="#cp-modal">Модальное добавление/редактирование</a></li>
+      <li><a href="#cp-csv">CSV-экспорт</a></li>
+      <li><a href="#cp-endpoints">Служебные endpoint-ы</a></li>
+      <li><a href="#cp-types">Типы адресных единиц</a></li>
+      </ul>
+    </details>
+    </div>
 
-  <img src="../img/addresses_v214/conn_points.png" alt="Точки подключения" class="screenshot">
+  <h4 id="cp-overview">Что это</h4>
+  <p>Отдельная вкладка для работы с физическими точками подключения: ТП, узлы, шкафы, муфты. Путь: <code>/admin/dictionary/conn_points_list/</code>. Каждая точка может быть привязана к конкретному <strong>абоненту</strong>, <strong>учётке</strong> (Users), <strong>свитчу</strong> и <strong>адресу</strong> из справочника Homes.</p>
+  <img src="../img/v425/cp_new_columns.png" alt="Точки подключения: новые колонки build 425" class="screenshot">
 
-  <p>Записи автоматически группируются по полю <code>name</code> и отображаются в виде карточек с иконкой по типу:</p>
+  <h4 id="cp-toolbar">Панель инструментов и фильтры</h4>
+  <p>Над таблицей — единая компактная строка:</p>
   <ul>
-    <li>🌿 <strong>СНТ / садоводства</strong> — зелёный leaf</li>
-    <li>🚂 <strong>ЖД-станции</strong> — оранжевый train</li>
-    <li>🏠 <strong>Посёлки</strong> — голубой home</li>
-    <li>📍 <strong>Районы / прочее</strong> — синий map-pin</li>
+    <li><strong>Заголовок «Точки подключения»</strong> + info-icon со ссылкой на эту документацию</li>
+    <li><strong>Текстовый поиск</strong> (Ctrl+K) — по имени, адресу-строке, комментарию, полному названию home (server-side с debounce 350мс)</li>
+    <li><strong>Счётчик</strong> «Показано: <em>N</em> · стр. <em>K</em>/<em>P</em>»</li>
+    <li><strong>Пагинация</strong> ◀ ▶ — серверная, по 50 записей на страницу</li>
+    <li><strong>CSV</strong> — выгрузка с учётом активного фильтра</li>
+    <li><strong>+ Точка</strong> — открывает <a href="#cp-modal">модалку добавления</a></li>
+  </ul>
+  <p>Под основной строкой — фильтры-чипы со счётчиками (build 421):</p>
+  <ul>
+    <li><strong>Все: 6 480</strong> — все точки</li>
+    <li><strong>🟢 Со свитчем: <em>N</em></strong> — есть привязка к Switch</li>
+    <li><strong>⚠️ Без свитча: <em>N</em></strong> — точка без оборудования</li>
+    <li><strong>🏠 Без адреса: <em>N</em></strong> — точка не привязана к Homes (только свободный текст)</li>
   </ul>
 
-  <p>На каждой карточке видно:</p>
-  <ul>
-    <li>Название узла (жирным), бейдж района, бейдж города</li>
-    <li>Полный адрес (мелким текстом)</li>
-    <li>Счётчик адресов (сколько <code>Homes</code> привязано)</li>
-    <li>Счётчик абонентов (физических пользователей в этой точке)</li>
-    <li>Кнопку открытия — переход к адресу в Homes</li>
-  </ul>
+  <h4 id="cp-columns">Колонки таблицы (build 423)</h4>
+  <p>В build 423 таблица переработана — убран дубль (раньше колонки «Адрес (строка)» и «Дом» содержали один текст), добавлены ключевые для оператора связи:</p>
+  <ol>
+    <li><strong>#</strong> — порядковый номер на странице</li>
+    <li><strong>Наименование</strong> — главное имя точки + 💬 иконка-tooltip с комментарием (если задан)</li>
+    <li><strong>Адрес</strong> — приоритетно из справочника (<code>home_name</code>), fallback — свободный текст из <code>address</code></li>
+    <li><strong>Кв.</strong> — бейдж с квартирой/офисом (32% покрытие; иногда используется для инфраструктурных пометок «winbox 62400 / ssh 3311»)</li>
+    <li><strong>Абонент</strong> — зелёная иконка <i class="fas fa-user text-success"></i> + ФИО + №договора, ссылка на профиль (86% покрытие)</li>
+    <li><strong>Учётка</strong> — логин Users в monospace, ссылка на учётку (86% покрытие)</li>
+    <li><strong>Свитч</strong> — бейдж с именем свитча (если привязан)</li>
+    <li><strong>Действия</strong> — карандаш (редактировать) + 🗑 (удалить)</li>
+  </ol>
 
-  <h4>Поиск и фильтрация</h4>
-  <img src="../img/addresses_v214/conn_points_search.png" alt="Поиск по точкам подключения" class="screenshot">
-  <p>Поле поиска по названию и району фильтрует карточки мгновенно на клиенте (<code>data-search</code> атрибут).</p>
+  <h4 id="cp-modal">Модальное добавление/редактирование</h4>
+  <p>Клик на карандаш или «+ Точка» открывает модалку. Поля:</p>
+  <ul>
+    <li><strong>Наименование</strong>* — обязательное</li>
+    <li><strong>Адрес (строка)</strong> — свободный текст</li>
+    <li><strong>Адрес на карте</strong> — Select2 AJAX по справочнику Homes</li>
+    <li><strong>Кв./офис</strong>, <strong>Розетка</strong> (порт)</li>
+    <li><strong>Свитч</strong> — Select2 AJAX (минимум 2 символа)</li>
+    <li><strong>Комментарий</strong> — многострочный текст</li>
+  </ul>
+  <p>Если в Select2 «Адрес на карте» нет нужного адреса, есть прямая кнопка «Создать через ФИАС» — открывается отдельная модалка создания адреса с автоподсказками от ФИАС/DaData.</p>
+
+  <h4 id="cp-csv">CSV-экспорт</h4>
+  <p>Кнопка <strong>CSV</strong> в toolbar выгружает текущую выборку (с учётом поиска и активного чипа). Endpoint: <code>GET /admin/dictionary/cp_csv/?q=&amp;chip=</code>. Формат: UTF-8 BOM + разделитель «;» для Excel RU. Колонки: ID, Наименование, Адрес, Кв./офис, Розетка, Абонент, Договор, Учётка (login), Свитч, Комментарий.</p>
+
+  <h4 id="cp-endpoints">Служебные endpoint-ы</h4>
+  <table class="table table-sm table-bordered" style="max-width:900px">
+    <thead><tr><th>URL</th><th>Назначение</th></tr></thead>
+    <tbody>
+      <tr><td><code>/admin/dictionary/conn_points_list/</code></td><td>Список (данная страница)</td></tr>
+      <tr><td><code>/admin/dictionary/cp_crud/?page=&amp;q=&amp;chip=</code></td><td>GET — JSON со списком + summary; POST — create</td></tr>
+      <tr><td><code>/admin/dictionary/cp_crud/&lt;id&gt;/</code></td><td>POST — обновление; POST <code>_delete=1</code> — удаление</td></tr>
+      <tr><td><code>/admin/dictionary/cp_csv/?q=&amp;chip=</code></td><td>build 421: streaming CSV</td></tr>
+    </tbody>
+  </table>
 
   <h4>Где используются точки подключения</h4>
   <ul>
     <li><strong>Карточка абонента</strong>: селект «Точка подключения» в секции «Основные»</li>
     <li><strong>Глобальный поиск абонентов</strong> (<a href="#search">11.7b</a>): колонка «Точка подкл.» + multi-select фильтр + bulk-операция «Изменить точку подключения»</li>
-    <li><strong>Справочник адресов</strong> (11.7): фильтр «Все точки подкл.»</li>
+    <li><strong>Справочник адресов</strong> (11.7): фильтр «Все точки подкл.» в блоке «Ещё»</li>
   </ul>
 
-  <h4>Создание точек</h4>
-  <p>Если таблица пустая, будет выведена подсказка с management-командой:</p>
-  <pre><code>manage.py create_connection_points</code></pre>
-  <p>Команда парсит <code>Homes.full_name</code> и создаёт записи <code>ConnectionPoints</code>.</p>
-
-  <h4>Мобильная версия</h4>
-  <img src="../img/addresses_v214/conn_points_mobile.png" alt="Точки подключения на мобильном" class="screenshot" style="max-width:360px">
-
-  <h4>Типы адресных единиц</h4>
+  <h4 id="cp-types">Типы адресных единиц</h4>
   <p>Справочник типов (<code>ул</code>, <code>пер</code>, <code>пр-кт</code>, <code>проезд</code>, …) доступен на отдельной вкладке — <code>/admin/dictionary/HomeTypeName/</code>.</p>
   <img src="../img/addresses_v214/home_types.png" alt="Типы адресных единиц" class="screenshot">
 
@@ -5369,24 +5527,24 @@ else:
   <h3 id="usluga">13.6. Услуги/Бонусы — список и массовые действия (build 268–418)</h3>
   <p>Раздел «Тарификация &rarr; Услуги/Бонусы» (<code>/admin/tarifs/Usluga/</code>) полностью перепроектирован: собственный тулбар, вкладка «Все», 11 массовых действий, модалка управления типами услуг, аудит всех изменений, специальная вкладка «Шейпер» для трафиковых услуг.</p>
 
-  <h4 id="usluga-list-features">Возможности списка (build 418)</h4>
+  <h4 id="usluga-list-features">Возможности списка (build 428)</h4>
   <p class="muted">Якорь раздела: <code>#usluga-list-features</code> (info-иконка в шапке страницы).</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v418/usluga_list.png" alt="Список услуг — таблица build 418" class="screenshot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v418/usluga_list.png" alt="Список услуг — таблица build 428" class="screenshot">
   <ul>
-    <li><strong>Эфф. цена</strong> (build 418) — каскад <code>Usluga.summa → price → 0</code> с цветовым кодированием источника:
+    <li><strong>Эфф. цена</strong> (build 428) — каскад <code>Usluga.summa → price → 0</code> с цветовым кодированием источника:
       <ul>
         <li>обычный текст — берётся из <code>summa</code> (шаблонная сумма)</li>
         <li>оранжевый цвет с подчёркиванием — fallback из <code>price</code> (тарифная цена)</li>
         <li>курсивный <code>—</code> — обе суммы пустые. Tooltip объясняет источник.</li>
       </ul>
     </li>
-    <li><strong>Метод как иконка</strong> (build 418) — <i class="fas fa-sync text-success"></i> «Ежемесячно» / <i class="fas fa-bolt text-primary"></i> «Разово». Текст метода — в tooltip + <code>visually-hidden</code> для screen reader. Колонка стала на 50&nbsp;px уже.</li>
-    <li><strong>В ЛК</strong> (build 418, переименовано из «ЛК») — <i class="fas fa-info-circle"></i> в заголовке объясняет что это <code>Usluga.is_show_web</code>: видимость услуги в личном кабинете абонента</li>
-    <li><strong>Колонка №</strong> убрана (build 418) — ID показывается в tooltip имени услуги</li>
+    <li><strong>Метод как иконка</strong> (build 428) — <i class="fas fa-sync text-success"></i> «Ежемесячно» / <i class="fas fa-bolt text-primary"></i> «Разово». Текст метода — в tooltip + <code>visually-hidden</code> для screen reader. Колонка стала на 50&nbsp;px уже.</li>
+    <li><strong>В ЛК</strong> (build 428, переименовано из «ЛК») — <i class="fas fa-info-circle"></i> в заголовке объясняет что это <code>Usluga.is_show_web</code>: видимость услуги в личном кабинете абонента</li>
+    <li><strong>Колонка №</strong> убрана (build 428) — ID показывается в tooltip имени услуги</li>
     <li><strong>Префикс «Услуга из…: Тип»</strong> на типизированных вкладках усечён через шаблонный фильтр <code>cut</code> — на вкладке «Трафик» имя становится короче без потери смысла (тариф уже виден в отдельной колонке)</li>
   </ul>
 
-  <h5 id="usluga-list-orphans">Чип «Не привязанные» (build 418)</h5>
+  <h5 id="usluga-list-orphans">Чип «Не привязанные» (build 428)</h5>
   <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v418/usluga_orphans.png" alt="Чип Не привязанные с count и фильтром" class="screenshot">
   <ul>
     <li>Чип <i class="fas fa-unlink"></i> <strong>Не привязанные</strong> в toolbar показывает количество услуг-«сирот» — без <code>TarifUsersUsluga</code> и без активных <code>UsersUsluga</code>.</li>
@@ -5395,7 +5553,7 @@ else:
     <li>Поле <code>is_orphan</code> вычисляется в Python в <code>UslugaListView.make_context</code> — отдельный SQL не нужен, проходит за один проход по списку.</li>
   </ul>
 
-  <h5 id="usluga-list-search">Поиск и шорткаты (build 418)</h5>
+  <h5 id="usluga-list-search">Поиск и шорткаты (build 428)</h5>
   <ul>
     <li><strong>Поиск</strong> теперь работает по <strong>имени услуги</strong>, <strong>имени тарифа</strong> ИЛИ <strong>ID</strong> (точное совпадение или префикс). Полезно когда оператор знает только <code>Usluga.id=30353</code> для обещанного платежа.</li>
     <li><strong>Ctrl+K</strong> / <kbd>/</kbd> — фокус в поле поиска</li>
@@ -5521,7 +5679,7 @@ else:
   </details>
   </div>
 
-  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 418) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
+  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 428) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
 
   <h3 id="setevaya-izolyatsiya">Сетевая изоляция</h3>
   <p><strong>Docker-контейнеризация</strong> — каждый сервис (web, db, redis, celery, nginx, freeradius) работает в изолированном Docker-контейнере с собственной сетью (172.28.0.0/16). Входящие соединения проходят через nginx reverse proxy, что предотвращает прямой доступ к внутренним сервисам.</p>
@@ -5665,7 +5823,7 @@ docker compose up -d</code></pre>
 
   <!-- ===== 16. Стороннее ПО ===== -->
   <h2 id="third-party">16. Стороннее ПО</h2>
-  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 418).</p>
+  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 428).</p>
 
   <!-- ===== 17. Смена языка ===== -->
   <h2 id="language">17. Смена языка</h2>
@@ -5686,7 +5844,7 @@ docker compose up -d</code></pre>
   </details>
   </div>
 
-  <p>СмИТ Биллинг v1.6.0 (build 418) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
+  <p>СмИТ Биллинг v1.6.0 (build 428) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
 
   <h3 id="pochemu-postgresql">Почему PostgreSQL</h3>
   <p>PostgreSQL 16 выбран в качестве основной СУБД по ряду причин:</p>
@@ -6450,8 +6608,8 @@ STARTED_AT, FINISHED_AT, EBS_LAST_TX_ID, STATS_JSON, DUMP_FILE, ERROR_MSG</code>
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 418)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">30.04.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 418)</span>&nbsp;|&nbsp;<span data-smit="updated">30.04.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 428)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">02.05.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 428)</span>&nbsp;|&nbsp;<span data-smit="updated">02.05.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=220"></script>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Журнал изменений — СмИТ Биллинг 1.0</title>
-  <link rel="stylesheet" href="../css/style.css?v=391">
+  <link rel="stylesheet" href="../css/style.css?v=428">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.26.0/dist/tabler-icons.min.css">
 </head>
 <body>
@@ -83,6 +83,7 @@
 <details open>
   <summary><strong>Содержание страницы</strong></summary>
   <ul>
+  <li><a href="#v1-6-0-b428">v1.6.0 (build 421–428) — 2 мая 2026</a></li>
   <li><a href="#v1-6-0-b324">v1.6.0 (build 324) — 27 апреля 2026</a></li>
   <li><a href="#v1-0-0-b37">v1.0.0 (build 37) — 29 марта 2026</a></li>
   <li><a href="#nas-deploy">NAS Развёртывание (OSS)</a></li>
@@ -92,6 +93,82 @@
   </ul>
 </details>
 </div>
+
+
+  <!-- ═══════════ v1.6.0 build 421-428 ═══════════ -->
+  <h2 id="v1-6-0-b428">v1.6.0 (build 421–428) — 2 мая 2026</h2>
+  <div class="section-toc">
+  <details open>
+    <summary><strong>Содержание раздела</strong></summary>
+    <ul>
+    <li><a href="#sprint-a-addresses">Sprint A: справочник адресов и точек подключения (build 421)</a></li>
+    <li><a href="#ippull-gateway-autofill">Автоподстановка шлюза IpPull (build 422)</a></li>
+    <li><a href="#cp-new-columns">Новые колонки точек подключения (build 423–425)</a></li>
+    <li><a href="#brand-green">Фирменный зелёный вместо синего (build 425)</a></li>
+    <li><a href="#homes-edit-modal">Модальное редактирование адресов (build 426)</a></li>
+    <li><a href="#homes-tooltips">Tooltips к подписям полей (build 428)</a></li>
+    </ul>
+  </details>
+  </div>
+
+  <div class="info-box">
+    <strong>GitHub коммиты:</strong> <code>55c5110</code> · <code>7d26932</code> · <code>9556537</code> · <code>4fc97cd</code><br>
+    <strong>Сервер:</strong> <a href="https://testbill.smit34.ru" target="_blank">testbill.smit34.ru</a><br>
+    <strong>Период:</strong> build 421 → 428 (8 билдов, 1 день)
+  </div>
+
+  <h3 id="sprint-a-addresses">Sprint A: справочник адресов и точек подключения (build 421)</h3>
+  <ul>
+    <li><strong>KPI-бейджи и фильтры-чипы</strong> на странице <code>/admin/dictionary/Homes/</code> объединены в одну строку: «Все», «С абонентами», «С точками», «Пустые», «С датой подкл.». Каждый чип содержит свой счётчик.</li>
+    <li><strong>Кликабельные колонки «Абон.» и «Точки»</strong> в таблице адресов: переход в глобальный поиск абонентов по этому адресу или в справочник точек.</li>
+    <li><strong>Удалены 7 «мусорных» адресов</strong> на testbill: «Дом у Озера», «Планета Венера», «Среди Озера» и др. — без абонентов и точек, без улицы и дома.</li>
+    <li><strong>CSV-экспорт</strong> для точек подключения с учётом фильтров.</li>
+    <li><strong>A11y</strong>: <code>aria-sort</code> на сортируемых заголовках, <code>aria-pressed</code> на чипах, <code>aria-live</code> на счётчике, шорткат <code>Ctrl+K</code> для фокуса в поиск.</li>
+  </ul>
+
+  <h3 id="ippull-gateway-autofill">Автоподстановка шлюза IpPull (build 422)</h3>
+  <p>Реальная проблема: после миграции с EBS у всех 26 IP-пулов на testbill поле <code>GATEWAY</code> было пустым, хотя <code>NETWORK_ADDRESS</code> и <code>MASK</code> заполнены. Решение в трёх уровнях:</p>
+  <ul>
+    <li><strong>Уровень 1</strong>: подсказка-предложение в модалке IP-пула («🪄 предложение: 100.99.40.1») + кнопка <strong>Подставить</strong>.</li>
+    <li><strong>Уровень 2</strong>: автоподстановка при сохранении, если поле пустое.</li>
+    <li><strong>Уровень 3</strong>: bulk-кнопка <strong>🪄 Авто-шлюз <em>N</em></strong> в toolbar — модалка предпросмотра + одно нажатие применяет ко всем кандидатам.</li>
+  </ul>
+  <p>Защита от граничных случаев: <code>/31</code>, <code>/32</code>, broadcast, network_address, адреса вне подсети. Поддержка IPv4 и IPv6. Все обновления пишутся в <code>AuditOperations</code>.</p>
+  <p><strong>Результат:</strong> 26/26 пулов на testbill корректно получили шлюзы, включая сложные случаи <code>46.243.178.128/25 → .129</code>. Подробнее: <a href="billing.html#ip-pools-gateway-autofill">11.5 → Автоподстановка шлюза</a>.</p>
+
+  <h3 id="cp-new-columns">Новые колонки точек подключения (build 423–425)</h3>
+  <p>Таблица <code>/admin/dictionary/conn_points_list/</code> переработана:</p>
+  <ul>
+    <li><strong>Убран дубль</strong>: раньше колонки «Адрес (строка)» и «Дом» содержали один и тот же текст. Объединены в одну «Адрес» с приоритетом home_name.</li>
+    <li><strong>Колонка «Абонент»</strong> с зелёной иконкой + ФИО + №договора, ссылка на профиль (86% покрытие).</li>
+    <li><strong>Колонка «Учётка»</strong> с логином Users в monospace, ссылка на учётку (86% покрытие).</li>
+    <li><strong>Колонка «Кв.»</strong> с бейджем (32% покрытие; иногда используется для инфраструктурных пометок «winbox 62400 / ssh 3311»).</li>
+    <li><strong>Иконка-комментарий</strong> 💬 рядом с именем точки заменила отдельную колонку «Комментарий».</li>
+  </ul>
+
+  <h3 id="brand-green">Фирменный зелёный вместо синего (build 425)</h3>
+  <p>Убраны последние следы Bootstrap-синего <code>#0d6efd</code> / <code>#0c63e4</code> в шаблонах списков:</p>
+  <ul>
+    <li><code>ip_pull_list.html</code>: ip-pool-fallback-badge, ip-nas-bind, kpi-info, row-fallback border.</li>
+    <li><code>vlan_pull_list.html</code>: vp-nas-bind, kpi-info color.</li>
+    <li><code>homes_list.html</code>: hm-count-cp (счётчик «Точек подкл.»).</li>
+  </ul>
+  <p>Теперь все активные элементы используют брендовый <code>#43b77a</code> с фоном <code>#e8f5e9</code> и hover <code>#c8e6c9</code>.</p>
+
+  <h3 id="homes-edit-modal">Модальное редактирование адресов (build 426)</h3>
+  <p>Карандаш на странице адресов теперь открывает <strong>модальное окно с полным набором из 31 поля</strong> модели <code>Homes</code> (раньше — переход на отдельную страницу). 5 вкладок:</p>
+  <ol>
+    <li><strong>Основные</strong> — Название, Краткое, Полное название, Родительский адрес, Тип объекта, Тип наименования</li>
+    <li><strong>Адрес</strong> — 14 полей: Страна, Регион, Район, Город, Нас.пункт, Улица, Номер, Литера + типы для каждого</li>
+    <li><strong>Гео и связи</strong> — Координаты, IP-пул, Оператор, УК, Управдом, Подъезды, Квартиры, Дата подключения</li>
+    <li><strong>ФИАС</strong> — КЛАДР ID, статус синхронизации, Полный адрес ФИАС, ОКАТО</li>
+    <li><strong>Служебные</strong> — ID при импорте, статистика связей, кнопка удаления</li>
+  </ol>
+  <p>Backend защищён от удаления адресов с активными связями: возвращает HTTP 400 со списком («5 абонентов, 3 точек подключения»). Иконка <i class="fas fa-external-link-alt"></i> в шапке модалки даёт переход к старой полной форме.</p>
+
+  <h3 id="homes-tooltips">Tooltips к подписям полей (build 428)</h3>
+  <p>К каждой подписи поля в модалке редактирования адреса добавлена голубая i-иконка <i class="fas fa-info-circle text-info"></i>. На наведение/клик/focus показывается всплывающая подсказка с пояснением: формат, источник данных, область применения.</p>
+  <p>35 подсказок покрывают все 5 вкладок. Триггеры работают одинаково на десктопе (наведение), тач-устройствах (тап) и при клавиатурной навигации.</p>
 
 
   <!-- ═══════════ v1.6.0 build 324 ═══════════ -->
@@ -369,7 +446,7 @@ rtsh list scheme            — список доступных схем</code><
 </main>
 
 <footer class="footer">
-  &copy; 2026 СмИТ — СмИТ Биллинг v1.6.0 (build 418)
+  &copy; 2026 СмИТ — СмИТ Биллинг v1.6.0 (build 428)
 </footer>
 
 <script src="../js/main.js?v=220"></script>
