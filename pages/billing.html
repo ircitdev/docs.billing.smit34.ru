@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 428)</title>
+  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 437)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 428)">
+  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 437)">
   <meta property="og:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/billing.html">
   <meta property="og:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 428)">
+  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 437)">
   <meta name="twitter:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta name="twitter:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
   <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
@@ -3562,6 +3562,7 @@ radtest &lt;LOGIN&gt; &lt;PASSWORD&gt; 127.0.0.1 0 testing123
   <!-- ===== 9. Резервное копирование ===== -->
   <h2 id="backup-system">9. Резервное копирование</h2>
   <p>Встроенная система резервного копирования позволяет создавать, планировать и восстанавливать резервные копии базы данных и файлов приложения. Доступна через <strong>Настройки → Резервные копии</strong> (<code>/admin/settings/backup/</code>).</p>
+  <img src="../img/v436/backup_overview.png" alt="Страница резервного копирования — общий вид" class="screenshot">
   <div class="section-toc">
   <details open>
     <summary><strong>Содержание раздела</strong></summary>
@@ -3569,6 +3570,13 @@ radtest &lt;LOGIN&gt; &lt;PASSWORD&gt; 127.0.0.1 0 testing123
     <li><a href="#backup-config">9.1. Настройка резервного копирования</a></li>
     <li><a href="#backup-types">9.2. Типы резервных копий</a></li>
     <li><a href="#backup-restore">9.3. Восстановление</a></li>
+    <li><a href="#backup-ux">9.4. UX-улучшения (Sprint 1+2)</a></li>
+    <li><a href="#backup-disk-banner">9.4.1. Баннер использования диска</a></li>
+    <li><a href="#backup-confirm-modals">9.4.2. Подтверждение опасных действий</a></li>
+    <li><a href="#backup-running-status">9.4.3. Статус «Идёт сейчас» и polling</a></li>
+    <li><a href="#backup-records-filters">9.4.4. Поиск и фильтры файлов</a></li>
+    <li><a href="#backup-mobile">9.4.5. Mobile dropdown «⋮ Действия»</a></li>
+    <li><a href="#backup-audit">9.4.6. Аудит и Telegram-алерты</a></li>
     </ul>
   </details>
   </div>
@@ -3676,6 +3684,86 @@ chmod +x restore.sh
   <div class="info-box">
     <strong>Совет:</strong> Тип <code>docker</code> рекомендуется для переноса инсталляции на новый сервер или для создания контрольных точек перед крупными обновлениями.
   </div>
+
+  <!-- ===== 9.4. UX-улучшения (Sprint 1+2, build 432–436) ===== -->
+  <h3 id="backup-ux">9.4. UX-улучшения (Sprint 1+2)</h3>
+  <p>Раздел «Резервные копии» — самая высокорисковая страница системы: ошибочный «Запустить» нагружает сервер, ошибочный «Восстановить» может потерять данные. В build 429–436 проведено два спринта по плану <code>dev_reports/Планы/2026-04-30_UX_бэкапы.md</code>: 8 quick wins (P0–P1) и 6 средних задач (P0-3, P1-1, P1-7, P1-8, P2-9, P3-4). Health Score: 75 → ≈88/100.</p>
+
+  <h4 id="backup-disk-banner">9.4.1. Баннер использования диска</h4>
+  <p>Сверху страницы — фиксированная панель с прогресс-баром заполненности тома <code>/var/backups/carbon</code>. Источник — <code>shutil.disk_usage()</code> в <code>billing/views/backup.py::_disk_usage()</code>. Уровни:</p>
+  <ul>
+    <li>🟢 <strong>В норме</strong> — &lt; 75%</li>
+    <li>🟡 <strong>Внимание</strong> — 75–89%</li>
+    <li>🔴 <strong>Критично</strong> — ≥ 90%</li>
+  </ul>
+  <p>Если volume не существует, баннер не отображается (skip без ошибки).</p>
+  <img src="../img/v436/backup_top.png" alt="Disk usage banner + summary alerts" class="screenshot">
+
+  <h4 id="backup-confirm-modals">9.4.2. Подтверждение опасных действий</h4>
+  <p>Все три деструктивные операции теперь требуют подтверждения с контекстом:</p>
+  <ul>
+    <li><strong>▶ Запустить</strong> — модалка <code>#modalConfirmRun</code> показывает: имя конфигурации, тип бэкапа, расписание, прошлый размер и длительность, предупреждение о возможной нагрузке. Кнопка «Запустить сейчас» зелёная.</li>
+    <li><strong>🗑 Удалить конфигурацию</strong> — двойное подтверждение. Модалка <code>#modalConfirmDelete</code> требует <em>ввести точное название конфигурации</em>; кнопка «Удалить безвозвратно» disabled пока ввод не совпадёт. Файлы бэкапов не трогаются — только расписание Celery beat.</li>
+    <li><strong>↻ Восстановить</strong> — расширенная модалка <code>#modalRestore</code>: Файл / Дата / Тип / Размер, блок «Что произойдёт» с предупреждением о потере данных после даты бэкапа, выбор <code>Только БД / Только файлы / Полное восстановление</code>, поле для ввода слова <code>ВОССТАНОВИТЬ</code> (uppercase). Для типа <code>docker</code> — инструкция запустить <code>./restore.sh</code> локально.</li>
+  </ul>
+  <img src="../img/v436/backup_modal_run.png" alt="Modal: подтверждение запуска бэкапа" class="screenshot">
+  <img src="../img/v436/backup_modal_delete.png" alt="Modal: двойное подтверждение удаления конфигурации" class="screenshot">
+  <img src="../img/v436/backup_modal_restore.png" alt="Modal: восстановление с вводом слова ВОССТАНОВИТЬ" class="screenshot">
+
+  <h4 id="backup-running-status">9.4.3. Статус «Идёт сейчас» и polling</h4>
+  <p>Когда Celery-задача <code>run_backup</code> в работе, страница немедленно отражает это:</p>
+  <ul>
+    <li><strong>Бейдж <code>cfg-badge-running</code></strong> в шапке карточки — синий с pulse-анимацией, текст <em>«Идёт · 2:13 мин»</em>. Длительность обновляется на каждом тике polling.</li>
+    <li><strong>Summary bar</strong> над списком конфигураций — синий блок с количеством одновременных бэкапов и их именами + длительностью.</li>
+    <li><strong>Adaptive polling</strong>: 5 сек пока что-то идёт, 30 сек в покое; через ~2 мин в покое — самостоп. На завершении бэкапа — toast «Резервное копирование завершено» + автоматическая перезагрузка через 1.5 сек, чтобы карточки получили новые <code>last_run / size / duration</code>.</li>
+    <li><strong>Last error alert</strong> — если последний record в статусе <code>error</code>, под disk banner показывается красный блок с именем конфигурации, временем и текстом ошибки.</li>
+  </ul>
+  <p>Endpoint: <code>GET /admin/settings/backup/status/</code> возвращает <code>running[]</code>, <code>running_count</code>, <code>last_done_id/name/size</code>, <code>last_error{config_name, created_at, error}</code>, <code>now</code>.</p>
+  <p>Уважает <code>prefers-reduced-motion: reduce</code> — pulse-анимация отключается для пользователей с укачиванием.</p>
+
+  <h4 id="backup-records-filters">9.4.4. Поиск и фильтры файлов бэкапов</h4>
+  <p>Над таблицей файлов — компактный inline-toolbar с 4 элементами (≥576px в одну строку):</p>
+  <ul>
+    <li><strong>Поиск по имени файла</strong> — input 280px с иконкой 🔍, фильтрация по подстроке (case-insensitive, jQuery <code>input</code> event)</li>
+    <li><strong>Все конфигурации</strong> — select 220px, опции из <code>BackupConfig.objects.all()</code></li>
+    <li><strong>Любой тип</strong> — select 200px, 5 опций (db / files / both / docker / configs)</li>
+    <li><strong>Любой статус</strong> — select 180px (done / running / error / pending)</li>
+    <li><strong>✕ Сбросить</strong> — обнуляет все 4 фильтра</li>
+  </ul>
+  <p>Фильтрация client-side: каждый <code>&lt;tr&gt;</code> имеет <code>data-name / data-config / data-type / data-status</code>, JS показывает/скрывает строки и обновляет счётчик «N / M». Когда нет совпадений — empty-state «Нет файлов под фильтр».</p>
+  <p>Технически: select'ы помечены классом <code>.no-select2</code>, чтобы AdminLTE не оборачивал их в Select2-обёртку (которая раздувала ширину до 100%).</p>
+  <img src="../img/v436/backup_records_toolbar.png" alt="Toolbar поиска и фильтров файлов бэкапов" class="screenshot">
+
+  <h4 id="backup-mobile">9.4.5. Mobile dropdown «⋮ Действия»</h4>
+  <p>На экранах ≤575px три кнопки <code>[⚙][▶][🗑]</code> в шапке карточки сворачиваются в один <code>fa-ellipsis-v</code>, открывающий Bootstrap dropdown с тремя пунктами (цветные иконки + подписи). Существующие event-handlers (<code>$(document).on('click', '.btn-edit-config')</code> и т.д.) автоматически подхватывают пункты dropdown — JS не дублируется.</p>
+  <img src="../img/v436/backup_mobile_dropdown.png" alt="Mobile-вид с раскрытым dropdown «⋮ Действия»" class="screenshot">
+
+  <h4 id="backup-audit">9.4.6. Аудит и Telegram-алерты</h4>
+  <p>Миграция <code>0105_backup_audit_fields</code> добавила в <code>BackupConfig</code> и <code>BackupRecord</code> по 3 поля:</p>
+  <table>
+    <thead><tr><th>Поле</th><th>Тип</th><th>Что хранит</th></tr></thead>
+    <tbody>
+      <tr><td><code>last_action_by</code></td><td>FK → User (SET_NULL)</td><td>Кто выполнил последнее действие</td></tr>
+      <tr><td><code>last_action_at</code></td><td>DateTime</td><td>Когда выполнено</td></tr>
+      <tr><td><code>last_action</code></td><td>CharField(32)</td><td><code>create / update / run / restore</code></td></tr>
+    </tbody>
+  </table>
+  <p>Заполнение через хелпер <code>billing/views/backup.py::_stamp_action(obj, request, action)</code>. Удаление и восстановление дополнительно пишутся в <code>AuditOperations</code> через <code>billing.services.audit_log.write_audit()</code> с <code>table_name='backup_config'</code> или <code>'backup_record'</code> — доступны для drill-down в <code>/admin/reports/AuditOperations/</code>.</p>
+  <p><strong>Telegram-алерт при сбое</strong>: в <code>billing/tasks/backup.py</code> хелпер <code>_alert_backup_failed(config_name, error)</code> зовёт существующий <code>billing.tasks.nas_sync._send_alarm()</code> с emoji 💾. Пример сообщения:</p>
+  <pre><code>⚠️ 💾 Сбой резервного копирования
+Конфигурация: Суточная база
+Ошибка: pg_dump: connection to server failed: timeout</code></pre>
+  <p>Алерт проходит через настройки Telegram-proxy и общий toggle <code>TELEGRAM_ALARM_*</code>; чат и thread берутся из <code>TELEGRAM_ADMIN_CHAT_ID</code> + <code>TELEGRAM_ADMIN_THREAD_ID</code>.</p>
+
+  <h4>Sprint roadmap (для контекста)</h4>
+  <table>
+    <thead><tr><th>Build</th><th>Что добавлено</th><th>Связь с планом</th></tr></thead>
+    <tbody>
+      <tr><td>429–430</td><td>Sprint 1: 8 quick wins</td><td>QW-1 .. QW-8</td></tr>
+      <tr><td>432</td><td>Sprint 2: polling + filters + mobile + audit + Telegram</td><td>S2-1 .. S2-6</td></tr>
+      <tr><td>433–436</td><td>UX-доводка: исправлен tool­bar layout (no-select2 + Select2 fallback width)</td><td>P1-7 follow-up</td></tr>
+    </tbody>
+  </table>
 
   <!-- ===== 10. Отчёты ===== -->
   <h2 id="reports">10. Отчёты</h2>
@@ -4330,7 +4418,7 @@ chmod +x restore.sh
 
   <!-- ===== 9. Справочники ===== -->
   <h2 id="dictionaries">11. Справочники</h2>
-  <p>Справочники СмИТ Биллинг v1.6.0 (build 428) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
+  <p>Справочники СмИТ Биллинг v1.6.0 (build 437) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
   <div class="section-toc">
   <details open>
     <summary><strong>Содержание раздела</strong></summary>
@@ -5679,7 +5767,7 @@ else:
   </details>
   </div>
 
-  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 428) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
+  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 437) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
 
   <h3 id="setevaya-izolyatsiya">Сетевая изоляция</h3>
   <p><strong>Docker-контейнеризация</strong> — каждый сервис (web, db, redis, celery, nginx, freeradius) работает в изолированном Docker-контейнере с собственной сетью (172.28.0.0/16). Входящие соединения проходят через nginx reverse proxy, что предотвращает прямой доступ к внутренним сервисам.</p>
@@ -5823,7 +5911,7 @@ docker compose up -d</code></pre>
 
   <!-- ===== 16. Стороннее ПО ===== -->
   <h2 id="third-party">16. Стороннее ПО</h2>
-  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 428).</p>
+  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 437).</p>
 
   <!-- ===== 17. Смена языка ===== -->
   <h2 id="language">17. Смена языка</h2>
@@ -5844,7 +5932,7 @@ docker compose up -d</code></pre>
   </details>
   </div>
 
-  <p>СмИТ Биллинг v1.6.0 (build 428) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
+  <p>СмИТ Биллинг v1.6.0 (build 437) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
 
   <h3 id="pochemu-postgresql">Почему PostgreSQL</h3>
   <p>PostgreSQL 16 выбран в качестве основной СУБД по ряду причин:</p>
@@ -6608,8 +6696,8 @@ STARTED_AT, FINISHED_AT, EBS_LAST_TX_ID, STATS_JSON, DUMP_FILE, ERROR_MSG</code>
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 428)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">02.05.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 428)</span>&nbsp;|&nbsp;<span data-smit="updated">02.05.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 437)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">02.05.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 437)</span>&nbsp;|&nbsp;<span data-smit="updated">02.05.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=220"></script>
