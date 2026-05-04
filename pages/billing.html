@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 442)</title>
+  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 443)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 442)">
+  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 443)">
   <meta property="og:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/billing.html">
   <meta property="og:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
@@ -14,12 +14,12 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 442)">
+  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 443)">
   <meta name="twitter:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta name="twitter:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
   <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=441">
+  <link rel="stylesheet" href="../css/style.css?v=443">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.26.0/dist/tabler-icons.min.css">
   <link rel="stylesheet" href="../css/search.css?v=222">
@@ -4418,7 +4418,7 @@ chmod +x restore.sh
 
   <!-- ===== 9. Справочники ===== -->
   <h2 id="dictionaries">11. Справочники</h2>
-  <p>Справочники СмИТ Биллинг v1.6.0 (build 442) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
+  <p>Справочники СмИТ Биллинг v1.6.0 (build 443) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
   <div class="section-toc">
   <details open>
     <summary><strong>Содержание раздела</strong></summary>
@@ -4647,10 +4647,39 @@ python manage.py backfill_ip_pool_mask --force --apply  # перезаписат
   <p>Связка <code>next_pull</code> используется в build 440 для <strong>chain-выдачи IP</strong>: при исчерпании пула A автоматический алгоритм (<code>_autoassign_ip_for_user</code>) переходит к пулу B, указанному в <code>A.next_pull_id</code>. Бейдж в списке делает эту цепочку <strong>видимой одним взглядом</strong> — без захода в модалку редактирования.</p>
   <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ip_pool_ux_v441/ippull_chain_badge.png" alt="Бейдж «🔗 → #20» рядом с именем JOY-1 #1007 и «🔗 → #28» у TOY-1 #1012 — chain через next_pull_id" class="screenshot">
 
-  <h5 id="ip-pools-441-not-yet">Что отложено в часть 2 (build 442+)</h5>
+  <h5 id="ip-pools-chain-allocate-442">Chain-aware выдача IP при allocate (build 442)</h5>
+  <p>Сразу после build 441 в <code>billing/services/ip_allocation.py</code> добавлен helper <code>_expand_next_pull_chain(pools, max_depth=10)</code>, который раскрывает цепочку <code>IpPull.next_pull</code> в плоский список:</p>
+  <pre><code>pools = [TOY-1, TOY-2-from-NAS]
+expanded = _expand_next_pull_chain(pools)
+# → [TOY-1, TOY-2 (from TOY-1.next_pull),
+#     TOY-3 (from TOY-2.next_pull), TOY-2-from-NAS-skipped]</code></pre>
+  <p>Алгоритм идёт по <code>pool.next_pull</code> до конца цепочки или пока <code>max_depth=10</code>, дедуплицирует по <code>pk</code> (защита от циклов). Применяется в <code>allocate_ip_from_pools()</code> <strong>перед</strong> глобальным fallback-пулом и reclaim'ом offline-IP.</p>
+  <p><strong>Эффект</strong>: NAS, у которого в <code>pull_id</code> указан только TOY-1, теперь автоматически выдаёт IP из TOY-2 / TOY-3 при исчерпании TOY-1 — без ручного перебора 4 FK-слотов NAS.</p>
+
+  <h5 id="ip-pools-chain-stats-443">Chain-aware статистика «Σ» в колонках «Свободно» / «% занято» (build 443)</h5>
+  <p>В <code>billing/services/ip_allocation.py::get_pool_stats</code> добавлен chain-aware подсчёт через новую функцию <code>_compute_chain_stats(pool)</code>. Для каждого пула возвращаются дополнительные поля:</p>
   <ul>
-    <li><strong>Chain-aware подсчёт «Свободно/% занято»</strong> — сейчас <code>get_pool_stats</code> считает только <code>Users.ip</code> в диапазоне самого пула, без учёта наследников цепочки. Из-за этого пул-родитель chain'а может выглядеть «100% занято», а пул-наследник «0% занято», хотя физически они шарят выдачу — в части 2 будет рекурсивный walk через <code>next_pull_id</code> + tooltip с разбивкой «свой / наследник»</li>
+    <li><code>chain_total</code> / <code>chain_used</code> / <code>chain_free</code> / <code>chain_pct_used</code> — суммарные значения по объединению диапазонов всех пулов в цепочке <code>next_pull</code>, дедуплицируются по реальному IP</li>
+    <li><code>chain_length</code> — глубина цепочки (1 = пул без <code>next_pull</code>)</li>
+    <li><code>chain_breakdown</code> — массив <code>[{pool_id, name, total, used, free}, …]</code> для tooltip-разбивки</li>
+  </ul>
+  <p>Реализация защищена от циклов (<code>seen</code>-set по <code>pk</code> + <code>max_depth=10</code>) и от пулов без <code>next_pull</code> (fast-path без обращения к chain-логике, ~95% пулов).</p>
+  <p>В UI у пулов с <code>chain_length &gt; 1</code> под основными цифрами «Свободно» и «% занято» появляется второй блок <strong>🔗 Σ</strong> с цветным бейджем — chain-aware значение. Tooltip показывает разбивку «JOY-1 (510/510) → JOY-2 (14/510) → JOY-3 (0/510)».</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ip_pool_ux_v441/ippull_chain_aware_stats.png" alt="Колонки «Свободно» и «% занято» с chain-aware Σ — JOY-1 показывает 0/510 (исчерпан) + Σ 1006/1530 ×3, TOY-1 17/510 + Σ 924/1530 ×3" class="screenshot">
+  <p><strong>Реальный пример с testbill:</strong></p>
+  <table class="docs-table">
+    <thead><tr><th>Пул</th><th>Self</th><th>Chain Σ</th><th>Цепочка</th></tr></thead>
+    <tbody>
+      <tr><td>JOY-1 #1007</td><td>0/510 (исчерпан)</td><td><strong>1006/1530 (34.2 %)</strong></td><td>JOY-1 → JOY-2 → JOY-3</td></tr>
+      <tr><td>TOY-1 #1012</td><td>17/510 (96.7 %)</td><td><strong>924/1530 (39.6 %)</strong></td><td>TOY-1 → TOY-2 → TOY-3</td></tr>
+    </tbody>
+  </table>
+  <p>До build 443 пул-родитель цепочки выглядел как «исчерпан 100 %», а пул-наследник как «0 % занято» — admin воспринимал это как «рандомную историю». После build 443 в одной строке видны оба значения: «свой» (отвечает за UI-сортировку и алерты) и «суммарный» (фактическая ёмкость с учётом chain-выдачи через <code>_expand_next_pull_chain</code> build 442).</p>
+
+  <h5 id="ip-pools-441-not-yet">Что ещё отложено</h5>
+  <ul>
     <li><strong>Колонка «Привязка к NAS» chain-aware</strong> — показывать NAS, для которых пул доступен через цепочку, но с пометкой «через chain»</li>
+    <li><strong>Сортировка по chain_pct_used</strong> — сейчас сортировка идёт по «своему» <code>pct_used</code>; добавить второй режим «По всей цепочке»</li>
   </ul>
 
   <h3 id="requisites">11.6. Реквизиты</h3>
@@ -5816,7 +5845,7 @@ else:
   </details>
   </div>
 
-  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 442) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
+  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 443) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
 
   <h3 id="setevaya-izolyatsiya">Сетевая изоляция</h3>
   <p><strong>Docker-контейнеризация</strong> — каждый сервис (web, db, redis, celery, nginx, freeradius) работает в изолированном Docker-контейнере с собственной сетью (172.28.0.0/16). Входящие соединения проходят через nginx reverse proxy, что предотвращает прямой доступ к внутренним сервисам.</p>
@@ -5960,7 +5989,7 @@ docker compose up -d</code></pre>
 
   <!-- ===== 16. Стороннее ПО ===== -->
   <h2 id="third-party">16. Стороннее ПО</h2>
-  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 442).</p>
+  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 443).</p>
 
   <!-- ===== 17. Смена языка ===== -->
   <h2 id="language">17. Смена языка</h2>
@@ -5981,7 +6010,7 @@ docker compose up -d</code></pre>
   </details>
   </div>
 
-  <p>СмИТ Биллинг v1.6.0 (build 442) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
+  <p>СмИТ Биллинг v1.6.0 (build 443) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
 
   <h3 id="pochemu-postgresql">Почему PostgreSQL</h3>
   <p>PostgreSQL 16 выбран в качестве основной СУБД по ряду причин:</p>
@@ -6745,8 +6774,8 @@ STARTED_AT, FINISHED_AT, EBS_LAST_TX_ID, STATS_JSON, DUMP_FILE, ERROR_MSG</code>
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 442)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">02.05.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 442)</span>&nbsp;|&nbsp;<span data-smit="updated">02.05.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 443)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">02.05.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 443)</span>&nbsp;|&nbsp;<span data-smit="updated">02.05.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=220"></script>
