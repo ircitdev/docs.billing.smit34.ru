@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 443)</title>
+  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 444)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 443)">
+  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 444)">
   <meta property="og:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/billing.html">
   <meta property="og:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
@@ -14,12 +14,12 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 443)">
+  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 444)">
   <meta name="twitter:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta name="twitter:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
   <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=443">
+  <link rel="stylesheet" href="../css/style.css?v=444">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.26.0/dist/tabler-icons.min.css">
   <link rel="stylesheet" href="../css/search.css?v=222">
@@ -4418,7 +4418,7 @@ chmod +x restore.sh
 
   <!-- ===== 9. Справочники ===== -->
   <h2 id="dictionaries">11. Справочники</h2>
-  <p>Справочники СмИТ Биллинг v1.6.0 (build 443) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
+  <p>Справочники СмИТ Биллинг v1.6.0 (build 444) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
   <div class="section-toc">
   <details open>
     <summary><strong>Содержание раздела</strong></summary>
@@ -4681,6 +4681,44 @@ expanded = _expand_next_pull_chain(pools)
     <li><strong>Колонка «Привязка к NAS» chain-aware</strong> — показывать NAS, для которых пул доступен через цепочку, но с пометкой «через chain»</li>
     <li><strong>Сортировка по chain_pct_used</strong> — сейчас сортировка идёт по «своему» <code>pct_used</code>; добавить второй режим «По всей цепочке»</li>
   </ul>
+
+  <h4 id="ip-pools-collect-used-ips-fix-444">CRITICAL fix: collect_used_ips — последовательная выдача IP (build 444)</h4>
+  <p>Баг существовал давно (вероятно с самого начала), проявился после жалобы admin: «IP должны выдаваться последовательно», но фактически новые абоненты TOY-NAS получали IP из TOY-2 (<code>100.99.10.x</code>), а не из TOY-1 (<code>100.99.8.x</code>) — несмотря на 17 свободных «дыр» в TOY-1.</p>
+
+  <h5 id="ip-pools-fix-444-root-cause">Корневая причина: SQL <code>NOT IN (NULL, ...)</code> bug</h5>
+  <p>Старый код в <code>billing/services/ip_allocation.py::collect_used_ips()</code>:</p>
+  <pre><code>Users.objects.exclude(ip__in=[None, '', '0.0.0.0']).values_list('ip', flat=True)</code></pre>
+  <p>Django ORM генерирует SQL <code>WHERE "IP" NOT IN (NULL, '', '0.0.0.0')</code>. По стандарту SQL, любое сравнение с <code>NULL</code> через <code>IN</code> возвращает <em>unknown</em> — это трёхзначная логика. <code>WHERE unknown</code> рассматривается как <code>false</code> → запись отбрасывается.</p>
+  <p><strong>В результате</strong> из 5576 записей с заполненным IP в выборку попадало только ~1021 (артефакты JOIN'ов). ~80 % занятых IP считались «свободными» в кеше <code>used_ips</code>.</p>
+
+  <h5 id="ip-pools-fix-444-why-no-dupes">Почему дублей всё равно не было</h5>
+  <p>Алгоритм <code>allocate_ip_from_pool</code> делает <strong>финальную проверку</strong> через <code>_is_ip_taken_anywhere(ip_str)</code> — три SQL-запроса (<code>Users.IP</code> / <code>Users.SNATIP</code> / <code>RADIUS_SESSIONS</code>). Эти запросы используют точное равенство (<code>filter(ip=ip_str)</code>) — оно работает корректно. Поэтому даже если <code>used_ips</code> пропускал занятый IP, эти три проверки его блокировали.</p>
+  <p>Защита работала, но <strong>ценой производительности</strong>: для пула с 493 занятыми IP алгоритм делал <code>510 × 3 = 1530 SQL-запросов</code> на одну выдачу IP, и в худшем случае возвращал <code>None</code> (ложно-исчерпан) → переходил в следующий пул цепочки <code>next_pull</code>. Admin видел это как «выдача попала в TOY-2».</p>
+
+  <h5 id="ip-pools-fix-444-solution">Решение: raw SQL с <code>host()</code></h5>
+  <p>Django ORM некорректно обрабатывает поле <code>GenericIPAddressField</code> при фильтрах с пустыми строками: <code>exclude(ip='')</code> → Django вызывает <code>to_python('')</code> = <code>None</code>, SQL снова получает <code>WHERE ip != NULL</code> = unknown.</p>
+  <p>Надёжный путь — raw SQL с Postgres-функцией <code>host()</code>, которая возвращает чистую строку IP без маски <code>/32</code>:</p>
+  <pre><code>with connection.cursor() as c:
+    c.execute(
+        'SELECT host("IP") FROM users '
+        'WHERE "IP" IS NOT NULL AND host("IP") NOT IN (\\'\\', \\'0.0.0.0\\')'
+    )
+    for row in c.fetchall():
+        ip = row[0]
+        if ip and ip not in _EMPTY_IPS:
+            used.add(ip)</code></pre>
+
+  <h5 id="ip-pools-fix-444-effect">Эффект</h5>
+  <table class="docs-table">
+    <thead><tr><th>Метрика</th><th>До build 444</th><th>После</th></tr></thead>
+    <tbody>
+      <tr><td><code>collect_used_ips()</code> total</td><td>1021 IP</td><td><strong>5579 IP</strong></td></tr>
+      <tr><td>TOY-1 used count</td><td>17/510</td><td><strong>494/510</strong></td></tr>
+      <tr><td>Время <code>allocate_ip_from_pool</code> для исчерпанного пула</td><td>~7.6 сек</td><td><strong>8 мс</strong></td></tr>
+      <tr><td>Возврат для TOY-1</td><td><code>None</code> → fallback в TOY-2</td><td><code>100.99.8.130</code> (первая дыра)</td></tr>
+    </tbody>
+  </table>
+  <p>Жалоба admin'а «IP должны выдаваться последовательно» закрыта. Дубли остаются невозможны — защита <code>_is_ip_taken_anywhere</code> + DB-constraint <code>users_ip_unique</code> + <code>SELECT FOR UPDATE</code> работает, как и раньше.</p>
 
   <h3 id="requisites">11.6. Реквизиты</h3>
   <p>Банковские и юридические реквизиты оператора для формирования договоров, счетов и актов. ИНН, КПП, расчётный счёт, БИК, юридический адрес.</p>
@@ -5845,7 +5883,7 @@ else:
   </details>
   </div>
 
-  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 443) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
+  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 444) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
 
   <h3 id="setevaya-izolyatsiya">Сетевая изоляция</h3>
   <p><strong>Docker-контейнеризация</strong> — каждый сервис (web, db, redis, celery, nginx, freeradius) работает в изолированном Docker-контейнере с собственной сетью (172.28.0.0/16). Входящие соединения проходят через nginx reverse proxy, что предотвращает прямой доступ к внутренним сервисам.</p>
@@ -5989,7 +6027,7 @@ docker compose up -d</code></pre>
 
   <!-- ===== 16. Стороннее ПО ===== -->
   <h2 id="third-party">16. Стороннее ПО</h2>
-  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 443).</p>
+  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 444).</p>
 
   <!-- ===== 17. Смена языка ===== -->
   <h2 id="language">17. Смена языка</h2>
@@ -6010,7 +6048,7 @@ docker compose up -d</code></pre>
   </details>
   </div>
 
-  <p>СмИТ Биллинг v1.6.0 (build 443) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
+  <p>СмИТ Биллинг v1.6.0 (build 444) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
 
   <h3 id="pochemu-postgresql">Почему PostgreSQL</h3>
   <p>PostgreSQL 16 выбран в качестве основной СУБД по ряду причин:</p>
@@ -6774,8 +6812,8 @@ STARTED_AT, FINISHED_AT, EBS_LAST_TX_ID, STATS_JSON, DUMP_FILE, ERROR_MSG</code>
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 443)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">02.05.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 443)</span>&nbsp;|&nbsp;<span data-smit="updated">02.05.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 444)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">02.05.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 444)</span>&nbsp;|&nbsp;<span data-smit="updated">02.05.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=220"></script>
