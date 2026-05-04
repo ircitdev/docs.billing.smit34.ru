@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 441)</title>
+  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 442)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 441)">
+  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 442)">
   <meta property="og:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/billing.html">
   <meta property="og:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 441)">
+  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 442)">
   <meta name="twitter:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta name="twitter:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
   <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
@@ -4418,7 +4418,7 @@ chmod +x restore.sh
 
   <!-- ===== 9. Справочники ===== -->
   <h2 id="dictionaries">11. Справочники</h2>
-  <p>Справочники СмИТ Биллинг v1.6.0 (build 441) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
+  <p>Справочники СмИТ Биллинг v1.6.0 (build 442) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
   <div class="section-toc">
   <details open>
     <summary><strong>Содержание раздела</strong></summary>
@@ -4607,6 +4607,7 @@ python manage.py backfill_ip_pool_mask --force --apply  # перезаписат
 
   <h4 id="ip-pools-ux-441">UX-доводка списка IP-пулов (build 441)</h4>
   <p>Часть 1 плана UX-полировки <code>/admin/dictionary/IpPull/</code> по обратной связи admin: «маска и шлюз без смысла», «привязка к чужому NAS непонятна», «сортировка слетает после CRUD».</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ip_pool_ux_v441/ippull_list_overview.png" alt="Список IP-пулов после build 441 — KPI, прогресс-бары, бейджи ролей" class="screenshot">
 
   <h5 id="ip-pools-persist-state">Сохранение сортировки и фильтров между перезагрузками</h5>
   <p>Раньше после <em>сохранения</em> или <em>удаления</em> пула страница делала <code>location.reload()</code> и сортировка сбрасывалась на дефолт <code>% занято desc</code>. Build 441 сохраняет состояние представления в <code>localStorage.ippool_view_v1</code>:</p>
@@ -4629,6 +4630,7 @@ python manage.py backfill_ip_pool_mask --force --apply  # перезаписат
   </ul>
   <p>Тултип на самой ссылке-NAS расшифровывает все его роли в этом пуле. Если NAS появляется в bindings <em>только</em> через <code>Users.nas_id</code> (то есть абоненты с этого пула физически идут через NAS, но формальной FK-привязки нет — например, через chain <code>next_pull_id</code> build 440), бейджи ролей пустые. Это диагностический сигнал «NAS подмешан только косвенно».</p>
   <p><strong>Кеш JSON:</strong> <code>CACHE_KEY</code> поднят с <code>ip_pool_stats_v2</code> до <code>v3</code> — старые ответы без <code>roles</code> инвалидируются автоматически.</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ip_pool_ux_v441/ippull_nas_roles.png" alt="Колонка «Привязка к NAS» с зелёными бейджами «ОСН.» и примером пула с двумя NAS (NAS NEO + JOY)" class="screenshot">
 
   <h5 id="ip-pools-decorative-fields">Колонки «Маска» и «Шлюз» — справочные значения</h5>
   <p>Поля <code>IpPull.mask</code> и <code>IpPull.gateway</code> <strong>не передаются абоненту через RADIUS</strong>: <code>Framed-IP-Address</code> берётся из <code>Users.ip</code>, шлюз настроен на NAS физически. Эти поля используются только:</p>
@@ -4638,10 +4640,12 @@ python manage.py backfill_ip_pool_mask --force --apply  # перезаписат
     <li><strong>DHCP-секцией</strong> <code>dhcpd.conf</code> при включённом <code>gen_dhcp_subnet</code></li>
   </ul>
   <p>В UI колонки помечены info-иконкой <i class="fas fa-info-circle"></i> в заголовке (с tooltip-пояснением) и приглушённым цветом ячеек (<code>#6c757d</code>) — визуально отличаются от действующих параметров. На <code>&lt; xl</code>-экранах эти колонки скрыты (<code>d-none d-xl-table-cell</code>) — экономия места под более важные «Свободно» / «% занято».</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ip_pool_ux_v441/ippull_decorative_columns.png" alt="Колонки «Маска» и «Шлюз» с info-иконкой в шапке, ячейки приглушены серым цветом" class="screenshot">
 
   <h5 id="ip-pools-chain-badge">Бейдж «🔗 → #N» — связка next_pull в цепочку</h5>
   <p>У пулов с заданным <code>next_pull_id</code> рядом с ID появляется кликабельный бейдж <strong>🔗 → #N</strong>. Клик открывает модалку редактирования следующего пула в цепочке. Тултип содержит имя следующего пула (подтягивается через JS из карты <code>POOL_NAMES</code>, без N+1 запросов в Django template).</p>
   <p>Связка <code>next_pull</code> используется в build 440 для <strong>chain-выдачи IP</strong>: при исчерпании пула A автоматический алгоритм (<code>_autoassign_ip_for_user</code>) переходит к пулу B, указанному в <code>A.next_pull_id</code>. Бейдж в списке делает эту цепочку <strong>видимой одним взглядом</strong> — без захода в модалку редактирования.</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ip_pool_ux_v441/ippull_chain_badge.png" alt="Бейдж «🔗 → #20» рядом с именем JOY-1 #1007 и «🔗 → #28» у TOY-1 #1012 — chain через next_pull_id" class="screenshot">
 
   <h5 id="ip-pools-441-not-yet">Что отложено в часть 2 (build 442+)</h5>
   <ul>
@@ -5812,7 +5816,7 @@ else:
   </details>
   </div>
 
-  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 441) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
+  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 442) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
 
   <h3 id="setevaya-izolyatsiya">Сетевая изоляция</h3>
   <p><strong>Docker-контейнеризация</strong> — каждый сервис (web, db, redis, celery, nginx, freeradius) работает в изолированном Docker-контейнере с собственной сетью (172.28.0.0/16). Входящие соединения проходят через nginx reverse proxy, что предотвращает прямой доступ к внутренним сервисам.</p>
@@ -5956,7 +5960,7 @@ docker compose up -d</code></pre>
 
   <!-- ===== 16. Стороннее ПО ===== -->
   <h2 id="third-party">16. Стороннее ПО</h2>
-  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 441).</p>
+  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 442).</p>
 
   <!-- ===== 17. Смена языка ===== -->
   <h2 id="language">17. Смена языка</h2>
@@ -5977,7 +5981,7 @@ docker compose up -d</code></pre>
   </details>
   </div>
 
-  <p>СмИТ Биллинг v1.6.0 (build 441) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
+  <p>СмИТ Биллинг v1.6.0 (build 442) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
 
   <h3 id="pochemu-postgresql">Почему PostgreSQL</h3>
   <p>PostgreSQL 16 выбран в качестве основной СУБД по ряду причин:</p>
@@ -6741,8 +6745,8 @@ STARTED_AT, FINISHED_AT, EBS_LAST_TX_ID, STATS_JSON, DUMP_FILE, ERROR_MSG</code>
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 441)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">02.05.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 441)</span>&nbsp;|&nbsp;<span data-smit="updated">02.05.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 442)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">02.05.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 442)</span>&nbsp;|&nbsp;<span data-smit="updated">02.05.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=220"></script>
