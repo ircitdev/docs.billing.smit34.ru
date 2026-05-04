@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 444)</title>
+  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 445)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 444)">
+  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 445)">
   <meta property="og:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/billing.html">
   <meta property="og:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
@@ -14,12 +14,12 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 444)">
+  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 445)">
   <meta name="twitter:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta name="twitter:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
   <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=444">
+  <link rel="stylesheet" href="../css/style.css?v=445">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.26.0/dist/tabler-icons.min.css">
   <link rel="stylesheet" href="../css/search.css?v=222">
@@ -3418,6 +3418,53 @@ NAS без сессии (NAK): CCR, JOY, Червленое, ...</code></pre>
   <h4 id="nas-monitoring-report">SQL-отчёт «NAS uptime за 30 дней»</h4>
   <p>Создаётся миграцией <code>0090_nas_monitoring</code> в <code>AdminCustomReports</code>. Доступен в разделе «Отчёты → Библиотека». Колонки: ID NAS, название, IP, количество падений за 30 дней, общий простой в минутах, uptime в %.</p>
 
+  <h3 id="nas-zombie-logged-fix-445">7.16. Fix расхождения виджета «NAS онлайн» и реальных RADIUS-сессий (build 445)</h3>
+  <p>Жалоба admin'а: «количество реальных сессий на NAS расходится с количеством сессий, которые отображаются в виджете на главной странице». Виджет показывал 989, реальных активных RADIUS-сессий было 1004 — расхождение 15+.</p>
+
+  <h4 id="nas-zombie-root-cause">Корневая причина: integer overflow в Acct-Session-Time</h4>
+  <p>Виджет дашборда читает <code>Users.LOGGED=true</code> (поле обновляется при RADIUS Accounting). Реальные сессии — таблица <code>RADIUS_SESSIONS WHERE END_TIME IS NULL</code>. Они могут расходиться, если NAS присылает мусорные значения в Interim-Update.</p>
+  <p>Конкретный пример с testbill: NAS Mikrotik после reboot/счётчик-overflow прислал <code>Acct-Session-Time = 4_261_480_885</code> (~135 лет). Колонка <code>RADIUS_SESSIONS.SESSION_TIME</code> имела тип <code>integer</code> (max <code>2_147_483_647</code>) → PostgreSQL отбрасывал <code>UPDATE/INSERT</code> с <code>integer out of range</code> → запись в <code>RADIUS_SESSIONS</code> не создавалась.</p>
+  <p>При этом функция <code>_update_radius_session</code> вызывалась <strong>раньше</strong> и успевала отметить <code>Users.LOGGED=true</code>. Итог — <strong>zombie-LOGGED</strong>: виджет показывал онлайн, а в RADIUS_SESSIONS пусто.</p>
+  <p><code>cleanup-stale-sessions</code> не помогал: он сбрасывает <code>LOGGED</code> только если <code>RADIUS_UPDATE</code> старше 60 минут. У zombie Interim-Update приходил каждые 2 минуты, поле всегда свежее.</p>
+
+  <h4 id="nas-zombie-fix">Фикс: clamp values + миграция SESSION_TIME → bigint</h4>
+  <p>В <code>radius_python/internet.py</code> функции <code>_radius_sessions_update()</code> и <code>_radius_sessions_stop()</code> теперь обрезают значения перед записью:</p>
+  <pre><code>INT4_MAX = 2_147_483_647        # max signed 4-byte int (SESSION_TIME column)
+BIGINT_MAX = 9_223_372_036_854_775_807  # max signed 8-byte int (IN_OCT/OUT_OCT)
+
+try:
+    sess_time = int(env.get('Acct-Session-Time', 0) or 0)
+    sess_time = min(max(sess_time, 0), INT4_MAX)
+except (ValueError, TypeError):
+    sess_time = 0</code></pre>
+
+  <p>Дополнительно — миграция <code>0107_radius_sessions_session_time_bigint</code> расширяет колонку <code>SESSION_TIME integer → bigint</code>. PostgreSQL делает это fast-path без блокировки таблицы. ORM-модель <code>RadiusSessions.session_time</code> обновлена на <code>BigIntegerField</code>.</p>
+  <p>С обоими фиксами:</p>
+  <ul>
+    <li>Если NAS пришлёт мусор &gt; INT4_MAX — clamp обрежет до INT4_MAX, запись успешна</li>
+    <li>В UI «Монитор сессий» это отобразится как ~68 лет — явный сигнал «мусор»</li>
+    <li>Колонка SESSION_TIME = bigint поддержит и более длинные сессии в будущем</li>
+  </ul>
+
+  <h4 id="nas-zombie-effect">Эффект</h4>
+  <table class="docs-table">
+    <thead><tr><th>Метрика</th><th>До build 445</th><th>После</th></tr></thead>
+    <tbody>
+      <tr><td>Виджет дашборда (<code>Users.LOGGED=true</code>)</td><td>989</td><td>995</td></tr>
+      <tr><td>Distinct user_id active в RADIUS_SESSIONS</td><td>987</td><td><strong>1001</strong></td></tr>
+      <tr><td>Zombie-LOGGED (LOGGED=true без активной сессии)</td><td>8-10</td><td><strong>0</strong></td></tr>
+      <tr><td>Ошибок <code>integer out of range</code> в FreeRADIUS-логах за 7 минут</td><td>3-4</td><td><strong>0</strong></td></tr>
+    </tbody>
+  </table>
+  <p>Знак расхождения сменился: теперь <code>Users.LOGGED &lt; active sessions</code> на 6 — это <strong>нормальный transient</strong> в момент перехода. Новые абоненты подключаются, RADIUS-сессии открываются, <code>Users.LOGGED</code> обновляется при следующем Interim-Update (2 минуты).</p>
+
+  <h4 id="nas-zombie-deploy-note">Особенность деплоя FreeRADIUS</h4>
+  <p>Файл <code>radius_python/internet.py</code> запекается в Docker-образ <code>app-freeradius</code>, не volume. Обычный workflow требует <code>docker compose build freeradius</code>. Если базовый образ <code>freeradius/freeradius-server:3.2.3</code> недоступен из docker.io (registry timeout), допустим временный hot-reload:</p>
+  <pre><code>sudo cp internet.py /opt/smit-billing/app/radius_python/
+docker cp /opt/smit-billing/app/radius_python/internet.py app-freeradius-1:/app/radius_python/
+docker restart app-freeradius-1</code></pre>
+  <p>Это <strong>временная мера</strong>: при следующем <code>docker compose build freeradius</code> код подтянется из репо. Hot-reload даёт мгновенный фикс без ожидания доступа к registry.</p>
+
   <!-- ===== 8. FreeRADIUS ===== -->
   <h2 id="freeradius">8. FreeRADIUS / RADIUS</h2>
   <p>СмИТ Биллинг 1.6 включает встроенный сервер FreeRADIUS для авторизации и аккаунтинга абонентов интернета, VoIP и IPTV. Сервис работает как отдельный Docker-контейнер в составе стека.</p>
@@ -4418,7 +4465,7 @@ chmod +x restore.sh
 
   <!-- ===== 9. Справочники ===== -->
   <h2 id="dictionaries">11. Справочники</h2>
-  <p>Справочники СмИТ Биллинг v1.6.0 (build 444) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
+  <p>Справочники СмИТ Биллинг v1.6.0 (build 445) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
   <div class="section-toc">
   <details open>
     <summary><strong>Содержание раздела</strong></summary>
@@ -5883,7 +5930,7 @@ else:
   </details>
   </div>
 
-  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 444) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
+  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 445) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
 
   <h3 id="setevaya-izolyatsiya">Сетевая изоляция</h3>
   <p><strong>Docker-контейнеризация</strong> — каждый сервис (web, db, redis, celery, nginx, freeradius) работает в изолированном Docker-контейнере с собственной сетью (172.28.0.0/16). Входящие соединения проходят через nginx reverse proxy, что предотвращает прямой доступ к внутренним сервисам.</p>
@@ -6027,7 +6074,7 @@ docker compose up -d</code></pre>
 
   <!-- ===== 16. Стороннее ПО ===== -->
   <h2 id="third-party">16. Стороннее ПО</h2>
-  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 444).</p>
+  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 445).</p>
 
   <!-- ===== 17. Смена языка ===== -->
   <h2 id="language">17. Смена языка</h2>
@@ -6048,7 +6095,7 @@ docker compose up -d</code></pre>
   </details>
   </div>
 
-  <p>СмИТ Биллинг v1.6.0 (build 444) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
+  <p>СмИТ Биллинг v1.6.0 (build 445) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
 
   <h3 id="pochemu-postgresql">Почему PostgreSQL</h3>
   <p>PostgreSQL 16 выбран в качестве основной СУБД по ряду причин:</p>
@@ -6812,8 +6859,8 @@ STARTED_AT, FINISHED_AT, EBS_LAST_TX_ID, STATS_JSON, DUMP_FILE, ERROR_MSG</code>
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 444)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">02.05.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 444)</span>&nbsp;|&nbsp;<span data-smit="updated">02.05.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 445)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">02.05.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 445)</span>&nbsp;|&nbsp;<span data-smit="updated">02.05.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=220"></script>
