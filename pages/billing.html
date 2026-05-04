@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 437)</title>
+  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 441)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 437)">
+  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 441)">
   <meta property="og:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/billing.html">
   <meta property="og:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
@@ -14,12 +14,12 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 437)">
+  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 441)">
   <meta name="twitter:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta name="twitter:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
   <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=428">
+  <link rel="stylesheet" href="../css/style.css?v=441">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.26.0/dist/tabler-icons.min.css">
   <link rel="stylesheet" href="../css/search.css?v=222">
@@ -4418,7 +4418,7 @@ chmod +x restore.sh
 
   <!-- ===== 9. Справочники ===== -->
   <h2 id="dictionaries">11. Справочники</h2>
-  <p>Справочники СмИТ Биллинг v1.6.0 (build 437) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
+  <p>Справочники СмИТ Биллинг v1.6.0 (build 441) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
   <div class="section-toc">
   <details open>
     <summary><strong>Содержание раздела</strong></summary>
@@ -4534,10 +4534,11 @@ chmod +x restore.sh
   <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ux_pools_v420/ip_pull_desktop.png" alt="Список IP-пулов с KPI-cards" class="screenshot">
 
   <h5 id="ip-pools-sort">Сортировка по умолчанию и кликабельные заголовки</h5>
-  <p>Дефолт — <code>% занято desc</code>: критические пулы наверху сразу при загрузке. Кликабельные <code>&lt;th&gt;</code> с <code>aria-sort</code> + индикаторами ▲/▼ для колонок Название, Диапазон IP, Свободно, % занято. Клавиши <code>Enter</code>/<code>Space</code> на заголовке — то же действие.</p>
+  <p>Дефолт — <code>% занято desc</code>: критические пулы наверху сразу при загрузке. Кликабельные <code>&lt;th&gt;</code> с <code>aria-sort</code> + индикаторами ▲/▼ для колонок Название, Диапазон IP, Свободно, % занято. Клавиши <code>Enter</code>/<code>Space</code> на заголовке — то же действие. <strong>Build 441:</strong> выбор сортировки и фильтров теперь сохраняется в <code>localStorage</code> между перезагрузками — после <code>save</code> / <code>delete</code> / <code>bulk</code> представление не сбрасывается. Подробнее → <a href="#ip-pools-persist-state">Сохранение сортировки и фильтров</a>.</p>
 
   <h5 id="ip-pools-bindings">Колонка «Привязка к NAS»</h5>
   <p>Backend (<code>billing/views/ip_pool_stats.py::_build_nas_bindings</code>) собирает для каждого пула список enabled NAS, использующих его через любое из 4 полей (<code>pull_id</code>, <code>nat_pull_id</code>, <code>white_pull_id</code>, <code>hotspot_pull_id</code>) или через <code>Users.nas_id</code>. Top-3 показываются как кликабельные бейджи с числом абонентов, остальные сворачиваются в <code>+N</code>. Пулы без привязок помечаются плашкой «не используется» и фильтруются чипом «Без привязки».</p>
+  <p><strong>Build 441:</strong> рядом с именем каждого NAS теперь показывается <strong>бейдж роли пула</strong> — <code>main</code> / <code>nat</code> / <code>white</code> / <code>hotspot</code>. Это разъясняет, почему один NAS может появляться в нескольких пулах с разными ролями. Подробнее → <a href="#ip-pools-nas-roles">Роли пула на NAS</a>.</p>
 
   <h5 id="ip-pools-bulk">Bulk-операции и undo</h5>
   <p>Чекбокс в первой колонке + master-чекбокс с indeterminate-состоянием. Bulk-toolbar появляется при выборе ≥ 1 строки: <strong>Включить · Выключить · CSV · Удалить</strong>. Удаление каждого пула проверяется на сервере: если есть <code>Users.pull_id</code>, <code>Homes.pull_id</code> или <code>next_pull_id</code> — пул пропускается с понятным сообщением.</p>
@@ -4603,6 +4604,50 @@ python manage.py backfill_ip_pool_mask --force --apply  # перезаписат
   <p><strong>Результат на testbill:</strong> 26 пулов из 26 (100%) обработаны корректно. Сложные случаи отработаны правильно: <code>46.243.178.128/25</code> → <code>46.243.178.129</code> (а не <code>.1</code>), <code>46.243.178.96/28</code> → <code>46.243.178.97</code>.</p>
 
   <img src="../img/v422/ippull_after_autofill.png" alt="Список IP-пулов после применения автоподстановки — все шлюзы заполнены" class="screenshot">
+
+  <h4 id="ip-pools-ux-441">UX-доводка списка IP-пулов (build 441)</h4>
+  <p>Часть 1 плана UX-полировки <code>/admin/dictionary/IpPull/</code> по обратной связи admin: «маска и шлюз без смысла», «привязка к чужому NAS непонятна», «сортировка слетает после CRUD».</p>
+
+  <h5 id="ip-pools-persist-state">Сохранение сортировки и фильтров между перезагрузками</h5>
+  <p>Раньше после <em>сохранения</em> или <em>удаления</em> пула страница делала <code>location.reload()</code> и сортировка сбрасывалась на дефолт <code>% занято desc</code>. Build 441 сохраняет состояние представления в <code>localStorage.ippool_view_v1</code>:</p>
+  <ul>
+    <li><strong>Сортировка</strong> — <code>{sortField, sortOrder}</code></li>
+    <li><strong>Segmented-control</strong> — Все / Активные / Неактивные</li>
+    <li><strong>Активный KPI-фильтр</strong> — Всего / Активных / &lt; 75 % / 75–90 % / ≥ 90 %</li>
+    <li><strong>Активные чипы</strong> — критические / опасные / без шлюза / hotspot / без привязки / fallback</li>
+  </ul>
+  <p>Поиск (<code>STATE.q</code>) <em>не сохраняется</em> — это по дизайну эпохальное состояние. Состояние применяется к UI (<code>aria-pressed</code> на кнопках) при инициализации через <code>syncUIFromState()</code>.</p>
+
+  <h5 id="ip-pools-nas-roles">Роли пула на NAS — цветные бейджи</h5>
+  <p>NAS привязан к пулу через одно из <strong>4 полей</strong>: <code>pull_id</code> (основной), <code>nat_pull_id</code> (NAT), <code>white_pull_id</code> (белый/публичный), <code>hotspot_pull_id</code> (Hotspot). Один NAS может фигурировать в нескольких ролях — например, на testbill NAS «POT» появляется как <em>основной</em> для пула 6, как <em>белый</em> для пула 8 и как <em>NAT</em> для пула 33.</p>
+  <p>Backend (<code>billing/views/ip_pool_stats.py::_build_nas_bindings</code>) теперь возвращает поле <code>roles: ['main' | 'nat' | 'white' | 'hotspot']</code> для каждого top-NAS пула. UI рисует мини-бейджи рядом с именем NAS:</p>
+  <ul>
+    <li><span style="background:#198754;color:#fff;padding:0 .35em;font-size:.7em;font-weight:600;border-radius:2px;letter-spacing:.02em">ОСН.</span> — <code>main</code> — Framed-IP абонента берётся из этого пула</li>
+    <li><span style="background:#fd7e14;color:#fff;padding:0 .35em;font-size:.7em;font-weight:600;border-radius:2px">NAT</span> — <code>nat</code> — обратные адреса NAT</li>
+    <li><span style="background:#0dcaf0;color:#003542;padding:0 .35em;font-size:.7em;font-weight:600;border-radius:2px">БЕЛ.</span> — <code>white</code> — публичные «белые» IP</li>
+    <li><span style="background:#6f42c1;color:#fff;padding:0 .35em;font-size:.7em;font-weight:600;border-radius:2px">HS</span> — <code>hotspot</code> — Wi-Fi гостевой пул</li>
+  </ul>
+  <p>Тултип на самой ссылке-NAS расшифровывает все его роли в этом пуле. Если NAS появляется в bindings <em>только</em> через <code>Users.nas_id</code> (то есть абоненты с этого пула физически идут через NAS, но формальной FK-привязки нет — например, через chain <code>next_pull_id</code> build 440), бейджи ролей пустые. Это диагностический сигнал «NAS подмешан только косвенно».</p>
+  <p><strong>Кеш JSON:</strong> <code>CACHE_KEY</code> поднят с <code>ip_pool_stats_v2</code> до <code>v3</code> — старые ответы без <code>roles</code> инвалидируются автоматически.</p>
+
+  <h5 id="ip-pools-decorative-fields">Колонки «Маска» и «Шлюз» — справочные значения</h5>
+  <p>Поля <code>IpPull.mask</code> и <code>IpPull.gateway</code> <strong>не передаются абоненту через RADIUS</strong>: <code>Framed-IP-Address</code> берётся из <code>Users.ip</code>, шлюз настроен на NAS физически. Эти поля используются только:</p>
+  <ul>
+    <li><strong>cfg-генерацией</strong> при развёртывании NAS (вкладка «Развёртывание»)</li>
+    <li><strong>SORM-отчётом</strong> <code>IP_GATEWAY</code></li>
+    <li><strong>DHCP-секцией</strong> <code>dhcpd.conf</code> при включённом <code>gen_dhcp_subnet</code></li>
+  </ul>
+  <p>В UI колонки помечены info-иконкой <i class="fas fa-info-circle"></i> в заголовке (с tooltip-пояснением) и приглушённым цветом ячеек (<code>#6c757d</code>) — визуально отличаются от действующих параметров. На <code>&lt; xl</code>-экранах эти колонки скрыты (<code>d-none d-xl-table-cell</code>) — экономия места под более важные «Свободно» / «% занято».</p>
+
+  <h5 id="ip-pools-chain-badge">Бейдж «🔗 → #N» — связка next_pull в цепочку</h5>
+  <p>У пулов с заданным <code>next_pull_id</code> рядом с ID появляется кликабельный бейдж <strong>🔗 → #N</strong>. Клик открывает модалку редактирования следующего пула в цепочке. Тултип содержит имя следующего пула (подтягивается через JS из карты <code>POOL_NAMES</code>, без N+1 запросов в Django template).</p>
+  <p>Связка <code>next_pull</code> используется в build 440 для <strong>chain-выдачи IP</strong>: при исчерпании пула A автоматический алгоритм (<code>_autoassign_ip_for_user</code>) переходит к пулу B, указанному в <code>A.next_pull_id</code>. Бейдж в списке делает эту цепочку <strong>видимой одним взглядом</strong> — без захода в модалку редактирования.</p>
+
+  <h5 id="ip-pools-441-not-yet">Что отложено в часть 2 (build 442+)</h5>
+  <ul>
+    <li><strong>Chain-aware подсчёт «Свободно/% занято»</strong> — сейчас <code>get_pool_stats</code> считает только <code>Users.ip</code> в диапазоне самого пула, без учёта наследников цепочки. Из-за этого пул-родитель chain'а может выглядеть «100% занято», а пул-наследник «0% занято», хотя физически они шарят выдачу — в части 2 будет рекурсивный walk через <code>next_pull_id</code> + tooltip с разбивкой «свой / наследник»</li>
+    <li><strong>Колонка «Привязка к NAS» chain-aware</strong> — показывать NAS, для которых пул доступен через цепочку, но с пометкой «через chain»</li>
+  </ul>
 
   <h3 id="requisites">11.6. Реквизиты</h3>
   <p>Банковские и юридические реквизиты оператора для формирования договоров, счетов и актов. ИНН, КПП, расчётный счёт, БИК, юридический адрес.</p>
@@ -5767,7 +5812,7 @@ else:
   </details>
   </div>
 
-  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 437) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
+  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 441) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
 
   <h3 id="setevaya-izolyatsiya">Сетевая изоляция</h3>
   <p><strong>Docker-контейнеризация</strong> — каждый сервис (web, db, redis, celery, nginx, freeradius) работает в изолированном Docker-контейнере с собственной сетью (172.28.0.0/16). Входящие соединения проходят через nginx reverse proxy, что предотвращает прямой доступ к внутренним сервисам.</p>
@@ -5911,7 +5956,7 @@ docker compose up -d</code></pre>
 
   <!-- ===== 16. Стороннее ПО ===== -->
   <h2 id="third-party">16. Стороннее ПО</h2>
-  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 437).</p>
+  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 441).</p>
 
   <!-- ===== 17. Смена языка ===== -->
   <h2 id="language">17. Смена языка</h2>
@@ -5932,7 +5977,7 @@ docker compose up -d</code></pre>
   </details>
   </div>
 
-  <p>СмИТ Биллинг v1.6.0 (build 437) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
+  <p>СмИТ Биллинг v1.6.0 (build 441) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
 
   <h3 id="pochemu-postgresql">Почему PostgreSQL</h3>
   <p>PostgreSQL 16 выбран в качестве основной СУБД по ряду причин:</p>
@@ -6696,8 +6741,8 @@ STARTED_AT, FINISHED_AT, EBS_LAST_TX_ID, STATS_JSON, DUMP_FILE, ERROR_MSG</code>
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 437)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">02.05.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 437)</span>&nbsp;|&nbsp;<span data-smit="updated">02.05.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 441)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">02.05.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 441)</span>&nbsp;|&nbsp;<span data-smit="updated">02.05.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=220"></script>
