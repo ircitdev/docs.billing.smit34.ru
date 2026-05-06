@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Установка и интеграция — СмИТ Биллинг v1.6.0 (build 470)</title>
+  <title>Установка и интеграция — СмИТ Биллинг v1.6.0 (build 471)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Установка и интеграция — СмИТ Биллинг v1.6.0 (build 470)">
+  <meta property="og:title" content="Установка и интеграция — СмИТ Биллинг v1.6.0 (build 471)">
   <meta property="og:description" content="Системные требования, установка через Docker Compose, интеграция с оборудованием, настройка тарифов и видеоинструкции.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/installation.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Установка и интеграция — СмИТ Биллинг v1.6.0 (build 470)">
+  <meta name="twitter:title" content="Установка и интеграция — СмИТ Биллинг v1.6.0 (build 471)">
   <meta name="twitter:description" content="Системные требования, установка через Docker Compose, интеграция с оборудованием, настройка тарифов и видеоинструкции.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="Системные требования, установка через Docker Compose, интеграция с оборудованием, настройка тарифов и видеоинструкции.">
@@ -270,7 +270,7 @@
     <a href="../index.html">Документация</a> <span class="sep">/</span> Установка и интеграция
   </div>
 
-  <h1>Установка и интеграция СмИТ Биллинг v1.6.0 (build 470)</h1>
+  <h1>Установка и интеграция СмИТ Биллинг v1.6.0 (build 471)</h1>
   <p>Пошаговое руководство по внедрению системы СмИТ Биллинг 1.6 для операторов связи и сервис-провайдеров.</p>
 
   <div class="welcome-image">
@@ -300,7 +300,7 @@
 </div>
 
 <h2 id="requirements">Этап 1. Системные требования</h2>
-  <p>Для развёртывания СмИТ Биллинг v1.6.0 (build 470) требуется сервер с поддержкой Docker:</p>
+  <p>Для развёртывания СмИТ Биллинг v1.6.0 (build 471) требуется сервер с поддержкой Docker:</p>
   <table>
     <thead><tr><th>Компонент</th><th>Минимум</th><th>Рекомендуется</th></tr></thead>
     <tbody>
@@ -385,13 +385,47 @@ docker compose exec web python manage.py loaddata initial_data</code></pre>
   </ol>
 
   <h2 id="tariff-setup">Этап 5. Настройка тарифов</h2>
-  <p>Создайте тарифы для интернета, телефонии (местная/междугородняя/международная связь) и телевидения.</p>
+  <div class="info-box" style="border-left:4px solid #43b77a; background:rgba(67,183,122,.06); padding:12px 16px; margin:16px 0">
+    <p class="mb-1"><strong><i class="ti ti-arrow-right"></i> Подробная документация по тарифам и услугам — в основном руководстве</strong></p>
+    <p>Создайте тарифы для интернета, телефонии (местная/междугородняя/международная связь) и телевидения. Полное описание раздела «Тарификация» (создание тарифов, услуги, линейки, программы лояльности, RADIUS-параметры тарифа, шейпер):</p>
+    <p style="margin:8px 0 0">
+      <a href="../pages/billing.html#tariffs" class="btn btn-success btn-sm">
+        <i class="ti ti-tags"></i> Открыть раздел «Тарификация»
+      </a>
+      <a href="../pages/billing.html#tarif-create" class="btn btn-outline-success btn-sm">Создание тарифа</a>
+      <a href="../pages/billing.html#services" class="btn btn-outline-success btn-sm">Услуги</a>
+      <a href="../pages/billing.html#tarif-list-features" class="btn btn-outline-success btn-sm">Список тарифов (UX)</a>
+    </p>
+  </div>
 
   <h2 id="add-subscribers">Этап 6. Добавление абонентов</h2>
-  <p>Создайте абонентские аккаунты, заполните персональные данные и внесите средства на баланс. Для миграции с других систем поддерживается импорт через CSV-файлы.</p>
+  <div class="info-box" style="border-left:4px solid #43b77a; background:rgba(67,183,122,.06); padding:12px 16px; margin:16px 0">
+    <p class="mb-1"><strong><i class="ti ti-arrow-right"></i> Подробная документация по абонентам — в основном руководстве</strong></p>
+    <p>Создайте абонентские аккаунты, заполните персональные данные и внесите средства на баланс. Полное описание работы с абонентами (карточка, контакты, договор, баланс, точка подключения, СОРМ-данные, юр.лица, импорт CSV):</p>
+    <p style="margin:8px 0 0">
+      <a href="../pages/billing.html#subscribers" class="btn btn-success btn-sm">
+        <i class="ti ti-users"></i> Открыть раздел «Абоненты»
+      </a>
+      <a href="../pages/billing.html#create-subscriber" class="btn btn-outline-success btn-sm">Создание абонента</a>
+      <a href="../pages/billing.html#edit-subscriber" class="btn btn-outline-success btn-sm">Карточка абонента</a>
+    </p>
+  </div>
 
   <h2 id="final-test">Этап 7. Финальное тестирование</h2>
-  <p>Проверьте полный цикл работы для абонентов и интеграцию оборудования по всем типам услуг.</p>
+  <p>Перед вводом в эксплуатацию пройдите полный цикл на одном-двух тестовых абонентах. Это проверит, что все компоненты (биллинг, RADIUS, NAS, платёжный шлюз, ЛК) корректно связаны.</p>
+
+  <h3 id="final-test-checklist">Чек-лист приёмки</h3>
+  <ol>
+    <li><strong>Тестовый абонент</strong> — создайте абонента (см. <a href="../pages/billing.html#create-subscriber">Создание абонента</a>), назначьте тариф, привяжите учётную запись (login/password) и точку подключения.</li>
+    <li><strong>RADIUS-авторизация</strong> — выполните <code>radtest &lt;login&gt; &lt;password&gt; 127.0.0.1 0 testing123</code> внутри контейнера <code>freeradius</code>. Ответ должен быть <code>Access-Accept</code> с корректным <code>Framed-IP-Address</code> и <code>Mikrotik-Rate-Limit</code>. Альтернатива — кнопка «Тест авторизации» (🧪) в карточке учётной записи (<a href="../pages/billing.html#tariffs">подробнее</a>).</li>
+    <li><strong>Платёж</strong> — пополните баланс через тестовый шлюз (YooKassa тестовый магазин или ручной приход через <code>/admin/Abonents/finance/</code>). Убедитесь, что <code>FinanceOperations</code> создалась и баланс обновился.</li>
+    <li><strong>Блокировка по балансу</strong> — выставьте абоненту отрицательный баланс или активируйте флаг <code>b_admin</code>. Проверьте, что в RADIUS приходит <code>Access-Reject</code> и сессия завершается через CoA-Disconnect.</li>
+    <li><strong>Разблокировка</strong> — пополните баланс или снимите блок. Через 1–2 минуты RADIUS должен снова отвечать <code>Access-Accept</code>, абонент получит интернет.</li>
+    <li><strong>Личный кабинет</strong> — войдите в ЛК (<code>/lk/</code>) под тестовым абонентом, убедитесь, что отображаются баланс, тариф, история операций. См. <a href="../pages/lk.html">документацию ЛК</a>.</li>
+    <li><strong>Отчёты</strong> — откройте <code>/admin/reports/dashboard/</code> и проверьте, что новый абонент попал в KPI «Активные», а его платёж — в «Финансовая динамика». Запустите SQL-отчёт «Активные абоненты» из <a href="../pages/billing.html#report-constructor">конструктора отчётов</a>.</li>
+    <li><strong>FreeScout / поддержка</strong> (если интегрирован) — создайте тестовый тикет от абонента, убедитесь, что HelpDesk-вкладка в карточке абонента подтянула тикет.</li>
+  </ol>
+  <p>После прохождения всех 8 пунктов биллинг готов к работе. Если на одном из шагов возникла ошибка — см. <a href="../pages/troubleshooting.html">Диагностика и решение проблем</a>.</p>
 
   <!-- ===== Видеоинструкции ===== -->
 
@@ -410,13 +444,13 @@ docker compose exec web python manage.py loaddata initial_data</code></pre>
   </details>
   </div>
 
-  <p>Видеоуроки по работе с системой СмИТ Биллинг v1.6.0 (build 470).</p>
+  <p>Видеоуроки по работе с системой СмИТ Биллинг v1.6.0 (build 471).</p>
 
   <h3 id="ustanovka">Установка</h3>
   <div class="video-container">
     <iframe src="https://rutube.ru/play/embed/6dc6eee9f04a3c2de662332f1e01378a" frameborder="0" allowfullscreen></iframe>
   </div>
-  <p>Установка СмИТ Биллинг v1.6.0 (build 470)</p>
+  <p>Установка СмИТ Биллинг v1.6.0 (build 471)</p>
 
   <h3 id="nastroyka-sistemy">Настройка системы</h3>
   <div class="video-container">
@@ -433,17 +467,17 @@ docker compose exec web python manage.py loaddata initial_data</code></pre>
   <div class="video-container">
     <iframe src="https://rutube.ru/play/embed/6e027c3a89af2118e82ac1cf7cae1e01" frameborder="0" allowfullscreen></iframe>
   </div>
-  <p>Миграция абонентов в СмИТ Биллинг v1.6.0 (build 470)</p>
+  <p>Миграция абонентов в СмИТ Биллинг v1.6.0 (build 471)</p>
 
   <div class="video-container">
     <iframe src="https://rutube.ru/play/embed/2537e4e338b3ef22e3e296d3b122b2ed" frameborder="0" allowfullscreen></iframe>
   </div>
-  <p>Заведение юридических лиц в СмИТ Биллинг v1.6.0 (build 470)</p>
+  <p>Заведение юридических лиц в СмИТ Биллинг v1.6.0 (build 471)</p>
 
   <div class="video-container">
     <iframe src="https://rutube.ru/play/embed/302579dfd0c776d34ae04b062714e28b" frameborder="0" allowfullscreen></iframe>
   </div>
-  <p>ФИАС в СмИТ Биллинг v1.6.0 (build 470)</p>
+  <p>ФИАС в СмИТ Биллинг v1.6.0 (build 471)</p>
 
   <h3 id="tarifikatsiya">Тарификация</h3>
   <div class="video-container">
@@ -481,13 +515,13 @@ docker compose exec web python manage.py loaddata initial_data</code></pre>
     <li><a>Миграция</a> <span class="desc">Перенос данных из других биллинговых систем</span></li>
     <li><a>Установка</a> <span class="desc">Подробная инструкция по установке</span></li>
     <li><a>Системные требования</a> <span class="desc">Аппаратные и программные требования</span></li>
-    <li><a>Тестирование СмИТ Биллинг v1.6.0 (build 470) на Docker</a> <span class="desc">Быстрый запуск через docker compose up -d</span></li>
+    <li><a>Тестирование СмИТ Биллинг v1.6.0 (build 471) на Docker</a> <span class="desc">Быстрый запуск через docker compose up -d</span></li>
   </ul>
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 470)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">07.05.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 470)</span>&nbsp;|&nbsp;<span data-smit="updated">07.05.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 471)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">07.05.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 471)</span>&nbsp;|&nbsp;<span data-smit="updated">07.05.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=466"></script>
