@@ -143,12 +143,16 @@
           <li class="sub-item"><a href="../pages/billing.html#loyalty-auto" style="padding-left:2.4rem">— Авто-назначение</a></li>
           <li class="sub-item"><a href="../pages/billing.html#loyalty-examples" style="padding-left:2.4rem">— Примеры</a></li>
           <li><a href="../pages/billing.html#messaging">4. Отправка сообщений</a></li>
-          <li class="sub-item"><a href="../pages/billing.html#mail-domain">4.1. Домен почты</a></li>
-          <li class="sub-item"><a href="../pages/billing.html#messaging-system">4.2. Система сообщений</a></li>
-          <li class="sub-item"><a href="../pages/billing.html#scheduled-messaging">4.3. Плановая отправка</a></li>
-          <li class="sub-item"><a href="../pages/billing.html#telegram">4.4. Telegram</a></li>
-          <li class="sub-item"><a href="../pages/billing.html#smsaero">4.5. SMSAero</a></li>
-          <li class="sub-item"><a href="../pages/billing.html#email-smtp">4.6. Email (SMTP)</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#messaging-overview">4.1. Обзор UI</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#email-smtp">4.2. Email (SMTP)</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#smsaero">4.3. SMS (3 шлюза)</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#sms-tecno">4.4. SMS Android</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#telegram-messaging">4.5. Telegram абонентам</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#vk-messaging">4.6. VK абонентам</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#push-messaging">4.7. Push (Firebase)</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#message-templates">4.8. Шаблоны</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#mail-domain">4.9. SPF/DKIM/MX</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#scheduled-messaging">4.10. Плановая отправка</a></li>
           <li><a href="../pages/billing.html#payments">5. Платежи, API, 1С</a></li>
           <li class="sub-item"><a href="../pages/billing.html#cashier">5.1. Веб-касса</a></li>
           <li class="sub-item"><a href="../pages/billing.html#payment-systems">5.2. Платёжные системы</a></li>
@@ -1954,95 +1958,277 @@ print('К удалению:', candidates.count())</code></pre>
 
   <!-- ===== 4. Отправка сообщений ===== -->
   <h2 id="messaging">4. Отправка сообщений</h2>
-  <p>Настройка системы уведомлений и рассылок абонентам через различные каналы связи.</p>
+  <p>Каналы доставки уведомлений абонентам: <strong>Email</strong> (SMTP), <strong>SMS</strong> (4 шлюза), <strong>Telegram</strong>, <strong>VK</strong>, <strong>Push</strong> (Firebase) и <strong>шаблоны</strong> сообщений. Все настройки собраны в одном разделе: <code>/admin/settings/messaging/</code>.</p>
+
   <div class="section-toc">
   <details open>
     <summary><strong>Содержание раздела</strong></summary>
     <ul>
-    <li><a href="#mail-domain">4.1. Регистрация домена для почтовой рассылки</a></li>
-    <li><a href="#messaging-system">4.2. Система отправки сообщений (SMS, Email)</a></li>
-    <li><a href="#scheduled-messaging">4.3. Плановая отправка сообщений</a></li>
-    <li><a href="#telegram">4.4. Отправка уведомлений через Telegram</a></li>
-    <li><a href="#smsaero">4.5. Настройка SMSAero</a></li>
-    <li><a href="#email-smtp">4.6. Настройка Email (SMTP)</a></li>
+    <li><a href="#messaging-overview">4.1. Обзор UI и единая страница «Сообщения»</a></li>
+    <li><a href="#email-smtp">4.2. Email (SMTP)</a></li>
+    <li><a href="#smsaero">4.3. SMS (SMSAero / SMSC.ru / SMS.ru)</a></li>
+    <li><a href="#sms-tecno">4.4. SMS через Android-телефон (свой шлюз)</a></li>
+    <li><a href="#telegram-messaging">4.5. Уведомления абонентов через Telegram</a></li>
+    <li><a href="#vk-messaging">4.6. Уведомления абонентов через VK</a></li>
+    <li><a href="#push-messaging">4.7. Push-уведомления (Firebase Cloud Messaging)</a></li>
+    <li><a href="#message-templates">4.8. Шаблоны сообщений</a></li>
+    <li><a href="#mail-domain">4.9. DNS-записи отправляющего домена (SPF/DKIM/MX)</a></li>
+    <li><a href="#scheduled-messaging">4.10. Плановая (массовая) отправка</a></li>
     </ul>
   </details>
   </div>
 
+  <h3 id="messaging-overview">4.1. Обзор UI и единая страница «Сообщения»</h3>
+  <p>В админке открывается через сайдбар <strong>Настройки → Сообщения</strong> (URL <code>/admin/settings/messaging/email/</code>). Страница содержит 6 вкладок:</p>
 
-  <h3 id="mail-domain">4.1. Регистрация домена для почтовой рассылки</h3>
-  <p>Для почтовой рассылки необходимо настроить DNS-записи домена отправителя:</p>
+  <img src="../img/messaging_v461/messaging_01_email.png" alt="Сообщения — вкладка Email" class="screenshot">
+
+  <h4>Status-strip над каждой вкладкой</h4>
+  <p>Сразу под навигацией табов выводится <strong>статус-полоса</strong> с актуальным состоянием канала и счётчиками:</p>
   <ul>
-    <li><strong>MX-запись</strong> — указывает почтовый сервер для домена</li>
-    <li><strong>SPF-запись</strong> — определяет разрешённые серверы-отправители</li>
-    <li><strong>DKIM</strong> — цифровая подпись для подтверждения подлинности</li>
+    <li>Бейдж: <span class="b-good">🟢 Настроено и включено</span> / <span class="b-warn">⏸ Настроено, но отключено</span> / <span class="b-muted">⚙ Не настроено</span></li>
+    <li>Отправлено / В очереди / Всего <em>(подсчёт по таблице <code>MSG_STACK</code>)</em></li>
+    <li>Для SMS — <strong>баланс шлюза</strong> через API провайдера</li>
+    <li>Для Push — <strong>project_id</strong> сервисного аккаунта Firebase</li>
+    <li>Для Telegram/VK — <strong>счётчик абонентов, привязавших OAuth-вход в ЛК</strong> (от этого зависит, кому реально могут уйти сообщения)</li>
+  </ul>
+
+  <h4>Тестовая отправка на каждом канале</h4>
+  <p>Под формой настроек на каждой вкладке (кроме Шаблонов) есть блок «Тестовая отправка». Кнопка <strong>«Отправить тест»</strong> использует <em>текущие несохранённые поля формы</em> — можно проверить корректность настроек до сохранения. Endpoints:</p>
+  <ul>
+    <li><code>POST /admin/settings/email/test/</code> — поле <code>recipient</code> (email адресата), отправляет письмо через SMTP-параметры формы (без записи в очередь).</li>
+    <li><code>POST /admin/settings/sms/test/</code> — поле <code>phone</code>, шлёт SMS через выбранный шлюз и текущие учётные данные.</li>
+    <li><code>POST /admin/settings/messaging/telegram/test/</code> — поле <code>chat_id</code> (опционально, по умолчанию админ-чат), использует сохранённый Bot Token.</li>
+    <li><code>POST /admin/settings/push/test/</code> — поле <code>abonent_id</code>, читает <code>push_token</code> из карточки абонента и шлёт через FCM.</li>
+  </ul>
+  <p>Все endpoints возвращают <code>{ok: bool, message: str}</code>; ошибки (SMTP-таймаут, неверный токен FCM, прокси не отвечает) показываются прямо под кнопкой.</p>
+
+  <h4>Унифицированная правая колонка</h4>
+  <p>На каждой вкладке справа: «Последние 5 сообщений» (если есть) + раскрываемая инструкция (<code>&lt;details&gt;</code>) — раскрыта при не-настроенном канале, свёрнута при настроенном. Это даёт возможность вернуться к шагам настройки после первичной конфигурации.</p>
+
+  <h3 id="email-smtp">4.2. Email (SMTP)</h3>
+  <p>URL вкладки: <code>/admin/settings/messaging/email/</code></p>
+  <p>Поля формы:</p>
+  <ul>
+    <li><strong>Toggle «Включить отправку Email»</strong> (<code>MSG_EMAIL_ENABLED</code>) — управляет рассылкой; настройки сохраняются независимо.</li>
+    <li><strong>От кого (From)</strong> — <code>DEFAULT_FROM_EMAIL</code></li>
+    <li><strong>SMTP сервер + Порт</strong> — <code>EMAIL_HOST</code> + <code>EMAIL_PORT</code></li>
+    <li><strong>Логин / Пароль</strong> — <code>EMAIL_HOST_USER</code> + <code>EMAIL_HOST_PASSWORD</code> (с кнопкой «глаз» — показать/скрыть)</li>
+    <li><strong>Toggle «Использовать TLS»</strong> — <code>EMAIL_USE_TLS</code> (для порта 587). Для порта 465 включается SSL автоматически.</li>
+  </ul>
+  <p>В правой колонке — таблица типичных хостов и портов:</p>
+  <table>
+    <thead><tr><th>Провайдер</th><th>Хост</th><th>Порт / Шифрование</th></tr></thead>
+    <tbody>
+      <tr><td>Yandex.Mail</td><td><code>smtp.yandex.ru</code></td><td>465 SSL</td></tr>
+      <tr><td>Mail.ru</td><td><code>smtp.mail.ru</code></td><td>465 SSL</td></tr>
+      <tr><td>Gmail</td><td><code>smtp.gmail.com</code></td><td>587 TLS (требуется App Password)</td></tr>
+      <tr><td>Свой SMTP</td><td>например <code>mail.support.smit34.ru</code></td><td>587 TLS</td></tr>
+    </tbody>
+  </table>
+  <p><strong>Тестовая отправка</strong>: введите адрес, нажмите «Отправить тест» — биллинг откроет SMTP-соединение по параметрам формы и попытается доставить пробное письмо. Ошибки SMTP (timeout, auth failed, TLS handshake) вернутся текстом сразу.</p>
+  <p><strong>Перед запуском в прод обязательно</strong>: SPF/DKIM/MX-записи отправляющего домена (см. <a href="#mail-domain">§ 4.9</a>), иначе письма уходят в спам.</p>
+
+  <h3 id="smsaero">4.3. SMS (SMSAero / SMSC.ru / SMS.ru)</h3>
+  <p>URL вкладки: <code>/admin/settings/messaging/sms/</code></p>
+  <p>Биллинг поддерживает 4 шлюза. Селектор «Шлюз» переключает значения подписей полей и подставляет правильный API.</p>
+
+  <img src="../img/messaging_v461/messaging_02_sms.png" alt="Сообщения — вкладка SMS" class="screenshot">
+
+  <table>
+    <thead><tr><th>Шлюз</th><th>Логин</th><th>Пароль</th><th>Подпись (Sender)</th></tr></thead>
+    <tbody>
+      <tr><td><strong>SMSAero</strong></td><td>email</td><td>API-ключ из ЛК → API → Ключ</td><td>зарегистрированное имя</td></tr>
+      <tr><td><strong>SMSC.ru</strong></td><td>логин аккаунта</td><td>пароль аккаунта</td><td>имя из «Имена отправителей»</td></tr>
+      <tr><td><strong>SMS.ru</strong></td><td>API ID из кабинета</td><td>—</td><td>—</td></tr>
+      <tr><td><strong>Свой шлюз (Android)</strong></td><td>Username (приложение)</td><td>Password (приложение)</td><td>URL шлюза, см. <a href="#sms-tecno">§ 4.4</a></td></tr>
+    </tbody>
+  </table>
+
+  <p><strong>Баланс шлюза</strong> в status-strip обновляется при каждой загрузке страницы — биллинг делает запрос <code>GET /balance</code> к API провайдера. Если API недоступен или ключ неверен — баланс не показывается.</p>
+
+  <h3 id="sms-tecno">4.4. SMS через Android-телефон (свой шлюз)</h3>
+  <p>Альтернатива платным SMS-шлюзам — собственный шлюз на базе обычного Android-смартфона с SIM-картой. Подходит для небольших сетей с лимитом ~30 SMS/час с одной симки.</p>
+  <ol>
+    <li>Установить приложение <a href="https://sms-gate.app" target="_blank" rel="noopener">SMS Gateway for Android</a> из Google Play (developer Capcom6).</li>
+    <li>В приложении включить <code>Local Server</code> и разрешить доступ к SMS.</li>
+    <li>Скопировать с экрана: <code>Username</code>, <code>Password</code>, <code>URL</code> (например <code>http://192.168.1.50:8080</code>).</li>
+    <li>Подключить телефон к Wi-Fi сети сервера биллинга.</li>
+    <li>На вкладке SMS выбрать шлюз «Свой шлюз (Android-телефон)»:
+      <ul>
+        <li>Имя пользователя = <code>Username</code> приложения</li>
+        <li>Пароль = <code>Password</code> приложения</li>
+        <li>URL шлюза = адрес из приложения</li>
+        <li>Номер SIM-карты = 1 или 2 (если две симки)</li>
+      </ul>
+    </li>
+  </ol>
+  <p><strong>Ограничения</strong>: оператор может ограничить количество исходящих SMS с одной симки (~30/час, ~500/сутки). При превышении — антиспам блокирует SIM. Не подходит для рассылок 1000+ абонентам единовременно.</p>
+
+  <h3 id="telegram-messaging">4.5. Уведомления абонентов через Telegram</h3>
+  <p>URL вкладки: <code>/admin/settings/messaging/telegram/</code></p>
+
+  <img src="../img/messaging_v461/messaging_03_telegram.png" alt="Сообщения — вкладка Telegram" class="screenshot">
+
+  <p>Сообщения биллинга (<strong>баланс / блокировка / платежи / обещанный платёж / произвольная рассылка</strong>) доставляются через <strong>того же бота</strong>, который используется для входа в ЛК.</p>
+
+  <div class="callout callout-warn">
+    <strong>⚠ Важно</strong>: бот <strong>не может писать первым</strong> (политика Telegram). Сообщения отправляются <em>только</em> тем абонентам, кто <strong>сам открыл чат с ботом</strong> и привязал вход в ЛК через Telegram. Без привязки доставка невозможна.
+  </div>
+
+  <h4>Как абонент привязывает Telegram</h4>
+  <ol>
+    <li>В Личном кабинете на странице «Профиль» — кнопка «Привязать Telegram».</li>
+    <li>Открывается чат с ботом <code>@&lt;bot_username&gt;</code>.</li>
+    <li>Абонент жмёт <code>/start</code> → бот отвечает уникальным кодом.</li>
+    <li>Код вводится в ЛК → биллинг сохраняет <code>telegram_chat_id</code> в <code>Abonents.telegram_chat_id</code>.</li>
+  </ol>
+
+  <h4>После привязки доступны рассылки</h4>
+  <ul>
+    <li>Поступление платежа (после успешного webhook платёжной системы)</li>
+    <li>Низкий баланс / автоматическая блокировка / разблокировка</li>
+    <li>Обещанный платёж (активирован/истекает/отменён)</li>
+    <li>Подключение / отключение услуги</li>
+    <li>Произвольная рассылка от оператора (массовая)</li>
+  </ul>
+
+  <h4>Не путать с админ-каналами</h4>
+  <p>Алерты <strong>падения NAS</strong>, <strong>исчерпания IP-пулов</strong>, <strong>ошибок RADIUS</strong> уходят в отдельный <strong>администраторский чат</strong> (<code>TELEGRAM_ADMIN_CHAT_ID</code>) — настраивается в <strong>Интеграции → Telegram</strong>, а не в разделе «Сообщения». Это разные каналы:</p>
+  <table>
+    <thead><tr><th>Канал</th><th>Получатели</th><th>Где настраивается</th></tr></thead>
+    <tbody>
+      <tr><td>Сообщения абонентам</td><td>Абоненты с <code>telegram_chat_id</code></td><td>Сообщения → Telegram (эта страница)</td></tr>
+      <tr><td>Алерты администратору</td><td>Группа/чат техподдержки</td><td>Интеграции → Telegram</td></tr>
+      <tr><td>Уведомления операторам</td><td>Пользователи биллинга</td><td>Профиль → telegram_chat_id</td></tr>
+    </tbody>
+  </table>
+  <p>Бот используется <strong>один и тот же</strong> для всех трёх каналов — просто шлёт в разные <code>chat_id</code>.</p>
+
+  <h4>Тестовая отправка</h4>
+  <p>Кнопка «Отправить тест» на этой вкладке шлёт сообщение <strong>в админ-чат</strong> (через <code>TELEGRAM_ADMIN_CHAT_ID</code>) — нужна, чтобы проверить, что Bot Token и прокси работают. Чтобы протестировать доставку конкретному абоненту — нужно знать его <code>telegram_chat_id</code>; для этого используется массовая рассылка из шаблона.</p>
+
+  <h3 id="vk-messaging">4.6. Уведомления абонентов через VK</h3>
+  <p>URL вкладки: <code>/admin/settings/messaging/vk/</code></p>
+
+  <img src="../img/messaging_v461/messaging_04_vk.png" alt="Сообщения — вкладка VK" class="screenshot">
+
+  <p>VK-канал работает <strong>через сообщество</strong> (Community Message API). Абонент должен сам подписаться на сообщество <strong>через VK OAuth</strong> — после этого Community Token может слать ему сообщения.</p>
+
+  <h4>Два разных токена</h4>
+  <table>
+    <thead><tr><th>Токен</th><th>Назначение</th><th>Где взять</th></tr></thead>
+    <tbody>
+      <tr><td><strong>App ID + Secret Key</strong> (<code>LK_VK_APP_ID</code>, <code>LK_VK_SECRET_KEY</code>)</td><td>OAuth-вход в ЛК</td><td><a href="https://vk.com/apps?act=manage" target="_blank" rel="noopener">vk.com/apps?act=manage</a> → создать Standalone-приложение → раздел «Настройки»</td></tr>
+      <tr><td><strong>Community Token</strong> (<code>LK_VK_COMMUNITY_TOKEN</code>)</td><td>Отправка сообщений (<code>messages.send</code>)</td><td>Сообщество → Управление → Работа с API → Ключи доступа → Создать ключ (обязательно <code>messages</code>)</td></tr>
+    </tbody>
+  </table>
+
+  <h4>Как абонент привязывает VK</h4>
+  <ol>
+    <li>В ЛК на странице входа абонент жмёт «Войти через VK».</li>
+    <li>VK OAuth — абонент даёт разрешение приложению.</li>
+    <li>В БД создаётся запись <code>SocialAuth(provider='vk', vk_id=...)</code> и привязывается к абоненту по договору.</li>
+    <li>После этого Community Token может слать ему сообщения через VK API <code>messages.send</code>.</li>
+  </ol>
+  <p>Каналы VK работают для тех же типов сообщений, что и Telegram: баланс, платежи, блокировки, обещанный платёж, произвольная рассылка.</p>
+
+  <h4>Тестирование доставки</h4>
+  <p>В отличие от Telegram, у VK <strong>нет «админ-чата»</strong> — Community API шлёт сообщения только конкретному пользователю по его <code>vk_id</code>. Чтобы проверить отправку, отправьте сообщение реальному абоненту через <strong>Интеграции → VK → Тест</strong> или массовую рассылку из шаблона.</p>
+
+  <div class="callout callout-warn">
+    <strong>⚠ Безопасность</strong>: Community Token хранится в БД (зашифрованно), <strong>не коммитьте его в git</strong>. Регулярно ротируйте ключ через настройки сообщества.
+  </div>
+
+  <h3 id="push-messaging">4.7. Push-уведомления (Firebase Cloud Messaging)</h3>
+  <p>URL вкладки: <code>/admin/settings/messaging/push/</code> · документация по архитектуре см. <a href="#lk-firebase">§ 6.10</a>.</p>
+
+  <img src="../img/messaging_v461/messaging_05_push.png" alt="Сообщения — вкладка Push (Firebase)" class="screenshot">
+
+  <p>Push-уведомления отправляются через <strong>Firebase Cloud Messaging</strong> в мобильное приложение «СмИТ Биллинг» (Android/iOS). Для работы нужен JSON-файл сервисного аккаунта Firebase, путь к которому хранится в <code>FIREBASE_CREDENTIALS_PATH</code>.</p>
+
+  <h4>Поля формы</h4>
+  <ul>
+    <li><strong>Toggle «Включить отправку Push»</strong> (<code>MSG_PUSH_ENABLED</code>) — управляет рассылкой.</li>
+    <li><strong>Путь к файлу сервисного аккаунта (JSON)</strong> — например <code>/app/firebase-key.json</code>. Под полем выводится статус: <em>«Файл найден · проект &lt;project_id&gt;»</em> или красный «Файл не найден».</li>
+  </ul>
+
+  <h4>Получение JSON-файла</h4>
+  <ol>
+    <li>Перейти в <a href="https://console.firebase.google.com/" target="_blank" rel="noopener">console.firebase.google.com</a>.</li>
+    <li>Выбрать проект → ⚙ Project Settings → раздел <strong>Service accounts</strong>.</li>
+    <li>Кнопка <strong>Generate new private key</strong> → подтвердить → скачается JSON.</li>
+    <li>Скопировать файл на сервер (например <code>/opt/smit-billing/app/firebase-key.json</code>), <code>chmod 600</code>.</li>
+    <li>Указать путь в форме → Сохранить → проверить кнопкой «Тест».</li>
+  </ol>
+
+  <h4>Тестирование</h4>
+  <p>Кнопка «Отправить тест» принимает <strong>ID абонента</strong> и шлёт push на его <code>push_token</code>. Токен появляется в карточке абонента после первого запуска мобильного приложения с этим аккаунтом. В status-strip отображается общее количество абонентов с активным push-токеном.</p>
+
+  <div class="callout callout-warn">
+    <strong>⚠ Безопасность</strong>: JSON-файл содержит <em>приватный ключ</em> — не коммитьте его в git, ограничьте доступ <code>chmod 600</code>, владелец = пользователь биллинга.
+  </div>
+
+  <h3 id="message-templates">4.8. Шаблоны сообщений</h3>
+  <p>URL вкладки: <code>/admin/settings/messaging/templates/</code></p>
+
+  <img src="../img/messaging_v461/messaging_06_templates.png" alt="Сообщения — вкладка Шаблоны" class="screenshot">
+
+  <p>Универсальные шаблоны хранятся в таблице <code>ADMIN_MSG</code>. Каждый шаблон содержит:</p>
+  <ul>
+    <li><strong>Название</strong> — для оператора (например, «Низкий баланс», «Блокировка»)</li>
+    <li><strong>Заголовок</strong> — для каналов с темой (Email subject, Push title)</li>
+    <li><strong>Текст</strong> — тело сообщения с переменными подстановки</li>
+    <li><strong>Активен / Ежедневно / Системное</strong> — toggle-флаги</li>
+    <li><strong>Каналы</strong> — чекбоксы ЛК / Push / SMS / Email / TG / VK (любая комбинация)</li>
+    <li><strong>Шаблонизатор</strong> — переключатель Python-format <code>%(var)s</code> или Jinja2 <code>{{ var }}</code></li>
+  </ul>
+
+  <h4>Переменные подстановки</h4>
+  <table>
+    <thead><tr><th>Python-format</th><th>Jinja2</th><th>Значение</th></tr></thead>
+    <tbody>
+      <tr><td><code>%(contract_number)s</code></td><td><code>{{ contract_number }}</code></td><td>Номер договора</td></tr>
+      <tr><td><code>%(balance)s</code></td><td><code>{{ balance }}</code></td><td>Текущий баланс</td></tr>
+      <tr><td><code>%(text)s</code></td><td><code>{{ text }}</code></td><td>Дополнительный текст (свободное поле)</td></tr>
+      <tr><td><code>%(operator_name)s</code></td><td><code>{{ operator_name }}</code></td><td>Оператор связи</td></tr>
+      <tr><td><code>%(abonent_name)s</code></td><td><code>{{ abonent_name }}</code></td><td>ФИО абонента</td></tr>
+      <tr><td><code>%(tarif_name)s</code></td><td><code>{{ tarif_name }}</code></td><td>Название тарифа</td></tr>
+    </tbody>
+  </table>
+
+  <h4>UX-возможности списка шаблонов</h4>
+  <ul>
+    <li><strong>Поиск с горячими клавишами</strong> Ctrl+K / <code>/</code> — фокус в поле поиска.</li>
+    <li><strong>Фильтр по каналам</strong> — chip-кнопки ЛК / Push / SMS / Email / TG / VK с <code>aria-pressed</code>; клик включает фильтр, повторный клик выключает. Можно комбинировать несколько каналов.</li>
+    <li><strong>Счётчик активных</strong> и счётчик «Показано N / M» в status-strip.</li>
+    <li><strong>Bootstrap confirm-модалка для удаления</strong> — заменяет native <code>confirm()</code>, объясняет последствия (связь со статусом обнулится, прошлые отправленные сообщения остаются в журнале).</li>
+    <li><strong>Карточка «Использовано»</strong> в модалке редактирования — показывает <em>usage_count</em> (сколько раз шаблон отправлен) и <em>last_sent</em> (дата последней отправки), помогает отличить активно используемые шаблоны от мёртвых.</li>
+    <li><strong>Контексты использования</strong> — модалка определяет, к каким событиям привязан шаблон (по подстрокам в названии: «блокировка», «оплата», «тариф», «обещанный платёж», «пароль» и т.д.) и показывает соответствующие иконки + ссылки.</li>
+  </ul>
+
+  <img src="../img/messaging_v461/messaging_07_template_modal.png" alt="Модалка добавления шаблона" class="screenshot">
+
+  <h3 id="mail-domain">4.9. DNS-записи отправляющего домена (SPF / DKIM / MX)</h3>
+  <p>Для надёжной доставки Email требуются три DNS-записи отправляющего домена:</p>
+  <ul>
+    <li><strong>MX-запись</strong> — указывает почтовый сервер для домена.</li>
+    <li><strong>SPF-запись</strong> (TXT) — определяет разрешённые серверы-отправители (защита от подмены).</li>
+    <li><strong>DKIM</strong> (TXT) — цифровая подпись писем, подтверждает подлинность.</li>
   </ul>
   <p>Проверка DNS-записей:</p>
   <pre><code>nslookup -type=mx yourdomain.ru
 host -t txt yourdomain.ru</code></pre>
+  <p>Без DKIM/SPF большинство почтовых провайдеров (Gmail, Yandex, Mail.ru) кладут письма в спам — даже если SMTP-настройки в биллинге правильные.</p>
 
-  <h3 id="messaging-system">4.2. Система отправки сообщений (SMS, Email)</h3>
-  <p>Биллинг поддерживает несколько каналов доставки уведомлений.</p>
-
-  <h4>SMS-шлюзы</h4>
-  <p>Поддерживаемые провайдеры: SMSC, Digital Direct, Prostor SMS, SMSPILOT, Ростелеком, SemySMS.</p>
-
-  <h4>Email (SMTP)</h4>
-  <p>Настройка SMTP для Gmail, Yandex или собственного почтового сервера.</p>
-
-  <h4>Шаблоны сообщений</h4>
-  <p>17+ типов событий (блокировка, оплата, смена тарифа, поздравление и др.). Переменные подстановки:</p>
-  <table>
-    <thead><tr><th>Переменная</th><th>Описание</th></tr></thead>
-    <tbody>
-      <tr><td><code>{{fio}}</code></td><td>ФИО абонента</td></tr>
-      <tr><td><code>{{balance}}</code></td><td>Текущий баланс</td></tr>
-      <tr><td><code>{{contract}}</code></td><td>Номер договора</td></tr>
-      <tr><td><code>{{tarif}}</code></td><td>Название тарифа</td></tr>
-      <tr><td><code>{{block_date}}</code></td><td>Дата блокировки</td></tr>
-      <tr><td><code>{{recommend_pay}}</code></td><td>Рекомендуемый платёж</td></tr>
-    </tbody>
-  </table>
-
-  <h4>Устранение проблем</h4>
-  <p>Логи отправки: <code>docker compose logs celery | grep messaging</code>. Отправка сообщений выполняется Celery-задачей <code>send_pending_messages</code> (интервал: 1 мин). Проверьте настройки SMTP и SSL-сертификатов при проблемах с email.</p>
-
-  <h3 id="scheduled-messaging">4.3. Плановая отправка сообщений</h3>
-  <p>Настраивается через вкладку «Запланированные задачи». Параметры:</p>
+  <h3 id="scheduled-messaging">4.10. Плановая (массовая) отправка</h3>
+  <p>Запланированные рассылки настраиваются через раздел <a href="#scheduled-tasks">Запланированные задачи</a>. Параметры:</p>
   <pre><code>admin_msg_id=12 objects_status=27</code></pre>
-  <p>Где <code>admin_msg_id</code> — ID шаблона сообщения, <code>objects_status</code> — статус абонентов-получателей.</p>
+  <p>Где <code>admin_msg_id</code> — ID шаблона (из таблицы <code>ADMIN_MSG</code>), <code>objects_status</code> — статус абонентов-получателей.</p>
+  <p>Логи отправки: <code>docker compose logs celery | grep messaging</code>. Очередь обрабатывается Celery-задачей <code>send_pending_messages</code> с интервалом 1 минута.</p>
 
-  <h3 id="telegram">4.4. Отправка уведомлений через Telegram</h3>
-  <p>Для отправки Telegram-уведомлений абонентам используется отдельный бот биллинга (не связанный с ботом FreeScout поддержки).</p>
-  <p><strong>Настройка в <code>.env</code>:</strong></p>
-  <pre><code>LK_TELEGRAM_BOT_TOKEN=&lt;токен бота от @BotFather&gt;
-LK_TELEGRAM_BOT_USERNAME=&lt;username бота&gt;</code></pre>
-  <p><strong>Регистрация webhook:</strong></p>
-  <pre><code>docker compose exec web python manage.py setup_telegram_webhook \
-  --url https://yourdomain.ru/lk/telegram/webhook/</code></pre>
-  <p><strong>Привязка абонента:</strong> абонент открывает Личный кабинет → Профиль → нажимает «Подключить уведомления» → получает deep-link с токеном → пишет боту <code>/start TOKEN</code> → бот сохраняет <code>telegram_chat_id</code>. После этого Celery-задача `process_message_queue` может отправлять сообщения через Telegram.
-
-  <h3 id="smsaero">4.5. Настройка SMSAero</h3>
-  <p>Для отправки SMS через SMSAero укажите в <code>.env</code>:</p>
-  <img src="../img/section_messaging_sms.png" alt="Настройка SMS" class="screenshot">
-
-  <pre><code>SMS_ENABLED=True
-SMS_GATEWAY=smsaero
-SMS_LOGIN=your@email.com
-SMS_PASSWORD=&lt;API-ключ из личного кабинета SMSAero&gt;
-SMS_SENDER=НАЗВАНИЕ  # имя отправителя (зарегистрированное в SMSAero)</code></pre>
-  <p>API-ключ доступен в личном кабинете <a href="https://smsaero.ru" target="_blank">smsaero.ru</a> → Настройки → API. Используется API v2 с Basic Auth (base64 email:key).</p>
-
-  <h3 id="email-smtp">4.6. Настройка Email (SMTP)</h3>
-  <pre><code>EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
-EMAIL_HOST=mail.yourdomain.ru
-EMAIL_PORT=465
-EMAIL_USE_SSL=True
-EMAIL_HOST_USER=billing@yourdomain.ru
-EMAIL_HOST_PASSWORD=&lt;пароль&gt;
-DEFAULT_FROM_EMAIL=БиллингСмИТ &lt;billing@yourdomain.ru&gt;
-MSG_EMAIL_ENABLED=True</code></pre>
-  <p>Поддерживаются SSL (порт 465) и STARTTLS (порт 587, <code>EMAIL_USE_TLS=True</code>).</p>
+  <h3 id="messaging-system">4.11. История раздела (legacy)</h3>
+  <p>До build 458 раздел был разнесён по 3+ страницам (<code>/admin/settings/messaging/</code>, <code>/admin/settings/firebase/</code>, частично — <code>/admin/settings/integrations/telegram/</code>). В build 458–461 настройки объединены в одну страницу с 6 вкладками; добавлены status-strip, тестовые отправители на каждом канале, фильтры по каналам в шаблонах, Bootstrap confirm-модалка вместо native <code>confirm()</code>, отдельная вкладка <strong>VK</strong> и расширенные пояснения по привязке абонентов через OAuth.</p>
 
   <!-- ===== 5. Платёжные системы, web-касса, API, 1С ===== -->
   <h2 id="payments">5. Платёжные системы, web-касса, API, 1С</h2>
