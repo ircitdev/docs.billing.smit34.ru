@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 455)</title>
+  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 456)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 455)">
+  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 456)">
   <meta property="og:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/billing.html">
   <meta property="og:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 455)">
+  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 456)">
   <meta name="twitter:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta name="twitter:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
   <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
@@ -4585,7 +4585,7 @@ WHERE op_date BETWEEN :ОтДаты|date$ AND :ДоДаты|date$
 
   <!-- ===== 9. Справочники ===== -->
   <h2 id="dictionaries">11. Справочники</h2>
-  <p>Справочники СмИТ Биллинг v1.6.0 (build 455) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
+  <p>Справочники СмИТ Биллинг v1.6.0 (build 456) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
   <div class="section-toc">
   <details open>
     <summary><strong>Содержание раздела</strong></summary>
@@ -4756,6 +4756,16 @@ python manage.py backfill_ip_pool_mask --force --apply  # перезаписат
   <p>Bulk-toolbar: <strong>CSV · Удалить</strong> (enable/disable не применимо к VLAN — у модели нет поля <code>enabled</code>). Удаление пула, к которому привязан хотя бы один NAS, блокируется на сервере. CSV — тот же формат, endpoint <code>GET /admin/dictionary/vlan_pull_csv/?ids=…</code>.</p>
   <p>Mobile (<code>≤ 768 px</code>): card-layout по тому же паттерну, что у IP — каждый пул как карточка с метками <code>НАЗВАНИЕ:</code>, <code>ДИАПАЗОН:</code>, <code>РАЗМЕР:</code>, <code>ИСПОЛЬЗОВАНО:</code>, <code>% ЗАНЯТО:</code>.</p>
   <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ux_pools_v420/vlan_pull_mobile.png" alt="VLAN-пулы на mobile" class="screenshot">
+
+  <h5 id="vlan-pools-build456-fixes">Доводки <span class="badge bg-success">build 456</span></h5>
+  <ul>
+    <li><strong>Скрытие колонки «Оператор связи»</strong> при единственном операторе — фактически работает. Раньше JS ставил <code>style.display=none</code>, но Bootstrap-класс <code>d-md-table-cell</code> с <code>!important</code> побеждал. Теперь добавляется класс <code>.vp-op-col-hidden</code> с <code>!important</code> — колонка пропадает корректно. Имя оператора показывается контекст-чипом в шапке.</li>
+    <li><strong>Защита удаления VLAN-пула</strong>: сервер блокирует <code>DELETE /admin/dictionary/vlan_pull_crud/&lt;id&gt;/</code> если на пул ссылается NAS (<code>Nas.vlan_pull_id</code>) или есть <code>Users</code> с <code>vlan</code> в диапазоне пула. Возвращается HTTP 400 + понятное сообщение «NAS используют пул: N; абонентов с VLAN в диапазоне: M».</li>
+    <li><strong>Empty-state с CTA</strong>: если фильтры/поиск дают пустой результат — показывается иллюстрация с кнопками «Сбросить фильтры» и «Создать VLAN-пул». Если пулов в принципе нет — только «Создать».</li>
+    <li><strong>Dark mode контраст</strong>: иконки «активен / отключён» (<code>.ip-on</code> / <code>.ip-off</code>) теперь имеют WCAG AA ≥ 4.5:1 на тёмном фоне (<code>#3cb371</code> / <code>#f87171</code> вместо <code>#198754</code> / <code>#dc3545</code>).</li>
+    <li><strong>Настраиваемые пороги</strong>: миграция <code>0111_pool_ux_thresholds</code> добавляет VpnConst <code>IP_POOL_DANGER_THRESHOLD_PCT</code> (default 75) и <code>IP_POOL_BINDING_TOP_N</code> (default 3). Меняются через <code>/admin/settings/VpnConst/</code> без перезапуска.</li>
+  </ul>
+  <p>Скриншот после фикса: <img src="../img/v456/vlan_pull_single_operator.png" alt="VLAN-пулы build 456 — колонка оператора скрыта" class="screenshot"></p>
 
   <h4 id="ip-pools-gateway-autofill">Автоподстановка шлюза</h4>
   <p>Часто после миграции с EBS у IP-пулов поле <code>GATEWAY</code> остаётся пустым, хотя <code>NETWORK_ADDRESS</code> и <code>MASK</code> заполнены. Для большинства подсетей шлюз — «адрес сети + 1» (классический паттерн «.1»). Биллинг автоматизирует эту подстановку на трёх уровнях.</p>
@@ -6038,7 +6048,7 @@ else:
   </details>
   </div>
 
-  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 455) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
+  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 456) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
 
   <h3 id="setevaya-izolyatsiya">Сетевая изоляция</h3>
   <p><strong>Docker-контейнеризация</strong> — каждый сервис (web, db, redis, celery, nginx, freeradius) работает в изолированном Docker-контейнере с собственной сетью (172.28.0.0/16). Входящие соединения проходят через nginx reverse proxy, что предотвращает прямой доступ к внутренним сервисам.</p>
@@ -6182,7 +6192,7 @@ docker compose up -d</code></pre>
 
   <!-- ===== 16. Стороннее ПО ===== -->
   <h2 id="third-party">16. Стороннее ПО</h2>
-  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 455).</p>
+  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 456).</p>
 
   <!-- ===== 17. Смена языка ===== -->
   <h2 id="language">17. Смена языка</h2>
@@ -6203,7 +6213,7 @@ docker compose up -d</code></pre>
   </details>
   </div>
 
-  <p>СмИТ Биллинг v1.6.0 (build 455) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
+  <p>СмИТ Биллинг v1.6.0 (build 456) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
 
   <h3 id="pochemu-postgresql">Почему PostgreSQL</h3>
   <p>PostgreSQL 16 выбран в качестве основной СУБД по ряду причин:</p>
@@ -6955,8 +6965,8 @@ STARTED_AT, FINISHED_AT, EBS_LAST_TX_ID, STATS_JSON, DUMP_FILE, ERROR_MSG</code>
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 455)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">02.05.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 455)</span>&nbsp;|&nbsp;<span data-smit="updated">02.05.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 456)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">02.05.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 456)</span>&nbsp;|&nbsp;<span data-smit="updated">02.05.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=220"></script>
