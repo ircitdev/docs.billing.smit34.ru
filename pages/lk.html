@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 472)</title>
+  <title>Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 474)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 472)">
+  <meta property="og:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 474)">
   <meta property="og:description" content="Личный кабинет абонента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/lk.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 472)">
+  <meta name="twitter:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 474)">
   <meta name="twitter:description" content="Личный кабинет абонента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="Личный кабинет абонента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
@@ -348,7 +348,7 @@
     <thead><tr><th>Вкладка</th><th>URL</th><th>Что настраивается</th></tr></thead>
     <tbody>
       <tr><td><strong>Обзор</strong></td><td><code>/admin/settings/lk/overview/</code></td>
-        <td>4 KPI-cards (push-токенов / Telegram / VK / активных сессий) + сводка брендинга и мобильных версий</td></tr>
+        <td>4 KPI-cards (push-токенов / Telegram / VK / активных сессий) + сводка брендинга и мобильных версий + <strong>таблица последних 10 входов в ЛК</strong> (login/IP/канал/метод) + <strong>круговая диаграмма каналов входа за 30 дней</strong> (build 474)</td></tr>
       <tr><td><strong>Брендинг</strong></td><td><code>/admin/settings/lk/branding/</code></td>
         <td>9 LK-overrides поверх <a href="#branding">CompanyBranding</a>: brand_short, контакты поддержки, соцсети VK/MAX, color-override</td></tr>
       <tr><td><strong>Функции</strong></td><td><code>/admin/settings/lk/features/</code></td>
@@ -364,6 +364,30 @@
     с полем <code>_tab=</code> для определения какие ключи обновлять.
     Все изменения пишутся в <code>AuditOperations</code> через <code>write_audit(table_name='LK_SETTINGS')</code>.
     После сохранения 60-секундный кеш <code>lk_brand</code> context_processor инвалидируется автоматически.</p>
+
+  <h4 id="lk-admin-overview-logins">Последние входы и каналы (build 474)</h4>
+  <p>На вкладке «Обзор» добавлены два аналитических блока:</p>
+  <ul>
+    <li><strong>Последние 10 входов в ЛК</strong> — таблица с колонками: время / логин / IP / канал
+      (Web/Android/iOS/прочие, цветной бейдж) / метод (пароль/VK/Telegram/JWT). Источник —
+      <code>AuditOperations</code> с <code>table_name='LK_LOGIN_SUCCESS'</code>. Кнопка «Все»
+      ведёт в полный <a href="/admin/reports/AuditOperations/?table_name=LK_LOGIN_SUCCESS">журнал аудита</a>.</li>
+    <li><strong>Круговая диаграмма каналов входа</strong> за 30 дней — Chart.js doughnut,
+      4 сегмента (Web/Android/iOS/прочие). Tooltip показывает абсолютное число и процент.
+      Под диаграммой — легенда с точными значениями. Если за 30 дней нет данных — empty-state.</li>
+  </ul>
+  <p>Audit-запись успешного входа создаётся во всех 4 точках авторизации:</p>
+  <ul>
+    <li><code>lk/views/auth.py::_record_successful_login()</code> — для пароля и Telegram</li>
+    <li><code>lk/views/oauth.py::vk_callback()</code> — для VK OAuth</li>
+    <li><code>mobile_api/views/auth.py::login_view()</code> — для Mobile JWT</li>
+  </ul>
+  <p>Канал определяется хелпером <code>_detect_lk_channel(user_agent)</code> по User-Agent:
+    UA <code>smit_billing_app/X.Y.Z</code> (мобильное приложение) → <code>android</code>
+    или <code>ios</code> в зависимости от платформенных маркеров; iPhone/iPad UA → <code>ios</code>;
+    Android browser → <code>android</code>; Mozilla/Chrome/Safari/Firefox/Edge → <code>web</code>;
+    иначе <code>unknown</code>.
+  </p>
 
   <h4 id="lk-admin-branding">Брендинг</h4>
   <p>На вкладке выводится <strong>read-only сводка из <code>CompanyBranding</code></strong>
@@ -381,6 +405,22 @@
       (<strong>только VK и MAX мессенджер</strong> — российские сервисы)</li>
     <li><code>LK_USE_BRAND_COLORS</code> (toggle) — если выключено, использовать
       <code>LK_PRIMARY_COLOR</code> (color picker) вместо <code>CompanyBranding.accent_color</code></li>
+    <li><strong>Способы входа (build 473):</strong>
+      <code>LK_AUTH_VK_ENABLED</code> и <code>LK_AUTH_TELEGRAM_ENABLED</code> — toggle для
+      кнопок «Войти через VK» / Telegram-widget на странице логина. Если выключены —
+      кнопки скрываются, а прямой переход на <code>/lk/auth/vk/</code> и Telegram-callback
+      возвращают «временно отключено».</li>
+    <li><strong>Фон страницы логина (build 473):</strong>
+      <code>LK_LOGIN_BG_DESKTOP</code> (1920×1080) и <code>LK_LOGIN_BG_MOBILE</code> (1080×1920) —
+      URL фоновых изображений. На экранах ≤768px используется mobile-вариант, если задан
+      (иначе — desktop). Поверх фона накладывается полупрозрачный белый/тёмный градиент
+      (35% / 45%) для контраста, в dark-mode градиент тёмнее.</li>
+    <li><strong>Frosted-glass card</strong>: <code>.login-card .card</code> получает
+      <code>backdrop-filter: blur(18px) saturate(180%)</code> + полупрозрачный фон
+      <code>rgba(255,255,255,.65)</code> + edge-light shadow. В dark-mode карточка
+      становится <code>rgba(28,30,36,.65)</code>. Для браузеров без поддержки
+      <code>backdrop-filter</code> применяется fallback с непрозрачным фоном через
+      <code>@supports</code>.</li>
   </ul>
   <p>В правой колонке — <strong>iframe-превью /lk/login/</strong> (sticky-top), перезагружается после
     каждого save.</p>
@@ -400,6 +440,66 @@
     флаги во все шаблоны ЛК. В sidebar пункты обёрнуты в
     <code>{% if lk_features.X %}…{% endif %}</code>. Mobile API возвращает флаги в
     <a href="#mobile-api-public"><code>GET /mobile-api/v1/features</code></a>.</p>
+
+  <p><strong>«Только Mobile» бейдж (build 473)</strong>: 4 флага
+    (<code>LK_FEATURE_IPTV</code>, <code>LK_FEATURE_PAPER_INVOICE</code>,
+    <code>LK_FEATURE_IPV6</code>, <code>LK_FEATURE_BALANCE_HISTORY_CHART</code>) в текущей
+    версии веб-ЛК <em>не имеют читателей</em> в <code>lk/templates/lk/base.html</code> — они
+    реализованы только в Mobile App через <code>GET /mobile-api/v1/features</code>. В админке
+    эти 4 toggle отмечены синим бейджем «только Mobile» чтобы оператор не ожидал эффекта в
+    веб-кабинете. Если потребуется — добавить
+    <code>{% if lk_features.iptv %}…{% endif %}</code> блоки в шаблоны ЛК.</p>
+
+  <p><strong>Promise Pay management (build 473)</strong> — 5 числовых ключей в Features tab,
+    реализуют политики доступности обещанного платежа в
+    <code>lk/views/promise_pay.py::_check_promise_pay_eligibility()</code>:</p>
+  <ul>
+    <li><code>LK_PROMISE_PAY_MIN_DEBT</code> (₽) — минимальная задолженность для активации.
+      <code>0</code> = ОП доступен при любом отрицательном балансе</li>
+    <li><code>LK_PROMISE_PAY_MAX_DURATION_DAYS</code> — override длительности из
+      <code>Usluga.end_count_days</code>. <code>0</code> = брать из услуги</li>
+    <li><code>LK_PROMISE_PAY_COOLDOWN_DAYS</code> — минимальный интервал между двумя ОП.
+      Считается от <code>promise_date_end</code> предыдущего ОП. <code>0</code> = без кулдауна</li>
+    <li><code>LK_PROMISE_PAY_MIN_AGE_DAYS</code> — минимальный возраст абонента
+      (<code>now() − create_date</code>). Защита от фрод-сценария «новый абонент
+      сразу активирует ОП и пропадает»</li>
+    <li><code>LK_PROMISE_PAY_MAX_LIMIT_OVERRIDE</code> (₽) — фиксированный максимальный лимит
+      ОП. <code>0</code> = берётся стоимость тарифа в месяц (динамически)</li>
+  </ul>
+  <p>При нарушении любой из политик возвращается понятное сообщение
+    («Между двумя обещанными платежами должно пройти 30 дней (подождите ещё 12 дн.)»),
+    и кнопка активации становится <code>disabled</code>.
+    Аналогичные проверки в <code>mobile_api/views/finance.py::promise_pay()</code> через
+    reuse того же хелпера — реакция API: HTTP 400 с
+    <code>{"detail": "...", "eligibility_error": "..."}</code>.</p>
+
+  <p><strong>Phantom-cleanup (build 473)</strong>: из Security tab удалены 10 ключей которые
+    раньше отображались как настройки, но не имели читателя в коде:
+    <code>LK_AUTH_METHOD</code>, <code>LK_AUTH_OTP_LENGTH/_TTL_SECONDS</code>,
+    <code>LK_LOGIN_CAPTCHA_AFTER</code>, <code>LK_PASSWORD_HISTORY_CHECK</code>,
+    <code>LK_PASSWORD_EXPIRY_DAYS</code>, <code>LK_SESSION_TTL_MINUTES/_IDLE_LOGOUT/_SINGLE_DEVICE</code>,
+    <code>LK_TOTP_REQUIRED_FOR_PAYMENT_ABOVE</code>. Это были «фантомные» настройки —
+    UI создавал ощущение что они работают, на деле — нет. Будут добавлены обратно
+    вместе с реальной реализацией.</p>
+
+  <p><strong>Push-настройки (build 473)</strong> — теперь подключены в
+    <code>billing/tasks/push_notifications.py</code>:</p>
+  <ul>
+    <li><code>MOBILE_PUSH_LOW_BALANCE_THRESHOLD</code> — порог в рублях для
+      <code>send_low_balance_alerts</code> (раньше был хардкод <code>100</code>)</li>
+    <li><code>MOBILE_PUSH_PROMISE_PAY_EXPIRE_HOURS</code> — окно «отправлять
+      предупреждение за N часов до истечения ОП» в
+      <code>send_promise_pay_expiring_alerts</code> (раньше — фиксированно «завтра»)</li>
+    <li><code>MOBILE_PUSH_QUIET_HOURS_START / _END</code> — пуши не уходят в этот период.
+      Корректно обрабатывается случай через полночь (22:00–08:00). Все three task
+      (low_balance / promise_expiring / send_to_abonent) уважают их</li>
+    <li><code>MOBILE_PUSH_MAX_PER_DAY</code> — счётчик пушей на абонента в Redis-кеше
+      (<code>push:daily:{ab_id}:{date}</code> с TTL 25h). При превышении — пуш не уходит,
+      пишется debug-лог. <code>0</code> = лимит отключён</li>
+  </ul>
+  <p>Срочные broadcast-уведомления (авария) могут передавать
+    <code>respect_quiet=False</code> и пройти через quiet-hours.
+    <code>send_push_to_abonent(force=True)</code> игнорирует и quiet-hours, и daily-limit.</p>
 
   <p><strong>Legacy LK-настройки (build 472)</strong> — 9 toggle + 1 числовое поле,
     мигрированы из старого раздела «Настройки системы → Параметры → Личный кабинет»
@@ -1100,8 +1200,8 @@ Content-Type: application/json
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 472)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">07.05.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 472)</span>&nbsp;|&nbsp;<span data-smit="updated">07.05.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 474)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">07.05.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 474)</span>&nbsp;|&nbsp;<span data-smit="updated">07.05.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=466"></script>
