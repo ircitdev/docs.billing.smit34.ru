@@ -668,44 +668,77 @@ docker compose exec web python manage.py loaddata initial_data
 # 4. Запустить сервисы
 docker compose up -d</code></pre>
 
-  <h3 id="db-cleanup-auto">1.5а. Автоочистка БД и аудит сессий <span class="badge bg-success">build 453-455</span></h3>
-  <p>Раздел <strong>Настройки &rarr; Обслуживание &rarr; Очистка БД и сессий</strong> (<code>/admin/settings/db_cleanup/</code>) объединяет два автоматических процесса.</p>
+  <h3 id="db-cleanup-auto">1.5а. Автоочистка БД и аудит зомби-сессий <span class="badge bg-success">build 453-456</span></h3>
+  <p>Раздел <strong>Настройки &rarr; Обслуживание &rarr; Очистка БД и сессий</strong> (<code>/admin/settings/db_cleanup/</code>) объединяет два автоматических процесса для поддержания здоровья биллинга.</p>
 
-  <p><img src="../img/v455/db_cleanup_overview.png" alt="Дашборд автоочистки БД" class="screenshot"></p>
+  <p><img src="../img/v456/db_cleanup_desktop.png" alt="Дашборд автоочистки БД (build 456)" class="screenshot"></p>
 
-  <h4>Что делает</h4>
+  <h4 id="db-cleanup-when">Когда применять этот инструмент</h4>
+  <p>Инструмент нужен <strong>каждой инсталляции</strong>, не только проблемной. Он работает в фоне (Celery beat) и предотвращает три типичных сценария деградации:</p>
   <ul>
-    <li><strong>Раз в сутки</strong> Celery-задача <code>db-cleanup-daily</code> удаляет старые записи из <code>MSG_STACK</code> (default 30 дней), <code>AUDIT_OPERATIONS</code> (365 дней), <code>RADIUS_SESSIONS</code> закрытые (90 дней), <code>EVENTS_STACK</code> processed (30 дней). После удаления — <code>VACUUM ANALYZE</code> для освобождения места на диске.</li>
-    <li><strong>Раз в час</strong> Celery-задача <code>session-audit-hourly</code> для выбранных NAS:
-      <ol>
-        <li>Через SSH забирает <code>/ppp active print</code></li>
-        <li>Сравнивает с <code>RADIUS_SESSIONS WHERE END_TIME IS NULL</code></li>
-        <li>«Зомби» (на NAS есть, в SB нет) — сбрасывает пачкой по 50/час через CoA Disconnect</li>
-        <li>Через 5 минут проверяет переавторизацию; если есть failed — алерт в Telegram</li>
-      </ol>
-    </li>
+    <li><strong>Сценарий 1 — БД растёт &gt; 5 ГБ</strong>. Журнал аудита накапливает 3000–5000 записей в сутки. Без очистки за год — 1.8 млн записей × вспомогательные индексы → запросы становятся в 5–10 раз медленнее. Проявляется как «биллинг тормозит, особенно дашборд и список абонентов».</li>
+    <li><strong>Сценарий 2 — «too many clients already»</strong>. Когда PostgreSQL connections подбирается к 80% от max — Django не может открыть новое соединение и абоненты получают 502/500. Виджет «Подключения к БД» в этом разделе показывает текущее значение.</li>
+    <li><strong>Сценарий 3 — расхождение виджета онлайна</strong>. На дашборде показано «995 онлайн», а в RADIUS_SESSIONS — 1010 активных. Это «зомби-сессии»: NAS не прислал Accounting-Stop, или сессия запустилась через прежний RADIUS, но запись в БД не появилась. Аудит зомби каждый час выравнивает картину через CoA Disconnect.</li>
   </ul>
 
-  <h4>Настройки и метрики на дашборде</h4>
+  <h4 id="db-cleanup-how-to-use">Как правильно использовать</h4>
+  <ol>
+    <li><strong>В первый раз</strong> — оставить дефолты. Они подобраны для типичной инсталляции на 3000–10000 абонентов: MSG 30 дней, AUDIT 365, RADIUS sessions 90, EVENTS 30. Включить «Раз в сутки», нажать «Запустить чистку сейчас» — увидеть pre-flight метрики (сколько именно записей удалится). Подтвердить.</li>
+    <li><strong>Если БД &gt; 10 ГБ или AUDIT &gt; 2 млн</strong> — уменьшить срок хранения AUDIT до 180 дней, нажать «Запустить чистку сейчас». На очень больших БД первый запуск может занять 5–10 мин — вы увидите real-time прогресс в правом верхнем углу.</li>
+    <li><strong>Регулярно (раз в неделю)</strong> — заглядывать на дашборд и смотреть «К очистке» в каждой карточке. Зелёный бейдж = всё в норме (автоочистка справляется). Жёлтый/красный = автоочистка не справляется или была отключена.</li>
+    <li><strong>Аудит зомби-сессий</strong> включать только для NAS с настроенным <code>/radius incoming</code> (CoA-incoming на MikroTik). Иначе CoA Disconnect не дойдёт и сессии не сбросятся. Список NAS выбирается через picker.</li>
+    <li><strong>При замеченной деградации</strong> — открыть «Историю запусков» и «Историю аудитов»: если статус ERROR (красная иконка) или давно не было успешных — диагностируйте через подробности (модалка с детальным логом).</li>
+  </ol>
+
+  <h4 id="db-cleanup-status">Состояние БД сейчас (KPI-карточки)</h4>
+  <p>6 живых метрик с auto-refresh каждые 60 секунд без перезагрузки страницы:</p>
   <ul>
-    <li><strong>6 KPI-карточек</strong> с наведением (i): PostgreSQL connections, размер БД, сколько записей в каждой таблице и сколько будет удалено при следующем запуске</li>
-    <li><strong>Auto-refresh метрик каждые 60 сек</strong> (без перезагрузки страницы)</li>
-    <li>Все retention-параметры — через <code>VpnConst</code>: <code>DB_CLEANUP_*</code>, <code>SESSION_AUDIT_*</code>. Можно менять без релиза</li>
-    <li><strong>История запусков</strong> и <strong>история аудитов</strong> с детальной страницей (полный лог + verify реавторизации)</li>
+    <li><strong>Подключения к БД</strong> (<code>PostgreSQL connections</code>) — текущие/максимум. Норма &lt;50%, тревога &gt;80%</li>
+    <li><strong>Размер базы данных</strong> — полный размер БД <code>carbon</code> на диске включая индексы</li>
+    <li><strong>Очередь сообщений</strong> (<code>MSG_STACK</code>) — email/SMS/push/Telegram/VK; «к очистке» — сколько висяков с <code>SENT_AT IS NULL</code> и <code>COUNT_TRY=0</code> старше N дней</li>
+    <li><strong>Журнал аудита</strong> (<code>AUDIT_OPERATIONS</code>) — все операции в биллинге; «к очистке» — старше retention</li>
+    <li><strong>История RADIUS-сессий</strong> (<code>RADIUS_SESSIONS</code>) — закрытые сессии; <strong>активные не удаляются никогда</strong></li>
+    <li><strong>Очередь событий</strong> (<code>EVENTS_STACK</code>) — обработанные триггеры/задачи</li>
   </ul>
+  <p>Бейдж «К очистке: 0» — зелёный (норма), &gt; 1000 жёлтый, &gt; 100 000 красный (нужно срочно почистить).</p>
 
-  <h4>Запуск вручную <span class="badge bg-secondary">build 454-455</span></h4>
-  <p>Кнопка «Запустить чистку сейчас» открывает модалку <strong>с pre-flight</strong>: показывает сколько именно записей будет удалено по каждой таблице + ИТОГО.</p>
-  <p><img src="../img/v455/db_cleanup_confirm.png" alt="Модалка запуска чистки" class="screenshot"></p>
+  <h4 id="db-cleanup-autoclean">Автоочистка БД</h4>
+  <p>Раз в сутки Celery-задача <code>db-cleanup-daily</code> удаляет старые записи из 4 таблиц и запускает <code>VACUUM ANALYZE</code>. Все параметры — в одной строке формы:</p>
+  <ul>
+    <li><strong>Расписание</strong>: «Раз в сутки» (рекомендуется) или «Только вручную»</li>
+    <li><strong>Сроки хранения</strong> (дни): Сообщения / Аудит / Сессии / События — в скобках указан default</li>
+    <li><strong>Дополнительно</strong> → размер пачки SQL-DELETE (default 5000) — большие пачки быстрее, но дольше блокируют таблицу</li>
+  </ul>
+  <p>Кнопка <strong>«Запустить чистку сейчас»</strong> открывает модалку pre-flight с цифрами «удалится X записей». После запуска — sticky-toast с real-time прогрессом (polling Celery-задачи каждые 2 сек).</p>
 
-  <p>После запуска — sticky-toast с <strong>real-time прогрессом</strong> (polling Celery-задачи каждые 2 сек). По завершении — итоги (удалено / время / ошибка) и кнопка обновить страницу.</p>
+  <h4 id="db-cleanup-zombie-audit">Аудит зомби-сессий на NAS</h4>
+  <p>Каждый час Celery-задача <code>session-audit-hourly</code> для выбранных NAS:</p>
+  <ol>
+    <li>Через SSH забирает <code>/ppp active print</code> с MikroTik</li>
+    <li>Сравнивает с <code>RADIUS_SESSIONS WHERE END_TIME IS NULL</code> в биллинге</li>
+    <li>«Зомби» (есть на NAS, нет в БД) — сбрасывает пачкой по N штук (default 50/час) через <strong>CoA Disconnect</strong></li>
+    <li>Через 5 минут проверяет переавторизацию; если есть <code>failed_reauth</code> — алерт в Telegram</li>
+  </ol>
+  <p><strong>Параметры формы:</strong> Расписание / NAS-picker (с поиском и toggle-switches) / Размер пачки / Проверка через. Все в одной строке. Сохраняется в <code>VpnConst.SESSION_AUDIT_*</code>.</p>
 
-  <h4>Выбор NAS для аудита <span class="badge bg-secondary">build 453</span></h4>
-  <p>Модалка с toggle-switches и поиском, кнопки «Все/Снять». Сохраняется в <code>VpnConst.SESSION_AUDIT_NAS_LIST</code>. Сегодня настроены 4 NAS (TOY/JOY/FAG/POT — где <code>/radius incoming</code> уже включён).</p>
-  <p><img src="../img/v455/db_cleanup_nas_picker.png" alt="Выбор NAS для аудита" class="screenshot"></p>
+  <h4 id="db-cleanup-history">История запусков и аудитов</h4>
+  <p>Две таблицы со списком последних 20 запусков. На mobile показываются только 3–4 ключевые колонки (Время / Всего / Статус), остальные скрыты до планшета.</p>
+  <p>Кнопка «глаз» в строке аудита открывает <strong>модалку с деталями</strong>: метрики (NAS опрошено / зомби / сброшено / реавторизация) + полный лог скрипта (что нашли, что сбросили, кто вернулся). Из модалки можно перейти на отдельную страницу для копипасты в инцидент.</p>
 
   <h4>Доступ из меню</h4>
   <p>Настройки &rarr; <strong>Обслуживание</strong> &rarr; «Очистка БД и сессий» (рядом с «Резервные копии», иконка <code>fa-broom</code>).</p>
+
+  <h4 id="db-cleanup-mobile">Mobile-версия <span class="badge bg-success">build 456</span></h4>
+  <p>На экранах ≤768px:</p>
+  <ul>
+    <li>KPI-карточки в 2 колонки вместо 6 (компактнее)</li>
+    <li>Поля retention в 2×2 сетке (Сообщения/Аудит над Сессии/События)</li>
+    <li>Кнопки «Запустить чистку», «Сохранить» — full-width</li>
+    <li>NAS-picker: бейджи и кнопка «Выбрать» в столбец, обе full-width</li>
+    <li>В таблицах истории показаны только 3–4 ключевые колонки, остальные скрыты до планшета</li>
+    <li>Модалка деталей аудита fullscreen на mobile (читать длинный лог удобнее)</li>
+  </ul>
+  <p><img src="../img/v456/db_cleanup_mobile.png" alt="Mobile-версия db_cleanup" class="screenshot" style="max-width:380px"></p>
 
   <!-- 1.6 Права доступа -->
   <h3 id="access-control">1.6. Права доступа</h3>
