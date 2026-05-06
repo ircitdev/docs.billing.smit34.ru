@@ -19,10 +19,10 @@
   <meta name="twitter:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
   <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=458">
+  <link rel="stylesheet" href="../css/style.css?v=466">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.26.0/dist/tabler-icons.min.css">
-  <link rel="stylesheet" href="../css/search.css?v=222">
+  <link rel="stylesheet" href="../css/search.css?v=466">
 </head>
 <body>
 
@@ -177,6 +177,7 @@
           <li class="sub-item"><a href="../pages/billing.html#lk-firebase">6.10. Push</a></li>
           <li class="sub-item"><a href="../pages/billing.html#lk-claude-ai">6.11. Claude AI</a></li>
           <li class="sub-item"><a href="../pages/billing.html#telegram-admin-bot">6.12. TG бот оператора</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#integrations">6.13. Раздел «Интеграции»</a></li>
           <li><a href="../pages/billing.html#oss-bss">7. OSS.BSS / NAS</a></li>
           <li class="sub-item"><a href="../pages/billing.html#rtsh">7.1. rtsh</a></li>
           <li class="sub-item"><a href="../pages/billing.html#oss-commands">7.2. Команды OSS</a></li>
@@ -2958,6 +2959,107 @@ Content-Type: application/json
 
   <h4>Логирование</h4>
   <p>Модуль <code>billing/services/claude_logger.py</code> записывает диалоги в FreeScout (отдельная база MySQL на сервере поддержки). Если сервер FreeScout недоступен — логирование пропускается без ошибки.</p>
+
+  <!-- ===== 6.13 Раздел «Интеграции» (build 466) ===== -->
+  <h3 id="integrations">6.13. Раздел «Интеграции» — единый центр</h3>
+  <p>Страница <code>/admin/settings/integrations/</code> — единая точка управления всеми внешними сервисами биллинга. После реструктуризации build 465-466 — <strong>7 разделов вместо 11</strong>: связанные интеграции объединены в группы со sub-tabs и общими info-карточками.</p>
+
+  <h4 id="integrations-overview">Вкладка «Обзор»</h4>
+  <p>Сводная таблица всех интеграций со статусами, KPI-карточками и кнопками <strong>«Проверить все»</strong> / <strong>«Остановить»</strong> / <strong>«Обновить статусы»</strong>. Last-test, ссылки на документацию и шестерёнки для перехода в нужный раздел.</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/integrations_v466/v466_01_overview.png" alt="Обзор всех интеграций" class="screenshot">
+  <ul>
+    <li><strong>Универсальный JS-модуль</strong> <code>billing/static/js/integration_tester.js</code> — <code>window.IntegrationTester.run()</code> / <code>runAll()</code> / <code>refreshStatus()</code> / <code>showToast()</code></li>
+    <li><strong>Batch-тест</strong> прогоняет все configured интеграции последовательно (~5-10 сек) с прогресс-баром и summary-списком результатов</li>
+    <li><strong>Auto-poll</strong> каждые 60 сек обновляет статус-точки на вкладках без F5</li>
+    <li><strong>Backend-fallback</strong>: каждый <code>*_test</code> endpoint читает settings из БД когда форма не открыта (для batch с Обзора)</li>
+  </ul>
+
+  <h4 id="integrations-iptv">Вкладка IPTV (TVIP + LFStream)</h4>
+  <p>Объединяет двух IPTV-провайдеров. Sub-pills переключают между TVIP Media (middleware) и LFStream «Смотрёшка» (CMS). Info-карточка сверху — общий контекст и счётчики маппингов услуг.</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/integrations_v466/v466_02_iptv_tvip.png" alt="IPTV — TVIP" class="screenshot">
+  <p><strong>Тесты используют production-клиенты</strong> <code>billing/services/iptv/tvip.py::TvipClient</code> и <code>billing/services/iptv/lfstream.py::LfstreamClient</code> с правильной авторизацией (HTTP Basic для TVIP, session-based через CMS <code>/login</code> + CSRF для LFStream).</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/integrations_v466/v466_03_iptv_lfstream.png" alt="IPTV — LFStream" class="screenshot">
+
+  <h4 id="integrations-geo">Вкладка География (Адреса + Карта)</h4>
+  <p>Геокодер DaData/Яндекс и тайловый слой карты абонентов. KPI-блок сверху: всего адресов, с координатами, точность дома, с абонентами.</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/integrations_v466/v466_04_geo_address.png" alt="География — Адреса" class="screenshot">
+  <ul>
+    <li>Sub-tab <strong>«Геокодер адресов»</strong> — DaData токен, лимиты, CORS-домены, AJAX-эндпоинты автоподсказок и проверки покрытия</li>
+    <li>Sub-tab <strong>«Тайловый слой карты»</strong> — выбор провайдера: OpenStreetMap (бесплатно) / 2GIS / Яндекс.Карты</li>
+  </ul>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/integrations_v466/v466_05_geo_map.png" alt="География — Карта" class="screenshot">
+
+  <h4 id="integrations-freescout-claude">Вкладка FreeScout + Claude AI</h4>
+  <p>HelpDesk-интеграция (FreeScout API + MySQL + webhook + автосинхронизация) и Claude AI-ассистент в одном разделе. Claude используется в трёх местах: ЛК-чат, мобильное приложение, FreeScout-модуль (отдельные настройки на <code>support.smit34.ru/claudeai/settings</code>).</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/integrations_v466/v466_06_freescout_top.png" alt="FreeScout — основные настройки" class="screenshot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/integrations_v466/v466_07_freescout_claude.png" alt="Claude AI как подраздел FreeScout" class="screenshot">
+  <p>Блок <strong>«Статистика»</strong> показывает количество AI-ответов сегодня (из FreeScout MySQL <code>claudeai_messages</code>) и ссылку на <a href="https://console.anthropic.com/settings/billing" target="_blank">console.anthropic.com/billing</a> для контроля баланса API.</p>
+
+  <h4 id="integrations-footer-ai">AI-статус в футере</h4>
+  <p>Футер всех страниц админки показывает живой статус AI после блока «Диск»:</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/integrations_v466/v466_08_footer_ai.png" alt="Футер с AI статусом" class="screenshot">
+  <p>Источник — <code>server_load_api</code> возвращает <code>ai_status</code> из <code>IntegrationStatusCache</code> (последний результат теста Claude) + <code>ai_messages_today</code> (cached 5 мин). Возможные значения:</p>
+  <table>
+    <thead><tr><th>Знак</th><th>Значение</th></tr></thead>
+    <tbody>
+      <tr><td>✓ AI</td><td>Claude доступен (последний тест успешен)</td></tr>
+      <tr><td>✗ AI</td><td>Claude отвечает с ошибкой</td></tr>
+      <tr><td>⏸ AI</td><td>AI отключён в настройках</td></tr>
+      <tr><td>? AI</td><td>Не настроен или ещё не тестировался</td></tr>
+    </tbody>
+  </table>
+  <p>Если в системе зафиксированы AI-ответы за сегодня — отображается «✓ AI: 12 сегодня». Tooltip показывает текст последнего теста.</p>
+
+  <h4 id="integrations-batch-test">Batch-тест всех интеграций</h4>
+  <p>Кнопка <strong>«Проверить все»</strong> на Обзоре прогоняет последовательно все настроенные интеграции и выдаёт сводный отчёт:</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/integrations_v466/v466_09_batch_all_green.png" alt="Batch-тест: все интеграции зелёные" class="screenshot">
+  <p>Каждый тест получает зелёную/красную иконку, сообщение endpoint'а, обновление last-test в таблице ниже. Пропущенные «Не настроено»-интеграции выводятся в финальной строке summary.</p>
+
+  <h4 id="integrations-info-icons">Info-иконки</h4>
+  <p>Каждый функциональный блок (карточка) имеет <strong>контурную серую info-иконку</strong> сразу после названия — клик открывает соответствующий раздел документации в новой вкладке. Реализовано через <code>relocateInfoIcons()</code> JS-функцию + <code>MutationObserver</code> для динамически добавленных блоков.</p>
+
+  <h4 id="integrations-test-endpoints">Test endpoints (для разработки)</h4>
+  <table>
+    <thead><tr><th>Slug</th><th>Endpoint</th><th>Что проверяет</th></tr></thead>
+    <tbody>
+      <tr><td>telegram</td><td><code>POST /admin/settings/telegram/test/</code></td><td>Bot token через <code>getMe</code>, опционально через прокси</td></tr>
+      <tr><td>telegram_proxy</td><td><code>POST /admin/settings/telegram/proxy_test/</code></td><td>SOCKS5 прокси соединение с api.telegram.org</td></tr>
+      <tr><td>telegram_alarm</td><td><code>POST /admin/settings/telegram/alarm_test/</code></td><td>Отправка тестового аларма в чат</td></tr>
+      <tr><td>freescout</td><td><code>POST /admin/settings/freescout/test/</code></td><td>API-ключ + хост + список conversations</td></tr>
+      <tr><td>freescout_db</td><td><code>POST /admin/settings/freescout/db_test/</code></td><td>MySQL соединение к БД FreeScout</td></tr>
+      <tr><td>aida</td><td><code>POST /admin/settings/aida/test/</code></td><td>HTTP <code>GET /health</code> на AIDA URL</td></tr>
+      <tr><td>claude</td><td><code>POST /admin/settings/claude/test/</code></td><td>Anthropic API <code>/v1/messages</code> (через прокси)</td></tr>
+      <tr><td>tvip</td><td><code>POST /admin/settings/tvip/test/</code></td><td>TvipClient через <code>/api/provider/accounts</code></td></tr>
+      <tr><td>lfstream</td><td><code>POST /admin/settings/lfstream/test/</code></td><td>LfstreamClient через CMS-логин + <code>/candidates/</code></td></tr>
+      <tr><td>gcs</td><td><code>POST /admin/settings/gcs/test/</code></td><td><code>list_blobs</code> с object-level permission</td></tr>
+      <tr><td>address_api</td><td><code>POST /admin/settings/integrations/dadata_test/</code></td><td>DaData API token + лимиты</td></tr>
+      <tr><td>status_json</td><td><code>GET /admin/settings/integrations/status_json/</code></td><td>Все статусы (для auto-poll бейджей)</td></tr>
+    </tbody>
+  </table>
+
+  <p><strong>JSON-формат ответа</strong> у всех test endpoints:</p>
+  <pre><code>{
+  "ok": true|false,
+  "message": "Подключено. Тикетов: 50",  // human-readable
+  "diag": {  // опционально, для модалки расширенной диагностики
+    "url": "https://...",
+    "http_status": 200,
+    "latency_ms": 145,
+    "body_preview": "..."
+  }
+}</code></pre>
+
+  <h4 id="integrations-build-history">История изменений</h4>
+  <table>
+    <thead><tr><th>Build</th><th>Дата</th><th>Изменения</th></tr></thead>
+    <tbody>
+      <tr><td>432</td><td>2026-04-25</td><td>Sprint 1: статус-бейджи на вкладках, history теста, sticky-save (Telegram)</td></tr>
+      <tr><td>463</td><td>2026-05-06</td><td>Sprint A: <code>integration_tester.js</code>, кнопка «Проверить все», auto-refresh</td></tr>
+      <tr><td>464</td><td>2026-05-06</td><td>GCS test fix (object-level permission через <code>list_blobs</code>)</td></tr>
+      <tr><td>465</td><td>2026-05-06</td><td>Реструктуризация: TVIP+LFStream→IPTV, Адреса+Карта→География, Claude→FreeScout (variant A); AI в футере</td></tr>
+      <tr><td>466</td><td>2026-05-06</td><td>LFStream/TVIP test через production-клиенты; fallback на settings; контурные серые info-иконки рядом с названиями блоков</td></tr>
+    </tbody>
+  </table>
 
   <!-- ===== 7. OSS.BSS + NAS Management ===== -->
   <h2 id="oss-bss">7. OSS.BSS — управление NAS и развёртывание</h2>
@@ -7225,8 +7327,8 @@ STARTED_AT, FINISHED_AT, EBS_LAST_TX_ID, STATS_JSON, DUMP_FILE, ERROR_MSG</code>
   <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;<span data-smit="updated">06.05.2026</span></span>
 </footer>
 
-<script src="../js/main.js?v=220"></script>
-<script src="../js/search.js?v=220"></script>
+<script src="../js/main.js?v=466"></script>
+<script src="../js/search.js?v=466"></script>
 <script src="../js/version.js"></script>
 </body>
 </html>
