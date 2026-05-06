@@ -116,6 +116,19 @@
           <li><a href="billing.html#oss-bss">6. OSS.BSS / NAS</a></li>
           <li class="sub-item"><a href="billing.html#nas-management-api">6.10. NAS API</a></li>
           <li><a href="billing.html#freeradius">7. FreeRADIUS</a></li>
+          <li class="sub-item"><a href="billing.html#radius-arch">7.1. Архитектура</a></li>
+          <li class="sub-item"><a href="billing.html#radius-auth">7.2. Авторизация</a></li>
+          <li class="sub-item"><a href="billing.html#radius-accounting">7.3. Аккаунтинг</a></li>
+          <li class="sub-item"><a href="billing.html#radius-clients">7.4. Клиенты (NAS)</a></li>
+          <li class="sub-item"><a href="billing.html#radius-vendors">7.5. Подключение по вендорам</a></li>
+          <li class="sub-item"><a href="billing.html#radius-mikrotik" style="padding-left:2.4rem">— Mikrotik</a></li>
+          <li class="sub-item"><a href="billing.html#radius-redback" style="padding-left:2.4rem">— Redback / Ericsson</a></li>
+          <li class="sub-item"><a href="billing.html#radius-cisco" style="padding-left:2.4rem">— Cisco</a></li>
+          <li class="sub-item"><a href="billing.html#radius-ip-allocation">7.6. IP-pool и chain pools</a></li>
+          <li class="sub-item"><a href="billing.html#radius-coa">7.7. CoA Disconnect / Reauthorize</a></li>
+          <li class="sub-item"><a href="billing.html#radius-test">7.8. Тестирование (radtest)</a></li>
+          <li class="sub-item"><a href="billing.html#radius-troubleshooting">7.9. Диагностика</a></li>
+          <li class="sub-item"><a href="billing.html#radius-performance">7.10. Производительность</a></li>
           <li><a href="billing.html#backup-system">8. Резервное копирование</a></li>
           <li><a href="billing.html#reports">9. Отчёты</a></li>
           <li class="sub-item"><a href="billing.html#audit">9.1. Аудит</a></li>
@@ -3133,31 +3146,51 @@ docker restart app-freeradius-1</code></pre>
 
   <!-- ===== 7. FreeRADIUS ===== -->
   <h2 id="freeradius">7. FreeRADIUS / RADIUS</h2>
-  <p>СмИТ Биллинг 1.6 включает встроенный сервер FreeRADIUS для авторизации и аккаунтинга абонентов интернета, VoIP и IPTV. Сервис работает как отдельный Docker-контейнер в составе стека.</p>
+  <p>СмИТ Биллинг 1.6 включает встроенный сервер <strong>FreeRADIUS 3.2.3</strong> для авторизации и аккаунтинга абонентов интернета, VoIP и IPTV. Сервис работает как отдельный Docker-контейнер <code>freeradius</code> в составе стека и поддерживает <strong>6 типов NAS-схем</strong> (Mikrotik с разными моделями биллинга, Redback/Ericsson, Carbon XGE, common_ssh).</p>
+
   <div class="section-toc">
   <details open>
     <summary><strong>Содержание раздела</strong></summary>
     <ul>
-    <li><a href="#radius-arch">8.1. Архитектура</a></li>
-    <li><a href="#radius-auth">8.2. Авторизация</a></li>
-    <li><a href="#radius-accounting">8.3. Аккаунтинг</a></li>
-    <li><a href="#radius-clients">8.4. Клиенты (NAS)</a></li>
-    <li><a href="#radius-test">8.5. Тестирование</a></li>
+    <li><a href="#radius-arch">7.1. Архитектура</a></li>
+    <li><a href="#radius-auth">7.2. Авторизация</a></li>
+    <li><a href="#radius-accounting">7.3. Аккаунтинг</a></li>
+    <li><a href="#radius-clients">7.4. Клиенты (NAS)</a></li>
+    <li><a href="#radius-vendors">7.5. Подключение оборудования по вендорам</a>
+      <ul>
+        <li><a href="#radius-mikrotik">— Mikrotik (PPPoE / IP / Queue)</a></li>
+        <li><a href="#radius-redback">— Redback / Ericsson SmartEdge</a></li>
+        <li><a href="#radius-cisco">— Cisco IOS / IOS-XR</a></li>
+        <li><a href="#radius-carbon">— Carbon XGE Router</a></li>
+      </ul>
+    </li>
+    <li><a href="#radius-ip-allocation">7.6. Назначение IP-адресов и chain pools</a></li>
+    <li><a href="#radius-coa">7.7. CoA Disconnect и Reauthorize</a></li>
+    <li><a href="#radius-test">7.8. Тестирование (radtest)</a></li>
+    <li><a href="#radius-troubleshooting">7.9. Диагностика типичных проблем</a>
+      <ul>
+        <li><a href="#radius-trouble-reject">— Access-Reject (неверные учётные данные)</a></li>
+        <li><a href="#radius-trouble-no-reply">— Нет ответа от сервера (timeout)</a></li>
+        <li><a href="#radius-trouble-no-accounting">— Сессия в Мониторе зависла</a></li>
+        <li><a href="#radius-trouble-rate-limit">— Скорость не применяется</a></li>
+        <li><a href="#radius-trouble-coa-fail">— CoA Disconnect не отключает</a></li>
+      </ul>
+    </li>
+    <li><a href="#radius-performance">7.10. Производительность и масштабирование</a></li>
     </ul>
   </details>
   </div>
 
-
-  <h3 id="radius-arch">8.1. Архитектура</h3>
+  <h3 id="radius-arch">7.1. Архитектура</h3>
   <p>Контейнер <code>freeradius</code> запускается на основе образа FreeRADIUS 3.2.3 с поддержкой <code>rlm_python3</code>.</p>
 
   <h4>Порты (UDP)</h4>
   <table>
-    <thead><tr><th>Порты</th><th>Сервис</th></tr></thead>
+    <thead><tr><th>Порты</th><th>Сервис</th><th>Сценарий</th></tr></thead>
     <tbody>
-      <tr><td>1812 / 1813</td><td>Интернет (Auth / Accounting)</td></tr>
-      <tr><td>2812 / 2813</td><td>VoIP (Auth / Accounting)</td></tr>
-      <tr><td>6812 / 6813</td><td>IPTV (Auth / Accounting)</td></tr>
+      <tr><td>1812 / 1813</td><td>Интернет (Auth / Accounting)</td><td>Основной — для NAS, обслуживающих интернет-абонентов</td></tr>
+      <tr><td>2812 / 2813</td><td>VoIP (Auth / Accounting)</td><td>SoftSwitch / SBC, авторизация SIP-клиентов</td></tr>
+      <tr><td>6812 / 6813</td><td>IPTV (Auth / Accounting)</td><td>STB middleware (TVIP, LFStream)</td></tr>
     </tbody>
   </table>
 
@@ -3170,55 +3203,56 @@ docker restart app-freeradius-1</code></pre>
   </ul>
 
   <div class="info-box">
-    <strong>Важно:</strong> В FreeRADIUS 3.x допускается только <strong>один</strong> модуль <code>python3</code>. Не создавайте отдельные модули <code>python3_voip</code>, <code>python3_iptv</code> — это приведёт к ошибке.
+    <strong>Важно:</strong> В FreeRADIUS 3.x допускается только <strong>один</strong> модуль <code>python3</code>. Не создавайте отдельные модули <code>python3_voip</code>, <code>python3_iptv</code> — это приведёт к ошибке загрузки. Маршрутизация по сервису решается атрибутом <code>Tmp-String-0</code>, который выставляется в <code>sites-enabled/internet</code>, <code>sites-enabled/voip</code>, <code>sites-enabled/iptv</code>.
   </div>
 
-  <h4>Исправление GIL</h4>
-  <p>FreeRADIUS пропатчен для работы в однопоточном режиме (<code>start_servers=1, max_servers=1</code>), что предотвращает краш с ошибкой <code>drop_gil</code> при использовании rlm_python3.</p>
+  <h4>GIL fix — single-threaded режим</h4>
+  <p>FreeRADIUS пропатчен для работы в однопоточном режиме (<code>start_servers=1, max_servers=1</code>) — без этого Python GIL приводит к крашу с ошибкой <code>drop_gil</code> при использовании <code>rlm_python3</code>. См. также <a href="#radius-performance">§ 7.10 Производительность</a>.</p>
 
-  <h3 id="radius-auth">8.2. Авторизация</h3>
+  <h3 id="radius-auth">7.2. Авторизация</h3>
   <p>Функция <code>internet.py:authorize()</code> выполняется при каждом запросе авторизации:</p>
   <ol>
     <li>Ищет пользователя в таблице <code>Users</code> по полю <code>LOGIN</code></li>
-    <li>Устанавливает атрибут <code>Cleartext-Password</code> для проверки пароля</li>
-    <li>Устанавливает <code>Framed-IP-Address</code> из IP-плана абонента</li>
-    <li>Применяет параметры из <code>NasRadiusParams</code> (специфичные для оборудования)</li>
-    <li>Применяет параметры из <code>TarifRadiusParams</code> (ограничения тарифа: скорость, CoS)</li>
+    <li>Проверяет блокировки (<code>AbonentsBlock</code>) — отказ если активна <code>b_negbal</code> или <code>b_admin</code></li>
+    <li>Устанавливает <code>Cleartext-Password</code> = <code>Users.PSW</code> (FreeRADIUS сравнивает с пришедшим)</li>
+    <li>Устанавливает <code>Framed-IP-Address</code> из <code>Users.ip</code> или авто-аллокацией из <a href="#radius-ip-allocation">IP-пула</a></li>
+    <li>Применяет параметры из <code>NasRadiusParams</code> (специфичные для оборудования: <code>Filter-Id</code>, <code>Mikrotik-Address-List</code>, <code>Framed-Pool</code>)</li>
+    <li>Применяет параметры из <code>TarifRadiusParams</code> (ограничения тарифа: <code>Mikrotik-Rate-Limit</code> и др.)</li>
   </ol>
 
   <h4>Django-инициализация</h4>
-  <p>При старте FreeRADIUS функция <code>internet.py:_setup_django()</code> инициализирует Django ORM. Файл лога <code>/var/log/django/error.log</code> создаётся до вызова <code>django.setup()</code> — FreeRADIUS работает от пользователя <code>freerad</code>.</p>
+  <p>При старте FreeRADIUS функция <code>internet.py:_setup_django()</code> инициализирует Django ORM. Файл лога <code>/var/log/django/error.log</code> создаётся до вызова <code>django.setup()</code> — FreeRADIUS работает от пользователя <code>freerad</code>, и без preset chmod 666 файл не сможет открыться на запись.</p>
 
-  <h3 id="radius-accounting">8.3. Аккаунтинг</h3>
-    <div class="section-toc">
-    <details open>
-      <summary><strong>Содержание раздела</strong></summary>
-      <ul>
-      <li><a href="#radius-sessions-recovery">Recovery missed Accounting-Start</a></li>
-      <li><a href="#cleanup-stale-sessions">Авто-закрытие зависших сессий</a></li>
-      <li><a href="#radius-disconnect">Сброс RADIUS-сессий из админки</a></li>
-      </ul>
-    </details>
-    </div>
+  <h3 id="radius-accounting">7.3. Аккаунтинг</h3>
+  <div class="section-toc">
+  <details open>
+    <summary><strong>Содержание подраздела</strong></summary>
+    <ul>
+    <li><a href="#radius-sessions-recovery">Recovery missed Accounting-Start</a></li>
+    <li><a href="#cleanup-stale-sessions">Авто-закрытие зависших сессий</a></li>
+    <li><a href="#radius-disconnect">Сброс RADIUS-сессий из админки</a></li>
+    </ul>
+  </details>
+  </div>
 
   <p>Функция <code>internet.py:accounting()</code> обрабатывает пакеты Start / Interim-Update / Stop:</p>
   <table>
     <thead><tr><th>Тип пакета</th><th>Действие</th></tr></thead>
     <tbody>
       <tr><td>Start</td><td>Создаёт запись сессии в <code>USERS_RADIUSAUTH</code> (<code>logged=true</code>)</td></tr>
-      <tr><td>Interim-Update</td><td>Обновляет счётчики трафика (<code>octets</code>)</td></tr>
+      <tr><td>Interim-Update</td><td>Обновляет счётчики трафика (<code>octets</code>) и <code>UPDATE_TIME</code></td></tr>
       <tr><td>Stop</td><td>Закрывает сессию, фиксирует итоговый трафик и время</td></tr>
     </tbody>
   </table>
   <p>После обработки аккаунтинга отправляется Celery-задача <code>update_nas_stats</code> для обновления статистики NAS.</p>
 
   <h4 id="radius-sessions-recovery">Recovery missed Accounting-Start</h4>
-  <p>Если NAS шлёт только <code>Interim-Update</code> без предшествующего <code>Accounting-Start</code> (типичная ситуация при перезапуске биллинга или потере UDP-пакета), <code>_radius_sessions_update()</code> в <code>radius_python/internet.py</code> отрабатывает следующим образом:</p>
+  <p>Если NAS шлёт только <code>Interim-Update</code> без предшествующего <code>Accounting-Start</code> (типичная ситуация при перезапуске биллинга или потере UDP-пакета), <code>_radius_sessions_update()</code> в <code>radius_python/internet.py</code> отрабатывает так:</p>
   <ol>
     <li>Пытается обновить <code>UPDATE_TIME</code> в <code>RADIUS_SESSIONS</code> по паре <code>(USER_ID, ACCT_SESSION_ID)</code>.</li>
     <li>Если <code>rowcount=0</code> (записи нет) — закрывает все осиротевшие открытые сессии этого пользователя c <code>END_REASON='Recovered: missed Accounting-Start'</code> и создаёт новую запись через <code>_radius_sessions_start()</code>.</li>
   </ol>
-  <p>Без этого корректирования старая запись от прошлого подключения висела в <code>RADIUS_SESSIONS</code> без <code>END_TIME</code> неделями, а UI «Монитор сессий» показывал устаревшие даты со статусом «Online».</p>
+  <p>Без этого старая запись от прошлого подключения висела в <code>RADIUS_SESSIONS</code> без <code>END_TIME</code> неделями, а UI «Монитор сессий» показывал устаревшие даты со статусом «Online».</p>
 
   <h4 id="cleanup-stale-sessions">Авто-закрытие зависших сессий</h4>
   <p>Celery-задача <code>cleanup_stale_sessions</code> (запускается ежечасно) выполняет три SQL-запроса:</p>
@@ -3232,36 +3266,159 @@ docker restart app-freeradius-1</code></pre>
   <p>Кнопка <i class="fas fa-power-off"></i> в шапке карточки абонента (<code>POST /admin/nas_api/abonent-disconnect/&lt;abonent_id&gt;/</code>):</p>
   <ol>
     <li>Шлёт CoA Disconnect-Request на NAS каждой учётной записи (<code>NasController.disconnect_user</code>).</li>
-    <li>Если у Users.nas стоит виртуальный <code>127.0.0.1</code> (FreeRADIUS, не реальный роутер) — пропускает основную ветку и идёт в fallback <code>_coa_disconnect_by_radiusauth</code>, который берёт реальный NAS_IP из последней открытой <code>RADIUS_SESSIONS</code> (там колонка заполняется из Accounting-пакета).</li>
+    <li>Если у <code>Users.nas</code> стоит виртуальный <code>127.0.0.1</code> (FreeRADIUS, не реальный роутер) — пропускает основную ветку и идёт в fallback <code>_coa_disconnect_by_radiusauth</code>, который берёт реальный <code>NAS_IP</code> из последней открытой <code>RADIUS_SESSIONS</code>.</li>
     <li>Независимо от ответа NAS приводит БД в офлайн: <code>Users.LOGGED=false</code>, <code>USERS_RADIUSAUTH.LOGGED=0</code>, <code>RADIUS_SESSIONS.END_TIME=now()</code> с <code>END_REASON='Admin reset'</code>.</li>
   </ol>
   <p>UI «Монитор сессий» сразу показывает offline даже если CoA не дошёл до NAS. Когда NAS пришлёт следующий Accounting-пакет (новая сессия с другим <code>ACCT_SESSION_ID</code>) — recovery автоматически создаст новую открытую запись.</p>
-  <p>Бейдж <span class="badge bg-success">Online</span> в Мониторе сессий ставится только при совпадении <code>RADIUS_SESSIONS.acct_session_id</code> с <code>USERS_RADIUSAUTH.acct_session_id</code> и свежем <code>RADIUS_UPDATE</code> (&lt; 15 минут). Сортировка списка — по <code>UPDATE_TIME DESC</code> (свежие активные сверху).</p>
+  <p>Бейдж <span class="badge bg-success">Online</span> в Мониторе сессий ставится только при совпадении <code>RADIUS_SESSIONS.acct_session_id</code> с <code>USERS_RADIUSAUTH.acct_session_id</code> и свежем <code>RADIUS_UPDATE</code> (&lt; 15 минут). Сортировка списка — по <code>UPDATE_TIME DESC</code>.</p>
 
-  <h3 id="radius-clients">8.4. Клиенты (NAS)</h3>
-  <p>Список RADIUS-клиентов генерируется автоматически при старте контейнера скриптом <code>docker/freeradius/entrypoint.sh</code> из таблицы <code>nas</code> базы данных биллинга.</p>
+  <h3 id="radius-clients">7.4. Клиенты (NAS)</h3>
+  <p>Список RADIUS-клиентов генерируется автоматически при старте контейнера скриптом <code>docker/freeradius/entrypoint.sh</code> из таблицы <code>nas</code>. После изменений в админке (<strong>Оборудование → NAS</strong>) нужно перезапустить контейнер: <code>docker compose restart freeradius</code> (или кнопка «Перезапустить RADIUS» в списке NAS).</p>
   <table>
-    <thead><tr><th>Параметр</th><th>Значение</th></tr></thead>
+    <thead><tr><th>Параметр</th><th>Значение по умолчанию</th></tr></thead>
     <tbody>
-      <tr><td>Секрет всех NAS</td><td><code>smitsecretkey</code></td></tr>
-      <tr><td>Wildcard-клиент</td><td><code>0.0.0.0/0</code>, секрет <code>smitsecretkey</code></td></tr>
-      <tr><td>Localhost</td><td><code>127.0.0.1</code>, секрет <code>testing123</code></td></tr>
+      <tr><td>Секрет всех NAS</td><td><code>smitsecretkey</code> (поле <code>nas.radius_secret</code>)</td></tr>
+      <tr><td>Wildcard-клиент</td><td><code>0.0.0.0/0</code>, секрет <code>smitsecretkey</code> (для тестов)</td></tr>
+      <tr><td>Localhost</td><td><code>127.0.0.1</code>, секрет <code>testing123</code> (для radtest)</td></tr>
     </tbody>
   </table>
-  <p>Не-ASCII символы в именах NAS автоматически удаляются при генерации <code>clients.conf</code>.</p>
+  <p>Не-ASCII символы в именах NAS автоматически удаляются при генерации <code>clients.conf</code> — без этого FreeRADIUS падает с ошибкой парсинга.</p>
 
   <h4>Модели Django</h4>
-  <p>Связанные модели (без миграций, managed=False):</p>
+  <p>Связанные модели (без миграций, <code>managed=False</code>):</p>
   <ul>
-    <li><code>UsersRadiusauth</code> — таблица <code>USERS_RADIUSAUTH</code> (5500+ записей)</li>
-    <li><code>NasRadiusParams</code> — параметры RADIUS для каждого NAS</li>
-    <li><code>TarifRadiusParams</code> — ограничения скорости/трафика по тарифу</li>
+    <li><code>UsersRadiusauth</code> (таблица <code>USERS_RADIUSAUTH</code>) — текущая сессия пользователя</li>
+    <li><code>NasRadiusParams</code> — RADIUS-атрибуты для каждого NAS (<code>Filter-Id</code>, <code>Framed-Pool</code> и др.)</li>
+    <li><code>TarifRadiusParams</code> — ограничения скорости/трафика по тарифу (<code>Mikrotik-Rate-Limit</code> и др.)</li>
+    <li><code>RadiusSessions</code> (таблица <code>RADIUS_SESSIONS</code>) — историческая запись сессий</li>
   </ul>
-  <p>Все три модели находятся в <code>billing/models/stubs.py</code>.</p>
+  <p>Все четыре модели в <code>billing/models/stubs.py</code>.</p>
 
-  <h3 id="radius-test">8.5. Тестирование</h3>
+  <h3 id="radius-vendors">7.5. Подключение оборудования по вендорам</h3>
+  <p>Биллинг поддерживает 6 типов NAS-схем (модели <code>NasType</code>). Тип задаётся в админке <strong>Оборудование → NAS → редактирование</strong> в поле <code>nas_type</code>.</p>
+  <table>
+    <thead><tr><th>Тип</th><th>Назначение</th></tr></thead>
+    <tbody>
+      <tr><td><code>mikrotik6</code></td><td>Mikrotik RouterOS 6.x/7.x — современная схема, рекомендуется</td></tr>
+      <tr><td><code>Mikrotik + IP + Queue Simple</code></td><td>Mikrotik IPoE с шейпером Simple Queue (legacy)</td></tr>
+      <tr><td><code>Mikrotik + PPPoE + Simple Queue</code></td><td>Mikrotik PPPoE-сервер с per-user шейпером</td></tr>
+      <tr><td><code>Redback + IPoE + Radius</code></td><td>Ericsson SmartEdge / Redback SmartEdge — RADIUS+IPoE</td></tr>
+      <tr><td><code>Carbon XGE Router</code></td><td>Внутренний роутер Carbon XGE (legacy)</td></tr>
+      <tr><td><code>common_ssh</code></td><td>Виртуальный NAS без RADIUS (управление через SSH-команды)</td></tr>
+    </tbody>
+  </table>
+
+  <h4 id="radius-mikrotik">Mikrotik (RouterOS 6/7)</h4>
+  <p>Самый частый сценарий. Поддерживает три модели биллинга: PPPoE, IPoE+Queue, IPoE+Hotspot.</p>
+
+  <p><strong>Шаги настройки на Mikrotik:</strong></p>
+  <pre><code># 1. Добавить RADIUS-сервер (IP биллинг-сервера)
+/radius add address=&lt;BILLING_IP&gt; secret=smitsecretkey service=ppp,login \
+    timeout=3s authentication-port=1812 accounting-port=1813
+
+# 2. Включить incoming для CoA Disconnect (порт 3799)
+/radius incoming set accept=yes port=3799
+
+# 3. Для PPPoE-схемы — указать использование RADIUS в PPP profile
+/ppp aaa set use-radius=yes interim-update=10m
+/ppp profile set default-encryption use-mpls=yes
+
+# 4. Для IPoE+Queue — DHCP/HotSpot с use-radius
+/ip hotspot profile set default use-radius=yes</code></pre>
+
+  <p><strong>RADIUS-атрибуты, которые шлёт биллинг (из <code>TarifRadiusParams</code>):</strong></p>
+  <table>
+    <thead><tr><th>Атрибут</th><th>Пример</th><th>Эффект на Mikrotik</th></tr></thead>
+    <tbody>
+      <tr><td><code>Mikrotik-Rate-Limit</code></td><td><code>10M/100M</code></td><td>Скорость up/down</td></tr>
+      <tr><td><code>Mikrotik-Rate-Limit</code> (расширенный)</td><td><code>10M/100M 10M/100M 0/0 8/8</code></td><td>up/down burst-up/burst-down threshold-up/down priority/limit-at</td></tr>
+      <tr><td><code>Filter-Id</code></td><td><code>vip-class</code></td><td>Применить firewall mangle-цепочку</td></tr>
+      <tr><td><code>Mikrotik-Address-List</code></td><td><code>customers</code></td><td>Добавить IP в address-list для firewall</td></tr>
+      <tr><td><code>Framed-IP-Address</code></td><td><code>10.20.30.40</code></td><td>Закрепить IP за абонентом</td></tr>
+      <tr><td><code>Framed-Pool</code></td><td><code>vip-pool</code></td><td>Выдать IP из конкретного пула на Mikrotik</td></tr>
+    </tbody>
+  </table>
+
+  <p><strong>Mikrotik 6 vs Mikrotik 7</strong>: с RouterOS 7 формат <code>Mikrotik-Rate-Limit</code> не изменился. На RouterOS 7 необходимо включить <code>/system package update install routeros-arm</code> до 7.10+ для корректной работы Acct-Interim-Update в IPoE-режиме.</p>
+
+  <h4 id="radius-redback">Redback / Ericsson SmartEdge (схема <code>Redback + IPoE + Radius</code>)</h4>
+  <p>Используется в крупных операторах для агрегации тысяч PPPoE/IPoE-сессий. Биллинг поддерживает чтение Acct-пакетов от Redback и применение Vendor-Specific Attributes (VSA) для управления QoS-профилями.</p>
+
+  <pre><code># Конфигурация на SmartEdge
+context local
+ radius accounting algorithm round-robin
+ radius accounting server &lt;BILLING_IP&gt; encrypted-key smitsecretkey port 1813
+ radius authentication algorithm round-robin
+ radius authentication server &lt;BILLING_IP&gt; encrypted-key smitsecretkey port 1812
+ radius dynamic-authorization
+ radius dynamic-authorization server-key smitsecretkey
+ radius dynamic-authorization client &lt;BILLING_IP&gt;</code></pre>
+
+  <p><strong>Особенности</strong>:</p>
+  <ul>
+    <li>SmartEdge не поддерживает <code>Mikrotik-Rate-Limit</code> — нужен VSA <code>Redback-Service-Profile</code> или статический QoS-профиль на NAS, выбираемый по <code>Class</code>-атрибуту.</li>
+    <li>CoA Disconnect отправляется по протоколу RFC 3576 на порт 3799.</li>
+    <li>Лимит на сессию устанавливается через NAS-конфиг, не через RADIUS-атрибут.</li>
+  </ul>
+
+  <h4 id="radius-cisco">Cisco IOS / IOS-XR</h4>
+  <p>Cisco не поддерживается «из коробки» в виде отдельного NasType, но работает через generic-схему. Использует RFC-стандартные атрибуты:</p>
+  <ul>
+    <li><code>Cisco-AVPair = "subscriber:traffic-class=10000000"</code> — bandwidth (bits/sec)</li>
+    <li><code>Cisco-AVPair = "ip:addr-pool=customers"</code> — выдать IP из пула</li>
+    <li><code>Service-Type = Framed-User</code></li>
+  </ul>
+
+  <p>Для интеграции с Cisco BNG (ASR9000 / IOS-XR) добавить в <code>NasRadiusParams</code> для NAS:</p>
+  <pre><code>attribute = "Cisco-AVPair"
+op = "+="
+thevalue = "subscriber:traffic-class=&lt;rate&gt;"</code></pre>
+
+  <p>Если в продакшене активно используется Cisco — стоит добавить отдельный <code>NasType</code> Cisco-IPoE с готовым шейпом атрибутов в <code>radius_python/internet.py:_apply_nas_params()</code>.</p>
+
+  <h4 id="radius-carbon">Carbon XGE Router</h4>
+  <p>Legacy-схема внутреннего роутера Carbon XGE. Поддерживается для совместимости со старыми инсталляциями. Не рекомендуется для новых внедрений — используйте Mikrotik.</p>
+
+  <h3 id="radius-ip-allocation">7.6. Назначение IP-адресов и chain pools</h3>
+  <p>Когда абонент авторизуется и у него <code>Users.ip</code> пустой, биллинг выдаёт IP автоматически через сервис <code>billing.services.ip_allocation</code>:</p>
+  <ol>
+    <li>Определяет какие IP-пулы доступны для NAS — поля <code>nas.pull</code> (основной), <code>nas.nat_pull</code>, <code>nas.white_pull</code>, <code>nas.hotspot_pull</code>.</li>
+    <li>Перебирает пулы по очереди (<a href="#ip-pools">chain pools</a> через поле <code>ip_pull.next_pull_id</code>) — ищет первый свободный IP.</li>
+    <li>Если все пулы исчерпаны — пробует <strong>fallback-пул</strong> (<code>VpnConst.FALLBACK_IP_POOL_ID</code>) и <strong>reclaim</strong> (отбор IP у offline-абонентов на > N дней через <code>VpnConst.IP_RECLAIM_OFFLINE_DAYS</code>).</li>
+    <li>Записывает выбранный IP в <code>Users.ip</code> + <code>Users.pull_id</code> в одной транзакции.</li>
+    <li>FreeRADIUS отправляет <code>Framed-IP-Address</code> = выданный IP в Access-Accept.</li>
+  </ol>
+
+  <div class="info-box">
+    <strong>Chain pools</strong> (build 440+): один NAS может обслуживать несколько IP-пулов через цепочку <code>NEXT_PULL_ID</code>. Например, JOY-1 → JOY-2 → JOY-3 — биллинг последовательно выдаёт IP из всей цепочки. См. список пулов в админке <strong>Справочники → Пулы IP</strong> с виджетом «Σ по цепочке».
+  </div>
+
+  <p><strong>Critical fix (build 444)</strong>: до этого билда `collect_used_ips` через ORM <code>exclude(ip__in=[None, '', '0.0.0.0'])</code> отсекал ~80% занятых IP из-за SQL-семантики <code>NOT IN NULL</code>. После фикса используется raw SQL <code>SELECT host("IP") FROM users WHERE "IP" IS NOT NULL</code>. См. <code>billing/services/ip_allocation.py:collect_used_ips()</code>.</p>
+
+  <h3 id="radius-coa">7.7. CoA Disconnect и Reauthorize</h3>
+  <p>FreeRADIUS поддерживает RFC 3576 (Dynamic Authorization Extensions) для CoA Disconnect-Request. Биллинг шлёт CoA через <code>radclient</code> из контейнера web (не freeradius — там нет radclient в production-режиме):</p>
+  <pre><code># billing/services/nas_control.py
+echo "User-Name = abc123, Acct-Session-Id = 0xdeadbeef" | \
+  radclient -x &lt;NAS_IP&gt;:&lt;COA_PORT&gt; disconnect &lt;COA_PSW&gt;</code></pre>
+
+  <p><strong>Параметры NAS</strong> (<code>nas.coa_port</code> + <code>nas.coa_psw</code>):</p>
+  <table>
+    <thead><tr><th>Вендор</th><th>CoA port</th><th>Особенности</th></tr></thead>
+    <tbody>
+      <tr><td>Mikrotik</td><td>3799</td><td>Включить <code>/radius incoming set accept=yes</code></td></tr>
+      <tr><td>Cisco</td><td>1700 / 3799</td><td><code>aaa server radius dynamic-author</code></td></tr>
+      <tr><td>Ericsson SmartEdge</td><td>3799</td><td><code>radius dynamic-authorization</code> в context</td></tr>
+      <tr><td>Juniper</td><td>3799</td><td><code>access dynamic-requests-server</code></td></tr>
+    </tbody>
+  </table>
+
+  <p><strong>CoA timeout</strong> (build 394): значение <code>VpnConst.COA_TIMEOUT_SECONDS</code> (default 10 сек) применяется ко всем <code>radclient</code>-вызовам. Если NAS не отвечает за 10 секунд — биллинг считает CoA неуспешным и фолбэкает к синхронизации БД (<code>Users.LOGGED=false</code> локально).</p>
+
+  <p><strong>Broadcast Disconnect</strong> (build 447): кнопка отключения в админке шлёт CoA параллельно на ВСЕ enabled NAS через <code>ThreadPoolExecutor</code> (max_workers=20, timeout=10s). Это нужно когда абонент мог подключиться к разным NAS (например, мобильность между точками), и старая сессия висит на одном из них.</p>
+
+  <h3 id="radius-test">7.8. Тестирование (radtest)</h3>
   <p>Проверка авторизации из Docker-контейнера FreeRADIUS:</p>
-  <pre><code># Войти в контейнер
+  <pre><code># Войти в контейнер freeradius
 docker compose exec freeradius bash
 
 # Тестовый запрос авторизации
@@ -3269,8 +3426,105 @@ radtest &lt;LOGIN&gt; &lt;PASSWORD&gt; 127.0.0.1 0 testing123
 
 # Пример успешного ответа:
 # Received Access-Accept Id 0 from 127.0.0.1:1812
-# Framed-IP-Address = 10.0.0.100</code></pre>
-  <p>Лог ошибок Django внутри контейнера: <code>/var/log/django/error.log</code></p>
+# Framed-IP-Address = 10.0.0.100
+# Mikrotik-Rate-Limit = "10M/100M"</code></pre>
+
+  <p><strong>Симуляция пакета аккаунтинга:</strong></p>
+  <pre><code># Симуляция Accounting-Start
+echo "User-Name = abc, Acct-Status-Type = Start, \
+  Acct-Session-Id = 0x1234, NAS-IP-Address = 10.10.10.10, \
+  Framed-IP-Address = 10.0.0.100" | radclient -x 127.0.0.1 acct testing123</code></pre>
+
+  <p><strong>Тест из админки</strong> (без захода в контейнер): кнопка <i class="fas fa-vial"></i> «Тест авторизации» в шапке карточки учётки (build 374). Использует <code>pyrad</code> с прямым RADIUS-Access-Request к <code>freeradius:1812</code> через docker-network. Возвращает атрибуты + decode (Mikrotik-Rate-Limit, Framed-IP-Address и др.).</p>
+
+  <p>Лог ошибок Django внутри контейнера: <code>/var/log/django/error.log</code>. Логи RADIUS-пакетов: <code>/var/log/django/freeradius.log</code> (включён <code>auth = yes</code>, <code>auth_badpass = yes</code>).</p>
+
+  <h3 id="radius-troubleshooting">7.9. Диагностика типичных проблем</h3>
+
+  <h4 id="radius-trouble-reject">Access-Reject (неверные учётные данные)</h4>
+  <p><strong>Симптом</strong>: NAS получает <code>Access-Reject</code>, абонент не может подключиться. На Mikrotik в логах: <code>radius reject &lt;login&gt;</code>.</p>
+  <p><strong>Что проверить</strong>:</p>
+  <ol>
+    <li><strong>Логин и пароль</strong>: <code>radtest &lt;login&gt; &lt;password&gt; 127.0.0.1 0 testing123</code> внутри контейнера. Если ответ <code>Reject</code> — проблема в БД, не в сети.</li>
+    <li><strong>Активен ли абонент</strong>: <code>SELECT enabled, deleted FROM users WHERE login='&lt;login&gt;';</code> — должно быть <code>true / false</code>.</li>
+    <li><strong>Блокировки</strong>: <code>SELECT * FROM "ABONENTS_BLOCK" WHERE abonent_id=&lt;id&gt; AND end_time IS NULL;</code> — <code>b_negbal=true</code> или <code>b_admin=true</code> блокируют RADIUS.</li>
+    <li><strong>Лог Django</strong>: <code>tail -50 /var/log/django/error.log | grep authorize</code> — покажет в чём биллинг отказывает.</li>
+    <li><strong>Случай для PPPoE</strong>: убедиться что в RouterOS <code>/ppp profile</code> имеет <code>use-radius=yes</code>.</li>
+  </ol>
+
+  <h4 id="radius-trouble-no-reply">Нет ответа от сервера (timeout)</h4>
+  <p><strong>Симптом</strong>: NAS пишет <code>radius timeout</code>, абонент висит в авторизации.</p>
+  <p><strong>Что проверить</strong>:</p>
+  <ol>
+    <li><strong>Сетевая связность</strong>: с NAS — <code>ping &lt;BILLING_IP&gt;</code> + <code>echo &gt; /dev/udp/&lt;BILLING_IP&gt;/1812</code>.</li>
+    <li><strong>Контейнер запущен</strong>: <code>docker compose ps freeradius</code> — статус <code>healthy</code>. Логи: <code>docker compose logs --tail=50 freeradius</code>.</li>
+    <li><strong>Firewall на хосте</strong>: <code>ufw status | grep 1812</code>. Должны быть открыты <code>1812/udp 1813/udp 3799/udp</code>.</li>
+    <li><strong>NAT</strong>: если NAS за NAT — RADIUS не работает корректно. Используйте dedicated подключение или GRE-туннель.</li>
+    <li><strong>Wildcard клиент</strong>: проверить что в БД нет несуществующего IP в поле <code>nas.ip</code> — в <code>clients.conf</code> попадёт неверный shared secret.</li>
+  </ol>
+
+  <h4 id="radius-trouble-no-accounting">Сессия в Мониторе зависла (LOGGED=true, давно не обновляется)</h4>
+  <p><strong>Симптом</strong>: в админке «Монитор сессий» видна сессия со статусом «Online», но <code>RADIUS_UPDATE</code> старее 1 часа.</p>
+  <p><strong>Причины</strong>:</p>
+  <ol>
+    <li><strong>NAS не шлёт Acct-Interim-Update</strong>. Mikrotik: проверить <code>/ppp aaa get interim-update</code> — должно быть 10m или меньше.</li>
+    <li><strong>NAS перезагрузился</strong>, не отправил <code>Accounting-Stop</code>. Биллинг закроет сессию через час (<code>cleanup_stale_sessions</code>).</li>
+    <li><strong>Acct-Session-Time overflow</strong> (build 445): на Mikrotik после reboot счётчик иногда становится > 4.2 млрд. Биллинг clamp до <code>BIGINT_MAX</code>, но старые записи могут остаться. Лечится Celery-таской <code>cleanup_stale_sessions</code>.</li>
+  </ol>
+
+  <p><strong>Ручной сброс</strong>: кнопка <i class="fas fa-power-off"></i> в шапке карточки абонента (см. <a href="#radius-disconnect">§ 7.3</a>).</p>
+
+  <h4 id="radius-trouble-rate-limit">Скорость не применяется</h4>
+  <p><strong>Симптом</strong>: абонент подключился, но скорость не соответствует тарифу.</p>
+  <p><strong>Что проверить</strong>:</p>
+  <ol>
+    <li><strong>TarifRadiusParams для тарифа</strong>: <code>SELECT * FROM "TARIF_RADIUS_PARAMS" WHERE tarif_id=&lt;id&gt;;</code>. Должна быть строка с <code>attribute='Mikrotik-Rate-Limit'</code> и значением вида <code>10M/100M</code>.</li>
+    <li><strong>Атрибут реально шлётся</strong>: <code>radtest</code> с verbose (<code>-x</code>) покажет что в Access-Accept.</li>
+    <li><strong>Mikrotik принимает атрибут</strong>: <code>/log print where topics~"radius"</code> на роутере. Должна быть строка <code>received Mikrotik-Rate-Limit = 10M/100M</code>.</li>
+    <li><strong>Профиль PPPoE/IPoE имеет use-radius=yes</strong>: <code>/ppp profile print where name=default</code>.</li>
+    <li><strong>Имя атрибута</strong>: для RouterOS 7 — <code>Mikrotik-Rate-Limit</code>, не <code>Mikrotik-Recv-Limit</code> (старый формат RouterOS 5 не поддерживается).</li>
+  </ol>
+
+  <h4 id="radius-trouble-coa-fail">CoA Disconnect не отключает абонента</h4>
+  <p><strong>Симптом</strong>: оператор жмёт кнопку «Отсоединить», но абонент остаётся онлайн.</p>
+  <p><strong>Что проверить</strong>:</p>
+  <ol>
+    <li><strong>Включен ли CoA на NAS</strong>: Mikrotik — <code>/radius incoming print</code> должно быть <code>accept: yes</code>, port 3799.</li>
+    <li><strong>Правильный shared secret</strong>: <code>nas.coa_psw</code> в БД должен совпадать с тем что настроен на NAS.</li>
+    <li><strong>Сетевая доступность</strong>: с биллинг-сервера <code>echo &gt; /dev/udp/&lt;NAS_IP&gt;/3799</code>.</li>
+    <li><strong>Acct-Session-Id известен</strong>: <code>SELECT acct_session_id FROM "RADIUS_SESSIONS" WHERE user_id=&lt;id&gt; AND end_time IS NULL;</code> — поле должно быть заполнено.</li>
+    <li><strong>Реальный NAS IP</strong>: если у <code>Users.nas</code> стоит <code>127.0.0.1</code> (виртуальный) — биллинг автоматически берёт NAS_IP из <code>RADIUS_SESSIONS</code> (build 330+ fallback).</li>
+    <li><strong>Лог</strong>: <code>tail -100 /var/log/django/error.log | grep -i coa</code>.</li>
+  </ol>
+
+  <h3 id="radius-performance">7.10. Производительность и масштабирование</h3>
+
+  <h4>Single-threaded режим</h4>
+  <p>FreeRADIUS работает в <strong>один поток</strong> (<code>start_servers=1, max_servers=1</code>) из-за Python GIL. Это даёт ~500–1500 RADIUS-запросов в секунду на одном инстансе. Для большинства небольших операторов (до 10 000 онлайн-абонентов) этого хватает с запасом.</p>
+  <p>Если нагрузка выше — варианты:</p>
+  <ul>
+    <li><strong>Горизонтальное масштабирование</strong>: запустить несколько FreeRADIUS-контейнеров, балансировка через keepalived или HAProxy на UDP. Каждый контейнер читает из той же БД через Django ORM.</li>
+    <li><strong>Уменьшение Acct-Interim-Update</strong>: с 5 минут до 30 минут (<code>/ppp aaa set interim-update=30m</code>). Это снижает нагрузку в 6 раз ценой задержки счётчиков трафика.</li>
+    <li><strong>Кеширование на уровне Django</strong>: <code>NasRadiusParams</code> и <code>TarifRadiusParams</code> можно кешировать в Redis (хитов 99%+).</li>
+  </ul>
+
+  <h4>BigInt для Acct-Session-Time (build 445)</h4>
+  <p>Mikrotik после reboot иногда присылает <code>Acct-Session-Time</code> > <code>int4_max</code> (2.1 млрд). PostgreSQL колонка <code>RADIUS_SESSIONS.SESSION_TIME</code> переведена в <code>bigint</code> (миграция <code>0107_radius_sessions_session_time_bigint</code>) + clamp в <code>internet.py</code>. Без фикса — <code>integer out of range</code>, сессия не записывается, <code>Users.LOGGED</code> остаётся true (zombie).</p>
+
+  <h4>Async accounting (build 450)</h4>
+  <p>Запись в БД из <code>internet.py:accounting()</code> вынесена в Celery-таску. Это разгружает FreeRADIUS — он отвечает <code>Accounting-Response</code> сразу после получения пакета, а БД-операции идут параллельно. Concurrency воркера = 8 (не 16 — иначе LOCK-конфликты на <code>USERS_RADIUSAUTH</code>).</p>
+
+  <h4>Connection leak fix (build 452)</h4>
+  <p><strong>Critical</strong>: <code>CONN_MAX_AGE = 0</code> + <code>close_all()</code> в RADIUS-hooks → PostgreSQL-соединения снизились с 289 до 19. Нагрузка на postgres сократилась в 15 раз. Если на новом сервере наблюдаются 200+ idle connections — проверить эту настройку.</p>
+
+  <h4>Авто-очистка истории (build 453)</h4>
+  <p>Beat-таска <code>db-cleanup-daily</code> чистит:</p>
+  <ul>
+    <li><code>RADIUS_SESSIONS</code> старше N дней (<code>VpnConst.RADIUS_SESSIONS_RETENTION_DAYS</code>, default 90)</li>
+    <li><code>MSG_STACK</code> старше N дней (default 180)</li>
+    <li><code>AUDIT_OPERATIONS</code> старше N дней (default 365)</li>
+  </ul>
+  <p>Управление: <strong>Настройки → Очистка БД и сессий</strong> (<code>/admin/settings/db_cleanup/</code>).</p>
 
   <!-- ===== 8. Резервное копирование ===== -->
   <h2 id="backup-system">8. Резервное копирование</h2>
