@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 445)</title>
+  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 450)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 445)">
+  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 450)">
   <meta property="og:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/billing.html">
   <meta property="og:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
@@ -14,12 +14,12 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 445)">
+  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 450)">
   <meta name="twitter:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta name="twitter:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
   <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=445">
+  <link rel="stylesheet" href="../css/style.css?v=449">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.26.0/dist/tabler-icons.min.css">
   <link rel="stylesheet" href="../css/search.css?v=222">
@@ -201,7 +201,8 @@
           <li><a href="../pages/billing.html#reports">10. Отчёты</a></li>
           <li class="sub-item"><a href="../pages/billing.html#audit">10.1. Аудит</a></li>
           <li class="sub-item"><a href="../pages/billing.html#payment-log">10.2. Журнал платежей</a></li>
-          <li class="sub-item"><a href="../pages/billing.html#report-constructor">10.3. Конструктор</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#report-constructor">10.3. Библиотека отчётов</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#custom-reports-v449">&nbsp;&nbsp;↳ UX-доводка (build 449)</a></li>
           <li class="sub-item"><a href="../pages/billing.html#director-report">10.4. Панель директора</a></li>
           <li class="sub-item"><a href="../pages/billing.html#audit-report">10.5. По аудитам</a></li>
           <li class="sub-item"><a href="../pages/billing.html#dev-reports">10.6. Разработка и логи</a></li>
@@ -3821,7 +3822,11 @@ chmod +x restore.sh
     <ul>
     <li><a href="#audit">10.1. Аудит</a></li>
     <li><a href="#payment-log">10.2. Журнал платежей</a></li>
-    <li><a href="#report-constructor">10.3. Библиотека отчётов</a></li>
+    <li><a href="#report-constructor">10.3. Библиотека отчётов</a>
+        <ul style="margin:.25rem 0 .25rem 1rem">
+            <li><a href="#custom-reports-v449">10.3А. UX-доводка Sprint 1+2 (build 449)</a></li>
+        </ul>
+    </li>
     <li><a href="#director-report">10.4. Отчёт для директора</a></li>
     <li><a href="#audit-report">10.5. Формирование отчёта по аудитам</a></li>
     <li><a href="#dev-reports">10.6. Разработка и логи</a></li>
@@ -3984,6 +3989,85 @@ chmod +x restore.sh
 
   <h4>Отчёт «Действия сотрудника»</h4>
   <p>SQL-отчёт (ID=136, тип «Руководство») с параметрами: сотрудник (выпадающий список), диапазон дат. Объединяет данные из <code>login_history</code> (входы/выходы) и <code>AUDIT_OPERATIONS</code> (действия в системе). Столбцы: Дата/время, Сотрудник, ФИО, Событие, IP-адрес, Подробности.</p>
+
+  <h3 id="custom-reports-v449">10.3А. UX-доводка Библиотеки отчётов (build 449)</h3>
+  <p>В build 446–449 раздел <code>/admin/reports/AdminCustomReports/</code> прошёл полную UX-переработку по плану <em>2026-05-06_План_UX_Библиотека_отчётов.md</em>. Закрыты все 12 пунктов Sprint 1, плюс ключевые фичи Sprint 2 (CodeMirror, CRUD типов, toggle-switch, компактный layout).</p>
+
+  <h4 id="custom-reports-list">Список отчётов с цветными бейджами</h4>
+  <p>Каждый из 7 типов отчётов получил собственную иконку и цвет: 🛠 Техсервис (синий), 📈 Руководство (оранжевый), ⛑ Техподдержка (красный), 🎧 ЦОК (зелёный), 💰 Бухгалтерия (зелёный gradient), 📞 Телефония (серый), 🛡 ЦУС (тёмный). На вкладке конкретного типа колонка «Тип отчёта» автоматически скрывается — она избыточна, когда все строки одного типа.</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/reports_library_v449/reports_list_overview.png" alt="Список отчётов с цветными типами и sticky toolbar" class="screenshot">
+  <ul>
+    <li><strong>Sticky toolbar</strong> — поиск, ⭐ счётчик избранного, кнопки «Типы» и «Добавить отчёт» остаются видны при скролле</li>
+    <li><strong>Ctrl+K / Cmd+K</strong> фокусирует поиск; placeholder содержит подсказку</li>
+    <li><strong>Бейдж 🤳 ЛК</strong> — рядом с именем для отчётов с <code>allow_in_cabinet=True</code></li>
+    <li><strong>P0-фикс</strong>: клик по названию открывает компактную модалку (раньше вёл на full-form ChangeView с 167 полями)</li>
+    <li><strong>A11y</strong>: <code>aria-label/aria-pressed</code> на ⭐, <code>scope="col"</code> на <code>&lt;th&gt;</code>, <code>prefers-reduced-motion</code> убирает переходы и spinner-анимацию</li>
+  </ul>
+
+  <h4 id="custom-reports-modal">Модальное окно — компактный layout</h4>
+  <p>Модалка переработана: <code>modal-xl</code> + <code>modal-dialog-centered</code>, компактные <code>form-control-sm</code>, <code>py-2</code> в header/footer. Левая колонка теперь полностью занята контентом — название, описание, тип, toggle ЛК, развёрнутый блок <em>«Параметры в SQL»</em> с примерами 4 типов параметров. Правая колонка — только редактор и chip-список параметров. Без вертикальных пустот.</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/reports_library_v449/reports_modal_codemirror.png" alt="Модалка отчёта с CodeMirror и справкой слева" class="screenshot">
+  <ul>
+    <li><strong>CodeMirror 5</strong> с PostgreSQL-подсветкой синтаксиса (<code>text/x-pgsql</code>)</li>
+    <li><strong>Тёмная тема</strong> <code>material-darker</code> всегда — независимо от UI-темы</li>
+    <li><strong>Номера строк</strong> в gutter, <code>matchBrackets</code>, <code>styleActiveLine</code></li>
+    <li><strong>Перенос длинных строк</strong> (<code>lineWrapping: true</code>) — длинный SQL без горизонтального скролла</li>
+    <li><strong>Auto-height</strong>: <code>min-height: 220px</code>, <code>max-height: 60vh</code> — модалка не растягивается без причины</li>
+    <li><strong>Toggle-switch</strong> для «Разрешено выполнение в ЛК» — Bootstrap 5 pill (BS5 <code>.form-switch</code> + custom override в <code>theme-smit.css</code>)</li>
+    <li><strong>Hot keys</strong>: Ctrl+/ (toggle comment), Ctrl+F (find), Tab (indent 2 spaces)</li>
+  </ul>
+
+  <h4 id="custom-reports-params">Live-counter параметров и подсветка <code>:Param|type$</code></h4>
+  <p>Парсер по regex <code>/:([А-яЁёA-Za-z0-9_ ]+)\|(\w+)(\[[^\]]*\])?\$/g</code> в реальном времени распознаёт параметры в SQL и показывает их chip-списком под редактором. Счётчик в header'е блока «SQL-запрос» обновляется на каждом keystroke: «<em>40 строк · 2 парам.</em>». Параметры дополнительно подсвечиваются прямо в SQL через CodeMirror-overlay (жёлтый фон).</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/reports_library_v449/reports_modal_with_params.png" alt="Параметры SQL — chip-список и подсветка" class="screenshot">
+  <p>Распознаются 4 типа параметров:</p>
+  <ul>
+    <li><code>:Дата|date$</code> — date-picker</li>
+    <li><code>:Сумма|sum$</code> — число с десятичными</li>
+    <li><code>:Абонент|select[Abonents]$</code> — выпадающий список из FK-модели</li>
+    <li><code>:Месяц|choices[1^Январь|2^Февраль|3^Март]$</code> — фиксированный список <code>value^label</code></li>
+  </ul>
+
+  <h4 id="custom-reports-types-modal">Модалка управления типами отчётов</h4>
+  <p>Кнопка «🏷 Типы» в toolbar открывает модалку CRUD для справочника <code>AdminCustomReportsType</code>. Раньше управление типами требовало перехода на отдельную страницу <code>/admin/dictionary/AdminCustomReportsType/</code> — теперь всё inline.</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/reports_library_v449/reports_types_modal.png" alt="Модалка управления типами отчётов" class="screenshot">
+  <ul>
+    <li><strong>Поиск</strong> по типам с live-фильтром</li>
+    <li><strong>Колонка «Отчётов»</strong> — счётчик связанных отчётов для каждого типа (защита от случайного удаления популярных)</li>
+    <li><strong>Цветные бейджи</strong> те же что в основном списке — визуальная связь</li>
+    <li><strong>Inline-форма</strong> add/edit без перезагрузки страницы</li>
+    <li><strong>Защита от потери данных</strong>: при удалении типа отчёты не теряются — у них значение <code>report_type_id</code> сбрасывается на <code>NULL</code> (категория «не указан»)</li>
+    <li><strong>Sync с главной модалкой</strong>: после изменения типов <code>&lt;select&gt;</code> в модалке отчёта обновляется автоматически</li>
+  </ul>
+  <p>Endpoints (переиспользованы из <code>/admin/dictionary/AdminCustomReportsType/</code>):</p>
+  <ul>
+    <li><code>GET /admin/dictionary/report_type_json/</code> — список с <code>reports_count</code></li>
+    <li><code>GET/POST/DELETE /admin/dictionary/report_type_crud/[&lt;pk&gt;/]</code></li>
+  </ul>
+
+  <h4 id="custom-reports-confirm-delete">Confirm-модалка удаления (вместо native <code>confirm()</code>)</h4>
+  <p>Native JavaScript <code>confirm("Удалить отчёт?")</code> заменён на полноценную Bootstrap-модалку с красным заголовком, перечислением последствий и предупреждением для отчётов в ЛК.</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/reports_library_v449/reports_confirm_delete.png" alt="Confirm-модалка удаления отчёта" class="screenshot">
+  <ul>
+    <li>Имя отчёта выделено жирным в самом заголовке</li>
+    <li>Список последствий: «Отчёт будет удалён из библиотеки» / «История запусков сохранится»</li>
+    <li>Дополнительный warning «Будет отключён в личном кабинете абонента» — только для <code>allow_in_cabinet=True</code></li>
+    <li>Inline-обработчик ошибок (alert внутри модалки, без перезагрузки)</li>
+    <li>После успеха — AJAX-update строки в списке (зелёная вспышка) вместо <code>location.reload()</code></li>
+  </ul>
+
+  <h4 id="custom-reports-tech">Технические детали</h4>
+  <p><strong>Backend:</strong> <code>billing/urls.py</code> функция <code>custom_report_ajax</code> расширена — возвращает <code>report_type_name</code>, <code>lk_ids[]</code> (для бейджей в строках), <code>desc_map</code> и <code>fav_ids</code> в одном GET-запросе (без N+1).</p>
+  <p><strong>Frontend:</strong> CodeMirror 5.65.16 подгружается с CDN cdnjs.cloudflare.com (UMD-сборка, не требует npm). Темы <code>material-darker</code> + <code>eclipse</code>, моды <code>sql</code>, аддоны <code>matchbrackets</code>, <code>active-line</code>, <code>search</code>, <code>dialog</code>.</p>
+  <p><strong>CSS-override</strong> для toggle в <code>theme-smit.css</code>: блок <code>.form-switch .form-check-input[type="checkbox"]</code> побеждает существующее правило (которое форсировало 18×18 квадратный appearance:auto на всех чекбоксах) и восстанавливает BS5 pill-rendering.</p>
+  <p><strong>Файлы изменены:</strong></p>
+  <ul>
+    <li><code>billing/templates/reports_sql_list.html</code> — полная переработка (~700 строк)</li>
+    <li><code>billing/static/css/theme-smit.css</code> — toggle-switch override (~30 строк)</li>
+    <li><code>billing/urls.py</code> — расширение <code>custom_report_ajax</code></li>
+    <li><code>billing/version.py</code> — BUILD bump</li>
+  </ul>
+  <p><strong>Cache-bust:</strong> CSS/JS получают <code>?v=449</code> через <code>{{ SMIT_BUILD }}</code> в <code>base_adminlte.html</code>. После деплоя на testbill — <code>collectstatic</code> + <code>docker restart web</code>.</p>
 
   <h3 id="director-report">10.4. Отчёт для директора</h3>
   <p>Сводный отчёт с ключевыми KPI:</p>
@@ -4465,7 +4549,7 @@ chmod +x restore.sh
 
   <!-- ===== 9. Справочники ===== -->
   <h2 id="dictionaries">11. Справочники</h2>
-  <p>Справочники СмИТ Биллинг v1.6.0 (build 445) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
+  <p>Справочники СмИТ Биллинг v1.6.0 (build 450) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
   <div class="section-toc">
   <details open>
     <summary><strong>Содержание раздела</strong></summary>
@@ -5930,7 +6014,7 @@ else:
   </details>
   </div>
 
-  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 445) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
+  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 450) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
 
   <h3 id="setevaya-izolyatsiya">Сетевая изоляция</h3>
   <p><strong>Docker-контейнеризация</strong> — каждый сервис (web, db, redis, celery, nginx, freeradius) работает в изолированном Docker-контейнере с собственной сетью (172.28.0.0/16). Входящие соединения проходят через nginx reverse proxy, что предотвращает прямой доступ к внутренним сервисам.</p>
@@ -6074,7 +6158,7 @@ docker compose up -d</code></pre>
 
   <!-- ===== 16. Стороннее ПО ===== -->
   <h2 id="third-party">16. Стороннее ПО</h2>
-  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 445).</p>
+  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 450).</p>
 
   <!-- ===== 17. Смена языка ===== -->
   <h2 id="language">17. Смена языка</h2>
@@ -6095,7 +6179,7 @@ docker compose up -d</code></pre>
   </details>
   </div>
 
-  <p>СмИТ Биллинг v1.6.0 (build 445) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
+  <p>СмИТ Биллинг v1.6.0 (build 450) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
 
   <h3 id="pochemu-postgresql">Почему PostgreSQL</h3>
   <p>PostgreSQL 16 выбран в качестве основной СУБД по ряду причин:</p>
@@ -6859,8 +6943,8 @@ STARTED_AT, FINISHED_AT, EBS_LAST_TX_ID, STATS_JSON, DUMP_FILE, ERROR_MSG</code>
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 445)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">02.05.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 445)</span>&nbsp;|&nbsp;<span data-smit="updated">02.05.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 450)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">02.05.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 450)</span>&nbsp;|&nbsp;<span data-smit="updated">02.05.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=220"></script>
