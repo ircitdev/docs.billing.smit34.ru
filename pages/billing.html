@@ -668,6 +668,45 @@ docker compose exec web python manage.py loaddata initial_data
 # 4. Запустить сервисы
 docker compose up -d</code></pre>
 
+  <h3 id="db-cleanup-auto">1.5а. Автоочистка БД и аудит сессий <span class="badge bg-success">build 453-455</span></h3>
+  <p>Раздел <strong>Настройки &rarr; Обслуживание &rarr; Очистка БД и сессий</strong> (<code>/admin/settings/db_cleanup/</code>) объединяет два автоматических процесса.</p>
+
+  <p><img src="../img/v455/db_cleanup_overview.png" alt="Дашборд автоочистки БД" class="screenshot"></p>
+
+  <h4>Что делает</h4>
+  <ul>
+    <li><strong>Раз в сутки</strong> Celery-задача <code>db-cleanup-daily</code> удаляет старые записи из <code>MSG_STACK</code> (default 30 дней), <code>AUDIT_OPERATIONS</code> (365 дней), <code>RADIUS_SESSIONS</code> закрытые (90 дней), <code>EVENTS_STACK</code> processed (30 дней). После удаления — <code>VACUUM ANALYZE</code> для освобождения места на диске.</li>
+    <li><strong>Раз в час</strong> Celery-задача <code>session-audit-hourly</code> для выбранных NAS:
+      <ol>
+        <li>Через SSH забирает <code>/ppp active print</code></li>
+        <li>Сравнивает с <code>RADIUS_SESSIONS WHERE END_TIME IS NULL</code></li>
+        <li>«Зомби» (на NAS есть, в SB нет) — сбрасывает пачкой по 50/час через CoA Disconnect</li>
+        <li>Через 5 минут проверяет переавторизацию; если есть failed — алерт в Telegram</li>
+      </ol>
+    </li>
+  </ul>
+
+  <h4>Настройки и метрики на дашборде</h4>
+  <ul>
+    <li><strong>6 KPI-карточек</strong> с наведением (i): PostgreSQL connections, размер БД, сколько записей в каждой таблице и сколько будет удалено при следующем запуске</li>
+    <li><strong>Auto-refresh метрик каждые 60 сек</strong> (без перезагрузки страницы)</li>
+    <li>Все retention-параметры — через <code>VpnConst</code>: <code>DB_CLEANUP_*</code>, <code>SESSION_AUDIT_*</code>. Можно менять без релиза</li>
+    <li><strong>История запусков</strong> и <strong>история аудитов</strong> с детальной страницей (полный лог + verify реавторизации)</li>
+  </ul>
+
+  <h4>Запуск вручную <span class="badge bg-secondary">build 454-455</span></h4>
+  <p>Кнопка «Запустить чистку сейчас» открывает модалку <strong>с pre-flight</strong>: показывает сколько именно записей будет удалено по каждой таблице + ИТОГО.</p>
+  <p><img src="../img/v455/db_cleanup_confirm.png" alt="Модалка запуска чистки" class="screenshot"></p>
+
+  <p>После запуска — sticky-toast с <strong>real-time прогрессом</strong> (polling Celery-задачи каждые 2 сек). По завершении — итоги (удалено / время / ошибка) и кнопка обновить страницу.</p>
+
+  <h4>Выбор NAS для аудита <span class="badge bg-secondary">build 453</span></h4>
+  <p>Модалка с toggle-switches и поиском, кнопки «Все/Снять». Сохраняется в <code>VpnConst.SESSION_AUDIT_NAS_LIST</code>. Сегодня настроены 4 NAS (TOY/JOY/FAG/POT — где <code>/radius incoming</code> уже включён).</p>
+  <p><img src="../img/v455/db_cleanup_nas_picker.png" alt="Выбор NAS для аудита" class="screenshot"></p>
+
+  <h4>Доступ из меню</h4>
+  <p>Настройки &rarr; <strong>Обслуживание</strong> &rarr; «Очистка БД и сессий» (рядом с «Резервные копии», иконка <code>fa-broom</code>).</p>
+
   <!-- 1.6 Права доступа -->
   <h3 id="access-control">1.6. Права доступа</h3>
     <div class="section-toc">
@@ -3317,34 +3356,50 @@ NAS без сессии (NAK): CCR, JOY, Червленое, ...</code></pre>
 
   <h4 id="nas-list">Список NAS — UX</h4>
   <p>URL: <code>/admin/equipment/Nas/</code>. Список NAS-устройств с интегрированным статусом UP/DOWN — оператору не нужно открывать дашборд, чтобы понять, что какой-то NAS упал.</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/nas_ux_v414/nas_list.png?v=418" alt="Список NAS с KPI и чипами" class="screenshot">
+  <img src="../img/v455/nas_list_overview.png" alt="Список NAS с компактными pills (build 455+)" class="screenshot">
   <ul>
-    <li><strong>KPI-cards</strong> над таблицей — Всего / UP / DOWN / Онлайн абонентов. Справа — ссылка-карта «Мониторинг →» на дашборд состояния и «Справка» — эта страница</li>
+    <li><strong>Компактные KPI-pills</strong> в правой части toolbar <span class="badge bg-success">build 455+</span> — Всего / UP / DOWN / Онлайн / CoA готов. Раньше был отдельный grid-блок с большими карточками — переехал в одну линию со строкой поиска и кнопками. Info-icon ведёт на эту документацию</li>
+    <li><strong>Бейдж «CoA / SSH only»</strong> рядом с PROD <span class="badge bg-success">build 454</span> — голубой бейдж <code>⚡ CoA</code> для NAS с настроенным <code>/radius incoming</code>; жёлтый <code>⌨ SSH</code> для остальных (disconnect через SSH-fallback). Список настроенных NAS — в <code>VpnConst.COA_READY_NAS</code></li>
     <li><strong>Колонка «Состояние»</strong> — UP / DOWN N мин / OFF (для выключенных) с тултипом длительности. Источник — последнее событие из <code>NasStatusLog</code></li>
+    <li><strong>Колонка «Последняя авт.»</strong> <span class="badge bg-success">build 455</span> — теперь наполнена (раньше была пуста). Берём <code>MAX(RADIUS_SESSIONS.START_TIME)</code> по NAS_IP_ADDRESS. Поле <code>Nas.stat_last_auth</code> — legacy Carbon 4, не пишется</li>
+    <li><strong>Колонка «Действия» удалена</strong> <span class="badge bg-success">build 455</span>. Клик по названию NAS открывает модалку редактирования (раньше нужна была отдельная кнопка-карандаш). «Полная форма» переехала в footer модалки</li>
     <li><strong>Чипы-фильтры</strong> со счётчиками: <em>Все · 🟢 UP · 🔴 DOWN · ⚠ Без RADIUS · ⚠ Без SSH · 🏷 PROD · 💤 Выключенные</em>. URL-shareable через <code>?chip=down|up|no_radius|no_ssh|prod|disabled</code></li>
-    <li><strong>Кнопка «Перезапустить RADIUS»</strong> в toolbar + автоматический warning-bar при наличии флага <code>radius_dirty</code> в кеше (флаг выставляется при сохранении/удалении NAS, сбрасывается после успешного перезапуска)</li>
+    <li><strong>Опасные операции в dropdown</strong> <span class="badge bg-success">build 454</span> — кнопка «Перезапустить RADIUS» переехала из общей панели в dropdown <code>fa-tools «Опасные»</code>, чтобы случайные клики не приводили к рестарту FreeRADIUS</li>
     <li><strong>Progress-bar</strong> в колонке «Онлайн» — цветовая индикация загрузки: <em>зелёный &lt;75%, оранжевый 75–90%, красный ≥90%</em>. Двойное кодирование (бар + число)</li>
     <li><strong>Подсветка строк по серьёзности</strong>: красноватый фон для DOWN, opacity для выключенных, оранжевая полоса слева для NAS без RADIUS secret или SSH-логина, зелёная полоса для PROD</li>
   </ul>
 
+  <p><strong>Модалка редактирования NAS</strong> (открывается кликом по названию):</p>
+  <p><img src="../img/v455/nas_list_modal.png" alt="Модалка редактирования NAS" class="screenshot"></p>
+
   <h4 id="nas-status">Дашборд состояния NAS</h4>
   <p>URL: <code>/admin/equipment/nas_status/</code> (доступен через сайдбар «Оборудование → 💓 Состояние NAS»).</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/nas_ux_v414/nas_status.png?v=418" alt="Дашборд состояния NAS с алертом и sparkline" class="screenshot">
+  <p><img src="../img/v455/nas_status_current.png" alt="Дашборд состояния NAS — текущее состояние" class="screenshot"></p>
 
-  <h4 id="nas-status-table">Таблица текущего состояния</h4>
+  <p><strong>Шапка в одну строку</strong> <span class="badge bg-success">build 455+</span>: Авто-обновление + ring-индикатор прогресса до следующего refresh + Telegram-статус + SLA + кнопки <em>Обновить · Экспорт · Все NAS · Очистка · (i)</em>. Раньше было две строки. <strong>«Очистка»</strong> ведёт на <code>/admin/settings/db_cleanup/</code> (FA-иконка <code>fa-broom</code>, жёлтый акцент), <strong>(i)</strong> — короткая info-кнопка на этот раздел документации (раньше была кнопка «Справка» с текстом).</p>
+
+  <p><img src="../img/v455/nas_online_modal.png" alt="Модалка online-абонентов на NAS" class="screenshot"></p>
+
+  <p><strong>Компактные KPI-pills</strong> <span class="badge bg-success">build 455+</span>: Всего / UP / DOWN / Затронуто — встроены в шапку (раньше были большой grid-блок с 4 карточками).</p>
+
+  <p><strong>Вкладки «Текущее состояние / История событий»</strong> <span class="badge bg-success">build 455</span> — разделяют live-monitoring (что сейчас) и forensic-режим (что было). URL hash <code>#history</code> восстанавливает активную вкладку при reload.</p>
+
+  <h4 id="nas-status-table">Текущее состояние устройств</h4>
   <ul>
-    <li><strong>Auto-refresh</strong> — dropdown «Авто-обновление: Выкл / 30с / 60с / 5мин» в шапке. Под капотом — JSON-endpoint <code>?json=1</code>, обновляется только tbody+KPI без полного reload. Состояние сохраняется в <code>localStorage.nas_status_refresh_sec</code>, рядом с dropdown показывается «Обновлено: N сек назад»</li>
-    <li><strong>Алерт-баннер при DOWN</strong> — если есть NAS в состоянии DOWN, поверх таблицы красный баннер со списком имён, IP, длительности и количества затронутых абонентов. Кнопка «Скрыть» с дедупом в <code>sessionStorage</code></li>
-    <li><strong>Сводка</strong> — total / UP / DOWN / Затронутых абонентов большими числами с цветовыми бейджами</li>
+    <li><strong>Auto-refresh</strong> — dropdown «Авто-обновление: Выкл / 30с / 60с / 5мин» в шапке. Под капотом — JSON-endpoint <code>?json=1</code>, обновляется только tbody+KPI без полного reload. Состояние сохраняется в <code>localStorage.nas_status_refresh_sec</code>, рядом с dropdown — ring-индикатор прогресса до следующего refresh и подпись «Обновлено: N сек назад»</li>
+    <li><strong>Алерт-баннер при DOWN</strong> — если есть NAS в состоянии DOWN, поверх таблицы красный баннер со списком имён, IP, длительности и количества затронутых абонентов. <span class="badge bg-success">build 454</span> добавлены CTA-кнопки «Открыть» (фильтр <code>?chip=down</code>) и «Молчать 1ч» (localStorage)</li>
     <li><strong>Колонка «24ч паттерн»</strong> — sparkline из 24 столбиков по часам: зелёный = up в этот час, оранжевый = частичный простой 5–50%, красный = ≥50% часа в простое. Помогает отличить «5 коротких сбоев» (проблема сети) от «одно длинное падение» (проблема NAS)</li>
-    <li><strong>Колонка «Затронуто»</strong> — число активных учёток на NAS (источник <code>UsersRadiusauth where logged=1</code>). Клик переходит на <code>/admin/equipment/Nas/?nas_online=&lt;id&gt;</code> и открывает модалку online-абонентов</li>
+    <li><strong>Колонка «Затронуто»</strong> — число активных учёток на NAS (источник <code>UsersRadiusauth where logged=1</code>). <span class="badge bg-success">build 455</span> Клик открывает <strong>модалку online-абонентов прямо на странице</strong> (раньше уходил на список NAS, было неудобно). Поиск по логину/ФИО/договору/IP, infinite-scroll по 100 записей, прямые ссылки на профиль абонента в новой вкладке. Реализована через include <code>includes/_nas_online_modal.html</code> — переиспользуется и в списке <code>/admin/equipment/Nas/</code></li>
+    <li><strong>Колонка «Последнее событие»</strong> <span class="badge bg-success">build 455+</span> — без переноса строки, без дублирования UP/DOWN (этот статус уже виден в колонке «Статус»)</li>
     <li><strong>SLA-цели</strong> — настраиваются через VpnConst <code>NAS_SLA_TARGET_PCT</code> (default 99.5) и <code>NAS_SLA_WARNING_PCT</code> (default 99.0). Тултип на цифре uptime поясняет: «✅ Соответствует SLA» / «⚠ Ниже SLA, выше предупреждения» / «❌ Критично». В шапке видна текущая SLA-цель</li>
     <li><strong>Цветовая шкала uptime</strong> — зелёный (≥<code>NAS_SLA_TARGET_PCT</code>), оранжевый (между warning и target), красный (&lt;<code>NAS_SLA_WARNING_PCT</code>)</li>
-    <li><strong>Telegram-индикатор</strong> — бейдж «🔔 Telegram: алерты ВКЛ/ВЫКЛ» в шапке, кликабелен для перехода в настройки интеграции</li>
-    <li><strong>Экспорт CSV</strong> — кнопка «📊 Экспорт» в шапке, endpoint <code>GET /admin/equipment/nas_status/export/?period=24h|7d|30d</code>. CSV с BOM (для Excel), разделитель <code>;</code>, колонки: ID, Название, IP, Падений, Простой минут, Uptime %, SLA</li>
+    <li><strong>Telegram-индикатор</strong> — бейдж «🔔 Telegram: алерты ВКЛ/ВЫКЛ» в шапке. Tooltip объясняет что произойдёт при падении NAS, клик ведёт в настройки интеграции</li>
+    <li><strong>Экспорт CSV</strong> — кнопка «Экспорт» в шапке, endpoint <code>GET /admin/equipment/nas_status/export/?period=24h|7d|30d</code>. CSV с BOM (для Excel), разделитель <code>;</code>, колонки: ID, Название, IP, Падений, Простой минут, Uptime %, SLA</li>
   </ul>
 
   <h4 id="nas-status-history">История событий</h4>
+  <p>Открывается через вкладку «История событий» <span class="badge bg-success">build 455</span> или прямой URL <code>/admin/equipment/nas_status/#history</code>.</p>
+  <p><img src="../img/v455/nas_status_history.png" alt="История событий NAS — вкладка" class="screenshot"></p>
   <ul>
     <li>Последние 50 переходов DOWN/UP по всем NAS</li>
     <li><strong>Группировка по дням</strong> — sticky-headers с датой и счётчиком: «02 мая 2026 — 50 событий (50 DOWN / 0 UP)». Помогает находить инциденты конкретного дня в плотном списке</li>
@@ -4644,7 +4699,18 @@ WHERE op_date BETWEEN :ОтДаты|date$ AND :ДоДаты|date$
 
   <h5 id="ip-pools-kpi">KPI-cards и фильтрация</h5>
   <p>Над таблицей — 6 KPI-карточек: <strong>Всего пулов</strong> / <strong>Активных</strong> / <strong>&lt; 75% занято</strong> / <strong>75–90%</strong> / <strong>≥ 90% / исчерпан</strong> / <strong>Свободно IP всего</strong>. Клик по карточке фильтрует таблицу. Под KPI — segmented-control «Все · Активные · Неактивные» (single-select, дефолт «Все») + 6 toggle-чипов: «Свободно &lt;10%», «Опасные (&gt;75%)», «Без шлюза», «Hotspot», «Без привязки», «Fallback».</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ux_pools_v420/ip_pull_desktop.png" alt="Список IP-пулов с KPI-cards" class="screenshot">
+  <img src="../img/v455/ip_pull_overview.png" alt="Список IP-пулов с KPI-cards (build 455)" class="screenshot">
+
+  <h5 id="ip-pools-info-toggle">Toggle справочных колонок <span class="badge bg-success">build 455</span></h5>
+  <p>Колонки <strong>Маска</strong> и <strong>Шлюз</strong> — справочные (RADIUS их не передаёт абоненту, нужны только для cfg-генерации NAS и SORM-отчёта IP_GATEWAY). Чтобы освободить место в таблице, добавлен toggle <em>«Справочные»</em> в toolbar:</p>
+  <ul>
+    <li><strong>Default OFF</strong> — колонки видны только на XL+ (≥1200px), на меньших скрыты</li>
+    <li><strong>ON</strong> — колонки показываются на любом разрешении (override <code>d-none</code>)</li>
+    <li>Состояние сохраняется в <code>localStorage.ippool_view_v1.showInfo</code></li>
+  </ul>
+
+  <h5 id="ip-pools-bulk-confirm">Bulk-операции с confirm-modal <span class="badge bg-success">build 454</span></h5>
+  <p>Native <code>confirm()</code> заменён на Bootstrap-модалку с превью (первых 10 имён пулов), цветовой схемой по action (red=delete, green=enable, warning=disable) и списком предупреждений. На время отправки кнопка показывает spinner.</p>
 
   <h5 id="ip-pools-sort">Сортировка по умолчанию и кликабельные заголовки</h5>
   <p>Дефолт — <code>% занято desc</code>: критические пулы наверху сразу при загрузке. Кликабельные <code>&lt;th&gt;</code> с <code>aria-sort</code> + индикаторами ▲/▼ для колонок Название, Диапазон IP, Свободно, % занято. Клавиши <code>Enter</code>/<code>Space</code> на заголовке — то же действие. Выбор сортировки и фильтров сохраняется в <code>localStorage</code> между перезагрузками — после <code>save</code> / <code>delete</code> / <code>bulk</code> представление не сбрасывается. Подробнее → <a href="#ip-pools-persist-state">Сохранение сортировки и фильтров</a>.</p>
