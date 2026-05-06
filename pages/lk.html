@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 474)</title>
+  <title>Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 476)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 474)">
+  <meta property="og:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 476)">
   <meta property="og:description" content="Личный кабинет абонента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/lk.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 474)">
+  <meta name="twitter:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 476)">
   <meta name="twitter:description" content="Личный кабинет абонента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="Личный кабинет абонента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
@@ -501,10 +501,62 @@
     <code>respect_quiet=False</code> и пройти через quiet-hours.
     <code>send_push_to_abonent(force=True)</code> игнорирует и quiet-hours, и daily-limit.</p>
 
-  <p><strong>Legacy LK-настройки (build 472)</strong> — 9 toggle + 1 числовое поле,
-    мигрированы из старого раздела «Настройки системы → Параметры → Личный кабинет»
-    (где они хранились в <code>VpnConst</code> с русскими именами). Теперь — в
-    <code>SystemSettings</code> с latin-ключами, отображаются ниже основных feature-toggle:</p>
+  <h4 id="lk-admin-sprint-b">Sprint B — реализация legacy LK-флагов (build 476)</h4>
+  <p>В build 472 12 LK-настроек были мигрированы из <code>VpnConst</code> в <code>SystemSettings</code>,
+    но в коде ЛК ещё не подключены — на UI они отображались с warning-бейджем «будет реализовано».
+    В build 476 все они подключены и переведены в статус «работает».</p>
+
+  <table>
+    <thead><tr><th>Флаг</th><th>Где реализовано</th></tr></thead>
+    <tbody>
+      <tr><td><code>LK_SHOW_SERVICES</code></td><td>sidebar в <code>base.html</code> + новый раздел
+        <code>/lk/services/</code> (<code>lk/views/services.py</code>) с каталогом услуг и формами
+        connect/disconnect</td></tr>
+      <tr><td><code>LK_SHOW_AUDIT</code></td><td>sidebar в <code>base.html</code> + новый раздел
+        <code>/lk/audit/</code> — FinanceOperations за 12 мес с KPI поступления/списания</td></tr>
+      <tr><td><code>LK_SHOW_HELPDESK</code></td><td>условный show пункта «Поддержка» в sidebar</td></tr>
+      <tr><td><code>LK_SHOW_DETAILED_TRAFFIC</code></td><td><code>sessions.html</code>: переключение
+        между in/out (детально) и компактным total_bytes</td></tr>
+      <tr><td><code>LK_HIDE_TARIFF_SPEED</code></td><td><code>dashboard.html</code>: скрытие Мбит/с
+        в карточке тарифа</td></tr>
+      <tr><td><code>LK_HIDE_TARIFF_TAB</code></td><td>скрытие пункта «Тарифы» в sidebar (запрет смены)</td></tr>
+      <tr><td><code>LK_HIDE_PAYMENT_TAB</code></td><td>скрытие пунктов «Платежи» и «Оплатить» в sidebar</td></tr>
+      <tr><td><code>LK_ALLOW_MAC_CHANGE</code></td><td>card в <code>profile.html</code> + action
+        <code>change_mac</code> в <code>lk/views/profile.py</code> с валидацией формата
+        <code>AA:BB:CC:DD:EE:FF</code> и audit <code>LK_MAC_CHANGE</code></td></tr>
+      <tr><td><code>LK_TARIFF_REQUIRE_RANGE</code></td><td>фильтр в <code>lk/views/tariff.py</code>:
+        при смене тарифа предлагаются только тарифы с тем же <code>usluga_range_type_id</code></td></tr>
+      <tr><td><code>LK_REQUIRE_SAME_IP</code></td><td><code>LkAuthMiddleware</code> сохраняет IP
+        в <code>session['lk_login_ip']</code> при логине и завершает сессию при смене IP
+        (с redirect на <code>/lk/login/</code>)</td></tr>
+      <tr><td><code>LK_AUTOLOGIN_BY_IP</code></td><td><code>LkAuthMiddleware</code>: если пользователь
+        не залогинен и ровно один <code>Users</code> с <code>ip=client_ip</code> и
+        <code>enabled=True</code> — автоматический вход. Public-paths
+        (<code>/lk/login</code>, <code>/lk/auth/</code>, webhook'и) исключены. Audit
+        <code>LK_LOGIN_SUCCESS</code> с <code>method=autologin_ip</code></td></tr>
+      <tr><td><code>LK_DISABLE_PASSWORD_CHANGE</code></td><td><code>change_password()</code>
+        возвращает redirect с error на dashboard; пункт «Сменить пароль» скрыт в sidebar</td></tr>
+    </tbody>
+  </table>
+
+  <h5 id="lk-admin-services">Раздел «Услуги абонента» (<code>/lk/services/</code>)</h5>
+  <p>Новый раздел в ЛК для управления подключёнными услугами. Использует 5 ранее не
+    подключённых полей <code>Usluga</code>:</p>
+  <ul>
+    <li><code>is_show_web</code> — фильтр каталога доступных услуг</li>
+    <li><code>web_check_overlimit</code> — проверка баланса перед подключением</li>
+    <li><code>web_allow_disable</code> — кнопка «Отключить» в списке подключённых</li>
+    <li><code>allow_off_month_web</code> — минимальный срок (мес.) до возможности отключения
+      (используется <code>dateutil.relativedelta</code>)</li>
+    <li><code>zakaz_msg</code> — сообщение во flash-нотификации после успешного подключения
+      (если пусто — дефолт «Услуга подключена»)</li>
+  </ul>
+  <p>Audit <code>LK_SERVICE_CONNECT</code> и <code>LK_SERVICE_DISCONNECT</code> при каждой
+    операции. Excludes услуг с <code>system_type=11</code> (это обещанный платёж — управляется
+    отдельно).</p>
+
+  <p><strong>Legacy LK-настройки (мигрированы build 472, реализованы build 476)</strong> —
+    9 toggle, отображаются ниже основных feature-toggle во вкладке «Функции»:</p>
   <ul>
     <li><strong>Видимость разделов в ЛК</strong>: <code>LK_SHOW_SERVICES</code>,
       <code>LK_SHOW_AUDIT</code>, <code>LK_SHOW_HELPDESK</code>,
@@ -1200,8 +1252,8 @@ Content-Type: application/json
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 474)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">07.05.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 474)</span>&nbsp;|&nbsp;<span data-smit="updated">07.05.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 476)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">07.05.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 476)</span>&nbsp;|&nbsp;<span data-smit="updated">07.05.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=466"></script>
