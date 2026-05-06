@@ -1251,6 +1251,16 @@ curl -s -b cookies.txt "https://billing.example.com/admin/ajax/ippull_get/1/"</c
     <strong>Стек:</strong> Django REST Framework + djangorestframework-simplejwt
   </div>
 
+  <div class="info-box" style="border-left:4px solid #43b77a; background:rgba(67,183,122,.06)">
+    <strong><i class="ti ti-mobile"></i> Public Mobile API (build 468+) — без авторизации</strong><br>
+    Помимо защищённых endpoints ниже, есть <strong>3 публичных</strong> для конфига приложения при старте:
+    <code>GET /mobile-api/v1/branding</code>,
+    <code>GET /mobile-api/v1/features</code>,
+    <code>GET /mobile-api/v1/version/check</code>.
+    Кэшируются на стороне клиента 5 мин (Cache-Control). Подробное описание и сценарии использования —
+    в разделе <a href="lk.html#mobile-api-public">ЛК и мобильные → Public Mobile API</a>.
+  </div>
+
   <h3 id="autentifikatsiya">Аутентификация</h3>
 
   <pre><code># Логин — получить JWT-токены
@@ -1464,8 +1474,8 @@ curl -s -X POST "https://billing.example.com/mobile-api/v1/push/register" \
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 469)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">06.05.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 469)</span>&nbsp;|&nbsp;<span data-smit="updated">06.05.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 469)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">07.05.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 469)</span>&nbsp;|&nbsp;<span data-smit="updated">07.05.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=466"></script>
