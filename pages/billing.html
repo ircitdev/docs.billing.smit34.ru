@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 456)</title>
+  <title>Основные настройки биллинга — СмИТ Биллинг v1.6.0</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 456)">
+  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0">
   <meta property="og:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/billing.html">
   <meta property="og:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0 (build 456)">
+  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v1.6.0">
   <meta name="twitter:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta name="twitter:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
   <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
@@ -100,8 +100,9 @@
           <li class="sub-item"><a href="../pages/billing.html#ssl-admin">1.3. SSL для HTTPS</a></li>
           <li class="sub-item"><a href="../pages/billing.html#user-interfaces">1.4. Интерфейсы</a></li>
           <li class="sub-item"><a href="../pages/billing.html#db-cleanup">1.5. Очистка БД</a></li>
-          <li class="sub-item"><a href="../pages/billing.html#access-control">1.6. Права доступа</a></li>
-          <li class="sub-item"><a href="../pages/billing.html#diagnostic-commands">1.7. Диагностика</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#db-cleanup-auto">1.6. Автоочистка БД и аудит</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#access-control">1.7. Права доступа</a></li>
+          <li class="sub-item"><a href="../pages/billing.html#diagnostic-commands">1.8. Диагностика</a></li>
           <li><a href="../pages/billing.html#subscribers">2. Работа с абонентами</a></li>
           <li class="sub-item"><a href="../pages/billing.html#create-subscriber">2.1. Создание абонента</a></li>
           <li class="sub-item"><a href="../pages/billing.html#add-service">2.2. Выбор тарифа</a></li>
@@ -435,8 +436,9 @@
     <li><a href="#ssl-admin">1.3. Добавление SSL-сертификата для HTTPS</a></li>
     <li><a href="#user-interfaces">1.4. Интерфейсы пользователей биллинга</a></li>
     <li><a href="#db-cleanup">1.5. Очистка базы данных. Удаление демо-данных</a></li>
-    <li><a href="#access-control">1.6. Права доступа</a></li>
-    <li><a href="#diagnostic-commands">1.7. Команды диагностики пользователей</a></li>
+    <li><a href="#db-cleanup-auto">1.6. Автоочистка БД и аудит зомби-сессий</a></li>
+    <li><a href="#access-control">1.7. Права доступа</a></li>
+    <li><a href="#diagnostic-commands">1.8. Команды диагностики пользователей</a></li>
     </ul>
   </details>
   </div>
@@ -668,10 +670,10 @@ docker compose exec web python manage.py loaddata initial_data
 # 4. Запустить сервисы
 docker compose up -d</code></pre>
 
-  <h3 id="db-cleanup-auto">1.5а. Автоочистка БД и аудит зомби-сессий <span class="badge bg-success">build 453-456</span></h3>
+  <h3 id="db-cleanup-auto">1.6. Автоочистка БД и аудит зомби-сессий</h3>
   <p>Раздел <strong>Настройки &rarr; Обслуживание &rarr; Очистка БД и сессий</strong> (<code>/admin/settings/db_cleanup/</code>) объединяет два автоматических процесса для поддержания здоровья биллинга.</p>
 
-  <p><img src="../img/v456/db_cleanup_desktop.png" alt="Дашборд автоочистки БД (build 456)" class="screenshot"></p>
+  <p><img src="../img/v456/db_cleanup_desktop.png" alt="Дашборд автоочистки БД" class="screenshot"></p>
 
   <h4 id="db-cleanup-when">Когда применять этот инструмент</h4>
   <p>Инструмент нужен <strong>каждой инсталляции</strong>, не только проблемной. Он работает в фоне (Celery beat) и предотвращает три типичных сценария деградации:</p>
@@ -728,7 +730,7 @@ docker compose up -d</code></pre>
   <h4>Доступ из меню</h4>
   <p>Настройки &rarr; <strong>Обслуживание</strong> &rarr; «Очистка БД и сессий» (рядом с «Резервные копии», иконка <code>fa-broom</code>).</p>
 
-  <h4 id="db-cleanup-mobile">Mobile-версия <span class="badge bg-success">build 456</span></h4>
+  <h4 id="db-cleanup-mobile">Mobile-версия</h4>
   <p>На экранах ≤768px:</p>
   <ul>
     <li>KPI-карточки в 2 колонки вместо 6 (компактнее)</li>
@@ -741,7 +743,7 @@ docker compose up -d</code></pre>
   <p><img src="../img/v456/db_cleanup_mobile.png" alt="Mobile-версия db_cleanup" class="screenshot" style="max-width:380px"></p>
 
   <!-- 1.6 Права доступа -->
-  <h3 id="access-control">1.6. Права доступа</h3>
+  <h3 id="access-control">1.7. Права доступа</h3>
     <div class="section-toc">
     <details open>
       <summary><strong>Содержание раздела</strong></summary>
@@ -791,7 +793,7 @@ docker compose up -d</code></pre>
 
   <div class="warning-box">При отсутствии необходимых прав система отобразит сообщение об ограничении и запретит действие.</div>
 
-  <h3 id="diagnostic-commands">1.7. Команды диагностики пользователей</h3>
+  <h3 id="diagnostic-commands">1.8. Команды диагностики пользователей</h3>
   <p>Раздел <strong>Настройки → Команды диагностики пользователей</strong> (<code>/admin/settings/DiagnosticCommands/</code>) — настройка команд для диагностики подключения абонентов.</p>
   <p>Позволяет определить набор shell-команд (ping, traceroute, проверка порта коммутатора и т.д.), которые администратор может запускать из карточки абонента для быстрой проверки связности.</p>
 
@@ -3389,15 +3391,15 @@ NAS без сессии (NAK): CCR, JOY, Червленое, ...</code></pre>
 
   <h4 id="nas-list">Список NAS — UX</h4>
   <p>URL: <code>/admin/equipment/Nas/</code>. Список NAS-устройств с интегрированным статусом UP/DOWN — оператору не нужно открывать дашборд, чтобы понять, что какой-то NAS упал.</p>
-  <img src="../img/v455/nas_list_overview.png" alt="Список NAS с компактными pills (build 455+)" class="screenshot">
+  <img src="../img/v455/nas_list_overview.png" alt="Список NAS с компактными pills" class="screenshot">
   <ul>
-    <li><strong>Компактные KPI-pills</strong> в правой части toolbar <span class="badge bg-success">build 455+</span> — Всего / UP / DOWN / Онлайн / CoA готов. Раньше был отдельный grid-блок с большими карточками — переехал в одну линию со строкой поиска и кнопками. Info-icon ведёт на эту документацию</li>
-    <li><strong>Бейдж «CoA / SSH only»</strong> рядом с PROD <span class="badge bg-success">build 454</span> — голубой бейдж <code>⚡ CoA</code> для NAS с настроенным <code>/radius incoming</code>; жёлтый <code>⌨ SSH</code> для остальных (disconnect через SSH-fallback). Список настроенных NAS — в <code>VpnConst.COA_READY_NAS</code></li>
+    <li><strong>Компактные KPI-pills</strong> в правой части toolbar — Всего / UP / DOWN / Онлайн / CoA готов. Раньше был отдельный grid-блок с большими карточками — переехал в одну линию со строкой поиска и кнопками. Info-icon ведёт на эту документацию</li>
+    <li><strong>Бейдж «CoA / SSH only»</strong> рядом с PROD — голубой бейдж <code>⚡ CoA</code> для NAS с настроенным <code>/radius incoming</code>; жёлтый <code>⌨ SSH</code> для остальных (disconnect через SSH-fallback). Список настроенных NAS — в <code>VpnConst.COA_READY_NAS</code></li>
     <li><strong>Колонка «Состояние»</strong> — UP / DOWN N мин / OFF (для выключенных) с тултипом длительности. Источник — последнее событие из <code>NasStatusLog</code></li>
-    <li><strong>Колонка «Последняя авт.»</strong> <span class="badge bg-success">build 455</span> — теперь наполнена (раньше была пуста). Берём <code>MAX(RADIUS_SESSIONS.START_TIME)</code> по NAS_IP_ADDRESS. Поле <code>Nas.stat_last_auth</code> — legacy Carbon 4, не пишется</li>
-    <li><strong>Колонка «Действия» удалена</strong> <span class="badge bg-success">build 455</span>. Клик по названию NAS открывает модалку редактирования (раньше нужна была отдельная кнопка-карандаш). «Полная форма» переехала в footer модалки</li>
+    <li><strong>Колонка «Последняя авт.»</strong> — теперь наполнена (раньше была пуста). Берём <code>MAX(RADIUS_SESSIONS.START_TIME)</code> по NAS_IP_ADDRESS. Поле <code>Nas.stat_last_auth</code> — legacy Carbon 4, не пишется</li>
+    <li><strong>Колонка «Действия» удалена</strong>. Клик по названию NAS открывает модалку редактирования (раньше нужна была отдельная кнопка-карандаш). «Полная форма» переехала в footer модалки</li>
     <li><strong>Чипы-фильтры</strong> со счётчиками: <em>Все · 🟢 UP · 🔴 DOWN · ⚠ Без RADIUS · ⚠ Без SSH · 🏷 PROD · 💤 Выключенные</em>. URL-shareable через <code>?chip=down|up|no_radius|no_ssh|prod|disabled</code></li>
-    <li><strong>Опасные операции в dropdown</strong> <span class="badge bg-success">build 454</span> — кнопка «Перезапустить RADIUS» переехала из общей панели в dropdown <code>fa-tools «Опасные»</code>, чтобы случайные клики не приводили к рестарту FreeRADIUS</li>
+    <li><strong>Опасные операции в dropdown</strong> — кнопка «Перезапустить RADIUS» переехала из общей панели в dropdown <code>fa-tools «Опасные»</code>, чтобы случайные клики не приводили к рестарту FreeRADIUS</li>
     <li><strong>Progress-bar</strong> в колонке «Онлайн» — цветовая индикация загрузки: <em>зелёный &lt;75%, оранжевый 75–90%, красный ≥90%</em>. Двойное кодирование (бар + число)</li>
     <li><strong>Подсветка строк по серьёзности</strong>: красноватый фон для DOWN, opacity для выключенных, оранжевая полоса слева для NAS без RADIUS secret или SSH-логина, зелёная полоса для PROD</li>
   </ul>
@@ -3409,21 +3411,21 @@ NAS без сессии (NAK): CCR, JOY, Червленое, ...</code></pre>
   <p>URL: <code>/admin/equipment/nas_status/</code> (доступен через сайдбар «Оборудование → 💓 Состояние NAS»).</p>
   <p><img src="../img/v455/nas_status_current.png" alt="Дашборд состояния NAS — текущее состояние" class="screenshot"></p>
 
-  <p><strong>Шапка в одну строку</strong> <span class="badge bg-success">build 455+</span>: Авто-обновление + ring-индикатор прогресса до следующего refresh + Telegram-статус + SLA + кнопки <em>Обновить · Экспорт · Все NAS · Очистка · (i)</em>. Раньше было две строки. <strong>«Очистка»</strong> ведёт на <code>/admin/settings/db_cleanup/</code> (FA-иконка <code>fa-broom</code>, жёлтый акцент), <strong>(i)</strong> — короткая info-кнопка на этот раздел документации (раньше была кнопка «Справка» с текстом).</p>
+  <p><strong>Шапка в одну строку</strong>: Авто-обновление + ring-индикатор прогресса до следующего refresh + Telegram-статус + SLA + кнопки <em>Обновить · Экспорт · Все NAS · Очистка · (i)</em>. Раньше было две строки. <strong>«Очистка»</strong> ведёт на <code>/admin/settings/db_cleanup/</code> (FA-иконка <code>fa-broom</code>, жёлтый акцент), <strong>(i)</strong> — короткая info-кнопка на этот раздел документации (раньше была кнопка «Справка» с текстом).</p>
 
   <p><img src="../img/v455/nas_online_modal.png" alt="Модалка online-абонентов на NAS" class="screenshot"></p>
 
-  <p><strong>Компактные KPI-pills</strong> <span class="badge bg-success">build 455+</span>: Всего / UP / DOWN / Затронуто — встроены в шапку (раньше были большой grid-блок с 4 карточками).</p>
+  <p><strong>Компактные KPI-pills</strong>: Всего / UP / DOWN / Затронуто — встроены в шапку (раньше были большой grid-блок с 4 карточками).</p>
 
-  <p><strong>Вкладки «Текущее состояние / История событий»</strong> <span class="badge bg-success">build 455</span> — разделяют live-monitoring (что сейчас) и forensic-режим (что было). URL hash <code>#history</code> восстанавливает активную вкладку при reload.</p>
+  <p><strong>Вкладки «Текущее состояние / История событий»</strong> — разделяют live-monitoring (что сейчас) и forensic-режим (что было). URL hash <code>#history</code> восстанавливает активную вкладку при reload.</p>
 
   <h4 id="nas-status-table">Текущее состояние устройств</h4>
   <ul>
     <li><strong>Auto-refresh</strong> — dropdown «Авто-обновление: Выкл / 30с / 60с / 5мин» в шапке. Под капотом — JSON-endpoint <code>?json=1</code>, обновляется только tbody+KPI без полного reload. Состояние сохраняется в <code>localStorage.nas_status_refresh_sec</code>, рядом с dropdown — ring-индикатор прогресса до следующего refresh и подпись «Обновлено: N сек назад»</li>
-    <li><strong>Алерт-баннер при DOWN</strong> — если есть NAS в состоянии DOWN, поверх таблицы красный баннер со списком имён, IP, длительности и количества затронутых абонентов. <span class="badge bg-success">build 454</span> добавлены CTA-кнопки «Открыть» (фильтр <code>?chip=down</code>) и «Молчать 1ч» (localStorage)</li>
+    <li><strong>Алерт-баннер при DOWN</strong> — если есть NAS в состоянии DOWN, поверх таблицы красный баннер со списком имён, IP, длительности и количества затронутых абонентов. добавлены CTA-кнопки «Открыть» (фильтр <code>?chip=down</code>) и «Молчать 1ч» (localStorage)</li>
     <li><strong>Колонка «24ч паттерн»</strong> — sparkline из 24 столбиков по часам: зелёный = up в этот час, оранжевый = частичный простой 5–50%, красный = ≥50% часа в простое. Помогает отличить «5 коротких сбоев» (проблема сети) от «одно длинное падение» (проблема NAS)</li>
-    <li><strong>Колонка «Затронуто»</strong> — число активных учёток на NAS (источник <code>UsersRadiusauth where logged=1</code>). <span class="badge bg-success">build 455</span> Клик открывает <strong>модалку online-абонентов прямо на странице</strong> (раньше уходил на список NAS, было неудобно). Поиск по логину/ФИО/договору/IP, infinite-scroll по 100 записей, прямые ссылки на профиль абонента в новой вкладке. Реализована через include <code>includes/_nas_online_modal.html</code> — переиспользуется и в списке <code>/admin/equipment/Nas/</code></li>
-    <li><strong>Колонка «Последнее событие»</strong> <span class="badge bg-success">build 455+</span> — без переноса строки, без дублирования UP/DOWN (этот статус уже виден в колонке «Статус»)</li>
+    <li><strong>Колонка «Затронуто»</strong> — число активных учёток на NAS (источник <code>UsersRadiusauth where logged=1</code>). Клик открывает <strong>модалку online-абонентов прямо на странице</strong> (раньше уходил на список NAS, было неудобно). Поиск по логину/ФИО/договору/IP, infinite-scroll по 100 записей, прямые ссылки на профиль абонента в новой вкладке. Реализована через include <code>includes/_nas_online_modal.html</code> — переиспользуется и в списке <code>/admin/equipment/Nas/</code></li>
+    <li><strong>Колонка «Последнее событие»</strong> — без переноса строки, без дублирования UP/DOWN (этот статус уже виден в колонке «Статус»)</li>
     <li><strong>SLA-цели</strong> — настраиваются через VpnConst <code>NAS_SLA_TARGET_PCT</code> (default 99.5) и <code>NAS_SLA_WARNING_PCT</code> (default 99.0). Тултип на цифре uptime поясняет: «✅ Соответствует SLA» / «⚠ Ниже SLA, выше предупреждения» / «❌ Критично». В шапке видна текущая SLA-цель</li>
     <li><strong>Цветовая шкала uptime</strong> — зелёный (≥<code>NAS_SLA_TARGET_PCT</code>), оранжевый (между warning и target), красный (&lt;<code>NAS_SLA_WARNING_PCT</code>)</li>
     <li><strong>Telegram-индикатор</strong> — бейдж «🔔 Telegram: алерты ВКЛ/ВЫКЛ» в шапке. Tooltip объясняет что произойдёт при падении NAS, клик ведёт в настройки интеграции</li>
@@ -3431,7 +3433,7 @@ NAS без сессии (NAK): CCR, JOY, Червленое, ...</code></pre>
   </ul>
 
   <h4 id="nas-status-history">История событий</h4>
-  <p>Открывается через вкладку «История событий» <span class="badge bg-success">build 455</span> или прямой URL <code>/admin/equipment/nas_status/#history</code>.</p>
+  <p>Открывается через вкладку «История событий» или прямой URL <code>/admin/equipment/nas_status/#history</code>.</p>
   <p><img src="../img/v455/nas_status_history.png" alt="История событий NAS — вкладка" class="screenshot"></p>
   <ul>
     <li>Последние 50 переходов DOWN/UP по всем NAS</li>
@@ -4618,7 +4620,7 @@ WHERE op_date BETWEEN :ОтДаты|date$ AND :ДоДаты|date$
 
   <!-- ===== 9. Справочники ===== -->
   <h2 id="dictionaries">11. Справочники</h2>
-  <p>Справочники СмИТ Биллинг v1.6.0 (build 456) хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
+  <p>Справочники СмИТ Биллинг v1.6.0 хранят настройки и наборы данных для работы с абонентами, услугами и оборудованием.</p>
   <div class="section-toc">
   <details open>
     <summary><strong>Содержание раздела</strong></summary>
@@ -4732,9 +4734,9 @@ WHERE op_date BETWEEN :ОтДаты|date$ AND :ДоДаты|date$
 
   <h5 id="ip-pools-kpi">KPI-cards и фильтрация</h5>
   <p>Над таблицей — 6 KPI-карточек: <strong>Всего пулов</strong> / <strong>Активных</strong> / <strong>&lt; 75% занято</strong> / <strong>75–90%</strong> / <strong>≥ 90% / исчерпан</strong> / <strong>Свободно IP всего</strong>. Клик по карточке фильтрует таблицу. Под KPI — segmented-control «Все · Активные · Неактивные» (single-select, дефолт «Все») + 6 toggle-чипов: «Свободно &lt;10%», «Опасные (&gt;75%)», «Без шлюза», «Hotspot», «Без привязки», «Fallback».</p>
-  <img src="../img/v455/ip_pull_overview.png" alt="Список IP-пулов с KPI-cards (build 455)" class="screenshot">
+  <img src="../img/v455/ip_pull_overview.png" alt="Список IP-пулов с KPI-cards" class="screenshot">
 
-  <h5 id="ip-pools-info-toggle">Toggle справочных колонок <span class="badge bg-success">build 455</span></h5>
+  <h5 id="ip-pools-info-toggle">Toggle справочных колонок</h5>
   <p>Колонки <strong>Маска</strong> и <strong>Шлюз</strong> — справочные (RADIUS их не передаёт абоненту, нужны только для cfg-генерации NAS и SORM-отчёта IP_GATEWAY). Чтобы освободить место в таблице, добавлен toggle <em>«Справочные»</em> в toolbar:</p>
   <ul>
     <li><strong>Default OFF</strong> — колонки видны только на XL+ (≥1200px), на меньших скрыты</li>
@@ -4742,7 +4744,7 @@ WHERE op_date BETWEEN :ОтДаты|date$ AND :ДоДаты|date$
     <li>Состояние сохраняется в <code>localStorage.ippool_view_v1.showInfo</code></li>
   </ul>
 
-  <h5 id="ip-pools-bulk-confirm">Bulk-операции с confirm-modal <span class="badge bg-success">build 454</span></h5>
+  <h5 id="ip-pools-bulk-confirm">Bulk-операции с confirm-modal</h5>
   <p>Native <code>confirm()</code> заменён на Bootstrap-модалку с превью (первых 10 имён пулов), цветовой схемой по action (red=delete, green=enable, warning=disable) и списком предупреждений. На время отправки кнопка показывает spinner.</p>
 
   <h5 id="ip-pools-sort">Сортировка по умолчанию и кликабельные заголовки</h5>
@@ -4790,7 +4792,7 @@ python manage.py backfill_ip_pool_mask --force --apply  # перезаписат
   <p>Mobile (<code>≤ 768 px</code>): card-layout по тому же паттерну, что у IP — каждый пул как карточка с метками <code>НАЗВАНИЕ:</code>, <code>ДИАПАЗОН:</code>, <code>РАЗМЕР:</code>, <code>ИСПОЛЬЗОВАНО:</code>, <code>% ЗАНЯТО:</code>.</p>
   <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ux_pools_v420/vlan_pull_mobile.png" alt="VLAN-пулы на mobile" class="screenshot">
 
-  <h5 id="vlan-pools-build456-fixes">Доводки <span class="badge bg-success">build 456</span></h5>
+  <h5 id="vlan-pools-fixes">Доводки</h5>
   <ul>
     <li><strong>Скрытие колонки «Оператор связи»</strong> при единственном операторе — фактически работает. Раньше JS ставил <code>style.display=none</code>, но Bootstrap-класс <code>d-md-table-cell</code> с <code>!important</code> побеждал. Теперь добавляется класс <code>.vp-op-col-hidden</code> с <code>!important</code> — колонка пропадает корректно. Имя оператора показывается контекст-чипом в шапке.</li>
     <li><strong>Защита удаления VLAN-пула</strong>: сервер блокирует <code>DELETE /admin/dictionary/vlan_pull_crud/&lt;id&gt;/</code> если на пул ссылается NAS (<code>Nas.vlan_pull_id</code>) или есть <code>Users</code> с <code>vlan</code> в диапазоне пула. Возвращается HTTP 400 + понятное сообщение «NAS используют пул: N; абонентов с VLAN в диапазоне: M».</li>
@@ -4798,7 +4800,7 @@ python manage.py backfill_ip_pool_mask --force --apply  # перезаписат
     <li><strong>Dark mode контраст</strong>: иконки «активен / отключён» (<code>.ip-on</code> / <code>.ip-off</code>) теперь имеют WCAG AA ≥ 4.5:1 на тёмном фоне (<code>#3cb371</code> / <code>#f87171</code> вместо <code>#198754</code> / <code>#dc3545</code>).</li>
     <li><strong>Настраиваемые пороги</strong>: миграция <code>0111_pool_ux_thresholds</code> добавляет VpnConst <code>IP_POOL_DANGER_THRESHOLD_PCT</code> (default 75) и <code>IP_POOL_BINDING_TOP_N</code> (default 3). Меняются через <code>/admin/settings/VpnConst/</code> без перезапуска.</li>
   </ul>
-  <p>Скриншот после фикса: <img src="../img/v456/vlan_pull_single_operator.png" alt="VLAN-пулы build 456 — колонка оператора скрыта" class="screenshot"></p>
+  <p><img src="../img/v456/vlan_pull_single_operator.png" alt="VLAN-пулы — колонка оператора скрыта" class="screenshot"></p>
 
   <h4 id="ip-pools-gateway-autofill">Автоподстановка шлюза</h4>
   <p>Часто после миграции с EBS у IP-пулов поле <code>GATEWAY</code> остаётся пустым, хотя <code>NETWORK_ADDRESS</code> и <code>MASK</code> заполнены. Для большинства подсетей шлюз — «адрес сети + 1» (классический паттерн «.1»). Биллинг автоматизирует эту подстановку на трёх уровнях.</p>
@@ -6081,7 +6083,7 @@ else:
   </details>
   </div>
 
-  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 (build 456) включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
+  <p>Обеспечение безопасности биллинговой системы — критически важная задача для любого оператора связи. СмИТ Биллинг v1.6.0 включает несколько уровней защиты и рекомендации по безопасной эксплуатации.</p>
 
   <h3 id="setevaya-izolyatsiya">Сетевая изоляция</h3>
   <p><strong>Docker-контейнеризация</strong> — каждый сервис (web, db, redis, celery, nginx, freeradius) работает в изолированном Docker-контейнере с собственной сетью (172.28.0.0/16). Входящие соединения проходят через nginx reverse proxy, что предотвращает прямой доступ к внутренним сервисам.</p>
@@ -6115,7 +6117,7 @@ else:
     <summary><strong>Содержание раздела</strong></summary>
     <ul>
     <li><a href="#format-versii">Формат версии</a></li>
-    <li><a href="#skrinshoty-v1-6-0-build-221">Скриншоты v1.6.0 (build 221)</a></li>
+    <li><a href="#skrinshoty">Скриншоты</a></li>
     <li><a href="#protsess-obnovleniya">Процесс обновления</a></li>
     </ul>
   </details>
@@ -6156,12 +6158,12 @@ else:
     <li><strong>1</strong> — мажорная версия (поколение биллинга)</li>
     <li><strong>0</strong> — минорная версия (функциональный релиз)</li>
     <li><strong>0</strong> — патч-версия</li>
-    <li><strong>build 324</strong> — номер сборки (инкрементируется при каждом деплое)</li>
+    <li><strong>обновление</strong> — номер сборки (инкрементируется при каждом деплое)</li>
   </ul>
   <p>Версия отображается в футере: <strong>СмИТ Биллинг 1.6</strong>. Файл версии: <code>billing/version.py</code>.</p>
 
   <div class="info-block">
-    <h4>Текущий релиз: v1.6.0 (build 221) — 18.04.2026</h4>
+    <h4>Текущий релиз: v1.6.0 — 18.04.2026</h4>
     <ul>
       <li>Справочник адресов — динамическая загрузка, фильтр по Району, клиентская сортировка и CSV</li>
       <li>Финансовые операции — фильтр по периоду, сводка прихода/расхода прямо во вкладке</li>
@@ -6174,7 +6176,7 @@ else:
     </ul>
   </div>
 
-  <h3 id="skrinshoty-v1-6-0-build-221">Скриншоты v1.6.0 (build 221)</h3>
+  <h3 id="skrinshoty">Скриншоты</h3>
   <h4>Десктоп</h4>
   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(400px,1fr));gap:12px;margin-bottom:20px">
     <div><img src="../img/v100/abonents_folder.png" alt="Папка абонентов" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Папка абонентов с поиском</div></div>
@@ -6225,7 +6227,7 @@ docker compose up -d</code></pre>
 
   <!-- ===== 16. Стороннее ПО ===== -->
   <h2 id="third-party">16. Стороннее ПО</h2>
-  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0 (build 456).</p>
+  <p>Совместимое программное обеспечение и интеграции с внешними системами, поддерживаемые СмИТ Биллинг v1.6.0.</p>
 
   <!-- ===== 17. Смена языка ===== -->
   <h2 id="language">17. Смена языка</h2>
@@ -6246,7 +6248,7 @@ docker compose up -d</code></pre>
   </details>
   </div>
 
-  <p>СмИТ Биллинг v1.6.0 (build 456) построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
+  <p>СмИТ Биллинг v1.6.0 построен на современном стеке технологий, обеспечивающем надёжность, масштабируемость и простоту эксплуатации.</p>
 
   <h3 id="pochemu-postgresql">Почему PostgreSQL</h3>
   <p>PostgreSQL 16 выбран в качестве основной СУБД по ряду причин:</p>
@@ -6998,8 +7000,8 @@ STARTED_AT, FINISHED_AT, EBS_LAST_TX_ID, STATS_JSON, DUMP_FILE, ERROR_MSG</code>
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 456)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">02.05.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 456)</span>&nbsp;|&nbsp;<span data-smit="updated">02.05.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">02.05.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;<span data-smit="updated">02.05.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=220"></script>
