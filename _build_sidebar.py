@@ -1,67 +1,15 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Контакты — СмИТ Биллинг v1.6.0 (build 469)</title>
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Контакты — СмИТ Биллинг v1.6.0 (build 469)">
-  <meta property="og:description" content="Отдел продаж, техническая поддержка, партнёрство. Электронная почта и мессенджеры.">
-  <meta property="og:url" content="https://docs.billing.smit34.ru/pages/contacts.html">
-  <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:locale" content="ru_RU">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Контакты — СмИТ Биллинг v1.6.0 (build 469)">
-  <meta name="twitter:description" content="Отдел продаж, техническая поддержка, партнёрство. Электронная почта и мессенджеры.">
-  <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
-  <meta name="description" content="Отдел продаж, техническая поддержка, партнёрство. Электронная почта и мессенджеры.">
-  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=428">
-  <link rel="stylesheet" href="../css/search.css?v=466">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.26.0/dist/tabler-icons.min.css">
-</head>
-<body>
+"""Update sidebar block in all docs/pages/*.html — single source of truth.
 
-<header class="header">
-  <div class="header-left">
-    <button class="menu-toggle" aria-label="Меню">&#9776;</button>
-    <div class="logo">
-      <div class="logo-icon">С</div>
-      <div class="logo-text"><span class="logo-main">СмИТ Биллинг 1.6 </span><span>Документация</span></div>
-    </div>
-  </div>
-  <div class="header-search"><div class="docs-search-wrap"><input type="search" id="docsSearch" class="docs-search-input" placeholder="Поиск по документации..." autocomplete="off"><span class="docs-search-icon"><i class="ti ti-search"></i></span><div class="docs-search-results" id="docsSearchResults"></div></div></div>
-  <div class="header-right">
-    <a href="../graphify/graph.html" class="header-nav-link" title="Граф зависимостей кода">
-      <i class="ti ti-topology-star-3 hnl-ico"></i><span class="hnl-txt">Граф</span>
-    </a>
-    <a href="../graphify/wiki/index.html" class="header-nav-link" title="Wiki архитектурных модулей">
-      <i class="ti ti-book-2 hnl-ico"></i><span class="hnl-txt">Wiki</span>
-    </a>
-    <button class="mobile-search-btn" aria-label="Поиск" title="Поиск"><i class="ti ti-search"></i></button>
-    <button class="theme-toggle" aria-label="Переключить тему" title="Светлая / тёмная тема">
-      <span class="icon-sun">&#9788;</span>
-      <span class="icon-moon">&#9790;</span>
-    </button>
-  </div>
-</header>
+Replaces existing <aside class="sidebar">...</aside> block with the new structure
+that includes "ЛК и мобильные" as a separate top-level menu item
+right after "Настройки биллинга".
 
-<div class="search-overlay" id="searchOverlay" role="dialog" aria-label="Поиск по документации">
-  <div class="search-overlay-inner">
-    <i class="ti ti-search search-prefix-icon"></i>
-    <input type="search" id="docsSearchMobile" placeholder="Поиск по документации..." autocomplete="off">
-    <button class="search-overlay-close" aria-label="Закрыть" id="searchOverlayClose"><i class="ti ti-x"></i></button>
-    <div class="search-overlay-results" id="docsSearchResultsMobile"></div>
-  </div>
-</div>
+Usage: python _build_sidebar.py
+"""
+import os
+import re
 
-<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
-
-<aside class="sidebar">
+SIDEBAR_BLOCK = '''<aside class="sidebar">
   <nav>
     <div class="nav-section">Разделы</div>
     <ul>
@@ -246,68 +194,32 @@
       </ul>
   <button class="sidebar-theme-toggle" aria-label="Тема"><span class="icon-sun"><i class="ti ti-sun"></i></span><span class="icon-moon"><i class="ti ti-moon"></i></span><span class="sidebar-theme-label">Сменить тему</span></button>
 </nav>
-</aside>
+</aside>'''
 
-<main class="content">
-  <div class="breadcrumb">
-    <a href="../index.html">Документация</a> <span class="sep">/</span> Контакты
-  </div>
 
-  <h1>Контакты</h1>
+def main():
+    pages_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'pages')
+    files = sorted(f for f in os.listdir(pages_dir) if f.endswith('.html'))
+    print(f'Found {len(files)} html files in {pages_dir}')
+    for fname in files:
+        fpath = os.path.join(pages_dir, fname)
+        with open(fpath, 'r', encoding='utf-8') as f:
+            text = f.read()
+        new_text, count = re.subn(
+            r'<aside class="sidebar">.*?</aside>',
+            SIDEBAR_BLOCK,
+            text,
+            count=1,
+            flags=re.DOTALL,
+        )
+        if count == 0:
+            print(f'  SKIP {fname}: sidebar not found')
+            continue
+        with open(fpath, 'w', encoding='utf-8') as f:
+            f.write(new_text)
+        print(f'  OK   {fname}')
+    print('done')
 
-  <div class="welcome-image">
-    <video src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/robot_contact.mp4"
-           autoplay muted playsinline preload="auto"
-           style="width:100%;border-radius:8px;display:block"
-           onended="this.outerHTML='<img src=&apos;https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/robot_contact.jpg&apos; style=&apos;width:100%;border-radius:8px;display:block&apos; alt=&apos;&apos;>'"></video>
-  </div>
 
-  <h2 id="email">Электронная почта</h2>
-  <table>
-    <thead>
-      <tr><th>Направление</th><th>Email</th></tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Вопросы по приобретению и общие вопросы</td>
-        <td><a href="mailto:sales@smit34.ru">sales@smit34.ru</a></td>
-      </tr>
-      <tr>
-        <td>Технические вопросы</td>
-        <td><a href="mailto:support@smit34.ru">support@smit34.ru</a></td>
-      </tr>
-      <tr>
-        <td>Партнёрство</td>
-        <td><a href="mailto:partners@smit34.ru">partners@smit34.ru</a></td>
-      </tr>
-    </tbody>
-  </table>
-
-  <h2 id="messengers">Телефон и Telegram</h2>
-  <table>
-    <thead>
-      <tr><th>Отдел</th><th>Телефон</th></tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Отдел продаж</td>
-        <td>+7 (937) 555-11-22</td>
-      </tr>
-      <tr>
-        <td>Менеджер продукта Billing</td>
-        <td>+7 (8442) 55-40-35</td>
-      </tr>
-    </tbody>
-  </table>
-</main>
-
-<footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 469)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">06.05.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 469)</span>&nbsp;|&nbsp;<span data-smit="updated">06.05.2026</span></span>
-</footer>
-
-<script src="../js/main.js?v=466"></script>
-<script src="../js/version.js"></script>
-<script src="../js/search.js?v=466"></script>
-</body>
-</html>
+if __name__ == '__main__':
+    main()
