@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Интеграция с СОРМ3 — СмИТ Биллинг v1.6.0 (build 453)</title>
+  <title>Интеграция с СОРМ3 — СмИТ Биллинг v1.6.0 (build 454)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v1.6.0 (build 453)">
+  <meta property="og:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v1.6.0 (build 454)">
   <meta property="og:description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/sorm.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
@@ -14,13 +14,13 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v1.6.0 (build 453)">
+  <meta name="twitter:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v1.6.0 (build 454)">
   <meta name="twitter:description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=428">
-  <link rel="stylesheet" href="../css/search.css?v=222">
+  <link rel="stylesheet" href="../css/style.css?v=458">
+  <link rel="stylesheet" href="../css/search.css?v=458">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.26.0/dist/tabler-icons.min.css">
 </head>
@@ -446,9 +446,7 @@
   </div>
 
 
-  <p>До build 410 SQL-запрос отчёта <code>ABONENT_LEGAL</code> содержал <strong>захардкоженные имена реквизитов</strong> в условиях <code>WHERE NAME='ИНН'</code>, <code>'КПП'</code>, <code>'ОГРН'</code>, и т.д. Любое переименование атрибута в <code>/admin/dictionary/UserAttributes/</code> молча ломало выгрузку — отчёт продолжал работать, но возвращал NULL для всех абонентов.</p>
-
-  <p>Начиная с build 410 SQL отчётов СОРМ генерируется автоматически через сервис <code>billing.services.sorm_sql.SormReportBuilder</code>, который читает <strong>метаданные</strong> прямо из записей <code>UserAttributes</code>:</p>
+  <p>SQL отчётов СОРМ генерируется автоматически через сервис <code>billing.services.sorm_sql.SormReportBuilder</code>, который читает <strong>метаданные</strong> прямо из записей <code>UserAttributes</code>. Это позволяет переименовывать атрибуты в <code>/admin/dictionary/UserAttributes/</code> без поломки выгрузки — отчёт всегда обращается к актуальным записям через ID, а не по захардкоженным именам.</p>
 
   <table>
     <thead><tr><th>Поле</th><th>Тип</th><th>Назначение</th></tr></thead>
@@ -659,8 +657,8 @@ python manage.py merge_sorm_attribute_dups --by-name --apply</code></pre>
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 453)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">02.05.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 453)</span>&nbsp;|&nbsp;<span data-smit="updated">02.05.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 454)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">02.05.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 454)</span>&nbsp;|&nbsp;<span data-smit="updated">02.05.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=220"></script>
