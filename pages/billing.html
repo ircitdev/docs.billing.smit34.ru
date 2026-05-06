@@ -1047,6 +1047,20 @@ docker compose up -d</code></pre>
   <h4 id="search-api">CSV-экспорт и бесконечная подгрузка</h4>
   <p>CSV включает те же колонки + email и телефон. Для больших выборок (&gt; 500 записей) результат загружается порциями при скролле без перезагрузки страницы.</p>
 
+  <!-- Карта абонентов -->
+  <h3 id="abonent-map">Карта абонентов</h3>
+  <p>Страница <code>/admin/abonents/map/</code> показывает абонентов на интерактивной карте по координатам адресов из справочника «Адреса». Используется для оперативного контроля состояния сети по районам и быстрого поиска проблемных зон.</p>
+  <ul>
+    <li><strong>Маркеры абонентов</strong>: 🟢 активный · 🔴 заблокирован (b_negbal/b_admin) · 🟡 добровольная блокировка · ⚪ удалён.</li>
+    <li><strong>Кластеризация</strong>: при оттдалении точки группируются с подсказкой «N абонентов» — справа в углу карты есть легенда размеров кластеров и цветов статусов.</li>
+    <li><strong>Слои</strong>: Абоненты / NAS / Коммутаторы / Узлы (видимы при zoom ≥ 14). Toggle-кнопки в верхней панели.</li>
+    <li><strong>Поиск</strong> по адресу / абоненту / оборудованию (Ctrl+K) — три секции в dropdown'е, при выборе карта летит к точке и открывается popup.</li>
+    <li><strong>Popup абонента</strong>: статус-бейдж, тариф, баланс, кнопки «Профиль», «Позвонить» (<code>tel:</code>), «E-mail» (<code>mailto:</code>).</li>
+    <li><strong>Сохранение видового положения</strong>: после прокрутки/зума состояние пишется в <code>localStorage.map_last_view</code> на 7 дней. URL-параметры <code>?center=lat,lon&amp;zoom=N</code> имеют приоритет.</li>
+    <li><strong>Геокодирование</strong>: используется DaData (токен в Настройки → Интеграции → Адреса). Команда <code>manage.py geocode_homes_dadata</code> заполняет lat/lon у адресов, у которых их ещё нет.</li>
+  </ul>
+  <p>Доступ из меню: <strong>Абоненты → 🗺 На карте</strong>.</p>
+
   <!-- Статистика, аудит, диагностика -->
   <h3 id="statistics">Статистика, аудит, диагностика</h3>
   <p><strong>Аудит:</strong> для просмотра аудита абонента откройте карточку «Аудит» в профиле абонента. Отображаются все изменения: карточка, услуги, отправленные сообщения и т.д.</p>
@@ -4216,7 +4230,7 @@ WHERE op_date BETWEEN :ОтДаты|date$ AND :ДоДаты|date$
 
   <h4>Вкладка «Серверные логи»</h4>
   <p>Просмотр серверных логов в реальном времени (последние 500 строк). URL: <code>/admin/reports/dev/?tab=logs</code></p>
-  <img src="../img/v140/server_logs.png" alt="Серверные логи" class="screenshot">
+  <img src="../img/v457/v457_server_logs.png" alt="Серверные логи" class="screenshot">
   <p>12 лог-файлов с русскими названиями:</p>
   <table class="table table-sm">
     <thead><tr><th>Название</th><th>Файл</th><th>Описание</th></tr></thead>
@@ -4319,7 +4333,7 @@ WHERE op_date BETWEEN :ОтДаты|date$ AND :ДоДаты|date$
     <li><strong>Фильтры по периоду</strong> — быстрые кнопки: месяц, квартал, год, произвольный диапазон дат</li>
     <li><strong>Адаптивность</strong> — на мобильных устройствах графики выстраиваются в одну колонку</li>
   </ul>
-  <img src="../img/v100/reports_dashboard.png" alt="Панель директора — графики" class="screenshot">
+  <img src="../img/v457/v457_reports_dashboard.png" alt="Панель директора — графики" class="screenshot">
 
   <h4>Журнал платежей (PayLog)</h4>
   <p>Страница <code>/admin/reports/PayLog/</code> — таблица платежей с улучшенным интерфейсом:</p>
@@ -4328,7 +4342,7 @@ WHERE op_date BETWEEN :ОтДаты|date$ AND :ДоДаты|date$
     <li><strong>Выбор количества строк</strong> — 20 / 50 / 100 / 200 строк на страницу</li>
     <li><strong>Тёмная тема</strong> — полная совместимость jqGrid с тёмным режимом</li>
   </ul>
-  <img src="../img/v100/reports_paylog.png" alt="Журнал платежей" class="screenshot">
+  <img src="../img/v457/v457_reports_paylog.png" alt="Журнал платежей" class="screenshot">
 
   <h4>Аудит (AuditOperations)</h4>
   <p>Страница <code>/admin/reports/AuditOperations/</code> — журнал действий пользователей:</p>
@@ -4338,7 +4352,7 @@ WHERE op_date BETWEEN :ОтДаты|date$ AND :ДоДаты|date$
     <li><strong>Прилипающий заголовок</strong> — шапка таблицы остаётся видна при прокрутке</li>
     <li><strong>Карточки на мобильных</strong> — на узких экранах каждая запись отображается как карточка</li>
   </ul>
-  <img src="../img/v100/reports_audit.png" alt="Аудит операций" class="screenshot">
+  <img src="../img/v457/v457_reports_audit.png" alt="Аудит операций" class="screenshot">
 
   <h4>Конструктор отчётов (Custom Reports)</h4>
   <p>Возможности страницы <code>/admin/reports/AdminCustomReports/</code>:</p>
@@ -4349,7 +4363,7 @@ WHERE op_date BETWEEN :ОтДаты|date$ AND :ДоДаты|date$
     <li><strong>Календарь в параметрах</strong> — поля Начало/Конец периода получают нативный date picker</li>
     <li><strong>Модальное окно</strong> — редактирование с полем «Описание»</li>
   </ul>
-  <img src="../img/v100/reports_constructor_list.png" alt="Конструктор отчётов — обновлённый список" class="screenshot">
+  <img src="../img/v457/v457_reports_constructor.png" alt="Конструктор отчётов — обновлённый список" class="screenshot">
 
   <h4>RADIUS-сессии (UsersRadiusauth)</h4>
   <p>Страница <code>/admin/Abonents/UsersRadiusauth/</code> — кастомный список 5500+ RADIUS-сессий:</p>
@@ -4382,7 +4396,7 @@ WHERE op_date BETWEEN :ОтДаты|date$ AND :ДоДаты|date$
     <li><strong>Диапазон дат</strong> — произвольный выбор дат через поля ввода</li>
     <li><strong>Производительность</strong> — агрегация рассчитывается отдельным запросом, не нагружает gunicorn</li>
   </ul>
-  <img src="../img/v100/abonent_ops.png" alt="Финансовые операции абонента" class="screenshot">
+  <img src="../img/v457/v457_abonent_ops.png" alt="Финансовые операции абонента" class="screenshot">
 
   <!-- ===== 10.8. Месячное списание ===== -->
   <h3 id="monthly-billing">10.8. Месячное списание</h3>
@@ -4435,7 +4449,7 @@ WHERE op_date BETWEEN :ОтДаты|date$ AND :ДоДаты|date$
 
   <h3 id="staff-management">10.10. Профиль и управление персоналом</h3>
   <p>Страница профиля (<code>/admin/settings/profile/</code>) и управления персоналом (<code>/admin/settings/staff/</code>):</p>
-  <img src="../img/v140/profile.png" alt="Профиль пользователя" class="screenshot">
+  <img src="../img/v457/v457_profile.png" alt="Профиль пользователя" class="screenshot">
   <h4>Профиль</h4>
   <ul>
     <li><strong>Компактная карточка</strong> — аватарка слева, поля ввода справа (имя, фамилия, email, телефон)</li>
@@ -4443,7 +4457,7 @@ WHERE op_date BETWEEN :ОтДаты|date$ AND :ДоДаты|date$
     <li><strong>Аудит действий</strong> — последние 10 действий пользователя с русскими названиями таблиц</li>
     <li><strong>Просмотр чужого профиля</strong> — суперпользователь может просмотреть профиль любого сотрудника через <code>?user_id=X</code></li>
   </ul>
-  <img src="../img/v140/staff_list.png" alt="Управление персоналом" class="screenshot">
+  <img src="../img/v457/v457_staff_list.png" alt="Управление персоналом" class="screenshot">
   <h4>Управление персоналом</h4>
   <ul>
     <li><strong>Колонка «Контакты»</strong> — email, телефон, иконка Telegram (если подключён)</li>
@@ -5553,7 +5567,7 @@ python manage.py fix_sorm_reports --no-create  # только обновить S
     <li><strong>Удаление</strong> — прямо из модалки с подтверждением. Баланс абонента откатывается через существующий механизм <code>DeleteObjectFormMixin</code>.</li>
     <li><strong>Адаптивность</strong> — колонки «Тип / Описание / Номер» скрываются на мобильных (&lt; 768 px).</li>
   </ul>
-  <img src="../img/v100/finops_list.png" alt="Финансовые операции — список с фильтрами" class="screenshot">
+  <img src="../img/v457/v457_finops_list.png" alt="Финансовые операции — список с фильтрами" class="screenshot">
 
   <!-- 13.2. Учётная запись -->
   <h3 id="modal-users">13.2. Учётная запись — модал с вкладками</h3>
@@ -6179,14 +6193,14 @@ else:
   <h3 id="skrinshoty">Скриншоты</h3>
   <h4>Десктоп</h4>
   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(400px,1fr));gap:12px;margin-bottom:20px">
-    <div><img src="../img/v100/abonents_folder.png" alt="Папка абонентов" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Папка абонентов с поиском</div></div>
-    <div><img src="../img/v100/abonent_card.png" alt="Карточка абонента" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Карточка абонента</div></div>
-    <div><img src="../img/v100/abonent_ops.png" alt="Операции абонента" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Финансовые операции с фильтром</div></div>
+    <div><img src="../img/v457/v457_abonents_folder.png" alt="Папка абонентов" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Папка абонентов с поиском</div></div>
+    <div><img src="../img/v457/v457_abonent_card.png" alt="Карточка абонента" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Карточка абонента</div></div>
+    <div><img src="../img/v457/v457_abonent_ops.png" alt="Операции абонента" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Финансовые операции с фильтром</div></div>
     <div><img src="../img/v100/homes_list.png" alt="Справочник адресов" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Справочник адресов с Районом</div></div>
-    <div><img src="../img/v100/reports_paylog.png" alt="Журнал платежей" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Журнал платежей</div></div>
-    <div><img src="../img/v100/reports_audit.png" alt="Аудит" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Аудит операций</div></div>
-    <div><img src="../img/v100/reports_custom.png" alt="Конструктор отчётов" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Конструктор отчётов</div></div>
-    <div><img src="../img/v100/reports_dashboard.png" alt="Панель директора" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Панель директора</div></div>
+    <div><img src="../img/v457/v457_reports_paylog.png" alt="Журнал платежей" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Журнал платежей</div></div>
+    <div><img src="../img/v457/v457_reports_audit.png" alt="Аудит" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Аудит операций</div></div>
+    <div><img src="../img/v457/v457_reports_constructor.png" alt="Конструктор отчётов" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Конструктор отчётов</div></div>
+    <div><img src="../img/v457/v457_reports_dashboard.png" alt="Панель директора" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Панель директора</div></div>
     <div><img src="../img/v100/interface_settings.png" alt="Настройки интерфейса" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Настройки интерфейса</div></div>
     <div><img src="../img/v100/permission_settings.png" alt="Права доступа" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">Права доступа</div></div>
     <div><img src="../img/v100/integrations_aida.png" alt="AIDA интеграция" style="width:100%;border:1px solid #ddd;border-radius:4px"><div class="text-muted" style="font-size:.85em;text-align:center">AI-интеграции</div></div>
