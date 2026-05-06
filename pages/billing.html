@@ -19,7 +19,7 @@
   <meta name="twitter:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
   <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=456">
+  <link rel="stylesheet" href="../css/style.css?v=457">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.26.0/dist/tabler-icons.min.css">
   <link rel="stylesheet" href="../css/search.css?v=222">
@@ -202,9 +202,6 @@
           <li class="sub-item"><a href="../pages/billing.html#audit">10.1. Аудит</a></li>
           <li class="sub-item"><a href="../pages/billing.html#payment-log">10.2. Журнал платежей</a></li>
           <li class="sub-item"><a href="../pages/billing.html#report-constructor">10.3. Библиотека отчётов</a></li>
-          <li class="sub-item"><a href="../pages/billing.html#custom-reports-v449">&nbsp;&nbsp;↳ UX-доводка (build 449)</a></li>
-          <li class="sub-item"><a href="../pages/billing.html#custom-reports-ai-455">&nbsp;&nbsp;↳ AI-помощник (build 455)</a></li>
-          <li class="sub-item"><a href="../pages/billing.html#custom-reports-final-456">&nbsp;&nbsp;↳ Финальный обзор (build 456)</a></li>
           <li class="sub-item"><a href="../pages/billing.html#director-report">10.4. Панель директора</a></li>
           <li class="sub-item"><a href="../pages/billing.html#audit-report">10.5. По аудитам</a></li>
           <li class="sub-item"><a href="../pages/billing.html#dev-reports">10.6. Разработка и логи</a></li>
@@ -3824,13 +3821,7 @@ chmod +x restore.sh
     <ul>
     <li><a href="#audit">10.1. Аудит</a></li>
     <li><a href="#payment-log">10.2. Журнал платежей</a></li>
-    <li><a href="#report-constructor">10.3. Библиотека отчётов</a>
-        <ul style="margin:.25rem 0 .25rem 1rem">
-            <li><a href="#custom-reports-v449">10.3А. UX-доводка Sprint 1+2 (build 449)</a></li>
-            <li><a href="#custom-reports-ai-455">10.3Б. AI-помощник создания отчётов (build 455)</a></li>
-            <li><a href="#custom-reports-final-456">10.3В. Финальный обзор + аудит SQL (build 456)</a></li>
-        </ul>
-    </li>
+    <li><a href="#report-constructor">10.3. Библиотека отчётов</a></li>
     <li><a href="#director-report">10.4. Отчёт для директора</a></li>
     <li><a href="#audit-report">10.5. Формирование отчёта по аудитам</a></li>
     <li><a href="#dev-reports">10.6. Разработка и логи</a></li>
@@ -3924,318 +3915,175 @@ chmod +x restore.sh
   </ul>
   <p>Поддерживает поиск и фильтрацию. Экспорт в CSV.</p>
 
+
   <h3 id="report-constructor">10.3. Библиотека отчётов</h3>
-  <p>Раздел <code>/admin/reports/AdminCustomReports/</code> — 63 SQL-отчёта для оперативной работы оператора. Каждый отчёт имеет краткое описание, тип (категорию) и может быть добавлен в избранное.</p>
-  <img src="../img/v221/reports_library_list.png" alt="Библиотека отчётов — список" class="screenshot">
+  <p>Раздел <code>/admin/reports/AdminCustomReports/</code> — каталог SQL-отчётов для оперативной работы. Каждый отчёт имеет название, описание, тип, SQL-запрос с параметрами и может быть запущен, отредактирован, продублирован или добавлен в избранное. Создание новых отчётов — вручную или через AI-помощника.</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/reports_library_v456/reports_v456_overview.png" alt="Библиотека отчётов" class="screenshot">
 
-  <h4>Описания отчётов</h4>
-  <p>Колонка «SQL-запрос» заменена на «Описание» — краткий текст о содержимом отчёта. SQL по-прежнему доступен в модальном окне редактирования. Описания написаны для всех 63 отчётов.</p>
-
-  <h4>Избранное</h4>
-  <p>Каждый сотрудник может добавить отчёты в избранное (★). Кнопка-фильтр над таблицей показывает только избранные. Избранное привязано к текущему пользователю — каждый видит своё.</p>
-  <img src="../img/v100/reports_constructor_fav.png" alt="Избранные отчёты" class="screenshot">
-
-  <h4>Категории отчётов</h4>
-  <p>Все 63 отчёта распределены по 7 типам:</p>
+  <h4 id="cr-tabs">Вкладки и фильтры</h4>
+  <p>Сверху списка — вкладки по типам отчётов с количеством записей в каждой категории. Первая вкладка «Все» показывает все отчёты вне зависимости от типа (открывается по умолчанию). Последний пункт линии вкладок — кнопка <code>+</code> справа: открывает <a href="#cr-types-modal">модалку управления типами</a>.</p>
+  <p>Под вкладками — KPI-strip (Всего отчётов · Запусков сегодня · Среднее время выполнения за 24ч · Самый популярный отчёт за 7 дней).</p>
+  <p>Ниже — chip-фильтры со счётчиками:</p>
   <ul>
-    <li><strong>Бухгалтерия</strong> (17) — платежи, выручка, баланс, должники, проводки</li>
-    <li><strong>ЦОК</strong> (14) — абоненты, договора, услуги, контакты</li>
-    <li><strong>Техсервис</strong> (12) — IP-пулы, MAC, RADIUS-аудит, NAS, трафик</li>
-    <li><strong>Телефония</strong> (11) — VoIP звонки, Мегафон, взаиморасчёты</li>
-    <li><strong>Руководство</strong> (4) — активные договора, покрытие, аналитика</li>
-    <li><strong>ЦУС</strong> (4) — СОРМ, PPPoE сессии</li>
-    <li><strong>Техподдержка</strong> (1) — поиск по номеру</li>
+    <li><strong>Все</strong> — без фильтра</li>
+    <li><strong>🤳 ЛК</strong> — отчёты с разрешением запуска в личном кабинете абонента</li>
+    <li><strong>⚡ Сегодня</strong> — те, что хотя бы раз запускались сегодня</li>
+    <li><strong>⌛ &gt; 30 дн</strong> — давно не запускались (кандидаты на удаление/обновление)</li>
+    <li><strong>❌ Не запуск.</strong> — никогда не запускались</li>
+  </ul>
+  <p>Активный фильтр сохраняется в <code>localStorage</code> и применяется при следующем заходе.</p>
+
+  <h4 id="cr-toolbar">Поиск и действия</h4>
+  <p>В правой части toolbar:</p>
+  <ul>
+    <li><strong>Поиск</strong> по названию и описанию (горячая клавиша <kbd>Ctrl+K</kbd> / <kbd>Cmd+K</kbd>) — поиск работает live, подсвечивает совпадения</li>
+    <li><strong>ⓘ</strong> — ссылка на эту документацию</li>
+    <li><strong>⭐</strong> — переключение «показать только избранные»</li>
+    <li><strong>«Всего: N»</strong> или <strong>«Найдено: M из N»</strong> — счётчик</li>
+    <li><strong>✨ AI</strong> — открыть <a href="#cr-ai">AI-помощника</a> для создания отчёта по описанию задачи</li>
+    <li><strong>➕ Добавить</strong> — открыть модалку создания отчёта вручную</li>
   </ul>
 
-  <h4>Модальное окно редактирования</h4>
-  <p>Создание и редактирование отчётов — в модальном окне (modal-xl). Поля: название, описание, тип, SQL-запрос (со счётчиком строк), шаблон, разрешение ЛК.</p>
-  <img src="../img/v221/reports_library_modal.png" alt="Модальное окно редактирования отчёта" class="screenshot">
+  <h4 id="cr-table">Таблица отчётов</h4>
+  <p>Колонки:</p>
+  <ul>
+    <li><strong>☑</strong> — чекбокс для bulk-операций (см. <a href="#cr-bulk">массовые действия</a>)</li>
+    <li><strong>№</strong> — ID отчёта</li>
+    <li><strong>Наименование</strong> — кликабельная ссылка зелёного цвета. Клик открывает <a href="#cr-edit-modal">модалку редактирования</a>. Длинные имена обрезаются с многоточием (полное имя в tooltip). Рядом с именем может быть бейдж 🤳 — отчёт доступен в ЛК</li>
+    <li><strong>Описание</strong> — короткий текст, обрезается с многоточием, полный текст в tooltip</li>
+    <li><strong>Тип отчёта</strong> — цветной бейдж с иконкой (см. <a href="#cr-types-list">типы</a>). На отдельной типизированной вкладке колонка скрыта</li>
+    <li><strong>Последний запуск</strong> — относительное время («2 дн. назад», «не запускался»). Цветовая индикация: серый (норма), оранжевый («&gt; 30 дней»), серый курсив («не запускался»)</li>
+    <li><strong>Действие</strong> — 4 кнопки в правом конце строки:
+      <ul>
+        <li>⭐ — добавить/убрать из избранного (личное для каждого пользователя)</li>
+        <li>▶ — запустить отчёт (переход на <code>/{id}/executesql/</code>)</li>
+        <li>✏ — редактировать (открывает модалку)</li>
+        <li>📋 — дублировать (открывает модалку с предзаполненными name + «(копия)», description, SQL, type)</li>
+      </ul>
+    </li>
+  </ul>
 
-  <h4>Параметры с календарём</h4>
-  <p>Поля ввода дат (Начало/Конец периода) автоматически получают нативный календарь браузера. Распознаются по label-у и имени поля.</p>
-  <img src="../img/v100/reports_constructor_datepicker.png" alt="Календарь в параметрах" class="screenshot">
-
-  <h4>Новые отчёты (build 101)</h4>
-  <p>10 новых SQL-отчётов:</p>
+  <h4 id="cr-types-list">Типы отчётов</h4>
+  <p>Список типов <a href="#cr-types-modal">управляется через CRUD-модалку</a>. На testbill 7 типов с цветовой схемой:</p>
   <table class="table table-sm">
-    <thead><tr><th>Отчёт</th><th>Тип</th><th>Описание</th></tr></thead>
+    <thead><tr><th>Тип</th><th>Иконка</th><th>Назначение</th></tr></thead>
     <tbody>
-      <tr><td>Выручка по тарифам за период</td><td>Бухгалтерия</td><td>Сумма начислений и кол-во абонентов по тарифу</td></tr>
-      <tr><td>Баланс абонентов — сводка</td><td>Бухгалтерия</td><td>Положительный / нулевой / отрицательный баланс</td></tr>
-      <tr><td>Топ-50 должников</td><td>Бухгалтерия</td><td>Наибольшая задолженность с адресом и контактами</td></tr>
-      <tr><td>Загрузка IP-пулов</td><td>Техсервис</td><td>Занято / свободно / % по каждому пулу</td></tr>
-      <tr><td>Топ-50 по трафику</td><td>Техсервис</td><td>Наибольший трафик текущей RADIUS-сессии</td></tr>
-      <tr><td>Загрузка NAS</td><td>Техсервис</td><td>Online-сессий и трафик по каждому NAS</td></tr>
-      <tr><td>Новые подключения за период</td><td>Руководство</td><td>Договоры, созданные за период</td></tr>
-      <tr><td>Абоненты без услуг</td><td>ЦОК</td><td>Договор есть, услуги не подключены</td></tr>
-      <tr><td>Абоненты без учётной записи</td><td>ЦОК</td><td>Договор есть, Users нет</td></tr>
-      <tr><td>Покрытие по улицам</td><td>Руководство</td><td>Кол-во абонентов по каждой улице/дому</td></tr>
+      <tr><td><strong>Бухгалтерия</strong></td><td>fa-coins</td><td>Платежи, выручка, баланс, должники, проводки</td></tr>
+      <tr><td><strong>ЦОК</strong></td><td>fa-headset</td><td>Абоненты, договора, услуги, контакты</td></tr>
+      <tr><td><strong>Техсервис</strong></td><td>fa-tools</td><td>IP-пулы, MAC, RADIUS-аудит, NAS, трафик</td></tr>
+      <tr><td><strong>Телефония</strong></td><td>fa-phone</td><td>VoIP звонки, Мегафон, взаиморасчёты</td></tr>
+      <tr><td><strong>Руководство</strong></td><td>fa-chart-line</td><td>Активные договора, покрытие, аналитика, действия сотрудников</td></tr>
+      <tr><td><strong>ЦУС</strong></td><td>fa-shield-alt</td><td>СОРМ, PPPoE сессии</td></tr>
+      <tr><td><strong>Техподдержка</strong></td><td>fa-life-ring</td><td>Поиск по номеру, диагностика</td></tr>
     </tbody>
   </table>
-  <img src="../img/v100/reports_constructor_balance.png" alt="Баланс по тарифам" class="screenshot">
-  <img src="../img/v100/reports_constructor_ippools.png" alt="Загрузка IP-пулов" class="screenshot">
 
-  <h4>Вкладка «Все»</h4>
-  <p>Добавлена вкладка «Все» — первая в списке. Показывает все отчёты вне зависимости от категории. С ней удобно искать отчёт по названию, не переключая вкладки.</p>
+  <h4 id="cr-edit-modal">Модалка редактирования отчёта</h4>
+  <p>Открывается кликом на имя отчёта или на ✏. Содержит:</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/reports_library_v456/reports_v456_modal_codemirror.png" alt="Модалка редактирования отчёта" class="screenshot">
+  <ul>
+    <li><strong>Левая колонка</strong>: название, описание, тип отчёта (выпадающий список), toggle «Разрешено выполнение в ЛК», раскрывающийся блок справки по синтаксису параметров с примером SQL</li>
+    <li><strong>Правая колонка</strong>: SQL-редактор на чёрном фоне с подсветкой PostgreSQL-синтаксиса. Параметры <code>:Name|тип$</code> подсвечиваются жёлтым. Под редактором — chip-список параметров и счётчик «N строк · M парам.»</li>
+    <li><strong>Кнопки</strong>: «🗑 Удалить» (слева, для существующих), «Отмена», «✓ Сохранить»</li>
+  </ul>
 
-  <h4>История выполнения отчётов</h4>
-  <p>Каждое выполнение SQL-отчёта автоматически сохраняется в историю (до 10 последних на отчёт). На странице выполнения отчёта справа отображается панель истории.</p>
+  <h5 id="cr-codemirror">SQL-редактор</h5>
+  <ul>
+    <li>Подсветка синтаксиса PostgreSQL</li>
+    <li>Номера строк</li>
+    <li>Перенос длинных строк (без горизонтального скролла)</li>
+    <li>Подсветка парных скобок и активной строки</li>
+    <li>Поиск по тексту: <kbd>Ctrl+F</kbd> / <kbd>Cmd+F</kbd></li>
+    <li>Toggle комментария: <kbd>Ctrl+/</kbd> / <kbd>Cmd+/</kbd></li>
+    <li>Tab — отступ 2 пробела</li>
+  </ul>
+
+  <h5 id="cr-params">Параметры в SQL</h5>
+  <p>Параметры подставляются в SQL по синтаксису <code>:Название|тип$</code>. Поддерживаются 4 типа:</p>
+  <ul>
+    <li><code>:Дата|date$</code> — date-picker, подставляется как date-литерал</li>
+    <li><code>:Сумма|sum$</code> — число с десятичными</li>
+    <li><code>:Абонент|select[Abonents]$</code> — выпадающий список из FK-модели (Abonents, Tarif, Usluga, ConnectionPoints, Status, FinOpType)</li>
+    <li><code>:Месяц|choices[1^Январь|2^Февраль|3^Март]$</code> — фиксированный список с парами <code>value^label</code></li>
+  </ul>
+  <p><strong>Пример:</strong></p>
+  <pre>SELECT op_id, op_date, op_summa
+FROM finance_operations
+WHERE op_date BETWEEN :ОтДаты|date$ AND :ДоДаты|date$
+  AND abonent_id = :Абонент|select[Abonents]$</pre>
+  <p>На странице запуска отчёта параметры превращаются в форму ввода. Дата-поля по умолчанию: «Дата с» = 1 месяц назад, «Дата по» = сегодня.</p>
+
+  <h4 id="cr-types-modal">Управление типами отчётов</h4>
+  <p>Открывается кликом на <code>+</code> в правом конце линии вкладок. Внутри модалки — таблица типов с цветными бейджами и счётчиком отчётов в каждом типе. Действия: создать новый тип, переименовать, удалить.</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/reports_library_v456/reports_v456_types_modal.png" alt="Модалка управления типами" class="screenshot">
+  <p>При удалении типа отчёты с этим типом не теряются — у них значение сбрасывается на «не указан» (попадают на вкладку «Не определено»).</p>
+
+  <h4 id="cr-ai">AI-помощник создания отчётов</h4>
+  <p>Кнопка <strong>✨ AI</strong> в toolbar открывает чат с AI-ассистентом. Пользователь описывает задачу простыми словами на русском, AI задаёт уточняющие вопросы и в итоге генерирует готовый SQL-отчёт.</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/reports_library_v456/reports_v456_ai_modal_green.png" alt="AI-помощник" class="screenshot">
+  <p><strong>Типичный сценарий:</strong></p>
+  <ol>
+    <li>Открыть AI-чат, описать задачу: «Топ-10 должников за месяц с балансом и телефоном»</li>
+    <li>AI задаёт уточняющие вопросы (период? фильтры по статусу? источник телефона? исключать ли удалённых?)</li>
+    <li>Пользователь отвечает текстом</li>
+    <li>AI возвращает готовый JSON-черновик с именем, описанием и SQL-кодом</li>
+    <li>Появляется зелёный draft-banner с кнопкой <strong>«Создать отчёт»</strong></li>
+    <li>Клик передаёт черновик в <a href="#cr-edit-modal">модалку редактирования</a> с предзаполненными полями</li>
+    <li>Пользователь проверяет SQL, при необходимости правит и нажимает «Сохранить»</li>
+  </ol>
+  <p><strong>4 готовых шаблона</strong> внизу AI-модалки кликом подставляются в поле ввода: «Должники свыше 1000 руб», «Топ-10 тарифов по выручке за месяц», «Абоненты с просрочкой более 3 месяцев», «Загрузка NAS по числу активных сессий».</p>
+  <p><strong>Что AI знает:</strong> ключевые таблицы биллинга (abonents, admin_accounts, tarif, usluga, finance_operations, pay_log, users, homes, nas, connection_points), все их колонки и типы, правила (денежные поля × 10^10, MPTT-дерево абонентов, исключение <code>is_folder</code>/<code>deleted</code>), синтаксис параметров.</p>
+  <p><strong>Hot keys в чате:</strong> <kbd>Ctrl+Enter</kbd> отправить, <kbd>Enter</kbd> — перенос строки.</p>
+
+  <h4 id="cr-bulk">Массовые операции</h4>
+  <p>При выделении хотя бы одной строки чекбоксом сверху появляется sticky-toolbar с тремя действиями:</p>
+  <ul>
+    <li><strong>Изменить тип на…</strong> — выпадающий список всех типов + «(не указан)». Применяется ко всем выбранным записям</li>
+    <li><strong>📄 Экспорт CSV</strong> — скачивание выбранных отчётов в CSV (UTF-8 BOM, разделитель <code>;</code> для Excel RU). Колонки: ID, Название, Тип, Описание, В ЛК</li>
+    <li><strong>🗑 Удалить</strong> — массовое удаление с подтверждением</li>
+  </ul>
+  <p>Master-checkbox в шапке таблицы выделяет/снимает все видимые строки сразу. Поддерживается indeterminate-state (часть выбрана). Кнопка «✕ Сбросить» очищает выделение.</p>
+
+  <h4 id="cr-mobile">Мобильная версия</h4>
+  <p>На мобильных устройствах (≤767px) раздел переходит в режим «только запуск»:</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/reports_library_v456/reports_v456_mobile.png" alt="Мобильная версия" class="screenshot">
+  <ul>
+    <li>Карточка отчёта = только название + кнопка ▶ запуска</li>
+    <li>Клик по названию ведёт сразу на <code>/executesql/</code> (без модалки)</li>
+    <li>Скрыто: №, описание, тип, время последнего запуска, ⭐, ✏, 📋</li>
+    <li>Скрыты: чекбоксы bulk, кнопки «Типы», «✨ AI», «➕ Добавить»</li>
+    <li>Chips и поиск работают, KPI-strip 2×2, вкладки горизонтальный scroll</li>
+  </ul>
+
+  <h4 id="cr-history">История выполнения</h4>
+  <p>Каждое выполнение SQL-отчёта автоматически сохраняется (до 10 последних на отчёт). На странице запуска отчёта справа — панель истории.</p>
   <img src="../img/v140/report_execute.png" alt="Выполнение отчёта с историей" class="screenshot">
   <ul>
     <li><strong>Уникальный URL</strong> — каждый результат доступен по постоянной ссылке <code>/admin/reports/AdminCustomReports/{id}/history/{exec_id}/</code></li>
-    <li><strong>Действия</strong> — просмотр, копирование ссылки, экспорт CSV, удаление (суперадмин)</li>
-    <li><strong>Параметры</strong> — отображаются заданные при запуске параметры</li>
-    <li><strong>Время выполнения</strong> — показано в миллисекундах</li>
-    <li><strong>Кнопка «Изменить и выполнить»</strong> — для параметризованных отчётов возвращает к форме</li>
-    <li><strong>Кнопки экспорта и печати</strong> — в режиме просмотра истории</li>
-  </ul>
-  <p>Дата-поля по умолчанию: «Дата с» = 1 месяц назад, «Дата по» = сегодня.</p>
-
-  <h4>Отчёт «Действия сотрудника»</h4>
-  <p>SQL-отчёт (ID=136, тип «Руководство») с параметрами: сотрудник (выпадающий список), диапазон дат. Объединяет данные из <code>login_history</code> (входы/выходы) и <code>AUDIT_OPERATIONS</code> (действия в системе). Столбцы: Дата/время, Сотрудник, ФИО, Событие, IP-адрес, Подробности.</p>
-
-  <h3 id="custom-reports-v449">10.3А. UX-доводка Библиотеки отчётов (build 449)</h3>
-  <p>В build 446–449 раздел <code>/admin/reports/AdminCustomReports/</code> прошёл полную UX-переработку по плану <em>2026-05-06_План_UX_Библиотека_отчётов.md</em>. Закрыты все 12 пунктов Sprint 1, плюс ключевые фичи Sprint 2 (CodeMirror, CRUD типов, toggle-switch, компактный layout).</p>
-
-  <h4 id="custom-reports-list">Список отчётов с цветными бейджами</h4>
-  <p>Каждый из 7 типов отчётов получил собственную иконку и цвет: 🛠 Техсервис (синий), 📈 Руководство (оранжевый), ⛑ Техподдержка (красный), 🎧 ЦОК (зелёный), 💰 Бухгалтерия (зелёный gradient), 📞 Телефония (серый), 🛡 ЦУС (тёмный). На вкладке конкретного типа колонка «Тип отчёта» автоматически скрывается — она избыточна, когда все строки одного типа.</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/reports_library_v449/reports_list_overview.png" alt="Список отчётов с цветными типами и sticky toolbar" class="screenshot">
-  <ul>
-    <li><strong>Sticky toolbar</strong> — поиск, ⭐ счётчик избранного, кнопки «Типы» и «Добавить отчёт» остаются видны при скролле</li>
-    <li><strong>Ctrl+K / Cmd+K</strong> фокусирует поиск; placeholder содержит подсказку</li>
-    <li><strong>Бейдж 🤳 ЛК</strong> — рядом с именем для отчётов с <code>allow_in_cabinet=True</code></li>
-    <li><strong>P0-фикс</strong>: клик по названию открывает компактную модалку (раньше вёл на full-form ChangeView с 167 полями)</li>
-    <li><strong>A11y</strong>: <code>aria-label/aria-pressed</code> на ⭐, <code>scope="col"</code> на <code>&lt;th&gt;</code>, <code>prefers-reduced-motion</code> убирает переходы и spinner-анимацию</li>
+    <li><strong>Действия:</strong> просмотр, копирование ссылки, экспорт CSV, удаление (только суперадмин)</li>
+    <li><strong>Параметры запуска</strong> отображаются в записи истории</li>
+    <li><strong>Время выполнения</strong> — в миллисекундах</li>
+    <li><strong>Кнопка «Изменить и выполнить»</strong> — для параметризованных отчётов возвращает к форме ввода</li>
   </ul>
 
-  <h4 id="custom-reports-modal">Модальное окно — компактный layout</h4>
-  <p>Модалка переработана: <code>modal-xl</code> + <code>modal-dialog-centered</code>, компактные <code>form-control-sm</code>, <code>py-2</code> в header/footer. Левая колонка теперь полностью занята контентом — название, описание, тип, toggle ЛК, развёрнутый блок <em>«Параметры в SQL»</em> с примерами 4 типов параметров. Правая колонка — только редактор и chip-список параметров. Без вертикальных пустот.</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/reports_library_v449/reports_modal_codemirror.png" alt="Модалка отчёта с CodeMirror и справкой слева" class="screenshot">
-  <ul>
-    <li><strong>CodeMirror 5</strong> с PostgreSQL-подсветкой синтаксиса (<code>text/x-pgsql</code>)</li>
-    <li><strong>Тёмная тема</strong> <code>material-darker</code> всегда — независимо от UI-темы</li>
-    <li><strong>Номера строк</strong> в gutter, <code>matchBrackets</code>, <code>styleActiveLine</code></li>
-    <li><strong>Перенос длинных строк</strong> (<code>lineWrapping: true</code>) — длинный SQL без горизонтального скролла</li>
-    <li><strong>Auto-height</strong>: <code>min-height: 220px</code>, <code>max-height: 60vh</code> — модалка не растягивается без причины</li>
-    <li><strong>Toggle-switch</strong> для «Разрешено выполнение в ЛК» — Bootstrap 5 pill (BS5 <code>.form-switch</code> + custom override в <code>theme-smit.css</code>)</li>
-    <li><strong>Hot keys</strong>: Ctrl+/ (toggle comment), Ctrl+F (find), Tab (indent 2 spaces)</li>
-  </ul>
+  <h4 id="cr-staff-actions">Отчёт «Действия сотрудника»</h4>
+  <p>SQL-отчёт ID=136 (тип «Руководство») с параметрами: сотрудник (выпадающий список) + диапазон дат. Объединяет данные из <code>login_history</code> (входы/выходы) и <code>AUDIT_OPERATIONS</code> (действия в системе). Колонки: Дата/время, Сотрудник, ФИО, Событие, IP-адрес, Подробности.</p>
 
-  <h4 id="custom-reports-params">Live-counter параметров и подсветка <code>:Param|type$</code></h4>
-  <p>Парсер по regex <code>/:([А-яЁёA-Za-z0-9_ ]+)\|(\w+)(\[[^\]]*\])?\$/g</code> в реальном времени распознаёт параметры в SQL и показывает их chip-списком под редактором. Счётчик в header'е блока «SQL-запрос» обновляется на каждом keystroke: «<em>40 строк · 2 парам.</em>». Параметры дополнительно подсвечиваются прямо в SQL через CodeMirror-overlay (жёлтый фон).</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/reports_library_v449/reports_modal_with_params.png" alt="Параметры SQL — chip-список и подсветка" class="screenshot">
-  <p>Распознаются 4 типа параметров:</p>
-  <ul>
-    <li><code>:Дата|date$</code> — date-picker</li>
-    <li><code>:Сумма|sum$</code> — число с десятичными</li>
-    <li><code>:Абонент|select[Abonents]$</code> — выпадающий список из FK-модели</li>
-    <li><code>:Месяц|choices[1^Январь|2^Февраль|3^Март]$</code> — фиксированный список <code>value^label</code></li>
-  </ul>
-
-  <h4 id="custom-reports-types-modal">Модалка управления типами отчётов</h4>
-  <p>Кнопка «🏷 Типы» в toolbar открывает модалку CRUD для справочника <code>AdminCustomReportsType</code>. Раньше управление типами требовало перехода на отдельную страницу <code>/admin/dictionary/AdminCustomReportsType/</code> — теперь всё inline.</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/reports_library_v449/reports_types_modal.png" alt="Модалка управления типами отчётов" class="screenshot">
-  <ul>
-    <li><strong>Поиск</strong> по типам с live-фильтром</li>
-    <li><strong>Колонка «Отчётов»</strong> — счётчик связанных отчётов для каждого типа (защита от случайного удаления популярных)</li>
-    <li><strong>Цветные бейджи</strong> те же что в основном списке — визуальная связь</li>
-    <li><strong>Inline-форма</strong> add/edit без перезагрузки страницы</li>
-    <li><strong>Защита от потери данных</strong>: при удалении типа отчёты не теряются — у них значение <code>report_type_id</code> сбрасывается на <code>NULL</code> (категория «не указан»)</li>
-    <li><strong>Sync с главной модалкой</strong>: после изменения типов <code>&lt;select&gt;</code> в модалке отчёта обновляется автоматически</li>
-  </ul>
-  <p>Endpoints (переиспользованы из <code>/admin/dictionary/AdminCustomReportsType/</code>):</p>
-  <ul>
-    <li><code>GET /admin/dictionary/report_type_json/</code> — список с <code>reports_count</code></li>
-    <li><code>GET/POST/DELETE /admin/dictionary/report_type_crud/[&lt;pk&gt;/]</code></li>
-  </ul>
-
-  <h4 id="custom-reports-confirm-delete">Confirm-модалка удаления (вместо native <code>confirm()</code>)</h4>
-  <p>Native JavaScript <code>confirm("Удалить отчёт?")</code> заменён на полноценную Bootstrap-модалку с красным заголовком, перечислением последствий и предупреждением для отчётов в ЛК.</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/reports_library_v449/reports_confirm_delete.png" alt="Confirm-модалка удаления отчёта" class="screenshot">
-  <ul>
-    <li>Имя отчёта выделено жирным в самом заголовке</li>
-    <li>Список последствий: «Отчёт будет удалён из библиотеки» / «История запусков сохранится»</li>
-    <li>Дополнительный warning «Будет отключён в личном кабинете абонента» — только для <code>allow_in_cabinet=True</code></li>
-    <li>Inline-обработчик ошибок (alert внутри модалки, без перезагрузки)</li>
-    <li>После успеха — AJAX-update строки в списке (зелёная вспышка) вместо <code>location.reload()</code></li>
-  </ul>
-
-  <h4 id="custom-reports-tech">Технические детали</h4>
-  <p><strong>Backend:</strong> <code>billing/urls.py</code> функция <code>custom_report_ajax</code> расширена — возвращает <code>report_type_name</code>, <code>lk_ids[]</code> (для бейджей в строках), <code>desc_map</code> и <code>fav_ids</code> в одном GET-запросе (без N+1).</p>
-  <p><strong>Frontend:</strong> CodeMirror 5.65.16 подгружается с CDN cdnjs.cloudflare.com (UMD-сборка, не требует npm). Темы <code>material-darker</code> + <code>eclipse</code>, моды <code>sql</code>, аддоны <code>matchbrackets</code>, <code>active-line</code>, <code>search</code>, <code>dialog</code>.</p>
-  <p><strong>CSS-override</strong> для toggle в <code>theme-smit.css</code>: блок <code>.form-switch .form-check-input[type="checkbox"]</code> побеждает существующее правило (которое форсировало 18×18 квадратный appearance:auto на всех чекбоксах) и восстанавливает BS5 pill-rendering.</p>
-  <p><strong>Файлы изменены:</strong></p>
-  <ul>
-    <li><code>billing/templates/reports_sql_list.html</code> — полная переработка (~700 строк)</li>
-    <li><code>billing/static/css/theme-smit.css</code> — toggle-switch override (~30 строк)</li>
-    <li><code>billing/urls.py</code> — расширение <code>custom_report_ajax</code></li>
-    <li><code>billing/version.py</code> — BUILD bump</li>
-  </ul>
-  <p><strong>Cache-bust:</strong> CSS/JS получают <code>?v=449</code> через <code>{{ SMIT_BUILD }}</code> в <code>base_adminlte.html</code>. После деплоя на testbill — <code>collectstatic</code> + <code>docker restart web</code>.</p>
-
-  <h3 id="custom-reports-ai-455">10.3Б. AI-помощник создания отчётов (build 455)</h3>
-  <p>В build 455 добавлена возможность создавать SQL-отчёты <strong>через диалог с AI</strong> — пользователь описывает задачу простыми словами на русском, ассистент задаёт уточняющие вопросы и в итоге генерирует готовый SQL с описанием. Использует Claude API через Telegram-прокси (api.anthropic.com заблокирован для российских IP).</p>
-
-  <h4 id="ai-toolbar-button">Кнопка «✨ AI» в toolbar</h4>
-  <p>Рядом с кнопками «Типы» и «Добавить» появилась фиолетово-розовая кнопка «<strong>AI</strong>» с иконкой палочки. На mobile (≤767px) скрывается — раздел переходит в read-only режим.</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/reports_library_v455/reports_v455_toolbar_with_ai.png" alt="Toolbar с кнопкой AI" class="screenshot">
-
-  <h4 id="ai-chat-modal">Чат-модалка с AI</h4>
-  <p>Клик по кнопке открывает чат-модалку (modal-lg, fullscreen на mobile). Сверху градиентная шапка, ниже область сообщений (50vh высоты), suggestion-чипы с готовыми примерами и поле ввода с кнопкой «Отправить» (Ctrl+Enter — submit, Enter — перенос строки).</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/reports_library_v455/reports_v455_ai_modal_open.png" alt="AI-модалка при открытии" class="screenshot">
-  <ul>
-    <li><strong>Welcome-сообщение</strong> с примерами: «Должники с балансом меньше -500 руб», «Топ-10 тарифов по выручке за месяц», «Абоненты которые не платили 3 месяца»</li>
-    <li><strong>4 suggestion-чипа</strong> снизу — клик заполняет поле ввода готовым шаблоном</li>
-    <li><strong>Markdown-рендер</strong>: code-блоки <code>```...```</code>, inline <code>`code`</code>, <strong>**bold**</strong></li>
-    <li><strong>Typing-индикатор</strong> «AI думает...» с анимированными точками во время запроса</li>
-    <li><strong>Auto-scroll</strong> к новому сообщению</li>
-  </ul>
-
-  <h4 id="ai-clarifying-questions">Уточняющие вопросы</h4>
-  <p>AI редко генерирует SQL с первой попытки — обычно задаёт 2-5 уточняющих вопросов о периоде, фильтрах, источниках данных. Это снижает вероятность бессмысленного SQL и помогает пользователю сформулировать задачу.</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/reports_library_v455/reports_v455_ai_dialog.png" alt="Уточняющие вопросы AI" class="screenshot">
-  <p>Пример диалога: пользователь — «<em>Топ-10 должников за текущий месяц с балансом, ФИО и телефоном</em>». AI отвечает:</p>
-  <ul>
-    <li>«Текущий месяц» — это календарный (с 1-го) или последний полный?</li>
-    <li>«Должники» — с отрицательным балансом (<code>OSTATOK &lt; 0</code>) или с просроченной абонплатой?</li>
-    <li>Телефон — поле <code>SMS</code> или другой источник?</li>
-    <li>Баланс — текущий из <code>admin_accounts.OSTATOK</code> или сумма к оплате?</li>
-    <li>Исключать ли удалённых (<code>DELETED=false</code>) и папки (<code>IS_FOLDER=false</code>)?</li>
-  </ul>
-  <p>Все имена колонок AI берёт из контекста БД — он знает реальные названия полей.</p>
-
-  <h4 id="ai-draft-banner">Готовый draft с кнопкой «Создать отчёт»</h4>
-  <p>После ответа на уточнения AI возвращает JSON-блок с готовым проектом отчёта. Парсер на frontend-е извлекает <code>{ready, name, description, sql}</code> и показывает зелёный draft-banner внизу модалки.</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/reports_library_v455/reports_v455_ai_draft_ready.png" alt="Draft-banner с кнопкой Создать отчёт" class="screenshot">
-  <p>Клик на «➡ Создать отчёт» закрывает AI-модалку и открывает основную модалку отчёта с предзаполненными name, description, SQL. Пользователь может проверить и отредактировать SQL перед сохранением — AI не запускает SQL и не создаёт отчёт без подтверждения.</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/reports_library_v455/reports_v455_ai_handoff_to_main_modal.png" alt="Передача в основную модалку с CodeMirror" class="screenshot">
-
-  <h4 id="ai-system-prompt">System prompt и контекст БД</h4>
-  <p>В endpoint собирается контекст из <code>information_schema</code>:</p>
-  <ul>
-    <li><strong>15 ключевых таблиц</strong>: abonents, admin_accounts, tarif, usluga, users_usluga, finance_operations, pay_log, users, homes, nas, connection_points, usluga_type, fin_op_type, admin_msg, abonents_block, ip_pull, switch</li>
-    <li>Для каждой — до 30 колонок с их типами (<code>integer, varchar(8), inet</code>...)</li>
-    <li>Описание правил биллинга в системном промпте: «Денежные поля хранятся ×10^10 — для рублей делить на 10000000000.0», «MPTT-дерево с <code>is_folder=true</code>», «Имена таблиц lowercase, КОЛОНКИ В ВЕРХНЕМ — обязательно в кавычках», «Алиасы: a, aa, t, uu, fo»</li>
-    <li>Поддерживает синтаксис параметров: <code>:Дата|date$</code>, <code>:Сумма|sum$</code>, <code>:Абонент|select[Abonents]$</code>, <code>:Месяц|choices[1^Янв|2^Фев]$</code></li>
-  </ul>
-
-  <h4 id="ai-technical">Технические детали</h4>
-  <ul>
-    <li><strong>Endpoint</strong>: <code>POST /admin/reports/custom_report_ai/</code> — принимает <code>{messages: [{role, content}, ...]}</code>, возвращает <code>{ok, reply, ready, draft}</code></li>
-    <li><strong>Модель</strong>: <code>claude-haiku-4-5-20251001</code> (быстрая, дешёвая, достаточная для генерации SQL)</li>
-    <li><strong>Прокси</strong>: Telegram-прокси SOCKS5h (см. <code>billing.services.proxy_helper.get_api_proxies</code>) — единый для всех Claude-вызовов</li>
-    <li><strong>API-ключ</strong>: <code>ANTHROPIC_API_KEY</code> в <code>.env</code> (тот же что для LK-чата и mobile-API чата)</li>
-    <li><strong>max_tokens</strong>: 2048 (хватает на длинный SQL + описание)</li>
-    <li><strong>temperature</strong>: 0.3 (детерминированно для SQL)</li>
-    <li><strong>timeout</strong>: 60 сек, при превышении возвращается 504 с понятным сообщением</li>
-    <li><strong>История диалога</strong>: на frontend-е в массиве <code>_aiMessages[]</code>, отправляется на каждый вопрос (контекст полный)</li>
-    <li><strong>JSON-извлечение</strong>: regex <code>```json([\s\S]+?)```</code> на серверной стороне; если parse fails — просто показываем reply без draft</li>
-    <li><strong>Audit</strong>: каждый вызов AI пишется в <code>AuditOperations</code> через <code>write_audit(table_name='ADMIN_CUSTOM_REPORTS', descr='AI-консультация: ...')</code></li>
-  </ul>
-
-  <h4 id="ai-files">Файлы изменены</h4>
-  <ul>
-    <li><code>billing/urls.py</code> — функция <code>custom_report_ai()</code> (~150 строк), URL <code>/admin/reports/custom_report_ai/</code></li>
-    <li><code>billing/templates/reports_sql_list.html</code> — кнопка ✨ AI, CSS chat-модалки (~150 строк), JS обработчики (<code>openAiModal</code>, <code>aiSend</code>, <code>aiAppend</code>, draft-handoff)</li>
-    <li><code>billing/version.py</code> — BUILD bump до 455</li>
-  </ul>
-
-  <h3 id="custom-reports-final-456">10.3В. Финальный обзор раздела + аудит SQL (build 456)</h3>
-  <p>В build 446–456 раздел <code>/admin/reports/AdminCustomReports/</code> прошёл полную UX-переработку с дополнительным аудитом существующих SQL-отчётов. Health Score поднят с <strong>64/100</strong> (Fair) до <strong>~92/100</strong> (Excellent).</p>
-
-  <h4 id="cr-final-overview">Финальный desktop-вид</h4>
-  <p>Все элементы интерфейса в одну строку: вкладки + <code>+</code> (управление типами) → KPI-strip 4×1 → toolbar (chips · поиск · ⓘ · ⭐ · «Всего: N» · ✨ AI · ➕ Добавить) → таблица с цветными бейджами типов и колонкой «Последний запуск».</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/reports_library_v456/reports_v456_overview.png" alt="Финальный desktop-вид Библиотеки отчётов" class="screenshot">
-  <ul>
-    <li><strong>Дефолтная вкладка «Все»</strong> — при заходе без параметра <code>?tab</code> JS перенаправляет на <code>?tab=all</code></li>
-    <li><strong>Вкладка <code>+</code></strong> в правом конце линии вкладок открывает CRUD-модалку типов (раньше была отдельной кнопкой в toolbar)</li>
-    <li><strong>Toolbar в одну строку</strong> на всех ширинах ≥1280px без overflow</li>
-    <li><strong>Имя отчёта</strong>: всегда одна строка, длинные имена — с многоточием и tooltip полного названия</li>
-  </ul>
-
-  <h4 id="cr-final-ai-green">AI-помощник в фирменных цветах</h4>
-  <p>Изначальный фиолетово-розовый gradient AI-модалки (build 455) заменён на фирменный зелёный СмИТ <code>#5BA89D → #3F8A7C</code>. Все элементы AI: шапка модалки, кнопка «✨ AI», send-кнопка, user-сообщения, draft-banner — в фирменной палитре.</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/reports_library_v456/reports_v456_ai_modal_green.png" alt="AI-модалка с фирменным зелёным gradient" class="screenshot">
-
-  <h4 id="cr-final-types-modal">Управление типами отчётов через вкладку <code>+</code></h4>
-  <p>Кнопка управления типами вынесена из toolbar в линию вкладок. Это освободило место в toolbar для chip-фильтров и AI-кнопки и логически группирует «Все типы» вместе с самими вкладками-типами.</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/reports_library_v456/reports_v456_types_modal.png" alt="CRUD-модалка типов отчётов" class="screenshot">
-
-  <h4 id="cr-final-mobile">Mobile read-only режим (≤767px)</h4>
-  <p>На мобильных устройствах раздел переходит в режим «только чтение». Карточка отчёта содержит только <strong>имя + ▶ кнопку запуска</strong>. Скрыто всё что не нужно оператору в поле:</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/reports_library_v456/reports_v456_mobile.png" alt="Mobile read-only вид" class="screenshot">
-  <ul>
-    <li>№, Описание, Тип, «Последний запуск», ⭐ Избранное</li>
-    <li>Кнопки ✏ Редактировать, 📋 Дублировать</li>
-    <li>Чекбоксы bulk-операций и весь bulk-toolbar</li>
-    <li>Кнопки «Типы», «✨ AI», «➕ Добавить» в toolbar</li>
-  </ul>
-  <p>Клик по имени отчёта на mobile сразу ведёт на <code>/executesql/</code> (без модалки) — оптимизировано для запуска отчёта в один тап.</p>
-
-  <h4 id="cr-final-codemirror">Модалка отчёта с CodeMirror 5</h4>
-  <p>SQL-редактор использует CodeMirror 5.65.16 с темой <code>material-darker</code> (чёрный фон), номерами строк, подсветкой PostgreSQL, переносом длинных строк (<code>lineWrapping: true</code>) и подсветкой параметров <code>:Param|type$</code>.</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/reports_library_v456/reports_v456_modal_codemirror.png" alt="Модалка отчёта с CodeMirror" class="screenshot">
-
-  <h4 id="cr-final-audit">Аудит 68 SQL-отчётов</h4>
-  <p>В рамках доработки запущен аудит всех 68 отчётов через <code>EXPLAIN</code>:</p>
-  <table class="table table-sm">
-    <thead><tr><th>Категория</th><th>До</th><th>После</th></tr></thead>
-    <tbody>
-      <tr><td>OK</td><td>40</td><td>68</td></tr>
-      <tr><td>BROKEN_SYNTAX (extra <code>''</code> вокруг параметров)</td><td>22</td><td>0</td></tr>
-      <tr><td>BROKEN_SYNTAX (LIKE <code>'XXX:p$%'</code>)</td><td>5</td><td>0</td></tr>
-      <tr><td>BROKEN_SCHEMA (несоответствие колонок)</td><td>4</td><td>0</td></tr>
-      <tr><td>EMPTY_SQL</td><td>1</td><td>0</td></tr>
-      <tr><td>REPORT_TYPE NULL</td><td>1</td><td>0</td></tr>
-    </tbody>
-  </table>
-  <p>Применено <strong>28 UPDATE'ов</strong> в БД testbill. Бэкап: <code>/tmp/audit_backups/admin_custom_reports_pre_audit_20260506_152908.sql</code>. Все фиксы прошли verify через <code>EXPLAIN</code>.</p>
-  <p><strong>Типичные исправления:</strong></p>
-  <ul>
-    <li>Лишние одинарные кавычки <code>'':param$''</code> вокруг параметров — убраны (параметр-парсер сам вставляет литерал нужного типа)</li>
-    <li>Конец дня <code>':p$ 23:59:59'</code> заменён на <code>:p$::date + interval '1 day'</code></li>
-    <li>LIKE <code>'XXX:p$%'</code> заменён на <code>('XXX' || :p$ || '%')</code></li>
-    <li>Несоответствия колонок: <code>PHONE</code> → <code>NUMBER</code>, <code>er."ID"</code> → <code>er.id</code></li>
-  </ul>
-  <p>Подробный отчёт: <a href="https://docs.billing.smit34.ru/pages/billing.html#custom-reports-final-456" target="_blank">в текущем разделе</a> + полный список фиксов в <code>dev_reports/Отчёты/2026-05-06_Аудит_68_отчётов_библиотеки.md</code>.</p>
-
-  <h4 id="cr-final-summary">Итоговая сводка изменений</h4>
-  <table class="table table-sm">
-    <thead><tr><th>Build</th><th>Что добавлено</th></tr></thead>
-    <tbody>
-      <tr><td>446-449</td><td>Sprint 1+2: 12 пунктов плана + CodeMirror, toggle-switch, CRUD типов</td></tr>
-      <tr><td>452</td><td>Sprint 3: bulk-actions (delete/change_type/export_csv)</td></tr>
-      <tr><td>453</td><td>Адаптив: 3 breakpoints (mobile/tablet/desktop)</td></tr>
-      <tr><td>454</td><td>Mobile read-only режим (только имя + ▶)</td></tr>
-      <tr><td>455</td><td>AI-помощник создания отчётов (Claude API через прокси)</td></tr>
-      <tr><td>456</td><td>Brand colors + аудит 68 SQL-отчётов + перенос Типы в <code>+</code> вкладку</td></tr>
-    </tbody>
-  </table>
-
-  <h4 id="cr-final-endpoints">Endpoints раздела</h4>
+  <h4 id="cr-endpoints">Endpoints</h4>
   <table class="table table-sm">
     <thead><tr><th>URL</th><th>Метод</th><th>Назначение</th></tr></thead>
     <tbody>
-      <tr><td><code>/admin/reports/AdminCustomReports/</code></td><td>GET</td><td>Список отчётов (custom template)</td></tr>
-      <tr><td><code>/admin/reports/custom_report_ajax/[&lt;pk&gt;/]</code></td><td>GET/POST</td><td>CRUD одного отчёта + favorites</td></tr>
+      <tr><td><code>/admin/reports/AdminCustomReports/</code></td><td>GET</td><td>Список отчётов</td></tr>
+      <tr><td><code>/admin/reports/AdminCustomReports/{id}/executesql/</code></td><td>GET/POST</td><td>Запуск отчёта (форма параметров + результат)</td></tr>
+      <tr><td><code>/admin/reports/AdminCustomReports/{id}/history/{exec_id}/</code></td><td>GET</td><td>Просмотр сохранённого результата</td></tr>
+      <tr><td><code>/admin/reports/custom_report_ajax/[{pk}/]</code></td><td>GET/POST</td><td>CRUD одного отчёта + переключение избранного</td></tr>
       <tr><td><code>/admin/reports/custom_report_stats/</code></td><td>GET</td><td>KPI: всего/сегодня/среднее время + last_run_map + top_popular</td></tr>
-      <tr><td><code>/admin/reports/custom_report_bulk/</code></td><td>POST</td><td>bulk delete / change_type / export_csv</td></tr>
+      <tr><td><code>/admin/reports/custom_report_bulk/</code></td><td>POST</td><td>Bulk: delete / change_type / export_csv</td></tr>
       <tr><td><code>/admin/reports/custom_report_ai/</code></td><td>POST</td><td>AI-чат для генерации SQL</td></tr>
       <tr><td><code>/admin/dictionary/report_type_json/</code></td><td>GET</td><td>Список типов отчётов</td></tr>
-      <tr><td><code>/admin/dictionary/report_type_crud/[&lt;pk&gt;/]</code></td><td>GET/POST/DELETE</td><td>CRUD типов</td></tr>
+      <tr><td><code>/admin/dictionary/report_type_crud/[{pk}/]</code></td><td>GET/POST/DELETE</td><td>CRUD типов</td></tr>
     </tbody>
   </table>
-
-  <h4 id="cr-final-files">Файлы изменены</h4>
-  <ul>
-    <li><code>billing/templates/reports_sql_list.html</code> — полная переработка (~1500 строк)</li>
-    <li><code>billing/static/css/theme-smit.css</code> — toggle-switch override (~30 строк)</li>
-    <li><code>billing/urls.py</code> — расширение <code>custom_report_ajax</code> + 3 новых endpoint'а</li>
-    <li><code>billing/version.py</code> — BUILD 446 → 456 (10 инкрементов)</li>
-    <li><code>dev_reports/Планы/2026-05-06_План_UX_Библиотека_отчётов.md</code> — план UX-доводки</li>
-    <li><code>dev_reports/Отчёты/2026-05-06_Аудит_68_отчётов_библиотеки.md</code> — аудит SQL</li>
-    <li><code>dev_reports/Отчёты/2026-05-06_Доработка_раздела_Библиотека_отчётов_итоговый.md</code> — итоговый отчёт</li>
-  </ul>
 
   <h3 id="director-report">10.4. Отчёт для директора</h3>
   <p>Сводный отчёт с ключевыми KPI:</p>
