@@ -401,6 +401,25 @@
     <code>{% if lk_features.X %}…{% endif %}</code>. Mobile API возвращает флаги в
     <a href="#mobile-api-public"><code>GET /mobile-api/v1/features</code></a>.</p>
 
+  <p><strong>Legacy LK-настройки (build 472)</strong> — 9 toggle + 1 числовое поле,
+    мигрированы из старого раздела «Настройки системы → Параметры → Личный кабинет»
+    (где они хранились в <code>VpnConst</code> с русскими именами). Теперь — в
+    <code>SystemSettings</code> с latin-ключами, отображаются ниже основных feature-toggle:</p>
+  <ul>
+    <li><strong>Видимость разделов в ЛК</strong>: <code>LK_SHOW_SERVICES</code>,
+      <code>LK_SHOW_AUDIT</code>, <code>LK_SHOW_HELPDESK</code>,
+      <code>LK_SHOW_DETAILED_TRAFFIC</code> — показывать раздел Услуги / История операций /
+      Help Desk / детальный трафик соответственно</li>
+    <li><strong>Скрыть в ЛК</strong>: <code>LK_HIDE_TARIFF_SPEED</code> (скорость в карточке
+      тарифа), <code>LK_HIDE_TARIFF_TAB</code> (вкладка «Тариф» — запрет смены тарифа),
+      <code>LK_HIDE_PAYMENT_TAB</code> (вкладка «Оплата» — для систем со сторонней оплатой)</li>
+    <li><strong>Поведение тарифов и услуг</strong>: <code>LK_ALLOW_MAC_CHANGE</code>
+      (разрешить абоненту менять MAC-адрес через ЛК),
+      <code>LK_TARIFF_REQUIRE_RANGE</code> (предлагать только тарифы из той же линейки услуг)</li>
+    <li><strong>Уведомления</strong>: <code>LK_HELPDESK_NOTIFY_GROUP_ID</code> (целое число —
+      ID Django-группы получателей уведомлений о новых заявках Help Desk; <code>0</code> = отключить)</li>
+  </ul>
+
   <h4 id="lk-admin-security">Безопасность</h4>
   <p>16 настроек на 4 секции:</p>
   <ul>
@@ -423,6 +442,17 @@
     lockout_minutes × 2. После исчерпания попыток — все логины с этого IP+login получают
     «Слишком много неудачных попыток. Попробуйте через N мин», audit-запись
     <code>LK_LOGIN_LOCKOUT</code>.</p>
+
+  <p><strong>Legacy LK-настройки безопасности (build 472)</strong> — 3 дополнительных
+    переключателя, мигрированы из старого раздела «Настройки системы»:</p>
+  <ul>
+    <li><code>LK_REQUIRE_SAME_IP</code> — после входа доступ в ЛК разрешён только с того же
+      IP-адреса. Если абонент сменил сеть — сессия закроется. Только для локальных сетей</li>
+    <li><code>LK_AUTOLOGIN_BY_IP</code> — автоматический вход в ЛК по IP-адресу без логина и
+      пароля. Только для доверенных сегментов сети</li>
+    <li><code>LK_DISABLE_PASSWORD_CHANGE</code> — раздел «Сменить пароль» в ЛК скрыт.
+      Используется когда пароли управляются администратором</li>
+  </ul>
 
   <h4 id="lk-admin-mobile">Мобильное (Android + iOS, force-update)</h4>
   <p>Двухколоночный layout: <strong>Android</strong> | <strong>iOS</strong>. Параллельные настройки:</p>
