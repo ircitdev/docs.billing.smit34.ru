@@ -3274,6 +3274,15 @@ docker restart app-freeradius-1</code></pre>
 
   <h3 id="radius-clients">7.4. Клиенты (NAS)</h3>
   <p>Список RADIUS-клиентов генерируется автоматически при старте контейнера скриптом <code>docker/freeradius/entrypoint.sh</code> из таблицы <code>nas</code>. После изменений в админке (<strong>Оборудование → NAS</strong>) нужно перезапустить контейнер: <code>docker compose restart freeradius</code> (или кнопка «Перезапустить RADIUS» в списке NAS).</p>
+
+  <p>Список NAS в админке (<code>/admin/equipment/Nas/</code>) — за каждой строкой стоит RADIUS-клиент, к которому биллинг откликается на пакеты Auth/Accounting:</p>
+  <img src="../img/v470_radius/nas_list.png" alt="Список NAS в админке — 12 устройств, 10 UP / 2 DOWN, 1128 онлайн-сессий" class="screenshot">
+  <p>Чипы-фильтры сверху (<strong>Все · UP · DOWN · RADIUS · SSH · PROD · Выключены</strong>) позволяют быстро отфильтровать проблемные устройства. KPI-блок в правом верхнем углу показывает счётчики онлайн-абонентов и pending CoA-команды в очереди (<strong>CoA 4/12</strong>).</p>
+
+  <p>Дашборд состояния (<code>/admin/equipment/nas_status/</code>) — мониторинг с 24-часовыми sparkline-патернами и SLA-расчётом по uptime:</p>
+  <img src="../img/v470_radius/nas_status_dashboard.png" alt="Дашборд состояния NAS — sparkline 24h, SLA, история уптайма, алерт о DOWN" class="screenshot">
+  <p>Зелёные столбики паттерна = NAS отвечал, красные = был недоступен. Колонки <strong>Uptime 7д / 30д</strong> сравниваются с порогами <code>NAS_SLA_TARGET_PCT</code> (99.5%) и <code>NAS_SLA_WARNING_PCT</code> (99.0%) — оранжевый = ниже warning, зелёный = выше target. Алерт-баннер сверху показывает сейчас недоступные NAS с длительностью простоя.</p>
+
   <table>
     <thead><tr><th>Параметр</th><th>Значение по умолчанию</th></tr></thead>
     <tbody>
