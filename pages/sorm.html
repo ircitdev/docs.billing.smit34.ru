@@ -350,6 +350,23 @@
 
   <h2 id="reports">Отчёты и SQL</h2>
 
+
+  <div class="section-toc">
+
+  <details open>
+
+    <summary><strong>Содержание раздела</strong></summary>
+
+    <ul>
+
+      <li><a href="#standartnye-otchety-sorm-3-build-324">Стандартные отчёты СОРМ-3 (build 324)</a></li>
+
+    </ul>
+
+  </details>
+
+  </div>
+
   <p>Каждая СОРМ-запись содержит список <strong>отчётов</strong> — это именованные SQL-запросы, результат которых выгружается в CSV и отправляется на FTP.</p>
 
   <p>Для каждого отчёта задаются:</p>
@@ -412,6 +429,29 @@
   <p>Каждый отчёт выполняется как отдельная Celery-задача <code>billing.tasks.sorm_export.export_sorm_report</code>. При ошибке задача повторяется до 2 раз с интервалом 60 секунд.</p>
 
   <h2 id="manual-run">Управление отчётами (build 88+)</h2>
+
+
+  <div class="section-toc">
+
+  <details open>
+
+    <summary><strong>Содержание раздела</strong></summary>
+
+    <ul>
+
+      <li><a href="#deystviya">Действия</a></li>
+
+      <li><a href="#upravlenie-metadannymi-v-ui">Управление метаданными в UI</a></li>
+
+      <li><a href="#tekuschaya-karta-metadannyh-build-411">Текущая карта метаданных (build 411)</a></li>
+
+      <li><a href="#pre-flight-v-celery-zadache-vygruzki">Pre-flight в Celery-задаче выгрузки</a></li>
+
+    </ul>
+
+  </details>
+
+  </div>
 
   <p>Страница отчётов: <code>/admin/equipment/sorm_list/1/reports/</code>. Все операции выполняются через <strong>модальные окна</strong> без перехода на другие страницы.</p>
 
@@ -657,8 +697,8 @@ python manage.py merge_sorm_attribute_dups --by-name --apply</code></pre>
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 457)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">02.05.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 457)</span>&nbsp;|&nbsp;<span data-smit="updated">02.05.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 457)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">06.05.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 457)</span>&nbsp;|&nbsp;<span data-smit="updated">06.05.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=220"></script>

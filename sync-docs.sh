@@ -46,21 +46,9 @@ if not (ver_m and bld_m):
     raise SystemExit(0)
 version, build = ver_m.group(1), bld_m.group(1)
 
-# 2. Last commit date for docs/ (DD.MM.YYYY). Fallback: today.
-try:
-    out = subprocess.check_output(
-        ['git', 'log', '-1', '--format=%cI', '--', 'docs/'],
-        text=True, encoding='utf-8'
-    ).strip()
-    if out:
-        # %cI = ISO-8601 strict, e.g. 2026-04-30T18:25:30+03:00
-        dt = datetime.fromisoformat(out)
-        updated = dt.strftime('%d.%m.%Y')
-    else:
-        updated = datetime.now().strftime('%d.%m.%Y')
-except Exception as e:
-    print('  WARN: git log failed (%s) — using today' % e)
-    updated = datetime.now().strftime('%d.%m.%Y')
+# 2. Updated date: всегда сегодня (правки могут быть через scp, без коммита в основном репо).
+#    Это тот день, когда оператор реально что-то поправил и запустил sync-docs.
+updated = datetime.now().strftime('%d.%m.%Y')
 
 year = str(datetime.now().year)
 
@@ -86,7 +74,7 @@ new_js = """/**
     vversion:       'v' + v.version,                                          // "v1.6.0"
     build:          v.build,                                                  // "170"
     vbuild:         'build ' + v.build,                                       // "build 170"
-    full:           'v' + v.version,                                          // "v1.6.0" — без build в публичной документации
+    full:           'v' + v.version + ' (build ' + v.build + ')',             // "v1.6.0 (build 457)"
     short:          v.version,                                                // "1.6.0" (alias of version)
     brand:          'СмИТ Биллинг ' + v.version,                              // "СмИТ Биллинг 1.6.0"
     'brand-short':  'СмИТ Биллинг ' + v.version.replace(/\\.0$/, ''),          // "СмИТ Биллинг 1.6"

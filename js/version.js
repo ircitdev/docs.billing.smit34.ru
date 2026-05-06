@@ -7,7 +7,7 @@
   window.SMIT_DOC = {
     version: '1.6.0',
     build: '457',
-    updated: '02.05.2026',
+    updated: '06.05.2026',
     year: '2026',
     company: 'ООО «СмИТ»',
   };
@@ -19,7 +19,7 @@
     vversion:       'v' + v.version,                                          // "v1.6.0"
     build:          v.build,                                                  // "170"
     vbuild:         'build ' + v.build,                                       // "build 170"
-    full:           'v' + v.version,                                          // "v1.6.0" — без build в публичной документации
+    full:           'v' + v.version + ' (build ' + v.build + ')',             // "v1.6.0 (build 457)"
     short:          v.version,                                                // "1.6.0" (alias of version)
     brand:          'СмИТ Биллинг ' + v.version,                              // "СмИТ Биллинг 1.6.0"
     'brand-short':  'СмИТ Биллинг ' + v.version.replace(/\.0$/, ''),          // "СмИТ Биллинг 1.6"

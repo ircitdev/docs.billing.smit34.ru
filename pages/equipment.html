@@ -388,6 +388,15 @@ docker compose restart freeradius</code></pre>
 
   <!-- ===== Типы коммутаторов ===== -->
   <h2 id="switch-types">Типы коммутаторов</h2>
+  <div class="section-toc">
+  <details open>
+    <summary><strong>Содержание раздела</strong></summary>
+    <ul>
+      <li><a href="#opt82-params">Параметры Opt82</a></li>
+    </ul>
+  </details>
+  </div>
+
   <p>Справочник типов коммутаторов <code>/admin/equipment/SwitchType/</code> — настройка правил парсинга DHCP Option 82 для каждого типа оборудования. Используется при авторизации абонентов по коммутатору.</p>
   <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v329/equipment_switchtype_list.png" alt="Типы коммутаторов — список" class="screenshot">
   <p>С build 329 добавление и редактирование типов выполняется в модальном окне с двумя вкладками: <strong>Основные</strong> (название, признак «Порты с 0») и <strong>Opt82</strong> (поля парсинга). Изменения сохраняются без перезагрузки страницы.</p>
@@ -697,8 +706,8 @@ IptvApiLog.objects.filter(success=False).order_by('-created_at')[:10]</code></pr
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 457)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">02.05.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 457)</span>&nbsp;|&nbsp;<span data-smit="updated">02.05.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 457)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">06.05.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 457)</span>&nbsp;|&nbsp;<span data-smit="updated">06.05.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=220"></script>
