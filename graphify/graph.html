@@ -1,29 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-theme="dark">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Граф архитектуры — СмИТ Биллинг 1.6 — Документация</title>
-<meta name="description" content="Интерактивный граф архитектуры СмИТ Биллинг: 25 сообществ, 2498 модулей, 9003 связей. Кликабельная карта зависимостей кода — Python imports, Louvain-кластеризация, drill-down в Wiki по модулям.">
-<meta name="keywords" content="СмИТ Биллинг, архитектура, граф зависимостей, graphify, документация, Django, Python">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-<meta property="og:title" content="Граф архитектуры — СмИТ Биллинг 1.6">
-<meta property="og:description" content="Интерактивный граф архитектуры: 25 сообществ, 2498 модулей, 9003 связей. Кликабельная карта зависимостей кода СмИТ Биллинг.">
-<meta property="og:url" content="https://docs.billing.smit34.ru/graphify/graph.html">
-<meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:locale" content="ru_RU">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Граф архитектуры — СмИТ Биллинг 1.6">
-<meta name="twitter:description" content="Интерактивный граф архитектуры: 25 сообществ, 2498 модулей, 9003 связей. Карта зависимостей кода.">
-<meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
-<link rel="icon" href="../favicon.svg" type="image/svg+xml">
-<link rel="canonical" href="https://docs.billing.smit34.ru/graphify/graph.html">
+<title>graphify — Карта архитектуры СмИТ Биллинг</title>
 <script src="https://unpkg.com/d3@7/dist/d3.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.26.0/dist/tabler-icons.min.css">
 <style>
 :root {
   --bg:#0f172a; --bg2:#1e293b; --bg3:#172033; --border:#334155;
@@ -48,31 +28,40 @@ svg{width:100%;height:100%}
 .link{stroke:var(--edge);stroke-opacity:.5;fill:none;transition:stroke .25s}
 .link.highlighted{stroke:var(--primary);stroke-opacity:.9}
 /* nodes */
-.node-g{cursor:pointer;transition:opacity .25s, filter .25s}
+.node-g{cursor:pointer}
 .node-g circle{transition:filter .2s,r .2s}
 .node-g:hover circle{filter:brightness(1.2)}
 .node-g.selected circle{filter:brightness(1.35);stroke:#fff;stroke-width:3px}
 .node-label{pointer-events:none;text-anchor:middle;dominant-baseline:central}
 .node-name{font-size:11px;fill:var(--text);font-weight:600;pointer-events:none;
-  paint-order:stroke fill;stroke:var(--bg);stroke-width:3px;stroke-linejoin:round;transition:opacity .25s}
+  paint-order:stroke fill;stroke:var(--bg);stroke-width:3px;stroke-linejoin:round}
 [data-theme=light] .node-name{fill:var(--text)}
-.node-icon-g{pointer-events:none;transition:opacity .25s}
+.node-icon-g{pointer-events:none}
 .node-icon-g path{transition:stroke .25s}
 [data-theme=light] .node-icon-g path{stroke:rgba(255,255,255,0.85)}
-/* dim non-related when something is selected */
-.node-g.dimmed{opacity:.18;filter:grayscale(.85)}
-.node-g.dimmed .node-name{opacity:.4}
-.link.dimmed{stroke-opacity:.06}
 /* tooltip */
 #tooltip{position:fixed;display:none;background:var(--bg2);border:1px solid var(--border);
-  border-radius:6px;padding:6px 9px;font-size:11px;color:var(--text);
-  pointer-events:none;z-index:100;max-width:200px;box-shadow:0 4px 20px #0006;line-height:1.4}
-#tooltip b{color:var(--primary-l);display:inline-flex;align-items:center;gap:4px;font-size:11.5px}
-#tooltip svg{flex-shrink:0;vertical-align:middle;width:9px;height:9px;opacity:.9}
-#tooltip .tip-meta{color:var(--text2);font-size:10.5px}
+  border-radius:8px;padding:10px 14px;font-size:12px;color:var(--text);
+  pointer-events:none;z-index:100;max-width:220px;box-shadow:0 4px 20px #0006}
+#tooltip b{color:var(--primary-l)}
 /* sidebar */
-#sidebar{width:280px;height:100vh;background:var(--bg2);border-left:1px solid var(--border);
+#sidebar{width:310px;height:100vh;background:var(--bg2);border-left:1px solid var(--border);
   display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;transition:background .25s}
+#sidebar-head{padding:14px 16px 10px;border-bottom:1px solid var(--border);
+  background:linear-gradient(135deg,var(--bg2),var(--bg3))}
+.head-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px}
+.logo{display:flex;align-items:center;gap:8px}
+.logo-icon{width:26px;height:26px;background:linear-gradient(135deg,#43a047,#26a69a);
+  border-radius:6px;display:flex;align-items:center;justify-content:center;
+  font-size:13px;color:#fff;font-weight:bold}
+.logo h3{margin:0;font-size:13px;font-weight:600;color:var(--primary-l)}
+#theme-btn{background:none;border:1px solid var(--border);border-radius:6px;
+  padding:3px 8px;cursor:pointer;font-size:14px;color:var(--text2);transition:.15s}
+#theme-btn:hover{background:var(--hover)}
+.stats{color:var(--text3);font-size:11px}.stats b{color:var(--text2)}
+#hint{padding:8px 16px;font-size:11px;color:var(--text3);
+  border-bottom:1px solid var(--border);line-height:1.7;background:var(--bg3)}
+.hint-row{display:flex;gap:5px}.hint-key{color:var(--primary-l);font-weight:600;white-space:nowrap}
 #legend{flex:1;overflow-y:auto;padding:4px 0}
 #legend::-webkit-scrollbar{width:4px}
 #legend::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
@@ -83,213 +72,81 @@ svg{width:100%;height:100%}
 .leg-row:hover{background:var(--hover)}
 .leg-row.active{background:var(--active-bg);border-left-color:var(--primary)}
 .dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-.legend-icon{width:20px;height:20px;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:10px;flex-shrink:0}
-.leg-icon{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;line-height:1;width:22px;height:22px;border-radius:5px;background:var(--bg3);padding:3px}
-.leg-icon svg{width:16px;height:16px}
+.leg-icon{flex-shrink:0;display:flex;align-items:center;line-height:1}
 .leg-name{flex:1;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text2)}
 .leg-row.active .leg-name{color:var(--text)}
 .leg-cnt{font-size:11px;color:var(--text3);flex-shrink:0;min-width:22px;text-align:right}
 .leg-link{flex-shrink:0;color:var(--primary-l);text-decoration:none;font-size:12px;
   padding:2px 6px;border-radius:4px;background:var(--link-bg);border:1px solid #26a69a44}
 .leg-link:hover{opacity:.8}
-.leg-link.disabled{color:var(--text3);background:transparent;border-color:transparent;cursor:not-allowed;opacity:.4}
-.leg-link.disabled:hover{opacity:.4}
-/* isolated communities — slightly faded + warning icon hint */
-.leg-row[data-isolated="1"] .leg-name{opacity:.7}
-.leg-row[data-isolated="1"] .leg-icon::after{content:'';position:absolute;width:7px;height:7px;border-radius:50%;background:#f59e0b;border:1.5px solid var(--bg2);transform:translate(8px,-8px)}
-.leg-row[data-isolated="1"] .leg-icon{position:relative}
-.leg-divider{padding:8px 16px 4px;font-size:9.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);border-top:1px solid var(--border);margin-top:6px;display:flex;align-items:center;gap:6px}
-.leg-divider .ld-dot{width:6px;height:6px;border-radius:50%;background:#f59e0b}
 #selected-detail{padding:13px 16px;border-top:1px solid var(--border);
   font-size:12px;display:none;background:var(--bg3)}
 .sel-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.sel-icon-big{font-size:26px;line-height:1;flex:0 0 auto;display:inline-flex;align-items:center}
-.sel-icon-big svg{width:22px !important;height:22px !important;flex:0 0 auto}
+.sel-icon-big{font-size:26px;line-height:1}
 .sel-name{font-weight:600;font-size:14px;color:var(--text)}
 .sel-badge{font-size:10px;background:#26a69a22;color:var(--primary-l);
   border:1px solid #26a69a44;border-radius:10px;padding:1px 7px;margin-left:auto}
-.conn-item{display:flex;gap:6px;align-items:center;padding:3px 0;
-  border-bottom:1px solid var(--border);font-size:11.5px}
-.conn-name{color:var(--primary-l);flex:1;display:inline-flex;align-items:center;gap:5px;min-width:0;overflow:hidden}
-.conn-name svg{flex-shrink:0;width:11px;height:11px;opacity:.85}
-.conn-name span.conn-text{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.conn-cnt{color:var(--text3);font-size:10px;white-space:nowrap;flex-shrink:0}
+.conn-item{display:flex;gap:6px;align-items:baseline;padding:2px 0;
+  border-bottom:1px solid var(--border)}
+.conn-name{color:var(--primary-l);flex:1}
+.conn-cnt{color:var(--text3);font-size:10px;white-space:nowrap}
 #sel-info{margin-bottom:10px;max-height:160px;overflow-y:auto}
 .open-btn{display:inline-flex;align-items:center;gap:5px;padding:7px 16px;
   background:linear-gradient(135deg,#43a047,#26a69a);border-radius:6px;
   color:#fff;text-decoration:none;font-size:12px;font-weight:500;transition:opacity .15s}
 .open-btn:hover{opacity:.85}
-
-/* graph-wrap gradient */
-#graph-wrap {
-  background: linear-gradient(160deg, #0d1b2e 0%, #0f172a 40%, #0d2336 100%);
-}
-[data-theme=light] #graph-wrap {
-  background: linear-gradient(160deg, #e8f4f8 0%, #f4f6f9 40%, #eaf4ee 100%);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-/* footer */
-#graph-footer {
-  position: fixed; bottom: 0; left: 0; right: 280px; z-index: 300;
-  height: 28px; display: flex; align-items: center; padding: 0 16px;
-  font-size: 11px; color: var(--text3);
-  background: linear-gradient(to top, var(--bg) 0%, transparent 100%);
-  pointer-events: none;
-}
-#graph-footer b { color: var(--text2); font-weight: 600; }
-
-
-/* ── Фирменная шапка docs ─────────────────────────────────────────────────── */
-:root { --header-grad-a: #43a047; --header-grad-b: #26a69a; --header-height: 56px; }
-[data-theme=dark] { --header-grad-a: #0f172a; --header-grad-b: #1e293b; }
-
-@keyframes header-gradient-shift {
-  0%   { background-position:   0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position:   0% 50%; }
-}
-@media (prefers-reduced-motion: reduce) { .header { animation: none !important; } }
-
-.header {
-  position: fixed; top: 0; left: 0; right: 0; height: var(--header-height);
-  background: linear-gradient(135deg, var(--header-grad-a), var(--header-grad-b), var(--header-grad-a));
-  background-size: 200% 200%;
-  animation: header-gradient-shift 18s ease-in-out infinite;
-  color: #fff; display: flex; align-items: center; padding: 0 20px;
-  z-index: 200; gap: 12px;
-  box-shadow: 0 1px 3px rgba(15,23,42,.06), 0 4px 12px rgba(15,23,42,.08);
-}
-[data-theme=dark] .header { border-bottom: 1px solid #334155; }
-.header-left { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
-.header-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
-.logo:hover { text-decoration: none; }
-.logo-icon {
-  width: 36px; height: 36px;
-  background: linear-gradient(135deg, #43a047, #26a69a);
-  border-radius: 8px; display: flex; align-items: center; justify-content: center;
-  color: #fff; font-weight: 700; font-size: 1.15rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,.25); flex-shrink: 0;
-}
-[data-theme=dark] .logo-icon { box-shadow: 0 2px 12px rgba(77,182,172,.35); }
-.logo-text { font-size: 1.15rem; font-weight: 700; white-space: nowrap; color: #fff; }
-.logo-text span { font-weight: 300; opacity: .85; }
-.logo-text .logo-main { font-weight: 700; opacity: 1; }
-.logo-text .logo-main::after { content: '\00a0|\00a0'; font-weight: 300; opacity: .85; }
-.header-nav-link {
-  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.25);
-  color: #fff; border-radius: 8px; padding: 6px 12px; font-size: 13px; font-weight: 500;
-  text-decoration: none; white-space: nowrap; transition: background .2s, transform .2s;
-  display: inline-flex; align-items: center; gap: 6px; height: 36px; line-height: 1;
-}
-.header-nav-link:hover { background: rgba(255,255,255,.25); text-decoration: none; color: #fff; transform: translateY(-1px); }
-.header-nav-link .hnl-ico { font-size: 16px; line-height: 1; }
-/* Mobile: скрыть текст, оставить иконки */
-@media (max-width: 680px) {
-  .logo-text { display: none; }
-  .header-nav-link .hnl-txt { display: none; }
-  .header-nav-link { padding: 5px 10px; }
-  .header { padding: 0 10px; gap: 6px; }
-  #graph-footer { font-size: 11px; padding: 4px 8px; }
-}
-.theme-toggle {
-  background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.25);
-  color: #fff; width: 36px; height: 36px; border-radius: 8px;
-  cursor: pointer; display: flex; align-items: center; justify-content: center;
-  font-size: 1.1rem; transition: background .2s, transform .2s; flex-shrink: 0;
-}
-.theme-toggle:hover { background: rgba(255,255,255,.25); transform: scale(1.05); }
-.theme-toggle .icon-sun, .theme-toggle .icon-moon { line-height: 1; }
-[data-theme=dark]  .theme-toggle .icon-sun  { display: inline; }
-[data-theme=dark]  .theme-toggle .icon-moon { display: none; }
-:root .theme-toggle .icon-sun  { display: none; }
-:root .theme-toggle .icon-moon { display: inline; }
-
-/* Offset body for fixed header */
-body { padding-top: var(--header-height); }
-/* ── /шапка ───────────────────────────────────────────────────────────────── */
-/* Graph layout: body has fixed header, graph fills rest */
-body { margin: 0; padding-top: var(--header-height) !important;
-       display: flex; height: 100vh; overflow: hidden; }
-#graph-wrap { height: calc(100vh - var(--header-height)); }
-#sidebar    { height: calc(100vh - var(--header-height)); }
 </style>
 </head>
 <body>
-
-<header class="header">
-  <div class="header-left">
-    <div class="logo">
-      <div class="logo-icon">С</div>
-      <div class="logo-text"><span class="logo-main"><span data-smit="brand-short">СмИТ Биллинг 1.6</span></span><span>Граф зависимостей</span></div>
-    </div>
-  </div>
-  <div class="header-right">
-    <a href="../index.html" class="header-nav-link" title="Документация">
-      <i class="ti ti-book hnl-ico"></i><span class="hnl-txt">Документация</span>
-    </a>
-    <a href="../pages/dev/index.html" class="header-nav-link" title="Разработчикам">
-      <i class="ti ti-code hnl-ico"></i><span class="hnl-txt">Разработчикам</span>
-    </a>
-    <a href="wiki/index.html" class="header-nav-link" title="Wiki сообществ">
-      <i class="ti ti-notebook hnl-ico"></i><span class="hnl-txt">Wiki</span>
-    </a>
-    <a href="help.html" class="header-nav-link" title="graphify CLI">
-      <i class="ti ti-terminal-2 hnl-ico"></i><span class="hnl-txt">CLI</span>
-    </a>
-    <button type="button" class="theme-toggle" id="themeToggle" aria-label="Переключить тему" title="Светлая / тёмная тема">
-      <span class="icon-sun"><i class="bi bi-sun"></i></span>
-      <span class="icon-moon"><i class="bi bi-moon-stars"></i></span>
-    </button>
-  </div>
-</header>
-
 <div id="graph-wrap">
   <svg id="svg"></svg>
   <div id="tooltip"></div>
 </div>
-<div id="graph-footer">
-  <b>25</b>&nbsp;сообществ&nbsp;&nbsp;·&nbsp;&nbsp;<b>2498</b>&nbsp;модулей&nbsp;&nbsp;·&nbsp;&nbsp;<b>9003</b>&nbsp;связей
-</div>
 <div id="sidebar">
+  <div id="sidebar-head">
+    <div class="head-top">
+      <div class="logo"><div class="logo-icon">G</div><h3>graphify</h3></div>
+      <button id="theme-btn" title="Переключить тему">🌙</button>
+    </div>
+    <div class="stats">
+      <b>25</b> сообществ &nbsp;·&nbsp;
+      <b>2498</b> модулей &nbsp;·&nbsp;
+      <b>9003</b> связей
+    </div>
+  </div>
+  <div id="hint">
+    <div class="hint-row"><span class="hint-key">Размер</span>&nbsp;— кол-во модулей</div>
+    <div class="hint-row"><span class="hint-key">Линия</span>&nbsp;— перекрёстные вызовы</div>
+    <div class="hint-row"><span class="hint-key">Клик</span>&nbsp;— детали и связи</div>
+    <div class="hint-row"><span class="hint-key">Скролл</span>&nbsp;— масштаб &nbsp; <span class="hint-key">Тащи</span>&nbsp;— панорама</div>
+  </div>
   <div id="legend">
     <div id="legend-header"><span>Сообщество</span><span>Мод.</span></div>
-<div class="leg-row" data-cid="0" onclick="selectCommunity(0)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#4e79a7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg></span><span class="leg-name">Карточка абонента</span><span class="leg-cnt">325</span><a class="leg-link" href="wiki/community_0.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
-<div class="leg-row" data-cid="1" onclick="selectCommunity(1)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#f28e2b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V21H3V9.5z M9 21v-6h6v6"/></svg></span><span class="leg-name">Личный кабинет</span><span class="leg-cnt">321</span><a class="leg-link" href="wiki/community_1.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
-<div class="leg-row" data-cid="2" onclick="selectCommunity(2)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#e15759" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1zm-1 5h20M7 16h2M11 16h4"/></svg></span><span class="leg-name">Финансы и деньги</span><span class="leg-cnt">274</span><a class="leg-link" href="wiki/community_2.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
-<div class="leg-row" data-cid="3" onclick="selectCommunity(3)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#76b7b2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5a6 6 0 1 0 0 12A6 6 0 0 0 11 5zm9 14l-4.35-4.35"/></svg></span><span class="leg-name">Поиск абонентов</span><span class="leg-cnt">238</span><a class="leg-link" href="wiki/community_3.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
-<div class="leg-row" data-cid="4" onclick="selectCommunity(4)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#59a14f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm5 14v.01"/></svg></span><span class="leg-name">Мобильный API</span><span class="leg-cnt">163</span><a class="leg-link" href="wiki/community_4.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
-<div class="leg-row" data-cid="5" onclick="selectCommunity(5)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#edc948" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11V7a7 7 0 1 1 14 0v4M4 11h16a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1zm8 4v2"/></svg></span><span class="leg-name">Авторизация</span><span class="leg-cnt">152</span><a class="leg-link" href="wiki/community_5.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
-<div class="leg-row" data-cid="6" onclick="selectCommunity(6)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#b07aa1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zM2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg></span><span class="leg-name">ACL и соцсети</span><span class="leg-cnt">150</span><a class="leg-link" href="wiki/community_6.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
-<div class="leg-row" data-cid="7" onclick="selectCommunity(7)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#ff9da7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zM4.93 4.93l14.14 14.14"/></svg></span><span class="leg-name">Блокировки</span><span class="leg-cnt">125</span><a class="leg-link" href="wiki/community_7.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
-<div class="leg-row" data-cid="8" onclick="selectCommunity(8)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#9c755f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c4.97 0 9 1.12 9 2.5v13C21 19.88 17 21 12 21s-9-1.12-9-2.5v-13C3 4.12 7.03 3 12 3zm9 4.5c0 1.38-4.03 2.5-9 2.5S3 8.88 3 7.5m18 5c0 1.38-4.03 2.5-9 2.5S3 13.88 3 12.5"/></svg></span><span class="leg-name">Резервные копии</span><span class="leg-cnt">110</span><a class="leg-link" href="wiki/community_8.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
-<div class="leg-row" data-cid="9" onclick="selectCommunity(9)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#bab0ac" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1zM8 19l-2 3M16 19l2 3M12 3l-4 4M12 3l4 4"/></svg></span><span class="leg-name">IPTV</span><span class="leg-cnt">108</span><a class="leg-link" href="wiki/community_9.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
-<div class="leg-row" data-cid="10" onclick="selectCommunity(10)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#d37295" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 10h16M4 14h10M4 18h10M14 14h6v4h-6z"/></svg></span><span class="leg-name">Фреймворк форм</span><span class="leg-cnt">99</span><a class="leg-link" href="wiki/community_10.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
-<div class="leg-row" data-cid="11" onclick="selectCommunity(11)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#fabfd2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12m-2 0a2 2 0 1 0 4 0 2 2 0 1 0-4 0M12 2v3m0 14v3M4.22 4.22l2.12 2.12m11.32 11.32 2.12 2.12M2 12h3m14 0h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg></span><span class="leg-name">Задачи биллинга</span><span class="leg-cnt">94</span><a class="leg-link" href="wiki/community_11.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
-<div class="leg-row" data-isolated="1" data-cid="12" onclick="selectCommunity(12)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#8cd17d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm0 0v6h6M9 13h6M9 17h4"/></svg></span><span class="leg-name">Шаблоны ЛК</span><span class="leg-cnt">61</span><a class="leg-link" href="wiki/community_12.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
-<div class="leg-row" data-cid="13" onclick="selectCommunity(13)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#b6992d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h6v8H4zm10 0h6v4h-6zM4 16h6v4H4zm10-4h6v8h-6z"/></svg></span><span class="leg-name">Интерфейс</span><span class="leg-cnt">58</span><a class="leg-link" href="wiki/community_13.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
-<div class="leg-row" data-cid="14" onclick="selectCommunity(14)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#499894" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L4 7v5c0 4.97 3.37 9.08 8 10 4.63-.92 8-5.03 8-10V7l-8-4zm-2 9l2 2 4-4"/></svg></span><span class="leg-name">Отчёты СОРМ</span><span class="leg-cnt">57</span><a class="leg-link" href="wiki/community_14.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
-<div class="leg-row" data-cid="15" onclick="selectCommunity(15)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#86bcb6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18v12H3zM3 10h18M7 14h2M13 14h4"/></svg></span><span class="leg-name">Платёжные системы</span><span class="leg-cnt">48</span><a class="leg-link" href="wiki/community_15.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
-<div class="leg-row" data-cid="16" onclick="selectCommunity(16)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#f1ce63" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm18 2l-10 7L2 6"/></svg></span><span class="leg-name">Сообщения</span><span class="leg-cnt">33</span><a class="leg-link" href="wiki/community_16.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
-<div class="leg-row" data-cid="17" onclick="selectCommunity(17)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#a0cbe8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg></span><span class="leg-name">Мобильная авторизация</span><span class="leg-cnt">18</span><a class="leg-link" href="wiki/community_17.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
-<div class="leg-row" data-cid="18" onclick="selectCommunity(18)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#ffbe7d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5a2 2 0 1 1 4 0 7 7 0 0 1 4 6v3l2 2H4l2-2v-3a7 7 0 0 1 4-6zM9 17v1a3 3 0 0 0 6 0v-1"/></svg></span><span class="leg-name">Push-уведомления</span><span class="leg-cnt">16</span><a class="leg-link" href="wiki/community_18.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
-<div class="leg-row" data-cid="19" onclick="selectCommunity(19)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#8CD3C7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm6 0a4 4 0 0 1 0 8M1 21v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2m0-14a4 4 0 0 1 0 8"/></svg></span><span class="leg-name">Модель аккаунта</span><span class="leg-cnt">15</span><a class="leg-link" href="wiki/community_19.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
-<div class="leg-row" data-cid="20" onclick="selectCommunity(20)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#4e79a7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5v2m0 4v2m0 4v2M5 5h14a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V7a2 2 0 0 1 2-2z"/></svg></span><span class="leg-name">FreeScout Webhooks</span><span class="leg-cnt">10</span><a class="leg-link" href="wiki/community_20.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
-<div class="leg-row" data-isolated="1" data-cid="21" onclick="selectCommunity(21)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#f28e2b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L4 7v5c0 4.97 3.37 9.08 8 10 4.63-.92 8-5.03 8-10V7l-8-4z"/></svg></span><span class="leg-name">Авторизация ЛК</span><span class="leg-cnt">9</span><span class="leg-link disabled" title="Wiki недоступна (мелкое сообщество)" onclick="event.stopPropagation()">·</span></div>
-<div class="leg-row" data-isolated="1" data-cid="22" onclick="selectCommunity(22)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#e15759" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 8l-4 4 4 4m10-8 4 4-4 4m-5-11-2 14"/></svg></span><span class="leg-name">Фильтры шаблонов</span><span class="leg-cnt">7</span><span class="leg-link disabled" title="Wiki недоступна (мелкое сообщество)" onclick="event.stopPropagation()">·</span></div>
-<div class="leg-row" data-isolated="1" data-cid="23" onclick="selectCommunity(23)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#76b7b2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 4.5v9L12 21l-9-4.5v-9L12 3zm0 0v9m9-4.5L12 12m-9-4.5L12 12"/></svg></span><span class="leg-name">Пакет мобильного API</span><span class="leg-cnt">4</span><span class="leg-link disabled" title="Wiki недоступна (мелкое сообщество)" onclick="event.stopPropagation()">·</span></div>
-<div class="leg-row" data-isolated="1" data-cid="24" onclick="selectCommunity(24)"><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#59a14f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h16M6 16h12M12 4v4M8 12v4M16 12v4"/></svg></span><span class="leg-name">Конфигурация</span><span class="leg-cnt">3</span><span class="leg-link disabled" title="Wiki недоступна (мелкое сообщество)" onclick="event.stopPropagation()">·</span></div>
+<div class="leg-row" data-cid="0" onclick="selectCommunity(0)"><span class="dot" style="background:#4e79a7"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#4e79a7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg></span><span class="leg-name">Карточка абонента</span><span class="leg-cnt">325</span><a class="leg-link" href="graph_c0.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="1" onclick="selectCommunity(1)"><span class="dot" style="background:#f28e2b"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#f28e2b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V21H3V9.5z M9 21v-6h6v6"/></svg></span><span class="leg-name">Личный кабинет</span><span class="leg-cnt">321</span><a class="leg-link" href="graph_c1.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="2" onclick="selectCommunity(2)"><span class="dot" style="background:#e15759"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#e15759" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1zm-1 5h20M7 16h2M11 16h4"/></svg></span><span class="leg-name">Финансы и деньги</span><span class="leg-cnt">274</span><a class="leg-link" href="graph_c2.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="3" onclick="selectCommunity(3)"><span class="dot" style="background:#76b7b2"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#76b7b2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5a6 6 0 1 0 0 12A6 6 0 0 0 11 5zm9 14l-4.35-4.35"/></svg></span><span class="leg-name">Поиск абонентов</span><span class="leg-cnt">238</span><a class="leg-link" href="graph_c3.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="4" onclick="selectCommunity(4)"><span class="dot" style="background:#59a14f"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#59a14f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm5 14v.01"/></svg></span><span class="leg-name">Мобильный API</span><span class="leg-cnt">163</span><a class="leg-link" href="graph_c4.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="5" onclick="selectCommunity(5)"><span class="dot" style="background:#edc948"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#edc948" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11V7a7 7 0 1 1 14 0v4M4 11h16a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1zm8 4v2"/></svg></span><span class="leg-name">Авторизация</span><span class="leg-cnt">152</span><a class="leg-link" href="graph_c5.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="6" onclick="selectCommunity(6)"><span class="dot" style="background:#b07aa1"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#b07aa1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zM2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg></span><span class="leg-name">ACL и соцсети</span><span class="leg-cnt">150</span><a class="leg-link" href="graph_c6.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="7" onclick="selectCommunity(7)"><span class="dot" style="background:#ff9da7"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#ff9da7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zM4.93 4.93l14.14 14.14"/></svg></span><span class="leg-name">Блокировки</span><span class="leg-cnt">125</span><a class="leg-link" href="graph_c7.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="8" onclick="selectCommunity(8)"><span class="dot" style="background:#9c755f"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#9c755f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c4.97 0 9 1.12 9 2.5v13C21 19.88 17 21 12 21s-9-1.12-9-2.5v-13C3 4.12 7.03 3 12 3zm9 4.5c0 1.38-4.03 2.5-9 2.5S3 8.88 3 7.5m18 5c0 1.38-4.03 2.5-9 2.5S3 13.88 3 12.5"/></svg></span><span class="leg-name">Резервные копии</span><span class="leg-cnt">110</span><a class="leg-link" href="graph_c8.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="9" onclick="selectCommunity(9)"><span class="dot" style="background:#bab0ac"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#bab0ac" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1zM8 19l-2 3M16 19l2 3M12 3l-4 4M12 3l4 4"/></svg></span><span class="leg-name">IPTV</span><span class="leg-cnt">108</span><a class="leg-link" href="graph_c9.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="10" onclick="selectCommunity(10)"><span class="dot" style="background:#d37295"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#d37295" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 10h16M4 14h10M4 18h10M14 14h6v4h-6z"/></svg></span><span class="leg-name">Фреймворк форм</span><span class="leg-cnt">99</span><a class="leg-link" href="graph_c10.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="11" onclick="selectCommunity(11)"><span class="dot" style="background:#fabfd2"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#fabfd2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12m-2 0a2 2 0 1 0 4 0 2 2 0 1 0-4 0M12 2v3m0 14v3M4.22 4.22l2.12 2.12m11.32 11.32 2.12 2.12M2 12h3m14 0h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg></span><span class="leg-name">Задачи биллинга</span><span class="leg-cnt">94</span><a class="leg-link" href="graph_c11.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="12" onclick="selectCommunity(12)"><span class="dot" style="background:#8cd17d"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#8cd17d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm0 0v6h6M9 13h6M9 17h4"/></svg></span><span class="leg-name">Шаблоны ЛК</span><span class="leg-cnt">61</span><a class="leg-link" href="graph_c12.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="13" onclick="selectCommunity(13)"><span class="dot" style="background:#b6992d"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#b6992d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h6v8H4zm10 0h6v4h-6zM4 16h6v4H4zm10-4h6v8h-6z"/></svg></span><span class="leg-name">Интерфейс</span><span class="leg-cnt">58</span><a class="leg-link" href="graph_c13.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="14" onclick="selectCommunity(14)"><span class="dot" style="background:#499894"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#499894" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L4 7v5c0 4.97 3.37 9.08 8 10 4.63-.92 8-5.03 8-10V7l-8-4zm-2 9l2 2 4-4"/></svg></span><span class="leg-name">Отчёты СОРМ</span><span class="leg-cnt">57</span><a class="leg-link" href="graph_c14.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="15" onclick="selectCommunity(15)"><span class="dot" style="background:#86bcb6"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#86bcb6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18v12H3zM3 10h18M7 14h2M13 14h4"/></svg></span><span class="leg-name">Платёжные системы</span><span class="leg-cnt">48</span><a class="leg-link" href="graph_c15.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="16" onclick="selectCommunity(16)"><span class="dot" style="background:#f1ce63"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#f1ce63" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm18 2l-10 7L2 6"/></svg></span><span class="leg-name">Сообщения</span><span class="leg-cnt">33</span><a class="leg-link" href="graph_c16.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="17" onclick="selectCommunity(17)"><span class="dot" style="background:#a0cbe8"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#a0cbe8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg></span><span class="leg-name">Мобильная авторизация</span><span class="leg-cnt">18</span><a class="leg-link" href="graph_c17.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="18" onclick="selectCommunity(18)"><span class="dot" style="background:#ffbe7d"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#ffbe7d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5a2 2 0 1 1 4 0 7 7 0 0 1 4 6v3l2 2H4l2-2v-3a7 7 0 0 1 4-6zM9 17v1a3 3 0 0 0 6 0v-1"/></svg></span><span class="leg-name">Push-уведомления</span><span class="leg-cnt">16</span><a class="leg-link" href="graph_c18.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="19" onclick="selectCommunity(19)"><span class="dot" style="background:#8CD3C7"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#8CD3C7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm6 0a4 4 0 0 1 0 8M1 21v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2m0-14a4 4 0 0 1 0 8"/></svg></span><span class="leg-name">Модель аккаунта</span><span class="leg-cnt">15</span><a class="leg-link" href="graph_c19.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="20" onclick="selectCommunity(20)"><span class="dot" style="background:#4e79a7"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#4e79a7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5v2m0 4v2m0 4v2M5 5h14a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V7a2 2 0 0 1 2-2z"/></svg></span><span class="leg-name">FreeScout Webhooks</span><span class="leg-cnt">10</span><a class="leg-link" href="graph_c20.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="21" onclick="selectCommunity(21)"><span class="dot" style="background:#f28e2b"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#f28e2b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L4 7v5c0 4.97 3.37 9.08 8 10 4.63-.92 8-5.03 8-10V7l-8-4z"/></svg></span><span class="leg-name">Авторизация ЛК</span><span class="leg-cnt">9</span><a class="leg-link" href="graph_c21.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="22" onclick="selectCommunity(22)"><span class="dot" style="background:#e15759"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#e15759" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 8l-4 4 4 4m10-8 4 4-4 4m-5-11-2 14"/></svg></span><span class="leg-name">Фильтры шаблонов</span><span class="leg-cnt">7</span><a class="leg-link" href="graph_c22.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="23" onclick="selectCommunity(23)"><span class="dot" style="background:#76b7b2"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#76b7b2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 4.5v9L12 21l-9-4.5v-9L12 3zm0 0v9m9-4.5L12 12m-9-4.5L12 12"/></svg></span><span class="leg-name">Пакет мобильного API</span><span class="leg-cnt">4</span><a class="leg-link" href="graph_c23.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
+<div class="leg-row" data-cid="24" onclick="selectCommunity(24)"><span class="dot" style="background:#59a14f"></span><span class="leg-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#59a14f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h16M6 16h12M12 4v4M8 12v4M16 12v4"/></svg></span><span class="leg-name">Конфигурация</span><span class="leg-cnt">3</span><a class="leg-link" href="graph_c24.html" target="_blank" title="Открыть детальный граф" onclick="event.stopPropagation()">→</a></div>
   </div>
   <div id="selected-detail">
     <div class="sel-head">
@@ -303,20 +160,6 @@ body { margin: 0; padding-top: var(--header-height) !important;
 </div>
 
 <script>
-// Theme toggle
-const html = document.documentElement;
-const saved = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-html.setAttribute('data-theme', saved);
-const themeBtn = document.getElementById('themeToggle');
-if (themeBtn) {
-  themeBtn.addEventListener('click', () => {
-    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    html.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
-  });
-}
-
-
 const NODES = [{"id": 0, "label": "\u041a\u0430\u0440\u0442\u043e\u0447\u043a\u0430 \u0430\u0431\u043e\u043d\u0435\u043d\u0442\u0430", "icon": "user", "color": "#4e79a7", "r": 87.0, "count": 325}, {"id": 1, "label": "\u041b\u0438\u0447\u043d\u044b\u0439 \u043a\u0430\u0431\u0438\u043d\u0435\u0442", "icon": "home", "color": "#f28e2b", "r": 86.2, "count": 321}, {"id": 2, "label": "\u0424\u0438\u043d\u0430\u043d\u0441\u044b \u0438 \u0434\u0435\u043d\u044c\u0433\u0438", "icon": "credit-card", "color": "#e15759", "r": 76.8, "count": 274}, {"id": 3, "label": "\u041f\u043e\u0438\u0441\u043a \u0430\u0431\u043e\u043d\u0435\u043d\u0442\u043e\u0432", "icon": "search", "color": "#76b7b2", "r": 69.6, "count": 238}, {"id": 4, "label": "\u041c\u043e\u0431\u0438\u043b\u044c\u043d\u044b\u0439 API", "icon": "device-mobile", "color": "#59a14f", "r": 54.6, "count": 163}, {"id": 5, "label": "\u0410\u0432\u0442\u043e\u0440\u0438\u0437\u0430\u0446\u0438\u044f", "icon": "lock", "color": "#edc948", "r": 52.4, "count": 152}, {"id": 6, "label": "ACL \u0438 \u0441\u043e\u0446\u0441\u0435\u0442\u0438", "icon": "world", "color": "#b07aa1", "r": 52.0, "count": 150}, {"id": 7, "label": "\u0411\u043b\u043e\u043a\u0438\u0440\u043e\u0432\u043a\u0438", "icon": "ban", "color": "#ff9da7", "r": 47.0, "count": 125}, {"id": 8, "label": "\u0420\u0435\u0437\u0435\u0440\u0432\u043d\u044b\u0435 \u043a\u043e\u043f\u0438\u0438", "icon": "database", "color": "#9c755f", "r": 44.0, "count": 110}, {"id": 9, "label": "IPTV", "icon": "device-tv", "color": "#bab0ac", "r": 43.6, "count": 108}, {"id": 10, "label": "\u0424\u0440\u0435\u0439\u043c\u0432\u043e\u0440\u043a \u0444\u043e\u0440\u043c", "icon": "layout-list", "color": "#d37295", "r": 41.8, "count": 99}, {"id": 11, "label": "\u0417\u0430\u0434\u0430\u0447\u0438 \u0431\u0438\u043b\u043b\u0438\u043d\u0433\u0430", "icon": "settings", "color": "#fabfd2", "r": 40.8, "count": 94}, {"id": 12, "label": "\u0428\u0430\u0431\u043b\u043e\u043d\u044b \u041b\u041a", "icon": "file-text", "color": "#8cd17d", "r": 34.2, "count": 61}, {"id": 13, "label": "\u0418\u043d\u0442\u0435\u0440\u0444\u0435\u0439\u0441", "icon": "layout-dashboard", "color": "#b6992d", "r": 33.6, "count": 58}, {"id": 14, "label": "\u041e\u0442\u0447\u0451\u0442\u044b \u0421\u041e\u0420\u041c", "icon": "shield-check", "color": "#499894", "r": 33.4, "count": 57}, {"id": 15, "label": "\u041f\u043b\u0430\u0442\u0451\u0436\u043d\u044b\u0435 \u0441\u0438\u0441\u0442\u0435\u043c\u044b", "icon": "cash", "color": "#86bcb6", "r": 31.6, "count": 48}, {"id": 16, "label": "\u0421\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u044f", "icon": "mail", "color": "#f1ce63", "r": 28.6, "count": 33}, {"id": 17, "label": "\u041c\u043e\u0431\u0438\u043b\u044c\u043d\u0430\u044f \u0430\u0432\u0442\u043e\u0440\u0438\u0437\u0430\u0446\u0438\u044f", "icon": "key", "color": "#a0cbe8", "r": 25.6, "count": 18}, {"id": 18, "label": "Push-\u0443\u0432\u0435\u0434\u043e\u043c\u043b\u0435\u043d\u0438\u044f", "icon": "bell", "color": "#ffbe7d", "r": 25.2, "count": 16}, {"id": 19, "label": "\u041c\u043e\u0434\u0435\u043b\u044c \u0430\u043a\u043a\u0430\u0443\u043d\u0442\u0430", "icon": "users", "color": "#8CD3C7", "r": 25.0, "count": 15}, {"id": 20, "label": "FreeScout Webhooks", "icon": "ticket", "color": "#4e79a7", "r": 24.0, "count": 10}, {"id": 21, "label": "\u0410\u0432\u0442\u043e\u0440\u0438\u0437\u0430\u0446\u0438\u044f \u041b\u041a", "icon": "shield", "color": "#f28e2b", "r": 23.8, "count": 9}, {"id": 22, "label": "\u0424\u0438\u043b\u044c\u0442\u0440\u044b \u0448\u0430\u0431\u043b\u043e\u043d\u043e\u0432", "icon": "code", "color": "#e15759", "r": 23.4, "count": 7}, {"id": 23, "label": "\u041f\u0430\u043a\u0435\u0442 \u043c\u043e\u0431\u0438\u043b\u044c\u043d\u043e\u0433\u043e API", "icon": "package", "color": "#76b7b2", "r": 22.8, "count": 4}, {"id": 24, "label": "\u041a\u043e\u043d\u0444\u0438\u0433\u0443\u0440\u0430\u0446\u0438\u044f", "icon": "adjustments", "color": "#59a14f", "r": 22.6, "count": 3}];
 const LINKS = [{"source": 0, "target": 3, "weight": 196}, {"source": 3, "target": 5, "weight": 197}, {"source": 3, "target": 10, "weight": 79}, {"source": 0, "target": 5, "weight": 66}, {"source": 5, "target": 6, "weight": 28}, {"source": 5, "target": 10, "weight": 19}, {"source": 6, "target": 10, "weight": 33}, {"source": 10, "target": 11, "weight": 5}, {"source": 0, "target": 10, "weight": 52}, {"source": 0, "target": 6, "weight": 48}, {"source": 0, "target": 1, "weight": 101}, {"source": 0, "target": 13, "weight": 24}, {"source": 0, "target": 11, "weight": 56}, {"source": 3, "target": 6, "weight": 202}, {"source": 0, "target": 2, "weight": 19}, {"source": 3, "target": 11, "weight": 40}, {"source": 0, "target": 16, "weight": 7}, {"source": 0, "target": 8, "weight": 53}, {"source": 1, "target": 6, "weight": 35}, {"source": 2, "target": 6, "weight": 20}, {"source": 6, "target": 11, "weight": 2}, {"source": 1, "target": 2, "weight": 11}, {"source": 2, "target": 11, "weight": 7}, {"source": 0, "target": 7, "weight": 17}, {"source": 1, "target": 3, "weight": 69}, {"source": 5, "target": 17, "weight": 5}, {"source": 1, "target": 5, "weight": 16}, {"source": 5, "target": 11, "weight": 26}, {"source": 3, "target": 17, "weight": 6}, {"source": 1, "target": 8, "weight": 31}, {"source": 8, "target": 11, "weight": 6}, {"source": 6, "target": 13, "weight": 8}, {"source": 2, "target": 3, "weight": 65}, {"source": 0, "target": 4, "weight": 36}, {"source": 0, "target": 9, "weight": 10}, {"source": 0, "target": 14, "weight": 14}, {"source": 0, "target": 18, "weight": 5}, {"source": 0, "target": 17, "weight": 2}, {"source": 0, "target": 20, "weight": 3}, {"source": 0, "target": 15, "weight": 5}, {"source": 10, "target": 13, "weight": 2}, {"source": 11, "target": 13, "weight": 4}, {"source": 2, "target": 10, "weight": 5}, {"source": 8, "target": 10, "weight": 3}, {"source": 2, "target": 5, "weight": 15}, {"source": 1, "target": 13, "weight": 11}, {"source": 1, "target": 9, "weight": 17}, {"source": 1, "target": 11, "weight": 19}, {"source": 1, "target": 17, "weight": 3}, {"source": 1, "target": 4, "weight": 43}, {"source": 1, "target": 15, "weight": 15}, {"source": 5, "target": 13, "weight": 1}, {"source": 9, "target": 11, "weight": 1}, {"source": 3, "target": 9, "weight": 15}, {"source": 3, "target": 13, "weight": 2}, {"source": 4, "target": 13, "weight": 1}, {"source": 1, "target": 7, "weight": 26}, {"source": 7, "target": 13, "weight": 1}, {"source": 5, "target": 7, "weight": 19}, {"source": 8, "target": 17, "weight": 1}, {"source": 3, "target": 8, "weight": 8}, {"source": 2, "target": 8, "weight": 18}, {"source": 1, "target": 14, "weight": 11}, {"source": 1, "target": 10, "weight": 1}, {"source": 1, "target": 16, "weight": 9}, {"source": 1, "target": 18, "weight": 1}, {"source": 1, "target": 20, "weight": 2}, {"source": 4, "target": 11, "weight": 12}, {"source": 7, "target": 11, "weight": 5}, {"source": 3, "target": 7, "weight": 2}, {"source": 2, "target": 19, "weight": 2}, {"source": 3, "target": 19, "weight": 1}, {"source": 2, "target": 4, "weight": 1}, {"source": 3, "target": 18, "weight": 8}, {"source": 3, "target": 4, "weight": 77}, {"source": 2, "target": 13, "weight": 5}, {"source": 4, "target": 8, "weight": 4}, {"source": 2, "target": 9, "weight": 3}, {"source": 2, "target": 14, "weight": 3}, {"source": 2, "target": 16, "weight": 2}, {"source": 3, "target": 20, "weight": 5}, {"source": 3, "target": 16, "weight": 32}, {"source": 3, "target": 15, "weight": 17}, {"source": 4, "target": 5, "weight": 1}, {"source": 4, "target": 17, "weight": 3}, {"source": 4, "target": 15, "weight": 3}, {"source": 4, "target": 7, "weight": 2}];
 const ICONS = {"0": "user", "1": "home", "2": "credit-card", "3": "search", "4": "device-mobile", "5": "lock", "6": "world", "7": "ban", "8": "database", "9": "device-tv", "10": "layout-list", "11": "settings", "12": "file-text", "13": "layout-dashboard", "14": "shield-check", "15": "cash", "16": "mail", "17": "key", "18": "bell", "19": "users", "20": "ticket", "21": "shield", "22": "code", "23": "package", "24": "adjustments"};
@@ -421,14 +264,11 @@ nodeSel.append('text').attr('class','node-name')
   });
 
 // ── simulation ──
-const cx = wrap.clientWidth / 2, cy = wrap.clientHeight / 2;
 const sim = d3.forceSimulation(NODES)
   .force('link', d3.forceLink(LINKS).id(d=>d.id).distance(d => 60 + (d.source.r||30) + (d.target.r||30)).strength(0.4))
   .force('charge', d3.forceManyBody().strength(d => -Math.pow(d.r,1.6)))
   .force('collision', d3.forceCollide().radius(d => d.r + 12).iterations(3))
-  .force('center', d3.forceCenter(cx, cy).strength(0.08))
-  .force('x', d3.forceX(cx).strength(0.04))
-  .force('y', d3.forceY(cy).strength(0.04))
+  .force('center', d3.forceCenter(wrap.clientWidth/2, wrap.clientHeight/2))
   .on('tick', ticked);
 
 function ticked() {
@@ -452,10 +292,7 @@ function makeIconSvg(id, size, color) {
 }
 function showTooltip(e,d) {
   const conns = LINKS.filter(l => l.source.id===d.id || l.target.id===d.id).length;
-  const connText = conns === 0
-    ? '<span style="color:#f59e0b">без межмодульных связей</span>'
-    : `${conns} связей`;
-  tip.innerHTML = `<b>${makeIconSvg(d.id,9,'var(--primary-l)')} ${d.label}</b><br><span class="tip-meta">${d.count} модулей · ${connText}</span>`;
+  tip.innerHTML = `<b>${makeIconSvg(d.id,14,'var(--primary-l)')} ${d.label}</b><br>${d.count} модулей · ${conns} связей`;
   tip.style.display = 'block';
   moveTooltip(e);
 }
@@ -467,58 +304,27 @@ function hideTooltip() { tip.style.display='none'; }
 // ── select ──
 function selectNode(id) {
   selectedId = id;
-  // build set of connected ids (including self)
-  const connectedIds = new Set([id]);
-  LINKS.forEach(l => {
-    if (l.source.id === id) connectedIds.add(l.target.id);
-    else if (l.target.id === id) connectedIds.add(l.source.id);
-  });
-  const isIsolated = connectedIds.size === 1; // только сам узел
-  // selection / highlighting / dim — не диммим если узел изолирован (бессмысленно)
   nodeSel.classed('selected', d => d.id===id);
-  nodeSel.classed('dimmed',   d => !isIsolated && !connectedIds.has(d.id));
   linkSel.classed('highlighted', d => d.source.id===id || d.target.id===id);
-  linkSel.classed('dimmed',      d => !isIsolated && d.source.id!==id && d.target.id!==id);
   // sidebar
   document.querySelectorAll('.leg-row').forEach(r=>r.classList.remove('active'));
   const row = document.querySelector('.leg-row[data-cid="'+id+'"]');
   if(row) { row.classList.add('active'); row.scrollIntoView({block:'nearest',behavior:'smooth'}); }
   const nd = NODES.find(n=>n.id===id);
   if(!nd) return;
-  document.getElementById('sel-icon').innerHTML = makeIconSvg(id, 22, nd.color);
+  document.getElementById('sel-icon').innerHTML = makeIconSvg(id, 26, nd.color);
   document.getElementById('sel-name-text').textContent = nd.label;
   document.getElementById('sel-badge').textContent = nd.count+' мод.';
   const conns = LINKS.filter(l=>l.source.id===id||l.target.id===id)
     .sort((a,b)=>b.weight-a.weight).slice(0,8);
   let html = conns.map(l=>{
     const other = l.source.id===id ? l.target : l.source;
-    return `<div class="conn-item"><span class="conn-name">${makeIconSvg(other.id,11,other.color)}<span class="conn-text">${other.label}</span></span><span class="conn-cnt">${l.weight} св.</span></div>`;
+    return `<div class="conn-item"><span class="conn-name">${makeIconSvg(other.id,12,other.color)} ${other.label}</span><span class="conn-cnt">${l.weight} св.</span></div>`;
   }).join('');
   const total = LINKS.filter(l=>l.source.id===id||l.target.id===id).length;
   if(total>8) html += `<div style="color:var(--text3);padding-top:3px">и ещё ${total-8}…</div>`;
-  if (!html) {
-    document.getElementById('sel-info').innerHTML =
-      '<div style="padding:6px 8px;background:#f59e0b22;border:1px solid #f59e0b55;border-radius:6px;color:var(--text2);font-size:11px;line-height:1.4">' +
-      '<b style="color:#f59e0b;display:block;margin-bottom:3px">Нет межмодульных связей</b>' +
-      'graphify видит связи только через Python <code>import</code>. Этот кластер ' +
-      'связан с другими через Django-шаблоны / URL-маршруты / Celery-задачи — ' +
-      'их парсер AST не отслеживает.</div>';
-  } else {
-    document.getElementById('sel-info').innerHTML = html;
-  }
-  // disable wiki link for missing communities (id >= 21)
-  const wikiBtn = document.getElementById('sel-link');
-  if (id >= 21) {
-    wikiBtn.removeAttribute('href');
-    wikiBtn.classList.add('disabled');
-    wikiBtn.title = 'Wiki-страница не сгенерирована (сообщество < 10 модулей)';
-    wikiBtn.textContent = 'Wiki недоступна';
-  } else {
-    wikiBtn.href = 'wiki/community_'+id+'.html';
-    wikiBtn.classList.remove('disabled');
-    wikiBtn.title = '';
-    wikiBtn.textContent = 'Открыть детальный граф →';
-  }
+  document.getElementById('sel-info').innerHTML = html || '<span style="color:var(--text3)">Нет связей</span>';
+  document.getElementById('sel-link').href = 'graph_c'+id+'.html';
   document.getElementById('selected-detail').style.display='block';
 }
 
@@ -534,13 +340,18 @@ function selectCommunity(id) {
 
 svg.on('click', () => {
   selectedId=null;
-  nodeSel.classed('selected',false).classed('dimmed',false);
-  linkSel.classed('highlighted',false).classed('dimmed',false);
+  nodeSel.classed('selected',false);
+  linkSel.classed('highlighted',false);
   document.querySelectorAll('.leg-row').forEach(r=>r.classList.remove('active'));
   document.getElementById('selected-detail').style.display='none';
 });
 
 // ── theme ──
+document.getElementById('theme-btn').addEventListener('click', () => {
+  theme = theme==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme',theme);
+  document.getElementById('theme-btn').textContent = theme==='dark'?'🌙':'☀️';
+});
 </script>
 </body>
 </html>
