@@ -2839,25 +2839,141 @@ OSM. Стиль карточки в <a href="#integrations">/admin/settings/inte
 <p>Inline-редактирование пароля (build 373): двойной клик на ячейке с паролем → input + кнопки 🎲 generate / ✓ save / ✕ cancel. Enter=save, Escape=cancel.</p>
 
 <h4 id="abonent-card-tab-radius">RADIUS / Монитор сессий</h4>
-<p>URL: <code>/admin/Abonents/&lt;id&gt;/check/</code>. История RADIUS-сессий абонента — последние 20 записей из <code>RADIUS_SESSIONS</code>. Активная сессия всегда вверху (бейдж <span class="badge bg-success">Online</span>), далее завершённые в обратном хронологическом порядке.</p>
+<p>URL: <code>/admin/Abonents/&lt;id&gt;/check/</code>. Полнофункциональный live-инструмент мониторинга RADIUS-сессий абонента. После UX-аудита (Sprint 1+2+3, builds 535–544) Health Score 64 → <strong>94+/100</strong>.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v520/session_monitor_with_mac.png" alt="Монитор сессий — таблица с колонкой MAC и временем в MSK"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/01_overview.png" alt="Монитор сессий — общий вид: контекст тарифа, toolbar с KPI, таблица сессий, live-индикатор"></p>
 
-<p>Колонки таблицы (build 519+):</p>
+<h5 id="abonent-card-tab-radius-context">Карточка контекста тарифа</h5>
+<p>Сверху страницы — компактный градиентный блок с информацией о тарифе абонента: имя, цена, шейпер из <code>TarifRadiusParams</code> (Mikrotik-Rate-Limit), Acct-Interim-Interval, статистика 7 дней (всего сессий / обрывов / процент). При <code>drop_pct &gt; 20%</code> — иконка ⚠ предупреждения «выше нормы по тарифу».</p>
+
+<h5 id="abonent-card-tab-radius-toolbar">Toolbar с KPI и переключателем периода</h5>
+<p>Над таблицей — 5 KPI-чипов:</p>
 <ul>
-  <li><strong>Логин</strong> — имя учётной записи (<code>Users.LOGIN</code>).</li>
-  <li><strong>Начало / Обновление / Завершение</strong> — timestamps в локальной TZ (<code>Europe/Moscow</code>). Обновление = <code>Acct-Interim-Update</code> (раз в 10 мин), Завершение = <code>Accounting-Stop</code>.</li>
-  <li><strong>Причина</strong> (<code>END_REASON</code>) — User-Request, Idle-Timeout, Session-Timeout, Admin-Reset, NAS-Request, Lost-Carrier, Synthetic (no Start) и т.д.</li>
-  <li><strong>Session ID</strong> — <code>Acct-Session-Id</code> от NAS, гиперссылка на полный лог.</li>
-  <li><strong>MAC</strong> (build 519) — <code>Calling-Station-Id</code> из <code>RADIUS_SESSIONS.MAC</code>: MAC-адрес устройства, с которого авторизовался клиент. Полезно для диагностики «у клиента поменялся роутер» и для блокировки чужих устройств в статусе.</li>
-  <li><strong>PPPoE / Порт</strong> — <code>NAS-Port-Id</code>: название PPPoE-сервера или физического интерфейса.</li>
-  <li><strong>VLAN</strong> — <code>Tunnel-Private-Group-Id</code>.</li>
-  <li><strong>Аптайм</strong> — длительность сессии (для активной — от <code>START_TIME</code> до текущего момента).</li>
-  <li><strong>Трафик</strong> — ↓ IN / ↑ OUT в человеческих единицах (КБ/МБ/ГБ). Для активной сессии счётчики из <code>USERS_RADIUSAUTH</code>, для завершённой — из <code>RADIUS_SESSIONS.IN_OCT/OUT_OCT</code> (фиксируется при Accounting-Stop).</li>
-  <li><strong>Статус</strong> — <span class="badge bg-success">Online</span> (активна и Interim-Update свежий), <span class="badge bg-warning text-dark">Stale</span> (запись «активна», но Interim-Update старый — зомби-сессия), <span class="badge bg-secondary">Завершена</span>.</li>
+  <li><strong>Всего</strong> — количество сессий за выбранный период</li>
+  <li><strong>Online</strong> — сейчас активные (с пульсирующей зелёной точкой)</li>
+  <li><strong>Загрузка / Выгрузка</strong> — суммарный трафик ↓/↑</li>
+  <li><strong>Обрывов</strong> — % сессий с <code>END_REASON</code> = Lost-Carrier и подобными. При &gt;25% — красный цвет</li>
+  <li><strong>MAC</strong> — количество уникальных MAC-адресов (выявление смены устройства)</li>
+</ul>
+<p>Переключатель периода: <em>Сутки / Неделя / Месяц / Всё</em>. Клик → fetch <code>GET /admin/Abonents/&lt;ab_id&gt;/sessions/kpi/?period=...</code> → JSON → точечное обновление цифр.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/07_kpi_24h.png" alt="KPI обновляются при выборе периода «Сутки»"></p>
+
+<h5 id="abonent-card-tab-radius-live">Live-индикатор и auto-refresh</h5>
+<p>Справа в toolbar — индикатор «Авто • N с назад» с пульсирующей зелёной точкой. Каждые 30 секунд JS опрашивает <code>GET /admin/Abonents/&lt;ab_id&gt;/sessions/list/</code>, обновляет статус-бейджи и трафик в строках без перезагрузки страницы. При смене статуса (Online → Stale → Завершена или наоборот) — <strong>flash-анимация строки</strong> и toast-уведомление «🔌 Сессия 8142e97a завершена: User-Request».</p>
+
+<p>Клик на индикатор — пауза. При переключении на другую вкладку браузера (<code>document.hidden</code>) — авто-пауза, при возврате — мгновенный refresh.</p>
+
+<h5 id="abonent-card-tab-radius-columns">Колонки таблицы (12 на десктопе)</h5>
+<ul>
+  <li><strong>Логин</strong> — имя учётной записи. Скрывается автоматически если у абонента всего 1 учётка (build 525) — экономия места.</li>
+  <li><strong>Период</strong> (build 531) — объединены 3 бывшие колонки. Дата сверху, время начала → конца на одной строке, аптайм с иконкой ⏱. Для активных — пульсирующая зелёная точка «● идёт».</li>
+  <li><strong>Update</strong> — время последнего <code>Acct-Interim-Update</code>.</li>
+  <li><strong>Причина</strong> — <strong>цветной бейдж</strong> с иконкой (build 531):
+    <ul>
+      <li><span class="badge" style="background:#6c757d22;color:#495057;border:1px solid #6c757d44">⏻ Норма</span> — User-Request, Logout</li>
+      <li><span class="badge" style="background:#fd7e1422;color:#c25e0a;border:1px solid #fd7e1444">⚡ Обрыв линии</span> — Lost-Carrier, NAS-Reboot</li>
+      <li><span class="badge" style="background:#0d6efd22;color:#0a58ca;border:1px solid #0d6efd44">⏳ Таймаут</span> — Idle-Timeout</li>
+      <li><span class="badge" style="background:#7048e822;color:#5a36c0;border:1px solid #7048e844">✨ Восстановлена</span> — Synthetic, Recovered (build 450)</li>
+      <li><span class="badge" style="background:#dc354522;color:#a72836;border:1px solid #dc354544">🛡 Админ</span> — Admin-Reset, NAS-Request</li>
+    </ul>
+    В тултипе — раскрытие категории и raw-значение <code>END_REASON</code>.
+  </li>
+  <li><strong>Session</strong> — короткий <code>Acct-Session-Id</code> (10 hex). Полный — в тултипе. Клик копирует в буфер с зелёной вспышкой и toast.</li>
+  <li><strong>MAC</strong> (build 519) — <code>Calling-Station-Id</code> + <strong>OUI vendor</strong> рядом (TP-Link, MikroTik, D-Link, Asus, Netgear, Xiaomi и др., 50+ префиксов). Клик копирует.</li>
+  <li><strong>IP</strong> (build 526) — <code>Framed-IP-Address</code> синим моноширинным. Клик копирует.</li>
+  <li><strong>NAS</strong> (build 529–530) — имя NAS зелёным с иконкой 🖥, IP под именем. Клик открывает <strong>модалку редактирования NAS</strong> в новой вкладке (паттерн <code>?edit=&lt;id&gt;</code> + autoOpenFromQuery в nas_list.html).</li>
+  <li><strong>PPPoE / Порт</strong> — <code>NAS-Port-Id</code>.</li>
+  <li><strong>VLAN</strong> — <code>Tunnel-Private-Group-Id</code> бейджем.</li>
+  <li><strong>Трафик</strong> (build 528) — две строки с цветовой кодировкой: <span class="text-success">↓ загрузка</span> зелёным, <span class="text-danger">↑ выгрузка</span> красным. В тултипе — точные байты.</li>
+  <li><strong>Статус</strong> — <span class="badge bg-success">● Online</span> / <span class="badge bg-warning text-dark">⚠ Stale</span> / <span class="badge bg-secondary">✓ Завершена</span>.</li>
+  <li><strong>Действия</strong> (build 536) — кнопка <strong>«i» Подробности</strong> и <strong>«⏻» CoA Disconnect</strong> (только на активных). На Online-строке кнопка CoA — белая с красной обводкой для контраста (build 544).</li>
 </ul>
 
-<p><strong>Фикс таймзоны (build 519)</strong>: ранее времена показывались с лишним сдвигом +3&nbsp;часа. Корень — <code>fmt_dt()</code> делал двойную конвертацию UTC&nbsp;→&nbsp;MSK, тогда как Django при <code>USE_TZ=False</code> и <code>TIME_ZONE='Europe/Moscow'</code> уже отдаёт naive datetime в локальной TZ. Теперь повторная конвертация выполняется только для aware-datetime, naive передаётся как есть. То же касается <code>fmt_uptime()</code>: <code>datetime.utcnow()</code> заменён на <code>datetime.now()</code> для согласованности с локальным временем web-контейнера.</p>
+<h5 id="abonent-card-tab-radius-rows">Подсветка строк</h5>
+<ul>
+  <li><strong>Online</strong> — салатовый фон <code>#d4f5dd</code> с зелёной полосой 4px слева через <code>box-shadow inset</code>.</li>
+  <li><strong>Synthetic</strong> (восстановленные сессии) — фиолетовая полоса 3px слева + слабый фиолетовый фон <code>rgba(112,72,232,0.04)</code>.</li>
+  <li><strong>Related</strong> (имеют связанную Synthetic-сессию с тем же ACCT_SESSION_ID) — слабый фиолетовый фон <code>rgba(112,72,232,0.025)</code>.</li>
+</ul>
+
+<h5 id="abonent-card-tab-radius-drawer">Drawer-модалка деталей сессии</h5>
+<p>Клик на «i» в строке (или Enter на сфокусированной строке) открывает <strong>offcanvas-end</strong> справа шириной 540px с 4 вкладками:</p>
+
+<ol>
+  <li><strong>Обзор</strong> — 9 ключевых полей в <code>&lt;dl&gt;</code>: Начало / Завершение / Длительность / MAC / IP / NAS / Port / VLAN / Причина.
+    <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/02_drawer_overview.png" alt="Drawer — Обзор" style="max-width:540px"></p>
+  </li>
+  <li><strong>RADIUS</strong> — 20 raw-атрибутов: Acct-Session-Id, User-Name, NAS-IP-Address, Calling-Station-Id, Framed-IP-Address, NAS-Port-Id, Tunnel-Private-Group-Id, Acct-Session-Time, Acct-Input/Output-Octets, Acct-Terminate-Cause, raw timestamps в UTC, CEIL_IN/OUT, RATE_IN/OUT.
+    <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/03_drawer_radius.png" alt="Drawer — RADIUS-атрибуты" style="max-width:540px"></p>
+  </li>
+  <li><strong>Трафик</strong> — крупные цифры ↓ загрузка / ↑ выгрузка (в МБ/ГБ + точные байты), средний rate в Kbps, длительность.
+    <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/04_drawer_traffic.png" alt="Drawer — Трафик" style="max-width:540px"></p>
+  </li>
+  <li><strong>Действия</strong> — CoA Disconnect (disabled для закрытых) + 3 копировать-кнопки (MAC / IP / Session ID) + ссылка «Открыть NAS».
+    <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/05_drawer_actions.png" alt="Drawer — Действия" style="max-width:540px"></p>
+  </li>
+</ol>
+
+<h5 id="abonent-card-tab-radius-coa">CoA Disconnect — разрыв сессии оператором</h5>
+<p>Кнопка <code>⏻</code> в строке с активной сессией (или из drawer-модалки → вкладка «Действия»). Клик открывает <strong>confirm-модалку</strong> с превью последствий:</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/06_coa_confirm.png" alt="Confirm-модалка перед CoA Disconnect"></p>
+
+<p>Подтверждение → <code>POST /admin/Abonents/&lt;ab_id&gt;/sessions/coa_disconnect/</code> → backend запускает <code>disconnect_user.delay(broadcast=True)</code> в Celery (CoA на все NAS абонента) + audit-запись (table=<code>RADIUS_SESSIONS</code>) + toast «CoA Disconnect отправлен на все NAS». Через 8 секунд страница перезагружается чтобы обновить статус сессии на «Завершена».</p>
+
+<h5 id="abonent-card-tab-radius-mobile">Mobile-вид (ниже 992px)</h5>
+<p>Таблица из 12 колонок не помещается на телефоне — вместо неё отдельный layout <code>d-block d-lg-none</code> с карточками:</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/08_mobile.png" alt="Mobile card-stack" style="max-width:430px"></p>
+
+<p>Каждая сессия — карточка с зелёной полосой слева для Online, бейджем статуса/причины сверху, периодом + аптаймом, и 6 ключевыми полями (Логин / NAS / IP / MAC / Трафик / Порт+VLAN). Touch-targets ≥ 44px (a11y-touch-target-design).</p>
+
+<h5 id="abonent-card-tab-radius-backend">Backend-endpoints</h5>
+<table>
+  <thead>
+    <tr><th>URL</th><th>Метод</th><th>Назначение</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>/admin/Abonents/&lt;ab_id&gt;/sessions/detail/&lt;sid&gt;/</code></td><td>GET</td><td>Полная карточка сессии (24+ поля) для drawer-модалки</td></tr>
+    <tr><td><code>/admin/Abonents/&lt;ab_id&gt;/sessions/kpi/?period=...</code></td><td>GET</td><td>Агрегаты за период (24h / 7d / 30d / all)</td></tr>
+    <tr><td><code>/admin/Abonents/&lt;ab_id&gt;/sessions/list/</code></td><td>GET</td><td>Лёгкий JSON для auto-refresh каждые 30 сек</td></tr>
+    <tr><td><code>/admin/Abonents/&lt;ab_id&gt;/sessions/coa_disconnect/</code></td><td>POST</td><td>Разорвать активную сессию через CoA</td></tr>
+  </tbody>
+</table>
+
+<p>Все endpoint-ы реализованы в <code>billing/views/session_monitor_api.py</code>.</p>
+
+<h5 id="abonent-card-tab-radius-a11y">Доступность (a11y) и UX-фиксы</h5>
+<ul>
+  <li><strong>aria-label</strong> на каждой строке: «Сессия от 07.05.2026 13:53:08, активна».</li>
+  <li><strong>tabindex=0</strong> — таблица навигируется с клавиатуры. <strong>Enter</strong> на сфокусированной строке открывает drawer.</li>
+  <li><strong>:focus-visible</strong> — outline 2px brand-зелёный.</li>
+  <li><strong>prefers-reduced-motion: reduce</strong> отключает все анимации (пульсация, flash, sparkline transition).</li>
+  <li><strong>scope="col"</strong> на всех <code>&lt;th&gt;</code> + <code>role="grid"</code> + <code>&lt;caption class="visually-hidden"&gt;</code> для скрин-ридеров.</li>
+  <li><strong>Цвет НЕ единственный сигнал</strong> — везде есть иконки (fa-arrow-down/up для трафика, fa-circle для Online, fa-check для Завершена и т.д.).</li>
+  <li><strong>Фикс таймзоны (build 519)</strong>: ранее времена показывались с лишним сдвигом +3 ч. Корень — <code>fmt_dt()</code> делал двойную конвертацию UTC → MSK, тогда как Django при <code>USE_TZ=False</code> и <code>TIME_ZONE='Europe/Moscow'</code> уже отдаёт naive datetime в локальной TZ. Теперь повторная конвертация только для aware-datetime, naive — как есть.</li>
+  <li><strong>Фикс контраста CoA-кнопки на Online (build 544)</strong>: жёлтый <code>btn-outline-warning</code> сливался с салатовым фоном Online-строки. Заменён на <code>btn-outline-danger</code> (красный — семантически точнее «опасно») + явный override для активных строк (белый фон + красная обводка).</li>
+</ul>
+
+<h5 id="abonent-card-tab-radius-history">История внедрения по билдам</h5>
+<table>
+  <thead>
+    <tr><th>Билд</th><th>Что добавлено</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>519</td><td>Колонка MAC, фикс таймзоны MSK</td></tr>
+    <tr><td>525</td><td>Авто-скрытие колонки «Логин» если 1 учётка</td></tr>
+    <tr><td>526</td><td>Колонка IP (Framed-IP-Address)</td></tr>
+    <tr><td>527</td><td>Подсветка Online — салатовый фон + зелёная полоса</td></tr>
+    <tr><td>528</td><td>Цветной трафик — ↓ зелёный / ↑ красный</td></tr>
+    <tr><td>529–530</td><td>Колонка NAS + клик открывает модалку</td></tr>
+    <tr><td>535 (Sprint 1)</td><td>Бейджи причин 5 категорий, колонка «Период», тултипы + OUI vendor + copy-on-click, a11y, mobile card-stack</td></tr>
+    <tr><td>536 (Sprint 2)</td><td>Drawer 4 вкладки, toolbar с KPI, контекст тарифа, CoA Disconnect</td></tr>
+    <tr><td>537 (Sprint 3)</td><td>Группировка Synthetic↔Real, auto-refresh 30 сек, live-индикатор, flash при смене статуса, toast</td></tr>
+    <tr><td>540–544</td><td>Серия фиксов: убран sparkline из таблицы, убраны фиолетовые точки-индикаторы, контраст CoA-кнопки на Online</td></tr>
+  </tbody>
+</table>
 
 <h4 id="abonent-card-tab-sorm">СОРМ</h4>
 <p>Паспортные данные и реквизиты для выгрузки в РКН по СОРМ-3:</p>
