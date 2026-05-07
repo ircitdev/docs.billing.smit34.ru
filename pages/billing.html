@@ -2092,6 +2092,24 @@ OSM. Стиль карточки в <a href="#integrations">/admin/settings/inte
 </ul>
 <p>UI пополнения счёта (см. <a href="#admin-accounts-payment">7.3. Счета → Пополнение</a>) фильтрует список типов по <code>op_sign &gt; 0</code>; UI корректировки счёта показывает все типы, оператор сам выбирает направление.</p>
 
+<h5 id="fin-types-modal">Редактирование справочника</h5>
+<p>URL: <a href="https://testbill.smit34.ru/admin/dictionary/FinTypes/">/admin/dictionary/FinTypes/</a> (раздел Справочники → <em>Типы фин. операций</em>, build 508).</p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/fin_types_v508/v508_fin_types_list.png" alt="Список типов финансовых операций"></p>
+<p>Список с поиском, чипами-фильтрами по знаку (Все / Приход / Расход / Нейтр. / Основные) и счётчиком использований в журнале <code>FinanceOperations</code>. Создание и редактирование — в модальном окне с радиогруппой Приход (+1) / Нейтр. (0) / Расход (−1).</p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/fin_types_v508/v508_fin_types_modal_edit.png" alt="Модалка редактирования типа с warning об использовании"></p>
+<p>На скриншоте — редактирование типа «Корректирующее списание» (#43, расход): warning «использован в 5411 операций» виден сверху, кнопка <em>Удалить</em> скрыта (нельзя удалить связанный тип).</p>
+<p><strong>Поля</strong>:</p>
+<ul>
+  <li><code>type_id</code> — автоинкремент (read-only при редактировании).</li>
+  <li><code>op_name</code> — название (отображается в UI и отчётах), до 256 символов, обязательно.</li>
+  <li><code>op_sign</code> — знак: +1 / 0 / −1.</li>
+  <li><code>op_descr</code> — описание (опционально), до 1024 символов.</li>
+  <li><code>is_common</code> — чекбокс «Основной». Помечает ходовые типы — они отображаются первыми в списке (выделены строкой и звездой), чтобы оператор не путался среди 47 legacy-типов.</li>
+</ul>
+<p><strong>Защита удаления</strong>: тип нельзя удалить, если он использован хотя бы в одной финансовой операции. Сервер вернёт ошибку «Тип использован в N финансовых операций. Удаление запрещено для сохранения истории». Это нужно потому что некоторые <code>type_id</code> жёстко зашиты в коде (например, 23 = YooKassa в webhook'ах, 32 = ежемесячное списание тарифа в <code>billing_worker</code>) — их удаление сломает интеграции.</p>
+<p><strong>Audit-trail</strong>: каждое создание / изменение / удаление записывается в <code>AuditOperations</code> (<code>table_name='FIN_TYPES'</code>, <code>object_id=type_id</code>) с указанием оператора и описанием изменения.</p>
+<p><strong>Когда добавлять новый тип</strong>: при подключении новой платёжной системы (например, СБП, T-Bank) или появлении специфической бухгалтерской операции (взаимозачёт между операторами, перерасчёт курсов и т.п.). Перед использованием нового <code>type_id</code> в коде webhook / <code>FinanceOperations.objects.create</code> — проверьте что значение возвращается из <code>FinTypes.objects.get(...)</code>, иначе при удалении/переименовании типа интеграция сломается.</p>
+
 <h4 id="finance-operations-relations">Связи и снапшот</h4>
 <p>Помимо <code>account</code>, <code>abonent</code>, <code>op_type</code>, у операции есть:</p>
 <ul>
