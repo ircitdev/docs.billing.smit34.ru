@@ -311,13 +311,23 @@
         <li><a href="#lk-build-history-489">— История builds 484-489</a></li>
       </ul>
     </li>
-    <li><a href="#lk-redesign-585"><strong>Серия редизайнов ЛК v569–v585</strong> (единый стиль страниц)</a>
+    <li><a href="#lk-pages"><strong>Страницы Личного Кабинета</strong> (что видит абонент)</a>
       <ul>
-        <li><a href="#lk-redesign-585-overview">— Что было сделано</a></li>
-        <li><a href="#lk-redesign-585-pattern">— Единый паттерн</a></li>
-        <li><a href="#lk-redesign-585-pages">— 14 переделанных страниц</a></li>
-        <li><a href="#lk-redesign-585-changes">— Ключевые улучшения</a></li>
-        <li><a href="#lk-redesign-585-screenshots">— Скриншоты</a></li>
+        <li><a href="#lk-page-dashboard">— Дашборд</a></li>
+        <li><a href="#lk-page-profile">— Профиль</a></li>
+        <li><a href="#lk-page-pay">— Пополнение баланса</a></li>
+        <li><a href="#lk-page-payments">— История платежей</a></li>
+        <li><a href="#lk-page-audit">— История операций</a></li>
+        <li><a href="#lk-page-promise-pay">— Обещанный платёж</a></li>
+        <li><a href="#lk-page-sessions">— Подключения</a></li>
+        <li><a href="#lk-page-speedtest">— Тест скорости</a></li>
+        <li><a href="#lk-page-messages">— Сообщения</a></li>
+        <li><a href="#lk-page-tariff">— Тарифы</a></li>
+        <li><a href="#lk-page-services">— Услуги</a></li>
+        <li><a href="#lk-page-referral">— Реферальная программа</a></li>
+        <li><a href="#lk-page-block">— Добровольная блокировка</a></li>
+        <li><a href="#lk-page-support">— Поддержка</a></li>
+        <li><a href="#lk-page-contacts-required">— Заполнение контактов</a></li>
       </ul>
     </li>
     </ul>
@@ -1365,118 +1375,212 @@ Content-Type: application/json
   </table>
 
 
-  <h2 id="lk-redesign-585">Серия редизайнов ЛК v569–v585 — единый стиль страниц</h2>
+  <h2 id="lk-pages">Страницы Личного Кабинета</h2>
 <div class="page-toc">
 <details open>
   <summary><strong><i class="bi bi-book"></i> Содержание раздела</strong></summary>
   <ul>
-    <li><a href="#lk-redesign-585-overview">Что было сделано</a></li>
-    <li><a href="#lk-redesign-585-pattern">Единый паттерн страниц</a></li>
-    <li><a href="#lk-redesign-585-pages">Список переделанных страниц (14)</a></li>
-    <li><a href="#lk-redesign-585-changes">Ключевые улучшения по билдам</a></li>
-    <li><a href="#lk-redesign-585-screenshots">Скриншоты (desktop + mobile)</a></li>
+    <li><a href="#lk-page-dashboard">Дашборд</a></li>
+    <li><a href="#lk-page-profile">Профиль</a></li>
+    <li><a href="#lk-page-pay">Пополнение баланса</a></li>
+    <li><a href="#lk-page-payments">История платежей</a></li>
+    <li><a href="#lk-page-audit">История операций</a></li>
+    <li><a href="#lk-page-promise-pay">Обещанный платёж</a></li>
+    <li><a href="#lk-page-sessions">Подключения</a></li>
+    <li><a href="#lk-page-speedtest">Тест скорости</a></li>
+    <li><a href="#lk-page-messages">Сообщения</a></li>
+    <li><a href="#lk-page-tariff">Тарифы</a></li>
+    <li><a href="#lk-page-services">Услуги</a></li>
+    <li><a href="#lk-page-referral">Реферальная программа</a></li>
+    <li><a href="#lk-page-block">Добровольная блокировка</a></li>
+    <li><a href="#lk-page-support">Поддержка</a></li>
+    <li><a href="#lk-page-contacts-required">Заполнение контактов</a></li>
   </ul>
 </details>
 </div>
 
-  <h3 id="lk-redesign-585-overview">Что было сделано</h3>
+  <p>Что видит абонент на каждой странице ЛК и какие действия ему доступны.</p>
 
-  <p>В серии билдов 569–585 переделаны 14 страниц Личного Кабинета в единый визуальный стиль. Цель — устранить остатки AI-tells (вертикальные <code>border-left:4px</code> акценты, плотные таблицы, BS-list-group, иконки разной формы), привести все страницы к единому card-pattern, добавить mobile-friendly верстку.</p>
+  <h3 id="lk-page-dashboard">Дашборд (<code>/lk/</code>)</h3>
 
-  <p>Основной приём: <strong>таблицы → card-rows</strong> (карточки с круглой иконкой слева + meta-полем + цветной pill + числом справа). Это работает одинаково на широких экранах и на mobile, не требует horizontal-scroll, лучше читается.</p>
+  <p>Главная страница ЛК — сводный обзор состояния аккаунта.</p>
 
-  <h3 id="lk-redesign-585-pattern">Единый паттерн страниц</h3>
+  <ul>
+    <li><strong>Шапка</strong> — название тарифа, абонплата, текущий баланс, инициал имени и номер договора. Клик по балансу ведёт на пополнение, клик по тарифу — на смену тарифа (если разрешено настройками).</li>
+    <li><strong>Алерты</strong> — уведомления о низком балансе, активном Обещанном платеже, запланированных работах. Каждый алерт можно скрыть крестиком (запоминается в cookie на год). На мобильном CTA («Пополнить →») располагается под текстом полной шириной для удобного тапа.</li>
+    <li><strong>Карточка «Тариф + Подключение»</strong> — в одной карточке: название тарифа, цена/мес, скорость скачивания, остаток дней до начисления; ниже отделённый блок со статусом подключения (Онлайн/Не подключён), временем последнего входа, ссылкой «История →» и кнопкой «Сменить тариф».</li>
+    <li><strong>Балансовая зона</strong> — сумма на счёте, прогноз «хватит на N дней» при текущем расходе.</li>
+    <li><strong>Быстрые действия</strong> — пополнить, открыть поддержку, посмотреть последний платёж.</li>
+  </ul>
 
-  <p>Все обновлённые страницы используют общий набор примитивов:</p>
+  <h3 id="lk-page-profile">Профиль (<code>/lk/profile/</code>)</h3>
 
-  <table>
-    <thead><tr><th>Элемент</th><th>Класс / приём</th><th>Что делает</th></tr></thead>
-    <tbody>
-      <tr><td>Toolbar</td><td><code>.lk*-toolbar</code> + <code>h5</code> с brand-иконкой</td><td>Заголовок страницы + опциональные actions справа</td></tr>
-      <tr><td>Hero (опционально)</td><td><code>.lk-hero-card</code> brand-gradient или <code>.lk*-hero</code></td><td>Краткий статус + основные метрики + actions</td></tr>
-      <tr><td>KPI-плитки</td><td><code>.lk*-kpi-grid</code> + <code>.lk*-kpi</code></td><td>Цифры с цветной круглой иконкой 40×40 слева (зелёная/красная/синяя/оранжевая)</td></tr>
-      <tr><td>Card-rows</td><td><code>.lk*-row</code> с круглой иконкой + body + value справа</td><td>Замена таблиц: дата+время+pill в первой строке, описание во второй, сумма bold</td></tr>
-      <tr><td>Card-grid</td><td><code>.lk*-grid</code> + <code>.lk*-card</code></td><td>auto-fill minmax(280px) для тарифов / услуг</td></tr>
-      <tr><td>Status-pill</td><td><code>.lk*-pill</code> с rgba bg + tinted color</td><td>Цветовое кодирование статуса операции / типа</td></tr>
-      <tr><td>Empty-state</td><td><code>.lk*-empty</code> с fa-inbox иконкой и CTA</td><td>Friendly-сообщение когда данных нет</td></tr>
-      <tr><td>Warning</td><td><code>.lk*-warn</code> с цветной квадратной иконкой 36×36</td><td>Заменили <code>border-left:4px</code> AI-tells</td></tr>
-    </tbody>
-  </table>
+  <p>Управление контактными данными и привязками.</p>
 
-  <p>Везде применены: <code>@media (max-width: 575px)</code> с уменьшением паддингов и иконок, <code>@media (prefers-reduced-motion: reduce)</code> отключающий transitions, dark theme через <code>[data-bs-theme="dark"]</code>.</p>
+  <ul>
+    <li><strong>Hero-карточка</strong> с аватаром-инициалом, ФИО, № договора и адресом. Бейджи статуса (Активен / Заблокирован / ОП активен) и привязок (e-mail, SMS, Telegram-бот). Кнопки «Сменить пароль» и «Пополнить» (если баланс &lt; 100 ₽).</li>
+    <li><strong>Контактные данные</strong> — поля e-mail и телефон с inline-edit. Кнопка «Сохранить» становится активной только при наличии изменений; индикатор «Есть несохранённые изменения» появляется при правке.</li>
+    <li><strong>Безопасность</strong> — пункт «Сменить пароль» (ведёт на отдельную страницу) и «Изменить MAC-адрес» (если функция включена админом — раскрывается inline).</li>
+    <li><strong>Привязки</strong> — VK, вход через Telegram, уведомления в Telegram-боте. Каждая строка показывает статус «Привязан/Не привязан» и кнопку «Привязать»/«Отвязать». Уведомления подключаются через одноразовую ссылку на бота с deep-link (10-минутный токен).</li>
+  </ul>
 
-  <h3 id="lk-redesign-585-pages">Список переделанных страниц (14)</h3>
+  <h3 id="lk-page-pay">Пополнение баланса (<code>/lk/payments/pay/</code>)</h3>
 
-  <table>
-    <thead><tr><th>URL</th><th>Build</th><th>Главное</th></tr></thead>
-    <tbody>
-      <tr><td><code>/lk/support/</code></td><td>569</td><td>Таблица тикетов → card-rows с цветными статусными иконками (waiting/active/pending/closed)</td></tr>
-      <tr><td><code>/lk/</code> (Дашборд)</td><td>572-577, 583-584</td><td>Карточка тарифа+подключения объединена в одну. Шапка LK без подложек pill-ов. Кнопка «Сменить тариф» filled brand. Алерты на mobile с CTA полной ширины</td></tr>
-      <tr><td><code>/lk/profile/</code></td><td>575</td><td>Убрана дублирующая «Данные абонента». Hero-actions заменены на «Сменить пароль». Контакты с inline-edit (Save активен только при изменении). Карточка «Безопасность» (пароль + MAC). Привязки в едином стиле</td></tr>
-      <tr><td><code>/lk/payments/pay/</code></td><td>576</td><td>Hero с балансом (gradient зелёный/красный). Большое stylized-поле суммы. After-payment preview. Платёжная система как card-row с SSL-бейджем</td></tr>
-      <tr><td><code>/lk/payments/</code></td><td>578</td><td>Filters в chip-строке + accordion «Точный фильтр». KPI с цветными иконками (без border-left). Таблица → card-rows. Custom pagination</td></tr>
-      <tr><td><code>/lk/audit/</code></td><td>579</td><td>Таблица операций → card-rows. KPI 3-колоночные. Infinite scroll адаптирован под новую card-структуру</td></tr>
-      <tr><td><code>/lk/promise-pay/</code></td><td>579</td><td>Eligibility warning без border-left. Условия услуги в key-value list. История ОП в компактных card-rows</td></tr>
-      <tr><td><code>/lk/sessions/</code></td><td>579</td><td>Таблица сессий → card-rows. Активная сессия с border-left brand + animated pulse-dot. Трафик справа: detailed (DL+UL) или compact (total)</td></tr>
-      <tr><td><code>/lk/speedtest/</code></td><td>579</td><td>Precheck-cards без border-left, цветные квадратные иконки. CTA-блок при низкой скорости с pre-filled тикетом. История тестов в card-rows</td></tr>
-      <tr><td><code>/lk/messages/</code></td><td>579</td><td>BS list-group → card-rows. Unread-сообщения с border-left brand + soft brand-bg. Каналы доставки как color-coded pills</td></tr>
-      <tr><td><code>/lk/tariff/</code></td><td>580</td><td>Tag-бейджи «дешевле»/«дороже» вместо border-left. Action-кнопка border → fill brand на hover. Empty state с CTA в поддержку</td></tr>
-      <tr><td><code>/lk/services/</code></td><td>580</td><td>2 секции с цветными section-icons. Подключённые в card-rows + действия (отключить/locked). Доступные в grid-cards 280px tiles</td></tr>
-      <tr><td><code>/lk/referral/</code></td><td>580</td><td>Hero с fa-gift и центрированным amount. Copy-button совмещён со ссылкой. Stats grid с цветными иконками. How-to блок без border-left</td></tr>
-      <tr><td><code>/lk/block/</code></td><td>580</td><td>Status-hero с тремя состояниями (blocked orange / active green / unavailable grey). Большая иконка 72×72 в круге. Info-card «Что произойдёт»</td></tr>
-      <tr><td><code>/lk/profile/contacts-required/</code></td><td>581, 585</td><td>Standalone-страница (без extends base): glassmorphism убран, чистая карточка. На шаге 1 предупреждение про «Спам» сразу. Шаг 2 verify-rows с состояниями pending/done</td></tr>
-    </tbody>
-  </table>
+  <p>Форма для онлайн-оплаты услуг.</p>
 
-  <h3 id="lk-redesign-585-changes">Ключевые улучшения по билдам</h3>
+  <ul>
+    <li><strong>Текущий баланс</strong> — крупно, зелёный при положительном или красный при отрицательном. При долге — пометка «Услуги могут быть приостановлены».</li>
+    <li><strong>Сумма</strong> — крупное поле с символом ₽. Минимум — сумма, достаточная для погашения долга (если есть).</li>
+    <li><strong>Подсказки сумм</strong> — 4 chip-кнопки с рекомендованными суммами на основе абонплаты тарифа. Активная подсвечивается.</li>
+    <li><strong>Прогноз «После оплаты»</strong> — расчёт нового баланса после зачисления и срок, на который его хватит («2 месяца и 14 дней»).</li>
+    <li><strong>Комиссия</strong> — отдельная плашка с процентом и итоговой суммой к списанию (если ненулевая).</li>
+    <li><strong>Платёжная система</strong> — карточка с иконкой, названием (ЮKassa / Wallet One), описанием поддерживаемых способов (Visa/Mastercard/МИР/СБП) и SSL-бейджем.</li>
+    <li><strong>Кнопка «Оплатить»</strong> — после клика блокируется и показывает спиннер «Перенаправление…» (защита от двойной отправки).</li>
+    <li><strong>Сайдбар</strong> — последние 5 платежей с датой, временем и суммой; ссылка «Все →».</li>
+  </ul>
 
-  <table>
-    <thead><tr><th>Build</th><th>Что изменилось</th></tr></thead>
-    <tbody>
-      <tr><td>569</td><td><code>/lk/support/</code> + переименования меню («Заявки в поддержку» → «Заявки», «Сообщения от оператора» → «Сообщения»)</td></tr>
-      <tr><td>570</td><td>Mobile-меню фиксы: иконки/подписи больше не скачут (label flex 0 0 auto + height 1.1em). Footer показывается только на главной. Подсветка активной группы через <code>.lk-nav-group-active</code> независимо от <code>.open</code></td></tr>
-      <tr><td>571</td><td>Фильтр <code>timeago</code> исправлен: USE_TZ=False, обе даты приводятся к naive UTC. Формат «вчера», «N дн назад», «N мес назад», «14 апр» / «14 апр 2025»</td></tr>
-      <tr><td>572</td><td>Карточки «Ваш тариф» и «Подключение» объединены — статус подключения переехал внутрь тарифной карточки</td></tr>
-      <tr><td>573</td><td>Воздух в объединённой карточке: gap 16px, padding 22×22×20, conn-link с padding 4×8 и hover-фоном</td></tr>
-      <tr><td>574</td><td>Переименованы пункты меню в подменю «Поддержка»</td></tr>
-      <tr><td>577</td><td>Карточка тарифа стала крупнее: иконка 48 → 60px, name 1.05 → 1.4rem font-weight 800, content вертикально центрируется (justify-content: center, min-height: 100%)</td></tr>
-      <tr><td>582-583</td><td>Кнопка «Сменить тариф» из outline → filled brand с brand-shadow. Шапка LK без pill-подложек: тариф/баланс/аватар прозрачные на brand-gradient. Шрифты увеличены</td></tr>
-      <tr><td>584</td><td>Алерты на mobile (≤575px): CTA full-width под текстом, dismiss-крестик абсолютный top:6/right:6</td></tr>
-      <tr><td>585</td><td>На <code>/lk/profile/contacts-required/</code> шаге 1 добавлено предупреждение про папку «Спам» (раньше было только на шаге 2)</td></tr>
-    </tbody>
-  </table>
+  <h3 id="lk-page-payments">История платежей (<code>/lk/payments/</code>)</h3>
 
-  <h3 id="lk-redesign-585-screenshots">Скриншоты (desktop + mobile)</h3>
+  <p>Список финансовых операций абонента.</p>
 
-  <p>28 скриншотов (14 страниц × 2 viewports) сохранены в <code>docs/img/v585_lk/</code>. Скрипт сборки — <code>screenshots_lk_v585.js</code>.</p>
+  <ul>
+    <li><strong>Hero</strong> — последний платёж (дата + сумма), баланс, абонплата, прогноз «хватит на N дней», всего операций. Кнопки «Пополнить» и «CSV» (выгрузка с учётом текущих фильтров).</li>
+    <li><strong>Фильтры</strong> — chip-строка периодов (Сегодня/Неделя/Месяц/3 мес/Год/Всё) и chip-строка типа (Все/Поступления/Списания). Кнопка «Точный фильтр» раскрывает аккордеон с датами «от-до» и суммой «от-до». Активные фильтры показываются как плашка под формой.</li>
+    <li><strong>Сводка</strong> — 4 плитки: Поступления, Списания, Всего операций, Средний платёж.</li>
+    <li><strong>График по месяцам</strong> — bar chart за 12 месяцев (поступления + списания).</li>
+    <li><strong>Список операций</strong> — каждая операция в виде карточки: иконка-стрелка слева (вверх/вниз), дата + время + цветной pill типа в первой строке, описание во второй (truncate с tooltip), сумма bold справа.</li>
+    <li><strong>Пагинация</strong> — компактные кнопки 36×36 с активной страницей в brand-цвете.</li>
+  </ul>
 
-  <table>
-    <thead><tr><th>Страница</th><th>Desktop (1440×900)</th><th>Mobile (390×844)</th></tr></thead>
-    <tbody>
-      <tr><td>Дашборд</td><td><code>dashboard_desktop.png</code></td><td><code>dashboard_mobile.png</code></td></tr>
-      <tr><td>Профиль</td><td><code>profile_desktop.png</code></td><td><code>profile_mobile.png</code></td></tr>
-      <tr><td>Пополнение</td><td><code>pay_desktop.png</code></td><td><code>pay_mobile.png</code></td></tr>
-      <tr><td>История платежей</td><td><code>payments_desktop.png</code></td><td><code>payments_mobile.png</code></td></tr>
-      <tr><td>История операций</td><td><code>audit_desktop.png</code></td><td><code>audit_mobile.png</code></td></tr>
-      <tr><td>Обещанный платёж</td><td><code>promise_pay_desktop.png</code></td><td><code>promise_pay_mobile.png</code></td></tr>
-      <tr><td>Сессии</td><td><code>sessions_desktop.png</code></td><td><code>sessions_mobile.png</code></td></tr>
-      <tr><td>Тест скорости</td><td><code>speedtest_desktop.png</code></td><td><code>speedtest_mobile.png</code></td></tr>
-      <tr><td>Сообщения</td><td><code>messages_desktop.png</code></td><td><code>messages_mobile.png</code></td></tr>
-      <tr><td>Тарифы</td><td><code>tariff_desktop.png</code></td><td><code>tariff_mobile.png</code></td></tr>
-      <tr><td>Услуги</td><td><code>services_desktop.png</code></td><td><code>services_mobile.png</code></td></tr>
-      <tr><td>Реферальная программа</td><td><code>referral_desktop.png</code></td><td><code>referral_mobile.png</code></td></tr>
-      <tr><td>Добровольная блокировка</td><td><code>block_desktop.png</code></td><td><code>block_mobile.png</code></td></tr>
-      <tr><td>Поддержка</td><td><code>support_desktop.png</code></td><td><code>support_mobile.png</code></td></tr>
-    </tbody>
-  </table>
+  <h3 id="lk-page-audit">История операций (<code>/lk/audit/</code>)</h3>
 
-  <p>Превью-галерея ключевых страниц (desktop):</p>
+  <p>Подробный аудит начислений и списаний за последний год.</p>
+
+  <ul>
+    <li><strong>Сводка</strong> — 3 плитки: Поступления, Списания, Всего операций.</li>
+    <li><strong>Список операций</strong> — карточки с иконкой-стрелкой, датой + временем + типом в первой строке, описанием во второй, суммой справа.</li>
+    <li><strong>Бесконечная загрузка</strong> — следующие 50 операций подгружаются автоматически при скролле к низу. По завершении — индикатор «Это все операции за период».</li>
+  </ul>
+
+  <h3 id="lk-page-promise-pay">Обещанный платёж (<code>/lk/promise-pay/</code>)</h3>
+
+  <p>Управление услугой временного кредитования.</p>
+
+  <ul>
+    <li><strong>Активный ОП</strong> — отображается дата окончания, оставшийся срок, лимит и текущий баланс. Кнопка «Пополнить» для досрочного погашения.</li>
+    <li><strong>Доступен для активации</strong> — карточка с условиями (срок, цена/день, лимит, баланс) и калькулятор «Если активировать ОП сейчас» считает: текущий баланс, зачисление, итоговый баланс, дату окончания, итог к возврату.</li>
+    <li><strong>Недоступен</strong> — карточка-предупреждение с конкретной причиной (превышен лимит/малый возраст аккаунта/cooldown/недостаточный долг) и подсказкой что делать.</li>
+    <li><strong>Активация</strong> — кнопка с подтверждением (модальное окно с деталями: срок, стоимость, лимит, время восстановления интернета).</li>
+    <li><strong>История ОП</strong> — последние операции с датой, описанием и суммой.</li>
+  </ul>
+
+  <h3 id="lk-page-sessions">Подключения (<code>/lk/sessions/</code>)</h3>
+
+  <p>История RADIUS-сессий абонента.</p>
+
+  <ul>
+    <li><strong>Сводка</strong> — 4 плитки: Всего сессий, Активных сейчас, Скачано, Загружено.</li>
+    <li><strong>Список сессий</strong> — для каждой: иконка Wi-Fi, дата + время старта, бейдж «онлайн» для активных, длительность, IP-адрес, VLAN, причина завершения. Активная сессия выделена brand-полосой слева и пульсирующей точкой на иконке.</li>
+    <li><strong>Трафик</strong> — справа в каждой строке. Если в настройках включена детализация — отдельно показывается скачано (DL) и загружено (UL); иначе — суммарный трафик.</li>
+  </ul>
+
+  <h3 id="lk-page-speedtest">Тест скорости (<code>/lk/speedtest/</code>)</h3>
+
+  <p>Замер фактической скорости интернета через Cloudflare Speed.</p>
+
+  <ul>
+    <li><strong>Тариф-карточка</strong> — заявленная скорость по тарифу (DL и UL).</li>
+    <li><strong>Предупреждения</strong> — обнаружение, что абонент находится не в сети оператора (внешний IP) или подключён через VPN/прокси (сравнение WebRTC IP с server IP). При обнаружении кнопка теста блокируется с пояснением.</li>
+    <li><strong>Индикатор замера</strong> — круговой gauge с brand-цветом, отображает текущий замер. Большое значение в Мбит/с в центре, подпись текущего этапа («измеряем ping…», «скачивание…», «отправка…»).</li>
+    <li><strong>Результаты</strong> — 4 плитки: скачивание, загрузка, ping (мс), jitter (мс).</li>
+    <li><strong>Сравнение с тарифом</strong> — цветная плашка: зелёная (≥80% от тарифа), жёлтая (50–80%), красная (&lt;50%).</li>
+    <li><strong>CTA при низкой скорости</strong> — отдельная карточка со списком рекомендаций (провод вместо Wi-Fi, перезагрузить роутер, закрыть торренты) и кнопкой «Создать обращение» с pre-filled темой и телом тикета (включая результаты теста).</li>
+    <li><strong>История тестов</strong> — последние 10 замеров (хранятся в браузере) с датой, DL, UL, ping. Кнопка «Очистить».</li>
+    <li><strong>Блокировка при долге</strong> — если баланс отрицательный, страница показывает заглушку с кнопками «Пополнить» и «Обещанный платёж».</li>
+  </ul>
+
+  <h3 id="lk-page-messages">Сообщения (<code>/lk/messages/</code>)</h3>
+
+  <p>Рассылки и системные уведомления от оператора.</p>
+
+  <ul>
+    <li>Каждое сообщение — карточка с иконкой конверта (закрытый — непрочитанное, открытый — прочитанное), заголовком, временем (формат «вчера», «2 дн назад», «14 апр»), полным текстом и пиллами каналов доставки (Email, SMS, Telegram, Push, VK).</li>
+    <li>Непрочитанные выделены brand-полосой слева и тонированным фоном.</li>
+    <li>Пустое состояние с подсказкой если сообщений нет.</li>
+  </ul>
+
+  <h3 id="lk-page-tariff">Тарифы (<code>/lk/tariff/</code>)</h3>
+
+  <p>Просмотр текущего тарифа и смена на другой.</p>
+
+  <ul>
+    <li><strong>Текущий тариф</strong> — большая brand-карточка: название, описание, цена/мес, параметры (скорость DL/UL, линейка услуг, минимальный срок до смены, комиссия за смену) и флаги-условия (доступна ли смена, разрешён только переход на более дорогие, смена с 1-го числа, смена в конце дня).</li>
+    <li><strong>Доступные тарифы</strong> — каталог карточек. Каждая показывает название, описание, цену, скорости, флаги-условия (с 1-го числа, комиссия, только вверх). Тег «дешевле»/«дороже» с дельтой относительно текущего тарифа. Кнопка «Перейти на этот тариф».</li>
+    <li><strong>Если смена недоступна</strong> — предупреждение с указанием причины и ссылкой на создание обращения.</li>
+  </ul>
+
+  <h3 id="lk-page-services">Услуги (<code>/lk/services/</code>)</h3>
+
+  <p>Подключение/отключение дополнительных услуг.</p>
+
+  <ul>
+    <li><strong>Подключённые услуги</strong> — список карточек: иконка статуса (включена/приостановлена), название, дата подключения, описание, цена/мес справа, кнопка «Отключить» (или «доступно с DD.MM» если есть минимальный срок до отключения).</li>
+    <li><strong>Доступно для подключения</strong> — каталог карточек: иконка-кубик, название, описание, цена (или «бесплатно»), кнопка «Подключить». Недоступные карточки приглушены и показывают причину блокировки.</li>
+  </ul>
+
+  <h3 id="lk-page-referral">Реферальная программа (<code>/lk/referral/</code>)</h3>
+
+  <p>Приглашение друзей с бонусом за подключение.</p>
+
+  <ul>
+    <li><strong>Hero</strong> — иконка-подарок и крупная сумма бонуса «+X ₽». Текст: «За каждого друга, который подключится по вашей ссылке».</li>
+    <li><strong>Реферальная ссылка</strong> — readonly-поле + кнопка «Копировать» (всплывающее уведомление при успешном копировании). Под полем — кнопки шеринга: VK, Telegram, MAX, Email, системное «Поделиться» (если поддерживается браузером).</li>
+    <li><strong>Статистика</strong> — 3 карточки: Приглашено, Оплатили, Заработано.</li>
+    <li><strong>Как это работает</strong> — 4-шаговая инструкция с указанием срока начисления бонуса (24 часа после подключения реферала).</li>
+    <li><strong>Если программа отключена</strong> — карточка-уведомление «Реферальная программа временно приостановлена».</li>
+  </ul>
+
+  <h3 id="lk-page-block">Добровольная блокировка (<code>/lk/block/</code>)</h3>
+
+  <p>Временная приостановка услуг на период отъезда.</p>
+
+  <ul>
+    <li><strong>Услуги активны</strong> — зелёная карточка с галочкой и кнопкой «Приостановить услуги». Подтверждение через модальное окно со списком последствий.</li>
+    <li><strong>Услуги приостановлены</strong> — оранжевая карточка с паузой и кнопкой «Возобновить услуги».</li>
+    <li><strong>Недоступно</strong> — серая карточка с заглушкой и кнопкой «Создать обращение в поддержку» (если функция отключена для тарифа).</li>
+    <li><strong>Что произойдёт при приостановке</strong> — отдельная информационная карточка с 4 пунктами: интернет отключится за 1–2 минуты, абонплата перестанет списываться, IPTV-услуги приостановятся, возобновить можно в любой момент.</li>
+  </ul>
+
+  <h3 id="lk-page-support">Поддержка (<code>/lk/support/</code>)</h3>
+
+  <p>Список обращений в техподдержку через FreeScout.</p>
+
+  <ul>
+    <li><strong>Вкладки</strong> — «Открытые» и «Закрытые» с цветными счётчиками.</li>
+    <li><strong>Список тикетов</strong> — карточки со статусной иконкой в круге слева, заголовком темы (clamp 2 строки), мета-строкой (#id · обновлено · цветной pill статуса), стрелкой при наведении.</li>
+    <li><strong>4 цвета статуса</strong>: <em>waiting</em> (красный, ждёт ответа оператора), <em>active</em> (зелёный, в работе), <em>pending</em> (оранжевый, ожидает), <em>closed</em> (серый, закрыт).</li>
+    <li><strong>Кнопка «Новое обращение»</strong> — переход на форму создания. Если у абонента не указан e-mail — отдельное предупреждение со ссылкой на профиль.</li>
+    <li><strong>Пустое состояние</strong> — сообщение с подсказкой для каждой вкладки.</li>
+  </ul>
+
+  <h3 id="lk-page-contacts-required">Заполнение контактов (<code>/lk/profile/contacts-required/</code>)</h3>
+
+  <p>Принудительный сценарий заполнения контактов при первом входе в ЛК (если включён в настройках).</p>
+
+  <ul>
+    <li><strong>Шаг 1</strong> — карточка с brand-шапкой и индикатором шагов. Поля e-mail и/или телефон (в зависимости от настроек). Блок «Зачем это нужно» объясняет назначение контактов. Если требуется верификация e-mail — отдельная плашка-напоминание о возможном попадании письма в «Спам».</li>
+    <li><strong>Шаг 2</strong> — карточки верификации для каждого канала: для SMS — крупное OTP-поле и кнопка «Отправить ещё раз» (cooldown 60 сек, иконка-таймер при countdown); для e-mail — индикация «Откройте письмо и кликните по ссылке» + плашка про «Спам» + кнопка «Отправить повторно».</li>
+    <li><strong>Автоматическая проверка</strong> — после отправки письма страница каждые 5 секунд проверяет, подтверждён ли e-mail, и автоматически переходит на главную ЛК, как только все каналы подтверждены.</li>
+    <li><strong>Возврат к шагу 1</strong> — если контакты были введены неверно, кнопка «Вернуться к шагу 1» сбрасывает данные.</li>
+  </ul>
+
+  <p>Иллюстрации страниц:</p>
 
   <p>
-    <img src="../img/v585_lk/dashboard_desktop.png" alt="Дашборд build 585" loading="lazy" style="max-width:100%;border:1px solid var(--border-default);border-radius:8px;margin-bottom:8px">
-    <img src="../img/v585_lk/payments_desktop.png" alt="История платежей build 585" loading="lazy" style="max-width:100%;border:1px solid var(--border-default);border-radius:8px;margin-bottom:8px">
-    <img src="../img/v585_lk/profile_desktop.png" alt="Профиль build 585" loading="lazy" style="max-width:100%;border:1px solid var(--border-default);border-radius:8px;margin-bottom:8px">
-    <img src="../img/v585_lk/tariff_desktop.png" alt="Тарифы build 585" loading="lazy" style="max-width:100%;border:1px solid var(--border-default);border-radius:8px;margin-bottom:8px">
+    <img src="../img/v585_lk/dashboard_desktop.png" alt="Дашборд" loading="lazy" style="max-width:100%;border:1px solid var(--border-default);border-radius:8px;margin-bottom:8px">
+    <img src="../img/v585_lk/payments_desktop.png" alt="История платежей" loading="lazy" style="max-width:100%;border:1px solid var(--border-default);border-radius:8px;margin-bottom:8px">
+    <img src="../img/v585_lk/profile_desktop.png" alt="Профиль" loading="lazy" style="max-width:100%;border:1px solid var(--border-default);border-radius:8px;margin-bottom:8px">
+    <img src="../img/v585_lk/tariff_desktop.png" alt="Тарифы" loading="lazy" style="max-width:100%;border:1px solid var(--border-default);border-radius:8px;margin-bottom:8px">
   </p>
 
 
