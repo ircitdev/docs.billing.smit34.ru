@@ -1935,18 +1935,123 @@ OSM. Стиль карточки в <a href="#integrations">/admin/settings/inte
 с <code>qc_geo=0</code>).</p>
 
 <h3 id="admin-accounts">7.3. Счета</h3>
-<p>Список лицевых счетов абонентов. Один счёт привязан к одному абоненту,
-содержит баланс, кредитный лимит, валюту, историю операций.</p>
+<p>URL: <a href="https://testbill.smit34.ru/admin/Abonents/AdminAccounts/">/admin/Abonents/AdminAccounts/</a></p>
+<p>Лицевой счёт — основной финансовый объект абонента. На нём хранится
+<strong>остаток</strong>, <strong>дебет</strong>, <strong>кредит</strong>, <strong>стоплата</strong> и привязка к валюте.
+К одному счёту может быть привязан один или несколько абонентов
+(<code>Abonents.account_id → AdminAccounts</code>, FK PROTECT). Все
+финансовые операции (<code>FinanceOperations</code>) ссылаются на счёт
+напрямую, что позволяет вести историю по счёту независимо от смены
+абонента.</p>
 
 <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/07_admin_accounts.png" alt="Лицевые счета"></p>
 
-<p><strong>Возможности списка</strong>:</p>
+<h4 id="admin-accounts-list">Список счетов</h4>
 <ul>
-  <li>KPI-бейджи: Всего / Активных / Без абонента / Должников / Сумма всех балансов.</li>
-  <li>Чип-фильтры: <em>Должники / Без абонента / Положительный баланс</em>.</li>
-  <li>Поиск по номеру счёта, имени абонента или тарифу.</li>
-  <li>Иконка направления баланса (↓ долг / ↑ положительный) и цветовое кодирование.</li>
+  <li><strong>KPI-бейджи</strong> в шапке: Всего / Активных / Без абонента / Должников / Сумма балансов выборки. Цвет «Сумма» меняется на красный при отрицательном итоге.</li>
+  <li><strong>Чип-фильтры</strong>: 🔻 Должники (баланс &lt; 0) / Без абонента / 🔺 Плюс (баланс &gt; 0). Активный чип подсвечивается, повторный клик снимает фильтр.</li>
+  <li><strong>Поиск</strong> по ID счёта, имени абонента, договору или тарифу. Хоткей <kbd>Ctrl+K</kbd> / <kbd>⌘K</kbd> фокусирует поле.</li>
+  <li><strong>Сортировка</strong> по № и Балансу — клик по заголовку столбца.</li>
+  <li><strong>Бесконечная прокрутка</strong> (build 494): первая загрузка 100 строк, далее автоматическая подгрузка при скролле. Внизу показывается «Загружено N из M».</li>
+  <li><strong>Цветовое кодирование</strong>: должники — красный фон, без абонента — серый, выбранные — зелёный. Иконки ↓/↑ рядом с балансом — для colour-independence (a11y).</li>
+  <li><strong>CSV-экспорт</strong> по текущим фильтрам или по выбранным (через bulk-действия).</li>
+  <li><strong>Bulk-действия</strong> при выборе ≥1 строки: смена валюты, установка лимитов, CSV выбранных, удаление сирот (только без абонентов и без операций).</li>
 </ul>
+
+<h4 id="admin-accounts-modal">Модалка счёта</h4>
+<p>Клик по строке или по кнопке-карандашу открывает модальное окно (modal-xl) с
+левой навигацией на 5 вкладок. URL-параметр <code>?edit=&lt;id&gt;</code>
+автоматически открывает модалку при загрузке страницы (для глубоких ссылок).
+Старая страница <code>/admin/Abonents/AdminAccounts/&lt;id&gt;/</code>
+редиректит 302 на список с открытой модалкой.</p>
+
+<h5>Вкладка «Баланс»</h5>
+<ul>
+  <li>Большая цифра текущего баланса (<code>остаток + дебет − кредит</code>) — цвет по знаку.</li>
+  <li>Сетка из 4 ячеек: Остаток / Дебет / Кредит / Стоплата.</li>
+  <li>Производные величины: Бухгалтерский (<code>остаток + дебет</code>), На конец месяца (<code>баланс − стоплата</code>) — с info-tooltip объяснением.</li>
+  <li>Три кнопки действий: <strong>Пополнить</strong>, <strong>Корректировка</strong>, <strong>Сторно последней</strong>.</li>
+</ul>
+
+<h5>Вкладка «Параметры»</h5>
+<p>Лимиты и пороги:</p>
+<ul>
+  <li><strong>Порог предупреждения</strong> — отправка SMS/Push при пересечении.</li>
+  <li><strong>Порог отключения</strong> — автоблокировка интернета (<code>b_negbal</code>).</li>
+  <li><strong>Безлимит</strong> (toggle) + дата окончания. При активном безлимите автоблокировка не срабатывает.</li>
+  <li><strong>Валюта</strong> счёта (FK Currency).</li>
+  <li><strong>Бонусные баллы</strong> (<code>bonus_score</code>).</li>
+  <li>Очистка <code>alert_last_date_limit</code> — сбрасывает дату последнего оповещения, заставит систему отправить алерт при следующей проверке.</li>
+</ul>
+
+<h5>Вкладка «Абоненты»</h5>
+<p>Список привязанных абонентов с бейджем «основной» (первый по ID), статусом и кнопками открытия профиля и отвязки. Кнопка <em>Привязать</em> открывает подмодалку с поиском (live-search через REST API). Если выбранный абонент уже привязан к другому счёту — показывается чекбокс <em>Перенести</em>.</p>
+
+<h5 id="admin-accounts-finops">Вкладка «Финансовые операции»</h5>
+<p>Последние 50 операций по счёту с цветовым кодированием:</p>
+<ul>
+  <li>🟢 Зелёный — приход (<code>op_summa &gt; 0</code>).</li>
+  <li>🔴 Красный — расход (<code>op_summa &lt; 0</code>).</li>
+  <li>⚪ Серый — нулевая.</li>
+  <li>~~Зачёркнутый~~ — сторнированная (<code>storno=True</code>).</li>
+</ul>
+<p>Ссылка <em>Все операции по счёту</em> ведёт на отдельный раздел <a href="#finance-operations">Финансовые операции</a> с фильтром <code>?account_id=&lt;id&gt;</code>.</p>
+
+<h5>Вкладка «Уведомления»</h5>
+<p>Последние 20 SMS / Email / Push сообщений по абонентам этого счёта (<code>MsgStack</code>, поля <code>head_txt</code>, <code>text</code>, <code>send_date</code>, флаги <code>email_done</code>/<code>sms_done</code>/<code>push_done</code> и др.). Read-only.</p>
+
+<h4 id="admin-accounts-payment">Пополнение / Корректировка / Сторно</h4>
+<p>На вкладке «Баланс» — три кнопки финансовых действий, каждая открывает подмодалку поверх главной (stacked modal через <code>z-index</code> патч).</p>
+
+<h5>Пополнение</h5>
+<p>Поля: <em>Сумма</em> (₽, обязательно), <em>Тип операции</em> (фильтрованы по <code>op_sign &gt; 0</code> — только приходные), <em>Дата</em>, <em>Номер документа</em>, <em>Описание</em>. Дополнительно: <em>ID транзакции</em> для идемпотентности — если задан и уже встречается в БД, повторный POST возвращает существующий <code>op_id</code> без двойного зачисления.</p>
+<p>Live-preview под формой показывает: текущий баланс, сумму операции, новый баланс. Цветовое кодирование зелёный/красный.</p>
+<p>Серверная логика (<code>_create_finop_atomic</code>): <code>SELECT FOR UPDATE</code> на счёт, инкремент <code>ostatok</code>, создание FinOp в одной транзакции, запись в audit (<code>ADMIN_ACCOUNTS</code> + <code>FinanceOperations</code>).</p>
+
+<h5>Корректировка</h5>
+<p>Тот же endpoint, но без фильтра типов — оператор сам выбирает из всех 30+ типов (например, «Корректирующее списание» или «Ручная проводка»). Знак суммы определяется типом (<code>op_sign</code>): если выбран расходный тип, введённая положительная сумма автоматически инвертируется.</p>
+
+<h5>Сторно последней</h5>
+<p>Confirm-диалог с реквизитами последней операции (op_id, сумма, описание). После подтверждения создаётся обратная FinOp, у оригинала ставится <code>storno=True</code>, остаток корректируется. Сторнированную операцию повторно сторнировать нельзя.</p>
+
+<h4 id="admin-accounts-permissions">Защита от удаления</h4>
+<p>Hard-delete счёта возможен только если соблюдены оба условия:</p>
+<ul>
+  <li>К счёту НЕ привязан ни один абонент (<code>account_id_abonents.count() == 0</code>).</li>
+  <li>В счёте НЕТ ни одной финансовой операции (<code>FinanceOperations.filter(account=acc).count() == 0</code>).</li>
+</ul>
+<p>Иначе сервер возвращает HTTP 400 с понятной подсказкой («Сначала отвяжите N абонентов…» / «У счёта M операций. Удаление запрещено для сохранения истории»).</p>
+
+<h4 id="admin-accounts-audit">Audit-trail</h4>
+<p>Каждое действие записывается в <code>AuditOperations</code> (<code>table_name='ADMIN_ACCOUNTS'</code>) с реквизитами оператора и diff-описанием:</p>
+<ul>
+  <li><strong>Создание</strong>: «Создан счёт #N: warn=X, limit=Y, currency=Z».</li>
+  <li><strong>Изменение</strong>: «Изменён счёт #N: warn 100→200; currency 1→2».</li>
+  <li><strong>Удаление</strong>: «Удалён счёт #N (баланс был X.XX ₽)».</li>
+  <li><strong>Пополнение/Корректировка</strong>: «Пополнение/корр. счёта #N на +500.00 ₽ (op_id=12345, type=23)».</li>
+  <li><strong>Сторно</strong>: «Сторно счёта #N: op_id=12345 (новая запись op_id=12346, сумма −500.00 ₽)».</li>
+  <li><strong>Привязка/отвязка абонента</strong>: «Привязан абонент #6911 (ФИО) к счёту #9811» / «Отвязан…».</li>
+</ul>
+
+<h4 id="admin-accounts-api">REST endpoints</h4>
+<table>
+  <thead><tr><th>URL</th><th>Метод</th><th>Назначение</th></tr></thead>
+  <tbody>
+  <tr><td><code>/admin/Abonents/AdminAccounts/</code></td><td>GET</td><td>HTML-страница списка</td></tr>
+  <tr><td><code>/admin/Abonents/accounts_json/</code></td><td>GET</td><td>JSON: список с фильтрами и пагинацией (поля <code>q</code>, <code>chip</code>, <code>page</code>, <code>per_page</code>, <code>sort</code>)</td></tr>
+  <tr><td><code>/admin/Abonents/accounts_get/&lt;id&gt;/</code></td><td>GET</td><td>JSON: счёт + абоненты + последние 50 финопов + 20 уведомлений</td></tr>
+  <tr><td><code>/admin/Abonents/accounts_crud/[&lt;id&gt;/]</code></td><td>POST</td><td>Create/Update/Delete (флаг <code>_delete=1</code>)</td></tr>
+  <tr><td><code>/admin/Abonents/accounts_payment/&lt;id&gt;/</code></td><td>POST</td><td>Пополнение / Корректировка</td></tr>
+  <tr><td><code>/admin/Abonents/accounts_storno/&lt;id&gt;/</code></td><td>POST</td><td>Сторно последней операции</td></tr>
+  <tr><td><code>/admin/Abonents/accounts_link/&lt;id&gt;/</code></td><td>POST</td><td>Привязать абонента (<code>force=1</code> — перевод с другого счёта)</td></tr>
+  <tr><td><code>/admin/Abonents/accounts_unlink/&lt;id&gt;/&lt;abonent_id&gt;/</code></td><td>POST</td><td>Отвязать абонента</td></tr>
+  <tr><td><code>/admin/Abonents/accounts_bulk/</code></td><td>POST</td><td>Bulk: <code>change_currency</code> / <code>set_limits</code> / <code>delete_orphans</code></td></tr>
+  <tr><td><code>/admin/Abonents/accounts_csv/</code></td><td>GET</td><td>CSV-экспорт (UTF-8 BOM, <code>;</code>) — по фильтрам или <code>?ids=1,2,3</code></td></tr>
+  </tbody>
+</table>
+
+<h4 id="admin-accounts-money">Денежные правила</h4>
+<p>Все суммы в БД хранятся как <strong>integer × 10^10</strong> (<code>DB_MONEY_KOEF = Decimal('10000000000')</code>). Конвертация происходит автоматически в <code>MoneyField</code> / <code>MoneyFormField</code>: <code>prepare_value()</code> делит на коэффициент при отображении, <code>clean()</code> умножает обратно при сохранении. На уровне UI и REST API всегда работаем в рублях с двумя знаками после запятой.</p>
 
 
 </main>
