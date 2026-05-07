@@ -1924,7 +1924,7 @@ OSM. Стиль карточки в <a href="#integrations">/admin/settings/inte
 напрямую, что позволяет вести историю по счёту независимо от смены
 абонента.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/07_admin_accounts.png" alt="Лицевые счета"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/accounts_v506/v506_01_list.png" alt="Лицевые счета — список"></p>
 
 <h4 id="admin-accounts-list">Список счетов</h4>
 <ul>
@@ -1946,6 +1946,7 @@ OSM. Стиль карточки в <a href="#integrations">/admin/settings/inte
 редиректит 302 на список с открытой модалкой.</p>
 
 <h5>Вкладка «Баланс»</h5>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/accounts_v506/v506_02_modal_balance.png" alt="Модалка счёта — вкладка Баланс"></p>
 <ul>
   <li>Большая цифра текущего баланса (<code>остаток + дебет − кредит</code>) — цвет по знаку.</li>
   <li>Сетка из 4 ячеек: Остаток / Дебет / Кредит / Стоплата.</li>
@@ -1954,6 +1955,7 @@ OSM. Стиль карточки в <a href="#integrations">/admin/settings/inte
 </ul>
 
 <h5>Вкладка «Параметры»</h5>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/accounts_v506/v506_03_modal_params.png" alt="Модалка счёта — вкладка Параметры"></p>
 <p>Лимиты и пороги:</p>
 <ul>
   <li><strong>Порог предупреждения</strong> — отправка SMS/Push при пересечении.</li>
@@ -1965,9 +1967,11 @@ OSM. Стиль карточки в <a href="#integrations">/admin/settings/inte
 </ul>
 
 <h5>Вкладка «Абоненты»</h5>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/accounts_v506/v506_04_modal_abonents.png" alt="Модалка счёта — вкладка Абоненты"></p>
 <p>Список привязанных абонентов с бейджем «основной» (первый по ID), статусом и кнопками открытия профиля и отвязки. Кнопка <em>Привязать</em> открывает подмодалку с поиском (live-search через REST API). Если выбранный абонент уже привязан к другому счёту — показывается чекбокс <em>Перенести</em>.</p>
 
 <h5 id="admin-accounts-finops">Вкладка «Финансовые операции»</h5>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/accounts_v506/v506_05_modal_finops.png" alt="Модалка счёта — вкладка Финансовые операции"></p>
 <p>Последние 50 операций по счёту с цветовым кодированием:</p>
 <ul>
   <li>🟢 Зелёный — приход (<code>op_summa &gt; 0</code>).</li>
@@ -1978,18 +1982,25 @@ OSM. Стиль карточки в <a href="#integrations">/admin/settings/inte
 <p>Ссылка <em>Все операции по счёту</em> ведёт на отдельный раздел <a href="#finance-operations">Финансовые операции</a> с фильтром <code>?account_id=&lt;id&gt;</code>.</p>
 
 <h5>Вкладка «Уведомления»</h5>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/accounts_v506/v506_06_modal_msgs.png" alt="Модалка счёта — вкладка Уведомления"></p>
 <p>Последние 20 SMS / Email / Push сообщений по абонентам этого счёта (<code>MsgStack</code>, поля <code>head_txt</code>, <code>text</code>, <code>send_date</code>, флаги <code>email_done</code>/<code>sms_done</code>/<code>push_done</code> и др.). Read-only.</p>
 
 <h4 id="admin-accounts-payment">Пополнение / Корректировка / Сторно</h4>
 <p>На вкладке «Баланс» — три кнопки финансовых действий, каждая открывает подмодалку поверх главной (stacked modal через <code>z-index</code> патч).</p>
 
 <h5>Пополнение</h5>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/accounts_v506/v506_07_payment_modal.png" alt="Подмодалка пополнения счёта"></p>
 <p>Поля: <em>Сумма</em> (₽, обязательно), <em>Тип операции</em> (фильтрованы по <code>op_sign &gt; 0</code> — только приходные), <em>Дата</em>, <em>Номер документа</em>, <em>Описание</em>. Дополнительно: <em>ID транзакции</em> для идемпотентности — если задан и уже встречается в БД, повторный POST возвращает существующий <code>op_id</code> без двойного зачисления.</p>
 <p>Live-preview под формой показывает: текущий баланс, сумму операции, новый баланс. Цветовое кодирование зелёный/красный.</p>
 <p>Серверная логика (<code>_create_finop_atomic</code>): <code>SELECT FOR UPDATE</code> на счёт, инкремент <code>ostatok</code>, создание FinOp в одной транзакции, запись в audit (<code>ADMIN_ACCOUNTS</code> + <code>FinanceOperations</code>).</p>
 
 <h5>Корректировка</h5>
-<p>Тот же endpoint, но без фильтра типов — оператор сам выбирает из всех 30+ типов (например, «Корректирующее списание» или «Ручная проводка»). Знак суммы определяется типом (<code>op_sign</code>): если выбран расходный тип, введённая положительная сумма автоматически инвертируется.</p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/accounts_v506/v506_08_correction_modal.png" alt="Подмодалка корректировки счёта"></p>
+<p>Тот же endpoint, но без фильтра типов — оператор сам выбирает из всех 30+ типов (например, «Корректирующее списание» или «Ручная проводка»). Знак суммы определяется типом (<code>op_sign</code>): если выбран расходный тип, введённая положительная сумма автоматически инвертируется. На скриншоте — отрицательная сумма с предпросмотром нового баланса.</p>
+
+<h5 id="admin-accounts-link-modal">Привязка абонента (подмодалка)</h5>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/accounts_v506/v506_09_link_modal.png" alt="Подмодалка привязки абонента к счёту"></p>
+<p>Открывается из вкладки «Абоненты» по кнопке <em>+ Привязать</em>. Поле поиска ищет абонента по ФИО, договору, телефону, email через REST API (с debounce 300мс). Результаты отображаются с бейджами «на счёте #N» если абонент уже привязан где-то ещё. Чекбокс <em>Перенести</em> появляется только при выборе такого абонента и подтверждает перевод с другого счёта.</p>
 
 <h5>Сторно последней</h5>
 <p>Confirm-диалог с реквизитами последней операции (op_id, сумма, описание). После подтверждения создаётся обратная FinOp, у оригинала ставится <code>storno=True</code>, остаток корректируется. Сторнированную операцию повторно сторнировать нельзя.</p>
@@ -2040,6 +2051,7 @@ OSM. Стиль карточки в <a href="#integrations">/admin/settings/inte
 <p>Раздел построен по тому же паттерну, что и <a href="#admin-accounts">Счета</a> (build 101): кастомная страница с AJAX-пагинацией и модальным редактированием. Это самый быстрый способ работать с журналом, в котором сотни тысяч записей.</p>
 
 <h4 id="finance-operations-list">Список операций</h4>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/accounts_v506/v506_10_finops_list.png" alt="Финансовые операции — список с фильтрами"></p>
 <ul>
   <li><strong>Серверная пагинация</strong>: 20 / 50 / 100 / 200 строк на страницу — не зависает на больших объёмах.</li>
   <li><strong>Фильтры</strong>: текстовый поиск (по абоненту / описанию / номеру), тип операции (dropdown), диапазон дат с datetime-local.</li>
@@ -2058,6 +2070,7 @@ OSM. Стиль карточки в <a href="#integrations">/admin/settings/inte
 </ul>
 
 <h4 id="modal-finops">Модалка операции</h4>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/accounts_v506/v506_11_finops_modal.png" alt="Модалка финансовой операции"></p>
 <p>Modal-lg с компактной формой (паттерн <a href="#modal-finops-legacy">build 101</a>):</p>
 <ul>
   <li><strong>Абонент</strong> — Select2 AJAX поиск через <code>/rest_api/v2/Abonents/?name__icontains=…</code>. Если выбран существующий абонент, его счёт <code>abonent.account</code> используется автоматически.</li>
