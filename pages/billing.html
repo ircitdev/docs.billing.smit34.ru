@@ -1451,28 +1451,130 @@ Update / Delete для каждой модели (Tarif, Usluga, Abonents, NAS, 
 </div>
 
 <h3 id="pools">6.1. Пулы IP и VLAN</h3>
-<p>Подменю с двумя справочниками.</p>
+<p>Подменю с двумя справочниками: <a href="#ip-pull">пулы IP-адресов</a> для выдачи через RADIUS и <a href="#vlan-pull">пулы VLAN</a> для разметки портов на коммутаторах.</p>
 
-<p><strong>Пулы IP-адресов</strong> — диапазоны IP, которые выдаются абонентам через
-RADIUS. Каждый пул содержит: имя, начальный/конечный IP, маску, шлюз, активность,
-ссылку на следующий пул в цепочке (для fallback при исчерпании).</p>
+<h4 id="ip-pull">Пулы IP-адресов</h4>
+<p>URL: <a href="https://testbill.smit34.ru/admin/dictionary/IpPull/">/admin/dictionary/IpPull/</a></p>
+<p><strong>Пул IP-адресов</strong> — это диапазон от <em>start_ip</em> до <em>end_ip</em>, из которого FreeRADIUS выдаёт <code>Framed-IP-Address</code> при авторизации абонента. Один пул привязан к одному или нескольким NAS-устройствам через 4 разных поля (см. <a href="#ip-pull-nas-roles">роли</a>). Список загружается AJAX, статистика занятости считается раз в минуту с кешем.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_ip_pull.png" alt="Пулы IP"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v510/v510_ip_pool_list.png" alt="Список IP-пулов"></p>
 
-<p>Возможности списка:</p>
+<h5 id="ip-pull-list-features">Возможности списка</h5>
 <ul>
-  <li>Сегменты <em>«Все / Активные / Опасные / Исчерпанные»</em>.</li>
-  <li>Колонки <strong>«Свободно»</strong> и <strong>«% занято»</strong> с прогресс-баром
-  (зелёный &lt;75%, оранжевый 75–90%, красный ≥90%).</li>
-  <li>Для пулов в цепочке (с next_pull) — Σ-блок с суммарной занятостью всей цепочки.</li>
-  <li>Привязка к NAS отображается с цветными бейджами ролей: <em>main / nat / white / hotspot</em>.</li>
-  <li>Бейдж <strong>«🔗 → #N»</strong> — ссылка на следующий пул в цепочке (клик открывает его).</li>
+  <li><strong>KPI-сводка</strong> сверху: общее количество пулов, активных, опасных (≥75 %), исчерпанных, суммарное использование.</li>
+  <li><strong>Сегменты</strong> Все / Активные / Опасные / Исчерпанные — фильтр по состоянию.</li>
+  <li><strong>Чипы-фильтры</strong> по ролям NAS: main / nat / white / hotspot — показывает пулы, используемые соответствующим способом.</li>
+  <li><strong>Колонки «Свободно» / «% занято»</strong> с прогресс-баром: зелёный &lt;75 %, оранжевый 75–90 %, красный ≥90 %, бейдж «ИСЧЕРПАН» при 0 свободных.</li>
+  <li><strong>Σ-блок «🔗 Σ N/M ×K»</strong> для пулов в цепочке (build 443) — суммарная занятость всех пулов цепочки <code>JOY-1 → JOY-2 → JOY-3</code> с разбивкой в tooltip. Без этого блока админ видит «JOY-1 = 100 % занято» и думает «всё пропало», на самом деле есть запас в JOY-2/3.</li>
+  <li><strong>Привязка к NAS</strong> — цветные бейджи ролей (main / nat / white / hotspot), tooltip раскрывает все привязки одного NAS.</li>
+  <li><strong>Бейдж «🔗 → #N»</strong> в колонке «Название» — ссылка на следующий пул в цепочке (клик открывает его модалку).</li>
+  <li><strong>Сортировка</strong> сохраняется в localStorage (build 441) — после CRUD страница перерисовывается с тем же sort и фильтрами.</li>
+  <li><strong>«Авто-шлюз»</strong> — кнопка-помощник: для пулов без шлюза подставляет первый IP диапазона (по конвенции <code>start_ip - 1</code> или <code>start_ip</code>).</li>
 </ul>
 
-<p><strong>Пулы VLAN</strong> — диапазоны VLAN для каждого оператора. Используется
-при настройке точек подключения и в правилах NAS.</p>
+<h5 id="ip-pull-add">Добавление пула</h5>
+<p>Кнопка <strong>«+ Новый IP-пул»</strong> в правом верхнем углу открывает модалку:</p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v510/v510_ip_pool_modal_add.png" alt="Модалка добавления IP-пула"></p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_vlan_pull.png" alt="Пулы VLAN"></p>
+<p><strong>Обязательные поля</strong>:</p>
+<ul>
+  <li><strong>Название</strong> (<code>name</code>, до 256 символов) — отображается в селектах и в колонке списка. Пример: <code>SmIT-main</code>, <code>JOY-1</code>, <code>HOTSPOT-FAG</code>. Рекомендуется префикс по NAS или роли.</li>
+  <li><strong>Начальный IP</strong> (<code>start_ip</code>) — первый адрес диапазона.</li>
+  <li><strong>Конечный IP</strong> (<code>end_ip</code>) — последний адрес. Сервер проверяет что <code>start ≤ end</code>, иначе вернёт 400.</li>
+</ul>
+
+<p><strong>Опциональные поля</strong>:</p>
+<ul>
+  <li><strong>Маска</strong> (<code>netmask</code>) — справочное значение, абоненту через RADIUS не назначается. Используется только для cfg-генерации NAS (<code>rtsh cfg make</code>) и SORM-отчётов. По умолчанию — <code>255.255.255.0</code> (/24).</li>
+  <li><strong>Шлюз</strong> (<code>gateway</code>) — справочное, отображается в cfg-шаблонах. По умолчанию — пусто (можно автозаполнить кнопкой «Авто-шлюз» в toolbar).</li>
+  <li><strong>Следующий пул</strong> (<code>next_pull_id</code>) — Select из активных пулов того же оператора. Когда основной исчерпан, <code>allocate_ip_from_pools</code> переходит в этот пул автоматически (<a href="#ip-pull-chain">см. цепочки</a>). Защита от циклов: <code>max_depth=10</code>.</li>
+  <li><strong>Активность</strong> (<code>enabled</code>, default = true) — выключенный пул не выдаёт IP, но остаётся в БД. Используется при выводе пула из эксплуатации без удаления.</li>
+  <li><strong>Комментарий</strong> (<code>comment</code>) — свободный текст. Удобно фиксировать VLAN-номер, оператора или причину создания.</li>
+</ul>
+
+<p><strong>Что происходит после сохранения</strong>:</p>
+<ol>
+  <li>Запись в БД (<code>ip_pull</code>): новый <code>pull_id</code> генерируется автоинкрементом.</li>
+  <li>Audit-запись в <code>AuditOperations</code> (<code>table_name='IP_PULL'</code>, <code>object_id=pull_id</code>).</li>
+  <li>Кеш статистики (<code>ip_pool_stats_v3</code>) инвалидируется — следующая загрузка списка пересчитывает использование.</li>
+  <li>Пул автоматически становится доступным в Select-полях NAS (Pull / NAT-pull / White-pull / Hotspot-pull) и в <code>RADIUS_USERAUTH</code> при авторизации.</li>
+</ol>
+
+<h5 id="ip-pull-edit">Редактирование пула</h5>
+<p>Клик по строке (или иконке карандаша справа) открывает ту же модалку с предзаполненными полями:</p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v510/v510_ip_pool_modal_edit.png" alt="Модалка редактирования IP-пула"></p>
+
+<p>Все поля редактируются. Изменение <code>start_ip</code> / <code>end_ip</code> у используемого пула — <strong>опасная операция</strong>: если новый диапазон не покрывает уже выданные адреса, абоненты со «старыми» IP не попадут в пул при следующей авторизации (<code>allocate_ip_from_pools</code> не считает их занятыми, может выдать дубль). Прежде чем сужать диапазон — проверьте через <code>find_ip_duplicates --pool_id=N</code>.</p>
+
+<p><strong>Удаление</strong> через кнопку <em>«Удалить»</em> внутри модалки. Защита: пул нельзя удалить, если на него ссылается хоть один <code>NAS</code> (через любое из 4 полей <code>pull_id / nat_pull_id / white_pull_id / hotspot_pull_id</code>) или другой пул через <code>next_pull_id</code>. Сервер вернёт ошибку «Пул используется в N NAS / M пулах. Сначала уберите ссылки.»</p>
+
+<h5 id="ip-pull-nas-roles">Роли пула на NAS (4 поля)</h5>
+<p>Один NAS может ссылаться на пул через 4 разных поля, что определяет <em>как</em> IP из этого пула используется:</p>
+<table>
+  <thead><tr><th>Поле NAS</th><th>Роль (бейдж)</th><th>Назначение</th></tr></thead>
+  <tbody>
+    <tr><td><code>pull_id</code></td><td>🟢 main</td><td>Основной пул для выдачи серых IP абонентам через DHCP/PPPoE.</td></tr>
+    <tr><td><code>nat_pull_id</code></td><td>🟠 nat</td><td>NAT-пул: серые IP, скрытые за внешним NAT. Через RADIUS уходит как Framed-IP-Address, на NAS настраивается NAT в сторону интернета.</td></tr>
+    <tr><td><code>white_pull_id</code></td><td>🔵 white</td><td>Белые (публичные) IP. Выдаются за дополнительную плату, маршрутизируются напрямую без NAT.</td></tr>
+    <tr><td><code>hotspot_pull_id</code></td><td>🟣 hotspot</td><td>Пул для гостевого Wi-Fi (hotspot). Часто короткие диапазоны с walled-garden ACL.</td></tr>
+  </tbody>
+</table>
+<p>В списке пулов рядом с именем NAS показываются бейджи ролей для каждого NAS, использующего этот пул. Это помогает быстро понять «куда подключён пул» без перехода на страницу NAS.</p>
+
+<h5 id="ip-pull-chain">Цепочки пулов (next_pull)</h5>
+<p>Когда абонентов больше, чем размер одного /24-пула (254 адреса), используется <strong>цепочка</strong>: основной пул ссылается на резервный через <code>next_pull_id</code>. Алгоритм <code>allocate_ip_from_pools()</code> в <code>billing/services/ip_allocation.py</code>:</p>
+<ol>
+  <li>Проверяет основной пул (NAS.pull_id).</li>
+  <li>Если он исчерпан — переходит в <code>next_pull</code>.</li>
+  <li>Из <code>next_pull</code> снова в его <code>next_pull</code>, и т.д.</li>
+  <li>Защита от циклов: <code>max_depth=10</code> + <code>seen</code>-set по <code>pull_id</code>.</li>
+  <li>Если все пулы цепочки исчерпаны — fallback на глобальный <code>FALLBACK_IP_POOL_ID</code> (если задан в VpnConst), затем reclaim из offline-абонентов, затем Telegram-алерт.</li>
+</ol>
+<p><strong>Пример</strong> (testbill, 2026-05): JOY-1 → JOY-2 → JOY-3, каждый по 510 адресов. Σ-блок в UI показывает «🔗 Σ 1006 / 1530 ×3» — итого занято 1006 из 1530, цепочка из 3 пулов.</p>
+<p><strong>Visual</strong>: на пуле, у которого задан <code>next_pull_id</code>, в колонке «Название» появляется бейдж <strong>«🔗 → #N»</strong>. Клик открывает модалку следующего пула.</p>
+
+<h4 id="vlan-pull">Пулы VLAN</h4>
+<p>URL: <a href="https://testbill.smit34.ru/admin/dictionary/VlanPull/">/admin/dictionary/VlanPull/</a></p>
+<p><strong>Пул VLAN</strong> — диапазон номеров VLAN, выделенных оператору связи. Используется при настройке точек подключения (одна точка = одна VLAN из пула) и в шаблонах конфигурации коммутаторов.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v510/v510_vlan_pool_list.png" alt="Список VLAN-пулов"></p>
+
+<h5 id="vlan-pull-features">Возможности списка</h5>
+<ul>
+  <li>Список с поиском по названию и оператору.</li>
+  <li>Колонка <em>«Использовано»</em> — счётчик точек подключения, занявших VLAN из пула.</li>
+  <li>Бейдж активности (<code>enabled</code>) — Bootstrap-switch прямо в строке (build 456).</li>
+  <li>Скрытие «оператора», если у системы единственный оператор (build 456): колонка убирается через <code>.vp-op-col-hidden</code>, чтобы не путать админа.</li>
+</ul>
+
+<h5 id="vlan-pull-add">Добавление и редактирование</h5>
+<p>Кнопка <strong>«+ Новый VLAN-пул»</strong> открывает модалку:</p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v510/v510_vlan_pool_modal_add.png" alt="Модалка добавления VLAN-пула"></p>
+
+<p><strong>Поля</strong>:</p>
+<ul>
+  <li><strong>Название</strong> (<code>name</code>) — отображается в селектах и списке.</li>
+  <li><strong>Начальный VLAN</strong> (<code>start_vlan</code>, 1–4094) — первый номер диапазона.</li>
+  <li><strong>Конечный VLAN</strong> (<code>end_vlan</code>, 1–4094) — последний номер. Сервер проверяет <code>start ≤ end</code> и непересечение с другими активными пулами того же оператора.</li>
+  <li><strong>Оператор</strong> (<code>operator_id</code>) — Select из абонентов в папке Операторы (9002). Для одно-операторских систем поле скрыто.</li>
+  <li><strong>Активность</strong> (<code>enabled</code>) — выключенный пул не назначается на новые точки подключения.</li>
+  <li><strong>Комментарий</strong> — свободный текст.</li>
+</ul>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v510/v510_vlan_pool_modal_edit.png" alt="Модалка редактирования VLAN-пула"></p>
+
+<p>На скриншоте edit-режим: модалка идентична add, но с заполненными значениями + кнопкой «Удалить» снизу слева.</p>
+
+<p><strong>Защита удаления</strong> (build 456): VLAN-пул нельзя удалить, если он использован хотя бы в одной точке подключения. Сервер вернёт ошибку «Пул используется в N точках. Удаление запрещено для сохранения связей.»</p>
+
+<h5 id="pools-monitoring">Мониторинг и алерты</h5>
+<p>Beat-задача <code>ip-pool-monitor</code> (раз в час) обходит все enabled IP-пулы:</p>
+<ul>
+  <li>Считает использование через <code>get_pool_stats(pool)</code> — для пулов в цепочке возвращает chain-aware Σ.</li>
+  <li>Если % занятости ≥ <code>IP_POOL_DANGER_THRESHOLD_PCT</code> (90 % default) → пул помечается как опасный.</li>
+  <li>Если ≥1 пул в опасной зоне ИЛИ исчерпан → отправка одной нотификации в Telegram-чат админов (дедуп <code>ip_pool_monitor:alert:{date}</code>).</li>
+</ul>
+<p>На дашборде <code>/admin/welcome/</code> — компактный виджет «IP-пулы» с топ-3 опасными и сводкой использования.</p>
 
 <h3 id="acl">6.2. Контроль доступа (ACL)</h3>
 <p>Подменю с двумя справочниками для управления сетевыми правилами доступа.</p>
