@@ -1352,12 +1352,85 @@ HelpDesk, история операций, обещанный платёж, ре
 
 <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_msg_email.png" alt="Сообщения — Email"></p>
 
-<h4>Вкладка «SMS»</h4>
-<p>Выбор провайдера SMS из трёх: <em>SMSAero</em>, <em>SMSC.ru</em>, <em>SMS.ru</em>.
-Каждый со своими параметрами (логин/пароль или API-ключ), общий — имя отправителя
-(должно быть зарегистрировано у оператора). Тест отправки на тестовый номер.</p>
+<h4 id="messaging-sms">Вкладка «SMS»</h4>
+<p>Выбор провайдера SMS из четырёх: <em>SMSAero</em>, <em>SMSC.ru</em>, <em>SMS.ru</em>,
+<em>Свой шлюз (Android-телефон)</em>. Каждый со своими параметрами (логин/пароль или API-ключ),
+общий — имя отправителя. Тест отправки на тестовый номер.</p>
 
 <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_msg_sms.png" alt="Сообщения — SMS"></p>
+
+<h5 id="messaging-sms-android">Свой шлюз (Android-телефон, sms-gate.app)</h5>
+<p>Используется приложение <a href="https://sms-gate.app/" target="_blank" rel="noopener">SMS Gateway for Android</a> (open-source). Старый Android-смартфон с SIM-картой превращается в локальный SMS-шлюз. Стоимость — только тариф вашего мобильного оператора (часто пакеты «безлимитный SMS» 200–300 ₽/мес).</p>
+
+<p>Поддерживается <strong>2 режима</strong>:</p>
+<ul>
+  <li><strong>Local Server</strong> — биллинг шлёт прямо на IP телефона (требует чтобы биллинг и телефон были в одной сети). URL: <code>http://192.168.1.50:8080</code>.</li>
+  <li><strong>Cloud Server</strong> — телефон через WebSocket подключается к <code>api.sms-gate.app</code>, биллинг шлёт REST туда. URL: <code>https://api.sms-gate.app/3rdparty/v1</code>. Не требует прямой связи между сетями.</li>
+</ul>
+
+<h6>Настройка телефона (Cloud-режим)</h6>
+<ol>
+  <li>Установить приложение <strong>SMS Gateway for Android</strong> (Google Play / F-Droid, разработчик capcom6).</li>
+  <li>На главном экране — переключатель <strong>«Облачный сервер»</strong> → ON.</li>
+  <li>Скопировать <em>Имя пользователя</em> и <em>Пароль</em> с экрана.</li>
+  <li>Включить <em>Автозапуск</em> (внизу экрана).</li>
+  <li>В настройках Android: Батарея → SMS Gateway → «Без ограничений» (иначе уйдёт в фоновую заморозку).</li>
+  <li>Внизу должна гореть надпись <strong>ОНЛАЙН</strong> — телефон подключён к cloud.</li>
+</ol>
+
+<h6>Настройка биллинга</h6>
+<table>
+  <thead><tr><th>Поле</th><th>Значение</th></tr></thead>
+  <tbody>
+    <tr><td>Шлюз</td><td><code>Свой шлюз (Android-телефон)</code></td></tr>
+    <tr><td>Имя пользователя</td><td>значение из приложения (например <code>F14JMP</code>)</td></tr>
+    <tr><td>Пароль</td><td>значение из приложения</td></tr>
+    <tr><td>URL шлюза</td><td>Local: <code>http://192.168.1.50:8080</code><br>Cloud: <code>https://api.sms-gate.app/3rdparty/v1</code></td></tr>
+    <tr><td>Номер SIM</td><td><code>1</code> или <code>2</code> (для двухсимочников)</td></tr>
+  </tbody>
+</table>
+
+<p>После сохранения — поле <em>«Тестовая отправка»</em> внизу страницы. Введите свой номер, нажмите <em>Отправить тест</em>. Должно прийти SMS в течение 5–30 секунд.</p>
+
+<h5 id="messaging-sms-webhook">Webhook delivery-status (build 514)</h5>
+<p>Только для cloud-режима sms-gate.app. Биллинг получает подтверждение реальной доставки SMS абоненту (не «отдано в шлюз», а «доставлено в телефон»). Без webhook'а биллинг знает только что POST в шлюз вернул 200 OK.</p>
+
+<p><strong>Настройка</strong>:</p>
+<ol>
+  <li>В UI <a href="https://testbill.smit34.ru/admin/settings/messaging/sms/">/admin/settings/messaging/sms/</a> при выборе «Свой шлюз» внизу появляется блок <em>«Webhook delivery-status»</em>.</li>
+  <li>Скопировать <strong>URL для регистрации</strong> кнопкой <em>«Копировать»</em> (формат <code>https://&lt;ваш-биллинг&gt;/api/sms/webhook/sms-gate/</code>).</li>
+  <li>Нажать <em>«Сгенерировать»</em> для random 32-символьного hex-секрета (HMAC-SHA256 ключ). Сохранить.</li>
+  <li>В приложении SMS Gateway: <strong>Cloud Server → Webhooks → Add</strong> → URL и secret скопировать сюда. События: <code>sms:sent</code>, <code>sms:delivered</code>, <code>sms:failed</code>.</li>
+</ol>
+
+<p><strong>Что происходит</strong>:</p>
+<ol>
+  <li>При отправке SMS биллинг сохраняет в <code>MsgStack.sms_external_id</code> id сообщения, возвращённый шлюзом, и ставит <code>sms_status='pending'</code>.</li>
+  <li>Когда телефон отправил SMS оператору → sms-gate.app дёргает наш webhook с <code>event='sms:sent'</code> → <code>sms_status='sent'</code>.</li>
+  <li>Когда оператор подтверждает доставку → событие <code>sms:delivered</code> → <code>sms_status='delivered'</code>, <code>sms_status_date=now()</code>.</li>
+  <li>При ошибке (нет связи у телефона, неверный номер и т.п.) → <code>sms:failed</code> → <code>sms_status='failed'</code>, <code>sms_error</code> = код ошибки.</li>
+</ol>
+
+<p><strong>Защита от подделки</strong>: webhook проверяет HMAC-SHA256 подпись из заголовка <code>X-Signature</code> по telu запроса с тем же secret'ом. Если <code>SMS_GATE_WEBHOOK_SECRET</code> в SystemSettings пустой — подпись не проверяется (для теста). В production обязательно задавайте secret.</p>
+
+<p><strong>Защита от downgrade</strong>: статус не понижается. Если уже <code>delivered</code>, повторное событие <code>sms:sent</code> не сбросит обратно — учитывается только апгрейд по приоритету (<code>pending=0 &lt; sent=1 &lt; failed=2 &lt; delivered=3</code>).</p>
+
+<p><strong>Защита от Denial-of-Service</strong>: endpoint работает без авторизации (по дизайну webhook'ов), но без подписи неавторизованный POST может только обновлять <code>sms_status</code> для существующих <code>sms_external_id</code> — записи не создаются, FK не нарушаются. Если беспокоит шум — поставьте секрет.</p>
+
+<p><strong>Endpoint</strong>: <code>POST /api/sms/webhook/sms-gate/</code> (публичный, CSRF-exempt). Принимает JSON формата:</p>
+<pre><code>{
+  "deviceId": "ggtli...",
+  "event": "sms:delivered",
+  "id": "&lt;webhook-event-id&gt;",
+  "payload": {
+    "messageId": "&lt;id из ответа POST /messages&gt;",
+    "phoneNumber": "+79991234567",
+    "deliveredAt": "2026-05-07T12:34:56Z",
+    "errorCode": "..."  // только для failed
+  }
+}</code></pre>
+
+<p>Возвращает: <code>{"ok": true, "msg_id": 12345, "status": "delivered"}</code> при успехе, <code>{"ok": true, "matched": false}</code> если messageId не найден в БД (например, тест на несуществующем id), <code>{"ok": false, "error": "invalid_signature"}</code> при невалидной HMAC.</p>
 
 <h4>Вкладка «Telegram»</h4>
 <p>Отправка уведомлений абонентам через Telegram-бота. Условие — абонент должен
