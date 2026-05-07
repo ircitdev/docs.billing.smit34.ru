@@ -1910,6 +1910,73 @@ X-Timestamp: 1715091045   # Unix epoch</code></pre>
 <code>{{ balance }}</code>, <code>{{ tariff }}</code>, <code>{{ amount }}</code>,
 <code>{{ end_date }}</code> и т.д.</p>
 
+<h4 id="messaging-template-editor">Редактор шаблонов: Plain + HTML (build 595–596)</h4>
+<p>Модальное окно редактирования шаблона расширено: <strong>2 вкладки</strong> —
+<em>«Текст (plain)»</em> для коротких сообщений (SMS / Push / Telegram / VK / ЛК) и
+<em>«HTML (Email)»</em> с WYSIWYG-редактором <strong>TinyMCE 6</strong> для
+оформленных HTML-писем. Plain-текст используется для всех каналов кроме Email;
+для Email — берётся HTML, если он заполнен, иначе fallback на plain (с заменой
+переносов на <code>&lt;br&gt;</code>).</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/msg_templates_v596/docs_v596_msg_template_html_editor.png" alt="Редактор шаблонов: вкладка HTML с TinyMCE"></p>
+
+<h5 id="messaging-template-editor-features">Возможности</h5>
+<ul>
+  <li><strong>WYSIWYG TinyMCE 6</strong> на вкладке HTML: заголовки, списки, ссылки,
+    изображения, таблицы, выравнивание, шрифт, цвета. Подгружается с CDN при первом
+    показе вкладки (lazy-load) — не нагружает страницу пока шаблон не открыт.</li>
+  <li><strong>Большое окно</strong>: <code>modal-xl</code> (1140 px) с плавающим переходом
+    в <code>fullscreen</code> на mobile/tablet (≤991 px). Высота TinyMCE — <strong>520 px</strong>,
+    можно растянуть кнопкой <em>resize</em>. Полноэкранный режим — кнопка
+    <em>fullscreen</em> в toolbar.</li>
+  <li><strong>Plain-текстарея</strong> увеличена до <strong>14 строк</strong>
+    (минимум 320 px) — удобнее редактировать длинные шаблоны для Email с уведомлением.</li>
+  <li><strong>Кликабельные переменные</strong> в правой панели: клик по
+    <code>%(contract_number)s</code> или <code>{{ balance }}</code> вставляет
+    переменную в позицию курсора активного редактора (plain или HTML). Подсказка
+    «<em>Клик — вставить в редактор</em>» под заголовком блока.</li>
+  <li><strong>Бейдж</strong> рядом с вкладкой HTML: ✓ если HTML-версия заполнена,
+    скрыт если пусто. Ссылка <em>«очистить»</em> под редактором — сбрасывает HTML.</li>
+  <li><strong>Санитайзер bleach</strong> при сохранении: разрешены теги <code>p, br,
+    strong, em, a, ul, ol, li, h1-h6, table, tr, td, img, span, div</code> и атрибуты
+    <code>class, style, href, src, alt, target, rel</code>. Скрипты, on*-обработчики,
+    iframe — удаляются. Защита от XSS в HTML-шаблонах.</li>
+</ul>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/msg_templates_v596/docs_v596_msg_template_plain_text.png" alt="Редактор шаблонов: вкладка Plain-текст"></p>
+
+<h5 id="messaging-template-editor-vars">Кликабельные переменные</h5>
+<p>В правой панели модалки — справочник переменных в двух форматах:
+<strong>Python format</strong> (<code>%(name)s</code>) и <strong>Jinja2</strong>
+(<code>{{ name }}</code>, при включённом флаге <em>«Jinja»</em>). Каждая переменная
+обёрнута в кликабельный <code>&lt;code&gt;</code>: hover подсвечивает её зелёным,
+клик — вставляет в позицию курсора. Если активна вкладка HTML — вставка идёт
+в TinyMCE через <code>insertContent()</code>; если plain — в обычное
+<code>&lt;textarea&gt;</code>.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/msg_templates_v596/docs_v596_msg_template_clickable_vars.png" alt="Подсветка переменной при наведении (зелёный фон)"></p>
+
+<h5 id="messaging-template-editor-routing">Какой канал берёт что</h5>
+<table class="docs-table">
+  <thead><tr><th>Канал</th><th>Источник</th><th>Пояснение</th></tr></thead>
+  <tbody>
+    <tr><td>SMS</td><td><code>txt</code> (plain)</td><td>HTML обрезается до текста (см. <a href="#messaging-sms-webhook">SMS webhook</a> для счётчика сегментов).</td></tr>
+    <tr><td>Push (FCM)</td><td><code>txt</code> (plain), 200 симв.</td><td>HTML не поддерживается push-сервисами.</td></tr>
+    <tr><td>Telegram</td><td><code>txt</code> (plain)</td><td>Базовое форматирование Telegram через future-расширение.</td></tr>
+    <tr><td>VK</td><td><code>txt</code> (plain)</td><td>Сообщения сообщества — только текст.</td></tr>
+    <tr><td>ЛК</td><td><code>txt</code> (plain)</td><td>Notification banner в личном кабинете.</td></tr>
+    <tr><td><strong>Email</strong></td><td><strong><code>html_body</code></strong> если заполнен,<br>иначе <code>txt</code> с заменой <code>\n</code> → <code>&lt;br&gt;</code></td><td>Один шаблон — два канала. Plain-fallback гарантирует совместимость со старыми шаблонами.</td></tr>
+  </tbody>
+</table>
+
+<h5 id="messaging-template-editor-migration">Миграция и схема</h5>
+<p>Поле <code>AdminMsg.html_body</code> (TextField, nullable) добавлено в build 595
+(миграция <code>0120_adminmsg_html_body</code>). Существующие шаблоны не затронуты —
+у них <code>html_body = NULL</code>, Email-канал продолжает работать через
+<code>txt</code>. Заполнить HTML можно постепенно по мере необходимости
+(приветствие новому абоненту → красивая HTML-вёрстка, авто-уведомление о низком
+балансе → plain).</p>
+
 <h3 id="staff">6.9. Персонал и доступ</h3>
 <p>Управление сотрудниками биллинга. Доступно только пользователям с правами root.
 Страница разделена на 4 подраздела.</p>
