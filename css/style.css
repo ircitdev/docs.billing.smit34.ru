@@ -458,11 +458,21 @@ a:hover { color: var(--primary-dark); text-decoration: underline; }
 .content h3 .heading-badge { font-size: .78em; border-radius: 7px; min-width: 2em; height: 2em; }
 
 .content h4 {
-  font-size: .98rem;
-  font-weight: 600;
-  color: var(--text-light);
-  margin: 16px 0 6px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--primary-dark, #2d8a76);
+  margin: 28px 0 10px;
+  padding: 6px 0 6px 12px;
+  border-left: 4px solid var(--primary, #43b77a);
+  background: linear-gradient(90deg, rgba(67,183,122,.08) 0%, rgba(67,183,122,0) 60%);
+  border-radius: 0 6px 6px 0;
   text-transform: none;
+  line-height: 1.35;
+}
+[data-theme="dark"] .content h4 {
+  color: #6ad5a4;
+  background: linear-gradient(90deg, rgba(106,213,164,.10) 0%, rgba(106,213,164,0) 60%);
+  border-left-color: #43b77a;
 }
 
 .content p { margin: 8px 0; color: var(--text-light); }
