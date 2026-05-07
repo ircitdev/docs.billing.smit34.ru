@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 476)</title>
+  <title>Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 491)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 476)">
+  <meta property="og:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 491)">
   <meta property="og:description" content="Личный кабинет абонента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/lk.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 476)">
+  <meta name="twitter:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 491)">
   <meta name="twitter:description" content="Личный кабинет абонента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="Личный кабинет абонента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
@@ -302,6 +302,15 @@
     <li><a href="#lk-firebase">Firebase Push-уведомления</a></li>
     <li><a href="#lk-claude-ai">Claude AI — конфигурация AI-ассистента</a></li>
     <li><a href="#telegram-admin-bot">Telegram-бот для операторов (admin bot)</a></li>
+    <li><a href="#lk-design-system-489"><strong>Дизайн-система ЛК v489</strong> (выравнивание со стилем админки)</a>
+      <ul>
+        <li><a href="#lk-design-tokens-489">— Токены</a></li>
+        <li><a href="#lk-hero-cards-489">— Hero-карточки</a></li>
+        <li><a href="#lk-mobile-489">— Mobile</a></li>
+        <li><a href="#lk-screenshots-489">— Скриншоты</a></li>
+        <li><a href="#lk-build-history-489">— История builds 484-489</a></li>
+      </ul>
+    </li>
     </ul>
   </details>
   </div>
@@ -1247,13 +1256,99 @@ Content-Type: application/json
     </tbody>
   </table>
 
+  <h2 id="lk-design-system-489">Дизайн-система ЛК v489 — выравнивание со стилем админки</h2>
+
+  <p>Build 489 переводит весь Личный Кабинет на единую дизайн-систему с админкой биллинга. До этого ЛК использовал собственный teal-брендинг <code>#5BA89D</code> и отдельный набор CSS-переменных (<code>--lk-*</code>) — это создавало визуальный разрыв при переключении между ЛК и админкой.</p>
+
+  <h3 id="lk-design-tokens-489">Токены дизайн-системы</h3>
+
+  <p>В <code>lk/templates/lk/base.html</code> :root теперь содержит полный набор токенов админки (<code>theme-smit.css</code>):</p>
+
+  <table>
+    <thead><tr><th>Категория</th><th>Токены</th><th>Источник правды</th></tr></thead>
+    <tbody>
+      <tr><td>Brand</td><td><code>--brand-primary #43b77a</code>, <code>--brand-primary-dark</code>, <code>--brand-primary-bg</code></td><td>Совпадает с админкой</td></tr>
+      <tr><td>Status</td><td><code>--smit-state-{ok,warn,danger,info,muted}</code></td><td>Скопировано из админки</td></tr>
+      <tr><td>Surface</td><td><code>--surface-page #f5f6f8</code>, <code>--surface-card #fff</code>, <code>--surface-muted</code></td><td>Скопировано из админки</td></tr>
+      <tr><td>Border</td><td><code>--border-subtle</code>, <code>--border-default</code></td><td>Скопировано из админки</td></tr>
+      <tr><td>Text</td><td><code>--text-primary</code>, <code>--text-secondary</code>, <code>--text-muted</code></td><td>Скопировано из админки</td></tr>
+      <tr><td>Radii</td><td><code>--radius-{xs,sm,md,lg,pill}</code> (3/4/6/8/999)</td><td>Скопировано из админки</td></tr>
+      <tr><td>Shadows</td><td><code>--shadow-{sm,md,lg}</code></td><td>Скопировано из админки</td></tr>
+      <tr><td>Spacing 8-pt</td><td><code>--space-{1..6}</code> (4/8/12/16/24/32)</td><td>Скопировано из админки</td></tr>
+      <tr><td>Focus</td><td><code>--focus-ring rgba(67,183,122,.30)</code>, <code>--focus-outline #43b77a</code></td><td>Скопировано из админки</td></tr>
+      <tr><td>Backwards-compat</td><td><code>--lk-bg</code>, <code>--lk-card-bg</code>, <code>--lk-text</code>, <code>--lk-muted</code>, <code>--lk-border</code></td><td>Алиасы на новые токены — старый код не сломан</td></tr>
+    </tbody>
+  </table>
+
+  <p>Для dark-темы (<code>[data-bs-theme="dark"]</code>) переопределены: surface, border, text, shadow — те же значения что в админском <code>body.dark-theme</code>.</p>
+
+  <h3 id="lk-hero-cards-489">Hero-карточки на всех ключевых страницах</h3>
+
+  <p>Введён единый класс <code>.lk-hero-card</code> (<code>lk/static/lk/css/lk-hero.css</code>, ~190 строк) — gradient-карточка с иконкой/аватаром, title+meta+actions. Используется на:</p>
+
+  <ul>
+    <li><strong>/lk/</strong> (Дашборд) — карточка тарифа: описание, скорость in/out, линейка услуг, бейдж «N доступных вариантов апгрейда»</li>
+    <li><strong>/lk/profile/</strong> — аватар-инициалы, статус (Активен/Заблокирован/ОП), баланс, осталось дней, бейджи «email/SMS/Telegram привязан»</li>
+    <li><strong>/lk/promise-pay/</strong> — countdown «ещё N дней» + лимит + баланс для активного ОП; мотивирующая карточка для неактивного</li>
+    <li><strong>/lk/payments/</strong> — последний платёж + баланс + monthly_cost + «хватит на N дней»</li>
+    <li><strong>/lk/tariff/</strong> — все параметры текущего тарифа + 3-х колоночный grid доступных тарифов</li>
+  </ul>
+
+  <h3 id="lk-mobile-489">Мобильная версия</h3>
+
+  <p>В <code>base.html</code> добавлена секция <code>@media (max-width: 767px)</code>:</p>
+  <ul>
+    <li><strong>Touch targets ≥44px</strong>: <code>.btn</code> min-height 44px, <code>.form-control</code> 44px (обновлено через единое правило, не inline)</li>
+    <li><strong>Inputs 16px</strong>: предотвращает iOS auto-zoom при focus</li>
+    <li><strong>Компактнее padding</strong>: <code>.content-lk</code> 12px, <code>.card-stat</code> 14px, типография уменьшена</li>
+    <li><strong>Bottom-nav safe-area</strong>: <code>padding-bottom: env(safe-area-inset-bottom)</code> для iPhone с home-indicator</li>
+    <li><strong>Bottom-nav active state</strong>: brand-color подсветка через <code>color-mix</code></li>
+  </ul>
+
+  <p>Hero-карточки на mobile (<code>@media (max-width: 767px)</code>):</p>
+  <ul>
+    <li>Grid 3 колонки → 1 колонка с центрированием</li>
+    <li>Иконка 64×64 → 56×56</li>
+    <li>Title 1.35rem → 1.1rem; subtitle 0.95rem → 0.88rem</li>
+    <li>Actions row-flex с <code>min-height 44px</code> на каждой кнопке</li>
+  </ul>
+
+  <h3 id="lk-screenshots-489">Скриншоты build 489</h3>
+
+  <p>12 скриншотов (6 страниц × desktop+mobile) сохранены в <code>docs/img/v489_lk/</code>:</p>
+
+  <table>
+    <thead><tr><th>Страница</th><th>Desktop (1440×900)</th><th>Mobile (390×844, iOS UA)</th></tr></thead>
+    <tbody>
+      <tr><td>Дашборд</td><td><code>dashboard_desktop.png</code></td><td><code>dashboard_mobile.png</code></td></tr>
+      <tr><td>Профиль</td><td><code>profile_desktop.png</code></td><td><code>profile_mobile.png</code></td></tr>
+      <tr><td>ОП</td><td><code>promise_pay_desktop.png</code></td><td><code>promise_pay_mobile.png</code></td></tr>
+      <tr><td>Платежи</td><td><code>payments_desktop.png</code></td><td><code>payments_mobile.png</code></td></tr>
+      <tr><td>Тариф</td><td><code>tariff_desktop.png</code></td><td><code>tariff_mobile.png</code></td></tr>
+      <tr><td>Speedtest</td><td><code>speedtest_desktop.png</code></td><td><code>speedtest_mobile.png</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="lk-build-history-489">История доработок ЛК (builds 484-489)</h3>
+
+  <table>
+    <thead><tr><th>Build</th><th>Дата</th><th>Что изменилось</th></tr></thead>
+    <tbody>
+      <tr><td>484</td><td>2026-05-07</td><td>Hero-карточка <code>/lk/tariff/</code>: все параметры текущего тарифа, фильтрация доступных по <code>allow_change_to</code> + <code>transfer_only_more_money</code> + <code>usluga_range_type</code>; чипы delta-price; empty-state с support-ссылкой</td></tr>
+      <tr><td>485</td><td>2026-05-07</td><td>Fix <code>_get_address()</code>: использовался несуществующий <code>home.city_name</code> вместо <code>home.city</code> → адрес «Не указан». Унифицирован через template-фильтр <code>home_city_street()</code></td></tr>
+      <tr><td>486</td><td>2026-05-07</td><td>Speedtest: при <code>NETWORK_MODE=external</code> или VPN — кнопка <code>disabled</code> с иконкой 🚫 и tooltip; убран <code>confirm()</code> dialog</td></tr>
+      <tr><td>487</td><td>2026-05-07</td><td>E1 mobile_api проверен (баг отсутствует, использует <code>home_city_street</code>) + <code>_get_address</code> унифицирован. E2 hero-карточка тарифа на дашборде: description, speed_in/out, линейка, upgrade_count. E3 inline-edit email/SMS вместо read-only</td></tr>
+      <tr><td>488</td><td>2026-05-07</td><td>F-prep <code>lk-hero.css</code>: 4 chip-цвета (success/warning/danger/info), dark-mode, mobile-адаптив. F1 hero <code>/lk/profile/</code>. F2 hero <code>/lk/promise-pay/</code> с countdown. F3 hero <code>/lk/payments/</code> с last/next</td></tr>
+      <tr><td>489</td><td>2026-05-07</td><td>Brand <code>#5BA89D</code> → <code>#43b77a</code> (выравнивание с админкой). Полный набор токенов админки в :root. Mobile-секция в base.html: ≥44px touch, 16px inputs, safe-area. <code>card-stat</code>/buttons/focus-states выровнены</td></tr>
+    </tbody>
+  </table>
 
 
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 476)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">07.05.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 476)</span>&nbsp;|&nbsp;<span data-smit="updated">07.05.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 491)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">07.05.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 491)</span>&nbsp;|&nbsp;<span data-smit="updated">07.05.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=466"></script>
