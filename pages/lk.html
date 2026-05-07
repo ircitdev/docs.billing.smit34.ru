@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 567)</title>
+  <title>Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 586)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 567)">
+  <meta property="og:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 586)">
   <meta property="og:description" content="Личный кабинет абонента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/lk.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 567)">
+  <meta name="twitter:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 586)">
   <meta name="twitter:description" content="Личный кабинет абонента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="Личный кабинет абонента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
@@ -309,6 +309,15 @@
         <li><a href="#lk-mobile-489">— Mobile</a></li>
         <li><a href="#lk-screenshots-489">— Скриншоты</a></li>
         <li><a href="#lk-build-history-489">— История builds 484-489</a></li>
+      </ul>
+    </li>
+    <li><a href="#lk-redesign-585"><strong>Серия редизайнов ЛК v569–v585</strong> (единый стиль страниц)</a>
+      <ul>
+        <li><a href="#lk-redesign-585-overview">— Что было сделано</a></li>
+        <li><a href="#lk-redesign-585-pattern">— Единый паттерн</a></li>
+        <li><a href="#lk-redesign-585-pages">— 14 переделанных страниц</a></li>
+        <li><a href="#lk-redesign-585-changes">— Ключевые улучшения</a></li>
+        <li><a href="#lk-redesign-585-screenshots">— Скриншоты</a></li>
       </ul>
     </li>
     </ul>
@@ -1356,11 +1365,126 @@ Content-Type: application/json
   </table>
 
 
+  <h2 id="lk-redesign-585">Серия редизайнов ЛК v569–v585 — единый стиль страниц</h2>
+<div class="page-toc">
+<details open>
+  <summary><strong><i class="bi bi-book"></i> Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#lk-redesign-585-overview">Что было сделано</a></li>
+    <li><a href="#lk-redesign-585-pattern">Единый паттерн страниц</a></li>
+    <li><a href="#lk-redesign-585-pages">Список переделанных страниц (14)</a></li>
+    <li><a href="#lk-redesign-585-changes">Ключевые улучшения по билдам</a></li>
+    <li><a href="#lk-redesign-585-screenshots">Скриншоты (desktop + mobile)</a></li>
+  </ul>
+</details>
+</div>
+
+  <h3 id="lk-redesign-585-overview">Что было сделано</h3>
+
+  <p>В серии билдов 569–585 переделаны 14 страниц Личного Кабинета в единый визуальный стиль. Цель — устранить остатки AI-tells (вертикальные <code>border-left:4px</code> акценты, плотные таблицы, BS-list-group, иконки разной формы), привести все страницы к единому card-pattern, добавить mobile-friendly верстку.</p>
+
+  <p>Основной приём: <strong>таблицы → card-rows</strong> (карточки с круглой иконкой слева + meta-полем + цветной pill + числом справа). Это работает одинаково на широких экранах и на mobile, не требует horizontal-scroll, лучше читается.</p>
+
+  <h3 id="lk-redesign-585-pattern">Единый паттерн страниц</h3>
+
+  <p>Все обновлённые страницы используют общий набор примитивов:</p>
+
+  <table>
+    <thead><tr><th>Элемент</th><th>Класс / приём</th><th>Что делает</th></tr></thead>
+    <tbody>
+      <tr><td>Toolbar</td><td><code>.lk*-toolbar</code> + <code>h5</code> с brand-иконкой</td><td>Заголовок страницы + опциональные actions справа</td></tr>
+      <tr><td>Hero (опционально)</td><td><code>.lk-hero-card</code> brand-gradient или <code>.lk*-hero</code></td><td>Краткий статус + основные метрики + actions</td></tr>
+      <tr><td>KPI-плитки</td><td><code>.lk*-kpi-grid</code> + <code>.lk*-kpi</code></td><td>Цифры с цветной круглой иконкой 40×40 слева (зелёная/красная/синяя/оранжевая)</td></tr>
+      <tr><td>Card-rows</td><td><code>.lk*-row</code> с круглой иконкой + body + value справа</td><td>Замена таблиц: дата+время+pill в первой строке, описание во второй, сумма bold</td></tr>
+      <tr><td>Card-grid</td><td><code>.lk*-grid</code> + <code>.lk*-card</code></td><td>auto-fill minmax(280px) для тарифов / услуг</td></tr>
+      <tr><td>Status-pill</td><td><code>.lk*-pill</code> с rgba bg + tinted color</td><td>Цветовое кодирование статуса операции / типа</td></tr>
+      <tr><td>Empty-state</td><td><code>.lk*-empty</code> с fa-inbox иконкой и CTA</td><td>Friendly-сообщение когда данных нет</td></tr>
+      <tr><td>Warning</td><td><code>.lk*-warn</code> с цветной квадратной иконкой 36×36</td><td>Заменили <code>border-left:4px</code> AI-tells</td></tr>
+    </tbody>
+  </table>
+
+  <p>Везде применены: <code>@media (max-width: 575px)</code> с уменьшением паддингов и иконок, <code>@media (prefers-reduced-motion: reduce)</code> отключающий transitions, dark theme через <code>[data-bs-theme="dark"]</code>.</p>
+
+  <h3 id="lk-redesign-585-pages">Список переделанных страниц (14)</h3>
+
+  <table>
+    <thead><tr><th>URL</th><th>Build</th><th>Главное</th></tr></thead>
+    <tbody>
+      <tr><td><code>/lk/support/</code></td><td>569</td><td>Таблица тикетов → card-rows с цветными статусными иконками (waiting/active/pending/closed)</td></tr>
+      <tr><td><code>/lk/</code> (Дашборд)</td><td>572-577, 583-584</td><td>Карточка тарифа+подключения объединена в одну. Шапка LK без подложек pill-ов. Кнопка «Сменить тариф» filled brand. Алерты на mobile с CTA полной ширины</td></tr>
+      <tr><td><code>/lk/profile/</code></td><td>575</td><td>Убрана дублирующая «Данные абонента». Hero-actions заменены на «Сменить пароль». Контакты с inline-edit (Save активен только при изменении). Карточка «Безопасность» (пароль + MAC). Привязки в едином стиле</td></tr>
+      <tr><td><code>/lk/payments/pay/</code></td><td>576</td><td>Hero с балансом (gradient зелёный/красный). Большое stylized-поле суммы. After-payment preview. Платёжная система как card-row с SSL-бейджем</td></tr>
+      <tr><td><code>/lk/payments/</code></td><td>578</td><td>Filters в chip-строке + accordion «Точный фильтр». KPI с цветными иконками (без border-left). Таблица → card-rows. Custom pagination</td></tr>
+      <tr><td><code>/lk/audit/</code></td><td>579</td><td>Таблица операций → card-rows. KPI 3-колоночные. Infinite scroll адаптирован под новую card-структуру</td></tr>
+      <tr><td><code>/lk/promise-pay/</code></td><td>579</td><td>Eligibility warning без border-left. Условия услуги в key-value list. История ОП в компактных card-rows</td></tr>
+      <tr><td><code>/lk/sessions/</code></td><td>579</td><td>Таблица сессий → card-rows. Активная сессия с border-left brand + animated pulse-dot. Трафик справа: detailed (DL+UL) или compact (total)</td></tr>
+      <tr><td><code>/lk/speedtest/</code></td><td>579</td><td>Precheck-cards без border-left, цветные квадратные иконки. CTA-блок при низкой скорости с pre-filled тикетом. История тестов в card-rows</td></tr>
+      <tr><td><code>/lk/messages/</code></td><td>579</td><td>BS list-group → card-rows. Unread-сообщения с border-left brand + soft brand-bg. Каналы доставки как color-coded pills</td></tr>
+      <tr><td><code>/lk/tariff/</code></td><td>580</td><td>Tag-бейджи «дешевле»/«дороже» вместо border-left. Action-кнопка border → fill brand на hover. Empty state с CTA в поддержку</td></tr>
+      <tr><td><code>/lk/services/</code></td><td>580</td><td>2 секции с цветными section-icons. Подключённые в card-rows + действия (отключить/locked). Доступные в grid-cards 280px tiles</td></tr>
+      <tr><td><code>/lk/referral/</code></td><td>580</td><td>Hero с fa-gift и центрированным amount. Copy-button совмещён со ссылкой. Stats grid с цветными иконками. How-to блок без border-left</td></tr>
+      <tr><td><code>/lk/block/</code></td><td>580</td><td>Status-hero с тремя состояниями (blocked orange / active green / unavailable grey). Большая иконка 72×72 в круге. Info-card «Что произойдёт»</td></tr>
+      <tr><td><code>/lk/profile/contacts-required/</code></td><td>581, 585</td><td>Standalone-страница (без extends base): glassmorphism убран, чистая карточка. На шаге 1 предупреждение про «Спам» сразу. Шаг 2 verify-rows с состояниями pending/done</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="lk-redesign-585-changes">Ключевые улучшения по билдам</h3>
+
+  <table>
+    <thead><tr><th>Build</th><th>Что изменилось</th></tr></thead>
+    <tbody>
+      <tr><td>569</td><td><code>/lk/support/</code> + переименования меню («Заявки в поддержку» → «Заявки», «Сообщения от оператора» → «Сообщения»)</td></tr>
+      <tr><td>570</td><td>Mobile-меню фиксы: иконки/подписи больше не скачут (label flex 0 0 auto + height 1.1em). Footer показывается только на главной. Подсветка активной группы через <code>.lk-nav-group-active</code> независимо от <code>.open</code></td></tr>
+      <tr><td>571</td><td>Фильтр <code>timeago</code> исправлен: USE_TZ=False, обе даты приводятся к naive UTC. Формат «вчера», «N дн назад», «N мес назад», «14 апр» / «14 апр 2025»</td></tr>
+      <tr><td>572</td><td>Карточки «Ваш тариф» и «Подключение» объединены — статус подключения переехал внутрь тарифной карточки</td></tr>
+      <tr><td>573</td><td>Воздух в объединённой карточке: gap 16px, padding 22×22×20, conn-link с padding 4×8 и hover-фоном</td></tr>
+      <tr><td>574</td><td>Переименованы пункты меню в подменю «Поддержка»</td></tr>
+      <tr><td>577</td><td>Карточка тарифа стала крупнее: иконка 48 → 60px, name 1.05 → 1.4rem font-weight 800, content вертикально центрируется (justify-content: center, min-height: 100%)</td></tr>
+      <tr><td>582-583</td><td>Кнопка «Сменить тариф» из outline → filled brand с brand-shadow. Шапка LK без pill-подложек: тариф/баланс/аватар прозрачные на brand-gradient. Шрифты увеличены</td></tr>
+      <tr><td>584</td><td>Алерты на mobile (≤575px): CTA full-width под текстом, dismiss-крестик абсолютный top:6/right:6</td></tr>
+      <tr><td>585</td><td>На <code>/lk/profile/contacts-required/</code> шаге 1 добавлено предупреждение про папку «Спам» (раньше было только на шаге 2)</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="lk-redesign-585-screenshots">Скриншоты (desktop + mobile)</h3>
+
+  <p>28 скриншотов (14 страниц × 2 viewports) сохранены в <code>docs/img/v585_lk/</code>. Скрипт сборки — <code>screenshots_lk_v585.js</code>.</p>
+
+  <table>
+    <thead><tr><th>Страница</th><th>Desktop (1440×900)</th><th>Mobile (390×844)</th></tr></thead>
+    <tbody>
+      <tr><td>Дашборд</td><td><code>dashboard_desktop.png</code></td><td><code>dashboard_mobile.png</code></td></tr>
+      <tr><td>Профиль</td><td><code>profile_desktop.png</code></td><td><code>profile_mobile.png</code></td></tr>
+      <tr><td>Пополнение</td><td><code>pay_desktop.png</code></td><td><code>pay_mobile.png</code></td></tr>
+      <tr><td>История платежей</td><td><code>payments_desktop.png</code></td><td><code>payments_mobile.png</code></td></tr>
+      <tr><td>История операций</td><td><code>audit_desktop.png</code></td><td><code>audit_mobile.png</code></td></tr>
+      <tr><td>Обещанный платёж</td><td><code>promise_pay_desktop.png</code></td><td><code>promise_pay_mobile.png</code></td></tr>
+      <tr><td>Сессии</td><td><code>sessions_desktop.png</code></td><td><code>sessions_mobile.png</code></td></tr>
+      <tr><td>Тест скорости</td><td><code>speedtest_desktop.png</code></td><td><code>speedtest_mobile.png</code></td></tr>
+      <tr><td>Сообщения</td><td><code>messages_desktop.png</code></td><td><code>messages_mobile.png</code></td></tr>
+      <tr><td>Тарифы</td><td><code>tariff_desktop.png</code></td><td><code>tariff_mobile.png</code></td></tr>
+      <tr><td>Услуги</td><td><code>services_desktop.png</code></td><td><code>services_mobile.png</code></td></tr>
+      <tr><td>Реферальная программа</td><td><code>referral_desktop.png</code></td><td><code>referral_mobile.png</code></td></tr>
+      <tr><td>Добровольная блокировка</td><td><code>block_desktop.png</code></td><td><code>block_mobile.png</code></td></tr>
+      <tr><td>Поддержка</td><td><code>support_desktop.png</code></td><td><code>support_mobile.png</code></td></tr>
+    </tbody>
+  </table>
+
+  <p>Превью-галерея ключевых страниц (desktop):</p>
+
+  <p>
+    <img src="../img/v585_lk/dashboard_desktop.png" alt="Дашборд build 585" loading="lazy" style="max-width:100%;border:1px solid var(--border-default);border-radius:8px;margin-bottom:8px">
+    <img src="../img/v585_lk/payments_desktop.png" alt="История платежей build 585" loading="lazy" style="max-width:100%;border:1px solid var(--border-default);border-radius:8px;margin-bottom:8px">
+    <img src="../img/v585_lk/profile_desktop.png" alt="Профиль build 585" loading="lazy" style="max-width:100%;border:1px solid var(--border-default);border-radius:8px;margin-bottom:8px">
+    <img src="../img/v585_lk/tariff_desktop.png" alt="Тарифы build 585" loading="lazy" style="max-width:100%;border:1px solid var(--border-default);border-radius:8px;margin-bottom:8px">
+  </p>
+
+
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 567)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">07.05.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 567)</span>&nbsp;|&nbsp;<span data-smit="updated">07.05.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 586)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">07.05.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 586)</span>&nbsp;|&nbsp;<span data-smit="updated">07.05.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=466"></script>
