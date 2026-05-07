@@ -1392,45 +1392,146 @@ HelpDesk, история операций, обещанный платёж, ре
 
 <p>После сохранения — поле <em>«Тестовая отправка»</em> внизу страницы. Введите свой номер, нажмите <em>Отправить тест</em>. Должно прийти SMS в течение 5–30 секунд.</p>
 
-<h5 id="messaging-sms-webhook">Webhook delivery-status (build 514)</h5>
-<p>Только для cloud-режима sms-gate.app. Биллинг получает подтверждение реальной доставки SMS абоненту (не «отдано в шлюз», а «доставлено в телефон»). Без webhook'а биллинг знает только что POST в шлюз вернул 200 OK.</p>
+<h5 id="messaging-sms-webhook">Webhook delivery-status (builds 514–518)</h5>
+<p>Только для <strong>cloud-режима</strong> sms-gate.app. Биллинг получает подтверждение реальной доставки SMS абоненту (не «отдано в шлюз», а «доставлено на телефон оператора»). Без webhook'а биллинг знает только что POST в шлюз вернул 200 OK — между «принято cloud'ом» и «дошло до пользователя» проходит от секунд до часов (если телефон-шлюз оффлайн).</p>
 
-<p><strong>Настройка</strong>:</p>
+<h6 id="messaging-sms-webhook-setup">Настройка (4 шага)</h6>
 <ol>
-  <li>В UI <a href="https://testbill.smit34.ru/admin/settings/messaging/sms/">/admin/settings/messaging/sms/</a> при выборе «Свой шлюз» внизу появляется блок <em>«Webhook delivery-status»</em>.</li>
-  <li>Скопировать <strong>URL для регистрации</strong> кнопкой <em>«Копировать»</em> (формат <code>https://&lt;ваш-биллинг&gt;/api/sms/webhook/sms-gate/</code>).</li>
-  <li>Нажать <em>«Сгенерировать»</em> для random 32-символьного hex-секрета (HMAC-SHA256 ключ). Сохранить.</li>
-  <li>В приложении SMS Gateway: <strong>Cloud Server → Webhooks → Add</strong> → URL и secret скопировать сюда. События: <code>sms:sent</code>, <code>sms:delivered</code>, <code>sms:failed</code>.</li>
+  <li>В UI <a href="https://testbill.smit34.ru/admin/settings/messaging/sms/">/admin/settings/messaging/sms/</a> при выборе шлюза «Свой шлюз (Android-телефон)» внизу появляется блок <strong>«Webhook delivery-status»</strong>.</li>
+  <li>Скопировать <strong>URL для регистрации</strong> кнопкой <em>«📋 Копировать»</em> (формат <code>https://&lt;ваш-биллинг&gt;/api/sms/webhook/sms-gate/</code>).</li>
+  <li>Нажать <em>«🎲 Сгенерировать»</em> для случайного 32-символьного hex-ключа HMAC-SHA256. Сохранить настройки.</li>
+  <li>Регистрация webhook'ов в sms-gate.app — <strong>через REST API</strong> (в приложении на телефоне нет UI для этого):
+    <pre><code>curl -u USERNAME:PASSWORD https://api.sms-gate.app/3rdparty/v1/webhooks \
+  -H 'Content-Type: application/json' \
+  -d '{"url":"https://testbill.smit34.ru/api/sms/webhook/sms-gate/",
+       "event":"sms:delivered","signingKey":"&lt;ваш-secret&gt;"}'</code></pre>
+    Повторить для всех 3 событий: <code>sms:sent</code>, <code>sms:delivered</code>, <code>sms:failed</code>. Каждый зарегистрированный webhook возвращает свой ID.</li>
 </ol>
 
-<p><strong>Что происходит</strong>:</p>
+<h6 id="messaging-sms-webhook-flow">Жизненный цикл SMS</h6>
+<table>
+  <thead><tr><th>Шаг</th><th>Что происходит</th><th>Поле <code>MsgStack</code></th></tr></thead>
+  <tbody>
+    <tr><td>1. Биллинг → cloud</td><td><code>POST /3rdparty/v1/messages</code> возвращает <code>{"id": "...", "state": "Pending"}</code></td><td><code>sms_external_id</code> = id, <code>sms_status</code> = <code>pending</code></td></tr>
+    <tr><td>2. Cloud → телефон</td><td>WebSocket-push на телефон-шлюз (если ОНЛАЙН)</td><td>не меняется</td></tr>
+    <tr><td>3. Телефон → оператор</td><td>SMS отправлено в сеть мобильного оператора</td><td>webhook <code>sms:sent</code> → <code>sms_status</code> = <code>sent</code></td></tr>
+    <tr><td>4. Оператор → абонент</td><td>SMS доставлено на телефон абонента</td><td>webhook <code>sms:delivered</code> → <code>sms_status</code> = <code>delivered</code>, <code>sms_status_date</code> = now()</td></tr>
+    <tr><td>4'. Ошибка</td><td>Нет связи у телефона / номер заблокирован / денег нет</td><td>webhook <code>sms:failed</code> → <code>sms_status</code> = <code>failed</code>, <code>sms_error</code> = код ошибки</td></tr>
+  </tbody>
+</table>
+
+<p><strong>Реальная статистика</strong> (с testbill 2026-05-07): pending → sent → delivered за <strong>4–6 секунд</strong> при онлайн-телефоне. Если телефон оффлайн — sms-gate.app ставит сообщение в очередь и доставляет когда телефон вернётся (тестировано: 11 минут оффлайна — webhook'и пришли retry'ями сразу как телефон поднялся).</p>
+
+<h6 id="messaging-sms-webhook-hmac">HMAC-подпись</h6>
+<p>Sms-gate.app шлёт подпись по схеме (<a href="https://docs.sms-gate.app/integration/webhooks/" target="_blank" rel="noopener">официальная docs</a>):</p>
+<pre><code>X-Signature: hex(HMAC-SHA256(secret, body + X-Timestamp))
+X-Timestamp: 1715091045   # Unix epoch</code></pre>
+
+<p>Биллинг проверяет подпись через <code>billing/views/sms_webhook.py::_verify_signature</code> с поддержкой <strong>4 форматов</strong> (для совместимости):</p>
 <ol>
-  <li>При отправке SMS биллинг сохраняет в <code>MsgStack.sms_external_id</code> id сообщения, возвращённый шлюзом, и ставит <code>sms_status='pending'</code>.</li>
-  <li>Когда телефон отправил SMS оператору → sms-gate.app дёргает наш webhook с <code>event='sms:sent'</code> → <code>sms_status='sent'</code>.</li>
-  <li>Когда оператор подтверждает доставку → событие <code>sms:delivered</code> → <code>sms_status='delivered'</code>, <code>sms_status_date=now()</code>.</li>
-  <li>При ошибке (нет связи у телефона, неверный номер и т.п.) → <code>sms:failed</code> → <code>sms_status='failed'</code>, <code>sms_error</code> = код ошибки.</li>
+  <li><strong>HMAC(body+timestamp, secret) hex</strong> — официальный формат sms-gate.app</li>
+  <li>HMAC(body, secret) hex — legacy без timestamp</li>
+  <li>base64 любого из вышеперечисленных</li>
+  <li>С префиксом <code>sha256=</code> или <code>hmac-sha256=</code> (стандартные конвенции webhook)</li>
 </ol>
 
-<p><strong>Защита от подделки</strong>: webhook проверяет HMAC-SHA256 подпись из заголовка <code>X-Signature</code> по telu запроса с тем же secret'ом. Если <code>SMS_GATE_WEBHOOK_SECRET</code> в SystemSettings пустой — подпись не проверяется (для теста). В production обязательно задавайте secret.</p>
+<p>Constant-time сравнение для каждого кандидата. Если <code>SMS_GATE_WEBHOOK_SECRET</code> в SystemSettings <strong>пустой — подпись не проверяется</strong> (для теста / отладки). В production обязательно задавайте secret.</p>
 
-<p><strong>Защита от downgrade</strong>: статус не понижается. Если уже <code>delivered</code>, повторное событие <code>sms:sent</code> не сбросит обратно — учитывается только апгрейд по приоритету (<code>pending=0 &lt; sent=1 &lt; failed=2 &lt; delivered=3</code>).</p>
+<h6 id="messaging-sms-webhook-defenses">Защиты</h6>
+<dl>
+  <dt><strong>От подделки</strong></dt>
+  <dd>HMAC-SHA256 с секретом из <code>SystemSettings.SMS_GATE_WEBHOOK_SECRET</code>. Невалидная подпись → HTTP 401 + лог с диагностикой (sig, ts, body_len, headers).</dd>
 
-<p><strong>Защита от Denial-of-Service</strong>: endpoint работает без авторизации (по дизайну webhook'ов), но без подписи неавторизованный POST может только обновлять <code>sms_status</code> для существующих <code>sms_external_id</code> — записи не создаются, FK не нарушаются. Если беспокоит шум — поставьте секрет.</p>
+  <dt><strong>От downgrade статусов</strong></dt>
+  <dd>Если уже <code>delivered</code>, повторный event <code>sms:sent</code> не сбросит обратно. Приоритет: <code>pending=0 &lt; sent=1 &lt; failed=2 &lt; delivered=3</code>. Учитывается только апгрейд по rank.</dd>
 
-<p><strong>Endpoint</strong>: <code>POST /api/sms/webhook/sms-gate/</code> (публичный, CSRF-exempt). Принимает JSON формата:</p>
+  <dt><strong>От Denial-of-Service</strong></dt>
+  <dd>Endpoint работает без auth (стандарт webhook'ов), но без подписи или с невалидной — атакующий может только обновить <code>sms_status</code> для уже существующих <code>sms_external_id</code>. Записи не создаются, FK не нарушаются. Реальный риск — флуд логов, лечится rate-limit на nginx (опционально).</dd>
+
+  <dt><strong>От retry-flood</strong></dt>
+  <dd>Sms-gate.app шлёт webhook несколько раз для одного события (retry'ит при failure). Биллинг идемпотентен: повторный webhook на тот же messageId+status — no-op (запись уже обновлена с правильным rank).</dd>
+</dl>
+
+<h6 id="messaging-sms-webhook-endpoint">Endpoint</h6>
+<p><strong>URL</strong>: <code>POST /api/sms/webhook/sms-gate/</code> (публичный, CSRF-exempt).</p>
+
+<p><strong>Headers</strong> (от sms-gate.app):</p>
+<ul>
+  <li><code>Content-Type: application/json</code></li>
+  <li><code>X-Signature: &lt;hex&gt;</code> — HMAC-SHA256(body+timestamp)</li>
+  <li><code>X-Timestamp: 1715091045</code> — Unix epoch</li>
+</ul>
+
+<p><strong>Body</strong> (JSON):</p>
 <pre><code>{
-  "deviceId": "ggtli...",
+  "deviceId": "fIuD_aVrUyAIuN7DhxDw8",
   "event": "sms:delivered",
   "id": "&lt;webhook-event-id&gt;",
   "payload": {
-    "messageId": "&lt;id из ответа POST /messages&gt;",
+    "messageId": "8_EwH18QDve2RnA_Sx7ye",   // совпадает с MsgStack.sms_external_id
     "phoneNumber": "+79991234567",
-    "deliveredAt": "2026-05-07T12:34:56Z",
-    "errorCode": "..."  // только для failed
-  }
+    "deliveredAt": "2026-05-07T14:13:50.923+03:00",
+    "errorCode": "..."  // только для sms:failed
+  },
+  "webhookId": "..."
 }</code></pre>
 
-<p>Возвращает: <code>{"ok": true, "msg_id": 12345, "status": "delivered"}</code> при успехе, <code>{"ok": true, "matched": false}</code> если messageId не найден в БД (например, тест на несуществующем id), <code>{"ok": false, "error": "invalid_signature"}</code> при невалидной HMAC.</p>
+<p><strong>Responses</strong>:</p>
+<ul>
+  <li><code>200 {"ok": true, "msg_id": 20697, "status": "delivered"}</code> — успех, MsgStack обновлён</li>
+  <li><code>200 {"ok": true, "matched": false, "message_id": "..."}</code> — messageId не найден в БД (например, MsgStack удалена)</li>
+  <li><code>200 {"ok": true, "ignored": true}</code> — неизвестное event, не падаем</li>
+  <li><code>200 {"ok": true, "skipped": "downgrade"}</code> — попытка понизить статус (delivered → sent отвергнуто)</li>
+  <li><code>400 {"ok": false, "error": "bad_json"}</code> — невалидный JSON</li>
+  <li><code>400 {"ok": false, "error": "no_message_id"}</code> — нет <code>messageId</code> в payload</li>
+  <li><code>401 {"ok": false, "error": "invalid_signature"}</code> — HMAC не сходится (только если secret задан)</li>
+</ul>
+
+<h6 id="messaging-sms-webhook-ui">UI отображения статуса (build 518)</h6>
+<p>На карточке абонента → вкладка «Сообщения» (<a href="#abonent-card-tab-messages">8.16</a>) бейдж SMS теперь показывает реальный статус доставки:</p>
+
+<table>
+  <thead><tr><th>Бейдж</th><th>Иконка</th><th>Статус</th><th>Tooltip</th></tr></thead>
+  <tbody>
+    <tr><td><span class="badge bg-success"><i class="fas fa-check-double"></i> SMS</span></td><td><code>fa-check-double</code></td><td><strong>delivered</strong> ✅</td><td>«Доставлено в DD.MM HH:MM:SS»</td></tr>
+    <tr><td><span class="badge bg-info"><i class="fas fa-check"></i> SMS</span></td><td><code>fa-check</code></td><td><strong>sent</strong></td><td>«Отправлено оператору в DD.MM HH:MM:SS»</td></tr>
+    <tr><td><span class="badge bg-warning text-dark"><i class="fas fa-clock"></i> SMS</span></td><td><code>fa-clock</code></td><td><strong>pending</strong></td><td>«Ожидает доставки (id: внешний_id)»</td></tr>
+    <tr><td><span class="badge bg-danger"><i class="fas fa-times"></i> SMS</span></td><td><code>fa-times</code></td><td><strong>failed</strong> 🚫</td><td>«Ошибка доставки: текст ошибки»</td></tr>
+    <tr><td><span class="badge bg-secondary">SMS</span></td><td>—</td><td>legacy (без webhook)</td><td>«SMS отправлено (без webhook delivery-status)»</td></tr>
+  </tbody>
+</table>
+
+<p>JS-функция <code>_smsBadge(msg)</code> в <code>send_message_tab.html</code> строит бейдж динамически после AJAX-create. <code>MutationObserver</code> на <code>#msg-history-tbody</code> автоинициализирует Bootstrap-tooltips на новых строках. После отправки бейдж 🟡 <em>pending</em> → через несколько секунд webhook → 🔵 <em>sent</em> → 🟢 <em>delivered</em>. <strong>Авторефреша без F5 пока нет</strong> (планируется отдельным билдом — JS-poll на <code>/sms_status/&lt;msg_id&gt;/</code>).</p>
+
+<h6 id="messaging-sms-webhook-troubleshooting">Решение проблем</h6>
+<dl>
+  <dt><strong>SMS уходит, но в БД <code>sms_status='pending'</code> навсегда</strong></dt>
+  <dd>Webhook'и не зарегистрированы в sms-gate.app. Проверь <code>GET /3rdparty/v1/webhooks</code> с твоей auth — должно быть 3 записи (sent / delivered / failed).</dd>
+
+  <dt><strong>Webhook прилетает, но в логах <code>invalid HMAC signature</code></strong></dt>
+  <dd>Secret в биллинге и в webhook-регистрации не совпадают. Удали webhook и зарегистрируй заново с правильным secret. Или временно очисти secret в UI — webhook начнёт работать без проверки подписи (для теста).</dd>
+
+  <dt><strong>SMS отправляется, но в БД <code>sms_external_id=''</code></strong></dt>
+  <dd>Используется <em>тестовая отправка</em> из UI (кнопка «Отправить тест») — она шлёт напрямую через <code>_send_sms_tecno</code> без создания <code>MsgStack</code>. Это by design. Для реального теста с tracking — отправь сообщение через карточку абонента → вкладка «Сообщения».</dd>
+
+  <dt><strong>Webhook прилетает, но MsgStack не обновляется</strong> (<code>{"matched": false}</code>)</dt>
+  <dd>Не совпадает <code>messageId</code> ↔ <code>sms_external_id</code>. Проверь что биллинг сохраняет id из ответа sms-gate.app: <code>SELECT pk, sms_external_id FROM msg_stack WHERE sms_done=true ORDER BY id DESC LIMIT 5</code>.</dd>
+
+  <dt><strong>DNS-резолюция падает (<code>NameResolutionError 'api.sms-gate.app'</code>)</strong></dt>
+  <dd>Известная нестабильность Docker-DNS. В <code>docker-compose.prod.yml</code> блоки <code>web</code> и <code>celery</code> должны содержать <code>extra_hosts: - "api.sms-gate.app:94.241.170.26"</code>. После добавления — recreate контейнеров.</dd>
+</dl>
+
+<h6 id="messaging-sms-webhook-real">Подтверждено вживую</h6>
+<p>Build 518 (2026-05-07) на testbill, абонент Письменный Павел (#7686, +79177271796):</p>
+<pre><code>14:13:44  Биллинг → POST api.sms-gate.app/3rdparty/v1/messages
+          MsgStack #20697.sms_external_id = "8_EwH18QDve2RnA_Sx7ye"
+          MsgStack #20697.sms_status = 'pending'
+14:13:46  cloud → телефон ОНЛАЙН → отправка SMS
+14:13:48  оператор → +79177271796 (SMS доставлена)
+14:13:50  cloud → POST webhook event=sms:delivered → HMAC ✓
+          MsgStack #20697.sms_status = 'delivered'
+          MsgStack #20697.sms_status_date = 2026-05-07 14:13:50</code></pre>
+<p>Полная цепочка от отправки до подтверждения доставки в БД — <strong>6 секунд</strong>. UI обновляется при F5 страницы.</p>
 
 <h4>Вкладка «Telegram»</h4>
 <p>Отправка уведомлений абонентам через Telegram-бота. Условие — абонент должен
