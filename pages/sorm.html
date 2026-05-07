@@ -281,14 +281,14 @@
   <li><a href="#pending">Ожидающие интеграции</a></li>
   <li><a href="#setup">Настройка подключения</a>
     <ul>
-      <li><a href="#sorm-add-modal">Модальное окно «Добавить СОРМ» <span class="badge bg-success" style="font-size:.65rem">build 415-417</span></a></li>
+      <li><a href="#sorm-add-modal">Модальное окно «Добавить СОРМ»</a></li>
     </ul>
   </li>
   <li><a href="#reports">Отчёты и SQL</a></li>
   <li><a href="#schedule">Расписание автоматической выгрузки</a></li>
-  <li><a href="#manual-run">Управление отчётами (build 88+)</a></li>
-  <li><a href="#metadata">СОРМ-метаданные UserAttributes build 410-411</a></li>
-  <li><a href="#preflight">Pre-flight валидация перед выгрузкой build 410</a></li>
+  <li><a href="#manual-run">Управление отчётами</a></li>
+  <li><a href="#metadata">СОРМ-метаданные UserAttributes</a></li>
+  <li><a href="#preflight">Pre-flight валидация перед выгрузкой</a></li>
   <li><a href="#dedup">Дубликаты атрибутов и команда merge</a></li>
   <li><a href="#api">REST API проверки готовности</a></li>
   <li><a href="#children">Схемы настройки</a></li>
@@ -332,10 +332,19 @@
   <p><strong>СОРМ «Якорь»</strong> (компания НЕОС) — находится в процессе интеграции. Планируется поддержка стандартного протокола обмена данными. Для получения информации о статусе интеграции обращайтесь в техническую поддержку.</p>
 
   <h2 id="setup">Настройка подключения</h2>
+<div class="page-toc">
+<details open>
+  <summary><strong><i class="bi bi-book"></i> Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#sorm-add-modal">Модальное окно «Добавить настройку СОРМ»</a></li>
+  </ul>
+</details>
+</div>
+
 
   <p>Перейдите в раздел <strong>Оборудование → Настройки СОРМ</strong> (<code>/admin/equipment/sorm_list/</code>) и нажмите <strong>«+&nbsp;Добавить»</strong>. Откроется модальное окно с формой создания новой конфигурации — без перехода на отдельную страницу.</p>
 
-  <h3 id="sorm-add-modal">Модальное окно «Добавить настройку СОРМ» <span class="badge bg-success" style="font-size:.7rem">build 415-417</span></h3>
+  <h3 id="sorm-add-modal">Модальное окно «Добавить настройку СОРМ»</h3>
 
   <p>Форма разделена на 4 секции и содержит подсказки <em>(серая иконка <code>i</code> рядом с подписью каждого поля)</em> — наведите курсор для пояснения значения и формата.</p>
 
@@ -384,7 +393,7 @@
 
     <ul>
 
-      <li><a href="#standartnye-otchety-sorm-3-build-324">Стандартные отчёты СОРМ-3 (build 324)</a></li>
+      <li><a href="#standartnye-otchety-sorm-3-build-324">Стандартные отчёты СОРМ-3</a></li>
 
     </ul>
 
@@ -407,7 +416,7 @@
     SQL-запрос выполняется с правами приложения. Допускаются только SELECT-запросы к таблицам биллинга. Можно использовать JOIN, подзапросы и функции PostgreSQL.
   </div>
 
-  <h3 id="standartnye-otchety-sorm-3-build-324">Стандартные отчёты СОРМ-3 (build 324)</h3>
+  <h3 id="standartnye-otchety-sorm-3-build-324">Стандартные отчёты СОРМ-3</h3>
   <p>При нажатии кнопки <strong>«Первоначальная настройка отчётов»</strong> создаются 13 стандартных отчётов в формате, совместимом с Carbon 4:</p>
   <table class="data-table">
     <thead><tr><th>Префикс файла</th><th>Описание</th><th>Формат</th></tr></thead>
@@ -454,7 +463,27 @@
   <p>Каждый отчёт выполняется как отдельная Celery-задача <code>billing.tasks.sorm_export.export_sorm_report</code>. При ошибке задача повторяется до 2 раз с интервалом 60 секунд.</p>
 
 
-  <h2 id="sorm-admin">Админка: выгрузка на сервера РКН <span class="badge bg-info" style="font-size:.7rem">build 88+</span></h2>
+  <h2 id="sorm-admin">Админка: выгрузка на сервера РКН</h2>
+<div class="page-toc">
+<details open>
+  <summary><strong><i class="bi bi-book"></i> Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#sorm-list">Список конфигураций</a></li>
+    <li><a href="#sorm-readiness">Проверка готовности данных</a></li>
+    <li><a href="#sorm-basic">Основные настройки</a></li>
+    <li><a href="#sorm-ftp">Подключение к FTP-серверу РКН</a></li>
+    <li><a href="#sorm-telegram">Уведомления в Telegram</a></li>
+    <li><a href="#sorm-reports">Список отчётов</a></li>
+    <li><a href="#sorm-run-now">Ручной запуск выгрузки</a></li>
+    <li><a href="#sorm-history">История выгрузок</a></li>
+    <li><a href="#sorm-schedule">Автоматическое расписание</a></li>
+    <li><a href="#sorm-data-model">Структуры данных</a></li>
+    <li><a href="#sorm-endpoints">URL-эндпоинты</a></li>
+    <li><a href="#sorm-cli">Команды управления</a></li>
+  </ul>
+</details>
+</div>
+
   
   <p>Раздел: <strong>Оборудование → Настройки СОРМ</strong> (URL
   <a href="/admin/equipment/sorm_list/">/admin/equipment/sorm_list/</a>).</p>
@@ -729,7 +758,7 @@
   </ul>
 
 
-  <h2 id="manual-run">Управление отчётами (build 88+)</h2>
+  <h2 id="manual-run">Управление отчётами</h2>
 
 
   <div class="section-toc">
@@ -744,7 +773,7 @@
 
       <li><a href="#upravlenie-metadannymi-v-ui">Управление метаданными в UI</a></li>
 
-      <li><a href="#tekuschaya-karta-metadannyh-build-411">Текущая карта метаданных (build 411)</a></li>
+      <li><a href="#tekuschaya-karta-metadannyh-build-411">Текущая карта метаданных</a></li>
 
       <li><a href="#pre-flight-v-celery-zadache-vygruzki">Pre-flight в Celery-задаче выгрузки</a></li>
 
@@ -775,13 +804,13 @@
     Если FTP-хост не задан, при выборе «FTP» будет выведено сообщение об ошибке. Убедитесь что параметры FTP заполнены в настройках СОРМ-записи.
   </div>
 
-  <h2 id="metadata">СОРМ-метаданные UserAttributes <span class="badge bg-success" style="font-size:.75rem">build 410-411</span></h2>
+  <h2 id="metadata">СОРМ-метаданные UserAttributes</h2>
   <div class="section-toc">
   <details open>
     <summary><strong>Содержание раздела</strong></summary>
     <ul>
     <li><a href="#upravlenie-metadannymi-v-ui">Управление метаданными в UI</a></li>
-    <li><a href="#tekuschaya-karta-metadannyh-build-411">Текущая карта метаданных (build 411)</a></li>
+    <li><a href="#tekuschaya-karta-metadannyh-build-411">Текущая карта метаданных</a></li>
     </ul>
   </details>
   </div>
@@ -792,7 +821,7 @@
   <table>
     <thead><tr><th>Поле</th><th>Тип</th><th>Назначение</th></tr></thead>
     <tbody>
-      <tr><td><code>is_sorm</code></td><td>BOOLEAN</td><td>Атрибут участвует в СОРМ-отчётности (build 407)</td></tr>
+      <tr><td><code>is_sorm</code></td><td>BOOLEAN</td><td>Атрибут участвует в СОРМ-отчётности</td></tr>
       <tr><td><code>sorm_field_code</code></td><td>VARCHAR(64)</td><td>Техническое имя колонки в SQL/CSV: <code>inn</code>, <code>kpp</code>, <code>legal_address</code>, <code>director</code>, <code>passport_issued_by</code>...</td></tr>
       <tr><td><code>sorm_report_types</code></td><td>VARCHAR(255)</td><td>CSV-список типов отчётов: <code>ABONENT,ABONENT_LEGAL,ABONENT_IDENT,ABONENT_USER,ABONENT_ADDR</code></td></tr>
       <tr><td><code>sorm_required</code></td><td>BOOLEAN</td><td>Обязательное поле — pre-flight предупредит о пропусках значений</td></tr>
@@ -825,7 +854,7 @@
     <li>Серая точка — обычный (не СОРМ) атрибут.</li>
   </ul>
 
-  <h3 id="tekuschaya-karta-metadannyh-build-411">Текущая карта метаданных (build 411)</h3>
+  <h3 id="tekuschaya-karta-metadannyh-build-411">Текущая карта метаданных</h3>
 
   <p>Миграции <code>0097_user_attributes_sorm_meta</code> и <code>0098_sorm_meta_extra_legacy</code> заполняют метаданные для 23 атрибутов из коробки:</p>
 
@@ -846,9 +875,9 @@
       <tr><td><code>director</code></td><td>Директор</td><td>ABONENT_LEGAL</td><td>да</td><td>—</td></tr>
       <tr><td><code>passport_series_number</code></td><td>Паспорт серия-номер</td><td>ABONENT, ABONENT_IDENT</td><td>да</td><td>—</td></tr>
       <tr><td><code>passport_issue_date</code></td><td>Паспорт дата выдачи</td><td>ABONENT_IDENT</td><td>—</td><td>—</td></tr>
-      <tr><td><code>passport_issued_by</code></td><td>Паспорт кем выдан <span class="badge bg-info" style="font-size:.7rem">build 411</span></td><td>ABONENT_IDENT</td><td>—</td><td>—</td></tr>
+      <tr><td><code>passport_issued_by</code></td><td>Паспорт кем выдан</td><td>ABONENT_IDENT</td><td>—</td><td>—</td></tr>
       <tr><td><code>passport_issued_by_date</code></td><td>Когда выдан</td><td>ABONENT_IDENT</td><td>—</td><td>—</td></tr>
-      <tr><td><code>passport_registration</code></td><td>Паспорт регистрация <span class="badge bg-info" style="font-size:.7rem">build 411</span></td><td>ABONENT_IDENT, ABONENT_USER</td><td>—</td><td>—</td></tr>
+      <tr><td><code>passport_registration</code></td><td>Паспорт регистрация</td><td>ABONENT_IDENT, ABONENT_USER</td><td>—</td><td>—</td></tr>
       <tr><td><code>reg_address</code></td><td>Адрес регистрации</td><td>ABONENT, ABONENT_USER</td><td>—</td><td>—</td></tr>
       <tr><td><code>birth_date</code></td><td>Дата рождения</td><td>ABONENT, ABONENT_IDENT</td><td>да</td><td>—</td></tr>
       <tr><td><code>birth_place</code></td><td>Место рождения</td><td>ABONENT_IDENT</td><td>—</td><td>—</td></tr>
@@ -862,14 +891,14 @@
     <strong>Legacy-поля:</strong> миграция 0098 пометила 5 устаревших атрибутов (id 13-17 на testbill — «Паспорт №», «Паспорт серия», «Паспорт регистрация», «Паспорт кем выдан», «Паспорт когда выдан») для совместимости. Главное — поле «Паспорт кем выдан» (3417 заполненных значений на проде), его отсутствие означало бы потерю данных для РКН.
   </div>
 
-  <h2 id="preflight">Pre-flight валидация перед выгрузкой <span class="badge bg-success" style="font-size:.75rem">build 410</span></h2>
+  <h2 id="preflight">Pre-flight валидация перед выгрузкой</h2>
   <div class="section-toc">
   <details open>
     <summary><strong>Содержание раздела</strong></summary>
     <ul>
     <li><a href="#problemy-metadannyh-meta-issues">Проблемы метаданных (meta_issues)</a></li>
     <li><a href="#propuski-obyazatelnyh-poley-data-issues">Пропуски обязательных полей (data_issues)</a></li>
-    <li><a href="#beydzh-gotovnosti-na-stranitse-build-412">Бейдж готовности на странице build 412</a></li>
+    <li><a href="#beydzh-gotovnosti-na-stranitse-build-412">Бейдж готовности на странице</a></li>
     <li><a href="#pre-flight-v-celery-zadache-vygruzki">Pre-flight в Celery-задаче выгрузки</a></li>
     </ul>
   </details>
@@ -889,7 +918,7 @@
 
   <p>Для каждого <code>sorm_required=True</code> атрибута проверяется сколько активных абонентов <strong>без</strong> заполненного значения. Юр-поля (<code>ABONENT_LEGAL</code>) проверяются только у юр.лиц (<code>company=True</code>); физ-поля (<code>passport_series_number</code>, <code>birth_date</code>) — только у физических лиц.</p>
 
-  <p>Пример вывода на проде testbill (build 411):</p>
+  <p>Пример вывода на проде testbill:</p>
 
   <table>
     <thead><tr><th>report_type</th><th>field_code</th><th>attribute_name</th><th>missing</th></tr></thead>
@@ -905,7 +934,7 @@
     Pre-flight <strong>не блокирует выгрузку</strong> — это информационный сигнал. Оператор сам решает: дозаполнить пропуски в карточках абонентов или запустить выгрузку как есть. РКН может вернуть файл с замечанием, поэтому удобнее закрыть критичные пробелы заранее.
   </div>
 
-  <h3 id="beydzh-gotovnosti-na-stranitse-build-412">Бейдж готовности на странице <span class="badge bg-success" style="font-size:.7rem">build 412</span></h3>
+  <h3 id="beydzh-gotovnosti-na-stranitse-build-412">Бейдж готовности на странице</h3>
 
   <p>В верхней панели страницы <code>/admin/equipment/sorm_list/</code> появился сводный бейдж готовности — показывает результат последней проверки и время:</p>
 
@@ -942,7 +971,7 @@ python manage.py merge_sorm_attribute_dups --field-code director --apply
 # Группировка по name (для legacy без field_code):
 python manage.py merge_sorm_attribute_dups --by-name --apply</code></pre>
 
-  <p>Пример вывода (testbill, build 411):</p>
+  <p>Пример вывода (testbill):</p>
 
   <pre><code>Найдено 1 групп дубликатов:
 

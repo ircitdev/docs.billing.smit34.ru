@@ -286,7 +286,7 @@
   <li><a href="#payments-api">Платёжные API (ЮKassa и Wallet One)</a></li>
   <li><a href="#soap">SOAP API</a></li>
   <li><a href="#web-api">Web API (управление абонентами)</a></li>
-  <li><a href="#sorm-api">СОРМ API build 410-411</a></li>
+  <li><a href="#sorm-api">СОРМ API</a></li>
   <li><a href="#ajax">AJAX-эндпоинты</a></li>
   <li><a href="#mobile-api">Mobile API</a></li>
   <li><a href="#errors">Коды ошибок</a></li>
@@ -999,7 +999,7 @@ curl -s -b cookies.txt -X POST \
   -H "Referer: https://billing.example.com/admin/Abonents/5552/"</code></pre>
 
   <!-- ============================================ -->
-  <h2 id="sorm-api">СОРМ API <span class="badge bg-success" style="font-size:.7rem">build 410-411</span></h2>
+  <h2 id="sorm-api">СОРМ API</h2>
   <p>Endpoint'ы для интеграции внешних систем (мониторинг, скрипты pre-deploy) с механизмом проверки готовности СОРМ-данных. Полное описание раздела — на странице <a href="sorm.html#metadata">Интеграция с СОРМ3 → СОРМ-метаданные</a>.</p>
   <div class="section-toc">
   <details open>
@@ -1177,7 +1177,7 @@ codes = SormReportBuilder('ABONENT_LEGAL').get_field_codes()
 
 # Список поддерживаемых типов отчётов
 SormReportBuilder.supported_report_types()
-# ['ABONENT_LEGAL']  # на build 411 только этот тип имеет builder-шаблон
+# ['ABONENT_LEGAL']  # на только этот тип имеет builder-шаблон
 
 # Валидация метаданных (без обращения к БД абонентов)
 issues = SormReportBuilder.validate_meta()
@@ -1265,7 +1265,7 @@ curl -s -b cookies.txt "https://billing.example.com/admin/ajax/ippull_get/1/"</c
   </div>
 
   <div class="info-box" style="border-left:4px solid #43b77a; background:rgba(67,183,122,.06)">
-    <strong><i class="ti ti-device-mobile"></i> Public Mobile API (build 468+) — без авторизации</strong><br>
+    <strong><i class="ti ti-device-mobile"></i> Public Mobile API — без авторизации</strong><br>
     Помимо защищённых endpoints ниже, есть <strong>3 публичных</strong> для конфига приложения при старте:
     <code>GET /mobile-api/v1/branding</code>,
     <code>GET /mobile-api/v1/features</code>,

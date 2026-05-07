@@ -274,7 +274,7 @@
     <summary><strong>Содержание раздела</strong></summary>
     <ul>
     <li><a href="#lk-overview">Обзор и возможности</a></li>
-    <li><a href="#lk-admin-settings">Раздел «ЛК и мобильные» в админке (build 468+)</a>
+    <li><a href="#lk-admin-settings">Раздел «ЛК и мобильные» в админке</a>
       <ul>
         <li><a href="#lk-admin-branding">Брендинг</a></li>
         <li><a href="#lk-admin-features">Функции (feature flags)</a></li>
@@ -342,7 +342,7 @@
     <li>История RADIUS-сессий с детализацией трафика и активных соединений</li>
   </ul>
 
-  <h3 id="lk-admin-settings">Раздел «ЛК и мобильные» в админке (build 468+)</h3>
+  <h3 id="lk-admin-settings">Раздел «ЛК и мобильные» в админке</h3>
   <p>Все user-facing настройки ЛК и мобильных приложений собраны на одной странице:
     <a href="#" class="text-decoration-none"><code>/admin/settings/lk/</code></a>
     с 5 вкладками. Это позволяет оператору
@@ -357,7 +357,7 @@
     <thead><tr><th>Вкладка</th><th>URL</th><th>Что настраивается</th></tr></thead>
     <tbody>
       <tr><td><strong>Обзор</strong></td><td><code>/admin/settings/lk/overview/</code></td>
-        <td>4 KPI-cards (push-токенов / Telegram / VK / активных сессий) + сводка брендинга и мобильных версий + <strong>таблица последних 10 входов в ЛК</strong> (login/IP/канал/метод) + <strong>круговая диаграмма каналов входа за 30 дней</strong> (build 474)</td></tr>
+        <td>4 KPI-cards (push-токенов / Telegram / VK / активных сессий) + сводка брендинга и мобильных версий + <strong>таблица последних 10 входов в ЛК</strong> (login/IP/канал/метод) + <strong>круговая диаграмма каналов входа за 30 дней</strong></td></tr>
       <tr><td><strong>Брендинг</strong></td><td><code>/admin/settings/lk/branding/</code></td>
         <td>9 LK-overrides поверх <a href="#branding">CompanyBranding</a>: brand_short, контакты поддержки, соцсети VK/MAX, color-override</td></tr>
       <tr><td><strong>Функции</strong></td><td><code>/admin/settings/lk/features/</code></td>
@@ -374,7 +374,7 @@
     Все изменения пишутся в <code>AuditOperations</code> через <code>write_audit(table_name='LK_SETTINGS')</code>.
     После сохранения 60-секундный кеш <code>lk_brand</code> context_processor инвалидируется автоматически.</p>
 
-  <h4 id="lk-admin-overview-logins">Последние входы и каналы (build 474)</h4>
+  <h4 id="lk-admin-overview-logins">Последние входы и каналы</h4>
   <p>На вкладке «Обзор» добавлены два аналитических блока:</p>
   <ul>
     <li><strong>Последние 10 входов в ЛК</strong> — таблица с колонками: время / логин / IP / канал
@@ -414,12 +414,12 @@
       (<strong>только VK и MAX мессенджер</strong> — российские сервисы)</li>
     <li><code>LK_USE_BRAND_COLORS</code> (toggle) — если выключено, использовать
       <code>LK_PRIMARY_COLOR</code> (color picker) вместо <code>CompanyBranding.accent_color</code></li>
-    <li><strong>Способы входа (build 473):</strong>
+    <li><strong>Способы входа:</strong>
       <code>LK_AUTH_VK_ENABLED</code> и <code>LK_AUTH_TELEGRAM_ENABLED</code> — toggle для
       кнопок «Войти через VK» / Telegram-widget на странице логина. Если выключены —
       кнопки скрываются, а прямой переход на <code>/lk/auth/vk/</code> и Telegram-callback
       возвращают «временно отключено».</li>
-    <li><strong>Фон страницы логина (build 473):</strong>
+    <li><strong>Фон страницы логина:</strong>
       <code>LK_LOGIN_BG_DESKTOP</code> (1920×1080) и <code>LK_LOGIN_BG_MOBILE</code> (1080×1920) —
       URL фоновых изображений. На экранах ≤768px используется mobile-вариант, если задан
       (иначе — desktop). Поверх фона накладывается полупрозрачный белый/тёмный градиент
@@ -450,7 +450,7 @@
     <code>{% if lk_features.X %}…{% endif %}</code>. Mobile API возвращает флаги в
     <a href="#mobile-api-public"><code>GET /mobile-api/v1/features</code></a>.</p>
 
-  <p><strong>«Только Mobile» бейдж (build 473)</strong>: 4 флага
+  <p><strong>«Только Mobile» бейдж</strong>: 4 флага
     (<code>LK_FEATURE_IPTV</code>, <code>LK_FEATURE_PAPER_INVOICE</code>,
     <code>LK_FEATURE_IPV6</code>, <code>LK_FEATURE_BALANCE_HISTORY_CHART</code>) в текущей
     версии веб-ЛК <em>не имеют читателей</em> в <code>lk/templates/lk/base.html</code> — они
@@ -459,7 +459,7 @@
     веб-кабинете. Если потребуется — добавить
     <code>{% if lk_features.iptv %}…{% endif %}</code> блоки в шаблоны ЛК.</p>
 
-  <p><strong>Promise Pay management (build 473)</strong> — 5 числовых ключей в Features tab,
+  <p><strong>Promise Pay management</strong> — 5 числовых ключей в Features tab,
     реализуют политики доступности обещанного платежа в
     <code>lk/views/promise_pay.py::_check_promise_pay_eligibility()</code>:</p>
   <ul>
@@ -482,7 +482,7 @@
     reuse того же хелпера — реакция API: HTTP 400 с
     <code>{"detail": "...", "eligibility_error": "..."}</code>.</p>
 
-  <p><strong>Phantom-cleanup (build 473)</strong>: из Security tab удалены 10 ключей которые
+  <p><strong>Phantom-cleanup</strong>: из Security tab удалены 10 ключей которые
     раньше отображались как настройки, но не имели читателя в коде:
     <code>LK_AUTH_METHOD</code>, <code>LK_AUTH_OTP_LENGTH/_TTL_SECONDS</code>,
     <code>LK_LOGIN_CAPTCHA_AFTER</code>, <code>LK_PASSWORD_HISTORY_CHECK</code>,
@@ -491,7 +491,7 @@
     UI создавал ощущение что они работают, на деле — нет. Будут добавлены обратно
     вместе с реальной реализацией.</p>
 
-  <p><strong>Push-настройки (build 473)</strong> — теперь подключены в
+  <p><strong>Push-настройки</strong> — теперь подключены в
     <code>billing/tasks/push_notifications.py</code>:</p>
   <ul>
     <li><code>MOBILE_PUSH_LOW_BALANCE_THRESHOLD</code> — порог в рублях для
@@ -510,10 +510,10 @@
     <code>respect_quiet=False</code> и пройти через quiet-hours.
     <code>send_push_to_abonent(force=True)</code> игнорирует и quiet-hours, и daily-limit.</p>
 
-  <h4 id="lk-admin-sprint-b">Sprint B — реализация legacy LK-флагов (build 476)</h4>
-  <p>В build 472 12 LK-настроек были мигрированы из <code>VpnConst</code> в <code>SystemSettings</code>,
+  <h4 id="lk-admin-sprint-b">Sprint B — реализация legacy LK-флагов</h4>
+  <p>В 12 LK-настроек были мигрированы из <code>VpnConst</code> в <code>SystemSettings</code>,
     но в коде ЛК ещё не подключены — на UI они отображались с warning-бейджем «будет реализовано».
-    В build 476 все они подключены и переведены в статус «работает».</p>
+    В все они подключены и переведены в статус «работает».</p>
 
   <table>
     <thead><tr><th>Флаг</th><th>Где реализовано</th></tr></thead>
@@ -564,7 +564,7 @@
     операции. Excludes услуг с <code>system_type=11</code> (это обещанный платёж — управляется
     отдельно).</p>
 
-  <p><strong>Legacy LK-настройки (мигрированы build 472, реализованы build 476)</strong> —
+  <p><strong>Legacy LK-настройки (мигрированы, реализованы)</strong> —
     9 toggle, отображаются ниже основных feature-toggle во вкладке «Функции»:</p>
   <ul>
     <li><strong>Видимость разделов в ЛК</strong>: <code>LK_SHOW_SERVICES</code>,
@@ -598,13 +598,12 @@
     <li><strong>2FA + audit</strong>: <code>LK_TOTP_REQUIRED_FOR_PAYMENT_ABOVE</code> (порог в ₽),
       <code>LK_AUDIT_LOGIN_FAILURES</code>, <code>LK_AUDIT_PASSWORD_CHANGES</code></li>
   </ul>
-  <p><strong>Lockout фактически работает</strong> в <code>lk/views/auth.py::login_view</code>
-    (build 469): per-login + per-IP keying в Redis-cache, окно отслеживания =
+  <p><strong>Lockout фактически работает</strong> в <code>lk/views/auth.py::login_view</code>: per-login + per-IP keying в Redis-cache, окно отслеживания =
     lockout_minutes × 2. После исчерпания попыток — все логины с этого IP+login получают
     «Слишком много неудачных попыток. Попробуйте через N мин», audit-запись
     <code>LK_LOGIN_LOCKOUT</code>.</p>
 
-  <p><strong>Legacy LK-настройки безопасности (build 472)</strong> — 3 дополнительных
+  <p><strong>Legacy LK-настройки безопасности</strong> — 3 дополнительных
     переключателя, мигрированы из старого раздела «Настройки системы»:</p>
   <ul>
     <li><code>LK_REQUIRE_SAME_IP</code> — после входа доступ в ЛК разрешён только с того же
@@ -912,7 +911,7 @@ https://billing.example.com/lk/payments/webhook/</code></pre>
     </tbody>
   </table>
 
-  <h4 id="mobile-api-public">Public Mobile API (build 468+)</h4>
+  <h4 id="mobile-api-public">Public Mobile API</h4>
   <p>Три новых публичных эндпоинта <strong>без auth</strong> для конфига приложения при старте.
     Кэшируются на стороне клиента 5 мин (Cache-Control header).</p>
   <table>
@@ -1155,9 +1154,9 @@ Content-Type: application/json
   <h4>Логирование</h4>
   <p>Модуль <code>billing/services/claude_logger.py</code> записывает диалоги в FreeScout (отдельная база MySQL на сервере поддержки). Если сервер FreeScout недоступен — логирование пропускается без ошибки.</p>
 
-  <!-- ===== 6.13 Раздел «Интеграции» (build 466) ===== -->
+  <!-- ===== 6.13 Раздел «Интеграции» ===== -->
   <h3 id="integrations">Раздел «Интеграции» — единый центр</h3>
-  <p>Страница <code>/admin/settings/integrations/</code> — единая точка управления всеми внешними сервисами биллинга. После реструктуризации build 465-466 — <strong>7 разделов вместо 11</strong>: связанные интеграции объединены в группы со sub-tabs и общими info-карточками.</p>
+  <p>Страница <code>/admin/settings/integrations/</code> — единая точка управления всеми внешними сервисами биллинга. После реструктуризации — <strong>7 разделов вместо 11</strong>: связанные интеграции объединены в группы со sub-tabs и общими info-карточками.</p>
 
   <h4 id="integrations-overview">Вкладка «Обзор»</h4>
   <p>Сводная таблица всех интеграций со статусами, KPI-карточками и кнопками <strong>«Проверить все»</strong> / <strong>«Остановить»</strong> / <strong>«Обновить статусы»</strong>. Last-test, ссылки на документацию и шестерёнки для перехода в нужный раздел.</p>
@@ -1257,6 +1256,19 @@ Content-Type: application/json
   </table>
 
   <h2 id="lk-design-system-489">Дизайн-система ЛК v489 — выравнивание со стилем админки</h2>
+<div class="page-toc">
+<details open>
+  <summary><strong><i class="bi bi-book"></i> Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#lk-design-tokens-489">Токены дизайн-системы</a></li>
+    <li><a href="#lk-hero-cards-489">Hero-карточки на всех ключевых страницах</a></li>
+    <li><a href="#lk-mobile-489">Мобильная версия</a></li>
+    <li><a href="#lk-screenshots-489">Скриншоты</a></li>
+    <li><a href="#lk-build-history-489">История доработок ЛК (builds 484-489)</a></li>
+  </ul>
+</details>
+</div>
+
 
   <p>Build 489 переводит весь Личный Кабинет на единую дизайн-систему с админкой биллинга. До этого ЛК использовал собственный teal-брендинг <code>#5BA89D</code> и отдельный набор CSS-переменных (<code>--lk-*</code>) — это создавало визуальный разрыв при переключении между ЛК и админкой.</p>
 
@@ -1313,7 +1325,7 @@ Content-Type: application/json
     <li>Actions row-flex с <code>min-height 44px</code> на каждой кнопке</li>
   </ul>
 
-  <h3 id="lk-screenshots-489">Скриншоты build 489</h3>
+  <h3 id="lk-screenshots-489">Скриншоты</h3>
 
   <p>12 скриншотов (6 страниц × desktop+mobile) сохранены в <code>docs/img/v489_lk/</code>:</p>
 
