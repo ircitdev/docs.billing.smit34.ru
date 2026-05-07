@@ -1466,19 +1466,137 @@ Update / Delete для каждой модели (Tarif, Usluga, Abonents, NAS, 
 копию на новом сервере.</p>
 
 <h3 id="db-cleanup">5.12. Очистка БД и сессий</h3>
-<p>Раздел в группе «Обслуживание». Автоматическое обслуживание базы данных:</p>
+<p>URL: <a href="https://testbill.smit34.ru/admin/settings/db_cleanup/">/admin/settings/db_cleanup/</a> (раздел «Обслуживание», только root-доступ).</p>
+<p>Раздел централизованного автоматического обслуживания БД и борьбы с «зомби»-сессиями RADIUS. Состоит из 5 блоков (сверху вниз): <a href="#db-cleanup-state">Состояние БД</a>, <a href="#db-cleanup-auto">Автоочистка</a>, <a href="#db-cleanup-history">История запусков</a>, <a href="#db-cleanup-session-audit">Аудит зомби-сессий</a>, <a href="#db-cleanup-nas-list">Выбор NAS для аудита</a>.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_db_cleanup.png" alt="Очистка БД и сессий"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/db_cleanup_v512/v512_db_cleanup_top.png" alt="Очистка БД — общий вид и состояние"></p>
 
+<h4 id="db-cleanup-state">Состояние БД сейчас</h4>
+<p>Верхний блок — реальный счётчик записей в 4 ключевых таблицах (обновляется AJAX):</p>
 <ul>
-  <li><strong>Очистка устаревших данных</strong> — записи аудита, MsgStack, RADIUS-сессии
-  старше указанного срока. Период хранения настраивается отдельно для каждой таблицы.</li>
-  <li><strong>Аудит зомби-сессий</strong> — поиск «застрявших» сессий, когда NAS не прислал
-  Accounting-Stop. Запускается раз в час, проверяет сессии каждого NAS батчами по 50.
-  Если сессия мертва — закрывается, через 5 минут идёт повторная проверка
-  и при необходимости отправляется Telegram-алерт.</li>
-  <li><strong>История запусков</strong> — таблица со статусами и метриками каждого запуска.</li>
+  <li><strong><code>MSG_STACK</code></strong> — журнал отправленных сообщений (Email/SMS/Push/Telegram). На testbill ~100K записей при ежедневной нагрузке 500–2000.</li>
+  <li><strong><code>AUDIT_OPERATIONS</code></strong> — аудит действий (создание/правка/удаление). На testbill ~600K записей за всё время.</li>
+  <li><strong><code>RADIUS_SESSIONS</code></strong> — история RADIUS-сессий (включая закрытые). На testbill ~5–7M записей при 1000+ онлайн-абонентах.</li>
+  <li><strong><code>NAS_EVENTS</code></strong> — события NAS (UP/DOWN, аларм). Маленькая таблица, чистится редко.</li>
 </ul>
+<p>Каждая ячейка показывает <em>размер</em> (Кб/Мб/Гб) + <em>количество записей</em>. Если рядом с цифрой растёт ⚠ — таблица превышает порог опасного роста и требует внимания.</p>
+
+<h4 id="db-cleanup-auto">Автоочистка БД</h4>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/db_cleanup_v512/v512_db_cleanup_settings.png" alt="Настройки автоочистки и аудита"></p>
+
+<p><strong>Параметры retention</strong> (период хранения, после которого записи удаляются):</p>
+<table>
+  <thead>
+    <tr><th>Параметр</th><th>SystemSettings ключ</th><th>Default</th><th>Что удаляется</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Сообщения</td><td><code>DB_CLEANUP_MSG_DAYS</code></td><td>30 дней</td><td><code>MsgStack</code> где <code>send_date &lt; now − N</code></td></tr>
+    <tr><td>Аудит</td><td><code>DB_CLEANUP_AUDIT_DAYS</code></td><td>365 дней</td><td><code>AuditOperations</code> где <code>op_time &lt; now − N</code></td></tr>
+    <tr><td>RADIUS-сессии</td><td><code>DB_CLEANUP_SESSIONS_DAYS</code></td><td>90 дней</td><td><code>RadiusSessions</code> где <code>END_TIME IS NOT NULL AND END_TIME &lt; now − N</code> (только закрытые!)</td></tr>
+    <tr><td>NAS-события</td><td><code>DB_CLEANUP_EVENTS_DAYS</code></td><td>30 дней</td><td><code>NasStatusLog</code> где <code>event_time &lt; now − N</code></td></tr>
+    <tr><td>Размер батча</td><td><code>DB_CLEANUP_BATCH_SIZE</code></td><td>5000</td><td>Сколько строк удалять за один <code>DELETE</code> (чтобы не лочить таблицу надолго)</td></tr>
+    <tr><td>Включена</td><td><code>DB_CLEANUP_ENABLED</code></td><td>1</td><td>Тогл всей автоочистки</td></tr>
+  </tbody>
+</table>
+
+<p><strong>Расписание</strong>: Celery beat-задача <code>db-cleanup-daily</code> запускается ежедневно в <strong>03:30</strong> по серверному времени. Время фиксированное, для теста есть кнопка <em>«Запустить чистку сейчас»</em>.</p>
+
+<p><strong>Что делает задача</strong> (build 453, <code>billing/tasks/db_cleanup.py::run_db_cleanup</code>):</p>
+<ol>
+  <li>Создаёт запись в <code>DbCleanupRun</code> с <code>status='running'</code>.</li>
+  <li>Для каждой из 4 таблиц считает порог <code>cutoff = now - timedelta(days=N)</code>.</li>
+  <li>В цикле: <code>DELETE ... LIMIT batch_size</code> пока есть записи. Между батчами 100мс паузы — снижает нагрузку.</li>
+  <li>Записывает в результат: <code>msg_deleted</code>, <code>audit_deleted</code>, <code>sessions_deleted</code>, <code>events_deleted</code>, <code>execution_time</code>.</li>
+  <li>Обновляет <code>DbCleanupRun.status='ok'</code> + <code>finished_at</code>. При ошибке — <code>status='failed'</code> + <code>error</code>.</li>
+  <li>Если за прогон удалено &gt; 100K записей — отправляет Telegram-уведомление.</li>
+</ol>
+
+<p><strong>Кнопки управления</strong>:</p>
+<ul>
+  <li><em>«Применить»</em> — сохранить изменённые retention-параметры в SystemSettings (без перезапуска чистки).</li>
+  <li><em>«Запустить чистку сейчас»</em> — синхронный запуск task'а через Celery <code>.delay()</code>. UI показывает spinner, через ~30 сек обновляет «Историю запусков».</li>
+  <li>Тогл <em>«Включено»</em> — глобально отключить автоочистку (полезно при миграциях/бэкапах).</li>
+</ul>
+
+<h4 id="db-cleanup-history">История запусков</h4>
+<p>Таблица последних 50 запусков из <code>DbCleanupRun</code>:</p>
+<ul>
+  <li><strong>Время старта</strong> и <strong>длительность</strong> в секундах.</li>
+  <li><strong>Статус</strong>: 🟢 ok / 🔴 failed / 🟡 running.</li>
+  <li><strong>Удалено</strong>: разбивка по 4 таблицам (Msg / Audit / RadSes / Events).</li>
+  <li><strong>Запустил</strong>: <code>scheduled</code> для beat-task или username при ручном запуске.</li>
+  <li><strong>Ошибка</strong>: tooltip с traceback при <code>status='failed'</code>.</li>
+</ul>
+
+<h4 id="db-cleanup-session-audit">Аудит зомби-сессий на NAS</h4>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/db_cleanup_v512/v512_db_cleanup_session_audit.png" alt="Аудит зомби-сессий"></p>
+
+<p><strong>Зомби-сессия</strong> — это запись в <code>RADIUS_SESSIONS</code> с <code>END_TIME IS NULL</code> (то есть «сессия активна»), но при этом NAS не подтверждает её существование. Возникает когда:</p>
+<ul>
+  <li>NAS перезагрузился / упал и не прислал Accounting-Stop для последних сессий.</li>
+  <li>Сетевой обрыв между NAS и FreeRADIUS — Accounting-Stop потерян.</li>
+  <li>Bug в прошивке NAS (типичный пример — MikroTik с переполнением счётчика, см. <a href="#nas-zombie-logged-fix-445">build 445</a>).</li>
+</ul>
+<p>Зомби-сессии искажают виджет «Онлайн сейчас» на дашборде (показывает большее число, чем реально), мешают корректному выбору IP из пула при переавторизации, и забивают `RADIUS_SESSIONS` лишними «открытыми» строками.</p>
+
+<p><strong>Beat-задача</strong> <code>session-audit-hourly</code> (build 453, <code>billing/tasks/session_audit.py</code>):</p>
+<ol>
+  <li>Запускается <strong>раз в час</strong> (default; настраивается через <code>SESSION_AUDIT_INTERVAL_MINUTES</code>).</li>
+  <li>Берёт ровно <strong>4 NAS</strong> (default <code>SESSION_AUDIT_NAS_PER_RUN=4</code>) — те, у которых давно не было аудита (sort by <code>last_audit_at ASC</code>). Так за сутки покрывается ~96 NAS — больше, чем у любого реального оператора.</li>
+  <li>Для каждого NAS берёт батч из <strong>50 активных сессий</strong> (default <code>SESSION_AUDIT_BATCH_SIZE=50</code>). Это ~2 минуты времени NAS — не нагружает его.</li>
+  <li>Для каждой сессии: <code>radclient</code> запрос <em>Status-Server</em> или <em>Accounting Interim-Update</em> к NAS — если NAS не подтверждает наличие session-id → метим как «подозрительную».</li>
+  <li>Через <strong>5 минут</strong> идёт повторная проверка тех же сессий. Если NAS ещё раз не подтверждает — сессия считается зомби, ставится <code>END_TIME=now()</code>, <code>END_REASON='zombie-cleanup'</code>.</li>
+  <li>Counter подтверждённых zombie добавляется в <code>SessionAuditRun.zombie_killed</code>.</li>
+  <li>Если <code>zombie_killed &gt; 0</code> — отправляется Telegram-алерт с разбивкой по NAS.</li>
+</ol>
+
+<p><strong>Параметры аудита</strong>:</p>
+<table>
+  <thead><tr><th>Параметр</th><th>SystemSettings ключ</th><th>Default</th></tr></thead>
+  <tbody>
+    <tr><td>Интервал между запусками</td><td><code>SESSION_AUDIT_INTERVAL_MINUTES</code></td><td>60 минут</td></tr>
+    <tr><td>NAS за один запуск</td><td><code>SESSION_AUDIT_NAS_PER_RUN</code></td><td>4</td></tr>
+    <tr><td>Сессий за один батч</td><td><code>SESSION_AUDIT_BATCH_SIZE</code></td><td>50</td></tr>
+    <tr><td>Задержка повторной проверки</td><td><code>SESSION_AUDIT_RECHECK_DELAY</code></td><td>300 сек (5 мин)</td></tr>
+    <tr><td>Telegram-алерт</td><td><code>SESSION_AUDIT_TG_ALERT</code></td><td>1</td></tr>
+    <tr><td>Включён</td><td><code>SESSION_AUDIT_ENABLED</code></td><td>1</td></tr>
+  </tbody>
+</table>
+
+<p><strong>История аудитов</strong> ниже — таблица из <code>SessionAuditRun</code>: время, NAS, проверено сессий, найдено зомби, длительность, статус.</p>
+
+<h4 id="db-cleanup-nas-list">Выбор NAS для аудита</h4>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/db_cleanup_v512/v512_db_cleanup_nas_list.png" alt="Выбор NAS для аудита"></p>
+
+<p>Таблица всех NAS с <code>enabled=True</code> и колонками:</p>
+<ul>
+  <li><strong>Имя</strong> + <strong>IP</strong> NAS.</li>
+  <li><strong>Чекбокс «Включён в аудит»</strong> — индивидуально для каждого NAS (тогл сохраняется в <code>Nas.session_audit_enabled</code>). Удобно отключить аудит для проблемного NAS на время разбора.</li>
+  <li><strong>Последний аудит</strong> — дата/время последнего <code>SessionAuditRun</code> для этого NAS.</li>
+  <li><strong>Найдено зомби</strong> — счётчик из последнего аудита.</li>
+  <li><strong>Активных сессий сейчас</strong> — текущее количество.</li>
+  <li>Кнопка <em>«Запустить»</em> — мгновенный аудит конкретного NAS (вне очереди), полезно для отладки.</li>
+</ul>
+
+<p>На testbill сейчас в активном аудите 4 NAS: <strong>TOY, JOY, FAG, POT</strong>. Зомби-сессии редки (1–3 в неделю) — после фиксов build 445 (zombie-LOGGED + bigint миграция) это в основном NAS-перезагрузки.</p>
+
+<h4 id="db-cleanup-troubleshooting">Решение проблем</h4>
+<dl>
+  <dt><strong>Чистка не отрабатывает в 03:30</strong></dt>
+  <dd>Проверь Celery beat: <code>docker logs app-celery-beat-1 | grep db-cleanup</code>. Должна быть запись «Scheduler: Sending due task db-cleanup-daily». Если нет — beat не запущен или не видит задачу (импорт <code>config/celery.py</code>).</dd>
+
+  <dt><strong>«MSG_STACK слишком большой» — 5М+ записей</strong></dt>
+  <dd>Уменьши <code>DB_CLEANUP_MSG_DAYS</code> до 14 или 7 → жми «Запустить чистку сейчас». При первом проходе может удалить миллионы строк (займёт 10–20 минут). Дальше beat-задача держит размер в норме.</dd>
+
+  <dt><strong>RadiusSessions растёт быстрее, чем чистится</strong></dt>
+  <dd>В норме: 1 сессия = 1 строка с <code>END_TIME IS NOT NULL</code> через 5–10 минут. Если строк с <code>END_TIME IS NULL</code> много — есть зомби, запусти аудит. Если все закрытые, но всё равно много — увеличь <code>DB_CLEANUP_BATCH_SIZE</code> до 20000.</dd>
+
+  <dt><strong>Telegram-алерт «zombie cleanup: 50+ sessions» каждый час</strong></dt>
+  <dd>Один из NAS постоянно теряет Accounting-Stop. Проверь логи NAS, прошивку, сетевые потери до FreeRADIUS. Временно отключи аудит для этого NAS (чекбокс «Включён в аудит» = False) пока разбираешься.</dd>
+
+  <dt><strong>Вернуть удалённые данные</strong></dt>
+  <dd>Backup до чистки берётся ежедневно в 03:00 (за 30 минут до db-cleanup) — в <code>/var/backups/carbon/</code>. Восстановление таблицы: <code>pg_restore -t msg_stack &lt;dump-file&gt;.dump</code> в отдельную БД, потом <code>INSERT</code> нужных строк.</dd>
+</dl>
 
 <h3 id="diagnostics">5.13. Диагностика</h3>
 <p>Набор готовых команд для диагностики проблем с конкретным абонентом или NAS.
