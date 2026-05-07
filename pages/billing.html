@@ -298,6 +298,8 @@
 визуальный язык компактных карточек (<code>.dash-tile</code>), все блоки скрываются автоматически
 при отсутствии данных.</p>
 
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v558/dashboard_v558_01_top.png" alt="Дашборд: KPI + IP-пулы + EBS Синхронизация"></p>
+
 <div class="page-toc">
 <details open>
   <summary><strong><i class="bi bi-book"></i> Содержание раздела</strong></summary>
@@ -363,6 +365,8 @@ JS-обновление каждые 60 сек через <code>/admin/dictionar
 <h3 id="dashboard-cash">Касса месяца</h3>
 <p>Build 543–548. Расчёт по <strong>календарному месяцу</strong> (с 1-го числа) из
 <code>FinanceOperations</code>:</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v558/dashboard_v558_02_cash_payments.png" alt="Касса месяца + Платежи сегодня vs вчера"></p>
 <ul>
   <li><strong>Начислено</strong> — сумма всех <code>op_summa &lt; 0</code></li>
   <li><strong>Оплачено</strong> — сумма всех <code>op_summa &gt; 0</code> (зелёный) +
@@ -391,6 +395,8 @@ JS-обновление каждые 60 сек через <code>/admin/dictionar
 <p>Build 551–554. Две карточки в одной строке: «Горячие абоненты» (col-lg-8) +
 «CRM сегодня» (col-lg-4).</p>
 
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v558/dashboard_v558_03_hot_crm.png" alt="Горячие абоненты + CRM с 3 последними тикетами"></p>
+
 <p><strong>Горячие абоненты 24ч</strong> — топ-5 по скоринг-системе. Сигналы:</p>
 <ul>
   <li>≥3 разрывов сессии за 24ч → 30 pts (≥10 → 40, ≥30 → 60)</li>
@@ -416,6 +422,8 @@ JS-обновление каждые 60 сек через <code>/admin/dictionar
 
 <h3 id="dashboard-extras">Heat-map + Цели + Что нового</h3>
 <p>Build 555–557. Три узких карточки в одной строке.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v558/dashboard_v558_04_heatmap_kpi_news.png" alt="Heat-map платежей 7×24 + KPI цели + Что нового"></p>
 
 <p><strong>Heat-map платежей 7×24</strong> (фиолетовая палитра) — день недели × час, цветовая
 интенсивность <code>rgba(#6f42c1, alpha)</code> от количества платежей. SQL:</p>
@@ -449,6 +457,8 @@ GROUP BY 1, 2;</code></pre>
 и линейный график «Финансовая динамика» с переключателями типа (Область/Линия/Столбцы)
 и периода (7д/14д/30д/90д/180д/1г). Кнопки в чистом стиле (build 542 — фикс «серой губой»
 заливки <code>.btn-outline-secondary</code>).</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v558/dashboard_v558_05_finance_chart.png" alt="Итого за период + Финансовая динамика — линейный график"></p>
 
 <h3 id="dashboard-auto-refresh">Auto-refresh</h3>
 <p>Переключатель в шапке: <em>Выкл / 30с / 1м / 2м / 5м / 10м</em>.
