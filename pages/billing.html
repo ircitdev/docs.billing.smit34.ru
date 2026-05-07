@@ -2766,14 +2766,25 @@ OSM. Стиль карточки в <a href="#integrations">/admin/settings/inte
 <p>Inline-редактирование пароля (build 373): двойной клик на ячейке с паролем → input + кнопки 🎲 generate / ✓ save / ✕ cancel. Enter=save, Escape=cancel.</p>
 
 <h4 id="abonent-card-tab-radius">RADIUS / Монитор сессий</h4>
-<p>История RADIUS-сессий абонента (последние 20 записей из <code>RADIUS_SESSIONS</code>):</p>
+<p>URL: <code>/admin/Abonents/&lt;id&gt;/check/</code>. История RADIUS-сессий абонента — последние 20 записей из <code>RADIUS_SESSIONS</code>. Активная сессия всегда вверху (бейдж <span class="badge bg-success">Online</span>), далее завершённые в обратном хронологическом порядке.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v520/session_monitor_with_mac.png" alt="Монитор сессий — таблица с колонкой MAC и временем в MSK"></p>
+
+<p>Колонки таблицы (build 519+):</p>
 <ul>
-  <li>Дата начала / окончания.</li>
-  <li>NAS-IP-Address, Framed-IP-Address.</li>
-  <li>Длительность, объём трафика IN/OUT.</li>
-  <li>Причина завершения (<code>END_REASON</code>): User-Request, Idle-Timeout, Session-Timeout, Admin-Reset, NAS-Request.</li>
-  <li>Зелёный кружок = активная сессия (без <code>END_TIME</code>).</li>
+  <li><strong>Логин</strong> — имя учётной записи (<code>Users.LOGIN</code>).</li>
+  <li><strong>Начало / Обновление / Завершение</strong> — timestamps в локальной TZ (<code>Europe/Moscow</code>). Обновление = <code>Acct-Interim-Update</code> (раз в 10 мин), Завершение = <code>Accounting-Stop</code>.</li>
+  <li><strong>Причина</strong> (<code>END_REASON</code>) — User-Request, Idle-Timeout, Session-Timeout, Admin-Reset, NAS-Request, Lost-Carrier, Synthetic (no Start) и т.д.</li>
+  <li><strong>Session ID</strong> — <code>Acct-Session-Id</code> от NAS, гиперссылка на полный лог.</li>
+  <li><strong>MAC</strong> (build 519) — <code>Calling-Station-Id</code> из <code>RADIUS_SESSIONS.MAC</code>: MAC-адрес устройства, с которого авторизовался клиент. Полезно для диагностики «у клиента поменялся роутер» и для блокировки чужих устройств в статусе.</li>
+  <li><strong>PPPoE / Порт</strong> — <code>NAS-Port-Id</code>: название PPPoE-сервера или физического интерфейса.</li>
+  <li><strong>VLAN</strong> — <code>Tunnel-Private-Group-Id</code>.</li>
+  <li><strong>Аптайм</strong> — длительность сессии (для активной — от <code>START_TIME</code> до текущего момента).</li>
+  <li><strong>Трафик</strong> — ↓ IN / ↑ OUT в человеческих единицах (КБ/МБ/ГБ). Для активной сессии счётчики из <code>USERS_RADIUSAUTH</code>, для завершённой — из <code>RADIUS_SESSIONS.IN_OCT/OUT_OCT</code> (фиксируется при Accounting-Stop).</li>
+  <li><strong>Статус</strong> — <span class="badge bg-success">Online</span> (активна и Interim-Update свежий), <span class="badge bg-warning text-dark">Stale</span> (запись «активна», но Interim-Update старый — зомби-сессия), <span class="badge bg-secondary">Завершена</span>.</li>
 </ul>
+
+<p><strong>Фикс таймзоны (build 519)</strong>: ранее времена показывались с лишним сдвигом +3&nbsp;часа. Корень — <code>fmt_dt()</code> делал двойную конвертацию UTC&nbsp;→&nbsp;MSK, тогда как Django при <code>USE_TZ=False</code> и <code>TIME_ZONE='Europe/Moscow'</code> уже отдаёт naive datetime в локальной TZ. Теперь повторная конвертация выполняется только для aware-datetime, naive передаётся как есть. То же касается <code>fmt_uptime()</code>: <code>datetime.utcnow()</code> заменён на <code>datetime.now()</code> для согласованности с локальным временем web-контейнера.</p>
 
 <h4 id="abonent-card-tab-sorm">СОРМ</h4>
 <p>Паспортные данные и реквизиты для выгрузки в РКН по СОРМ-3:</p>
