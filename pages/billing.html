@@ -1969,6 +1969,68 @@ X-Timestamp: 1715091045   # Unix epoch</code></pre>
   </tbody>
 </table>
 
+<h5 id="messaging-template-editor-presets">Готовые HTML-шаблоны писем (build 597)</h5>
+<p>В toolbar визуального редактора добавлена кнопка <strong>«Шаблоны писем»</strong>
+(зелёная, с иконкой <i class="fa fa-magic"></i>). Клик открывает выпадающий список из
+<strong>8 готовых пресетов</strong> с автоматической подстановкой брендинга компании
+(<code>CompanyBranding</code>) — название, логотип, ИНН/КПП, контакты, адрес, акцентный цвет.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/msg_presets_v597/docs_v597_msg_presets_dropdown.png" alt="Dropdown «Шаблоны писем» с 8 пресетами"></p>
+
+<table class="docs-table">
+  <thead><tr><th>Пресет</th><th>Сценарий использования</th></tr></thead>
+  <tbody>
+    <tr><td><i class="fa fa-file"></i> <strong>Чистый шаблон</strong></td><td>Только шапка + подвал с брендингом, заголовок и заглушка для текста</td></tr>
+    <tr><td><i class="fa fa-check-circle"></i> <strong>Платёж получен</strong></td><td>Подтверждение зачисления платежа с указанием баланса (зелёный card-style)</td></tr>
+    <tr><td><i class="fa fa-exclamation-triangle"></i> <strong>Низкий баланс</strong></td><td>Предупреждение + CTA-кнопка «Пополнить счёт» (акцентный цвет)</td></tr>
+    <tr><td><i class="fa fa-ban"></i> <strong>Услуги приостановлены</strong></td><td>Блокировка по балансу + кнопка восстановления</td></tr>
+    <tr><td><i class="fa fa-plug"></i> <strong>Услуга подключена</strong></td><td>Уведомление о новом подключении (с балансом)</td></tr>
+    <tr><td><i class="fa fa-tools"></i> <strong>Технические работы</strong></td><td>Информация о плановых работах (orange-style)</td></tr>
+    <tr><td><i class="fa fa-birthday-cake"></i> <strong>Поздравление с ДР</strong></td><td>Праздничное письмо с центрированной вёрсткой</td></tr>
+    <tr><td><i class="fa fa-key"></i> <strong>Восстановление пароля</strong></td><td>Письмо с проверочным кодом (моноширинный шрифт, увеличенный текст)</td></tr>
+  </tbody>
+</table>
+
+<p>Каждый пресет — полноценное Email-письмо с тремя секциями:</p>
+<ul>
+  <li><strong>Шапка</strong>: логотип (или fallback-буква в круге с акцентным цветом)
+    + название компании + ИНН/КПП. Снизу — 3px полоса акцентного цвета из брендинга.</li>
+  <li><strong>Контент</strong>: заголовок-сценарий, обращение к абоненту через
+    <code>%(abonent_name)s</code>, основной текст с
+    <code>%(contract_number)s</code> и <code>%(balance)s</code>, при необходимости —
+    CTA-кнопка с акцентным цветом.</li>
+  <li><strong>Подвал</strong>: контакты компании (телефон, email, сайт) с иконками
+    📞 ✉ 🌐, юридический адрес, дисклеймер и подпись директора (если задано
+    <code>director_name</code> в брендинге).</li>
+</ul>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/msg_presets_v597/docs_v597_msg_preset_low_balance_inserted.png" alt="Пресет «Низкий баланс» — вставленное письмо с брендингом"></p>
+
+<p><strong>Поведение при вставке</strong>:</p>
+<ul>
+  <li>Если редактор пуст или содержит менее 50 символов — пресет вставляется без подтверждения.</li>
+  <li>Если в редакторе уже есть HTML — confirm-диалог: «Заменить готовым шаблоном «N»?».</li>
+  <li>После вставки <strong>автоматически переключается на вкладку «Визуальный»</strong>,
+    чтобы оператор сразу увидел результат.</li>
+  <li>Брендинг подгружается из <a href="#branding">CompanyBranding</a> при каждом запросе
+    — изменения логотипа/реквизитов мгновенно отражаются в новых пресетах.</li>
+</ul>
+
+<p><strong>Endpoint'ы</strong>:</p>
+<ul>
+  <li><code>GET /admin/settings/messaging/email_presets/</code> → список пресетов
+    (<code>{items:[{id,name,icon,description}]}</code>)</li>
+  <li><code>GET /admin/settings/messaging/email_presets/?preset=&lt;id&gt;</code> →
+    готовый HTML с подставленным брендингом
+    (<code>{ok:true, preset_id, html}</code>)</li>
+</ul>
+
+<p><strong>Реализация</strong>: <code>billing/services/email_presets.py</code> —
+изолированный модуль с реестром <code>PRESETS</code>. Каждый пресет — функция-сборщик
+контента, обёрнутая в общий wrapper <code>_wrap()</code> с шапкой и подвалом из
+<code>_branding_dict()</code>. Добавление нового пресета = одна функция + запись в
+<code>PRESETS</code>.</p>
+
 <h5 id="messaging-template-editor-migration">Миграция и схема</h5>
 <p>Поле <code>AdminMsg.html_body</code> (TextField, nullable) добавлено в build 595
 (миграция <code>0120_adminmsg_html_body</code>). Существующие шаблоны не затронуты —
