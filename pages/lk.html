@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 602)</title>
+  <title>Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 609)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 602)">
+  <meta property="og:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 609)">
   <meta property="og:description" content="Личный кабинет абонента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/lk.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 602)">
+  <meta name="twitter:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 609)">
   <meta name="twitter:description" content="Личный кабинет абонента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="Личный кабинет абонента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
@@ -156,6 +156,7 @@
           <li><a href="lk.html#lk-profile">Профиль</a></li>
           <li><a href="lk.html#lk-firebase">Push (Firebase)</a></li>
           <li><a href="lk.html#lk-claude-ai">Claude AI</a></li>
+          <li><a href="lk.html#ai-assistant">AI обучение (промпт/few-shot/eval/дашборд)</a></li>
           <li><a href="lk.html#telegram-admin-bot">TG бот оператора</a></li>
         </ul>
       </li>
@@ -301,6 +302,14 @@
     <li><a href="#lk-deploy">Развёртывание и SSL</a></li>
     <li><a href="#lk-firebase">Firebase Push-уведомления</a></li>
     <li><a href="#lk-claude-ai">Claude AI — конфигурация AI-ассистента</a></li>
+    <li><a href="#ai-assistant"><strong>AI-ассистент — обучение и управление промптом</strong> (build 603-607)</a>
+      <ul>
+        <li><a href="#ai-prompt">— Вкладка «Промпт»</a></li>
+        <li><a href="#ai-fewshot">— Few-shot примеры</a></li>
+        <li><a href="#ai-eval">— Eval (автотесты)</a></li>
+        <li><a href="#ai-dashboard">— Дашборд AI-чата</a></li>
+      </ul>
+    </li>
     <li><a href="#telegram-admin-bot">Telegram-бот для операторов (admin bot)</a></li>
     <li><a href="#lk-design-system-489"><strong>Дизайн-система ЛК v489</strong> (выравнивание со стилем админки)</a>
       <ul>
@@ -1171,7 +1180,121 @@ Content-Type: application/json
   </table>
 
   <h4>Логирование</h4>
-  <p>Модуль <code>billing/services/claude_logger.py</code> записывает диалоги в FreeScout (отдельная база MySQL на сервере поддержки). Если сервер FreeScout недоступен — логирование пропускается без ошибки.</p>
+  <p>Модуль <code>billing/services/claude_logger.py</code> записывает диалоги в FreeScout (отдельная база MySQL на сервере поддержки) и параллельно — в локальную PostgreSQL-таблицу <code>ai_chat_log</code> биллинга. Если один из источников недоступен — логирование во второй проходит без ошибки.</p>
+
+  <!-- ===== AI обучение (build 603-607) ===== -->
+  <h3 id="ai-assistant">AI-ассистент — обучение и управление промптом (build 603-607)</h3>
+  <p>Раздел <strong>Настройки → AI-ассистент</strong> (<code>/admin/settings/ai/</code>) — единая точка управления системными промптами, эталонными примерами (few-shot) и автотестами AI-чата. Все три канала — <strong>Личный кабинет</strong>, <strong>Мобильное приложение</strong> и <strong>Email / FreeScout</strong> — настраиваются раздельно.</p>
+
+  <div class="info-box">
+    <strong>Что значит «обучить Claude»?</strong> В нашем контексте это <em>не</em> дообучение весов модели (Anthropic такую возможность не предоставляет). Это: правка system prompt, добавление few-shot примеров «вопрос → идеальный ответ», прогон автотестов и A/B-варианты. Полная инструкция: <code>/admin/reports/dev/?file=Документация%2F2026-05-08_Инструкция_обучение_Claude_агента_поддержки.md</code>.
+  </div>
+
+  <h4 id="ai-prompt">Вкладка «Промпт»</h4>
+  <p>Редактирование system prompt с версионированием и откатом. Поддерживается <strong>prompt caching</strong> Anthropic — статическая часть кешируется на 5 минут, экономия до 90% на повторных запросах.</p>
+  <img src="../img/v607/ai_settings_lk.png" alt="Раздел AI-настроек: вкладка Промпт" class="screenshot">
+
+  <table>
+    <thead><tr><th>Поле</th><th>Назначение</th></tr></thead>
+    <tbody>
+      <tr><td>System prompt</td><td>Текст инструкции для Claude — стиль, правила, сценарии. Динамические данные клиента (имя, баланс, тариф) добавляются автоматически на каждый запрос.</td></tr>
+      <tr><td>Модель</td><td>Haiku 4.5 (по умолчанию — быстро и дёшево), Sonnet 4.6 (точнее), Opus 4.7 (лучшее качество)</td></tr>
+      <tr><td>Max tokens</td><td>Максимальная длина ответа (1024 для LK / 512 для Mobile)</td></tr>
+      <tr><td>Temperature</td><td>0.0–1.0; для биллинга рекомендуется 0.3 (фактическая точность важнее креативности)</td></tr>
+      <tr><td>Ключевые слова эскалации</td><td>При наличии в сообщении клиента — пропуск AI-ответа, прямой переход к оператору</td></tr>
+      <tr><td>Prompt caching</td><td>Включает заголовок <code>anthropic-beta: prompt-caching-2024-07-31</code> и кеширует статическую часть промпта</td></tr>
+    </tbody>
+  </table>
+
+  <p><strong>История версий</strong> справа сохраняет последние 30 правок. Кнопка ↶ восстанавливает любую версию — текущая при этом тоже сохраняется в истории, можно вернуться обратно.</p>
+
+  <h4 id="ai-fewshot">Вкладка «Few-shot»</h4>
+  <p>Эталонные пары «сообщение клиента → идеальный ответ Алисы». Топ-8 по приоритету подмешиваются в <strong>статическую часть промпта</strong> — попадают в кеш, не пересчитываются на каждый запрос.</p>
+  <img src="../img/v607/ai_fewshot_lk.png" alt="Few-shot примеры — карточки user/ideal" class="screenshot">
+
+  <p>На канал LK при первом деплое сидируется <strong>5 эталонных примеров</strong> (миграция <code>0126_ai_fewshot_seed</code>): баланс положительный, баланс отрицательный, диагностика «нет интернета», явная эскалация, OOD-отказ (нерелевантные темы).</p>
+
+  <table>
+    <thead><tr><th>Поле карточки</th><th>Назначение</th></tr></thead>
+    <tbody>
+      <tr><td>Интент</td><td>Метка для группировки (balance / promise_pay / diag / escalation / ood)</td></tr>
+      <tr><td>Приоритет (0–100)</td><td>Цветовой бар; чем выше — тем чаще пример попадает в промпт</td></tr>
+      <tr><td>Сообщение клиента</td><td>Реальный (или гипотетический) запрос абонента</td></tr>
+      <tr><td>Эталонный ответ Алисы</td><td>Образцовая формулировка — длина, стиль, структура</td></tr>
+    </tbody>
+  </table>
+
+  <h4 id="ai-eval">Вкладка «Eval»</h4>
+  <p>Автотесты промпта на eval-датасете <code>dev_reports/Документация/ai_eval_dataset.jsonl</code> (58 кейсов в 14 категориях). Каждый кейс проверяется на <code>must_contain</code>, <code>must_not_contain</code>, корректную эскалацию и лимит слов.</p>
+  <img src="../img/v607/ai_eval_lk.png" alt="История прогонов eval-датасета" class="screenshot">
+
+  <p>Кнопка <strong>«Запустить»</strong> (с опциональным <code>limit</code>) дёргает реальный API синхронно — 30–60 секунд на полный прогон. После завершения история обновляется, видна <em>pass rate</em> с цветовым кодом: ≥90% зелёный, ≥75% оранжевый, ниже — красный.</p>
+
+  <p>CLI-вариант для cron / CI:</p>
+  <pre><code>docker compose exec web python manage.py ai_eval \
+  --channel lk --note "after weekly review N"</code></pre>
+
+  <p>Кнопка <strong>«Подробнее»</strong> на строке прогона открывает модал со всеми кейсами: ID, интент, сообщение, ответ AI, проваленные проверки, время выполнения, токены.</p>
+
+  <h4 id="ai-dashboard">Дашборд AI-чата</h4>
+  <p>Страница <strong>Отчёты → AI-чат: дашборд</strong> (<code>/admin/reports/ai_chat_dashboard/</code>) — KPI и графики по реальной нагрузке.</p>
+  <img src="../img/v607/ai_dashboard.png" alt="AI-чат дашборд: KPI + графики" class="screenshot">
+
+  <table>
+    <thead><tr><th>KPI</th><th>Что показывает</th></tr></thead>
+    <tbody>
+      <tr><td>Сессий</td><td>Уникальных диалогов за выбранный период (1/3/7/14/30 дней)</td></tr>
+      <tr><td>Помогло (👍)</td><td>Доля положительных оценок от всех проставленных</td></tr>
+      <tr><td>Не помогло (👎)</td><td>Доля негативных + общий процент сессий, в которых клиент поставил оценку</td></tr>
+      <tr><td>Эскалаций</td><td>Сколько сессий завершилось передачей оператору в FreeScout</td></tr>
+      <tr><td>Токены</td><td>Суммарный input/output расход на API за период</td></tr>
+    </tbody>
+  </table>
+
+  <p>Графики:</p>
+  <ul>
+    <li><strong>Активность по дням</strong> — line chart сессий и эскалаций + bar chart 👍/👎</li>
+    <li><strong>По каналам</strong> — pie chart распределения сессий между LK / Mobile / Email</li>
+    <li><strong>Последние 👎</strong> — клик по строке открывает модал с полным транскриптом сессии (для разбора и пополнения few-shot)</li>
+    <li><strong>Худшие eval-кейсы за период</strong> — какие тесты чаще всего падали (источник для правки промпта)</li>
+  </ul>
+
+  <h4>Telegram-алерты</h4>
+  <p>Celery-задача <code>ai-health-check</code> запускается каждые 15 минут и проверяет показатели за последний час. Если <code>escalation_pct ≥ 40%</code> или <code>down_feedback_pct ≥ 40%</code> — отправляет алерт в Telegram-канал <code>nas_down</code>. Дедуп по severity и дате (один алерт на проблему в сутки).</p>
+
+  <p>Управляющие настройки в SystemSettings (категория <code>ai</code>):</p>
+  <table>
+    <thead><tr><th>Ключ</th><th>Значение</th></tr></thead>
+    <tbody>
+      <tr><td><code>AI_HEALTH_TELEGRAM_ALERT</code></td><td>1 = включено, 0 = выключено</td></tr>
+      <tr><td><code>AI_ESCALATION_ALERT_PCT</code></td><td>Порог % эскалаций для алерта (по умолчанию 40)</td></tr>
+      <tr><td><code>AI_DOWN_FEEDBACK_ALERT_PCT</code></td><td>Порог % 👎-оценок для алерта (по умолчанию 40)</td></tr>
+      <tr><td><code>AI_HEALTH_MIN_SAMPLE</code></td><td>Минимальный размер выборки (по умолчанию 5)</td></tr>
+    </tbody>
+  </table>
+
+  <h4>A/B-варианты промпта</h4>
+  <p>Модель <code>AIPromptVariant</code> позволяет тестировать новые версии промпта на доле трафика. Сплит детерминированный: <code>hash(channel:abonent.pk) % 100</code> — один абонент в одном канале всегда получает один и тот же вариант.</p>
+
+  <p>Создание варианта (через Django shell, UI пока не реализован):</p>
+  <pre><code>from billing.models.ai import AIPromptVariant
+AIPromptVariant.objects.create(
+    channel='lk', name='exp_v1', weight=30,
+    prompt='...новый вариант текста...',
+    model='claude-haiku-4-5-20251001',
+    max_tokens=1024, temperature=0.3,
+    enable_caching=True, is_active=True,
+    note='Тест нового сценария для негбала'
+)</code></pre>
+
+  <p>30% абонентов начнут получать <code>exp_v1</code>, остальные останутся на control. В <code>ai_chat_log</code> каждое сообщение помечено <code>ab_variant</code> — для аналитики через <code>GROUP BY ab_variant</code> можно сравнить escalation_pct, токены, 👍/👎 по группам.</p>
+
+  <h4>Регламент использования</h4>
+  <ul>
+    <li><strong>Ежедневно (5 мин)</strong>: открыть дашборд за сегодня → проверить эскалации и количество 👎.</li>
+    <li><strong>Еженедельно (30 мин)</strong>: посмотреть 30 👎-сессий за неделю → пометить «правильный ответ» в формате few-shot → создать 5–10 новых записей или поправить промпт → запустить ai_eval — pass rate не должен упасть.</li>
+    <li><strong>При кардинальных изменениях</strong>: создать <code>AIPromptVariant(weight=30)</code>, дать поработать неделю, сверить метрики, раскатать на 100% или откатить.</li>
+  </ul>
 
   <!-- ===== 6.13 Раздел «Интеграции» ===== -->
   <h3 id="integrations">Раздел «Интеграции» — единый центр</h3>
@@ -1587,8 +1710,8 @@ Content-Type: application/json
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 602)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">08.05.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 602)</span>&nbsp;|&nbsp;<span data-smit="updated">08.05.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 609)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">08.05.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 609)</span>&nbsp;|&nbsp;<span data-smit="updated">08.05.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=466"></script>
