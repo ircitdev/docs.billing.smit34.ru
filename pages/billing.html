@@ -3121,6 +3121,49 @@ OSM. Стиль карточки в <a href="#integrations">/admin/settings/inte
 </ul>
 <p>Mini-блок СОРМ под контактами показывает паспорт + ИНН с кнопкой быстрого редактирования (без перехода на отдельную вкладку). Для юр.лиц — ИНН/КПП/ОГРН + В лице/Директор.</p>
 
+<h5 id="abonent-finance">Блок «Финансовая информация»</h5>
+<p>Под основной информацией абонента отдельная карточка с расчётами по балансу. Состоит из двух частей: таблица балансов и параметры порогов/прогнозов.</p>
+
+<h6>Таблица балансов</h6>
+<p>Три варианта расчёта с разделением списаний на предоплату и постоплату:</p>
+<table class="docs-table">
+  <thead><tr><th>Строка</th><th>Формула</th><th>Что значит</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Бух.</strong></td><td><code>admin_accounts.ostatok / 10¹⁰</code></td><td>Бухгалтерский баланс — фактическое значение лицевого счёта.</td></tr>
+    <tr><td><strong>Текущий</strong></td><td>Бух − Расход предоплата + Приход</td><td>С учётом обещанных платежей и предстоящих списаний за уже оказанные услуги.</td></tr>
+    <tr><td><strong>На конец месяца</strong></td><td>Текущий − Расход постоплата</td><td>Прогноз остатка после всех списаний до конца расчётного периода.</td></tr>
+  </tbody>
+</table>
+<p>Колонки:</p>
+<ul>
+  <li><strong>Приход</strong> — сумма активного обещанного платежа (<code>Usluga 30353</code>).</li>
+  <li><strong>Расход предоплата</strong> — будущие списания услуг с <code>payment_type=prepaid</code> в этом месяце.</li>
+  <li><strong>Расход постоплата</strong> — услуги по факту использования (трафик, услуги-пакеты).</li>
+</ul>
+
+<h6>Параметры и прогнозы</h6>
+<table class="docs-table">
+  <thead><tr><th>Поле</th><th>Назначение</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Порог предупр.</strong></td><td>Если <code>ostatok &lt; threshold</code> — отправляется уведомление через MsgStack (Email/SMS/Push).</td></tr>
+    <tr><td><strong>Порог откл.</strong></td><td>Если <code>ostatok &lt; threshold</code> — <code>billing_worker</code> ставит блок <code>b_negbal</code> и шлёт CoA Disconnect.</td></tr>
+    <tr><td><strong>Бонусы</strong></td><td>Текущий счёт бонусных баллов (программа лояльности, <code>AbonentsLoyalty</code>).</td></tr>
+    <tr><td><strong>Рек. платёж</strong></td><td>Минимальная сумма для непрерывного обслуживания до конца следующего месяца.</td></tr>
+    <tr><td><strong>Мин. для разблок.</strong></td><td>При активном <code>b_negbal</code> — сколько нужно внести сейчас чтобы блок снялся.</td></tr>
+    <tr><td><strong>Хватит до</strong></td><td>Прогнозная дата выхода в минус: <code>today + (ostatok / monthly_burn_rate)</code>.</td></tr>
+  </tbody>
+</table>
+
+<h6>Калькулятор «Рассчитать платёж»</h6>
+<p>Поле «Рассчитать до даты» + кнопка → возвращает требуемую сумму пополнения чтобы баланса хватило до указанной даты. Использует тот же алгоритм что <code>billing_simulate</code> — учитывает тариф, активные <code>UsersUsluga</code>, будущие <code>sched_date</code>, бонусы и скидки.</p>
+
+<h6>Где смотреть в коде</h6>
+<ul>
+  <li><strong>View</strong>: <code>billing/views/abonents.py::add_finance_tab</code> + контекст для <code>show_fields.html</code></li>
+  <li><strong>Шаблон</strong>: <code>billing/templates/abonents_form/balanse_table.html</code></li>
+  <li><strong>Расчёт «Хватит до»</strong>: <code>billing/services/balance_forecast.py::days_until_negative</code></li>
+</ul>
+
 <h4 id="abonent-card-tab-history">История</h4>
 <p>Лента всех изменений по абоненту, синхронизирована с разделом <a href="#audit">Аудит</a>. Каждая запись содержит:</p>
 <ul>
