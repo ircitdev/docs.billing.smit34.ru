@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Интеграция с оборудованием — СмИТ Биллинг v1.6.0 (build 610)</title>
+  <title>Интеграция с оборудованием — СмИТ Биллинг v1.6.0 (build 677)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Интеграция с оборудованием — СмИТ Биллинг v1.6.0 (build 610)">
+  <meta property="og:title" content="Интеграция с оборудованием — СмИТ Биллинг v1.6.0 (build 677)">
   <meta property="og:description" content="NAS/BRAS, коммутаторы, VoIP-шлюзы, IPTV, FreeRADIUS с rlm_python3, абонентское оборудование.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/equipment.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Интеграция с оборудованием — СмИТ Биллинг v1.6.0 (build 610)">
+  <meta name="twitter:title" content="Интеграция с оборудованием — СмИТ Биллинг v1.6.0 (build 677)">
   <meta name="twitter:description" content="NAS/BRAS, коммутаторы, VoIP-шлюзы, IPTV, FreeRADIUS с rlm_python3, абонентское оборудование.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="NAS/BRAS, коммутаторы, VoIP-шлюзы, IPTV, FreeRADIUS с rlm_python3, абонентское оборудование.">
@@ -174,7 +174,8 @@
         <a href="equipment.html"><i class="ti ti-broadcast"></i> Интеграция с оборудованием <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
         <ul class="submenu">
           <li><a href="equipment.html#internet">1. Интернет (NAS/BRAS)</a></li>
-          <li class="sub-item"><a href="equipment.html#switch-types">1.1. Типы коммутаторов</a></li>
+          <li class="sub-item"><a href="equipment.html#switch-overview">1.1. Коммутаторы — обзор</a></li>
+          <li class="sub-item"><a href="equipment.html#switch-types">1.2. Типы коммутаторов</a></li>
           <li><a href="equipment.html#voip">2. Телефония (VoIP)</a></li>
           <li><a href="equipment.html#iptv">3. IPTV</a></li>
           <li class="sub-item"><a href="equipment.html#iptv-tvip">3.1. TVIP Media</a></li>
@@ -280,6 +281,7 @@
   <summary><strong>Содержание страницы</strong></summary>
   <ul>
   <li><a href="#internet">Интернет оборудование — Пользовательская схема</a></li>
+  <li><a href="#switch-overview">Коммутаторы — назначение и роль</a></li>
   <li><a href="#switch-types">Типы коммутаторов</a></li>
   <li><a href="#opt82-auth">OPT82-авторизация</a></li>
   <li><a href="#voip">Телефония</a></li>
@@ -300,8 +302,10 @@
     <summary><strong>Содержание раздела</strong></summary>
     <ul>
     <li><a href="#podderzhivaemoe-internet-oborudovanie">Поддерживаемое интернет-оборудование</a></li>
+    <li><a href="#nas-overview">NAS — назначение и роль</a></li>
     <li><a href="#nas-modal">Редактирование NAS — модальное окно</a></li>
     <li><a href="#nas-online">Онлайн-абоненты NAS</a></li>
+    <li><a href="#switch-overview">Коммутаторы — назначение и роль</a></li>
     <li><a href="#switch-modal">Редактирование коммутаторов — модальное окно</a></li>
     </ul>
   </details>
@@ -350,6 +354,81 @@ docker compose restart freeradius</code></pre>
     <li><a>Прочие (пользовательская схема)</a> <span class="desc">Интеграция любого RADIUS-совместимого оборудования</span></li>
   </ul>
 
+  <!-- ===== NAS overview — назначение и роль ===== -->
+  <h3 id="nas-overview">NAS — назначение и роль в биллинге</h3>
+  <details class="section-toc">
+    <summary><strong>Содержание раздела</strong></summary>
+    <ul>
+      <li><a href="#nas-purpose">Зачем NAS заводится в БД</a></li>
+      <li><a href="#nas-fields-usage">Где это поле используется</a></li>
+      <li><a href="#nas-when-needed">Нужно ли вам это</a></li>
+      <li><a href="#nas-cleanup">Что делать со старыми/неиспользуемыми NAS</a></li>
+    </ul>
+  </details>
+
+  <p><strong>NAS (Network Access Server)</strong> — устройство, которое физически терминирует абонентскую сессию (PPPoE, IPoE, DHCP) и отправляет RADIUS-запросы в биллинг. Запись хранится в таблице <code>nas</code>, редактируется на странице <code>/admin/equipment/Nas/</code>.</p>
+
+  <h4 id="nas-purpose">Зачем NAS заводится в БД</h4>
+  <p>Запись <code>nas</code> в биллинге решает четыре задачи:</p>
+
+  <h5>1. RADIUS-доверие (<code>clients.conf</code>)</h5>
+  <p>FreeRADIUS принимает Access-Request только от IP, перечисленных в <code>clients.conf</code>. Этот файл генерируется при старте контейнера <code>app-freeradius-1</code> из таблицы <code>nas</code> (см. <code>docker/freeradius/entrypoint.sh</code>) — каждая enabled-запись становится <code>client &lt;name&gt; { ipaddr=&lt;IP&gt;; secret=&lt;SECRET&gt; }</code>. Без записи в БД ваш роутер физически не сможет авторизовать клиентов.</p>
+
+  <h5>2. Привязка абонента к серверу доступа (<code>Users.NAS_ID</code>)</h5>
+  <p>Когда абонент авторизуется, FreeRADIUS заполняет <code>Users.NAS_ID</code> ID сервера, через который пришёл запрос. Это нужно для:</p>
+  <ul>
+    <li><strong>CoA Disconnect</strong> — при блокировке/смене тарифа биллинг шлёт CoA только на «правильный» NAS;</li>
+    <li><strong>Sync RADIUS-сессий</strong> — задача <code>nas_sync</code> опрашивает NAS по SSH/SNMP и сверяет сессии;</li>
+    <li><strong>СОРМ-выгрузки</strong> — поле <code>GATEWAY</code> идентифицирует через какой шлюз шёл трафик абонента.</li>
+  </ul>
+
+  <h5>3. Назначение IP-пулов (<code>nas.PULL_ID</code> и связанные)</h5>
+  <p>NAS имеет 4 поля привязки к пулам: основной (<code>PULL_ID</code>), белый (<code>WHITE_PULL_ID</code>), NAT (<code>NAT_PULL_ID</code>), Hotspot (<code>HOTSPOT_PULL_ID</code>). FreeRADIUS при авторизации выбирает свободный IP из соответствующего пула. Можно строить chain-цепочки (<code>ip_pull.NEXT_PULL_ID</code>) — когда основной пул заполнен, выдача переходит во вспомогательный.</p>
+
+  <h5>4. Развёртывание / автоконфиг (<code>buttons_nas.html</code>)</h5>
+  <p>Поля <code>TELNET_IP</code> / <code>TELNET_LOGIN</code> / <code>TELNET_PASSWORD</code> / <code>TELNET_PORT</code> используются вкладкой «Развёртывание» в карточке NAS — там можно с UI запустить <code>cfg_init / cfg_fill / cfg_make / cfg_upload</code>. Это ssh-команды через скрипт <code>ssh_send</code>, генерирующие конфиг роутера на основании текущих абонентов и пулов.</p>
+
+  <h4 id="nas-fields-usage">Где это поле используется</h4>
+  <table class="data-table">
+    <thead>
+      <tr><th>Где</th><th>Поле / связь</th><th>Что происходит</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>nas</code></td><td><code>IP</code> + <code>SECRET</code></td><td>Попадает в <code>clients.conf</code> FreeRADIUS — без этого NAS не может слать RADIUS-запросы</td></tr>
+      <tr><td><code>Users</code></td><td><code>NAS_ID</code></td><td>Авто-заполнение при авторизации; используется для CoA и СОРМ</td></tr>
+      <tr><td><code>nas</code></td><td><code>PULL_ID</code> / <code>WHITE_PULL_ID</code> / <code>NAT_PULL_ID</code> / <code>HOTSPOT_PULL_ID</code></td><td>4 IP-пула с назначением — FreeRADIUS выдаёт IP из соответствующего</td></tr>
+      <tr><td><code>RADIUS_SESSIONS</code></td><td><code>NAS_IP_ADDRESS</code></td><td>История сессий с привязкой к NAS — для отчётов и SORM</td></tr>
+      <tr><td><code>nas_radius_params</code></td><td><code>NAS_ID</code></td><td>Дополнительные RADIUS-атрибуты, отдаваемые в Access-Accept (vendor-specific)</td></tr>
+    </tbody>
+  </table>
+
+  <h4 id="nas-when-needed">Нужно ли вам это</h4>
+  <p>Запись NAS в БД <strong>нужна всегда</strong>, как только у вас есть хоть один сервер доступа который шлёт RADIUS-запросы:</p>
+  <ul>
+    <li>Без записи — FreeRADIUS отвергает запрос с ошибкой <code>ignoring request from unknown client</code>;</li>
+    <li>Любая модификация (новый NAS, смена IP, смена secret) требует <strong>правки в БД через UI и перезапуска FreeRADIUS</strong> (кнопка «Перезапустить RADIUS» в списке NAS);</li>
+    <li>Если у вас один большой роутер на офис — это одна запись. Если 5 OLT-головок и 3 BRAS — это 8 записей.</li>
+  </ul>
+
+  <h4 id="nas-cleanup">Что делать со старыми/неиспользуемыми NAS</h4>
+  <p>Хорошие индикаторы что NAS-запись «мёртвая»:</p>
+  <ol>
+    <li><code>enabled=false</code> — выключен в UI, но строка не удалена;</li>
+    <li>0 RADIUS-сессий за последние 30 дней (см. дашборд <code>/admin/equipment/nas_status/</code> → колонка «Активность»);</li>
+    <li>0 абонентов на нём (<code>Users.NAS_ID = ваш_id</code>);</li>
+    <li>не упоминается ни в одной NAS-цепочке (<code>nas.PULL_ID</code> не используется другими).</li>
+  </ol>
+  <p>Перед удалением:</p>
+  <ul>
+    <li><strong>Если NAS — реальное оборудование, временно выключенное</strong> (на профилактике, заменён на новый и отдан на склад) — оставить с <code>enabled=false</code>. Не удалять. Возможно потом вернёте в работу.</li>
+    <li><strong>Если NAS точно списан</strong> и <strong>не упомянут</strong> в полях <code>USERS_RADIUSAUTH</code>, <code>RADIUS_SESSIONS</code>, <code>nas_radius_params</code> — можно удалять. Удаление через UI кнопкой 🗑.</li>
+    <li><strong>FK-защита</strong>: на <code>nas</code> ссылаются с <code>NO ACTION</code> поля <code>users.NAS_ID</code> и <code>USERS_RADIUSAUTH.NAS_ID</code> — если у вас есть Users привязанные к этому NAS, удаление заблокируется. Сначала переведите Users на другой NAS или обнулите <code>NAS_ID</code>.</li>
+  </ul>
+
+  <div class="info-box">
+    <strong>Важно:</strong> после любого изменения списка NAS (добавление, удаление, смена IP, смена secret) — перезапустите FreeRADIUS кнопкой «Перезапустить RADIUS» (или через меню деплоя). <code>clients.conf</code> генерируется только при старте контейнера, на лету не перечитывается. Без перезапуска новый NAS не сможет работать, а удалённый продолжит работать «по старой памяти».
+  </div>
+
   <!-- ===== NAS модальное окно ===== -->
   <h3 id="nas-modal">Редактирование NAS — модальное окно</h3>
   <p>Начиная с, все операции с NAS-устройствами выполняются в модальном окне (без перехода на отдельную страницу). Кнопка <i class="ti ti-pencil"></i> в строке таблицы открывает полнофункциональное окно редактирования.</p>
@@ -397,6 +476,74 @@ docker compose restart freeradius</code></pre>
 
   <div class="info-box">
     Данные берутся из таблицы <code>USERS_RADIUSAUTH</code> по условию <code>logged=1, user.nas_id=&lt;id&gt;</code>. Если сессия зависла (NAS не прислал Accounting-Stop), она всё равно будет отображаться — используйте кнопку «Sync» для принудительной синхронизации.
+  </div>
+
+  <!-- ===== Что такое свитчи в биллинге ===== -->
+  <h2 id="switch-overview">Коммутаторы (Switch) в биллинге — назначение и роль</h2>
+  <div class="section-toc">
+  <details open>
+    <summary><strong>Содержание раздела</strong></summary>
+    <ul>
+      <li><a href="#switch-purpose">Зачем коммутатор хранится в БД</a></li>
+      <li><a href="#switch-fields-usage">Где это поле используется</a></li>
+      <li><a href="#switch-when-needed">Нужно ли вам это</a></li>
+      <li><a href="#switch-cleanup">Что делать со старыми/неиспользуемыми коммутаторами</a></li>
+    </ul>
+  </details>
+  </div>
+
+  <p><strong>Коммутатор (Switch)</strong> в СмИТ Биллинг — это запись в БД, отражающая физический сетевой коммутатор / OLT (PON-головку), через который абонент подключён к сети провайдера. Запись хранится в таблице <code>switch</code>, редактируется на странице <code>/admin/equipment/Switch/</code>.</p>
+
+  <h3 id="switch-purpose">Зачем коммутатор хранится в БД</h3>
+  <p>Запись <code>switch</code> в биллинге решает три задачи:</p>
+
+  <h4>1. Привязка абонента к точке физического подключения</h4>
+  <p>Поле <code>Users.SWITCH_ID</code> указывает «через какой коммутатор работает данная учётная запись». Эта информация используется в:</p>
+  <ul>
+    <li><strong>СОРМ-выгрузках</strong> — куда и через какое оборудование подключён клиент (<code>ABONENT_USER</code>, <code>GATEWAY</code>);</li>
+    <li><strong>Карточке абонента</strong> — оператор видит «абонент сидит в доме X на свитче Y» и не лезет в маршрутизаторы;</li>
+    <li><strong>Печатных формах</strong> и техподдержке — чтобы техник, выезжающий на объект, знал точку подключения.</li>
+  </ul>
+
+  <h4 id="opt82-binding">2. OPT82-авторизация (привязка по порту)</h4>
+  <p>Таблица <code>SWITCH_PORTS</code> хранит список портов конкретного коммутатора и привязки к учёткам. При OPT82-авторизации (см. <a href="#opt82-auth">раздел ниже</a>) FreeRADIUS получает из DHCP Option 82 IP коммутатора + номер порта, парсит их по шаблонам из <a href="#switch-types"><strong>Типа коммутатора</strong></a> и находит абонента в <code>SWITCH_PORTS</code> без логина/пароля.</p>
+  <p>Это самый «технологический» способ использования коммутатора в биллинге: реально влияет на авторизацию.</p>
+
+  <h4>3. Связь с IP-пулом (<code>ip_pull.SWITCH_ID</code>)</h4>
+  <p>Можно привязать конкретный IP-пул к конкретному свитчу — тогда выдача IP-адресов клиентам этого свитча идёт только из назначенного пула. Используется в небольших сегментированных сетях, где хочется строго контролировать какой кусок адресации работает с какой железкой.</p>
+
+  <h3 id="switch-fields-usage">Где это поле используется</h3>
+  <table class="data-table">
+    <thead>
+      <tr><th>Где</th><th>Поле / связь</th><th>Что происходит</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>Users</code> (учётная запись)</td><td><code>SWITCH_ID</code> + <code>PORT</code></td><td>Привязка абонента к коммутатору и порту — отображение в карточке, СОРМ, OPT82</td></tr>
+      <tr><td><code>SWITCH_PORTS</code></td><td><code>SWITCH_ID</code> + <code>id</code> (номер порта)</td><td>OPT82-авторизация — поиск абонента по физическому порту</td></tr>
+      <tr><td><code>CONNECTION_POINTS</code></td><td><code>SWITCH_ID</code> + <code>SWITCH_P_ID</code></td><td>Точка физического подключения с указанием конкретного порта</td></tr>
+      <tr><td><code>ip_pull</code></td><td><code>SWITCH_ID</code></td><td>Привязка IP-пула к свитчу — клиенты этого свитча получают IP только отсюда</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="switch-when-needed">Нужно ли вам это</h3>
+  <p>Зависит от модели работы вашего ISP:</p>
+  <ul>
+    <li><strong>Если используете OPT82-авторизацию</strong> — записи коммутаторов <em>обязательны</em>. Без правильно заполненного <code>switch</code> + <code>SWITCH_PORTS</code> + <code>SwitchType</code> с шаблонами Option 82 авторизация работать не будет.</li>
+    <li><strong>Если авторизация по логину/паролю или MAC</strong> — записи нужны только для <em>отображения</em> в карточке абонента: «он подключён через свитч X». Удобно технику, но никакой логики на свитче не висит. Можно поддерживать «по желанию».</li>
+    <li><strong>Если у вас PON-сеть (оптика)</strong> — OLT-головки часто заводятся в <code>switch</code> для отображения, но фактическая авторизация идёт по MAC ONT через RADIUS, а не через OPT82. Тогда запись OLT в БД полезна для документации, но не для логики.</li>
+  </ul>
+
+  <h3 id="switch-cleanup">Что делать со старыми/неиспользуемыми коммутаторами</h3>
+  <p>В аудите чистоты БД (<a href="billing.html#dev-reports">журнал dev_reports</a>) часто встречаются записи коммутаторов с <code>users_on_it=0</code> и <code>cp_on_it=0</code> — то есть ни один абонент через них не привязан. Перед удалением проверьте:</p>
+  <ol>
+    <li><strong>OLT/PON-головки</strong> (имя содержит «OLT», «GPON», «BDCOM», «ELTEX_LTE», тип SwitchType с PON-полями) — <em>не удалять без подтверждения сетевиков</em>. Это реальное оборудование в сети, на нём могут позже появиться абоненты.</li>
+    <li><strong>Старые маленькие коммутаторы доступа</strong> (D-Link, SNR на 24 порта) — если им больше 5 лет и у них нет ни одного клиента, чаще всего это рудимент после декомиссии. Можно удалять <strong>после</strong> подтверждения от инженера, что эта железка реально снята.</li>
+    <li><strong>Тестовые записи</strong> (имя совпадает с IP, тип не указан, дом не указан) — обычно безопасно удалять.</li>
+  </ol>
+  <p>Удаление выполняется через UI <code>/admin/equipment/Switch/</code> кнопкой 🗑 в строке. SQL-каскад: <code>switch</code> защищён <strong>NO ACTION</strong> на FK из <code>users.SWITCH_ID</code>, <code>CONNECTION_POINTS.SWITCH_ID</code>, <code>ip_pull.SWITCH_ID</code> — то есть удаление заблокируется, если есть хотя бы одна привязка. Это safety net.</p>
+
+  <div class="info-box">
+    <strong>Рекомендация:</strong> прежде чем удалять коммутатор «потому что 0 пользователей», убедитесь у сетевого инженера, что это не запасное оборудование на складе с заранее заведённой записью в биллинге. Удаление 4 пустых записей не даёт экономии (БД от них не тормозит), а ошибочное удаление действующего OLT — это потенциальный геморрой когда на нём появятся новые клиенты.
   </div>
 
   <!-- ===== Switch модальное окно ===== -->
@@ -727,8 +874,8 @@ IptvApiLog.objects.filter(success=False).order_by('-created_at')[:10]</code></pr
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 610)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">08.05.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 610)</span>&nbsp;|&nbsp;<span data-smit="updated">08.05.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 677)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">09.05.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 677)</span>&nbsp;|&nbsp;<span data-smit="updated">09.05.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=466"></script>
