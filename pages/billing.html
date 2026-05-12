@@ -3804,11 +3804,11 @@ debounce 300&nbsp;мс. Шорткат <kbd>Ctrl</kbd>+<kbd>K</kbd> ставит
 
 <h5>Подтверждение опасных операций</h5>
 
-<p>Удаление, отключение, включение и смена тарифа открывают Bootstrap-модалку
-<code>#bulkConfirmModal</code>: показывает превью первых 5 имён, общее количество
-и требует ввести точное число выбранных ID для активации кнопки. Это защита
-от случайной массовой операции — простой <code>confirm()</code> заменён на
-эту модалку (build&nbsp;289+).</p>
+<p>Удаление, отключение, включение и смена тарифа открывают модальное окно
+подтверждения: показывает превью первых 5 имён выбранных абонентов, общее их
+количество и требует ввести точное число выбранных записей для активации
+кнопки «Подтвердить». Это защита от случайной массовой операции по
+невнимательности.</p>
 
 <h5 id="abonents-search-csv">CSV-экспорт</h5>
 <p>Кнопка <em>«📥 CSV»</em> в шапке выгружает текущий видимый срез
@@ -3816,100 +3816,120 @@ debounce 300&nbsp;мс. Шорткат <kbd>Ctrl</kbd>+<kbd>K</kbd> ставит
 для Excel RU. Колонки те же что в таблице плюс расшифровка тарифа,
 оператор и баланс в рублях.</p>
 
-<h4 id="abonent-details-drawer">Drawer-панель деталей абонента (build 663–677)</h4>
+<h4 id="abonent-details-drawer">Sidebar-панель абонента</h4>
 
-<p>В строках таблиц на трёх страницах — <code>/admin/debtors/</code>,
-<code>/admin/Abonents/search/</code>, <code>/admin/Abonents/&lt;folder-id&gt;/</code> —
-справа от каждой строки рендерится компактная кнопка <code>ℹ</code> (<em class="text-muted">.abd-trigger-btn</em>).
-Клик открывает <strong>drawer-панель</strong> справа (Bootstrap offcanvas, 540&nbsp;px) с краткими
-деталями абонента — без перехода на полную карточку. Drawer построен как универсальный
-include-шаблон <code>billing/templates/includes/abonent_drawer.html</code> и подключается
-одной строкой <code>{% include 'includes/abonent_drawer.html' %}</code>.</p>
+<p>В строках таблиц списков абонентов (<a href="#abonents-folder-view">папка</a>,
+<a href="#abonents-search">глобальный поиск</a>, <a href="#debtors">должники</a>) у каждой
+записи справа есть кнопка <strong>ℹ Подробнее</strong>. Клик открывает выезжающую
+<strong>боковую панель справа</strong> (sidebar / drawer) с краткой сводкой по абоненту —
+без ухода со списка и потери контекста (фильтры, прокрутка, выделение сохраняются).</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/drawer_v677/debtors_list_with_trigger.png" alt="Кнопки ℹ в строках таблицы должников"></p>
+<p>Панель решает задачу «быстро глянуть, что у этого абонента», когда полная карточка
+с десятком вкладок избыточна. Подходит для: проверки баланса, просмотра последних оплат,
+звонка/письма по контактам, добавления комментария оператора, отправки SMS-напоминания.</p>
 
-<h5 id="drawer-header">Шапка drawer с плашками</h5>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/drawer_v677/debtors_list_with_trigger.png" alt="Кнопки ℹ в строках таблицы списка абонентов"></p>
 
-<p>В верхней части drawer выводятся <strong>8 плашек</strong> с ключевыми атрибутами абонента
-(<em>build 677</em>):</p>
+<details class="section-toc">
+  <summary><strong>Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#drawer-where">Где доступна панель</a></li>
+    <li><a href="#drawer-header">Шапка с плашками</a></li>
+    <li><a href="#drawer-sections">Секции панели</a></li>
+    <li><a href="#drawer-actions">Действия из панели</a></li>
+  </ul>
+</details>
+
+<h5 id="drawer-where">Где доступна панель</h5>
+<ul>
+  <li><strong>Папка абонентов</strong> (<code>/admin/Abonents/&lt;id&gt;/</code>) — в каждой строке таблицы.</li>
+  <li><strong>Глобальный поиск</strong> (<code>/admin/Abonents/search/</code>) — после колонки «Статус».</li>
+  <li><strong>Должники</strong> (<code>/admin/debtors/</code>) — последняя колонка таблицы.</li>
+</ul>
+
+<h5 id="drawer-header">Шапка с плашками</h5>
+
+<p>Вверху панели — компактные плашки с ключевыми атрибутами абонента (видно с одного
+взгляда, без скролла):</p>
 
 <table class="data-table">
-  <thead><tr><th>Плашка</th><th>Источник</th><th>Цвет</th></tr></thead>
+  <thead><tr><th>Плашка</th><th>Что показывает</th><th>Цвет</th></tr></thead>
   <tbody>
-    <tr><td>#&lt;договор&gt;</td><td><code>Abonents.contract_number</code></td><td>—</td></tr>
-    <tr><td>Активен / Отключён</td><td><code>Abonents.enabled</code></td><td>зелёный / жёлтый</td></tr>
-    <tr><td>Физ. лицо / Бизнес</td><td><code>Abonents.company</code></td><td>серый</td></tr>
-    <tr><td>🔑 Логин</td><td>Первый <code>Users.login</code> (по <code>pk DESC</code>)</td><td>серый</td></tr>
-    <tr><td>🌐 IP</td><td><code>Users.ip</code> того же аккаунта</td><td>серый</td></tr>
-    <tr><td>🔓 Учётка вкл. / 🔒 выкл.</td><td><code>Users.enabled</code></td><td>зелёный / жёлтый</td></tr>
-    <tr><td>📶 Онлайн / 🔌 Офлайн</td><td><code>UsersRadiusauth.logged=1</code> + <code>radius_update &lt; 15&nbsp;мин</code></td><td>зелёный / жёлтый</td></tr>
-    <tr><td>🪪 СОРМ N/9</td><td>ФИО parts + паспорт серия/номер + 4 атрибута (тот же расчёт что в quick_cards карточки)</td><td>зелёный (9/9) / жёлтый (5–8) / красный (0–4)</td></tr>
+    <tr><td>#&lt;номер договора&gt;</td><td>Номер договора абонента</td><td>—</td></tr>
+    <tr><td>Активен / Отключён</td><td>Состояние абонента целиком</td><td>зелёный / жёлтый</td></tr>
+    <tr><td>Физ. лицо / Бизнес</td><td>Тип клиента</td><td>серый</td></tr>
+    <tr><td>🔑 Логин</td><td>Основной логин учётной записи</td><td>серый</td></tr>
+    <tr><td>🌐 IP</td><td>IP-адрес учётной записи</td><td>серый</td></tr>
+    <tr><td>🔓 Учётка вкл. / 🔒 выкл.</td><td>Состояние учётной записи (отдельно от абонента)</td><td>зелёный / жёлтый</td></tr>
+    <tr><td>📶 Онлайн / 🔌 Офлайн</td><td>Сейчас в RADIUS-сессии или нет</td><td>зелёный / жёлтый</td></tr>
+    <tr><td>🪪 СОРМ N/9</td><td>Полнота персональных данных по СОРМ-требованиям (ФИО, паспорт, ещё 4 атрибута)</td><td>зелёный (9/9) / жёлтый (5–8) / красный (0–4)</td></tr>
   </tbody>
 </table>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/drawer_v677/drawer_header_with_badges.png" alt="Шапка drawer с плашками" style="max-width:540px"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/drawer_v677/drawer_header_with_badges.png" alt="Шапка sidebar-панели с плашками" style="max-width:540px"></p>
 
-<h5 id="drawer-sections">Секции drawer</h5>
+<h5 id="drawer-sections">Секции панели</h5>
 
-<p>Прокрутка drawer сверху вниз содержит 8 секций:</p>
+<p>Прокрутка панели сверху вниз содержит 8 информационных блоков:</p>
 
 <ol>
-  <li><strong>💰 Финансы</strong> — баланс, дней долга, тариф, последний платёж. Если активен ОП — отдельная info-плашка с суммой и датой окончания.</li>
-  <li><strong>📒 Контакты и действия</strong> — телефон (<code>tel:</code>), email (<code>mailto:</code>), адрес. Кнопки: «Полная карточка» (новая вкладка) и «Активировать ОП» (скрыта при положительном балансе, <em>build 673</em>).</li>
-  <li><strong>👤 Аккаунты / учётные записи</strong> (<em>build 675</em>) — компактная таблица первых 10 <code>Users</code> абонента: цветная точка статуса (online / offline / disabled), логин (моноширинный), IP, NAS.</li>
-  <li><strong>🌐 Последняя сессия</strong> (<em>build 675</em>) — последняя/активная <code>RadiusSessions</code>: бейдж Active/Завершена, логин, начало, длительность (форматированная), Framed-IP, NAS-IP, трафик in/out (Б/КБ/МБ/ГБ), end_reason для закрытых.</li>
-  <li><strong>📈 Платежи за 12 мес.</strong> — Chart.js stacked bar (зелёный приход / красный расход по месяцам). Загружается с jsdelivr CDN при первом открытии drawer (lazy).</li>
-  <li><strong>📋 Последние операции</strong> — 10 последних <code>FinanceOperations</code> с цветом по знаку.</li>
-  <li><strong>📝 Комментарии операторов</strong> — хранятся в <code>AbonentsComments</code> (тот же источник что блок «Комментарии» на полной карточке, <em>build 674</em>). С <em>build 677</em>: сохраняется автор через <code>OWNER_ID</code> (миграция <code>0128_abonents_comments_owner</code>), пишется аудит-запись с <code>table_name='ABONENTS_COMMENTS'</code>. Кнопка удаления 🗑 рендерится только для <code>request.user.is_superuser</code> — backend проверяет в <code>POST /admin/debtors/&lt;id&gt;/comment/&lt;cid&gt;/delete/</code>.</li>
-  <li><strong>✉ Отправленные сообщения</strong> — последние 20 <code>MsgStack</code> с бейджами каналов (SMS/Email/Push/TG/VK) и статусом доставки. Форма «Отправить SMS» с пустым полем = шаблон по умолчанию.</li>
+  <li><strong>💰 Финансы</strong> — баланс, количество дней долга, текущий тариф, дата
+  последнего платежа. Если активен <a href="#promise-pay">обещанный платёж</a> —
+  отдельная плашка с суммой и датой окончания.</li>
+
+  <li><strong>📒 Контакты и действия</strong> — телефон (клик → системный диалер),
+  e-mail (клик → почтовый клиент), почтовый адрес. Кнопки быстрых действий:
+  «Открыть полную карточку» (в новой вкладке) и «Активировать обещанный платёж»
+  (видна, только если у абонента отрицательный баланс).</li>
+
+  <li><strong>👤 Учётные записи</strong> — компактная таблица первых 10 логинов
+  абонента: цветная точка статуса (online / offline / disabled), логин,
+  IP-адрес, имя NAS-сервера. Удобно для абонентов с несколькими договорами.</li>
+
+  <li><strong>🌐 Последняя сессия</strong> — данные последней или текущей RADIUS-сессии:
+  бейдж Active / Завершена, логин, время начала, длительность, IP, NAS,
+  объём трафика in/out (с автоматическим форматированием Б/КБ/МБ/ГБ),
+  причина завершения для закрытых сессий.</li>
+
+  <li><strong>📈 Платежи за 12 месяцев</strong> — столбчатая диаграмма (зелёный — приход
+  средств, красный — списания) по месяцам. Помогает увидеть платёжную дисциплину.</li>
+
+  <li><strong>📋 Последние операции</strong> — 10 свежих финансовых операций
+  (приходы/списания) с цветовым кодированием по знаку.</li>
+
+  <li><strong>📝 Комментарии операторов</strong> — общая лента комментариев (тот же
+  источник, что и блок «Комментарии» на полной карточке абонента). Каждая
+  запись подписана автором и временем. Прямо из панели можно добавить новый
+  комментарий. Удаление существующих комментариев доступно только пользователю
+  с правами администратора.</li>
+
+  <li><strong>✉ Отправленные сообщения</strong> — последние 20 сообщений с бейджами
+  каналов (SMS / Email / Push / Telegram / VK) и статусом доставки. Внизу —
+  форма «Отправить SMS»: если оставить поле пустым, отправится шаблон по
+  умолчанию (например, напоминание о долге).</li>
 </ol>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/drawer_v677/drawer_debtor.png" alt="Drawer для должника — верхняя часть" style="max-width:540px"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/drawer_v677/drawer_debtor.png" alt="Sidebar-панель — верхняя часть (Финансы, Контакты)" style="max-width:540px"></p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/drawer_v677/drawer_accounts_and_session.png" alt="Drawer: Аккаунты и Последняя сессия" style="max-width:540px"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/drawer_v677/drawer_accounts_and_session.png" alt="Sidebar-панель — Учётные записи и Последняя сессия" style="max-width:540px"></p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/drawer_v677/drawer_chart_and_finops.png" alt="Drawer: график платежей и последние операции" style="max-width:540px"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/drawer_v677/drawer_chart_and_finops.png" alt="Sidebar-панель — график платежей и последние операции" style="max-width:540px"></p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/drawer_v677/drawer_comments_and_messages.png" alt="Drawer: комментарии и сообщения" style="max-width:540px"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/drawer_v677/drawer_comments_and_messages.png" alt="Sidebar-панель — комментарии и сообщения" style="max-width:540px"></p>
 
-<h5 id="drawer-where">Где доступен drawer</h5>
-
-<table class="data-table">
-  <thead><tr><th>Страница</th><th>Где кнопка ℹ</th></tr></thead>
-  <tbody>
-    <tr><td><code>/admin/debtors/</code></td><td>В каждой строке таблицы должников (последняя колонка)</td></tr>
-    <tr><td><code>/admin/Abonents/search/</code></td><td>В строках глобального поиска (после колонки «Статус»)</td></tr>
-    <tr><td><code>/admin/Abonents/&lt;folder-id&gt;/</code></td><td>В строках таблицы дочерних абонентов папки</td></tr>
-  </tbody>
-</table>
-
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/drawer_v677/search_with_trigger.png" alt="Drawer-кнопки на странице поиска"></p>
-
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/drawer_v677/folder_with_trigger.png" alt="Drawer-кнопки на странице папки"></p>
-
-<h5 id="drawer-api">Backend endpoints</h5>
-
-<table class="data-table">
-  <thead><tr><th>URL</th><th>Метод</th><th>Назначение</th></tr></thead>
-  <tbody>
-    <tr><td><code>/admin/debtors/&lt;id&gt;/details/</code></td><td>GET</td><td>Один запрос → JSON с <code>profile/kpi/chart/last_finops/messages/comments/accounts/last_session/can_delete_comment</code></td></tr>
-    <tr><td><code>/admin/debtors/&lt;id&gt;/comment/</code></td><td>POST</td><td>Добавить комментарий → <code>AbonentsComments.objects.create(owner_id=request.user.pk)</code> + аудит</td></tr>
-    <tr><td><code>/admin/debtors/&lt;id&gt;/comment/&lt;cid&gt;/delete/</code></td><td>POST</td><td>Удалить комментарий (только superuser) + аудит</td></tr>
-    <tr><td><code>/admin/debtors/&lt;id&gt;/action/</code></td><td>POST</td><td><code>action=send_sms</code> или <code>action=promise_pay</code> — переиспользует существующий debtors_action_ajax</td></tr>
-  </tbody>
-</table>
-
-<p>Endpoint <code>debtor_details</code> работает с <strong>любым абонентом</strong>
-(фильтр только <code>deleted=False</code>), не только с должниками — URL остался
-с префиксом <code>/admin/debtors/</code> по историческим причинам.</p>
-
-<h5 id="drawer-js-api">JS API</h5>
-
-<p><code>window.AbDrawer.open(abonentId)</code> — открывает drawer программно.
-Также автоматически срабатывает click-handler на любую кнопку с классом
-<code>.abd-trigger-btn[data-abonent-id]</code> (новый) или legacy
-<code>.debt-details-btn[data-id]</code>. Chart.js загружается с
-<code>cdn.jsdelivr.net/npm/chart.js@4.4.1</code> один раз за сессию.</p>
+<h5 id="drawer-actions">Действия из панели</h5>
+<ul>
+  <li><strong>Позвонить / написать на e-mail</strong> — клик по номеру телефона или
+  адресу почты в блоке «Контакты».</li>
+  <li><strong>Активировать обещанный платёж</strong> — одной кнопкой подключает абоненту
+  ОП (отрицательный баланс на N дней — настройка из тарифа).</li>
+  <li><strong>Добавить комментарий оператора</strong> — поле «Комментарий» + кнопка
+  «Сохранить». Запись автоматически подписывается автором.</li>
+  <li><strong>Отправить SMS-напоминание</strong> — отдельная форма внизу секции «Сообщения».
+  Пустое поле = шаблон напоминания о долге.</li>
+  <li><strong>Открыть полную карточку</strong> — переход на детальную страницу абонента
+  со всеми вкладками (в новой вкладке браузера).</li>
+</ul>
 
 <h4 id="abonent-card-ref">Карточка абонента</h4>
 <p>Переход кликом по строке абонента — открывается отдельная страница
