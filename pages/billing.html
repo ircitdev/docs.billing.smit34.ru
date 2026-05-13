@@ -19,10 +19,10 @@
   <meta name="twitter:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
   <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=466">
+  <link rel="stylesheet" href="../css/style.css?v=787">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.26.0/dist/tabler-icons.min.css">
-  <link rel="stylesheet" href="../css/search.css?v=466">
+  <link rel="stylesheet" href="../css/search.css?v=787">
 </head>
 <body>
 
@@ -4975,6 +4975,98 @@ OSM. Стиль карточки в <a href="#integrations">/admin/settings/inte
   <li><strong>💰 Операции</strong> — последние 5 финансовых операций с цветовыми бейджами. Кнопка «+» открывает модалку добавления операции.</li>
 </ul>
 
+<h3 id="abonent-diagnose">Диагностика связи — плашка-светофор (build 782+)</h3>
+
+<p>В шапке карточки абонента — автоматический <strong>экспресс-диагноз</strong> состояния связи. Светофор из 3 цветов (🟢 норма / 🟡 возможны проблемы / 🔴 проблема) с раскрывающимися деталями и готовым ответом для абонента. Все данные читаются из БД <em>read-only</em> (никаких записей, ≤6 SQL-запросов).</p>
+
+<p>Цель функционала — <strong>сократить время разбора жалобы «не работает интернет»</strong> с 5 минут до 10 секунд. Раньше оператор открывал 4 вкладки и шёл в SQL-консоль, чтобы понять причину; теперь — открыл карточку, посмотрел светофор, скопировал готовый ответ.</p>
+
+<h4 id="abonent-diagnose-overview">Что показывает плашка</h4>
+
+<p>Свёрнутая плашка — компактный светофор + 5 чипов проверок. Каждый чип имеет свой цвет (зелёный/жёлтый/красный/серый) и tooltip с детальным summary.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/diagnose_v782/diag_yellow_yudina_3083.png" alt="Жёлтая плашка диагностики — Lost-Carrier ×3 за сутки"></p>
+
+<h4 id="abonent-diagnose-checks">5 проверок диагностики</h4>
+
+<table>
+<thead><tr><th>Чип</th><th>Что проверяет</th><th>Когда красный</th></tr></thead>
+<tbody>
+  <tr><td>💰 <strong>Биллинг</strong></td><td>enabled, deleted, баланс, активные блоки, тариф, ОП</td><td>удалён / отключён / нет тарифа / b_admin / b_negbal</td></tr>
+  <tr><td>📶 <strong>Сессия</strong></td><td>Users.enabled/logged, активная RADIUS-сессия, свежесть UPDATE_TIME</td><td>LOGGED=true без сессии (зависшая)</td></tr>
+  <tr><td>📜 <strong>Разрывы</strong></td><td>END_REASON последних 10 сессий, Lost-Carrier за час/сутки</td><td>2+ Lost-Carrier за час → выезд монтажника</td></tr>
+  <tr><td>📊 <strong>Трафик</strong></td><td>IN_OCT/OUT_OCT текущей активной сессии</td><td>(всегда green/yellow/grey)</td></tr>
+  <tr><td>📍 <strong>Адрес</strong></td><td>Abonents.HOME_ID/FLAT == CONNECTION_POINTS.HOME_ID/FLAT</td><td>адрес и точка подключения не совпадают</td></tr>
+</tbody>
+</table>
+
+<p><strong>Общий уровень (overall)</strong> = худший из всех (red > yellow > green > grey).</p>
+
+<h4 id="abonent-diagnose-expanded">Развёрнутый вид и готовый ответ</h4>
+
+<p>Клик на кнопку «Подробнее» раскрывает 5 карточек с полным summary каждой проверки + блок «<strong>Готовый ответ для абонента</strong>» с кнопкой «Скопировать». Текст ответа автоматически подбирается по decision tree из 12 веток (нет тарифа → инструкция назначить тариф, 2+ Lost-Carrier → инструкция про кабель и роутер, активный трафик → «перезагрузите Wi-Fi», блок за неуплату → «внесите оплату», и т.д.).</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/diagnose_v782/diag_red_no_tarif_9318_expanded.png" alt="Развёрнутая плашка с 5 карточками + advice + кнопка Скопировать"></p>
+
+<h4 id="abonent-diagnose-sprint3">Sparkline 24ч и auto-actions (build 789)</h4>
+
+<p><strong>Sparkline «Сессии за 24 часа»</strong> — мини-график из 24 столбиков, каждый = 1 час. Зелёный = час с активной сессией, серый = тишина, красный = час с Lost-Carrier. Tooltip на каждом столбике показывает состояние.</p>
+
+<p>Под графиком — <strong>3 кнопки-действия</strong>:</p>
+<ul>
+  <li><strong>⚡ Сброс сессии</strong> — закрывает зависшие сессии в RADIUS_SESSIONS, сбрасывает <code>Users.LOGGED</code>+<code>USERS_RADIUSAUTH.LOGGED</code>, шлёт CoA Disconnect broadcast на все enabled NAS. Через 1 секунду диагноз автоматически обновляется.</li>
+  <li><strong>🔄 Перевыдать IP</strong> — освобождает текущий IP и выделяет новый из пула NAS (main → nat → white → hotspot) через <code>allocate_ip_from_pools</code> с защитой от race condition. Сразу же шлёт CoA, чтобы абонент переавторизовался.</li>
+  <li><strong>🔧 Тикет монтажнику</strong> — создаёт тикет в FreeScout с автозаполнением: ФИО / договор / телефон / адрес + результат диагноза + 🚨 подсветка Lost-Carrier как обоснование выезда. Тикет создаётся под аккаунтом оператора, видится в карточке вкладкой «Поддержка».</li>
+</ul>
+
+<p>Каждое действие защищено JS-confirm, показывает spinner во время выполнения, выводит toast «успех/ошибка», пишет запись в аудит.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/sprint3_v789/sprint3_sparkline_and_actions.png" alt="Sprint 3: sparkline 24ч + 3 action-кнопки в развёрнутой плашке"></p>
+
+<h4 id="abonent-diagnose-ux">UX-особенности (build 788+)</h4>
+
+<ul>
+  <li><strong>Точечный refresh</strong> кнопкой «Проверить сейчас» — fetch <code>/admin/Abonents/&lt;id&gt;/diagnose/</code> + обновление DOM без перезагрузки страницы. Прокрутка и открытые вкладки не теряются.</li>
+  <li><strong>Skeleton-loader</strong> — пока ждём ответ, чипы становятся полупрозрачными и по ним идёт shimmer-анимация, иконка светофора крутится. Анимация GPU-композитная (через <code>transform: translateX</code>), уважает <code>prefers-reduced-motion</code>.</li>
+  <li><strong>Toast-уведомления</strong> — copy / refresh / результаты действий показывают всплывающее уведомление 2.2с в правом нижнем углу с цветной иконкой success/error/info.</li>
+  <li><strong>Защита от падения</strong> — каждая из 5 проверок обёрнута в <code>_safe_check()</code>. Если одна из них падает (например, повреждена запись в БД) — она возвращает grey-результат «Ошибка проверки», остальные продолжают работать.</li>
+  <li><strong>Toggle</strong> через <code>VpnConst CONNECTIVITY_DIAG_ENABLED</code> (default <code>True</code>). При отключении плашка не рендерится, остальная карточка не затронута.</li>
+</ul>
+
+<h4 id="abonent-diagnose-api">REST API и CLI (build 789)</h4>
+
+<p>Для интеграции с внешними системами:</p>
+
+<ul>
+  <li><strong>REST API</strong>: <code>GET /rest_api/v2/diagnose/&lt;login&gt;/</code> → JSON DiagnoseReport. Session-auth Django. Используется в FreeScout-модуле, Telegram-боте, custom-скриптах.</li>
+  <li><strong>CLI команда</strong>: <code>python manage.py diag &lt;login&gt;</code> (или <code>--contract</code>, <code>--abonent-id</code>) — текстовый отчёт с цветовой подсветкой. Опция <code>--json</code> для скриптов, <code>--telegram</code> отправляет компактную сводку в админ-чат алертов.</li>
+</ul>
+
+<p>Пример CLI:</p>
+
+<pre><code>$ docker exec app-web-1 python manage.py diag 5927
+
+═══ Диагноз: 🟡 YELLOW — #5927 Кельн Валерий Валерьевич ═══
+
+  [GREEN] billing      — Активен, баланс 6.01 ₽, 2025_Для Тебя: 749.0 руб./мес.
+  [GREEN] session      — Сессия не активна (абонент офлайн)
+  [YELLOW] end_reasons — Lost-Carrier ×3 за сутки — нестабильная линия
+  [GREY] traffic       — Активной сессии нет
+  [GREEN] address      — Адрес абонента совпадает с точкой подключения
+
+📋 Готовый ответ для абонента:
+Здравствуйте! Проверим вашу линию и свяжемся с вами в течение 30 минут.
+</code></pre>
+
+<h4 id="abonent-diagnose-impl">Реализация (для разработчиков)</h4>
+
+<ul>
+  <li><strong>Service-layer</strong>: <code>billing/services/connectivity.py</code> — 5 функций <code>check_*()</code> + <code>connectivity_diagnose()</code> + <code>build_advice()</code>. Read-only, ≤6 SQL. Покрыто 37 unit-тестами в <code>billing/tests/test_connectivity.py</code>.</li>
+  <li><strong>Endpoint</strong>: <code>billing/views/diagnose.py</code> — <code>diagnose_view</code> (GET), <code>diag_action_view</code> (POST для 3 actions), <code>diagnose_rest_api</code> (REST API).</li>
+  <li><strong>UI</strong>: <code>billing/templates/abonents_form/abonent_post_status.html</code> — плашка-баннер + раскрывающиеся детали + sparkline + auto-actions + JS-обработчики + ~400 строк CSS.</li>
+  <li><strong>Интеграция с карточкой</strong>: <code>BlockStatusView</code> в <code>billing/views/abonents.py</code> — передаёт <code>diag</code> через try/except в контекст шаблона.</li>
+</ul>
+
 <h3 id="abonent-card-tabs">Вкладки</h3>
 <p>13 вкладок с подробной информацией. Часть из них объединена в группы (build 71): «Учётные записи + RADIUS», «Точки подключения + Оборудование» — соседние вкладки навигируются стрелками.</p>
 
@@ -5747,8 +5839,8 @@ endpoints <code>finops_ajax</code>, <code>finops_crud_ajax</code>,
   <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;<span data-smit="updated">13.05.2026</span></span>
 </footer>
 
-<script src="../js/main.js?v=466"></script>
-<script src="../js/search.js?v=466"></script>
+<script src="../js/main.js?v=787"></script>
+<script src="../js/search.js?v=787"></script>
 <script src="../js/version.js"></script>
 </body>
 </html>
