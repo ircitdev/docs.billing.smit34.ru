@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 794)</title>
+  <title>Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 796)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 794)">
+  <meta property="og:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 796)">
   <meta property="og:description" content="Личный кабинет абонента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/lk.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 794)">
+  <meta name="twitter:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 796)">
   <meta name="twitter:description" content="Личный кабинет абонента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="Личный кабинет абонента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
@@ -315,7 +315,11 @@
         <li><a href="#ai-fewshot">— Few-shot примеры</a></li>
         <li><a href="#ai-eval">— Eval (автотесты)</a></li>
         <li><a href="#ai-ab-testing">— A/B варианты</a></li>
-        <li><a href="#ai-dashboard">— Дашборд AI-чата</a></li>
+        <li><a href="#ai-dashboard">— Дашборд AI-чата</a>
+          <ul>
+            <li><a href="#ai-dashboard-all-sessions-796">— Все сессии за период (build 796)</a></li>
+          </ul>
+        </li>
       </ul>
     </li>
     <li><a href="#telegram-admin-bot">Telegram-бот для операторов (admin bot)</a></li>
@@ -1357,6 +1361,34 @@ Content-Type: application/json
     <li><strong>Худшие eval-кейсы за период</strong> — какие тесты чаще всего падали (источник для правки промпта)</li>
   </ul>
 
+  <h5 id="ai-dashboard-all-sessions-796">Все сессии за период (build 796)</h5>
+  <p>Новый блок внизу дашборда — полный список диалогов за период с фильтрами и поиском (limit 500). Раньше посмотреть сессию можно было только если клиент поставил 👎 или через прямой URL <code>/admin/reports/ai_chat_session/&lt;sid&gt;/</code>.</p>
+
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_chat_dashboard_v796/ai_dashboard_all_sessions_v796.png" alt="Все сессии за период — таблица с фильтрами" class="screenshot">
+
+  <p><strong>Фильтры:</strong></p>
+  <ul>
+    <li><strong>Канал:</strong> Все / LK / Mobile (раздельно или вместе)</li>
+    <li><strong>Feedback:</strong> Все / 👍 / 👎 / 🎧 Эскал. — оставляет только сессии с конкретным сигналом</li>
+    <li><strong>Поиск</strong> по <code>session_id</code> / имени абонента / номеру договора</li>
+  </ul>
+
+  <p><strong>Колонки</strong> (можно сортировать кликом на заголовок):</p>
+  <ul>
+    <li><strong>Последняя реплика</strong> — время последнего сообщения в сессии (по умолчанию desc — самое свежее наверху)</li>
+    <li><strong>Канал</strong> — цветной бейдж <code>LK</code> (синий) / <code>Mobile</code> (зелёный)</li>
+    <li><strong>Абонент</strong> — ФИО + номер договора, клик ведёт на профиль в новой вкладке</li>
+    <li><strong>Сообщений</strong> — общее (user/ai)</li>
+    <li><strong>Оценки</strong> — 👍N / 👎N / 🎧 (если эскалирована) или прочерк</li>
+    <li><strong>Session ID</strong> — monospace, для копирования или поиска в логах</li>
+  </ul>
+
+  <p>Клик по любой строке → существующая модалка с полным диалогом (та же что для «Последние 👎»).</p>
+
+  <div class="info-box">
+    <strong>Производительность:</strong> backend агрегирует <code>ai_chat_log</code> через <code>GROUP BY session_id</code> с лимитом 500 строк. Запрос укладывается в индекс <code>ix_ai_chat_log_created</code> + <code>ix_ai_chat_log_abonent</code>. Фильтрация / сортировка — на клиенте без дополнительных запросов.
+  </div>
+
   <h4>Telegram-алерты</h4>
   <p>Celery-задача <code>ai-health-check</code> запускается каждые 15 минут и проверяет показатели за последний час. Если <code>escalation_pct ≥ 40%</code> или <code>down_feedback_pct ≥ 40%</code> — отправляет алерт в Telegram-канал <code>nas_down</code>. Дедуп по severity и дате (один алерт на проблему в сутки).</p>
 
@@ -1816,8 +1848,8 @@ Content-Type: application/json
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 794)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">13.05.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 794)</span>&nbsp;|&nbsp;<span data-smit="updated">13.05.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 796)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">13.05.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 796)</span>&nbsp;|&nbsp;<span data-smit="updated">13.05.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=790"></script>
