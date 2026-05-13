@@ -2169,6 +2169,164 @@ auto-block по отрицательному балансу — работают
 
 <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/audit_settings_v778/audit_settings_v778_02_toolbar_with_cog.png" alt="Toolbar вкладки Аудит абонента с шестерёнкой настроек"></p>
 
+<h4 id="system-settings-logs">Вкладка «Логи» — хранение и уровень логирования (build 801)</h4>
+
+<p>Управление файлами журналов в <code>/var/log/django/</code>: ротация, сжатие, уровень логирования Django и FreeRADIUS. Раньше логи росли без ограничений — на тестовом сервере <code>freeradius.log</code> вырастал до 22 ГБ за месяц при <code>FREERADIUS_DEBUG_LEVEL=trace</code>.</p>
+
+<p>Параметры:</p>
+
+<table class="data-table">
+  <thead><tr><th>Параметр</th><th>Диапазон</th><th>Default</th><th>Что меняет</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Срок хранения логов (дней)</strong><br><code>LOG_RETENTION_DAYS</code></td>
+      <td>1–90</td>
+      <td>14</td>
+      <td>Сколько дней logrotate хранит файлы. Применяется к <code>error.log</code>, <code>freeradius.log</code>, <code>celery_*.log</code>, <code>gunicorn_*.log</code> и др. Ротация раз в сутки в 00:00 на хосте.</td>
+    </tr>
+    <tr>
+      <td><strong>Уровень логирования Django</strong><br><code>LOG_LEVEL</code></td>
+      <td>DEBUG / INFO / WARNING / ERROR</td>
+      <td>INFO</td>
+      <td>Влияет на <code>error.log</code> и <code>celery_*.log</code>. Применяется после перезапуска контейнеров.</td>
+    </tr>
+    <tr>
+      <td><strong>Verbosity FreeRADIUS</strong><br><code>FREERADIUS_DEBUG_LEVEL</code></td>
+      <td>info / debug / trace</td>
+      <td>info</td>
+      <td><code>info</code> — только Accept/Reject (~10 MB/сутки). <code>debug</code> (флаг <code>-X</code>) — детально (~100 MB/сутки). <code>trace</code> (флаг <code>-xx</code>) — полная трассировка (~800 MB/сутки, не использовать в проде).</td>
+    </tr>
+    <tr>
+      <td><strong>Сжимать ротированные файлы gzip</strong><br><code>LOG_COMPRESS</code></td>
+      <td>bool</td>
+      <td>true</td>
+      <td>Архивы прошлых дней сжимаются (≈ ×10 экономия места). Чтение через <code>zcat имя.gz</code>.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Справа на вкладке — таблица текущего размера всех файлов в <code>/var/log/django/</code> с подсветкой больших (≥100 МБ оранжевый, ≥1 ГБ красный). Клик по имени файла → переход в просмотр содержимого (<code>/admin/reports/dev/?tab=logs</code>).</p>
+
+<p>Host-side: <code>/etc/logrotate.d/smit-billing-django</code> (daily, rotate N, compress, copytruncate) + два cron-скрипта (<code>smit-billing-radacct-cleanup</code> для FreeRADIUS detail-файлов <code>radacct/&lt;NAS&gt;/detail-YYYYMMDD</code>; <code>smit-billing-logrotate-sync</code> для синхронизации конфига из контейнера).</p>
+
+<h4 id="system-settings-performance">Вкладка «Производительность» — Gunicorn / Celery / БД / Throttling (build 803)</h4>
+
+<p>Параметры процессов и ресурсов. Изменения требуют перезапуска контейнеров (<code>web</code>, <code>celery</code>). 4 группы настроек 2×2 + статус-блок снизу.</p>
+
+<table class="data-table">
+  <thead><tr><th>Группа</th><th>Параметры</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Веб-сервер (Gunicorn)</strong></td>
+      <td><code>GUNICORN_WORKERS</code> (1–16, default 1), <code>GUNICORN_THREADS</code> (1–32, default 8), <code>GUNICORN_TIMEOUT</code> (30–600 сек, default 120).</td>
+    </tr>
+    <tr>
+      <td><strong>Фоновые задачи (Celery)</strong></td>
+      <td><code>CELERY_WORKER_CONCURRENCY</code> (1–16, default 8 — не ставьте 16, см. build 450), <code>CELERY_TASK_TIME_LIMIT</code> (30–3600 сек, default 600).</td>
+    </tr>
+    <tr>
+      <td><strong>База данных и кеш</strong></td>
+      <td><code>DB_CONN_MAX_AGE</code> (0–3600, default 0 — закрывать после каждого запроса; см. build 452 — фикс утечки соединений), <code>REDIS_CACHE_TTL_DEFAULT</code> (10–86400 сек, default 300), <code>IP_POOL_STATS_CACHE_SECONDS</code> (5–600, default 60).</td>
+    </tr>
+    <tr>
+      <td><strong>Лимиты Mobile API</strong></td>
+      <td><code>MOBILE_API_THROTTLE_RATE_USER</code> (5–300 запросов/мин, default 30), <code>MOBILE_API_THROTTLE_RATE_ANON</code> (1–60 логинов/мин, default 5).</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Статус-блок снизу (read-only метрики, обновляется при загрузке страницы): CPU, RAM, Load average, PostgreSQL соединений (с алертом если &gt;80%), размер БД, Celery очередь, Redis память.</p>
+
+<h4 id="system-settings-radius">Вкладка «Сессии и RADIUS» — таймауты, retention, NAS auto-assign (build 803)</h4>
+
+<p>Параметры RADIUS-сессий, NAS-мониторинга и хранения истории. Применяются при следующей авторизации или ближайшем прогоне Celery beat (<code>cleanup-stale-sessions</code> каждые 5 минут, <code>db-cleanup-daily</code> в 03:00 UTC).</p>
+
+<table class="data-table">
+  <thead><tr><th>Группа</th><th>Параметры</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Активные сессии</strong></td>
+      <td><code>SESSION_STALE_MINUTES</code> (10–360, default 60) — после скольких минут без Update сессия считается зомби и <code>LOGGED</code> сбрасывается. <code>ACCT_INTERIM_INTERVAL</code> (60–3600 сек, default 600) — раз в сколько секунд NAS должен слать Accounting-Update.</td>
+    </tr>
+    <tr>
+      <td><strong>Хранение истории</strong></td>
+      <td><code>SESSIONS_RETENTION_DAYS</code> (7–365, default 90), <code>MSG_STACK_RETENTION_DAYS</code> (7–365, default 30), <code>AUDIT_RETENTION_DAYS</code> (30–1825, default 365). Целевая task — <code>db-cleanup-daily</code>, чистка батчами по 5000 с паузой 100мс.</td>
+    </tr>
+    <tr>
+      <td><strong>Авто-замена NAS</strong></td>
+      <td><code>DEFAULT_NAS_ID</code> (dropdown enabled NAS) — приёмник для новых абонентов. <code>AUTO_ASSIGN_NAS_MINUTES</code> (1–1440, default 3) — через сколько минут после первой авторизации перевешивать на реальный NAS. <code>NAS_RESYNC_MINUTES</code> (5–120, default 15) — окно для beat-задачи <code>nas-resync-recent</code> которая реагирует на ручную правку оператора.</td>
+    </tr>
+    <tr>
+      <td><strong>CoA / Disconnect</strong></td>
+      <td><code>COA_TIMEOUT_SECONDS</code> (1–60, default 10) — timeout для <code>radclient</code> при CoA Disconnect.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Статус-блок снизу: NAS всего / UP / DOWN (если есть), Сейчас онлайн (LOGGED), Активных RADIUS-сессий, Расхождение, размер таблиц <code>RADIUS_SESSIONS</code> / <code>AUDIT_OPERATIONS</code> / <code>MSG_STACK</code>.</p>
+
+<h4 id="system-settings-messages">Вкладка «Сообщения абонентам» — политика уведомлений (build 805)</h4>
+
+<p>Единая страница для управления всеми каналами доставки сообщений: Email, SMS, Push, Telegram, VK. Объединяет настройки из 4 разных мест в одну ментальную модель оператора («Сообщения»). 4 группы 2×2 + статистика снизу.</p>
+
+<table class="data-table">
+  <thead><tr><th>Группа</th><th>Параметры и эффект</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Тихий час</strong></td>
+      <td><code>NOTIFY_QUIET_HOURS_START</code> / <code>NOTIFY_QUIET_HOURS_END</code> (HH:MM). В заданное окно SMS и push не отправляются (Email и Telegram приходят молча). Окно может пересекать полночь (например 22:00–08:00). Fallback на старые <code>MOBILE_PUSH_QUIET_HOURS_*</code> для совместимости.</td>
+    </tr>
+    <tr>
+      <td><strong>Низкий баланс</strong></td>
+      <td><code>LOW_BALANCE_NOTIFY_DAYS_BEFORE</code> (1–14, default 3) — за сколько дней до окончания баланса предупреждать. <code>LOW_BALANCE_NOTIFY_THRESHOLD_RUB</code> (0–10000 руб, default 100) — дополнительный триггер по сумме.</td>
+    </tr>
+    <tr>
+      <td><strong>Каналы</strong> (kill-switch'и)</td>
+      <td>5 toggle: <code>NOTIFY_EMAIL_ENABLED</code>, <code>NOTIFY_SMS_ENABLED</code>, <code>NOTIFY_PUSH_ENABLED</code>, <code>NOTIFY_TELEGRAM_ENABLED</code>, <code>NOTIFY_VK_ENABLED</code>. <strong>Внимание</strong>: выключение канала останавливает ВСЕ сообщения через него, включая восстановление пароля и OAuth.</td>
+    </tr>
+    <tr>
+      <td><strong>Антидубль / шаблоны</strong></td>
+      <td><code>NOTIFY_DUPLICATE_WINDOW_MIN</code> (0–1440, default 60) — не слать одинаковое сообщение чаще раза в N минут (дедуп через Redis по md5 head_txt). <code>EMAIL_DEFAULT_SUBJECT</code> (строка до 200 симв.) — подставляется в письма без явного subject. <code>MSG_RETRY_COUNT</code> (1–10, default 4) — попыток отправки при ошибках шлюза.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Подключение: <code>billing/services/notification_policy.py::should_send(channel, abonent_id, head_txt)</code> вызывается в <code>billing/tasks/messaging.py:_dispatch_message</code> для каждого канала. Пропущенные сообщения логируются в <code>MsgStack.sms_status='skipped'</code> с <code>sms_error=причина</code> — оператор видит почему сообщение не доставлено.</p>
+
+<p>Шлюзы каждого канала настраиваются в отдельных разделах: Email <code>/admin/settings/email/</code>, SMS <code>/admin/settings/sms/</code>, Push <code>/admin/settings/firebase/</code>. Здесь — общая политика на уровне всей системы.</p>
+
+<p>Статистика снизу: отправлено сегодня по каналам, в очереди, SMS-ошибки, SMS-пропуски (тихий час / дубль), бейдж «Тихий час сейчас».</p>
+
+<h4 id="system-settings-blocks">Вкладка «Блокировки и финансы» — captive-portal + бизнес-правила (build 808)</h4>
+
+<p>Управление блокировкой абонентов за долг и базовыми правилами биллинга. 4 группы 2×2 + статус блокировок. Закрывает давнюю боль «Не авторизовать по RADIUS при отрицательном балансе» (build 419 soft-block) и задачу №4 Марии (captive-portal).</p>
+
+<table class="data-table">
+  <thead><tr><th>Группа</th><th>Параметры и эффект</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Captive Portal (мягкая блокировка)</strong></td>
+      <td><code>BLOCK_POOL_ID</code> (dropdown пулов) — IP-пул для walled-garden (обычно отдельный private-диапазон типа 10.88.0.0/24). <code>BLOCK_FILTER_ID</code> (default <code>walled_garden</code>) — атрибут Filter-Id в RADIUS-ответе, привязан к firewall-правилу на NAS. <code>BLOCK_PORTAL_URL</code> — справочный URL nginx-заглушки (для копирования в nginx config).</td>
+    </tr>
+    <tr>
+      <td><strong>Правила блокировок</strong></td>
+      <td><strong>🚨 Аварийный kill-switch</strong> «Разрешить интернет всем абонентам» — игнорирует ВСЕ блокировки в RADIUS (даже <code>b_admin</code>). «Разрывать сессию при переходе в <code>b_negbal</code>» (default ON) — сразу CoA Disconnect, иначе текущая сессия доживает до Acct-Interim. «Не авторизовать по RADIUS при отрицательном балансе» — hard REJECT vs soft walled-garden.</td>
+    </tr>
+    <tr>
+      <td><strong>Биллинг</strong></td>
+      <td><code>BILLING_CHARGES_HOUR</code> (0–23, default 9) — час суток для ежедневных списаний <code>billing_worker</code>. Рекомендация: 3 (ночь) — абоненты не будут видеть «минус» во время пользования. «Списывать у отключённых» (default ON = Carbon 4 поведение) — копит долг даже у <code>enabled=False</code>; OFF — не списываем.</td>
+    </tr>
+    <tr>
+      <td><strong>Отображение FinanceOperations</strong></td>
+      <td>«Скрыть операции с нулевой суммой» — фильтрует <code>op_summa=0</code> в <code>/admin/Abonents/FinanceOperations/</code> и карточке абонента. Не влияет на хранение в БД.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Подключение: <code>billing/services/block_policy.py</code> в 4 точках кода — <code>radius_python/internet.py:authorize()</code> (kill-switch ДО soft-block), <code>billing/models/abonents.py:block()</code> (пропуск CoA), <code>billing/tasks/billing_worker.py:_process_service()</code> (skip списания), <code>billing/views/finops_list.py</code> (queryset filter).</p>
+
+<p>Статус-блок снизу: Активных / Заблокированных абонентов, по b_negbal / b_admin / b_own, активных Обещанных Платежей, заблокировано/разблокировано сегодня. Большой красный alert над формой если включён аварийный kill-switch.</p>
+
 <h3 id="print-forms">6.2. Шаблоны печати</h3>
 <p>Шаблоны документов — договоры, акты, квитанции. Шаблон — это HTML или Word-файл
 с подстановочными переменными вида <code>{{ contract_number }}</code>,
