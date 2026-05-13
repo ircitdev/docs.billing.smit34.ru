@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 791)</title>
+  <title>Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 794)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 791)">
+  <meta property="og:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 794)">
   <meta property="og:description" content="Личный кабинет абонента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/lk.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 791)">
+  <meta name="twitter:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 794)">
   <meta name="twitter:description" content="Личный кабинет абонента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="Личный кабинет абонента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
@@ -154,6 +154,7 @@
           <li><a href="lk.html#lk-support">FreeScout</a></li>
           <li><a href="lk.html#lk-ai-chat">AI-ассистент</a></li>
           <li class="sub-item"><a href="lk.html#ai-chat-settings-787">— Управление /admin/settings/lk/ai_chat/</a></li>
+          <li class="sub-item"><a href="lk.html#ai-chat-widget-feedback-794">— Feedback 👍/👎 в виджете</a></li>
           <li><a href="lk.html#lk-profile">Профиль</a></li>
           <li><a href="lk.html#lk-firebase">Push (Firebase)</a></li>
           <li><a href="lk.html#lk-claude-ai">Claude AI</a></li>
@@ -299,6 +300,7 @@
     <li><a href="#lk-ai-chat">AI-ассистент (Claude / AIDA)</a>
       <ul>
         <li><a href="#ai-chat-settings-787">— Управление AI-чатом /admin/settings/lk/ai_chat/ (build 787)</a></li>
+        <li><a href="#ai-chat-widget-feedback-794">— Feedback 👍/👎 в виджете ЛК (build 794)</a></li>
       </ul>
     </li>
     <li><a href="#lk-profile">Профиль абонента</a></li>
@@ -1088,6 +1090,42 @@ https://billing.example.com/lk/payments/webhook/</code></pre>
 
   <p><strong>Flutter feedback (Android + iOS, v1.3.1):</strong> под каждым ответом AI — кнопки 👍/👎 (16px outlined icons). Активная кнопка подсвечивается brand-цветом <code>#5BA89D</code>. Повторное нажатие на ту же кнопку = снять оценку. Оптимистичный update + rollback при HTTP-ошибке. Оценки сохраняются в <code>shared_preferences</code>, отправляются на <code>POST /mobile-api/v1/chat/feedback</code> с <code>{session_id, message_index, rating, text}</code> и зеркалятся в локальный PG <code>ai_chat_log</code> + FreeScout MySQL <code>aida_messages</code>.</p>
 
+  <h4 id="ai-chat-widget-feedback-794">Feedback 👍/👎 в плавающем виджете ЛК (build 794)</h4>
+  <p>Плавающий виджет AI-ассистента в правом-нижнем углу ЛК (доступный со всех страниц) теперь поддерживает оценку ответов — синхронно с full-page чатом <code>/lk/chat/</code> и Flutter-приложением.</p>
+
+  <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;margin:16px 0">
+    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/lk_ai_chat_v794/lk_chat_widget_fb_zoom_v794.png" alt="Виджет AI с кнопками 👍/👎 под AI-ответом" class="screenshot" style="max-width:380px;border-radius:12px;border:1px solid #dee2e6">
+    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/lk_ai_chat_v794/lk_chat_widget_feedback_final_v794.png" alt="Виджет AI в ЛК — общий вид" class="screenshot" style="max-width:600px">
+  </div>
+
+  <p><strong>Поведение:</strong></p>
+  <ul>
+    <li>Кнопки появляются ТОЛЬКО под AI-ответами с <code>assistant_index</code> (welcome-сообщение и системные «Ошибка…» без них — туда оценку не поставишь)</li>
+    <li>Виден ровно при <code>LK_AI_FEEDBACK_ENABLED=1</code> — toggle в <code>/admin/settings/lk/ai_chat/</code>. Если выключить — кнопки исчезнут из всех каналов сразу</li>
+    <li>Активная 👍 окрашивается brand-цветом <code>#43b77a</code>, 👎 — красным <code>#dc3545</code></li>
+    <li>Повторное нажатие на активную кнопку = снять оценку (rating="")</li>
+    <li>Оптимистичный UI: статус меняется мгновенно, при HTTP-ошибке откатывается. Console остаётся чистым</li>
+    <li>Восстановление при reopen: при загрузке истории через <code>GET /lk/chat/history/</code> сохранённые оценки рендерятся обратно (хранятся в <code>ai_chat_log</code>)</li>
+    <li>Endpoint: <code>POST /lk/chat/feedback/</code> — общий для full-page <code>/lk/chat/</code> и виджета</li>
+  </ul>
+
+  <p><strong>Где зеркалится feedback:</strong></p>
+  <table>
+    <thead><tr><th>Хранилище</th><th>Поле</th><th>Назначение</th></tr></thead>
+    <tbody>
+      <tr><td>PG <code>ai_chat_log</code></td><td><code>user_feedback</code>, <code>feedback_text</code>, <code>feedback_at</code></td><td>Источник для <code>/admin/reports/ai_chat_dashboard/</code> (KPI 👍/👎)</td></tr>
+      <tr><td>FreeScout MySQL <code>aida_messages</code></td><td>те же 3 поля</td><td>Зеркало для read-only анализа из FreeScout-модуля</td></tr>
+    </tbody>
+  </table>
+
+  <p><strong>Технические детали:</strong></p>
+  <ul>
+    <li><code>chat_send</code> response: добавлены <code>assistant_index</code> (0-based индекс среди assistant-сообщений в claude_history) и <code>feedback_enabled</code> (bool из <code>LK_AI_FEEDBACK_ENABLED</code>)</li>
+    <li>Context processor <code>lk_features</code>: новые ключи <code>chat_ai_lk</code> (заменяет legacy condition в условии видимости виджета) и <code>ai_feedback</code></li>
+    <li>CSS <code>lk-chat-widget.css</code>: <code>.lk-chat-fb-row</code> + <code>.lk-chat-fb-btn</code> с focus-visible 2px brand outline, <code>prefers-reduced-motion</code> отключает transitions</li>
+    <li>На деплое: после обновления CSS обязательно <code>collectstatic --noinput</code> + <code>restart web</code> — иначе whitenoise отдаёт закешированный файл</li>
+  </ul>
+
   <div class="info-box">
     <strong>Совместимость:</strong> Legacy <code>LK_FEATURE_CHAT_AI</code> остаётся master-fallback — если новые ключи <code>LK_FEATURE_CHAT_AI_LK</code>/<code>LK_FEATURE_CHAT_AI_MOBILE</code> не заданы, runtime использует legacy значение. Это позволяет обновляться без миграции данных.
   </div>
@@ -1778,8 +1816,8 @@ Content-Type: application/json
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 791)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">13.05.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 791)</span>&nbsp;|&nbsp;<span data-smit="updated">13.05.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 794)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">13.05.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 794)</span>&nbsp;|&nbsp;<span data-smit="updated">13.05.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=790"></script>
