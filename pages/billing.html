@@ -2125,6 +2125,50 @@ endpoints <code>finops_ajax</code>, <code>finops_crud_ajax</code>,
 auto-block по отрицательному балансу — работают как обычно, без проверок.
 Это нужно чтобы политика «только суперюзер» не сломала автоматическое начисление.</p>
 
+<h4 id="system-settings-audit">Вкладка «Аудит» — настройки журнала действий по абонентам (build 778)</h4>
+
+<p>Управление параметрами вкладки <a href="#abonent-card-tab-audit">Аудит</a> в карточке абонента и общим поведением логирования. Доступна по адресу <code>/admin/settings/system/?tab=audit</code> только пользователям группы <code>root</code> или с <code>is_superuser=True</code>.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/audit_settings_v778/audit_settings_v778_01_form.png" alt="Настройки аудита — форма с 4 параметрами"></p>
+
+<table class="data-table">
+  <thead><tr><th>Параметр</th><th>Диапазон</th><th>Default</th><th>Что меняет</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Период по умолчанию (месяцев)</strong><br><code>AUDIT_TAB_DEFAULT_PERIOD_MONTHS</code></td>
+      <td>1–60</td>
+      <td>12</td>
+      <td>При первом открытии вкладки «Аудит» в карточке абонента сервер ставит диапазон <em>[now − N мес .. now]</em>. Пользователь может расширить вручную через datepicker.</td>
+    </tr>
+    <tr>
+      <td><strong>Записей на странице</strong><br><code>AUDIT_TAB_PER_PAGE</code></td>
+      <td>10–500</td>
+      <td>50</td>
+      <td>Количество строк в таблице вкладки. Больше = меньше переключений страниц, но дольше первая загрузка.</td>
+    </tr>
+    <tr>
+      <td><strong>Максимум строк в CSV-экспорте</strong><br><code>AUDIT_CSV_EXPORT_LIMIT</code></td>
+      <td>1 000 – 500 000</td>
+      <td>50 000</td>
+      <td>Защита от перегрузки сервера при выгрузке. При превышении выгружаются <em>последние N записей</em> по дате (хвост обрезается).</td>
+    </tr>
+    <tr>
+      <td><strong>Скрывать системные события</strong><br><code>AUDIT_TAB_HIDE_SYSTEM_EVENTS</code></td>
+      <td>bool</td>
+      <td>off</td>
+      <td>Не показывать строки без оператора (Celery, billing_worker, авто-блокировки) во вкладке Аудит и в KPI-плитках. Полезно для операторов 1-й линии — меньше шума, легче найти действия людей.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Все 4 настройки хранятся в таблице <code>system_settings</code> (category = <code>audit</code>), читаются через хелперы в <code>billing/services/settings_service.py</code> (<code>get_audit_default_period_months()</code>, <code>get_audit_per_page()</code>, <code>get_audit_csv_export_limit()</code>, <code>is_audit_hide_system_events()</code>) с clamp в коде на случай некорректного значения в БД.</p>
+
+<p><strong>Срок хранения записей аудита</strong> (по умолчанию 365 дней) настраивается отдельно в разделе <a href="#db-cleanup">Очистка БД</a> — параметр <code>DB_CLEANUP_AUDIT_DAYS</code>. Это сделано чтобы retention-политика управлялась рядом с другими параметрами очистки (MSG_STACK, RADIUS_SESSIONS), а не дублировалась.</p>
+
+<p><strong>Быстрый переход в настройки</strong>: для пользователей с <code>is_superuser=True</code> в toolbar вкладки «Аудит» карточки абонента появляется иконка-шестерёнка справа от кнопки CSV-экспорта — клик ведёт прямо в <code>/admin/settings/system/?tab=audit</code>.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/audit_settings_v778/audit_settings_v778_02_toolbar_with_cog.png" alt="Toolbar вкладки Аудит абонента с шестерёнкой настроек"></p>
+
 <h3 id="print-forms">6.2. Шаблоны печати</h3>
 <p>Шаблоны документов — договоры, акты, квитанции. Шаблон — это HTML или Word-файл
 с подстановочными переменными вида <code>{{ contract_number }}</code>,
@@ -5659,6 +5703,8 @@ endpoints <code>finops_ajax</code>, <code>finops_crud_ajax</code>,
 
 <h5 id="abonent-card-tab-audit-period">Период по умолчанию</h5>
 <p>При первом открытии вкладки сервер ставит диапазон <strong>последние 12 месяцев</strong> (раньше был 1 месяц, build 773). Для более длинной истории — расширить вручную через datepicker. localStorage сохраняет выбранный <em>текст-поиск</em> и <em>тип фильтра</em>, но <strong>НЕ даты</strong> (даты могут устареть и ввести в заблуждение). Ключ хранилища: <code>audit_filters_v2</code>.</p>
+
+<p>Дефолтный период (12 мес) <strong>настраивается</strong> в <a href="#system-settings-audit">Настройки системы → Аудит</a> — параметр <code>AUDIT_TAB_DEFAULT_PERIOD_MONTHS</code> (диапазон 1–60). Там же — лимит CSV-экспорта, записей на странице и опция «скрывать системные события».</p>
 
 <h5 id="abonent-card-tab-audit-csv">CSV-экспорт</h5>
 <p>Зелёная кнопка с иконкой <code>fa-file-csv</code> справа от «Применить» в toolbar. Качается выборка с теми же фильтрами что в UI (даты, поиск, абонент). Endpoint: <code>GET /admin/reports/audit_export/?abonent=&lt;id&gt;&amp;date_from=YYYY-MM-DD&amp;date_to=YYYY-MM-DD&amp;search=...</code>. Формат: UTF-8 BOM, разделитель <code>;</code>, колонки <em>Дата, Событие, Описание, Абонент ID, Абонент ФИО, Исполнитель</em>. Лимит 50 000 строк.</p>
