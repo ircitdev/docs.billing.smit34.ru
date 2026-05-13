@@ -31,6 +31,29 @@
     return d.innerHTML;
   }
 
+  // build 790+: индекс использует короткие ключи (t/id/f/c)
+  // для экономии байт — нормализуем для удобства доступа.
+  // t = title, id = anchor id, f = file path (pages/X.html), c = context.
+  // Старые длинные ключи (title/section/page/href/ctx) тоже поддерживаются
+  // на случай миграции.
+  function norm(item) {
+    return {
+      title: item.title || item.t || '',
+      ctx:   item.ctx   || item.c || '',
+      file:  item.href  || item.f || '',
+      anchor: item.anchor || item.id || '',
+      // section/page deprecated — выводим page из file path
+      page:  item.page  || (item.f ? item.f.replace('pages/', '').replace('.html', '') : ''),
+      section: item.section || item.title || item.t || ''
+    };
+  }
+
+  function buildHref(n) {
+    if (n.file && n.anchor) return hrefBase + n.file + '#' + n.anchor;
+    if (n.file) return hrefBase + n.file;
+    return '#';
+  }
+
   function render(found, q, results) {
     if (!found.length) {
       results.innerHTML = '<div class="docs-sr-empty">Ничего не найдено</div>';
@@ -40,29 +63,28 @@
     var re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
     var html = '';
     for (var j = 0; j < found.length; j++) {
-      var f = found[j];
-      var item = f.item;
-      var href = hrefBase + item.href;
+      var n = found[j].item; // уже нормализовано
+      var href = buildHref(n);
       var ctxHtml = '';
-      if (item.ctx) {
-        var ci = item.ctx.toLowerCase().indexOf(q);
+      if (n.ctx) {
+        var ci = n.ctx.toLowerCase().indexOf(q);
         var snippet;
         if (ci >= 0) {
           var start = Math.max(0, ci - 40);
-          var end = Math.min(item.ctx.length, ci + q.length + 60);
-          snippet = (start > 0 ? '…' : '') + item.ctx.substring(start, end) + (end < item.ctx.length ? '…' : '');
+          var end = Math.min(n.ctx.length, ci + q.length + 60);
+          snippet = (start > 0 ? '…' : '') + n.ctx.substring(start, end) + (end < n.ctx.length ? '…' : '');
         } else {
-          snippet = item.ctx.substring(0, 100) + (item.ctx.length > 100 ? '…' : '');
+          snippet = n.ctx.substring(0, 100) + (n.ctx.length > 100 ? '…' : '');
         }
         ctxHtml = '<div class="docs-sr-ctx">' + escH(snippet).replace(re, '<mark>$1</mark>') + '</div>';
       }
-      var sectionLine = item.section;
-      if (item.page && item.page !== item.section) {
-        sectionLine = item.page + ' / ' + item.section;
+      var sectionLine = n.section;
+      if (n.page && n.page !== n.section) {
+        sectionLine = n.page + ' / ' + n.section;
       }
       html += '<a href="' + href + '" class="docs-sr-item">'
         + '<div class="docs-sr-section">' + escH(sectionLine) + '</div>'
-        + '<div class="docs-sr-title">' + escH(item.title).replace(re, '<mark>$1</mark>') + '</div>'
+        + '<div class="docs-sr-title">' + escH(n.title).replace(re, '<mark>$1</mark>') + '</div>'
         + ctxHtml + '</a>';
     }
     results.innerHTML = html;
@@ -74,14 +96,15 @@
     if (q.length < 2) { results.classList.remove('show'); results.innerHTML = ''; return; }
     loadIndex().then(function(idx) {
       var found = [];
-      for (var i = 0; i < idx.length && found.length < 20; i++) {
-        var item = idx[i];
+      for (var i = 0; i < idx.length; i++) {
+        var n = norm(idx[i]);
         var score = 0;
-        if (item.title && item.title.toLowerCase().indexOf(q) >= 0) score += 5;
-        if (item.section && item.section.toLowerCase().indexOf(q) >= 0) score += 2;
-        if (item.page && item.page.toLowerCase().indexOf(q) >= 0) score += 2;
-        if (item.ctx && item.ctx.toLowerCase().indexOf(q) >= 0) score += 1;
-        if (score > 0) found.push({ item: item, score: score });
+        if (n.title && n.title.toLowerCase().indexOf(q) >= 0) score += 5;
+        if (n.section && n.section.toLowerCase().indexOf(q) >= 0) score += 2;
+        if (n.page && n.page.toLowerCase().indexOf(q) >= 0) score += 2;
+        if (n.ctx && n.ctx.toLowerCase().indexOf(q) >= 0) score += 1;
+        if (score > 0) found.push({ item: n, score: score });
+        if (found.length >= 20) break;
       }
       found.sort(function(a, b){ return b.score - a.score; });
       render(found, q, results);
