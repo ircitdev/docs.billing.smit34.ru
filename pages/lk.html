@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 822)</title>
+  <title>Личный кабинет и мобильные приложения — СмИТ Биллинг v2.0.0 (build 830)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 822)">
+  <meta property="og:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v2.0.0 (build 830)">
   <meta property="og:description" content="Личный кабинет абонента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/lk.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v1.6.0 (build 822)">
+  <meta name="twitter:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v2.0.0 (build 830)">
   <meta name="twitter:description" content="Личный кабинет абонента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="Личный кабинет абонента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
@@ -1536,6 +1536,19 @@ Content-Type: application/json
   </table>
 
   <h2 id="lk-design-system-489">Дизайн-система ЛК v489 — выравнивание со стилем админки</h2>
+  <div class="section-toc">
+  <details open>
+    <summary><strong>Содержание раздела</strong></summary>
+    <ul>
+    <li><a href="#lk-design-tokens-489">Токены дизайн-системы</a></li>
+    <li><a href="#lk-hero-cards-489">Hero-карточки на всех ключевых страницах</a></li>
+    <li><a href="#lk-mobile-489">Мобильная версия</a></li>
+    <li><a href="#lk-screenshots-489">Скриншоты</a></li>
+    <li><a href="#lk-build-history-489">История доработок ЛК (builds 484-489)</a></li>
+    </ul>
+  </details>
+  </div>
+
 <div class="page-toc">
 <details open>
   <summary><strong><i class="bi bi-book"></i> Содержание раздела</strong></summary>
@@ -1637,6 +1650,29 @@ Content-Type: application/json
 
 
   <h2 id="lk-pages">Страницы Личного Кабинета</h2>
+  <div class="section-toc">
+  <details open>
+    <summary><strong>Содержание раздела</strong></summary>
+    <ul>
+    <li><a href="#lk-page-dashboard">Дашборд (/lk/)</a></li>
+    <li><a href="#lk-page-profile">Профиль (/lk/profile/)</a></li>
+    <li><a href="#lk-page-pay">Пополнение баланса (/lk/payments/pay/)</a></li>
+    <li><a href="#lk-page-payments">История платежей (/lk/payments/)</a></li>
+    <li><a href="#lk-page-audit">История операций (/lk/audit/)</a></li>
+    <li><a href="#lk-page-promise-pay">Обещанный платёж (/lk/promise-pay/)</a></li>
+    <li><a href="#lk-page-sessions">Подключения (/lk/sessions/)</a></li>
+    <li><a href="#lk-page-speedtest">Тест скорости (/lk/speedtest/)</a></li>
+    <li><a href="#lk-page-messages">Сообщения (/lk/messages/)</a></li>
+    <li><a href="#lk-page-tariff">Тарифы (/lk/tariff/)</a></li>
+    <li><a href="#lk-page-services">Услуги (/lk/services/)</a></li>
+    <li><a href="#lk-page-referral">Реферальная программа (/lk/referral/)</a></li>
+    <li><a href="#lk-page-block">Добровольная блокировка (/lk/block/)</a></li>
+    <li><a href="#lk-page-support">Поддержка (/lk/support/)</a></li>
+    <li><a href="#lk-page-contacts-required">Заполнение контактов (/lk/profile/contacts-required/)</a></li>
+    </ul>
+  </details>
+  </div>
+
 <div class="page-toc">
 <details open>
   <summary><strong><i class="bi bi-book"></i> Содержание раздела</strong></summary>
@@ -1848,8 +1884,8 @@ Content-Type: application/json
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 822)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">14.05.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 822)</span>&nbsp;|&nbsp;<span data-smit="updated">14.05.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v2.0.0 (build 830)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">14.05.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v2.0.0 (build 830)</span>&nbsp;|&nbsp;<span data-smit="updated">14.05.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=790"></script>

@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Интеграция с СОРМ3 — СмИТ Биллинг v1.6.0 (build 822)</title>
+  <title>Интеграция с СОРМ3 — СмИТ Биллинг v2.0.0 (build 830)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 1.6 — Документация">
-  <meta property="og:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v1.6.0 (build 822)">
+  <meta property="og:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v2.0.0 (build 830)">
   <meta property="og:description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/sorm.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v1.6.0 (build 822)">
+  <meta name="twitter:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v2.0.0 (build 830)">
   <meta name="twitter:description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
@@ -279,13 +279,10 @@
   <li><a href="#principle">Принцип работы</a></li>
   <li><a href="#integrated">Интегрированные решения</a></li>
   <li><a href="#pending">Ожидающие интеграции</a></li>
-  <li><a href="#setup">Настройка подключения</a>
-    <ul>
-      <li><a href="#sorm-add-modal">Модальное окно «Добавить СОРМ»</a></li>
-    </ul>
-  </li>
+  <li><a href="#setup">Настройка подключения</a></li>
   <li><a href="#reports">Отчёты и SQL</a></li>
   <li><a href="#schedule">Расписание автоматической выгрузки</a></li>
+  <li><a href="#sorm-admin">Админка: выгрузка на сервера РКН</a></li>
   <li><a href="#manual-run">Управление отчётами</a></li>
   <li><a href="#metadata">СОРМ-метаданные UserAttributes</a></li>
   <li><a href="#preflight">Pre-flight валидация перед выгрузкой</a></li>
@@ -295,6 +292,7 @@
   </ul>
 </details>
 </div>
+
 
 
 <img src="../img/p112754989_BillingSormFSB_scheme.png" alt="Схема интеграции СОРМ3 с биллингом" class="content-image">
@@ -384,23 +382,6 @@
 
   <h2 id="reports">Отчёты и SQL</h2>
 
-
-  <div class="section-toc">
-
-  <details open>
-
-    <summary><strong>Содержание раздела</strong></summary>
-
-    <ul>
-
-      <li><a href="#standartnye-otchety-sorm-3-build-324">Стандартные отчёты СОРМ-3</a></li>
-
-    </ul>
-
-  </details>
-
-  </div>
-
   <p>Каждая СОРМ-запись содержит список <strong>отчётов</strong> — это именованные SQL-запросы, результат которых выгружается в CSV и отправляется на FTP.</p>
 
   <p>Для каждого отчёта задаются:</p>
@@ -464,6 +445,26 @@
 
 
   <h2 id="sorm-admin">Админка: выгрузка на сервера РКН</h2>
+  <div class="section-toc">
+  <details open>
+    <summary><strong>Содержание раздела</strong></summary>
+    <ul>
+    <li><a href="#sorm-list">Список конфигураций</a></li>
+    <li><a href="#sorm-readiness">Проверка готовности данных</a></li>
+    <li><a href="#sorm-basic">Основные настройки</a></li>
+    <li><a href="#sorm-ftp">Подключение к FTP-серверу РКН</a></li>
+    <li><a href="#sorm-telegram">Уведомления в Telegram</a></li>
+    <li><a href="#sorm-reports">Список отчётов</a></li>
+    <li><a href="#sorm-run-now">Ручной запуск выгрузки</a></li>
+    <li><a href="#sorm-history">История выгрузок</a></li>
+    <li><a href="#sorm-schedule">Автоматическое расписание</a></li>
+    <li><a href="#sorm-data-model">Структуры данных</a></li>
+    <li><a href="#sorm-endpoints">URL-эндпоинты</a></li>
+    <li><a href="#sorm-cli">Команды управления</a></li>
+    </ul>
+  </details>
+  </div>
+
 <div class="page-toc">
 <details open>
   <summary><strong><i class="bi bi-book"></i> Содержание раздела</strong></summary>
@@ -760,29 +761,6 @@
 
   <h2 id="manual-run">Управление отчётами</h2>
 
-
-  <div class="section-toc">
-
-  <details open>
-
-    <summary><strong>Содержание раздела</strong></summary>
-
-    <ul>
-
-      <li><a href="#deystviya">Действия</a></li>
-
-      <li><a href="#upravlenie-metadannymi-v-ui">Управление метаданными в UI</a></li>
-
-      <li><a href="#tekuschaya-karta-metadannyh-build-411">Текущая карта метаданных</a></li>
-
-      <li><a href="#pre-flight-v-celery-zadache-vygruzki">Pre-flight в Celery-задаче выгрузки</a></li>
-
-    </ul>
-
-  </details>
-
-  </div>
-
   <p>Страница отчётов: <code>/admin/equipment/sorm_list/1/reports/</code>. Все операции выполняются через <strong>модальные окна</strong> без перехода на другие страницы.</p>
 
   <p>Таблица показывает: название, описание содержимого, имя файла, периодичность. На мобильных устройствах дополнительные колонки компактно отображаются под названием.</p>
@@ -1027,8 +1005,8 @@ python manage.py merge_sorm_attribute_dups --by-name --apply</code></pre>
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0 (build 822)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">14.05.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0 (build 822)</span>&nbsp;|&nbsp;<span data-smit="updated">14.05.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v2.0.0 (build 830)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">14.05.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v2.0.0 (build 830)</span>&nbsp;|&nbsp;<span data-smit="updated">14.05.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=790"></script>
