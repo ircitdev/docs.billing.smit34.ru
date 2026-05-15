@@ -157,6 +157,12 @@ patterns = [
     (r'(СмИТ Биллинг\s+)v[\d.]+\s*\(build\s+\d+\)',                            r'\g<1>%s' % full),
     # SVG/text inside index.html: "v1.6.0 · build 214"
     (r'v[\d.]+\s*·\s*build\s+\d+',                                              'v%s · build %s' % (v['version'], v['build'])),
+    # <title>...СмИТ Биллинг v1.6.0</title>, <meta og:title>, плейн-текст без build (build 861 fix)
+    (r'(СмИТ Биллинг\s+)v[\d]+\.[\d]+\.[\d]+(?!\d|\s*\(build)',                r'\g<1>v%s' % v['version']),
+    # Плейн «СмИТ Биллинг 1.6.0» без v (исключая историч. заголовки в changelog,
+    # которые мы обходим — этот скрипт работает по всем .html, но «1.6.0» без v
+    # в живых страницах встречается только как версия)
+    (r'(СмИТ Биллинг\s+)[\d]+\.[\d]+\.[\d]+(?!\d)',                            r'\g<1>%s' % v['version']),
 ]
 total = 0
 for f in glob.glob('index.html') + glob.glob('pages/*.html'):
