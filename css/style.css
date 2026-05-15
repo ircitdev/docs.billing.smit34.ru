@@ -1607,3 +1607,221 @@ html, body {
 [data-theme="light"] .sidebar-theme-toggle .icon-sun,
 [data-theme="dark"] .sidebar-theme-toggle .icon-moon { display: none; }
 .sidebar-theme-label { flex: 1; text-align: left; }
+
+/* ═══════════ Dynamic Island TOC — мобильная навигация по разделам (≤768px) ═══════════ */
+/* Капсула внизу по центру: свёрнута → активный раздел + кольцо прогресса чтения;
+   развёрнута → список разделов страницы + полоса прогресса.
+   Строится скриптом в main.js из .content h2[id]. Светлая/тёмная тема. */
+.docs-island {
+  /* theme-токены (по умолчанию — светлая тема) */
+  --di-bg: rgba(255, 255, 255, 0.97);
+  --di-bg-solid: #ffffff;          /* непрозрачный — для выреза кольца */
+  --di-text: var(--text);
+  --di-text-dim: var(--text-light);
+  --di-num-muted: #94a3b8;
+  --di-track: rgba(38, 166, 154, 0.18);
+  --di-divider: var(--border);
+  --di-shadow: 0 10px 36px rgba(15, 23, 42, 0.20), 0 0 0 1px rgba(38, 166, 154, 0.14) inset;
+  --di-accent: var(--primary-dark);
+  --di-accent-soft: rgba(38, 166, 154, 0.10);
+  --di-accent-soft-strong: rgba(38, 166, 154, 0.18);
+  --di-ring-from: var(--primary);
+  --di-ring-to: var(--accent);
+  --di-bar: linear-gradient(90deg, var(--primary), var(--accent));
+
+  display: none;  /* показывается только в @media ≤768px */
+  position: fixed;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  z-index: 95;
+  background: var(--di-bg);
+  color: var(--di-text);
+  border-radius: 26px;
+  box-shadow: var(--di-shadow);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  overflow: hidden;
+  transition: width .38s cubic-bezier(.34,1.3,.64,1),
+              height .38s cubic-bezier(.34,1.3,.64,1),
+              border-radius .38s ease;
+  width: 252px;
+  height: 52px;
+}
+/* Тёмная тема: капсула — фирменный зелёный с градиентом */
+[data-theme="dark"] .docs-island {
+  --di-bg-solid: #0b3b34;          /* непрозрачный тёмно-teal — вырез кольца */
+  --di-text: #ffffff;
+  --di-text-dim: rgba(255, 255, 255, 0.82);
+  --di-num-muted: rgba(255, 255, 255, 0.55);
+  --di-track: rgba(255, 255, 255, 0.22);
+  --di-divider: rgba(255, 255, 255, 0.16);
+  --di-shadow: 0 10px 36px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.12) inset;
+  --di-accent: #ffffff;
+  --di-accent-soft: rgba(255, 255, 255, 0.12);
+  --di-accent-soft-strong: rgba(255, 255, 255, 0.22);
+  --di-ring-from: rgba(255, 255, 255, 0.85);
+  --di-ring-to: #ffffff;
+  --di-bar: linear-gradient(90deg, rgba(255,255,255,0.7), #ffffff);
+  /* фирменный teal → green градиент капсулы */
+  background: linear-gradient(135deg, #1f9e90 0%, #26a69a 55%, #43a047 100%);
+}
+.docs-island.open {
+  width: min(340px, calc(100vw - 24px));
+  height: min(60vh, calc(100vh - 110px));
+  border-radius: 22px;
+}
+
+/* ── Свёрнутая пилюля ── */
+.docs-island-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 52px;
+  padding: 0 14px 0 8px;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+.docs-island-ring {
+  position: relative;
+  width: 36px; height: 36px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  /* --di-progress (0–100) задаётся скриптом */
+  background: conic-gradient(from -90deg,
+                var(--di-ring-from) 0%,
+                var(--di-ring-to) calc(var(--di-progress, 0) * 1%),
+                var(--di-track) calc(var(--di-progress, 0) * 1%));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .25s ease;
+}
+.docs-island-ring::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: var(--di-bg-solid);
+}
+.docs-island-num {
+  position: relative;
+  z-index: 1;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: .74rem;
+  font-weight: 700;
+  color: var(--di-accent);
+}
+.docs-island-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: .82rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--di-text);
+}
+.docs-island-caret {
+  flex-shrink: 0;
+  font-size: .7rem;
+  color: var(--di-text-dim);
+  opacity: .75;
+  transition: transform .3s ease;
+}
+.docs-island.open .docs-island-caret { transform: rotate(180deg); }
+
+/* ── Развёрнутая панель ── */
+.docs-island-panel {
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 52px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease;
+}
+.docs-island.open .docs-island-panel {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity .25s ease .15s;
+}
+.docs-island-progress {
+  height: 3px;
+  flex-shrink: 0;
+  background: var(--di-track);
+}
+.docs-island-progress-bar {
+  height: 100%;
+  width: 0;
+  background: var(--di-bar);
+  transition: width .2s ease;
+}
+.docs-island-list {
+  list-style: none;
+  margin: 0;
+  padding: 8px;
+  overflow-y: auto;
+  counter-reset: di;
+  flex: 1;
+}
+.docs-island-list li { counter-increment: di; margin: 0; }
+.docs-island-list a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  color: var(--di-text-dim);
+  border-radius: 9px;
+  text-decoration: none;
+  font-size: .85rem;
+  line-height: 1.3;
+  transition: background .15s, color .15s;
+}
+.docs-island-list a::before {
+  content: counter(di, decimal-leading-zero);
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: .68rem;
+  font-weight: 700;
+  color: var(--di-num-muted);
+  flex-shrink: 0;
+  min-width: 20px;
+}
+.docs-island-list a:hover {
+  background: var(--di-accent-soft);
+  color: var(--di-text);
+  text-decoration: none;
+}
+.docs-island-list a.active {
+  background: var(--di-accent-soft-strong);
+  color: var(--di-accent);
+  font-weight: 600;
+}
+.docs-island-list a.active::before { color: var(--di-accent); }
+.docs-island-list::-webkit-scrollbar { width: 4px; }
+.docs-island-list::-webkit-scrollbar-thumb { background: rgba(38,166,154,0.4); border-radius: 8px; }
+[data-theme="dark"] .docs-island-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.4); }
+
+/* Backdrop за раскрытым островом */
+.docs-island-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.35);
+  z-index: 94;
+  opacity: 0;
+  transition: opacity .3s ease;
+}
+[data-theme="dark"] .docs-island-backdrop { background: rgba(0, 0, 0, 0.55); }
+.docs-island-backdrop.show { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .docs-island, .docs-island-caret, .docs-island-panel,
+  .docs-island-progress-bar, .docs-island-ring { transition: none; }
+}
+
+/* Показываем остров только на мобильном — там же, где появляется .menu-toggle */
+@media (max-width: 768px) {
+  .docs-island { display: block; }
+  .docs-island-backdrop.show { display: block; }
+}

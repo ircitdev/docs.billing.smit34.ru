@@ -404,4 +404,163 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     });
   });
+
+  // ═══════════ Dynamic Island TOC — мобильная навигация по разделам ═══════════
+  // Капсула внизу по центру (только ≤768px): свёрнута — активный раздел + кольцо
+  // прогресса чтения; развёрнута — список h2-разделов страницы. Строится из DOM.
+  (function initDocsIsland() {
+    // Только длинные страницы документации
+    var ISLAND_PAGES = ['billing.html', 'lk.html', 'api.html', 'sorm.html'];
+    if (ISLAND_PAGES.indexOf(currentFile) === -1) return;
+
+    // Собрать разделы текущей страницы. Структура страниц различается:
+    // billing/api/sorm используют h2 для разделов, lk — h3. Берём самый
+    // высокий присутствующий уровень, которого набралось ≥3.
+    var headings = Array.prototype.slice.call(
+      document.querySelectorAll('.content h2[id]')
+    );
+    if (headings.length < 3) {
+      headings = Array.prototype.slice.call(
+        document.querySelectorAll('.content h3[id]')
+      );
+    }
+    if (headings.length < 3) return;  // слишком мало разделов — остров не нужен
+
+    // Чистый текст заголовка: без badge-числа и без share-кнопки
+    function headingText(h) {
+      var clone = h.cloneNode(true);
+      clone.querySelectorAll('.heading-badge, .heading-share').forEach(function (el) {
+        el.remove();
+      });
+      return clone.textContent.trim().replace(/\s+/g, ' ');
+    }
+
+    var items = headings.map(function (h) {
+      return { id: h.id, el: h, label: headingText(h) };
+    });
+
+    // --- Разметка острова (создаётся скриптом, HTML-страницы не трогаем) ---
+    var backdrop = document.createElement('div');
+    backdrop.className = 'docs-island-backdrop';
+
+    var island = document.createElement('nav');
+    island.className = 'docs-island';
+    island.setAttribute('aria-label', 'Навигация по разделам страницы');
+
+    var listHtml = items.map(function (it) {
+      return '<li><a href="#' + it.id + '">' +
+        it.label.replace(/&/g, '&amp;').replace(/</g, '&lt;') + '</a></li>';
+    }).join('');
+
+    island.innerHTML =
+      '<div class="docs-island-pill" role="button" tabindex="0" ' +
+        'aria-expanded="false" aria-controls="docsIslandPanel" ' +
+        'aria-label="Оглавление страницы">' +
+        '<span class="docs-island-ring">' +
+          '<span class="docs-island-num">01</span></span>' +
+        '<span class="docs-island-label"></span>' +
+        '<span class="docs-island-caret" aria-hidden="true">▲</span>' +
+      '</div>' +
+      '<div class="docs-island-panel" id="docsIslandPanel">' +
+        '<div class="docs-island-progress" aria-hidden="true">' +
+          '<div class="docs-island-progress-bar"></div></div>' +
+        '<ol class="docs-island-list">' + listHtml + '</ol>' +
+      '</div>';
+
+    document.body.appendChild(backdrop);
+    document.body.appendChild(island);
+
+    var pill = island.querySelector('.docs-island-pill');
+    var ring = island.querySelector('.docs-island-ring');
+    var numEl = island.querySelector('.docs-island-num');
+    var labelEl = island.querySelector('.docs-island-label');
+    var barEl = island.querySelector('.docs-island-progress-bar');
+    var links = Array.prototype.slice.call(
+      island.querySelectorAll('.docs-island-list a')
+    );
+
+    // --- Открыть / закрыть ---
+    function openIsland() {
+      island.classList.add('open');
+      pill.setAttribute('aria-expanded', 'true');
+      backdrop.classList.add('show');
+    }
+    function closeIsland() {
+      island.classList.remove('open');
+      pill.setAttribute('aria-expanded', 'false');
+      backdrop.classList.remove('show');
+    }
+    function toggleIsland() {
+      island.classList.contains('open') ? closeIsland() : openIsland();
+    }
+    pill.addEventListener('click', toggleIsland);
+    pill.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleIsland(); }
+    });
+    backdrop.addEventListener('click', closeIsland);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && island.classList.contains('open')) closeIsland();
+    });
+
+    // --- Клик по разделу: плавный скролл + закрыть остров ---
+    links.forEach(function (link) {
+      link.addEventListener('click', function (e) {
+        var id = this.getAttribute('href').slice(1);
+        var target = document.getElementById(id);
+        if (!target) return;
+        e.preventDefault();
+        var headerH = 56;  // --header-height
+        var top = target.getBoundingClientRect().top + window.pageYOffset - headerH - 8;
+        window.scrollTo({ top: top, behavior: 'smooth' });
+        closeIsland();
+        if (history.replaceState) history.replaceState(null, '', '#' + id);
+      });
+    });
+
+    // --- Прогресс чтения страницы → кольцо в пилюле + полоса в панели ---
+    function updateProgress() {
+      var docH = document.documentElement.scrollHeight - window.innerHeight;
+      var pct = docH > 0
+        ? Math.min(100, Math.max(0, (window.pageYOffset / docH) * 100))
+        : 0;
+      ring.style.setProperty('--di-progress', pct.toFixed(1));
+      barEl.style.width = pct.toFixed(1) + '%';
+    }
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    window.addEventListener('resize', updateProgress);
+    updateProgress();
+
+    // --- Scrollspy: подсветка активного раздела ---
+    function setActive(id) {
+      var activeLink = null;
+      links.forEach(function (l) {
+        var on = l.getAttribute('href') === '#' + id;
+        l.classList.toggle('active', on);
+        if (on) activeLink = l;
+      });
+      if (!activeLink) return;
+      var idx = links.indexOf(activeLink) + 1;
+      numEl.textContent = idx < 10 ? '0' + idx : String(idx);
+      labelEl.textContent = activeLink.textContent;
+      if (island.classList.contains('open')) {
+        activeLink.scrollIntoView({ block: 'nearest' });
+      }
+    }
+    // Стартовое значение — первый раздел
+    setActive(items[0].id);
+
+    if ('IntersectionObserver' in window) {
+      var obs = new IntersectionObserver(function (entries) {
+        var topMost = null;
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting &&
+              (!topMost || entry.boundingClientRect.top < topMost.boundingClientRect.top)) {
+            topMost = entry;
+          }
+        });
+        if (topMost) setActive(topMost.target.id);
+      }, { rootMargin: '-64px 0px -55% 0px', threshold: 0 });
+      items.forEach(function (it) { obs.observe(it.el); });
+    }
+  })();
 });
