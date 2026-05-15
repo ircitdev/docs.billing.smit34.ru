@@ -413,19 +413,6 @@ document.addEventListener('DOMContentLoaded', function () {
     var ISLAND_PAGES = ['billing.html', 'lk.html', 'api.html', 'sorm.html'];
     if (ISLAND_PAGES.indexOf(currentFile) === -1) return;
 
-    // Собрать разделы текущей страницы. Структура страниц различается:
-    // billing/api/sorm используют h2 для разделов, lk — h3. Берём самый
-    // высокий присутствующий уровень, которого набралось ≥3.
-    var headings = Array.prototype.slice.call(
-      document.querySelectorAll('.content h2[id]')
-    );
-    if (headings.length < 3) {
-      headings = Array.prototype.slice.call(
-        document.querySelectorAll('.content h3[id]')
-      );
-    }
-    if (headings.length < 3) return;  // слишком мало разделов — остров не нужен
-
     // Чистый текст заголовка: без badge-числа и без share-кнопки
     function headingText(h) {
       var clone = h.cloneNode(true);
@@ -434,10 +421,47 @@ document.addEventListener('DOMContentLoaded', function () {
       });
       return clone.textContent.trim().replace(/\s+/g, ' ');
     }
+    function esc(s) {
+      return s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+    }
 
-    var items = headings.map(function (h) {
+    // Собрать разделы ВЕРХНЕГО УРОВНЯ страницы. Структура страниц различается:
+    // billing/api/sorm используют h2 для разделов (h3 — подразделы), lk — плоско:
+    // 16 h3-разделов + 2 поздних h2-блока. Стратегия:
+    //   • h2[id] ≥ 3  → плоский список h2
+    //   • иначе       → h2 + те h3, что идут ДО первого h2 (h3 внутри h2-блоков
+    //                   считаем подразделами и в остров не берём)
+    var h2list = Array.prototype.slice.call(
+      document.querySelectorAll('.content h2[id]')
+    );
+    var headings;
+    if (h2list.length >= 3) {
+      headings = h2list;
+    } else {
+      headings = [];
+      var firstH2 = h2list.length ? h2list[0] : null;
+      Array.prototype.slice.call(
+        document.querySelectorAll('.content h2[id], .content h3[id]')
+      ).forEach(function (h) {
+        if (h.tagName === 'H2') {
+          headings.push(h);
+        } else if (!firstH2) {
+          headings.push(h);  // h2 на странице нет — берём все h3
+        } else if (h.compareDocumentPosition(firstH2) & Node.DOCUMENT_POSITION_FOLLOWING) {
+          headings.push(h);  // h3 идёт раньше первого h2 — раздел верхнего уровня
+        }
+        // h3 после первого h2 — подраздел h2-блока, в остров не берём
+      });
+    }
+    if (headings.length < 3) return;  // слишком мало разделов — остров не нужен
+
+    // entries: { id, el, label } — пункты навигации (для scrollspy/прогресса)
+    var entries = headings.map(function (h) {
       return { id: h.id, el: h, label: headingText(h) };
     });
+    var listHtml = entries.map(function (it) {
+      return '<li><a href="#' + it.id + '">' + esc(it.label) + '</a></li>';
+    }).join('');
 
     // --- Разметка острова (создаётся скриптом, HTML-страницы не трогаем) ---
     var backdrop = document.createElement('div');
@@ -446,11 +470,6 @@ document.addEventListener('DOMContentLoaded', function () {
     var island = document.createElement('nav');
     island.className = 'docs-island';
     island.setAttribute('aria-label', 'Навигация по разделам страницы');
-
-    var listHtml = items.map(function (it) {
-      return '<li><a href="#' + it.id + '">' +
-        it.label.replace(/&/g, '&amp;').replace(/</g, '&lt;') + '</a></li>';
-    }).join('');
 
     island.innerHTML =
       '<div class="docs-island-pill" role="button" tabindex="0" ' +
@@ -547,12 +566,12 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
     // Стартовое значение — первый раздел
-    setActive(items[0].id);
+    setActive(entries[0].id);
 
     if ('IntersectionObserver' in window) {
-      var obs = new IntersectionObserver(function (entries) {
+      var obs = new IntersectionObserver(function (obsEntries) {
         var topMost = null;
-        entries.forEach(function (entry) {
+        obsEntries.forEach(function (entry) {
           if (entry.isIntersecting &&
               (!topMost || entry.boundingClientRect.top < topMost.boundingClientRect.top)) {
             topMost = entry;
@@ -560,7 +579,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         if (topMost) setActive(topMost.target.id);
       }, { rootMargin: '-64px 0px -55% 0px', threshold: 0 });
-      items.forEach(function (it) { obs.observe(it.el); });
+      entries.forEach(function (it) { obs.observe(it.el); });
     }
   })();
 });
