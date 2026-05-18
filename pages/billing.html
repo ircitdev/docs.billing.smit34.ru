@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Основные настройки биллинга — СмИТ Биллинг v2.0.0</title>
+  <title>Основные настройки биллинга — СмИТ Биллинг v2.1.0</title>
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="СмИТ Биллинг 2.0 — Документация">
-  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v2.0.0">
+  <meta property="og:site_name" content="СмИТ Биллинг 2.1 — Документация">
+  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v2.1.0">
   <meta property="og:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/billing.html">
   <meta property="og:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v2.0.0">
+  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v2.1.0">
   <meta name="twitter:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta name="twitter:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
   <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
@@ -31,7 +31,7 @@
     <button class="menu-toggle" aria-label="Меню"><i class="bi bi-list"></i></button>
     <div class="logo">
       <div class="logo-icon">С</div>
-      <div class="logo-text"><span class="logo-main"><span data-smit="brand-short">СмИТ Биллинг 2.0</span></span><span>Документация</span></div>
+      <div class="logo-text"><span class="logo-main"><span data-smit="brand-short">СмИТ Биллинг 2.1</span></span><span>Документация</span></div>
     </div>
   </div>
   <div class="header-search">
@@ -2249,7 +2249,7 @@ auto-block по отрицательному балансу — работают
 
 <p>Host-side: <code>/etc/logrotate.d/smit-billing-django</code> (daily, rotate N, compress, copytruncate) + два cron-скрипта (<code>smit-billing-radacct-cleanup</code> для FreeRADIUS detail-файлов <code>radacct/&lt;NAS&gt;/detail-YYYYMMDD</code>; <code>smit-billing-logrotate-sync</code> для синхронизации конфига из контейнера).</p>
 
-<h4 id="system-settings-performance">Вкладка «Производительность» — Gunicorn / Celery / БД / Throttling (build 803)</h4>
+<h4 id="system-settings-performance">Вкладка «Скорость» — Gunicorn / Celery / БД / Throttling (build 803, переименована в build 885)</h4>
 
 <p>Параметры процессов и ресурсов. Изменения требуют перезапуска контейнеров (<code>web</code>, <code>celery</code>). 4 группы настроек 2×2 + статус-блок снизу.</p>
 
@@ -2277,7 +2277,7 @@ auto-block по отрицательному балансу — работают
 
 <p>Статус-блок снизу (read-only метрики, обновляется при загрузке страницы): CPU, RAM, Load average, PostgreSQL соединений (с алертом если &gt;80%), размер БД, Celery очередь, Redis память.</p>
 
-<h4 id="system-settings-radius">Вкладка «Сессии и RADIUS» — таймауты, retention, NAS auto-assign (build 803)</h4>
+<h4 id="system-settings-radius">Вкладка «RADIUS» — таймауты, retention, NAS auto-assign (build 803, переименована в build 885)</h4>
 
 <p>Параметры RADIUS-сессий, NAS-мониторинга и хранения истории. Применяются при следующей авторизации или ближайшем прогоне Celery beat (<code>cleanup-stale-sessions</code> каждые 5 минут, <code>db-cleanup-daily</code> в 03:00 UTC).</p>
 
@@ -5295,11 +5295,23 @@ OSM. Стиль карточки в <a href="#integrations">/admin/settings/inte
 
 <p>Данные загружаются одним AJAX-запросом <code>/admin/Abonents/&lt;id&gt;/quick_cards/</code> сразу после открытия карточки. Шапка автообновляется раз в 60 секунд (статус Онлайн/Офлайн, баланс) — карточки операторов открыты часами, но всегда актуальны.</p>
 
-<h4 id="system-abonent-profile">Настройки профиля абонента (build 883)</h4>
+<h4 id="system-abonent-profile">Настройки профиля абонента (build 883, layout 2-col с build 885)</h4>
 
 <p>Раздел <a href="https://testbill.smit34.ru/admin/settings/system/?tab=abonent_profile" target="_blank" rel="noopener"><code>/admin/settings/system/?tab=abonent_profile</code></a> (вкладка <strong>«Профиль»</strong>) — <strong>33 глобальные настройки</strong> в 9 секциях, управляющие тем, что и как видит оператор на карточке абонента и в списках. Все настройки глобальные (действуют на всех операторов), хранятся в <code>SystemSettings</code> с категорией <code>abonent_profile</code>. Кеш Redis 60 секунд (<code>ctxproc:abonent_profile_v2</code>), сбрасывается при сохранении формы.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/profile_v883/profile_overview.png" alt="Обзор вкладки Профиль — 9 свёрнутых секций"></p>
+<p><strong>С build 885 (v2.1.0)</strong> страница в 2-колоночном layout (на экранах ≥1280px). 9 секций укладываются masonry-style через CSS <code>column-count:2</code> + <code>break-inside:avoid</code> — без выравнивания по высоте, плотно. На узких экранах автоматически 1 колонка.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/abonent_profile_v885/abonent_profile_v2.1.0.png" alt="Обзор вкладки «Профиль» — 2-колоночный layout, 9 свёрнутых секций (build 885)"></p>
+
+<p><strong>Также в build 885 переименованы две соседние вкладки</strong> для краткости:</p>
+<ul>
+<li>«Производительность» → <strong>«Скорость»</strong> (Gunicorn / Celery / БД / Throttling)</li>
+<li>«Сессии и RADIUS» → <strong>«RADIUS»</strong> (таймауты, retention, NAS auto-assign)</li>
+</ul>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/abonent_profile_v885/system_tabs_renamed.png" alt="Вкладки «Скорость» и «RADIUS» в /admin/settings/system/ (переименованы в build 885)"></p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/abonent_profile_v885/abonent_profile_v2.1.0_expanded.png" alt="Вкладка «Профиль» с раскрытыми секциями — 2-колоночный layout"></p>
 
 <h5 id="system-abonent-profile-quick">Секция 0 — Быстрый доступ (Quick Cards)</h5>
 

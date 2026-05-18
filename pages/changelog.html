@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Журнал изменений — СмИТ Биллинг 2.0</title>
+  <title>Журнал изменений — СмИТ Биллинг 2.1</title>
   <link rel="stylesheet" href="../css/style.css?v=836">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.26.0/dist/tabler-icons.min.css">
 </head>
@@ -14,7 +14,7 @@
     <button class="menu-toggle" aria-label="Меню">&#9776;</button>
     <div class="logo">
       <div class="logo-icon">С</div>
-      <div class="logo-text"><span class="logo-main">СмИТ Биллинг 2.0 </span><span>Документация</span></div>
+      <div class="logo-text"><span class="logo-main">СмИТ Биллинг 2.1 </span><span>Документация</span></div>
     </div>
   </div>
   <div class="header-right">
@@ -241,7 +241,7 @@
 <details open>
   <summary><strong>Содержание страницы</strong></summary>
   <ul>
-  <li><a href="#v2-0-0-b861">v2.0.0 (build 838–861) — 15 мая 2026</a></li>
+  <li><a href="#v2-0-0-b861">v2.1.0 (build 838–861) — 15 мая 2026</a></li>
   <li><a href="#v1-6-0-b428">v1.6.0 (build 421–428) — 2 мая 2026</a></li>
   <li><a href="#v1-6-0-b324">v1.6.0 (build 324) — 27 апреля 2026</a></li>
   <li><a href="#v1-0-0-b37">v1.0.0 (build 37) — 29 марта 2026</a></li>
@@ -254,7 +254,55 @@
 </div>
 
 
-  <!-- ═══════════ v2.0.0 build 838-861 ═══════════ -->
+  <!-- ═══════════ v2.1.0 build 864-885 — 18 мая 2026 ═══════════ -->
+  <h2 id="v2-1-0-b885">v2.1.0 (build 864–885) — 18 мая 2026</h2>
+  <p>Доработки логики разблокировок (фин-блок, b_sys, b_own), 3 read-only audit-команды, backup-модуль self-contained, синхронизация с EBS suspendedperiod, UI настроек профиля абонента (новая вкладка с 33 настройками в 2-колоночном layout).</p>
+
+  <h3 id="v210-unblock-logic">Логика разблокировки и фин-блоки</h3>
+  <ul>
+    <li><strong>auto-unblock b_negbal в _credit_abonent</strong> (build 868) — после webhook-оплаты (YooKassa/W1/Generic) фин-блокировка снимается автоматически. Заменяет ручную проводку оператора.</li>
+    <li><strong>signals.sync_tarif_on_create для NULL→X</strong> (build 877, 1A) — через sentinel-маркер триггерит копирование шаблона UsersUsluga при первом назначении тарифа. Раньше шаблон не подтягивался — оператор менял тариф на другой и обратно.</li>
+    <li><strong>auto-unblock b_sys «не назначен тариф»</strong> (build 877, 1B) — при появлении tarif_id блок снимается сразу, без отдельного нажатия «снять блок».</li>
+    <li><strong>auto-unblock b_negbal в promise_sync + EBS reconcile</strong> (build 877, 2A) — симметрично 868 для всех путей зачисления баланса (webhook + EBS-pull).</li>
+    <li><strong>Celery beat safety net</strong> (build 877, 2C) — <code>auto-unblock-bnegbal-with-positive</code> каждые 5 мин ловит любые остаточные случаи + Telegram-алёрт если &gt;5 за тик.</li>
+    <li><strong>Кнопка 💰 «Снять фин-блок»</strong> (build 877, 2E) — в шапке карточки абонента при активном b_negbal. Url <code>/admin/abonents/force_unblock_negbal/&lt;id&gt;/</code>. Баланс не меняется.</li>
+    <li><strong>sync_ebs_suspendedperiod + beat + кнопка 🏖</strong> (build 884) — синхронизация добровольных блокировок с EBS. Снимает зомби-блоки из миграционного импорта, когда отпуск в EBS закрыт. Кнопка в шапке для ручного снятия.</li>
+  </ul>
+
+  <h3 id="v210-audit-tools">Аудит и safety net</h3>
+  <ul>
+    <li><strong>3 read-only audit-команды</strong> (build 870) — <code>audit_block_consistency</code> (4 проверки блокировок+тарифов), <code>audit_duplicates</code> (FinOps/MsgStack/UsersUsluga), <code>audit_billing_consistency</code> (сверка AdminAccounts vs SUM(FinOps)).</li>
+    <li><strong>Фикс дублей FinOps в promise_sync</strong> (build 872) — broad-dedup в окне ±60s по abonent+op_type+summa.</li>
+    <li><strong>Ежедневный audit_block_consistency_daily</strong> (build 873/875) — Celery beat в 06:00 UTC, Telegram-алёрт при расхождениях.</li>
+    <li><strong>disable_abonents_without_tariff</strong> (build 871) — массовая блокировка абонентов без тарифа.</li>
+  </ul>
+
+  <h3 id="v210-backup">Backup-модуль (build 876)</h3>
+  <ul>
+    <li><code>_make_docker_backup</code> теперь включает <strong>Dockerfile, docker-compose.prod.yml, .env, requirements.txt, manage.py, gunicorn.conf.py</strong> и папку <code>docker/</code> — полный self-contained пакет для разворачивания на пустом VPS.</li>
+    <li>Bind-mount <code>/opt/smit-billing/app:/host_app:ro</code> в web и celery контейнерах.</li>
+    <li><code>restore.sh</code> переписан: принимает <code>TARGET_DIR</code>, sanity-check на <code>database.dump</code>+<code>manage.py</code>, подтверждение перед перезаписом, корректно поднимает БД, восстанавливает дамп, билдит и запускает контейнеры.</li>
+  </ul>
+
+  <h3 id="v210-ui">UI — настройки и виджеты</h3>
+  <ul>
+    <li><strong>Новая вкладка <code>/admin/settings/system/?tab=abonent_profile</code></strong> (build 879–883) — 33 настройки в 9 секциях: Quick Cards, видимость секций карточки, колонки списка, AJAX/refresh, дефолты карточки, drag&amp;drop вкладок + 4 стиля, баннеры уведомлений, прочее.</li>
+    <li><strong>2-колоночный layout</strong> для вкладки «Профиль» (build 885) — CSS <code>column-count:2</code> на ≥1280px, секции укладываются masonry-style плотно. На узких — 1 колонка автоматически.</li>
+    <li><strong>Переименование вкладок</strong> (build 885): «Производительность» → <strong>«Скорость»</strong>, «Сессии и RADIUS» → <strong>«RADIUS»</strong>.</li>
+    <li><strong>Виджет «Абоненты NAS» — общий онлайн</strong> (build 882) — на дашборде в шапке виджета теперь сумма активных RADIUS-сессий по всем NAS.</li>
+  </ul>
+
+  <h3 id="v210-principles">Соблюдённые правила</h3>
+  <ul>
+    <li><strong>EBS — источник правды по балансам.</strong> Поле <code>ostatok</code> не правится никакими скриптами или командами.</li>
+    <li>Все блокировки/разблокировки — через <code>AbonentsBlock</code> (наша таблица, EBS её не трогает).</li>
+    <li>Аудит на каждое действие через <code>billing.services.audit_log.write_audit</code>.</li>
+    <li>Toggle через VpnConst для отключения автоматики при инцидентах: <code>EBS_PROMISE_SYNC_ENABLED</code>, <code>AUTO_UNBLOCK_BNEGBAL_ENABLED</code>, <code>EBS_SUSPEND_SYNC_ENABLED</code>.</li>
+  </ul>
+
+  <p><strong>GitHub Release</strong>: <a href="https://github.com/ircitdev/SmitBilling/releases/tag/v2.1.0" target="_blank" rel="noopener">v2.1.0</a></p>
+
+  <!-- ═══════════ v2.0.0 build 838-861 — 15 мая 2026 ═══════════ -->
   <h2 id="v2-0-0-b861">v2.0.0 (build 838–861) — 15 мая 2026</h2>
   <p>Крупный рестайлинг карточки абонента и единая дизайн-система компонентов. Версия повышена до 2.0 — пользовательский интерфейс существенно перестроен.</p>
 
@@ -648,7 +696,7 @@ rtsh list scheme            — список доступных схем</code><
 </main>
 
 <footer class="footer">
-  &copy; 2026 СмИТ — СмИТ Биллинг v2.0.0 (build 883)
+  &copy; 2026 СмИТ — СмИТ Биллинг v2.1.0 (build 885)
 </footer>
 
 <script src="../js/main.js?v=836"></script>
