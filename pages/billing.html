@@ -19,7 +19,7 @@
   <meta name="twitter:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
   <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=836">
+  <link rel="stylesheet" href="../css/style.css?v=923">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.26.0/dist/tabler-icons.min.css">
   <link rel="stylesheet" href="../css/search.css?v=790">
@@ -176,6 +176,7 @@
           <li class="sub-item"><a href="billing.html#abonents-search">— Глобальный поиск</a></li>
           <li class="sub-item"><a href="billing.html#abonent-map">8.2. На карте</a></li>
           <li class="sub-item"><a href="billing.html#admin-accounts">8.3. Счета</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="billing.html#admin-accounts-v2">— Счета v2 (builds 918-923)</a></li>
           <li class="sub-item"><a href="billing.html#finance-operations">8.4. Финансовые операции</a></li>
           <li class="sub-item" style="padding-left:1.8em"><a href="billing.html#finops-modal-v915">— Модалка v915 (variant B)</a></li>
           <li><a href="billing.html#abonent-card">9. Карточка абонента</a></li>
@@ -5289,6 +5290,79 @@ OSM. Стиль карточки в <a href="#integrations">/admin/settings/inte
 <h4 id="admin-accounts-money">Денежные правила</h4>
 <p>Все суммы в БД хранятся как <strong>integer × 10^10</strong> (<code>DB_MONEY_KOEF = Decimal('10000000000')</code>). Конвертация происходит автоматически в <code>MoneyField</code> / <code>MoneyFormField</code>: <code>prepare_value()</code> делит на коэффициент при отображении, <code>clean()</code> умножает обратно при сохранении. На уровне UI и REST API всегда работаем в рублях с двумя знаками после запятой.</p>
 
+<h3 id="admin-accounts-v2">8.3.1. Счета v2 — Sprint 1-5 (builds 918-923)</h3>
+<p>Версия модалки счёта, расширенная связями с FinOps modal v915, Банковскими выписками, Услугами и Платёжными системами. Sprint 1 закрыл 5 P0 находок UX-аудита 2026-05-18, Sprint 2-5 закрыли 7 P1 находок. Health Score 64 → 92/100 (Excellent).</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/admin_accounts_v2_923/v2_01_list_overview.png" alt="Список счетов v2 — KPI кликабельные + колонка Тариф видна с md-breakpoint"></p>
+
+<h4 id="admin-accounts-header">Шапка модалки (P0-1, build 918)</h4>
+<p>Рядом с «Счёт #N» сразу видны: <strong>ФИО абонента</strong> (кликабельная ссылка на карточку), договор, тариф, иконка юр.лица (<i class="fas fa-briefcase"></i>), бейдж «Откл.» если abonent.enabled=false. Справа — бейдж баланса (цвет по знаку) и бейджи активных блокировок: <span class="badge bg-danger">b_negbal</span> <span class="badge bg-warning text-dark">b_admin</span> <span class="badge bg-info">b_own</span> <span class="badge bg-secondary">b_sys</span>.</p>
+<p>Backend: helper <code>_get_block_flags(abonent)</code> в <code>billing/views/accounts_list.py</code> читает <code>AbonentsBlock.objects.filter(abonent=ab, end_date__isnull=True)</code>. Расширение <code>ab_dict</code> в <code>_account_summary</code> отдаёт <code>enabled / block_flags / is_company</code>.</p>
+
+<h4 id="admin-accounts-balance">Вкладка ① Баланс — свёрнутые нулевые ячейки (P1-5, build 923)</h4>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/admin_accounts_v2_923/v2_02_modal_balance.png" alt="Модалка счёта — вкладка Баланс"></p>
+<p>Большая цифра баланса + 4 ячейки (Остаток / Дебет / Кредит / Стоплата). Если debit + credit + credit_adjust = 0 (типичный счёт EBS-абонента) — три нулевые ячейки скрыты, остаётся только «Остаток» + плашка «Дебет, Кредит, Стоплата = 0 — скрыто. <em>показать все ячейки</em>». Клик по ссылке выставляет <code>STATE._showAllBalance = true</code> и перерисовывает баланс.</p>
+
+<h4 id="admin-accounts-services">Вкладка ② Услуги и тарифы (P1-2, build 921)</h4>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/admin_accounts_v2_923/v2_03_services_with_tariff.png" alt="Модалка счёта — вкладка Услуги и тарифы"></p>
+<p>Для каждого абонента счёта показывается:</p>
+<ul>
+  <li><strong>Тариф</strong> с месячной ценой (берётся через <code>tarif.tarif_tuu.first().usluga.price/summa</code>). Клик → <code>/admin/tarifs/Tarif/?edit=&lt;id&gt;</code>.</li>
+  <li><strong>Таблица услуг</strong> (<code>UsersUsluga</code>): имя (клик → Usluga modal) / Сумма / Источник (бейдж <em>индивид.</em> / <em>шаблон</em> / <em>price</em>) / След. списание / комментарий-tooltip.</li>
+  <li><strong>Бонусы и компенсации</strong> свёрнуты в <code>&lt;details&gt;</code> — отдельной таблицей. Эвристика: <code>summ &lt; 0</code> OR <code>usluga.name</code> содержит «бонус».</li>
+  <li><strong>Каскад цены</strong>: <code>uu.summ → usluga.summa → usluga.price</code> (правило build 41).</li>
+</ul>
+<p>Сверху — карточка <strong>«Ожидаемое списание следующего месяца»</strong>: сумма всех enabled услуг + тариф − активные отрицательные бонусы. Endpoint: <code>GET /admin/Abonents/accounts_services/&lt;id&gt;/</code>.</p>
+
+<h4 id="admin-accounts-payments">Вкладка ③ Платёжные системы (P1-3, build 922)</h4>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/admin_accounts_v2_923/v2_04_payments_full.png" alt="Модалка счёта — вкладка Платёжные системы"></p>
+<p>За 90 дней группировка приходов (<code>op_summa &gt; 0</code>) по каналам платежей (<code>operator_name</code>). Если <code>operator_name</code> пустой — heuristic по <code>descr</code>: <code>[txn:</code> = YooKassa, <code>[bank_op:</code> = Bank, иначе Manual. Каждый канал — карточка grid 2-col с count, sum, last_date и иконкой/цветом канала.</p>
+<p>Под каналами — список <strong>доступных интеграций</strong> (YooKassa, Wallet One, Банковские выписки) с статусом ✓/⚠ и ссылками на настройки. Endpoint: <code>GET /admin/Abonents/accounts_payments_summary/&lt;id&gt;/</code>.</p>
+
+<h4 id="admin-accounts-finops">Вкладка ⑥ Финансовые операции — source-kind + клик (P0-2, build 918)</h4>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/admin_accounts_v2_923/v2_05_finops_with_sources.png" alt="Финопеации с цветными иконками источников и чипами связей"></p>
+<p>Каждая строка теперь имеет:</p>
+<ul>
+  <li><strong>Цветная иконка источника</strong> слева (32px): <i class="fas fa-credit-card" style="color:#7b3fff"></i> YooKassa / <i class="fas fa-wallet" style="color:#1976d2"></i> W1 / <i class="fas fa-university" style="color:#2e7d32"></i> Банк / <i class="fas fa-database" style="color:#757575"></i> EBS / <i class="fas fa-handshake" style="color:#e65100"></i> ОП / <i class="fas fa-user-edit" style="color:#00796b"></i> Ручная / <i class="fas fa-calendar-day" style="color:#43b77a"></i> Ежемес. / <i class="fas fa-exchange-alt" style="color:#6a1b9a"></i> Смена тарифа.</li>
+  <li><strong>Чипы связей</strong> в колонке «Описание»: <code>🏦 банк</code> (есть BSO reverse-link), <code>⚙ услуга</code> (usluga_id), <code>🔗 родитель</code> (fin_op_id), <code>↩ сторно</code>.</li>
+  <li><strong>Клик по строке</strong> → открывает FinOps modal v915 в view-режиме через <code>window.FinopsModal.open(op_id, 'view')</code>. Fallback — открытие в новой вкладке если FinopsModal не загружен.</li>
+</ul>
+<p>Backend использует <code>_resolve_source(op)</code> из <code>billing/views/finops_list.py</code> — единая эвристика во всех модалках. <code>select_related('usluga', 'fin_op')</code> избегает N+1.</p>
+
+<h4 id="admin-accounts-bank">Вкладка ⑦ Банковские выписки (P1-1, build 920)</h4>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/admin_accounts_v2_923/v2_06_bank_tab_empty.png" alt="Модалка счёта — вкладка Банковские выписки (empty-state)"></p>
+<p>Reverse-link на <code>BankStatementOperation</code> через <code>fin_operation_id</code>: батч-запрос для всех 50 финопеаций счёта одним SQL. Кнопки периода 30д/90д/1г. Сводка по банкам (карточки count + sum), таблица с Дата / Банк / Сумма / Плательщик+ИНН / Назначение / Сопоставление (match_strategy + match_confidence + status). Клик «→» открывает <code>/admin/finance/bank_queue/?import_id=&lt;N&gt;#bank-op-&lt;id&gt;</code>.</p>
+<p>Empty-state с иконкой <i class="fas fa-university"></i> и 2 подсказками: «Возможно платит через YooKassa/W1 — посмотрите финопеации» и «Открыть очередь bank_queue». Endpoint: <code>GET /admin/Abonents/accounts_bank_ops/&lt;id&gt;/?days=N</code>.</p>
+
+<h4 id="admin-accounts-msgs">Вкладка ⑧ Уведомления</h4>
+<p>Последние 20 SMS / Email / Push сообщений по абонентам этого счёта (<code>MsgStack</code>, см. <a href="#messaging">раздел 6.8 Сообщения</a>). Read-only.</p>
+
+<h4 id="admin-accounts-mobile">Mobile (P0-5, build 918 + build 923)</h4>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/admin_accounts_v2_923/v2_07_mobile_services.png" alt="Модалка на mobile 390px — вкладка Услуги и тарифы"></p>
+<p>На ≤768px side-nav становится горизонтальным pill-баром со scroll-overflow (помещается 8 вкладок). Шапка модалки переносит ФИО на отдельную строку (<code>flex-wrap</code>). Balance-grid 2×2. Action-кнопки (Пополнить/Корректировка/Сторно) — full-width. Колонка «№ операции» в финопеациях скрыта, source-иконки и чипы уменьшены. На вкладке «Банк. выписки» скрыты колонки «Сопоставление» и «Опер.».</p>
+
+<h4 id="admin-accounts-kpi-clickable">P1-7 KPI-карточки кликабельные (build 923)</h4>
+<p>В шапке списка счетов карточки «Без абонента» и «Должники» получили <code>data-chip-stat</code>, <code>role="button"</code>, <code>tabindex="0"</code>, <code>aria-pressed</code>. Клик применяет соответствующий chip-фильтр (синхронизация с chip-группой). Карточка «Всего» сбрасывает все фильтры. Keyboard support: Enter / Space.</p>
+
+<h4 id="admin-accounts-payment-filter">P0-3 Защита от ошибочного выбора «Обещанный платёж» в Пополнении (build 918)</h4>
+<p>В подмодалке «Пополнение» селектор «Тип операции» больше НЕ показывает promise/системные FinTypes. Backend: <code>SYSTEM_TYPE_IDS = {3, 31, 32}</code> + флаги <code>is_payment/is_system/is_promise</code> вычисляются в <code>accounts_list_view</code>. Frontend: <code>fillOpTypes('payment')</code> фильтрует по <code>t.is_payment === true</code>. В режиме «Корректировка» фильтр мягче — только <code>!t.is_system</code> (ОП доступен для бухгалтерских правок).</p>
+
+<h4 id="admin-accounts-save-disabled">P1-4 Кнопка «Сохранить» disabled до правки формы (build 923)</h4>
+<p>В модалке счёта кнопка «Сохранить» в footer теперь <code>disabled</code> по умолчанию. Tooltip объясняет: «Активируется когда вы измените поля во вкладке Параметры». Слежение через <code>form.addEventListener('input'/'change')</code>. После успешного сохранения снова disabled — защита от случайного повторного нажатия в режиме просмотра.</p>
+
+<h4 id="admin-accounts-v2-api">REST endpoints v2 (новые в Sprint 2-4)</h4>
+<table>
+  <thead><tr><th>URL</th><th>Method</th><th>Назначение</th></tr></thead>
+  <tbody>
+  <tr><td><code>/admin/Abonents/accounts_bank_ops/&lt;id&gt;/?days=N</code></td><td>GET</td><td>BSO связанные с финопеациями счёта за N дней + сводка по банкам (build 920)</td></tr>
+  <tr><td><code>/admin/Abonents/accounts_services/&lt;id&gt;/</code></td><td>GET</td><td>Тариф + UsersUsluga + бонусы + expected_monthly_charge (build 921)</td></tr>
+  <tr><td><code>/admin/Abonents/accounts_payments_summary/&lt;id&gt;/?days=N</code></td><td>GET</td><td>Сводка приходов по operator_name за N дней + статус интеграций (build 922)</td></tr>
+  </tbody>
+</table>
+
+<h4 id="admin-accounts-v2-plan">План и история</h4>
+<p>Полный план: <code>dev_reports/Планы/2026-05-19_План_AdminAccounts_v2_доработки_после_v915.md</code>. UX-аудит: <code>dev_reports/Отчёты/2026-05-18_UX_операции_абонента_и_модалки.md</code>. Все 5 спринтов закрыты builds 918→920→921→922→923 без миграций БД.</p>
+
 <h3 id="finance-operations">8.4. Финансовые операции</h3>
 <p>URL: <a href="https://testbill.smit34.ru/admin/Abonents/FinanceOperations/">/admin/Abonents/FinanceOperations/</a></p>
 <p><strong>Финансовая операция</strong> (<code>FinanceOperations</code>, таблица <code>finance_operations</code>) — атомарная запись в журнале движения денег. Привязана к лицевому счёту (<code>account_id → AdminAccounts</code>) и к абоненту (<code>abonent_id → Abonents</code>). Тип операции (<code>op_type → FinTypes</code>) определяет знак (<code>op_sign</code>: +1 приход, −1 расход). Сумма хранится в БД как <code>op_summa × 10^10</code>.</p>
@@ -6668,7 +6742,7 @@ endpoints <code>finops_ajax</code>, <code>finops_crud_ajax</code>,
   <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;<span data-smit="updated">18.05.2026</span></span>
 </footer>
 
-<script src="../js/main.js?v=836"></script>
+<script src="../js/main.js?v=923"></script>
 <script src="../js/search.js?v=790"></script>
 <script src="../js/version.js"></script>
 </body>
