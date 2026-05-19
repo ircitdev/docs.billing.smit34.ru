@@ -130,6 +130,7 @@
           <li class="sub-item"><a href="billing.html#bank-parsers">6.4.2. Банки и парсеры</a></li>
           <li class="sub-item"><a href="billing.html#bank-queue">6.4.3. Очередь модерации</a></li>
           <li class="sub-item"><a href="billing.html#bank-imports">6.4.4. Журнал импортов</a></li>
+          <li class="sub-item"><a href="billing.html#mailserver">6.4.5. Почтовый сервер</a></li>
           <li class="sub-item"><a href="billing.html#integrations">6.5. Интеграции</a></li>
           <li class="sub-item"><a href="billing.html#iptv-mappings">6.6. IPTV-пакеты</a></li>
           <li class="sub-item"><a href="billing.html#lk-mobile">6.7. ЛК и мобильные</a></li>
@@ -2600,6 +2601,60 @@ auto-block по отрицательному балансу — работают
 </ul>
 <p>Если у юр.лица оба флага OFF — документы не генерируются даже при <code>BANK_AUTO_GENERATE_DOCS=true</code>. Если <code>next_auto_acount</code> не задан, используется fallback на <code>BANK_DOC_DEFAULT_SEND_DAY</code> (день месяца).</p>
 
+<h3 id="mailserver">6.4.5. Почтовый сервер (SmitMailServ)</h3>
+<p><strong>URL:</strong> <code>/admin/settings/mailserver/</code> (build 960+) — управление собственным почтовым сервером <strong>SmitMailServ</strong> (форк Mailcow), развёрнутым на хосте <code>mail.billing.smit34.ru</code>. Раньше операции с ящиками/доменами требовали входа в Mailcow Admin UI — теперь всё доступно из биллинга через API <code>https://mail.billing.smit34.ru/api/v1/</code>.</p>
+
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v960/mailserver_overview.png" alt="Почтовый сервер — Обзор" loading="lazy"></p>
+
+<h4 id="mailserver-overview">Вкладка «Обзор»</h4>
+<p>Состояние сервера, настройки API, защищённые ящики, DKIM/SPF/DMARC.</p>
+<ul>
+  <li><strong>Состояние сервера</strong> — Статус (Online/Offline) · Версия SmitMailServ · Ящиков (всего/лимит) · Использовано места. Кнопка «Проверить подключение» делает test-request к API.</li>
+  <li><strong>Настройки API</strong> — Endpoint API, API-ключ (rw) с переключателем видимости, <strong>Основной домен</strong> (<code>&lt;select&gt;</code>, подгружается через <code>GET /admin/settings/mailserver/api/domains/</code>), toggle «Проверять SSL-сертификат».</li>
+  <li><strong>Защищённые ящики</strong> — <code>bank@billing.smit34.ru</code>, <code>noreply@billing.smit34.ru</code>, <code>ask@support.smit34.ru</code> и др. Нельзя удалить через UI (server-side защита в <code>get_protected_mailboxes()</code>), чтобы не сломать банковские выписки/рассылку.</li>
+  <li><strong>DKIM / SPF / DMARC</strong> — статус DNS-записей по нажатию «Обновить».</li>
+</ul>
+
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v960/mailserver_domain_select.png" alt="Селект «Основной домен»" loading="lazy" style="max-width:760px"></p>
+
+<h4 id="mailserver-mailboxes">Вкладка «Ящики»</h4>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v960/mailserver_mailboxes.png" alt="Список ящиков" loading="lazy"></p>
+<p>AJAX-таблица всех ящиков выбранного домена. Колонки: Email | Имя | Квота (использовано / лимит) | Активен | Создан | Действия (редактировать / сменить пароль / удалить). Поиск по email/имени с debounce. У защищённых ящиков рядом с email иконка-щит (<code>fa-shield-alt</code>).</p>
+
+<p><strong>Добавление ящика</strong> (кнопка «Добавить ящик»):</p>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v960/mailserver_mailbox_add_modal.png" alt="Модалка «Добавить ящик»" loading="lazy" style="max-width:820px"></p>
+<ul>
+  <li><strong>Домен</strong> — теперь <code>&lt;select&gt;</code> с подгрузкой реального списка из SmitMailServ (build 960). Раньше — текстовое поле, легко было опечататься.</li>
+  <li><strong>Логин (до @)</strong> — локальная часть адреса.</li>
+  <li><strong>Пароль</strong> + <strong>Подтверждение</strong> — обязательны. Генератор пароля рядом (фиолетовая иконка <code>fa-magic</code>).</li>
+  <li><strong>Квота (МБ)</strong> — default 1024. <strong>Активен</strong> — toggle.</li>
+  <li>При создании <strong>системных ящиков</strong> (bank@/noreply@/ask@…) пароль автоматически синхронизируется в SystemSettings (<code>_sync_password_to_settings()</code>), чтобы IMAP-парсер банковских выписок и SMTP-рассылка биллинга получили актуальный пароль одним нажатием.</li>
+</ul>
+
+<h4 id="mailserver-admins">Вкладка «Админы доменов»</h4>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v960/mailserver_admins.png" alt="Админы доменов" loading="lazy"></p>
+<p>Управление доменными админами SmitMailServ. У админа можно назначить набор доменов, которыми он управляет (<code>&lt;select multiple&gt;</code> с тем же AJAX-источником). Полезно если на сервере несколько обслуживаемых доменов — каждому даём отдельного админа.</p>
+
+<h4 id="mailserver-api">REST API внутри биллинга</h4>
+<table style="font-size:.92em">
+<tr><th>Endpoint</th><th>Назначение</th></tr>
+<tr><td><code>GET /admin/settings/mailserver/api/status/</code></td><td>Состояние API (status/version/quota/mailbox-counts)</td></tr>
+<tr><td><code>GET /admin/settings/mailserver/api/test-connection/</code></td><td>Проверка соединения (с возвратом версии)</td></tr>
+<tr><td><code>GET /admin/settings/mailserver/api/dkim/</code></td><td>DKIM/SPF/DMARC статусы по доменам</td></tr>
+<tr><td><code>GET /admin/settings/mailserver/api/domains/</code></td><td>Список доменов с метаданными (mailboxes, max_mailboxes, aliases, active, is_default) — питает все <code>&lt;select&gt;</code> доменов</td></tr>
+<tr><td><code>GET /admin/settings/mailserver/api/mailbox/?domain=…</code></td><td>Список ящиков домена</td></tr>
+<tr><td><code>POST /admin/settings/mailserver/api/mailbox/create/</code></td><td>Создание ящика</td></tr>
+<tr><td><code>POST /admin/settings/mailserver/api/mailbox/&lt;email&gt;/edit/</code></td><td>Редактирование (имя/квота/active)</td></tr>
+<tr><td><code>POST /admin/settings/mailserver/api/mailbox/&lt;email&gt;/password/</code></td><td>Смена пароля (с авто-sync в SystemSettings для системных)</td></tr>
+<tr><td><code>DELETE /admin/settings/mailserver/api/mailbox/&lt;email&gt;/</code></td><td>Удаление (server-side защита системных)</td></tr>
+<tr><td><code>GET/POST/DELETE …/api/domain-admin/…</code></td><td>CRUD доменных админов</td></tr>
+</table>
+
+<p>Все endpoint'ы за <code>@user_passes_test(_is_superadmin)</code> — только суперадмин. Каждая CRUD-операция пишет в <code>AuditOperations</code> с <code>table_name='MAILSERVER'</code>.</p>
+
+<p><strong>Backend:</strong> <code>billing/services/mailcow_client.py</code> (<code>MailcowClient</code> — 15 методов API, retries через <code>urllib3.Retry</code>, <code>MailcowAPIError</code>) + <code>billing/views/mailserver_settings.py</code>. Endpoint API хранится в <code>MAILCOW_API_URL</code>, ключ в <code>MAILCOW_API_KEY</code> (категория <code>mailcow</code>).</p>
+
+
 <h3 id="integrations">6.5. Интеграции</h3>
 <p>Единая точка управления внешними сервисами. Страница разделена на 8 вкладок.
 В нижней части любой страницы биллинга в футере отображается мини-индикатор статуса
@@ -2836,12 +2891,43 @@ HelpDesk, история операций, обещанный платёж, ре
 <h3 id="messaging">6.8. Сообщения</h3>
 <p>Настройка каналов отправки уведомлений абонентам. Страница разделена на 5 вкладок.</p>
 
-<h4>Вкладка «Email (SMTP)»</h4>
-<p>Параметры SMTP-сервера для исходящей почты: хост, порт, авторизация (логин/пароль),
-тип защиты (SSL / TLS / STARTTLS), отправитель «От кого». Кнопка <em>«Тест»</em> отправляет
-письмо на указанный адрес и показывает ответ сервера.</p>
+<h4 id="messaging-email">Вкладка «Email (SMTP)»</h4>
+<p>Параметры SMTP-сервера для исходящей почты: «От кого» (From), хост, порт, логин/пароль,
+<strong>режим шифрования</strong>, проверка SSL-сертификата. Кнопка <em>«Отправить тест»</em>
+отправляет письмо на указанный адрес <strong>через текущие несохранённые значения формы</strong> —
+это позволяет проверить настройки до сохранения.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_msg_email.png" alt="Сообщения — Email"></p>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/email_v961/email_card_radio.png" alt="Email — настройки SMTP с radio-группой шифрования" loading="lazy" style="max-width:760px"></p>
+
+<h5 id="messaging-email-encryption">Шифрование SMTP — radio-группа (build 961)</h5>
+<p>Раньше тип шифрования управлялся <strong>двумя независимыми toggle</strong> (STARTTLS + SSL),
+и оператор мог случайно включить оба — это приводило к ошибке Django
+<code>EMAIL_USE_TLS/EMAIL_USE_SSL are mutually exclusive</code> при попытке отправки.</p>
+
+<p>С build 961 это <strong>одна radio-группа</strong> из трёх взаимоисключающих кнопок:</p>
+<ul>
+  <li><strong>STARTTLS</strong> <code>(587)</code> — наиболее распространённый вариант, default. Подключение в plain-text с upgrade до TLS через команду STARTTLS.</li>
+  <li><strong>SSL (SMTPS)</strong> <code>(465)</code> — TLS с первого байта (implicit TLS).</li>
+  <li><strong>Без шифрования</strong> — порт 25, plain SMTP. Только для внутренних SMTP-relays/локальной тестовой инфраструктуры.</li>
+</ul>
+
+<p><strong>Авто-подстановка порта.</strong> При смене radio JS подставляет порт (587/465/25), если в поле сейчас стоит один из «дефолтных» портов. Если оператор задал кастомный порт (например, <code>2525</code>) — он сохраняется.</p>
+
+<p><strong>Защита на back-end.</strong> Если из формы каким-то образом пришли <code>email_use_tls=True</code> и <code>email_use_ssl=True</code> одновременно (старый кэш браузера, legacy POST), <code>email_test_send</code> и <code>email_settings_save</code> применяют XOR-нормализацию: оставляют тот режим, который соответствует порту (465 → SSL, иначе STARTTLS), второй гасят. В <code>SystemSettings</code> теперь никогда не лежат оба <code>True</code>.</p>
+
+<h5 id="messaging-email-from-policy">Поле «От кого» и политика отправителя</h5>
+<p>Большинство SMTP-серверов (включая <a href="#mailserver">SmitMailServ</a>) применяют политику
+<em>«отправитель должен совпадать с авторизованным пользователем»</em>. Если у вас логин
+<code>noreply@billing.smit34.ru</code>, но в поле «От кого» вы указали
+<code>billing@support.smit34.ru</code> — сервер вернёт ошибку:</p>
+<pre><code>SMTPRecipientsRefused: 553 5.7.1 &lt;billing@support.smit34.ru&gt;:
+Sender address rejected: not owned by user noreply@billing.smit34.ru</code></pre>
+
+<p><strong>Решения:</strong></p>
+<ul>
+  <li><strong>Простое</strong> — в поле «От кого» укажите тот же адрес, что и в «Логин».</li>
+  <li><strong>Гибкое</strong> — создайте alias на mail-сервере, чтобы <code>noreply@billing.smit34.ru</code> имел право отправлять от имени нужного адреса. Для SmitMailServ это делается через раздел <a href="#mailserver">«Почтовый сервер»</a> → вкладка «Ящики» → редактирование ящика → поле <code>sender_acl</code> (или API <code>edit_mailbox</code>).</li>
+</ul>
 
 <h4 id="messaging-sms">Вкладка «SMS»</h4>
 <p>Выбор провайдера SMS из четырёх: <em>SMSAero</em>, <em>SMSC.ru</em>, <em>SMS.ru</em>,
@@ -6738,8 +6824,8 @@ endpoints <code>finops_ajax</code>, <code>finops_crud_ajax</code>,
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">18.05.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;<span data-smit="updated">18.05.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">19.05.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;<span data-smit="updated">19.05.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=923"></script>
