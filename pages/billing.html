@@ -2461,7 +2461,7 @@ auto-block по отрицательному балансу — работают
 </ol>
 
 <h4 id="bank-statements-settings">Главная страница настроек</h4>
-<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v961/bank_v961_settings.png" alt="Настройки модуля автообработки выписок" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v961/bank_v961_settings.png" alt="Настройки модуля автообработки выписок" loading="lazy"></p>
 <p>Структура страницы (build 914):</p>
 <ul>
   <li><strong>Tab-навигация:</strong> «Общие настройки» ↔ «Банки и парсеры»</li>
@@ -2500,7 +2500,7 @@ auto-block по отрицательному балансу — работают
 <p>В UI кнопка «Добавить» парсит ссылку <code>https://t.me/c/2910452601/18140</code> → автоматически заполняет <code>chat_id=-1002910452601</code> и <code>thread_id=18140</code>. Поддерживаются 3 формата: <code>/c/&lt;chat&gt;/&lt;thread&gt;</code>, <code>https://t.me/&lt;username&gt;</code>, числовой <code>-100...</code>.</p>
 
 <h3 id="bank-parsers">6.4.2. Банки и парсеры</h3>
-<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v961/bank_v961_parsers.png" alt="Раздел Банки и парсеры" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v961/bank_v961_parsers.png" alt="Раздел Банки и парсеры" loading="lazy"></p>
 
 <p>Регистр банков с привязкой к парсерам и email-доменам отправителей. По умолчанию загружены Сбербанк и АльфаБанк через миграцию 0144 (data-seed). Без активных записей здесь IMAP-приёмник игнорирует все входящие письма.</p>
 
@@ -2527,7 +2527,7 @@ auto-block по отрицательному балансу — работают
 <p><strong>Защита от потери данных:</strong> при удалении банк-парсера <code>BankStatementImport</code> с этим email_domain в БД сохраняются (FK не настроен). Новые письма с домена будут игнорироваться. Восстановить — повторное добавление с тем же доменом.</p>
 
 <h3 id="bank-queue">6.4.3. Очередь модерации</h3>
-<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v961/bank_v961_queue.png" alt="Очередь модерации платежей" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v961/bank_v961_queue.png" alt="Очередь модерации платежей" loading="lazy"></p>
 
 <p><strong>Ключевая страница</strong> для финансиста-оператора. Обрабатывает 50-100 платежей в день. После 4 спринтов UX-аудита время обработки одного платежа сокращено с 5-7 кликов до 1 клика через bulk или 2 клика через one-shot модалку.</p>
 
@@ -2561,11 +2561,11 @@ auto-block по отрицательному балансу — работают
 </ul>
 
 <h4 id="bank-queue-onboarding">Onboarding-tooltip</h4>
-<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v914/bank_v914_queue_onboarding.png" alt="Onboarding-tooltip 4 шага" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v914/bank_v914_queue_onboarding.png" alt="Onboarding-tooltip 4 шага" loading="lazy"></p>
 <p>При первом визите показывает 4-step tour: Bulk-операции → Keyboard shortcuts → Undo → Risk-проверка. Bump версии (v4 → v5 в JS) — снова покажется после новых фич. Shift+Click на help-иконку (клавиатура в toolbar) — перезапуск.</p>
 
 <h3 id="bank-imports">6.4.4. Журнал импортов</h3>
-<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v961/bank_v961_imports.png" alt="Журнал импортов выписок" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v961/bank_v961_imports.png" alt="Журнал импортов выписок" loading="lazy"></p>
 
 <p>Полный лог писем от банков с возможностью отладки. <strong>По умолчанию показывает последние 30 дней</strong> (защита от бесконечной выдачи при N тысячах импортов).</p>
 
