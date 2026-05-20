@@ -2461,7 +2461,7 @@ auto-block по отрицательному балансу — работают
 </ol>
 
 <h4 id="bank-statements-settings">Главная страница настроек</h4>
-<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v914/bank_v914_settings_full.png" alt="Настройки модуля автообработки выписок" loading="lazy"></p>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v961/bank_v961_settings.png" alt="Настройки модуля автообработки выписок" loading="lazy"></p>
 <p>Структура страницы (build 914):</p>
 <ul>
   <li><strong>Tab-навигация:</strong> «Общие настройки» ↔ «Банки и парсеры»</li>
@@ -2500,7 +2500,7 @@ auto-block по отрицательному балансу — работают
 <p>В UI кнопка «Добавить» парсит ссылку <code>https://t.me/c/2910452601/18140</code> → автоматически заполняет <code>chat_id=-1002910452601</code> и <code>thread_id=18140</code>. Поддерживаются 3 формата: <code>/c/&lt;chat&gt;/&lt;thread&gt;</code>, <code>https://t.me/&lt;username&gt;</code>, числовой <code>-100...</code>.</p>
 
 <h3 id="bank-parsers">6.4.2. Банки и парсеры</h3>
-<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v914/bank_v914_parsers.png" alt="Раздел Банки и парсеры" loading="lazy"></p>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v961/bank_v961_parsers.png" alt="Раздел Банки и парсеры" loading="lazy"></p>
 
 <p>Регистр банков с привязкой к парсерам и email-доменам отправителей. По умолчанию загружены Сбербанк и АльфаБанк через миграцию 0144 (data-seed). Без активных записей здесь IMAP-приёмник игнорирует все входящие письма.</p>
 
@@ -2527,7 +2527,7 @@ auto-block по отрицательному балансу — работают
 <p><strong>Защита от потери данных:</strong> при удалении банк-парсера <code>BankStatementImport</code> с этим email_domain в БД сохраняются (FK не настроен). Новые письма с домена будут игнорироваться. Восстановить — повторное добавление с тем же доменом.</p>
 
 <h3 id="bank-queue">6.4.3. Очередь модерации</h3>
-<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v914/bank_v914_queue.png" alt="Очередь модерации платежей" loading="lazy"></p>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v961/bank_v961_queue.png" alt="Очередь модерации платежей" loading="lazy"></p>
 
 <p><strong>Ключевая страница</strong> для финансиста-оператора. Обрабатывает 50-100 платежей в день. После 4 спринтов UX-аудита время обработки одного платежа сокращено с 5-7 кликов до 1 клика через bulk или 2 клика через one-shot модалку.</p>
 
@@ -2565,7 +2565,7 @@ auto-block по отрицательному балансу — работают
 <p>При первом визите показывает 4-step tour: Bulk-операции → Keyboard shortcuts → Undo → Risk-проверка. Bump версии (v4 → v5 в JS) — снова покажется после новых фич. Shift+Click на help-иконку (клавиатура в toolbar) — перезапуск.</p>
 
 <h3 id="bank-imports">6.4.4. Журнал импортов</h3>
-<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v914/bank_v914_imports.png" alt="Журнал импортов выписок" loading="lazy"></p>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v961/bank_v961_imports.png" alt="Журнал импортов выписок" loading="lazy"></p>
 
 <p>Полный лог писем от банков с возможностью отладки. <strong>По умолчанию показывает последние 30 дней</strong> (защита от бесконечной выдачи при N тысячах импортов).</p>
 
@@ -2578,6 +2578,49 @@ auto-block по отрицательному балансу — работают
   <li><strong>«Операции»</strong> (<code>fa-eye</code>) → переход в очередь модерации с фильтром <code>?import_id=&lt;pk&gt;</code> (отображает только операции этого письма)</li>
   <li><strong>«Перепарсить»</strong> (<code>fa-redo-alt</code>) — для status=error: сбрасывает <code>parser_error</code> + ставит <code>status=new</code> + запускает <code>process_pending_imports.apply()</code></li>
   <li>Для status=parsed — кнопка <code>fa-sync-alt</code> для повторного парсинга (создаст дубликаты только если UNIQUE(bank, external_id) не сработает)</li>
+</ul>
+
+<h4 id="bank-imports-statuses">Статусы письма-импорта</h4>
+<p>Колонка «Статус» в журнале — это статус <strong>письма с выпиской</strong> (модель <code>BankStatementImport</code>, набор <code>IMPORT_STATUS_CHOICES</code>). Всего 5 значений:</p>
+<table class="settings-table">
+  <thead><tr><th>Статус (UI)</th><th>Код</th><th>Когда выставляется</th></tr></thead>
+  <tbody>
+    <tr><td>🟡 Новый</td><td><code>new</code></td><td>Дефолт. Письмо получено по IMAP, вложение сохранено, но ещё не разобрано парсером</td></tr>
+    <tr><td>🟢 Разобран</td><td><code>parsed</code></td><td>Парсер успешно прочёл вложение и создал записи <code>BankStatementOperation</code></td></tr>
+    <tr><td>🔴 Ошибка парсинга</td><td><code>error</code></td><td>Парсер упал на файле — текст ошибки сохраняется в поле <code>parser_error</code>, виден при наведении</td></tr>
+    <tr><td>⚪ Без вложений</td><td><code>empty</code></td><td>В письме нет файла выписки (<code>.csv</code>/<code>.txt</code>)</td></tr>
+    <tr><td>⚪ Пропущен</td><td><code>skipped</code></td><td>Письмо не от банка — домен отправителя не входит в whitelist «Банки и парсеры»</td></tr>
+  </tbody>
+</table>
+
+<h4 id="bank-imports-status-flow">Как меняется статус: «Новый» → «Разобран»</h4>
+<p>Переход <strong>выполняет фоновая задача Celery</strong>, оператор в нём не участвует. Цепочка:</p>
+<ol>
+  <li><strong><code>bank-statements-pull</code></strong> (Celery beat, ежечасно) — приёмник <code>billing/services/imap_client.py</code> читает UNSEEN-письма из ящика <code>bank@billing.smit34.ru</code> и создаёт <code>BankStatementImport</code> со статусом <code>new</code>.</li>
+  <li><strong><code>bank-statements-process</code></strong> (Celery beat, <strong>каждые 5 минут</strong>) — функция <code>process_pending_imports()</code> в <code>billing/tasks/bank_statements.py</code>:
+    <ul>
+      <li>берёт <code>BankStatementImport.objects.filter(status='new')[:20]</code>;</li>
+      <li>вызывает парсер по <code>parser_slug</code> банка (<code>sber</code>/<code>alfa</code>/<code>generic</code>);</li>
+      <li>на каждую строку выписки создаёт <code>BankStatementOperation</code> + запускает matching;</li>
+      <li>при успехе — <code>imp.status = 'parsed'</code>; при сбое парсера — <code>status = 'error'</code> + текст в <code>parser_error</code>.</li>
+    </ul>
+  </li>
+</ol>
+<p>То есть письмо в статусе <code>Новый</code> автоматически становится <code>Разобран</code> <strong>в течение ~5 минут</strong> после получения — на следующем тике <code>bank-statements-process</code>. Если статус не меняется дольше — см. блок «Диагностика» ниже.</p>
+
+<div class="note note-warning">
+  <strong>«Разобран» ≠ «Зачислено».</strong> Статус письма (<code>parsed</code>) означает только, что вложение прочитано и операции созданы. Сами деньги имеют <strong>отдельный статус</strong> — это набор <code>OPERATION_STATUS_CHOICES</code> модели <code>BankStatementOperation</code>, видимый в <a href="https://testbill.smit34.ru/admin/finance/bank_queue/" target="_blank">очереди модерации</a>:
+  <code>Новая (не сопоставлена)</code> → <code>Сопоставлена</code> / <code>На модерации</code> → <code>Зачислена</code> / <code>Отклонена</code> / <code>Дубликат</code>.
+  Зачисление контролируется kill-switch <code>BANK_AUTO_CREDIT_ENABLED</code> (по умолчанию ВЫКЛ — операции ждут ручного подтверждения оператором).
+</div>
+
+<h4 id="bank-imports-status-diagnostics">Диагностика: статус долго не меняется</h4>
+<p>Если письма зависают в статусе <code>Новый</code> и не переходят в <code>Разобран</code> — задача <code>bank-statements-process</code> не выполняется. Что проверить:</p>
+<ul>
+  <li><strong>Жив ли планировщик</strong> — контейнер <code>celery-beat</code> должен быть в статусе <code>running</code> (<code>docker ps</code>).</li>
+  <li><strong>Видит ли beat банковские задачи</strong> — после деплоя новых beat-задач контейнер <code>celery-beat</code> <strong>обязательно пересоздаётся</strong>. Если он запущен на устаревшем образе, задачи из <code>CELERY_BEAT_SCHEDULE</code> в его расписание не попадают, и <code>bank-statements-process</code> молча не запускается (контейнер при этом «running», ошибок нет).</li>
+  <li><strong>Ручной запуск как обходной путь</strong> — задачу можно выполнить немедленно: <code>process_pending_imports()</code> разберёт все письма со статусом <code>new</code>.</li>
+  <li><strong>Кнопка «Перепарсить»</strong> в журнале — для писем со статусом <code>error</code> сбрасывает ошибку, ставит <code>new</code> и сразу запускает разбор.</li>
 </ul>
 
 <h4 id="bank-statements-fonts">Шрифтовая пара для PDF</h4>
@@ -6824,8 +6867,8 @@ endpoints <code>finops_ajax</code>, <code>finops_crud_ajax</code>,
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">19.05.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;<span data-smit="updated">19.05.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">20.05.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;<span data-smit="updated">20.05.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=923"></script>
