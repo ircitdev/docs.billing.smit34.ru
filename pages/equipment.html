@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Интеграция с оборудованием — СмИТ Биллинг v2.1.0 (build 961)</title>
+  <title>Интеграция с оборудованием — СмИТ Биллинг v2.1.0 (build 964)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 2.1 — Документация">
-  <meta property="og:title" content="Интеграция с оборудованием — СмИТ Биллинг v2.1.0 (build 961)">
+  <meta property="og:title" content="Интеграция с оборудованием — СмИТ Биллинг v2.1.0 (build 964)">
   <meta property="og:description" content="NAS/BRAS, коммутаторы, VoIP-шлюзы, IPTV, FreeRADIUS с rlm_python3, абонентское оборудование.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/equipment.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Интеграция с оборудованием — СмИТ Биллинг v2.1.0 (build 961)">
+  <meta name="twitter:title" content="Интеграция с оборудованием — СмИТ Биллинг v2.1.0 (build 964)">
   <meta name="twitter:description" content="NAS/BRAS, коммутаторы, VoIP-шлюзы, IPTV, FreeRADIUS с rlm_python3, абонентское оборудование.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="NAS/BRAS, коммутаторы, VoIP-шлюзы, IPTV, FreeRADIUS с rlm_python3, абонентское оборудование.">
@@ -487,6 +487,38 @@ docker compose restart freeradius</code></pre>
     Данные берутся из таблицы <code>USERS_RADIUSAUTH</code> по условию <code>logged=1, user.nas_id=&lt;id&gt;</code>. Если сессия зависла (NAS не прислал Accounting-Stop), она всё равно будет отображаться — используйте кнопку «Sync» для принудительной синхронизации.
   </div>
 
+  <!-- ===== NAS dashboard (June 2026) ===== -->
+  <h3 id="nas-dashboard-v963">Дашборд состояния NAS (Sidebar → «Состояние NAS»)</h3>
+
+  <p>Отдельная страница <code>/admin/equipment/nas_status/</code> предоставляет real-time мониторинг всех NAS-устройств: текущее состояние (UP/DOWN), uptime за 7/30 дней, простой за 24 часа, и историю последних 50 событий.</p>
+
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_v963/nas_status_v963.png" alt="Дашборд состояния NAS" class="screenshot">
+
+  <p>Дашборд показывает:</p>
+  <ul>
+    <li><strong>Текущее состояние</strong> каждого enabled NAS: 🟢 UP / 🔴 DOWN / ⏸ выключен</li>
+    <li><strong>Uptime</strong> за последние 7 и 30 дней (%)</li>
+    <li><strong>Sparkline 24h</strong> — 24 столбика по часам (зелёный = up, оранжевый = частичный простой, красный = ≥50% downtime)</li>
+    <li><strong>Затронутые абоненты</strong> — клик на цифру открывает модалку онлайн-абонентов</li>
+    <li><strong>SLA-индикатор</strong> — порог настраивается через VpnConst <code>NAS_SLA_TARGET_PCT</code> (99.5) и <code>NAS_SLA_WARNING_PCT</code> (99.0)</li>
+    <li><strong>Auto-refresh</strong> — 30с / 60с / 5мин (выбор через тулбар)</li>
+    <li><strong>Алерт-баннер при DOWN</strong> — список упавших NAS с длительностью и счётчиком абонентов</li>
+    <li><strong>CSV-экспорт истории</strong> за 24h / 7d / 30d (endpoint <code>/admin/equipment/nas_status/export/</code>)</li>
+  </ul>
+
+  <p>В <strong>список NAS</strong> добавлены KPI-карточки и чипы-фильтры:</p>
+
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_v963/nas_list_v963.png" alt="Список NAS с KPI и фильтрами" class="screenshot">
+
+  <ul>
+    <li><strong>KPI-cards</strong>: Всего NAS / UP / DOWN / Онлайн абонентов</li>
+    <li><strong>Чипы со счётчиками</strong>: Все · UP · DOWN · Без RADIUS · Без SSH · PROD · Выключенные</li>
+    <li><strong>Колонка «Состояние»</strong>: тултип с длительностью простоя</li>
+    <li><strong>Progress-bar «Онлайн»</strong>: зелёный &lt;75%, оранжевый 75–90%, красный ≥90%</li>
+    <li><strong>Подсветка строк</strong>: DOWN — красноватый фон, выключенные — opacity, без RADIUS/SSH — оранжевая полоса слева</li>
+    <li><strong>Кнопка «Перезапустить RADIUS»</strong> в toolbar + автоматический warning-bar при флаге <code>radius_dirty</code> в кеше</li>
+  </ul>
+
   <!-- ===== Что такое свитчи в биллинге ===== -->
   <h2 id="switch-overview">Коммутаторы (Switch) в биллинге — назначение и роль</h2>
   <div class="section-toc">
@@ -877,8 +909,8 @@ IptvApiLog.objects.filter(success=False).order_by('-created_at')[:10]</code></pr
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v2.1.0 (build 961)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">20.05.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v2.1.0 (build 961)</span>&nbsp;|&nbsp;<span data-smit="updated">20.05.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v2.1.0 (build 964)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">02.06.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v2.1.0 (build 964)</span>&nbsp;|&nbsp;<span data-smit="updated">02.06.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=923"></script>

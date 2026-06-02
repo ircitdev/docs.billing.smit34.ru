@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Интеграция с СОРМ3 — СмИТ Биллинг v2.1.0 (build 961)</title>
+  <title>Интеграция с СОРМ3 — СмИТ Биллинг v2.1.0 (build 964)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 2.1 — Документация">
-  <meta property="og:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v2.1.0 (build 961)">
+  <meta property="og:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v2.1.0 (build 964)">
   <meta property="og:description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/sorm.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v2.1.0 (build 961)">
+  <meta name="twitter:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v2.1.0 (build 964)">
   <meta name="twitter:description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
@@ -426,6 +426,112 @@
     Разделитель полей: <code>;</code> (точка с запятой).
   </div>
 
+  <h2 id="prikaz-573-v2">Соответствие приказу Минкомсвязи №573 (актуально на 02.06.2026)</h2>
+
+  <p>После полной переработки в июне 2026 года выгрузка приведена в строгое соответствие <strong>Приказу №573 от 29.10.2018</strong> (с изменениями <strong>Приказа Минцифры №630 от 12.07.2023</strong>).</p>
+
+  <div class="info-box">
+    <strong>SQL-генерация эталонных отчётов вынесена в отдельный модуль:</strong>
+    <code>billing/services/sorm_prikaz_573.py</code> — там для каждой из 13 таблиц СОРМ-3 собирается полный SQL с правильными именами полей, кодами и форматами.
+  </div>
+
+  <h3 id="prikaz-573-key-changes">Ключевые отличия от Carbon 4</h3>
+  <table class="data-table">
+    <thead><tr><th>Параметр</th><th>Было (Carbon 4)</th><th>Стало (Приказ №573)</th></tr></thead>
+    <tbody>
+      <tr><td>Имена полей</td><td>lowercase</td><td><strong>UPPERCASE</strong></td></tr>
+      <tr><td>Расширение файлов</td><td><code>.csv</code></td><td><strong><code>.txt</code></strong></td></tr>
+      <tr><td>REGION_ID</td><td>3</td><td><strong>1</strong> (один оператор, без филиалов)</td></tr>
+      <tr><td>NETWORK_TYPE</td><td>—</td><td><strong>4</strong> (стационарные сети передачи данных)</td></tr>
+      <tr><td>IDENT_TYPE</td><td>—</td><td><strong>5</strong> (DATA NETWORK)</td></tr>
+      <tr><td>ABONENT_TYPE</td><td>строки <code>"individual"</code>/<code>"legal"</code></td><td><strong>42</strong> (физ.) / <strong>43</strong> (юр.)</td></tr>
+      <tr><td>STATUS</td><td>строки <code>"active"</code>/<code>"blocked"</code></td><td><strong>0</strong> (активный) / <strong>1</strong> (неактивный)</td></tr>
+      <tr><td>PAYMENT_TYPE</td><td>внутренние коды биллинга</td><td><strong>коды 80–89</strong> по §3.10 приказа</td></tr>
+      <tr><td>TIMESTAMP</td><td>локальная зона</td><td><strong>UTC</strong> в формате <code>YYYY-MM-DD HH24:MI:SS</code></td></tr>
+      <tr><td>MAC</td><td><code>aa:bb:cc:dd:ee:ff</code></td><td><strong>12 hex uppercase</strong> без разделителей</td></tr>
+      <tr><td>IPv4</td><td>текст</td><td><strong>8 hex uppercase</strong> через <code>uf_ip2hex(host(...))</code></td></tr>
+      <tr><td>Период истории</td><td>текущие активные</td><td><strong>3 года</strong> (2023-06-01 → 2026-06-01)</td></tr>
+      <tr><td>ABONENT_LEGAL</td><td>отдельный файл</td><td><strong>удалён</strong> (поля юр.лиц в основном ABONENT)</td></tr>
+      <tr><td>ABONENT_USER</td><td>отдельный файл</td><td><strong>исключён</strong> (у нас нет юр.лиц с несколькими Users)</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="prikaz-573-payment-types">Маппинг PAYMENT_TYPE (коды 80–89)</h3>
+  <p>Внутренние <code>op_type</code> и <code>operator_name</code> биллинга мапятся в коды приказа функцией <code>_payment_type_expr</code> в <code>sorm_prikaz_573.py</code>:</p>
+  <table class="data-table">
+    <thead><tr><th>Код</th><th>Тип платежа</th><th>Что попадает в эту категорию</th></tr></thead>
+    <tbody>
+      <tr><td><strong>80</strong></td><td>Электронные деньги / банковский перевод</td><td>YooKassa, W1, банковские выписки (<code>[txn:...]</code>, <code>[bank_op:...]</code>)</td></tr>
+      <tr><td><strong>81</strong></td><td>Наличные средства</td><td>—</td></tr>
+      <tr><td><strong>82</strong></td><td>Терминал моментальных платежей</td><td>—</td></tr>
+      <tr><td><strong>83</strong></td><td>Центр обслуживания клиентов</td><td><code>operator_name='kassa'</code>, op_type 7/9 (приход через ЦОК / корректировка)</td></tr>
+      <tr><td><strong>84</strong></td><td>Снятие со счёта другого абонента</td><td>—</td></tr>
+      <tr><td><strong>85</strong></td><td>Скретч-карта (express-pay)</td><td>—</td></tr>
+      <tr><td><strong>86</strong></td><td>Невозможно определить тип</td><td>прочее</td></tr>
+      <tr><td><strong>87</strong></td><td>Бонусные начисления</td><td>—</td></tr>
+      <tr><td><strong>88</strong></td><td>Сторно (отмена платежа)</td><td>—</td></tr>
+      <tr><td><strong>89</strong></td><td>Перенос остатка</td><td>—</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="prikaz-573-reports-list">Текущий набор отчётов (12 файлов)</h3>
+  <p>В рабочем наборе сейчас <strong>12 отчётов</strong>. <code>ABONENT_USER</code> убран (у нас нет юр.лиц с несколькими Users — файл всегда пустой). <code>ABONENT_LEGAL</code> удалён (поля юр.лиц перенесены в основной <code>ABONENT</code>).</p>
+
+  <table class="data-table">
+    <thead><tr><th>Префикс</th><th>Полей</th><th>Содержит</th></tr></thead>
+    <tbody>
+      <tr><td><code>ABONENT</code></td><td>37</td><td>Все абоненты (физ. + юр.) с полями ИНН, БАНК и др.</td></tr>
+      <tr><td><code>ABONENT_IDENT</code></td><td>45</td><td>Идентификаторы абонента (логин, MAC, IPv4 hex)</td></tr>
+      <tr><td><code>ABONENT_SRV</code></td><td>10</td><td>Услуги абонента (БЕЗ Обещанного платежа и комиссий)</td></tr>
+      <tr><td><code>ABONENT_ADDR</code></td><td>19</td><td>Адреса (структурированные)</td></tr>
+      <tr><td><code>PAYMENT</code></td><td>12</td><td>Все приходы за 3 года с PAYMENT_TYPE кодами 80–89</td></tr>
+      <tr><td><code>REGIONS</code></td><td>5</td><td>Справочник операторов (с BEGIN_TIME/END_TIME)</td></tr>
+      <tr><td><code>SUPPLEMENTARY_SERVICE</code></td><td>4</td><td>Каталог услуг</td></tr>
+      <tr><td><code>PAY_TYPE</code></td><td>5</td><td>Справочник типов платежей <strong>80–89</strong></td></tr>
+      <tr><td><code>DOC_TYPE</code></td><td>5</td><td>Справочник типов документов с OPERATOR_ID</td></tr>
+      <tr><td><code>IP_PLAN</code></td><td>11</td><td>План IP-адресации</td></tr>
+      <tr><td><code>IP_GATEWAY</code></td><td>6</td><td>IP-шлюзы</td></tr>
+      <tr><td><code>GATEWAY</code></td><td>7</td><td>Шлюзы (NAS)</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="prikaz-573-data-fixes">Исправления качества данных в SQL</h3>
+  <p>По замечаниям куратора СОРМ от 02.06.2026 в SQL добавлены:</p>
+  <ul>
+    <li><strong>DETACH fallback</strong> — <code>COALESCE(DISABLED_DATE, CREATE_DATE_SYSTEM, CREATE_DATE)</code>. У 2285 неактивных абонентов <code>DISABLED_DATE</code> не было перенесено из EBS-импорта, теперь поле всегда заполнено</li>
+    <li><strong>Нормализация ФИО</strong> — <code>regexp_replace(NAME, '[0-9.&quot;&laquo;&raquo;№]+', '', 'g')</code> + <code>NULLIF</code> для пустоты. Убирает мусор типа «7006», «Сергей.», «Колюжнова Р.М.», «Абонент №6649»</li>
+    <li><strong>Фильтр Обещанного Платежа</strong> в ABONENT_SRV — <code>usluga.name NOT ILIKE '%обещанн%'</code> и исключение usluga_id из списка {30353, -3, -4}. ОП — это внутренние транзакции биллинга, не «услуги связи»</li>
+  </ul>
+
+  <h3 id="prikaz-573-audit-cmd">Команда аудита качества данных</h3>
+  <p>Для постоянного мониторинга качества данных перед выгрузкой добавлена management-команда:</p>
+  <pre><code># Human-readable вывод
+docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit
+
+# JSON для интеграции
+docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --json
+
+# Показать больше примеров проблемных имён
+docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 30</code></pre>
+
+  <p>Что проверяется:</p>
+  <ul>
+    <li><strong>Физ.лица</strong>: процент заполненности даты рождения, ФИО с мусором (цифры/точки/кавычки)</li>
+    <li><strong>Юр.лица</strong>: ИНН, КПП, банк, р/с, контакт (В лице/Директор), телефон</li>
+    <li><strong>Адреса</strong>: ZIP, Region, Zone, City, Street</li>
+    <li><strong>DETACH</strong>: количество неактивных абонентов без DISABLED_DATE</li>
+  </ul>
+
+  <p>Команда выводит рекомендации с указанием количества записей для бизнес-кампаний (сбор паспортов, реквизитов юр.лиц).</p>
+
+  <h3 id="prikaz-573-files">Файлы реализации</h3>
+  <ul>
+    <li><code>billing/services/sorm_prikaz_573.py</code> — эталонные SQL-генераторы для всех 13 таблиц</li>
+    <li><code>billing/views/sorm.py::prepare_reports_view</code> — создание набора отчётов из эталона</li>
+    <li><code>billing/management/commands/sorm_regenerate_default_reports.py</code> — обновление существующих SORM-конфигов из эталона</li>
+    <li><code>billing/management/commands/sorm_data_quality_audit.py</code> — аудит качества данных</li>
+  </ul>
+
   <h2 id="schedule">Расписание автоматической выгрузки</h2>
 
   <p>Celery Beat проверяет расписание каждые <strong>10 минут</strong> и автоматически запускает отчёты согласно настроенной периодичности:</p>
@@ -500,16 +606,19 @@
   В одной системе обычно одна конфигурация, но можно создать несколько
   (например, для разных регионов).</p>
 
-  <p><img class="screenshot" src="../img/v457/sorm/sorm_v457_01_list.png" alt="Список конфигураций СОРМ"></p>
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_v963/sorm_list_v963.png" alt="Список конфигураций СОРМ"></p>
 
   <p>Таблица показывает по каждой конфигурации:</p>
   <ul>
     <li><strong>Vendor</strong> — поставщик СОРМ-оборудования: СигналТек, НОРСИ 2020, СпецТехПитон, МФИ Софт, Элком НТ, VAS Experts</li>
     <li><strong>FTP</strong> — хост и путь выгрузки на стенде РКН (если не задан — предупреждение)</li>
     <li><strong>Расписание</strong> — время автоматической выгрузки</li>
-    <li><strong>Отчётов</strong> — количество настроенных <code>SormReport</code> (по дефолту 14)</li>
+    <li><strong>Отчётов</strong> — количество настроенных <code>SormReport</code> (по дефолту 12 — без ABONENT_USER и ABONENT_LEGAL)</li>
     <li><strong>Последняя выгрузка</strong> — дата/время + значок статуса (✓ успех, ⚠ частично, ✗ ошибка, ⏳ идёт) + сколько файлов из общего числа</li>
   </ul>
+
+  <p>Карточка конфигурации СОРМ:</p>
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_v963/sorm_card_v963.png" alt="Карточка СОРМ — список отчётов"></p>
 
   <p>Кнопки в строке: <strong>⚙</strong> открыть настройки, <strong>▶</strong>
   запустить выгрузку сейчас, <strong>🗑</strong> удалить конфигурацию.</p>
@@ -1005,8 +1114,8 @@ python manage.py merge_sorm_attribute_dups --by-name --apply</code></pre>
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v2.1.0 (build 961)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">20.05.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v2.1.0 (build 961)</span>&nbsp;|&nbsp;<span data-smit="updated">20.05.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v2.1.0 (build 964)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">02.06.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v2.1.0 (build 964)</span>&nbsp;|&nbsp;<span data-smit="updated">02.06.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=923"></script>
