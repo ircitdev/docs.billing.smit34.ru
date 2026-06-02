@@ -2283,9 +2283,58 @@ auto-block по отрицательному балансу — работают
   </tbody>
 </table>
 
-<p>Справа на вкладке — таблица текущего размера всех файлов в <code>/var/log/django/</code> с подсветкой больших (≥100 МБ оранжевый, ≥1 ГБ красный). Клик по имени файла → переход в просмотр содержимого (<code>/admin/reports/dev/?tab=logs</code>).</p>
+<p>Справа на вкладке — таблица текущего размера всех файлов в <code>/var/log/django/</code> с подсветкой больших (≥100 МБ оранжевый, ≥1 ГБ красный). Клик по имени файла → переход в просмотр содержимого (<code>/admin/reports/dev/logs/</code>).</p>
 
-<p>Host-side: <code>/etc/logrotate.d/smit-billing-django</code> (daily, rotate N, compress, copytruncate) + два cron-скрипта (<code>smit-billing-radacct-cleanup</code> для FreeRADIUS detail-файлов <code>radacct/&lt;NAS&gt;/detail-YYYYMMDD</code>; <code>smit-billing-logrotate-sync</code> для синхронизации конфига из контейнера).</p>
+<h4 id="logs-viewer">Просмотр логов с подсветкой</h4>
+
+<p>Страница <a href="https://rbill.smit34.ru/admin/reports/dev/logs/">/admin/reports/dev/logs/</a> (раздел «Отчёты → Разработка и логи», только root-доступ) показывает 12 каналов журналов слева с текущим размером, справа — содержимое выбранного файла.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/backup_logs_v967/logs_colorized.png" alt="Просмотр логов с подсветкой по уровням"></p>
+
+<ul>
+  <li><strong>Чтение с конца файла</strong> — функция <code>_tail_log()</code> читает последние
+  500 строк, двигаясь от конца файла чанками, не загружая его целиком в память. Поэтому даже
+  лог на десятки гигабайт открывается мгновенно (в шапке показано «Показано: 500 / N строк»).
+  Это защищает от OOM, который раньше валил контейнер при открытии многогигабайтного
+  <code>freeradius.log</code>.</li>
+  <li><strong>Подсветка по уровням</strong> (<code>colorizeLog</code>) — каждая строка
+  раскрашивается по содержимому: <span style="color:#dc3545">красный</span> для
+  <code>error</code> / <code>traceback</code> / <code>exception</code>,
+  <span style="color:#e67e22">оранжевый</span> для <code>warning</code>,
+  серый для <code>debug</code>, обычный для <code>info</code>. Цвета адаптируются под тёмную тему.</li>
+  <li><strong>Кнопки</strong>: обновить, скачать файл, поделиться ссылкой (<code>?log=имя</code>),
+  очистить лог / очистить все логи (только суперадмин).</li>
+</ul>
+
+<h4 id="logs-rotation-host">Ротация логов на сервере</h4>
+
+<p>Часть логов пишет Django через <code>RotatingFileHandler</code> (<code>error.log</code>,
+<code>radius.log</code>, <code>payment.log</code>, <code>sorm.log</code>, <code>staff.log</code> —
+maxBytes 10 МБ, backupCount 5, в просмотрщике видны как <code>radius.log.1</code>…<code>.5</code>).
+Но <strong>нативный <code>freeradius.log</code></strong> пишет сам FreeRADIUS (C-side), и Django его
+не ротирует. Если FreeRADIUS запущен в trace-режиме (<code>-xx</code>), этот файл растёт на
+~5 ГБ/сутки — на rbill он однажды вырос до <strong>43 ГБ</strong>.</p>
+
+<p>Лечение (build 967, host-side на rbill):</p>
+<ul>
+  <li><strong>Уровень детализации FreeRADIUS</strong> задаётся переменной
+  <code>RADIUS_DEBUG_LEVEL</code> в <code>.env</code> (читается <code>docker/freeradius/entrypoint.sh</code>):
+  <code>info</code> (без флага, ~1 ГБ/сутки, только Accept/Reject и блокировки), <code>debug</code>
+  (<code>-x</code>), <code>trace</code> (<code>-xx</code>, не использовать в проде). После правки —
+  <code>docker compose up -d --force-recreate freeradius</code>.</li>
+  <li><strong><code>/etc/logrotate.d/smit-freeradius</code></strong> — ротация нативного лога
+  (daily, rotate 5, maxsize 100M, compress, <code>copytruncate</code> — обязателен, т.к. FreeRADIUS
+  держит файл открытым, <code>su root root</code> — т.к. каталог volume world-writable).
+  Файл больше не превышает ~600 МБ.</li>
+  <li><strong><code>/etc/cron.daily/smit-radacct-cleanup</code></strong> — удаляет accounting
+  detail-файлы <code>radacct/&lt;NAS&gt;/detail-YYYYMMDD</code> старше 14 дней (эти данные уже
+  продублированы в таблице <code>RADIUS_SESSIONS</code>).</li>
+</ul>
+
+<p>Текущий размер каждого файла виден в просмотрщике — после фикса <code>freeradius.log</code>
+держится в районе десятков мегабайт:</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/backup_logs_v967/logs_list.png" alt="Список лог-каналов с размерами"></p>
 
 <h4 id="system-settings-performance">Вкладка «Скорость» — Gunicorn / Celery / БД / Throttling (build 803, переименована в build 885)</h4>
 
@@ -3399,7 +3448,7 @@ Update / Delete для каждой модели (Tarif, Usluga, Abonents, NAS, 
 <h3 id="backup">6.11. Резервные копии</h3>
 <p>Резервные копии — самостоятельный таб в группе «Обслуживание».</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_backup.png" alt="Резервные копии"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/backup_logs_v967/backup_configs.png" alt="Резервные копии — конфигурации и список копий"></p>
 
 <p><strong>Типы копий</strong>:</p>
 <ul>
@@ -3408,6 +3457,11 @@ Update / Delete для каждой модели (Tarif, Usluga, Abonents, NAS, 
   <li><strong>both</strong> — БД + файлы.</li>
   <li><strong>docker</strong> — самодостаточный пакет: БД, код, Dockerfile, docker-compose,
   .env, медиа и скрипт <code>restore.sh</code>. Достаточно для развёртывания на новом сервере.</li>
+  <li><strong>configs</strong> («Конфиги сервера», build 967) — лёгкий снимок только
+  серверной конфигурации: <code>.env</code>, <code>docker-compose*.yml</code>, <code>Dockerfile</code>,
+  <code>gunicorn.conf.py</code>, <code>requirements.txt</code> и весь каталог <code>docker/</code>
+  (nginx / freeradius / postgres). Без БД и кода — обычно несколько килобайт. Удобно для
+  быстрого сравнения/отката настроек сервера.</li>
 </ul>
 
 <p><strong>Настройка</strong>: имя конфигурации, тип, расписание (cron-выражение),
@@ -3416,6 +3470,16 @@ Update / Delete для каждой модели (Tarif, Usluga, Abonents, NAS, 
 <p><strong>Список копий</strong> — записи с датой, размером, статусом, типом.
 Кнопки в строке: <em>Скачать</em>, <em>Восстановить</em>, <em>Удалить</em>.
 В процессе backup'а строка показывает анимированный прогресс-бар (опрос статуса каждые 3 секунды).</p>
+
+<p><strong>Защита от «зависших» копий</strong> (build 967): если Celery-воркер падает или
+перезапускается во время резервного копирования (например, при переезде сервера), запись
+могла навсегда остаться в статусе <code>running</code> — на странице крутился вечный
+спиннер и шёл бесконечный опрос статуса. Теперь функция <code>_reap_stale_running()</code>
+автоматически помечает любую запись в <code>running</code> старше <strong>30 минут</strong>
+как <em>«Ошибка»</em> с понятным сообщением. Срабатывает при открытии страницы и при каждом
+опросе статуса (раз в 3 секунды), так что зомби-запись сбрасывается сама. Дополнительно
+<code>run_backup</code> теперь явно завершается ошибкой при неизвестном типе бекапа или
+если файл не был создан (раньше такая копия молча сохранялась как «Выполнена» без файла).</p>
 
 <p><strong>Восстановление</strong> — модалка с выбором: только БД / только файлы /
 полное восстановление. Для типа <em>docker</em> показывается инструкция как развернуть
