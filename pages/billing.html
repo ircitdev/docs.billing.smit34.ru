@@ -329,7 +329,38 @@
 визуальный язык компактных карточек (<code>.dash-tile</code>), все блоки скрываются автоматически
 при отсутствии данных.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_v963/dashboard_v963.png" alt="Дашборд: KPI + IP-пулы + EBS Синхронизация (v963)"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v966/dashboard_v966_whats_new_comments.png" alt="Дашборд v966: «Что нового» с бейджами комментариев"></p>
+
+<div class="info-box">
+<strong>Build 2026-06-02 (v966) — реорганизация дашборда:</strong>
+<ul>
+  <li>Добавлен <strong>виджет SORM</strong> в правую колонку под «Быстрыми ссылками»</li>
+  <li>В блоке «Что нового» — <strong>бейдж с количеством комментариев</strong> у каждого документа</li>
+  <li>«Последние операции» расширены с 5 до <strong>15 записей</strong></li>
+  <li>«Последние заявки» переехали в левую колонку <strong>над операциями</strong></li>
+  <li>«Горячие абоненты» + «Платежи: день × час» — <strong>в одном ряду</strong> (col-lg-6 + col-lg-6)</li>
+  <li>Карта абонентов внизу — <strong>fix</strong>: теперь инициализируется сразу при загрузке (раньше была пустой)</li>
+</ul>
+</div>
+
+<p><strong>Виджет SORM</strong> в правой колонке показывает статус выгрузок:</p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v966/dashboard_v966_sorm_widget.png" alt="Виджет SORM на дашборде"></p>
+<ul>
+  <li>Имя конфига → ссылка на <code>/admin/equipment/sorm_list/&lt;id&gt;/</code></li>
+  <li>Vendor (СпецТехПитон / СигналТек / ...)</li>
+  <li>FTP-хост и путь</li>
+  <li>Время выгрузки</li>
+  <li>Бейдж с числом отчётов</li>
+  <li>Статус последней выгрузки: ✓ зелёный N/M файлов / ⚠ оранжевый partial / ✗ красный provаl / ⏳ синий running</li>
+  <li>Дата + кол-во строк + значок облака (✅ если ftp_uploaded)</li>
+  <li>Сводка за 7 дней (счётчики success/partial/failed)</li>
+</ul>
+
+<p><strong>«Горячие абоненты» + «Платежи: день × час»</strong> теперь в одном ряду:</p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v966/dashboard_v966_hot_heatmap.png" alt="Горячие абоненты + Heatmap в одном ряду"></p>
+
+<p><strong>Карта абонентов</strong> (была пустой до v966):</p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v966/dashboard_v966_map_fixed.png" alt="Карта абонентов на дашборде (fix)"></p>
 
 <div class="page-toc">
 <details open>
