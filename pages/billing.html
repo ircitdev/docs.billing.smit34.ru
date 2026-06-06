@@ -19,7 +19,7 @@
   <meta name="twitter:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
   <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=923">
+  <link rel="stylesheet" href="../css/style.css?v=924">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.26.0/dist/tabler-icons.min.css">
   <link rel="stylesheet" href="../css/search.css?v=790">
@@ -203,6 +203,22 @@
           <li><a href="lk.html#lk-firebase">Push (Firebase)</a></li>
           <li><a href="lk.html#lk-claude-ai">Claude AI</a></li>
           <li><a href="lk.html#telegram-admin-bot">TG бот оператора</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="helpdesk.html"><i class="ti ti-headset"></i> HelpDesk (поддержка) <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="helpdesk.html#overview">1. Обзор системы</a></li>
+          <li><a href="helpdesk.html#workflow">2. Рабочий процесс</a></li>
+          <li><a href="helpdesk.html#dashboard">3. Панель управления</a></li>
+          <li><a href="helpdesk.html#mailbox">4. Списки тикетов</a></li>
+          <li><a href="helpdesk.html#conversation">5. Карточка тикета</a></li>
+          <li><a href="helpdesk.html#kanban">6. Канбан-доска</a></li>
+          <li><a href="helpdesk.html#tags">7. Теги и фильтры</a></li>
+          <li><a href="helpdesk.html#knowledgebase">8. База знаний</a></li>
+          <li><a href="helpdesk.html#ai-assistant">9. AI-ассистент Claude</a></li>
+          <li><a href="helpdesk.html#integration">10. Связь с биллингом</a></li>
+          <li><a href="helpdesk.html#admin">11. Администрирование</a></li>
         </ul>
       </li>
       <li class="has-children">
@@ -2424,6 +2440,78 @@ maxBytes 10 МБ, backupCount 5, в просмотрщике видны как <
 
 <p>Статистика снизу: отправлено сегодня по каналам, в очереди, SMS-ошибки, SMS-пропуски (тихий час / дубль), бейдж «Тихий час сейчас».</p>
 
+<h4 id="su-security">Доступ суперпользователя — 2FA, IP-ограничение, политики паролей (build 971)</h4>
+
+<p>В правой колонке вкладки <strong>Безопасность</strong> — карточка
+<strong>«Доступ суперпользователя»</strong>. Все политики применяются
+<strong>только к <code>is_superuser</code></strong> и по умолчанию выключены
+(поведение входа не меняется, пока администратор не включит их осознанно).
+Управление доступно только суперпользователю.</p>
+
+<table class="data-table">
+  <thead><tr><th>Политика</th><th>Настройка</th><th>Что делает</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Доступ su только с разрешённых IP</strong></td>
+      <td><code>SU_RESTRICT_BY_IP</code> + <code>SU_ALLOWED_IPS</code></td>
+      <td>Вход su разрешён только с IP из списка (через запятую, CIDR). Кнопка
+      «мой IP» подставляет текущий адрес. С недоверенного IP — HTTP 403.
+      <em>Fail-open</em> при пустом списке (защита от self-lockout).</td>
+    </tr>
+    <tr>
+      <td><strong>Обязательная 2FA для su</strong></td>
+      <td><code>SU_REQUIRE_2FA</code></td>
+      <td>TOTP (Google Authenticator / Authy). Подключается в профиле
+      (<code>/admin/settings/profile/</code>) — QR-код + 10 одноразовых
+      backup-кодов. Без 2FA вход блокируется до её настройки.</td>
+    </tr>
+    <tr>
+      <td><strong>Спрашивать 2FA, если IP вне списка</strong></td>
+      <td><code>SU_2FA_IF_IP_OUTSIDE</code></td>
+      <td>С доверенного IP — вход без кода; с прочих — запрос TOTP. Удобно для
+      быстрого входа из офиса и защищённого — извне.</td>
+    </tr>
+    <tr>
+      <td><strong>Требовать сложный пароль</strong></td>
+      <td><code>SU_REQUIRE_STRONG_PASSWORD</code></td>
+      <td>При смене пароля su: 8+ символов, буква + цифра + спецсимвол.
+      Слабый пароль отклоняется с пояснением.</td>
+    </tr>
+    <tr>
+      <td><strong>Смена пароля при первом входе</strong></td>
+      <td><code>SU_FORCE_PASSWORD_CHANGE_FIRST</code></td>
+      <td>Если у su стоит флаг «требуется смена» — при входе принудительный
+      редирект в профиль на смену пароля.</td>
+    </tr>
+    <tr>
+      <td><strong>Смена пароля каждые X дней</strong></td>
+      <td><code>SU_PASSWORD_MAX_AGE_DAYS</code></td>
+      <td>Отслеживается дата последней смены. Если пароль старше X дней — при
+      входе принудительная смена. <code>0</code> = без ограничения.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Двухфакторная аутентификация (TOTP).</strong> Подключение в профиле:
+сканируете QR-код приложением-аутентификатором, подтверждаете кодом — 2FA
+активна. При активации выдаются <strong>10 резервных кодов</strong> (формат
+<code>XXXX-XXXX</code>, показываются один раз) — на случай потери телефона.
+При входе после логина/пароля запрашивается 6-значный код (можно ввести
+backup-код). Отключить 2FA нельзя, пока включена политика «Обязательная 2FA».</p>
+
+<p><strong>Защита от self-lockout:</strong> все политики выключены по умолчанию;
+backup-коды 2FA; IP-список fail-open при пустоте; аварийный сброс через консоль
+сервера (<code>set_setting('SU_REQUIRE_2FA', False)</code>). Каждое изменение
+политик пишется в <code>AuditOperations</code>.</p>
+
+<p>Подключение: <code>billing/services/su_security.py</code> (логика IP/2FA/паролей),
+<code>billing/views/auth.py</code> (вход), <code>billing/views/profile.py</code>
+(2FA + смена пароля).</p>
+
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/su_security/security_tab_full.png"
+     alt="Вкладка Безопасность: финансовые операции + доступ суперпользователя + Web-консоль"
+     style="max-width:100%;border:1px solid #ddd;border-radius:6px"></p>
+
 <h4 id="system-settings-blocks">Вкладка «Блокировки и финансы» — captive-portal + бизнес-правила (build 808)</h4>
 
 <p>Управление блокировкой абонентов за долг и базовыми правилами биллинга. 4 группы 2×2 + статус блокировок. Закрывает давнюю боль «Не авторизовать по RADIUS при отрицательном балансе» (build 419 soft-block) и задачу №4 Марии (captive-portal).</p>
@@ -2812,86 +2900,63 @@ ID группы. Тест соединения проверяет валидно
 
 <!-- ===== FreeScout-интеграция: обзор ===== -->
 <h3 id="freescout-overview">FreeScout-интеграция — назначение и роль</h3>
-<details class="section-toc">
-  <summary><strong>Содержание раздела</strong></summary>
-  <ul>
-    <li><a href="#fs-what">Что такое FreeScout и зачем</a></li>
-    <li><a href="#fs-sync">Что синхронизируется с биллингом</a></li>
-    <li><a href="#fs-rest-api">REST API для FS-плагина</a></li>
-    <li><a href="#fs-webhooks">Webhook-события из FS</a></li>
-    <li><a href="#fs-helpdesk-tab">Вкладка HelpDesk в карточке абонента</a></li>
-    <li><a href="#fs-ai">Claude AI как агент в FreeScout</a></li>
-  </ul>
-</details>
 
-<p><strong>FreeScout</strong> — это open-source движок системы поддержки (HelpDesk), внешнее PHP-приложение. Установлен на отдельном поддомене (на demo: <code>support.smit34.ru</code>). СмИТ Биллинг интегрирован с FreeScout двусторонне: абоненты и тикеты синхронизируются обоими направлениями.</p>
+<p><strong>FreeScout</strong> — это движок системы поддержки клиентов (HelpDesk), внешнее PHP-приложение на собственном поддомене <code>support.smit34.ru</code>. СмИТ Биллинг интегрирован с ним двусторонне: данные абонента видны в карточке тикета, тикеты доступны во вкладке «HelpDesk» абонента, AI-ассистент Claude отвечает на простые вопросы автоматически.</p>
 
-<h5 id="fs-what">Что такое FreeScout и зачем</h5>
-<p>FreeScout заменил старый раздел HDSK (HelpDesk) внутри биллинга в build 78 (2026-04-03). Причины:</p>
-<ol>
-  <li><strong>Полноценный хелпдеск</strong> — теги, фильтры, шаблоны ответов, статусы тикетов, ответственные операторы, SLA, отчёты;</li>
-  <li><strong>Email-интеграция</strong> — abonент пишет на <code>support@</code>, FreeScout автоматически создаёт тикет;</li>
-  <li><strong>Mobile UI для оператора</strong> — есть нативный мобильный клиент, удобно в полевых условиях;</li>
-  <li><strong>Расширяемость</strong> — поддержка PHP-модулей: ClaudeAI, CarbonBilling, VkIntegration, TelegramIntegration.</li>
-</ol>
+<p>Полное описание системы поддержки — рабочее место оператора, канбан-доска подключений, теги, база знаний, AI-ассистент, отчёты — вынесено в отдельный раздел:</p>
+
+<div class="info-box">
+  <strong>→ <a href="helpdesk.html">HelpDesk (поддержка клиентов)</a></strong> — обзор, рабочий процесс, скриншоты интерфейса, администрирование, связь с биллингом.
+</div>
 
 <h5 id="fs-sync">Что синхронизируется с биллингом</h5>
 <table class="data-table">
   <thead><tr><th>Что</th><th>Направление</th><th>Как</th></tr></thead>
   <tbody>
-    <tr><td><strong>Абоненты ↔ FS Customers</strong></td><td>Биллинг → FS</td><td>Поле <code>Abonents.FREESCOUT_ID</code> (build 58) хранит ID customer в FS. Celery-задача <code>sync_abonent_to_freescout</code> ежедневно в 03:00 синхронизирует имя, email, phone, custom fields (billing_id, contract_number, tariff, balance)</td></tr>
+    <tr><td><strong>Абоненты ↔ FS Customers</strong></td><td>Биллинг → FS</td><td>Поле <code>Abonents.FREESCOUT_ID</code> хранит ID customer в FS. Celery-задача <code>sync_abonent_to_freescout</code> ежедневно в 03:00 синхронизирует имя, email, phone, custom fields (billing_id, contract_number, tariff, balance)</td></tr>
     <tr><td><strong>Тикеты</strong></td><td>FS ↔ Биллинг</td><td>FS — главный source of truth. Биллинг отображает тикеты абонента во вкладке HelpDesk через REST API</td></tr>
-    <tr><td><strong>HDSK миграция</strong></td><td>Старый HDSK → FS</td><td>Команда <code>manage.py migrate_hdsk_to_freescout [--dry-run]</code> (build 78) — однократный перенос с сохранением комментариев и истории</td></tr>
-    <tr><td><strong>Дубликаты</strong></td><td>Внутри FS</td><td>Build 109: 281 группа дублей абонентов в FS объединена скриптом <code>dedupe_freescout_customers</code></td></tr>
   </tbody>
 </table>
 
-<h5 id="fs-rest-api">REST API для FS-плагина</h5>
-<p>В FreeScout установлен PHP-модуль <strong>CarbonBilling</strong> — он показывает оператору информацию об абоненте прямо в окне тикета: баланс, тариф, контактные данные, последние операции. Модуль читает из биллинга через REST API:</p>
+<h5 id="fs-rest-api">REST API биллинга для FS-плагина</h5>
+<p>В FreeScout установлен модуль <strong>SmitBilling</strong> — он показывает оператору информацию об абоненте прямо в карточке тикета. Модуль читает из биллинга по REST API:</p>
 <table class="data-table">
   <thead><tr><th>Endpoint</th><th>Что возвращает</th></tr></thead>
   <tbody>
-    <tr><td><code>GET /rest_api/v2/abonent_by_email/?email=xxx</code></td><td>Поиск абонента по email — нужно когда тикет приходит из почты</td></tr>
-    <tr><td><code>GET /rest_api/v2/abonent_summary/&lt;id&gt;/</code></td><td>Краткая информация (баланс, тариф, ФИО, телефон, статус) для отображения в FS</td></tr>
+    <tr><td><code>POST /rest_api/v2/Abonents/</code> с <code>sms__contains</code></td><td>Поиск абонента по телефону</td></tr>
+    <tr><td><code>POST /rest_api/v2/AdminAccounts/</code></td><td>Баланс лицевого счёта</td></tr>
+    <tr><td><code>POST /rest_api/v2/UsersUsluga/</code></td><td>Активные услуги</td></tr>
+    <tr><td><code>POST /rest_api/v2/FinanceOperations/</code></td><td>Последние платежи</td></tr>
   </tbody>
 </table>
-<p>Конфиг FreeScout: переменная окружения <code>SMIT_BILLING_API=https://testbill.smit34.ru/rest_api/v2/</code> в FS-<code>.env</code>. После изменения — <code>php artisan config:clear &amp;&amp; php artisan cache:clear</code>.</p>
+<p>Конфигурация в FS <code>.env</code>: <code>SMIT_BILLING_API=https://rbill.smit34.ru/rest_api/v2/</code>. Аутентификация — Bearer-токен <code>AIDA_API_KEY</code>. После изменения — <code>php artisan config:clear &amp;&amp; cache:clear</code> и <code>systemctl restart freescout-queue.service php8.2-fpm</code>.</p>
 
-<h5 id="fs-webhooks">Webhook-события из FS</h5>
-<p>Когда в FreeScout что-то происходит, он шлёт webhook на биллинг:</p>
+<h5 id="fs-webhooks">Webhook-события из FS в биллинг</h5>
 <table class="data-table">
   <thead><tr><th>Событие</th><th>Действие в биллинге</th></tr></thead>
   <tbody>
-    <tr><td><code>conversation.agent_reply_created</code></td><td>Push-уведомление абоненту через FCM (если есть привязанное устройство) — «Получен ответ от поддержки»</td></tr>
-    <tr><td><code>conversation.assigned</code></td><td>Telegram-алерт назначенному оператору — «Вам назначен тикет №N от Иван Иванов»</td></tr>
-    <tr><td><code>conversation.status_changed(closed)</code></td><td>Запись в <code>AUDIT_OPERATIONS</code> с drill-down на FS-тикет (для отчётов)</td></tr>
+    <tr><td><code>conversation.agent_reply_created</code></td><td>Push-уведомление абоненту через FCM (если есть привязанное устройство)</td></tr>
+    <tr><td><code>conversation.assigned</code></td><td>Telegram-алерт назначенному оператору</td></tr>
+    <tr><td><code>conversation.status_changed(closed)</code></td><td>Запись в <code>AUDIT_OPERATIONS</code> для отчётов</td></tr>
   </tbody>
 </table>
-<p>Регистрация webhook'ов: в FS админке <code>Settings → Webhooks → Add</code>, URL биллинга: <code>https://testbill.smit34.ru/api/freescout/webhook/</code>.</p>
+<p>Регистрация webhook'ов: в FS админке <code>Settings → API &amp; Webhooks → Add</code>. URL биллинга для webhook: <code>https://rbill.smit34.ru/api/freescout/webhook/</code>.</p>
 
 <h5 id="fs-helpdesk-tab">Вкладка HelpDesk в карточке абонента</h5>
-<p>В <code>/admin/Abonents/&lt;id&gt;/</code> есть вкладка <strong>HelpDesk</strong> (build 78):</p>
+<p>В <code>/admin/Abonents/&lt;id&gt;/</code> есть вкладка <strong>HelpDesk</strong>:</p>
 <ul>
   <li>Список тикетов абонента (читается через FS API при открытии вкладки);</li>
   <li>Кнопка «+ Создать тикет» — модальное окно с темой и текстом, отправка через <code>POST /api/v1/conversations</code>;</li>
-  <li>Каждый тикет — клик ведёт в FreeScout новой вкладкой;</li>
+  <li>Каждый тикет — клик ведёт в FreeScout в новой вкладке;</li>
   <li>Статусы тикетов с цветными бейджами: 🟢 active, 🟡 pending, ⚫ closed.</li>
 </ul>
 <p>Сервис: <code>billing/services/freescout_billing.py</code> — REST-клиент с retry-логикой и кешированием.</p>
 
 <h5 id="fs-ai">Claude AI как агент в FreeScout</h5>
-<p>В FreeScout установлен модуль <strong>ClaudeAI</strong> — он автоматически отвечает на тикеты:</p>
-<ol>
-  <li>Абонент пишет в чат ЛК → FreeScout получает сообщение;</li>
-  <li>ClaudeAI читает контекст: профиль абонента (через CarbonBilling API), историю тикетов, базу знаний;</li>
-  <li>Если вопрос «технический и понятный» (узнать баланс, как пополнить, забыл пароль) — Claude отвечает сам;</li>
-  <li>Если вопрос требует человека (жалоба, ошибка биллинга, специфичный кейс) — Claude отвечает «передаю оператору» и помечает тикет escalated;</li>
-  <li>Оператор видит тикет в FS, продолжает диалог.</li>
-</ol>
-<p>Настройка: в FreeScout <code>/claudeai/settings</code> — API-ключ Anthropic, прокси для <code>api.anthropic.com</code>, billing_url для контекста.</p>
+<p>В FreeScout установлен модуль <strong>ClaudeAI</strong> — AI-ассистент Anthropic. Подробнее — в разделе <a href="helpdesk.html#ai-assistant">HelpDesk → AI-ассистент Claude</a>. Кратко: используется для автоответа в чате ЛК и мобильного приложения, для подсказки ответа оператору в карточке тикета, для автоклассификации тегов. Настройка — <code>support.smit34.ru/claudeai/settings</code>.</p>
 
 <div class="info-box">
-  <strong>Custom Fields в FreeScout</strong>: для корректной работы CarbonBilling нужны 4 поля у Customer: <code>billing_id</code>, <code>contract_number</code>, <code>tariff</code>, <code>balance</code>. Создаются вручную в FS админке (<code>Manage → Custom Fields</code>) — однократно при настройке. Биллинг заполняет их автоматически при синхронизации.
+  <strong>Custom Fields в FreeScout</strong>: для корректной работы виджета SmitBilling нужны 4 поля у Customer: <code>billing_id</code>, <code>contract_number</code>, <code>tariff</code>, <code>balance</code>. Создаются вручную в FS админке (<code>Manage → Custom Fields</code>) — однократно при настройке. Биллинг заполняет их автоматически при синхронизации.
 </div>
 
 <h4>Вкладка «FreeScout + Claude AI»</h4>
@@ -6962,8 +7027,8 @@ endpoints <code>finops_ajax</code>, <code>finops_crud_ajax</code>,
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">02.06.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;<span data-smit="updated">02.06.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">06.06.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;<span data-smit="updated">06.06.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=923"></script>

@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HelpDesk — СмИТ Биллинг 2.1 (build 967)</title>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="СмИТ Биллинг 2.1 — Документация">
+  <meta property="og:title" content="HelpDesk — СмИТ Биллинг 2.1">
+  <meta property="og:description" content="Система поддержки клиентов на базе FreeScout: рабочее место оператора, канбан-доска подключений, теги, база знаний, AI-ассистент Claude.">
+  <meta property="og:url" content="https://docs.billing.smit34.ru/pages/helpdesk.html">
+  <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="ru_RU">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="HelpDesk — СмИТ Биллинг 2.1">
+  <meta name="twitter:description" content="Рабочее место оператора поддержки, канбан-доска, теги, база знаний, AI-ассистент Claude.">
+  <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
+  <meta name="description" content="Рабочее место оператора поддержки, канбан-доска, теги, база знаний, AI-ассистент Claude.">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css?v=924">
+  <link rel="stylesheet" href="../css/search.css?v=790">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.26.0/dist/tabler-icons.min.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <button class="menu-toggle" aria-label="Меню">&#9776;</button>
+    <div class="logo">
+      <div class="logo-icon">С</div>
+      <div class="logo-text"><span class="logo-main">СмИТ Биллинг 2.1 </span><span>Документация</span></div>
+    </div>
+  </div>
+  <div class="header-search"><div class="docs-search-wrap"><input type="search" id="docsSearch" class="docs-search-input" placeholder="Поиск по документации..." autocomplete="off"><span class="docs-search-icon"><i class="ti ti-search"></i></span><div class="docs-search-results" id="docsSearchResults"></div></div></div>
+  <div class="header-right">
+    <a href="../graphify/graph.html" class="header-nav-link" title="Граф зависимостей кода">
+      <i class="ti ti-topology-star-3 hnl-ico"></i><span class="hnl-txt">Граф</span>
+    </a>
+    <a href="../graphify/wiki/index.html" class="header-nav-link" title="Wiki архитектурных модулей">
+      <i class="ti ti-book-2 hnl-ico"></i><span class="hnl-txt">Wiki</span>
+    </a>
+    <button class="mobile-search-btn" aria-label="Поиск" title="Поиск"><i class="ti ti-search"></i></button>
+    <button class="theme-toggle" aria-label="Переключить тему" title="Светлая / тёмная тема">
+      <span class="icon-sun">&#9788;</span>
+      <span class="icon-moon">&#9790;</span>
+    </button>
+  </div>
+</header>
+
+<div class="search-overlay" id="searchOverlay" role="dialog" aria-label="Поиск по документации">
+  <div class="search-overlay-inner">
+    <i class="ti ti-search search-prefix-icon"></i>
+    <input type="search" id="docsSearchMobile" placeholder="Поиск по документации..." autocomplete="off">
+    <button class="search-overlay-close" aria-label="Закрыть" id="searchOverlayClose"><i class="ti ti-x"></i></button>
+    <div class="search-overlay-results" id="docsSearchResultsMobile"></div>
+  </div>
+</div>
+
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+<aside class="sidebar">
+  <nav>
+    <div class="nav-section">Разделы</div>
+    <ul>
+      <li><a href="../index.html"><i class="ti ti-home"></i> Главная</a></li>
+      <li class="has-children">
+        <a href="installation.html"><i class="ti ti-box"></i> Установка и интеграция <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="installation.html#requirements">1. Системные требования</a></li>
+          <li><a href="installation.html#docker-install">2. Установка Docker Compose</a></li>
+          <li><a href="installation.html#demo-cleanup">3. Удаление демо-данных</a></li>
+          <li><a href="installation.html#equip-integration">4. Интеграция с оборудованием</a></li>
+          <li><a href="installation.html#tariff-setup">5. Настройка тарифов</a></li>
+          <li><a href="installation.html#add-subscribers">6. Добавление абонентов</a></li>
+          <li><a href="installation.html#final-test">7. Финальное тестирование</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="billing.html"><i class="ti ti-settings"></i> Настройки биллинга <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+      </li>
+      <li class="has-children">
+        <a href="lk.html"><i class="ti ti-user"></i> Личный кабинет и мобильное приложение <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+      </li>
+      <li class="has-children active">
+        <a href="helpdesk.html"><i class="ti ti-headset"></i> HelpDesk (поддержка) <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="helpdesk.html#overview">1. Обзор системы</a></li>
+          <li><a href="helpdesk.html#workflow">2. Рабочий процесс</a></li>
+          <li><a href="helpdesk.html#dashboard">3. Панель управления</a></li>
+          <li><a href="helpdesk.html#mailbox">4. Списки тикетов</a></li>
+          <li><a href="helpdesk.html#conversation">5. Карточка тикета</a></li>
+          <li><a href="helpdesk.html#kanban">6. Канбан-доска</a></li>
+          <li><a href="helpdesk.html#tags">7. Теги и фильтры</a></li>
+          <li><a href="helpdesk.html#knowledgebase">8. База знаний</a></li>
+          <li><a href="helpdesk.html#ai-assistant">9. AI-ассистент Claude</a></li>
+          <li><a href="helpdesk.html#integration">10. Связь с биллингом</a></li>
+          <li><a href="helpdesk.html#admin">11. Администрирование</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="server.html"><i class="ti ti-server"></i> Управление сервером <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+      </li>
+      <li class="has-children">
+        <a href="equipment.html"><i class="ti ti-broadcast"></i> Интеграция с оборудованием <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+      </li>
+      <li class="has-children">
+        <a href="sorm.html"><i class="ti ti-shield-lock"></i> Интеграция с СОРМ3 <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+      </li>
+      <li class="has-children">
+        <a href="api.html"><i class="ti ti-link"></i> API <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+      </li>
+      <li class="has-children">
+        <a href="troubleshooting.html"><i class="ti ti-tool"></i> Решение проблем <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+      </li>
+      <li class="has-children">
+        <a href="licensing.html"><i class="ti ti-file-description"></i> Лицензирование <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+      </li>
+      <li><a href="contacts.html"><i class="ti ti-phone"></i> Контакты</a></li>
+    </ul>
+
+    <div class="nav-section">Разработчикам</div>
+    <ul>
+      <li class="has-children">
+        <a href="../graphify/graph.html"><i class="ti ti-topology-star-3"></i> Архитектура кода <span class="arrow"><i class="bi bi-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="../graphify/graph.html">Граф сообществ</a></li>
+          <li><a href="../graphify/wiki/index.html">Wiki модулей</a></li>
+          <li><a href="dev/index.html">Портал разработчика</a></li>
+          <li><a href="../graphify/help.html">graphify CLI</a></li>
+        </ul>
+      </li>
+    </ul>
+  <button class="sidebar-theme-toggle" aria-label="Тема"><span class="icon-sun"><i class="ti ti-sun"></i></span><span class="icon-moon"><i class="ti ti-moon"></i></span><span class="sidebar-theme-label">Сменить тему</span></button>
+</nav>
+</aside>
+
+<main class="content">
+  <div class="breadcrumb">
+    <a href="../index.html">Документация</a> <span class="sep">/</span> HelpDesk (поддержка)
+  </div>
+
+  <h1>HelpDesk — система поддержки клиентов</h1>
+  <p>HelpDesk — рабочее место операторов техподдержки, развёрнутое на open-source-движке <strong>FreeScout</strong>. Установлен на поддомене <code>support.smit34.ru</code> и двусторонне интегрирован с СмИТ Биллингом: данные абонента подгружаются в карточку тикета, тикеты доступны во вкладке «HelpDesk» абонента, AI-ассистент Claude отвечает на простые вопросы автоматически.</p>
+
+  <div class="page-toc">
+    <details open>
+      <summary><strong>Содержание страницы</strong></summary>
+      <ul>
+        <li><a href="#overview">1. Обзор системы</a></li>
+        <li><a href="#workflow">2. Рабочий процесс</a></li>
+        <li><a href="#dashboard">3. Панель управления</a></li>
+        <li><a href="#mailbox">4. Списки тикетов</a></li>
+        <li><a href="#conversation">5. Карточка тикета</a></li>
+        <li><a href="#kanban">6. Канбан-доска подключений</a></li>
+        <li><a href="#tags">7. Теги и фильтры</a></li>
+        <li><a href="#knowledgebase">8. База знаний</a></li>
+        <li><a href="#ai-assistant">9. AI-ассистент Claude</a></li>
+        <li><a href="#integration">10. Связь с биллингом</a></li>
+        <li><a href="#admin">11. Администрирование</a></li>
+      </ul>
+    </details>
+  </div>
+
+  <!-- ============================================ -->
+  <h2 id="overview">1. Обзор системы</h2>
+
+  <p>HelpDesk закрывает четыре задачи техподдержки:</p>
+  <ul>
+    <li><strong>Регистрация обращений</strong> — клиент пишет на email <code>support@</code>, в ЛК, в мобильном приложении, через VK или Telegram-бот — обращение автоматически превращается в тикет;</li>
+    <li><strong>Распределение работы</strong> — тикеты раскладываются по ящикам (Поддержка, Подключение, Разработка), назначаются оператору, попадают на канбан-доску;</li>
+    <li><strong>Ответ клиенту</strong> — оператор видит баланс, тариф, адрес абонента прямо в окне тикета (виджет SMIT Billing), отвечает в один клик;</li>
+    <li><strong>Аналитика и история</strong> — отчёты по SLA, продуктивности, отзывам; полный архив переписки с клиентом.</li>
+  </ul>
+
+  <div class="info-box">
+    <strong>Технологическая база.</strong> Движок — <a href="https://freescout.net/" target="_blank" rel="noopener">FreeScout</a> 1.8.221 (PHP/Laravel). Поверх него стоят наши модули: SmitUI (тёмная тема + брендинг), SmitBilling (виджет данных абонента в боковой панели), ClaudeAI (AI-ассистент), KnowledgeBase (база знаний), Kanban, AmoCRMSync, VK/Telegram/VoiceMail-интеграции. Хостинг — отдельный сервер <code>support.smit34.ru</code>, БД — MySQL <code>helpdesk</code>. Связь с биллингом — через REST API <code>https://rbill.smit34.ru/rest_api/v2/</code>.
+  </div>
+
+  <h3>Ящики и роли</h3>
+  <p>В HelpDesk заведено три рабочих ящика, каждый со своими операторами и SLA:</p>
+  <table class="data-table">
+    <thead><tr><th>Ящик</th><th>Email</th><th>Назначение</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Поддержка клиентов</strong></td><td><code>ask@support.smit34.ru</code></td><td>Все обращения по сервису: интернет не работает, плохая скорость, оплата, услуги, переподключение</td></tr>
+      <tr><td><strong>Подключение</strong></td><td><code>connect@support.smit34.ru</code></td><td>Заявки на новое подключение — попадают на отдельную канбан-доску (Новый лид → Тариф выбран → Назначен монтаж → Подключено)</td></tr>
+      <tr><td><strong>Разработка</strong></td><td><code>development@support.smit34.ru</code></td><td>Внутренний канал: обращения от операторов к разработчикам биллинга (баги, доработки)</td></tr>
+    </tbody>
+  </table>
+  <p>Помимо них есть служебные ящики (Звонки, Поддержка ROBOR) — они скрыты от обычных операторов через модуль SmitUI и используются только для технических автоматизаций (например, расшифровка голосовых сообщений с АТС попадает в «Звонки» как тикет с тегом канала).</p>
+
+  <!-- ============================================ -->
+  <h2 id="workflow">2. Рабочий процесс</h2>
+
+  <p>Стандартный цикл от входящего обращения до закрытия тикета:</p>
+
+  <ol>
+    <li><strong>Поступление</strong> — клиент написал в любой из каналов (email, ЛК, мобильное приложение, VK-сообщество, Telegram-бот). HelpDesk автоматически создаёт тикет и кладёт его в нужный ящик в статус «Неназначен»;</li>
+    <li><strong>Обогащение</strong> — модуль <strong>SmitBilling</strong> ищет абонента по email или телефону через REST API биллинга. Если абонент найден — в правой панели тикета показывается баланс, тариф, адрес, кнопки «Открыть в биллинге», «Создать платёж», «Перезагрузить роутер»;</li>
+    <li><strong>Первый ответ AI</strong> (опционально) — если включён <strong>ClaudeAI</strong> и вопрос распознан как простой (баланс, как пополнить, забыл пароль), Claude отвечает автоматически в течение нескольких секунд. Если вопрос требует человека — Claude отвечает «передаю оператору» и помечает тикет тегом <code>escalated</code>;</li>
+    <li><strong>Назначение оператору</strong> — старший смены или сам оператор берёт тикет в работу (статус «В работе», назначен ответственный, тикет уходит из общего списка «Неназначен» в «Мои»);</li>
+    <li><strong>Диалог</strong> — оператор и абонент переписываются. Каждый ответ оператора уходит абоненту тем же каналом, что и пришло обращение (email → email, VK → VK-сообщение, мобильное приложение → push + отображение в чате ЛК);</li>
+    <li><strong>Закрытие</strong> — тикет переводится в статус «Решён». Клиенту приходит письмо с ссылкой на оценку качества (1–5 звёзд) — оценки попадают в отчёт «Удовлетворённость».</li>
+  </ol>
+
+  <div class="info-box">
+    <strong>Важная связь с биллингом:</strong> событие закрытия тикета (<code>conversation.status_changed(closed)</code>) отправляется webhook'ом в биллинг и записывается в журнал <code>AUDIT_OPERATIONS</code> абонента — для дальнейших отчётов «сколько обращений у должников», «топ-проблем за месяц».
+  </div>
+
+  <!-- ============================================ -->
+  <h2 id="dashboard">3. Панель управления</h2>
+
+  <p>Главный экран HelpDesk (<code>support.smit34.ru</code>) — обзор по всем ящикам сразу. По каждому ящику показано количество неназначенных, моих, отмеченных, черновиков, назначенных тикетов и дата последнего обращения.</p>
+
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v1/01_dashboard_dark.png" alt="Панель управления HelpDesk — три ящика с счётчиками"></p>
+
+  <ul>
+    <li><strong>Цифра в кружке</strong> рядом с «Неназначены» — количество тикетов в очереди (если ≥1 — нужно разобрать);</li>
+    <li><strong>Кнопка-шестерёнка</strong> — настройки ящика (доступ операторов, шаблоны автоответов, теги);</li>
+    <li><strong>Стрелка</strong> — открыть список тикетов ящика.</li>
+  </ul>
+  <p>На мобильном устройстве (планшет/смартфон) панель адаптируется в одну колонку — карточки ящиков идут одна под другой, в шапке остаётся только бургер-меню, поиск и тема. Подходит для оператора, который начинает смену вне офиса.</p>
+
+  <!-- ============================================ -->
+  <h2 id="mailbox">4. Списки тикетов</h2>
+
+  <p>Внутри ящика (например «Поддержка клиентов») — таблица тикетов. По умолчанию открыта папка «Неназначены», слева — переключатель папок (Все, Мои, Неназначены, Отмеченные, Черновики, Закрытые, Спам), справа — фильтры по статусу и тегам.</p>
+
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v1/02_mailbox_dark.png" alt="Список тикетов в ящике «Поддержка клиентов»"></p>
+
+  <p>Каждая строка таблицы — это:</p>
+  <ul>
+    <li><strong>Имя клиента</strong> и email/телефон (телефонные тикеты — из голосовой почты или из мобильного приложения);</li>
+    <li><strong>Цветные бейджи</strong>:
+      <ul>
+        <li><span style="background:#43b77a;color:#fff;padding:1px 8px;border-radius:10px;font-size:11px">смит</span> / другие теги — категория проблемы (см. <a href="#tags">раздел 7</a>);</li>
+        <li><span style="background:#fce4ec;color:#a11;padding:1px 8px;border-radius:3px;font-size:11px;border:1px solid #ef9a9a">−123₽</span> — отрицательный баланс абонента (модуль SmitBilling подтягивает в реальном времени);</li>
+        <li><span style="background:#e8f5e9;color:#1b5e20;padding:1px 8px;border-radius:3px;font-size:11px;border:1px solid #a5d6a7">450₽</span> — положительный баланс;</li>
+      </ul>
+    </li>
+    <li><strong>Превью первой строки сообщения</strong> — для быстрого понимания сути обращения без открытия;</li>
+    <li><strong>Время</strong> — когда пришло обращение (или последний ответ).</li>
+  </ul>
+
+  <p>Над таблицей — строка <strong>массовых действий</strong>: отметить, переместить в другой ящик, назначить оператора, изменить статус, удалить. Действия применяются к отмеченным тикетам (checkbox в левой колонке).</p>
+
+  <!-- ============================================ -->
+  <h2 id="conversation">5. Карточка тикета</h2>
+
+  <p>Клик по тикету открывает карточку — основной экран оператора. Слева — переписка, справа — данные абонента, в верхней части — панель быстрых действий.</p>
+
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v1/03_conversation_dark.png" alt="Карточка тикета с виджетом биллинга в правой панели"></p>
+
+  <h3>Верхняя панель действий</h3>
+  <ul>
+    <li><i class="ti ti-arrow-back-up"></i> <strong>Назад</strong> — к списку ящика;</li>
+    <li><i class="ti ti-pencil"></i> <strong>Редактировать</strong> — изменить тему, заказчика, теги;</li>
+    <li><i class="ti ti-trash"></i> <strong>Удалить</strong> — переместить в корзину (восстанавливается 30 дней);</li>
+    <li><i class="ti ti-calendar"></i> <strong>Отложить</strong> — спрятать тикет до указанной даты (например «вернуться через 3 дня после обещанного платежа»);</li>
+    <li><i class="ti ti-tag"></i> <strong>Теги</strong> — навесить категории;</li>
+    <li><i class="ti ti-dots"></i> <strong>Ещё</strong> — пересылка на другой ящик, объединение с другим тикетом, печать, экспорт.</li>
+  </ul>
+  <p>Справа в шапке — кнопки <strong>«Активен / Отвечен / Закрыт / Спам»</strong> (статус) и <strong>«Любой / Иванов / Петров»</strong> (ответственный оператор).</p>
+
+  <h3>Правая панель — данные абонента (модуль SmitBilling)</h3>
+  <p>Если абонент найден в биллинге по email или телефону, в правой колонке появляется блок:</p>
+  <ul>
+    <li><strong>ФИО абонента</strong> с ссылкой на полную карточку в админке биллинга;</li>
+    <li><strong>Контакты</strong> — email, телефон (рабочий/мобильный/voicemail);</li>
+    <li><strong>Договор и тариф</strong> — номер договора, действующий тариф, статус (активен / заблокирован);</li>
+    <li><strong>Баланс</strong> — цветным бейджем (красный отрицательный / зелёный положительный) с возможностью клика для создания финоперации;</li>
+    <li><strong>Кнопки быстрых действий</strong>:
+      <ul>
+        <li><strong>Claude AI</strong> — подсказка ответа от AI на основе истории абонента (тариф, баланс, последние обращения);</li>
+        <li><strong>Черновик</strong> — сохранить заготовку ответа без отправки;</li>
+        <li>Кнопки оборудования (Пинг роутера, Перезагрузка ONT и т.д.) — если NAS поддерживает удалённое управление.</li>
+      </ul>
+    </li>
+  </ul>
+
+  <div class="info-box">
+    <strong>Если абонент не найден</strong> — вместо данных биллинга показывается «Клиент не найден в биллинге». Оператор может вручную сопоставить тикет с абонентом, нажав «Связать» и выбрав договор из выпадающего списка с поиском.
+  </div>
+
+  <h3>Окно ответа</h3>
+  <p>Под перепиской — редактор ответа: форматирование (жирный/курсив/списки/вставка ссылки/изображения), кнопка вставки шаблона, выбор статуса после отправки, назначение оператора. Кнопки внизу:</p>
+  <ul>
+    <li><strong>AI Подсказка</strong> — Claude предложит черновик ответа на основе истории тикета и данных абонента;</li>
+    <li><strong>Отправить ответ</strong> — отправляется клиенту тем же каналом, что пришло обращение;</li>
+    <li><strong>Переслать</strong> — отправить тикет с историей другому оператору или внешнему адресату;</li>
+    <li><strong>Добавить внутреннее примечание</strong> — комментарий, видимый только операторам (не уходит клиенту);</li>
+    <li><strong>Создать</strong> — создать отдельный тикет из текущего сообщения (например выделить новую проблему).</li>
+  </ul>
+
+  <!-- ============================================ -->
+  <h2 id="kanban">6. Канбан-доска подключений</h2>
+
+  <p>Для ящика «Подключение» включён модуль <strong>Kanban</strong> — заявки на подключение отображаются как карточки на доске со столбцами по этапам сделки.</p>
+
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v1/04_kanban_dark.png" alt="Канбан-доска подключений"></p>
+
+  <h3>Столбцы доски</h3>
+  <ol>
+    <li><strong>Новый лид</strong> — поступило обращение, абонент пока не подтвердил серьёзность намерений;</li>
+    <li><strong>Тариф выбран</strong> — менеджер согласовал с клиентом тариф и адрес подключения;</li>
+    <li><strong>Назначен монтаж</strong> — на адрес назначена бригада монтажников и дата;</li>
+    <li><strong>Подключено</strong> — клиент работает, договор оформлен (в биллинге создаётся абонент);</li>
+    <li><strong>Отказ / Нет покрытия</strong> — заявка закрыта без подключения (с указанием причины для аналитики).</li>
+  </ol>
+
+  <h3>Что в карточке</h3>
+  <ul>
+    <li>Имя контактного лица и адрес;</li>
+    <li>Канал источника (AI/чат-бот, форма с сайта, телефон, email) — цветная плашка;</li>
+    <li>Теги (см. <a href="#tags">раздел 7</a>);</li>
+    <li>Заметки менеджера (тариф, особенности подключения, сроки);</li>
+    <li>Номер тикета и время создания;</li>
+    <li>Назначенный менеджер.</li>
+  </ul>
+  <p>Карточки перетаскиваются между столбцами мышью — статус тикета меняется автоматически. Внизу доски — кнопка «Показать закрытые (N)» для просмотра завершённых сделок.</p>
+
+  <!-- ============================================ -->
+  <h2 id="tags">7. Теги и фильтры</h2>
+
+  <p>Теги — главный инструмент классификации тикетов. По тегам ведётся аналитика (топ-проблем за месяц), фильтрация в списках, автоматизация (например, тег <code>оплата</code> + неотвеченный ≥ 4 часа → SMS-напоминание оператору).</p>
+
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v1/05_tags_light.png" alt="Каталог тегов с цветовой палитрой и счётчиками"></p>
+
+  <h3>Категории тегов в нашей инсталляции</h3>
+  <table class="data-table">
+    <thead><tr><th>Тег</th><th>Назначение</th></tr></thead>
+    <tbody>
+      <tr><td><code>смит</code>, <code>робор</code></td><td>Какой бренд оператора затронут (если у нас несколько ISP)</td></tr>
+      <tr><td><code>нет-интернета</code>, <code>los</code>, <code>скорость</code>, <code>роутер</code>, <code>проблемная-зона</code></td><td>Тип технической проблемы</td></tr>
+      <tr><td><code>подключение</code>, <code>повторное</code>, <code>оплата</code></td><td>Тип запроса</td></tr>
+      <tr><td><code>активен</code>, <code>заблокирован</code></td><td>Текущий статус абонента (проставляется автоматически по данным биллинга)</td></tr>
+      <tr><td><code>бизнес</code></td><td>Корпоративный клиент (приоритет)</td></tr>
+      <tr><td><code>vk</code>, <code>voice</code></td><td>Канал источника</td></tr>
+      <tr><td>Номер телефона (например <code>78442554065</code>)</td><td>Тикеты, пришедшие с конкретного номера АТС</td></tr>
+    </tbody>
+  </table>
+  <p>Рядом с каждым тегом — счётчик активных тикетов. Клик по тегу открывает список всех тикетов с этим тегом по всем ящикам — удобно для проверки «сколько сейчас аварийных обращений «нет-интернета».</p>
+
+  <div class="info-box">
+    <strong>Автотеги.</strong> Часть тегов проставляется автоматически: <code>vk</code> и <code>voice</code> — по источнику обращения, <code>заблокирован</code> / <code>активен</code> — модулем SmitBilling по данным биллинга, теги номеров — по расшифровке голосового сообщения с АТС.
+  </div>
+
+  <h3>Фильтрация в списках</h3>
+  <p>Над таблицей тикетов в любом ящике — фильтр «Теги». Можно выбрать несколько тегов и одну из двух стратегий: «любой из» (OR) или «все одновременно» (AND). Фильтр сохраняется в URL — можно скопировать ссылку и отправить коллеге.</p>
+
+  <!-- ============================================ -->
+  <h2 id="knowledgebase">8. База знаний</h2>
+
+  <p>База знаний — структурированный каталог типовых сценариев решения проблем. Используется операторами при обучении, ботом AIDA для авто-ответов, и Claude AI как контекст для подсказок.</p>
+
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v1/06_knowledgebase_dark.png" alt="База знаний — типовые сценарии решения проблем"></p>
+
+  <h3>Структура базы</h3>
+  <p>База разделена на четыре вкладки в верхней панели:</p>
+  <ul>
+    <li><strong>Сценарии решения</strong> — пошаговые инструкции (S01 «Нет интернета», S02 «Горит LOS», S03 «Проблемы с MK», S04 «Низкая скорость», S05 «Проблемы с роутером», S06 «Проблемы с Wi-Fi» и т.д.). У каждого сценария — приоритет (высокий/средний/низкий) и аудитория (Бот / Оператор / Бот+Оператор);</li>
+    <li><strong>Дерево диагностики</strong> — иерархия вопросов «если LOS красный → проверить муфту, если зелёный → проверить настройки роутера»;</li>
+    <li><strong>Шаблоны ответов</strong> — заготовки текстов для типовых ответов (форматирование, переменные <code>{ФИО}</code>, <code>{баланс}</code>, <code>{тариф}</code>, подставляются из данных биллинга);</li>
+    <li><strong>Аналитика</strong> — отчёты по обращениям: топ-проблем за период, эффективность сценариев, скорость решения по типу.</li>
+  </ul>
+
+  <p>В шапке базы есть кнопка <strong>«Работа с сервисом ↗»</strong> — ведёт на эту страницу документации (раздел про FreeScout) в новой вкладке.</p>
+
+  <h3>Аудитория «Бот»</h3>
+  <p>Сценарии с пометкой «Бот» используются AI-ассистентом Claude для автоматических ответов в чате ЛК и мобильного приложения. Если сценарий простой («забыл пароль», «как пополнить»), Claude отвечает по сценарию сам. Если требуется участие оператора («медленный интернет, проверяли модем») — Claude отвечает фразой «передаю оператору» и создаёт тикет в FreeScout с тегом сценария.</p>
+
+  <h3>Аудитория «Оператор»</h3>
+  <p>Сценарии для оператора — это шпаргалка в карточке тикета. По клику на «AI Подсказка» Claude находит подходящий сценарий по тексту обращения и предлагает черновик ответа на основе сценария + данных абонента.</p>
+
+  <!-- ============================================ -->
+  <h2 id="ai-assistant">9. AI-ассистент Claude</h2>
+
+  <p>Модуль <strong>ClaudeAI</strong> подключает AI-ассистент Anthropic к FreeScout. Используется в трёх режимах:</p>
+
+  <ol>
+    <li><strong>Автоответ в чате ЛК и мобильного приложения</strong> — абонент пишет в чат, ClaudeAI отвечает сам, если вопрос соответствует базе знаний с аудиторией «Бот». При непонятной ситуации — фраза «передаю оператору» и создание тикета в FreeScout;</li>
+    <li><strong>Подсказка ответа оператору</strong> — в карточке тикета кнопка «AI Подсказка» (или «Claude AI» в правой панели). Claude получает контекст: текст тикета, данные абонента (баланс, тариф, история обращений), подходящие сценарии из базы знаний — и формирует черновик ответа. Оператор редактирует и отправляет;</li>
+    <li><strong>Классификация и теги</strong> — Claude автоматически проставляет теги по содержанию тикета (например, «нет-интернета» + «робор», если в тексте упомянуты обе характеристики).</li>
+  </ol>
+
+  <h3>Настройка</h3>
+  <p>В админке HelpDesk: <code>support.smit34.ru/claudeai/settings</code> (только администратор). Параметры:</p>
+  <ul>
+    <li><strong>API-ключ Anthropic</strong> — выдаётся в личном кабинете Anthropic Console;</li>
+    <li><strong>Прокси</strong> — API <code>api.anthropic.com</code> заблокирован из российских IP, поэтому запросы идут через прокси (настройки из биллинга, раздел Telegram-прокси переиспользуется);</li>
+    <li><strong>URL биллинга</strong> — <code>https://rbill.smit34.ru/rest_api/v2/</code> — откуда Claude берёт контекст по абоненту;</li>
+    <li><strong>Токен биллинга</strong> — Bearer-токен для аутентификации в REST API биллинга.</li>
+  </ul>
+
+  <div class="info-box">
+    <strong>Резервный AI — AIDA.</strong> Если Claude недоступен (отсутствует ключ, не работает прокси, превышен лимит API), используется собственная модель AIDA — fallback для критичных автоответов. Настройки: раздел «AIDA» в админке биллинга.
+  </div>
+
+  <h3>Расходы и лимиты</h3>
+  <p>Claude API оплачивается за токены (входные + выходные). Один типовой ответ — около 500–2000 токенов. В админке биллинга есть отчёт «AI-сессии» (раздел <code>/ai-sessions</code> в HelpDesk) — статистика по дням, типам сессий (текст/голос), провайдерам, ошибкам. Используется для контроля расходов.</p>
+
+  <!-- ============================================ -->
+  <h2 id="integration">10. Связь с биллингом</h2>
+
+  <p>HelpDesk и СмИТ Биллинг связаны двусторонне. Подробное техническое описание интеграции — в разделе <a href="billing.html#freescout-overview">«Настройки биллинга → FreeScout-интеграция»</a>. Здесь — краткая сводка по точкам соединения.</p>
+
+  <table class="data-table">
+    <thead><tr><th>Что</th><th>Направление</th><th>Как</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Поиск абонента</strong> по email/телефону</td><td>HelpDesk → Биллинг</td><td>Модуль SmitBilling делает запрос к REST API <code>rbill.smit34.ru/rest_api/v2/Abonents/</code> при открытии тикета, кэширует ответ на 60 секунд</td></tr>
+      <tr><td><strong>Виджет данных абонента</strong> в правой панели</td><td>HelpDesk → Биллинг</td><td>4 запроса: <code>/Abonents/</code> + <code>/AdminAccounts/</code> (баланс) + <code>/UsersUsluga/</code> (услуги) + <code>/FinanceOperations/</code> (история платежей)</td></tr>
+      <tr><td><strong>Создание тикета из ЛК/мобильного приложения</strong></td><td>Биллинг → HelpDesk</td><td>POST <code>/api/v1/conversations</code> в API FreeScout с темой, текстом, привязкой к customer</td></tr>
+      <tr><td><strong>Вкладка «HelpDesk» в карточке абонента</strong></td><td>Биллинг → HelpDesk</td><td>GET <code>/api/v1/conversations?customer_id=N</code> — список тикетов абонента</td></tr>
+      <tr><td><strong>Ежедневная синхронизация абонентов</strong></td><td>Биллинг → HelpDesk</td><td>Celery-задача <code>sync_abonent_to_freescout</code> в 03:00 — обновляет имя, email, phone, custom fields (billing_id, contract_number, tariff, balance)</td></tr>
+      <tr><td><strong>Webhook: ответ оператора</strong></td><td>HelpDesk → Биллинг</td><td>Push-уведомление абоненту через FCM, если у абонента есть мобильное приложение</td></tr>
+      <tr><td><strong>Webhook: назначение тикета</strong></td><td>HelpDesk → Биллинг</td><td>Telegram-алерт назначенному оператору в групповой чат</td></tr>
+      <tr><td><strong>Webhook: закрытие тикета</strong></td><td>HelpDesk → Биллинг</td><td>Запись в <code>AUDIT_OPERATIONS</code> абонента — для отчётов</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <strong>Конфигурация URL.</strong> В FreeScout <code>.env</code> переменные <code>SMIT_BILLING_API=https://rbill.smit34.ru/rest_api/v2/</code> и <code>CLAUDE_BILLING_URL=https://rbill.smit34.ru/rest_api/v2/</code>. После изменения URL обязательно <code>php artisan config:clear &amp;&amp; php artisan cache:clear</code> и перезапуск очереди (<code>systemctl restart freescout-queue.service php8.2-fpm</code>).
+  </div>
+
+  <!-- ============================================ -->
+  <h2 id="admin">11. Администрирование</h2>
+
+  <h3>Управление операторами</h3>
+  <p><strong>Настройки → Агенты</strong>. Создание нового оператора, выдача доступа к ящикам, выбор роли (Оператор / Администратор), смена пароля, деактивация. Деактивированные операторы остаются в списке для истории (их подписи на тикетах сохраняются), но не могут войти.</p>
+
+  <h3>Ящики и каналы</h3>
+  <p><strong>Настройки → Ящики</strong>. Для каждого ящика настраивается:</p>
+  <ul>
+    <li>Входящая почта (IMAP) — Mailcow на <code>mail.support.smit34.ru</code>;</li>
+    <li>Исходящая почта (SMTP) — тот же Mailcow;</li>
+    <li>Автоответ — шаблон письма-подтверждения «ваш тикет № принят»;</li>
+    <li>Доступ операторов — кто видит этот ящик;</li>
+    <li>Шаблонные ответы — общие для ящика;</li>
+    <li>Пользовательские поля Customer — billing_id, contract_number, tariff, balance (заполняются автосинхронизацией с биллингом);</li>
+    <li>Канбан-доска (для ящика «Подключение») — настройка столбцов и автоматизаций.</li>
+  </ul>
+
+  <h3>Интеграции каналов</h3>
+  <p>В разделах <strong>Настройки → VK Integration / TelegramNotification / VoiceMail</strong> настраиваются:</p>
+  <ul>
+    <li><strong>VK</strong> — ID сообщества, токен, обработка входящих сообщений как тикетов;</li>
+    <li><strong>Telegram</strong> — bot token, чаты для алертов (распределение по топикам по типам событий);</li>
+    <li><strong>VoiceMail</strong> — обработка email от АТС с расшифровкой голоса и автоматическое создание тикета с привязкой к абоненту по номеру.</li>
+  </ul>
+
+  <h3>Отчёты</h3>
+  <p>Раздел <strong>Отчёты</strong> в верхней панели:</p>
+  <ul>
+    <li><strong>По тикетам</strong> — динамика поступления, среднее время первого ответа, среднее время решения, по тегам/ящикам/операторам;</li>
+    <li><strong>По продуктивности</strong> — кто сколько отвечает, среднее время на тикет;</li>
+    <li><strong>По отзывам</strong> — оценки клиентов (1–5 звёзд), средний балл, рекомендации;</li>
+    <li><strong>По затраченному времени</strong> — если включён модуль учёта рабочего времени (Time Tracking).</li>
+  </ul>
+
+  <h3>Резервное копирование</h3>
+  <p>HelpDesk развёрнут на отдельном сервере и бэкапится отдельно от биллинга:</p>
+  <ul>
+    <li>MySQL <code>helpdesk</code> — ежедневный <code>mysqldump</code>;</li>
+    <li>Файлы вложений — <code>/var/www/freescout/storage/app/attachments/</code> — еженедельный <code>tar.gz</code>;</li>
+    <li>Кастомные модули (SmitUI, SmitBilling, ClaudeAI, KnowledgeBase и др.) — в git-репозитории <code>ircitdev/SmitBilling</code> и связанных.</li>
+  </ul>
+
+  <h3>Обновление FreeScout</h3>
+  <p>HelpDesk обновляется через встроенный апдейтер (<code>Настройки → Статус → Доступна версия...</code>). Процедура:</p>
+  <ol>
+    <li>Остановить очередь и cron: <code>systemctl stop freescout-queue.service</code>;</li>
+    <li>Сделать резервную копию <code>storage/</code> и БД;</li>
+    <li>Нажать «Обновить» в админке;</li>
+    <li>После обновления — проверить, что апдейтер не затёр кастомные blade-шаблоны (логин, восстановление пароля, оформление email) — если затёр, восстановить из бэкапа;</li>
+    <li>Очистить кеш: <code>php artisan config:clear &amp;&amp; cache:clear &amp;&amp; view:clear</code>;</li>
+    <li>Запустить очередь: <code>systemctl start freescout-queue.service</code>.</li>
+  </ol>
+
+  <div class="info-box">
+    <strong>Запасной канал на случай недоступности HelpDesk:</strong> в админке биллинга есть раздел «Старые HDSK» — это архив старого встроенного хелпдеска СмИТ Биллинга, который использовался до апреля 2026. На него можно временно переключить операторов, если FreeScout полностью недоступен. Для перехода назад в FreeScout — все новые тикеты надо будет вручную мигрировать.
+  </div>
+
+</main>
+
+<script src="../js/main.js?v=924"></script>
+<script src="../js/version.js"></script>
+<script src="../js/search.js?v=790"></script>
+</body>
+</html>
