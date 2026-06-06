@@ -125,6 +125,7 @@
           <li class="sub-item"><a href="billing.html#system-settings">6.1. Настройки системы</a></li>
           <li class="sub-item"><a href="billing.html#print-forms">6.2. Шаблоны печати</a></li>
           <li class="sub-item"><a href="billing.html#atol-config">6.3. Фискализация</a></li>
+          <li class="sub-item"><a href="billing.html#fiscal">6.3.1. Модуль фискализации 54-ФЗ</a></li>
           <li class="sub-item"><a href="billing.html#payment-systems">6.4. Платёжные системы</a></li>
           <li class="sub-item"><a href="billing.html#bank-statements">6.4.1. Банковские выписки</a></li>
           <li class="sub-item"><a href="billing.html#bank-parsers">6.4.2. Банки и парсеры</a></li>
@@ -2281,7 +2282,8 @@ GAMES_OF_MONTH_REQUIRE_APP_RATING / _YANDEX_MAPS / _2GIS</code></pre>
   <ul>
     <li><a href="#system-settings">5.1. Настройки системы</a></li>
     <li><a href="#print-forms">5.2. Шаблоны печати</a></li>
-    <li><a href="#atol-config">5.3. Фискализация (АТОЛ)</a></li>
+    <li><a href="#atol-config">5.3. Фискализация (54-ФЗ)</a></li>
+    <li><a href="#fiscal">5.3.1. Модуль фискализации 54-ФЗ</a></li>
     <li><a href="#payment-systems">5.4. Платёжные системы</a></li>
     <li><a href="#integrations">5.5. Интеграции</a></li>
     <li><a href="#iptv-mappings">5.6. IPTV-пакеты</a></li>
@@ -2708,14 +2710,90 @@ backup-коды 2FA; IP-список fail-open при пустоте; авари
 
 <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_print_forms.png" alt="Шаблоны печати"></p>
 
-<h3 id="atol-config">6.3. Фискализация (АТОЛ)</h3>
-<p>Настройка интеграции с фискальным регистратором (онлайн-кассой) АТОЛ для соблюдения
-ФЗ-54. После успешного платежа автоматически отправляется чек в ОФД.</p>
+<h3 id="atol-config">6.3. Фискализация (54-ФЗ)</h3>
+<p>Полное описание модуля автоматической отправки кассовых чеков в ОФД — в разделе
+<a href="#fiscal">6.3.1. Модуль фискализации</a> ниже.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_atol.png" alt="Фискализация АТОЛ"></p>
+<h4 id="fiscal">6.3.1. Модуль фискализации 54-ФЗ</h4>
 
-<p>Поля настройки: адрес кассового сервера, идентификатор кассы, СНО (система налогообложения),
-ставка НДС.</p>
+<p>Модуль автоматически формирует кассовый чек и передаёт его в ОФД при каждом приёме
+реальной оплаты — согласно Федеральному закону № 54-ФЗ. Чеки бьются <strong>собственной
+кассой ООО «СмИТ»</strong> (а не делегируются платёжному агрегатору) по всем каналам:
+ЮKassa, Wallet One, банковские выписки и ручные пополнения. Реквизиты продавца (ИНН, СНО,
+НДС) берутся из брендинга компании — единый источник, без дублирования.</p>
+
+<div class="info-box" style="border-left:4px solid #fd7e14; background:rgba(253,126,20,.07); padding:12px 16px; margin:16px 0">
+  <p class="mb-1"><strong><i class="ti ti-alert-triangle"></i> Главный выключатель (kill-switch)</strong></p>
+  <p>Фискализация управляется флагом <code>FISCAL_ENABLED</code> (по умолчанию <strong>выключен</strong>).
+  Пока он выключен — чеки в ОФД <strong>не уходят</strong>, движок только логирует. Включать боевой режим
+  следует лишь после ввода реквизитов кассы и успешной проверки связи с ОФД на тестовом сервере.
+  При включении система запрашивает явное подтверждение (чеки уходят в ФНС необратимо).</p>
+</div>
+
+<h5>Как работает (поток чека)</h5>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/fiscal_module_v2026_06_06/fiscal_flow.svg" alt="Поток кассового чека: оплата → FiscalManager → Celery → ОФД → ФНС → чек клиенту" width="1100"></p>
+
+<ol>
+  <li><strong>Приём оплаты</strong> — webhook ЮKassa/W1, зачисление банковской выписки или ручное
+  пополнение создаёт финоперацию (<code>FinanceOperations</code>).</li>
+  <li><strong>Движок</strong> <code>FiscalManager.enqueue()</code> проверяет, подлежит ли операция
+  фискализации (приход реальных денег; обещанный платёж, ежемесячные списания и бонусы —
+  не фискализируются), собирает состав чека по 54-ФЗ и ставит задачу в очередь.</li>
+  <li><strong>Очередь Celery</strong> отправляет чек в ОФД (АТОЛ Онлайн: <code>sell</code> /
+  <code>sell_refund</code>), опрашивает статус, повторяет при сбоях и шлёт Telegram-алерт на
+  «застрявшие» чеки.</li>
+  <li><strong>Чек клиенту</strong> — электронный чек на e-mail/телефон абонента, ссылка в личном
+  кабинете и мобильном приложении, статус и фискальные реквизиты — в карточке операции.</li>
+</ol>
+
+<h5>Статусы чека</h5>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/fiscal_module_v2026_06_06/fiscal_lifecycle.svg" alt="Жизненный цикл чека: pending → sent → wait → done; ветка fail с повтором и алертом" width="1100"></p>
+<ul>
+  <li><strong>В очереди</strong> (pending) — операция помечена к фискализации.</li>
+  <li><strong>Отправлен</strong> (sent) — чек ушёл в ОФД, получен UUID запроса.</li>
+  <li><strong>Ожидает ОФД</strong> (wait) — ОФД обрабатывает, статус опрашивается периодически.</li>
+  <li><strong>Принят ОФД</strong> (done) — чек зарегистрирован, сохранены № ФД, ФП и ссылка на чек.</li>
+  <li><strong>Ошибка</strong> (fail) — ОФД отклонил или недоступен; авто-повтор до N попыток, затем Telegram-алерт.</li>
+</ul>
+
+<h5>Страница настроек <code>/admin/settings/AtolConfig/</code></h5>
+<p>В шапке — главный выключатель «Фискализация включена» с бейджем режима, реквизиты ООО «СмИТ»
+(ИНН, без НДС / УСН) и индикатор связи с ОФД с кнопкой «Проверить связь».</p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/fiscal_module_v2026_06_06/fiscal_settings_light.png" alt="Страница настроек фискализации (светлая тема)" width="1100"></p>
+
+<p><strong>Параметры чека:</strong></p>
+<ul>
+  <li><strong>Провайдер ОФД</strong> — АТОЛ Онлайн (основной) или OrangeData.</li>
+  <li><strong>Контакт в чек</strong> — e-mail или телефон абонента по умолчанию.</li>
+  <li><strong>Наименование позиции</strong> — текст в чеке (по умолчанию «Услуги связи / доступ к сети Интернет»),
+  либо брать из услуги абонента.</li>
+  <li><strong>Типы операций для чека</strong> — мультивыбор типов финопераций, по которым бить чек.
+  Пусто = все приходы реальных денег, кроме обещанного платежа и ежемесячных списаний.</li>
+  <li><strong>Попыток отправки</strong>, <strong>опрос ОФД (мин)</strong>, <strong>алерт застрявших (ч)</strong> —
+  параметры очереди и мониторинга.</li>
+</ul>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/fiscal_module_v2026_06_06/fiscal_optypes_dropdown.png" alt="Мультивыбор типов операций для чека" width="1100"></p>
+
+<p>Внизу — статус-блок с реальной сводкой за день (пробито / ожидают ОФД / в очереди / с ошибкой)
+и ссылкой на журнал <code>fiscal.log</code>. Страница полностью поддерживает тёмную тему.</p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/fiscal_module_v2026_06_06/fiscal_settings_dark.png" alt="Страница настроек фискализации (тёмная тема)" width="1100"></p>
+
+<h5>Касса (доступ к ОФД)</h5>
+<p>Кассовые параметры доступа суперпользователь вводит в модалке кассы: тип кассы, URL сервера ОФД,
+группа ККТ, логин и пароль, СНО, адрес размещения ККТ, e-mail продавца, флаг тестового сервера.</p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/fiscal_module_v2026_06_06/fiscal_kassa_modal.png" alt="Модалка настройки кассы" width="1100"></p>
+
+<h5>Чек в карточке операции</h5>
+<p>На странице <a href="#modal-finops">Финансовые операции</a> в карточке появляется секция «Чек»
+со статусом ОФД, номером ФД/ФП, ссылкой на электронный чек и кнопкой «Пробить чек» (для
+суперпользователя, приходные операции). Абонент видит ссылку на чек в личном кабинете и в
+мобильном приложении (поле <code>receipt_url</code> в истории операций).</p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/fiscal_module_v2026_06_06/fiscal_finops_modal.png" alt="Карточка финансовой операции" width="1100"></p>
+
+<h5>Налогообложение</h5>
+<p>ООО «СмИТ» работает на УСН без НДС — в чек ОФД передаётся признак «НДС не облагается».
+Ставка НДС и система налогообложения берутся из реквизитов компании
+(<a href="#branding">Брендинг</a>); при переходе на ОСН переключатель ставки уже готов.</p>
 
 <h3 id="payment-systems">6.4. Платёжные системы</h3>
 <p>Настройка приёма онлайн-платежей. Поддерживается несколько провайдеров.</p>
