@@ -19,7 +19,7 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="Рабочее место оператора поддержки, канбан-доска, теги, база знаний, AI-ассистент Claude.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=925">
+  <link rel="stylesheet" href="../css/style.css?v=926">
   <link rel="stylesheet" href="../css/search.css?v=790">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.26.0/dist/tabler-icons.min.css">
@@ -492,10 +492,8 @@
 
   <p>Раздел <strong>«AI-сессии»</strong> в верхнем меню HelpDesk показывает все диалоги клиентов с AI-ассистентом — текстовые из чата ЛК и мобильного приложения, а также голосовые из голосовой почты. Это единая точка контроля качества AI-ответов и расходов на токены.</p>
 
-  <figure class="figure">
-    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v2/ai_sessions_light.png" alt="Журнал AI-сессий — фильтры по периоду, провайдеру, типу и привязке, KPI" loading="lazy">
-    <figcaption>Раздел «AI-сессии»: KPI на 9 показателей, гибкие фильтры и таблица сессий с привязками к тикетам и лидам.</figcaption>
-  </figure>
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v2/ai_sessions_light.png" alt="Журнал AI-сессий — фильтры по периоду, провайдеру, типу и привязке, KPI" loading="lazy"></p>
+  <p style="text-align:center;font-size:.92em;color:var(--muted,#64748b);margin-top:-12px;margin-bottom:24px"><em>Раздел «AI-сессии»: KPI на 9 показателей, гибкие фильтры и таблица сессий с привязками к тикетам и лидам.</em></p>
 
   <h3>KPI и фильтры</h3>
   <p>Над таблицей — карточки KPI за выбранный период (по умолчанию — месяц):</p>
@@ -507,18 +505,14 @@
     <li><strong>Ошибки</strong> — счётчик неудачных запросов к Claude API (например, превышение лимита, недоступность прокси).</li>
   </ul>
 
-  <figure class="figure">
-    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v2/ai_kpi_dashboard.svg" alt="KPI журнала AI-сессий — 9 показателей с фильтрами периода и привязки" loading="lazy">
-    <figcaption>Все 9 KPI журнала на одной плитке. Фильтры можно комбинировать: например, «голос + РОБОР + ошибки» — выявить проблемы расшифровки в B2B-канале.</figcaption>
-  </figure>
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v2/ai_kpi_dashboard.svg" alt="KPI журнала AI-сессий — 9 показателей с фильтрами периода и привязки" loading="lazy"></p>
+  <p style="text-align:center;font-size:.92em;color:var(--muted,#64748b);margin-top:-12px;margin-bottom:24px"><em>Все 9 KPI журнала на одной плитке. Фильтры можно комбинировать: например, «голос + РОБОР + ошибки» — выявить проблемы расшифровки в B2B-канале.</em></p>
 
   <h3>Поток сессии: от обращения до результата</h3>
   <p>Каждая сессия проходит одинаковый путь — на схеме видно, как сообщение клиента превращается в тикет, лид или закрывается AI-ассистентом самостоятельно.</p>
 
-  <figure class="figure">
-    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v2/ai_sessions_flow.svg" alt="Поток AI-сессии: источник → Claude → результат" loading="lazy">
-    <figcaption>Источники сессий (СМИТ-чат, РОБОР, голосовая почта) → Claude → один из четырёх исходов: тикет, лид в AmoCRM, решено без эскалации, ошибка в журнале.</figcaption>
-  </figure>
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v2/ai_sessions_flow.svg" alt="Поток AI-сессии: источник → Claude → результат" loading="lazy"></p>
+  <p style="text-align:center;font-size:.92em;color:var(--muted,#64748b);margin-top:-12px;margin-bottom:24px"><em>Источники сессий (СМИТ-чат, РОБОР, голосовая почта) → Claude → один из четырёх исходов: тикет, лид в AmoCRM, решено без эскалации, ошибка в журнале.</em></p>
 
   <h3>Колонки таблицы</h3>
   <p>В таблице сессий выводятся: <strong>ID</strong> (с префиксом #), <strong>Дата</strong>, <strong>Клиент</strong> (если идентифицирован — ФИО, иначе «Аноним»), <strong>Тип</strong> (текст 💬 или голос 🎙), <strong>Ветка</strong> (СМИТ / РБР — канал), <strong>Сообщений</strong> (длина диалога), <strong>Статус</strong> (Active, Timeout, Resolved, Error), <strong>Связи</strong> (ссылки на созданный тикет или лид), <strong>Действия</strong> (открыть полный лог).</p>
@@ -532,10 +526,8 @@
 
   <p>Модуль <strong>«Голосовая почта»</strong> автоматически обрабатывает пропущенные звонки от АТС Манго Телеком: расшифровывает аудиосообщения, создаёт тикеты в HelpDesk, лиды в AmoCRM и отправляет клиенту SMS-уведомление о перезвоне.</p>
 
-  <figure class="figure">
-    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v2/voicemail_settings_light.png" alt="Настройки голосовой почты — 4 телефонные линии, OpenAI, AmoCRM, SMSAero" loading="lazy">
-    <figcaption>Настройки модуля «Голосовая почта»: 4 телефонные линии, интеграция с OpenAI Whisper, AmoCRM и SMSAero.</figcaption>
-  </figure>
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v2/voicemail_settings_light.png" alt="Настройки голосовой почты — 4 телефонные линии, OpenAI, AmoCRM, SMSAero" loading="lazy"></p>
+  <p style="text-align:center;font-size:.92em;color:var(--muted,#64748b);margin-top:-12px;margin-bottom:24px"><em>Настройки модуля «Голосовая почта»: 4 телефонные линии, интеграция с OpenAI Whisper, AmoCRM и SMSAero.</em></p>
 
   <h3>Телефонные линии</h3>
   <p>Каждая линия — отдельная карточка с параметрами: полный номер, внутренний ID, назначение, воронка AmoCRM, Pipeline ID, UTM-метки. На момент скриншота настроены 4 линии:</p>
@@ -554,10 +546,8 @@
 
   <h3>Полный цикл обработки звонка</h3>
 
-  <figure class="figure">
-    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v2/voicemail_pipeline.svg" alt="Pipeline голосовой почты: 4 линии → OpenAI → HelpDesk → AmoCRM + SMS" loading="lazy">
-    <figcaption>Полный цикл обработки пропущенного звонка: от письма с MP3 до лида в AmoCRM и SMS клиенту.</figcaption>
-  </figure>
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v2/voicemail_pipeline.svg" alt="Pipeline голосовой почты: 4 линии → OpenAI → HelpDesk → AmoCRM + SMS" loading="lazy"></p>
+  <p style="text-align:center;font-size:.92em;color:var(--muted,#64748b);margin-top:-12px;margin-bottom:24px"><em>Полный цикл обработки пропущенного звонка: от письма с MP3 до лида в AmoCRM и SMS клиенту.</em></p>
 
   <h3>Интеграции модуля</h3>
   <ul>
@@ -576,10 +566,8 @@
 
   <p>Раздел <strong>«Claude AI — Настройки»</strong> — административная панель управления AI-ассистентом. Доступна только пользователям с ролью администратора.</p>
 
-  <figure class="figure">
-    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v2/claudeai_settings_light.png" alt="Claude AI — Настройки: API ключ, функции, интеграция с биллингом, system prompts" loading="lazy">
-    <figcaption>Панель настроек AI-ассистента Claude: API-подключение, функции, интеграция с биллингом, system prompts и калькулятор стоимости.</figcaption>
-  </figure>
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v2/claudeai_settings_light.png" alt="Claude AI — Настройки: API ключ, функции, интеграция с биллингом, system prompts" loading="lazy"></p>
+  <p style="text-align:center;font-size:.92em;color:var(--muted,#64748b);margin-top:-12px;margin-bottom:24px"><em>Панель настроек AI-ассистента Claude: API-подключение, функции, интеграция с биллингом, system prompts и калькулятор стоимости.</em></p>
 
   <h3>API подключение</h3>
   <p>Блок <strong>«🔑 API подключение»</strong> — основа модуля:</p>
@@ -593,10 +581,8 @@
 
   <h3>Архитектура модуля</h3>
 
-  <figure class="figure">
-    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v2/claude_architecture.svg" alt="Архитектура Claude AI: клиент → HelpDesk → Claude → биллинг" loading="lazy">
-    <figcaption>Поток данных: тикет → Claude → контекст из биллинга → черновик или авто-ответ → агент проверяет и отправляет.</figcaption>
-  </figure>
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v2/claude_architecture.svg" alt="Архитектура Claude AI: клиент → HelpDesk → Claude → биллинг" loading="lazy"></p>
+  <p style="text-align:center;font-size:.92em;color:var(--muted,#64748b);margin-top:-12px;margin-bottom:24px"><em>Поток данных: тикет → Claude → контекст из биллинга → черновик или авто-ответ → агент проверяет и отправляет.</em></p>
 
   <h3>Калькулятор стоимости</h3>
   <p>Внизу панели — таблица стоимости трёх моделей по двум сценариям нагрузки:</p>
@@ -647,10 +633,8 @@
 
   <p>Модуль <strong>VK Integration v2.0</strong> подключает сообщество VK к HelpDesk: сообщения клиентов в личку сообщества превращаются в тикеты, а бот VK Bridge сам идентифицирует абонента через биллинг.</p>
 
-  <figure class="figure">
-    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v2/vk_settings_light.png" alt="VK Integration v2.0 — основные настройки, VK API, 4 сценария диалога" loading="lazy">
-    <figcaption>Настройки VK Integration: подключение бота сообщества и описание 4 сценариев диалога.</figcaption>
-  </figure>
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v2/vk_settings_light.png" alt="VK Integration v2.0 — основные настройки, VK API, 4 сценария диалога" loading="lazy"></p>
+  <p style="text-align:center;font-size:.92em;color:var(--muted,#64748b);margin-top:-12px;margin-bottom:24px"><em>Настройки VK Integration: подключение бота сообщества и описание 4 сценариев диалога.</em></p>
 
   <h3>Основные настройки</h3>
   <ul>
@@ -671,10 +655,8 @@
 
   <h3>Четыре сценария диалога</h3>
 
-  <figure class="figure">
-    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v2/vk_scenarios.svg" alt="4 сценария бота VK Bridge: новый клиент, найден, не найден, телефон в VK" loading="lazy">
-    <figcaption>Четыре варианта диалога VK-бота с автоматической идентификацией абонента через биллинг.</figcaption>
-  </figure>
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v2/vk_scenarios.svg" alt="4 сценария бота VK Bridge: новый клиент, найден, не найден, телефон в VK" loading="lazy"></p>
+  <p style="text-align:center;font-size:.92em;color:var(--muted,#64748b);margin-top:-12px;margin-bottom:24px"><em>Четыре варианта диалога VK-бота с автоматической идентификацией абонента через биллинг.</em></p>
 
   <p>VK Bridge при первом сообщении клиента всегда сверяется с биллингом. В зависимости от того, что нашлось — выбирается один из четырёх сценариев:</p>
 
@@ -697,18 +679,14 @@
 
   <p>Раздел <strong>«Агенты»</strong> в верхнем меню — единая точка управления операторами HelpDesk: создание, выдача доступа, назначение роли, деактивация.</p>
 
-  <figure class="figure">
-    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v2/users_light.png" alt="Управление агентами — список из 24 операторов с email" loading="lazy">
-    <figcaption>Раздел «Агенты» — на момент скриншота в системе зарегистрировано 24 оператора.</figcaption>
-  </figure>
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v2/users_light.png" alt="Управление агентами — список из 24 операторов с email" loading="lazy"></p>
+  <p style="text-align:center;font-size:.92em;color:var(--muted,#64748b);margin-top:-12px;margin-bottom:24px"><em>Раздел «Агенты» — на момент скриншота в системе зарегистрировано 24 оператора.</em></p>
 
   <h3>Роли и доступ</h3>
   <p>В HelpDesk три типа учётных записей: <strong>Администратор</strong>, <strong>Агент поддержки</strong> и <strong>Системные/Bot</strong>. У каждой роли свой набор прав:</p>
 
-  <figure class="figure">
-    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v2/users_roles.svg" alt="Роли HelpDesk: Администратор, Агент поддержки, Системные/Bot" loading="lazy">
-    <figcaption>Три типа учётных записей и их основные возможности.</figcaption>
-  </figure>
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v2/users_roles.svg" alt="Роли HelpDesk: Администратор, Агент поддержки, Системные/Bot" loading="lazy"></p>
+  <p style="text-align:center;font-size:.92em;color:var(--muted,#64748b);margin-top:-12px;margin-bottom:24px"><em>Три типа учётных записей и их основные возможности.</em></p>
 
   <h3>Создание агента</h3>
   <p>Кнопка <strong>«Новый агент»</strong> вверху справа открывает форму:</p>
@@ -746,7 +724,7 @@
 
 </main>
 
-<script src="../js/main.js?v=925"></script>
+<script src="../js/main.js?v=926"></script>
 <script src="../js/version.js"></script>
 <script src="../js/search.js?v=790"></script>
 </body>
