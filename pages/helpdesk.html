@@ -7,7 +7,7 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 2.1 — Документация">
   <meta property="og:title" content="HelpDesk — СмИТ Биллинг 2.1">
-  <meta property="og:description" content="Система поддержки клиентов на базе FreeScout: рабочее место оператора, канбан-доска подключений, теги, база знаний, AI-ассистент Claude.">
+  <meta property="og:description" content="Система поддержки клиентов СМИТ: рабочее место оператора, канбан-доска подключений, теги, база знаний, AI-ассистент Claude.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/helpdesk.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta property="og:image:width" content="1200">
@@ -19,7 +19,7 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="Рабочее место оператора поддержки, канбан-доска, теги, база знаний, AI-ассистент Claude.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=924">
+  <link rel="stylesheet" href="../css/style.css?v=925">
   <link rel="stylesheet" href="../css/search.css?v=790">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.26.0/dist/tabler-icons.min.css">
@@ -98,6 +98,11 @@
           <li><a href="helpdesk.html#ai-assistant">9. AI-ассистент Claude</a></li>
           <li><a href="helpdesk.html#integration">10. Связь с биллингом</a></li>
           <li><a href="helpdesk.html#admin">11. Администрирование</a></li>
+          <li><a href="helpdesk.html#ai-sessions">12. Журнал AI-сессий</a></li>
+          <li><a href="helpdesk.html#voicemail">13. Голосовая почта</a></li>
+          <li><a href="helpdesk.html#claude-settings">14. Настройки Claude</a></li>
+          <li><a href="helpdesk.html#vk-settings">15. Интеграция VK</a></li>
+          <li><a href="helpdesk.html#users">16. Управление агентами</a></li>
         </ul>
       </li>
       <li class="has-children">
@@ -143,7 +148,7 @@
   </div>
 
   <h1>HelpDesk — система поддержки клиентов</h1>
-  <p>HelpDesk — рабочее место операторов техподдержки, развёрнутое на open-source-движке <strong>FreeScout</strong>. Установлен на поддомене <code>support.smit34.ru</code> и двусторонне интегрирован с СмИТ Биллингом: данные абонента подгружаются в карточку тикета, тикеты доступны во вкладке «HelpDesk» абонента, AI-ассистент Claude отвечает на простые вопросы автоматически.</p>
+  <p>HelpDesk — рабочее место операторов техподдержки СмИТ Биллинга. Установлен на поддомене <code>support.smit34.ru</code> и двусторонне интегрирован с СмИТ Биллингом: данные абонента подгружаются в карточку тикета, тикеты доступны во вкладке «HelpDesk» абонента, AI-ассистент Claude отвечает на простые вопросы автоматически.</p>
 
   <div class="page-toc">
     <details open>
@@ -176,7 +181,7 @@
   </ul>
 
   <div class="info-box">
-    <strong>Технологическая база.</strong> Движок — <a href="https://freescout.net/" target="_blank" rel="noopener">FreeScout</a> 1.8.221 (PHP/Laravel). Поверх него стоят наши модули: SmitUI (тёмная тема + брендинг), SmitBilling (виджет данных абонента в боковой панели), ClaudeAI (AI-ассистент), KnowledgeBase (база знаний), Kanban, AmoCRMSync, VK/Telegram/VoiceMail-интеграции. Хостинг — отдельный сервер <code>support.smit34.ru</code>, БД — MySQL <code>helpdesk</code>. Связь с биллингом — через REST API <code>https://rbill.smit34.ru/rest_api/v2/</code>.
+    <strong>Архитектура.</strong> HelpDesk — независимое веб-приложение, интегрированное с биллингом через REST API. Хостинг — отдельный сервер <code>support.smit34.ru</code>, собственная БД, собственное резервное копирование. Поверх ядра — наши модули: SmitUI (тёмная тема + брендинг), SmitBilling (виджет данных абонента в боковой панели), ClaudeAI (AI-ассистент), KnowledgeBase (база знаний), Kanban-доска, синхронизация с AmoCRM, входящие каналы VK / Telegram / голосовая почта. Связь с биллингом — через REST API <code>https://rbill.smit34.ru/rest_api/v2/</code>.
   </div>
 
   <h3>Ящики и роли</h3>
@@ -366,10 +371,10 @@
     <li><strong>Аналитика</strong> — отчёты по обращениям: топ-проблем за период, эффективность сценариев, скорость решения по типу.</li>
   </ul>
 
-  <p>В шапке базы есть кнопка <strong>«Работа с сервисом ↗»</strong> — ведёт на эту страницу документации (раздел про FreeScout) в новой вкладке.</p>
+  <p>В шапке базы есть кнопка <strong>«Работа с сервисом ↗»</strong> — ведёт на этот раздел документации в новой вкладке.</p>
 
   <h3>Аудитория «Бот»</h3>
-  <p>Сценарии с пометкой «Бот» используются AI-ассистентом Claude для автоматических ответов в чате ЛК и мобильного приложения. Если сценарий простой («забыл пароль», «как пополнить»), Claude отвечает по сценарию сам. Если требуется участие оператора («медленный интернет, проверяли модем») — Claude отвечает фразой «передаю оператору» и создаёт тикет в FreeScout с тегом сценария.</p>
+  <p>Сценарии с пометкой «Бот» используются AI-ассистентом Claude для автоматических ответов в чате ЛК и мобильного приложения. Если сценарий простой («забыл пароль», «как пополнить»), Claude отвечает по сценарию сам. Если требуется участие оператора («медленный интернет, проверяли модем») — Claude отвечает фразой «передаю оператору» и создаёт тикет в HelpDesk с тегом сценария.</p>
 
   <h3>Аудитория «Оператор»</h3>
   <p>Сценарии для оператора — это шпаргалка в карточке тикета. По клику на «AI Подсказка» Claude находит подходящий сценарий по тексту обращения и предлагает черновик ответа на основе сценария + данных абонента.</p>
@@ -377,10 +382,10 @@
   <!-- ============================================ -->
   <h2 id="ai-assistant">9. AI-ассистент Claude</h2>
 
-  <p>Модуль <strong>ClaudeAI</strong> подключает AI-ассистент Anthropic к FreeScout. Используется в трёх режимах:</p>
+  <p>Модуль <strong>ClaudeAI</strong> подключает AI-ассистент Anthropic к HelpDesk. Используется в трёх режимах:</p>
 
   <ol>
-    <li><strong>Автоответ в чате ЛК и мобильного приложения</strong> — абонент пишет в чат, ClaudeAI отвечает сам, если вопрос соответствует базе знаний с аудиторией «Бот». При непонятной ситуации — фраза «передаю оператору» и создание тикета в FreeScout;</li>
+    <li><strong>Автоответ в чате ЛК и мобильного приложения</strong> — абонент пишет в чат, ClaudeAI отвечает сам, если вопрос соответствует базе знаний с аудиторией «Бот». При непонятной ситуации — фраза «передаю оператору» и создание тикета в HelpDesk;</li>
     <li><strong>Подсказка ответа оператору</strong> — в карточке тикета кнопка «AI Подсказка» (или «Claude AI» в правой панели). Claude получает контекст: текст тикета, данные абонента (баланс, тариф, история обращений), подходящие сценарии из базы знаний — и формирует черновик ответа. Оператор редактирует и отправляет;</li>
     <li><strong>Классификация и теги</strong> — Claude автоматически проставляет теги по содержанию тикета (например, «нет-интернета» + «робор», если в тексте упомянуты обе характеристики).</li>
   </ol>
@@ -404,16 +409,16 @@
   <!-- ============================================ -->
   <h2 id="integration">10. Связь с биллингом</h2>
 
-  <p>HelpDesk и СмИТ Биллинг связаны двусторонне. Подробное техническое описание интеграции — в разделе <a href="billing.html#freescout-overview">«Настройки биллинга → FreeScout-интеграция»</a>. Здесь — краткая сводка по точкам соединения.</p>
+  <p>HelpDesk и СмИТ Биллинг связаны двусторонне. Подробное техническое описание интеграции — в разделе <a href="billing.html#freescout-overview">«Настройки биллинга → Интеграция с HelpDesk»</a>. Здесь — краткая сводка по точкам соединения.</p>
 
   <table class="data-table">
     <thead><tr><th>Что</th><th>Направление</th><th>Как</th></tr></thead>
     <tbody>
       <tr><td><strong>Поиск абонента</strong> по email/телефону</td><td>HelpDesk → Биллинг</td><td>Модуль SmitBilling делает запрос к REST API <code>rbill.smit34.ru/rest_api/v2/Abonents/</code> при открытии тикета, кэширует ответ на 60 секунд</td></tr>
       <tr><td><strong>Виджет данных абонента</strong> в правой панели</td><td>HelpDesk → Биллинг</td><td>4 запроса: <code>/Abonents/</code> + <code>/AdminAccounts/</code> (баланс) + <code>/UsersUsluga/</code> (услуги) + <code>/FinanceOperations/</code> (история платежей)</td></tr>
-      <tr><td><strong>Создание тикета из ЛК/мобильного приложения</strong></td><td>Биллинг → HelpDesk</td><td>POST <code>/api/v1/conversations</code> в API FreeScout с темой, текстом, привязкой к customer</td></tr>
+      <tr><td><strong>Создание тикета из ЛК/мобильного приложения</strong></td><td>Биллинг → HelpDesk</td><td>POST <code>/api/v1/conversations</code> в REST API HelpDesk с темой, текстом, привязкой к customer</td></tr>
       <tr><td><strong>Вкладка «HelpDesk» в карточке абонента</strong></td><td>Биллинг → HelpDesk</td><td>GET <code>/api/v1/conversations?customer_id=N</code> — список тикетов абонента</td></tr>
-      <tr><td><strong>Ежедневная синхронизация абонентов</strong></td><td>Биллинг → HelpDesk</td><td>Celery-задача <code>sync_abonent_to_freescout</code> в 03:00 — обновляет имя, email, phone, custom fields (billing_id, contract_number, tariff, balance)</td></tr>
+      <tr><td><strong>Ежедневная синхронизация абонентов</strong></td><td>Биллинг → HelpDesk</td><td>Ночная задача синхронизации в 03:00 — обновляет имя, email, телефон и пользовательские поля (billing_id, contract_number, tariff, balance) на стороне HelpDesk</td></tr>
       <tr><td><strong>Webhook: ответ оператора</strong></td><td>HelpDesk → Биллинг</td><td>Push-уведомление абоненту через FCM, если у абонента есть мобильное приложение</td></tr>
       <tr><td><strong>Webhook: назначение тикета</strong></td><td>HelpDesk → Биллинг</td><td>Telegram-алерт назначенному оператору в групповой чат</td></tr>
       <tr><td><strong>Webhook: закрытие тикета</strong></td><td>HelpDesk → Биллинг</td><td>Запись в <code>AUDIT_OPERATIONS</code> абонента — для отчётов</td></tr>
@@ -421,7 +426,7 @@
   </table>
 
   <div class="info-box">
-    <strong>Конфигурация URL.</strong> В FreeScout <code>.env</code> переменные <code>SMIT_BILLING_API=https://rbill.smit34.ru/rest_api/v2/</code> и <code>CLAUDE_BILLING_URL=https://rbill.smit34.ru/rest_api/v2/</code>. После изменения URL обязательно <code>php artisan config:clear &amp;&amp; php artisan cache:clear</code> и перезапуск очереди (<code>systemctl restart freescout-queue.service php8.2-fpm</code>).
+    <strong>Конфигурация URL.</strong> В <code>.env</code> HelpDesk переменные <code>SMIT_BILLING_API=https://rbill.smit34.ru/rest_api/v2/</code> и <code>CLAUDE_BILLING_URL=https://rbill.smit34.ru/rest_api/v2/</code>. После изменения URL обязательно очистить кеш конфигурации и перезапустить очередь HelpDesk (выполняется через системного администратора одной командой).
   </div>
 
   <!-- ============================================ -->
@@ -463,28 +468,285 @@
   <p>HelpDesk развёрнут на отдельном сервере и бэкапится отдельно от биллинга:</p>
   <ul>
     <li>MySQL <code>helpdesk</code> — ежедневный <code>mysqldump</code>;</li>
-    <li>Файлы вложений — <code>/var/www/freescout/storage/app/attachments/</code> — еженедельный <code>tar.gz</code>;</li>
+    <li>Файлы вложений — каталог <code>storage/app/attachments/</code> — еженедельный <code>tar.gz</code>;</li>
     <li>Кастомные модули (SmitUI, SmitBilling, ClaudeAI, KnowledgeBase и др.) — в git-репозитории <code>ircitdev/SmitBilling</code> и связанных.</li>
   </ul>
 
-  <h3>Обновление FreeScout</h3>
+  <h3>Обновление HelpDesk</h3>
   <p>HelpDesk обновляется через встроенный апдейтер (<code>Настройки → Статус → Доступна версия...</code>). Процедура:</p>
   <ol>
-    <li>Остановить очередь и cron: <code>systemctl stop freescout-queue.service</code>;</li>
+    <li>Остановить обработку очереди задач и cron-задач HelpDesk;</li>
     <li>Сделать резервную копию <code>storage/</code> и БД;</li>
     <li>Нажать «Обновить» в админке;</li>
     <li>После обновления — проверить, что апдейтер не затёр кастомные blade-шаблоны (логин, восстановление пароля, оформление email) — если затёр, восстановить из бэкапа;</li>
     <li>Очистить кеш: <code>php artisan config:clear &amp;&amp; cache:clear &amp;&amp; view:clear</code>;</li>
-    <li>Запустить очередь: <code>systemctl start freescout-queue.service</code>.</li>
+    <li>Запустить обратно обработку очереди задач HelpDesk.</li>
   </ol>
 
   <div class="info-box">
-    <strong>Запасной канал на случай недоступности HelpDesk:</strong> в админке биллинга есть раздел «Старые HDSK» — это архив старого встроенного хелпдеска СмИТ Биллинга, который использовался до апреля 2026. На него можно временно переключить операторов, если FreeScout полностью недоступен. Для перехода назад в FreeScout — все новые тикеты надо будет вручную мигрировать.
+    <strong>Запасной канал на случай недоступности HelpDesk:</strong> в админке биллинга есть раздел «Старые HDSK» — это архив старого встроенного хелпдеска СмИТ Биллинга, который использовался до апреля 2026. На него можно временно переключить операторов, если HelpDesk полностью недоступен. Для перехода назад в HelpDesk — все новые тикеты надо будет вручную мигрировать.
+  </div>
+
+  <!-- ============================================ -->
+  <h2 id="ai-sessions">12. Журнал AI-сессий</h2>
+
+  <p>Раздел <strong>«AI-сессии»</strong> в верхнем меню HelpDesk показывает все диалоги клиентов с AI-ассистентом — текстовые из чата ЛК и мобильного приложения, а также голосовые из голосовой почты. Это единая точка контроля качества AI-ответов и расходов на токены.</p>
+
+  <figure class="figure">
+    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v2/ai_sessions_light.png" alt="Журнал AI-сессий — фильтры по периоду, провайдеру, типу и привязке, KPI" loading="lazy">
+    <figcaption>Раздел «AI-сессии»: KPI на 9 показателей, гибкие фильтры и таблица сессий с привязками к тикетам и лидам.</figcaption>
+  </figure>
+
+  <h3>KPI и фильтры</h3>
+  <p>Над таблицей — карточки KPI за выбранный период (по умолчанию — месяц):</p>
+  <ul>
+    <li><strong>Всего / Сегодня</strong> — общее количество сессий и количество за сегодняшний день;</li>
+    <li><strong>Текст / Голос</strong> — соотношение текстовых и голосовых сессий;</li>
+    <li><strong>СМИТ / РОБОР</strong> — распределение по двум каналам поддержки (B2C и B2B);</li>
+    <li><strong>Тикеты / Лиды</strong> — сколько сессий завершились созданием тикета в HelpDesk или лида в AmoCRM;</li>
+    <li><strong>Ошибки</strong> — счётчик неудачных запросов к Claude API (например, превышение лимита, недоступность прокси).</li>
+  </ul>
+
+  <figure class="figure">
+    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v2/ai_kpi_dashboard.svg" alt="KPI журнала AI-сессий — 9 показателей с фильтрами периода и привязки" loading="lazy">
+    <figcaption>Все 9 KPI журнала на одной плитке. Фильтры можно комбинировать: например, «голос + РОБОР + ошибки» — выявить проблемы расшифровки в B2B-канале.</figcaption>
+  </figure>
+
+  <h3>Поток сессии: от обращения до результата</h3>
+  <p>Каждая сессия проходит одинаковый путь — на схеме видно, как сообщение клиента превращается в тикет, лид или закрывается AI-ассистентом самостоятельно.</p>
+
+  <figure class="figure">
+    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v2/ai_sessions_flow.svg" alt="Поток AI-сессии: источник → Claude → результат" loading="lazy">
+    <figcaption>Источники сессий (СМИТ-чат, РОБОР, голосовая почта) → Claude → один из четырёх исходов: тикет, лид в AmoCRM, решено без эскалации, ошибка в журнале.</figcaption>
+  </figure>
+
+  <h3>Колонки таблицы</h3>
+  <p>В таблице сессий выводятся: <strong>ID</strong> (с префиксом #), <strong>Дата</strong>, <strong>Клиент</strong> (если идентифицирован — ФИО, иначе «Аноним»), <strong>Тип</strong> (текст 💬 или голос 🎙), <strong>Ветка</strong> (СМИТ / РБР — канал), <strong>Сообщений</strong> (длина диалога), <strong>Статус</strong> (Active, Timeout, Resolved, Error), <strong>Связи</strong> (ссылки на созданный тикет или лид), <strong>Действия</strong> (открыть полный лог).</p>
+
+  <div class="info-box">
+    <strong>Анализ расходов.</strong> По счётчику «Сообщений» и фильтрам можно оценить нагрузку на Claude API: 44 сессии за месяц со средней длиной 1–3 сообщения — это примерно 100 000 токенов, около $0.40 на модели Haiku или $1.5 на Sonnet.
+  </div>
+
+  <!-- ============================================ -->
+  <h2 id="voicemail">13. Голосовая почта</h2>
+
+  <p>Модуль <strong>«Голосовая почта»</strong> автоматически обрабатывает пропущенные звонки от АТС Манго Телеком: расшифровывает аудиосообщения, создаёт тикеты в HelpDesk, лиды в AmoCRM и отправляет клиенту SMS-уведомление о перезвоне.</p>
+
+  <figure class="figure">
+    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v2/voicemail_settings_light.png" alt="Настройки голосовой почты — 4 телефонные линии, OpenAI, AmoCRM, SMSAero" loading="lazy">
+    <figcaption>Настройки модуля «Голосовая почта»: 4 телефонные линии, интеграция с OpenAI Whisper, AmoCRM и SMSAero.</figcaption>
+  </figure>
+
+  <h3>Телефонные линии</h3>
+  <p>Каждая линия — отдельная карточка с параметрами: полный номер, внутренний ID, назначение, воронка AmoCRM, Pipeline ID, UTM-метки. На момент скриншота настроены 4 линии:</p>
+
+  <table class="data-table">
+    <thead><tr><th>Линия</th><th>Полный номер</th><th>Назначение</th><th>Pipeline AmoCRM</th></tr></thead>
+    <tbody>
+      <tr><td><strong>55-35-59</strong> (B2C)</td><td>+7 (8442) 55-35-59</td><td>Основная линия для физических лиц</td><td>Интернет SMIT (B2C) — 9963182</td></tr>
+      <tr><td><strong>79375551122</strong></td><td>+7 (937) 555-11-22</td><td>Линия поддержки</td><td>Интернет SMIT (B2C) — 9963182</td></tr>
+      <tr><td><strong>55-40-35</strong> (B2B)</td><td>+7 (8442) 55-40-35</td><td>Юр.лица / корпоративные клиенты</td><td>B2B/Корп — 10082198</td></tr>
+      <tr><td><strong>55-40-65</strong></td><td>+7 (8442) 55-40-65</td><td>ROBOR</td><td>Интернет SMIT (B2C) — 9963182</td></tr>
+    </tbody>
+  </table>
+
+  <p>Линия определяется автоматически: из поля <code>sip:user@vpbx</code> в email-уведомлении АТС или из темы письма. В зависимости от номера выбирается воронка AmoCRM и UTM-метки.</p>
+
+  <h3>Полный цикл обработки звонка</h3>
+
+  <figure class="figure">
+    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v2/voicemail_pipeline.svg" alt="Pipeline голосовой почты: 4 линии → OpenAI → HelpDesk → AmoCRM + SMS" loading="lazy">
+    <figcaption>Полный цикл обработки пропущенного звонка: от письма с MP3 до лида в AmoCRM и SMS клиенту.</figcaption>
+  </figure>
+
+  <h3>Интеграции модуля</h3>
+  <ul>
+    <li><strong>OpenAI Whisper</strong> — расшифровка MP3 в текст. Настраивается ключ API в карточке «OpenAI API»;</li>
+    <li><strong>AmoCRM</strong> — для каждого пропущенного звонка создаётся лид в нужной воронке. Настраивается домен AmoCRM и Access Token;</li>
+    <li><strong>SMSAero</strong> — клиент получает SMS «Мы вам перезвоним». Шаблон сообщения настраивается отдельно для каждой линии. Аутентификация: email-логин + API Key;</li>
+    <li><strong>HelpDesk mailbox</strong> — три отдельных ящика для разных типов звонков: «Входящие», «Поддержка», «Подключение».</li>
+  </ul>
+
+  <div class="info-box">
+    <strong>Результат:</strong> ни один пропущенный звонок не теряется. Клиент сразу получает SMS-подтверждение, а оператор видит расшифрованный текст обращения и контакт в карточке тикета — может перезвонить, имея полный контекст.
+  </div>
+
+  <!-- ============================================ -->
+  <h2 id="claude-settings">14. Настройки AI-ассистента Claude</h2>
+
+  <p>Раздел <strong>«Claude AI — Настройки»</strong> — административная панель управления AI-ассистентом. Доступна только пользователям с ролью администратора.</p>
+
+  <figure class="figure">
+    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v2/claudeai_settings_light.png" alt="Claude AI — Настройки: API ключ, функции, интеграция с биллингом, system prompts" loading="lazy">
+    <figcaption>Панель настроек AI-ассистента Claude: API-подключение, функции, интеграция с биллингом, system prompts и калькулятор стоимости.</figcaption>
+  </figure>
+
+  <h3>API подключение</h3>
+  <p>Блок <strong>«🔑 API подключение»</strong> — основа модуля:</p>
+  <ul>
+    <li><strong>API-ключ Anthropic</strong> — выдаётся в личном кабинете на <code>console.anthropic.com</code>. Поле с глазиком для просмотра скрытого значения;</li>
+    <li><strong>Модель</strong> — выбор одной из трёх Claude-моделей с разной ценой и производительностью;</li>
+    <li><strong>Max tokens</strong> — максимальная длина ответа в токенах;</li>
+    <li><strong>Temperature</strong> — креативность ответа (0 = детерминированно, 1 = более свободно);</li>
+    <li>Кнопка <strong>«🔌 Проверить подключение»</strong> — тестовый запрос к API, чтобы убедиться, что ключ работает и прокси доступен.</li>
+  </ul>
+
+  <h3>Архитектура модуля</h3>
+
+  <figure class="figure">
+    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v2/claude_architecture.svg" alt="Архитектура Claude AI: клиент → HelpDesk → Claude → биллинг" loading="lazy">
+    <figcaption>Поток данных: тикет → Claude → контекст из биллинга → черновик или авто-ответ → агент проверяет и отправляет.</figcaption>
+  </figure>
+
+  <h3>Калькулятор стоимости</h3>
+  <p>Внизу панели — таблица стоимости трёх моделей по двум сценариям нагрузки:</p>
+
+  <table class="data-table">
+    <thead><tr><th>Модель</th><th>Input (1M токенов)</th><th>Output (1M токенов)</th><th>~50 диалогов/день</th><th>~250 диалогов/день</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Haiku 4.5</strong> — быстрый, дешёвый</td><td>$0.80</td><td>$4.00</td><td>~$11/мес</td><td>~$55/мес</td></tr>
+      <tr><td><strong>Sonnet 4.6</strong> — умный, средний</td><td>$3.00</td><td>$15.00</td><td>~$44/мес</td><td>~$220/мес</td></tr>
+      <tr><td><strong>Opus 4.6</strong> — максимальный</td><td>$15.00</td><td>$75.00</td><td>~$220/мес</td><td>~$1100/мес</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Функции модуля</h3>
+  <p>Блок <strong>«⚙️ Функции»</strong> — переключатели возможностей Claude:</p>
+  <ul>
+    <li><strong>🧠 Подсказка оператору</strong> — кнопка AI-анализа в сайдбаре тикета;</li>
+    <li><strong>✍️ Автоответ</strong> — генерировать черновик ответа клиенту;</li>
+    <li><strong>🏷️ Авто-классификация</strong> — определять сценарий S01–S21 из базы знаний;</li>
+    <li><strong>👀 Требовать проверку</strong> — оператор подтверждает каждый автоответ перед отправкой;</li>
+    <li><strong>📚 База знаний</strong> — Claude использует контекст из статей KB при формировании ответа.</li>
+  </ul>
+
+  <p>Дополнительные параметры:</p>
+  <ul>
+    <li><strong>Макс. автоответов на тикет</strong> — после исчерпания лимита Claude передаёт диалог оператору;</li>
+    <li><strong>Ключевые слова эскалации</strong> — список через запятую. При наличии этих слов в тексте обращения автоответ блокируется, тикет передаётся оператору («жалоба», «прокуратура» и т. п.).</li>
+  </ul>
+
+  <h3>Интеграция с биллингом</h3>
+  <p>Блок <strong>«🔗 Интеграция с биллингом»</strong>:</p>
+  <ul>
+    <li><strong>URL Smit Billing</strong> — адрес REST API биллинга (<code>https://rbill.smit34.ru/rest_api/v2/</code>);</li>
+    <li><strong>API токен</strong> — Bearer-токен для аутентификации Claude в биллинге.</li>
+  </ul>
+
+  <h3>System prompts</h3>
+  <p>Блок <strong>«📝 System prompts»</strong> — два настраиваемых промпта (если оставить пустыми, используются встроенные):</p>
+  <ul>
+    <li><strong>Промпт для клиентов (чат-бот)</strong> — задаёт тон ответа в чате ЛК и мобильном приложении;</li>
+    <li><strong>Промпт для операторов (подсказки)</strong> — настраивает поведение Claude в кнопке «AI Подсказка» в карточке тикета.</li>
+  </ul>
+
+  <p>Кнопка <strong>«📊 Статистика»</strong> ведёт в раздел AI-сессий с предварительно установленными фильтрами по Claude.</p>
+
+  <!-- ============================================ -->
+  <h2 id="vk-settings">15. Интеграция VK</h2>
+
+  <p>Модуль <strong>VK Integration v2.0</strong> подключает сообщество VK к HelpDesk: сообщения клиентов в личку сообщества превращаются в тикеты, а бот VK Bridge сам идентифицирует абонента через биллинг.</p>
+
+  <figure class="figure">
+    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v2/vk_settings_light.png" alt="VK Integration v2.0 — основные настройки, VK API, 4 сценария диалога" loading="lazy">
+    <figcaption>Настройки VK Integration: подключение бота сообщества и описание 4 сценариев диалога.</figcaption>
+  </figure>
+
+  <h3>Основные настройки</h3>
+  <ul>
+    <li><strong>Включить интеграцию</strong> — главный переключатель модуля;</li>
+    <li><strong>URL Bridge</strong> — адрес микросервиса VK Bridge (промежуточный слой между VK Callback API и HelpDesk);</li>
+    <li><strong>Mailbox по умолчанию</strong> — в какой ящик попадают новые тикеты из VK (на скриншоте — «Поддержка клиентов», «Подключение», «Звонки», «Поддержка ROBOR», «Разработка»).</li>
+  </ul>
+
+  <h3>VK API</h3>
+  <p>Блок параметров для подключения к API сообщества VK:</p>
+  <ul>
+    <li><strong>Access Token</strong> — токен сообщества с правами на сообщения;</li>
+    <li><strong>Group ID</strong> — ID сообщества;</li>
+    <li><strong>Secret Key</strong> — секретный ключ Callback API;</li>
+    <li><strong>Confirmation Code</strong> — строка подтверждения сервера для Callback API;</li>
+    <li><strong>HelpDesk API Key</strong> — токен для создания тикетов и поиска клиентов.</li>
+  </ul>
+
+  <h3>Четыре сценария диалога</h3>
+
+  <figure class="figure">
+    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v2/vk_scenarios.svg" alt="4 сценария бота VK Bridge: новый клиент, найден, не найден, телефон в VK" loading="lazy">
+    <figcaption>Четыре варианта диалога VK-бота с автоматической идентификацией абонента через биллинг.</figcaption>
+  </figure>
+
+  <p>VK Bridge при первом сообщении клиента всегда сверяется с биллингом. В зависимости от того, что нашлось — выбирается один из четырёх сценариев:</p>
+
+  <ol>
+    <li><strong>Сценарий 1: Новый клиент</strong> — телефон в VK-профиле не найден или скрыт. Бот вежливо запрашивает номер телефона: «Подскажите ваш номер, чтобы я мог проверить информацию по договору». После ответа клиента — переходит к Сценарию 2 или 3;</li>
+    <li><strong>Сценарий 2: Клиент найден</strong> — биллинг вернул карточку (ФИО, договор, баланс, тариф, адрес). Бот отвечает приветствием по имени и кратким досье: «Спасибо! Информация найдена: Имя: Иван, Договор: 12345, Баланс: 150.00 руб., Тариф: Оптимальный 100. Чем могу помочь?». Параллельно создаётся клиент в HelpDesk, номер добавляется в профиль, и формируется тикет;</li>
+    <li><strong>Сценарий 3: Клиент не найден</strong> — биллинг вернул 404. Бот говорит «не нашли вас в базе» и уточняет: «Если вы новый клиент — напишите ваш адрес, мы проверим возможность подключения». Уточнения создают заявку на подключение;</li>
+    <li><strong>Сценарий 4: Телефон в VK</strong> — VK-профиль уже отдал номер телефона. Бот пропускает шаг запроса и сразу проверяет абонента в биллинге — минимум вопросов для клиента.</li>
+  </ol>
+
+  <h3>Биллинг API и статус Bridge</h3>
+  <p>Внизу страницы — блок <strong>«Биллинг API»</strong> с URL и токеном для запросов к биллингу из VK Bridge, и блок <strong>«Статус Bridge»</strong> — индикатор работоспособности микросервиса.</p>
+
+  <div class="info-box">
+    <strong>Результат интеграции:</strong> клиент пишет в VK сообщество — попадает в HelpDesk как тикет с уже заполненной карточкой (ФИО, договор, баланс). Оператор видит весь контекст с первой секунды.
+  </div>
+
+  <!-- ============================================ -->
+  <h2 id="users">16. Управление агентами</h2>
+
+  <p>Раздел <strong>«Агенты»</strong> в верхнем меню — единая точка управления операторами HelpDesk: создание, выдача доступа, назначение роли, деактивация.</p>
+
+  <figure class="figure">
+    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v2/users_light.png" alt="Управление агентами — список из 24 операторов с email" loading="lazy">
+    <figcaption>Раздел «Агенты» — на момент скриншота в системе зарегистрировано 24 оператора.</figcaption>
+  </figure>
+
+  <h3>Роли и доступ</h3>
+  <p>В HelpDesk три типа учётных записей: <strong>Администратор</strong>, <strong>Агент поддержки</strong> и <strong>Системные/Bot</strong>. У каждой роли свой набор прав:</p>
+
+  <figure class="figure">
+    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/helpdesk_v2/users_roles.svg" alt="Роли HelpDesk: Администратор, Агент поддержки, Системные/Bot" loading="lazy">
+    <figcaption>Три типа учётных записей и их основные возможности.</figcaption>
+  </figure>
+
+  <h3>Создание агента</h3>
+  <p>Кнопка <strong>«Новый агент»</strong> вверху справа открывает форму:</p>
+  <ul>
+    <li><strong>Имя и фамилия</strong> — отображаются в подписях ответов клиентам;</li>
+    <li><strong>Email</strong> — используется и как логин, и для уведомлений;</li>
+    <li><strong>Роль</strong> — Администратор / Агент;</li>
+    <li><strong>Mailboxes</strong> — список ящиков, к которым агент получает доступ;</li>
+    <li><strong>Тайм-зона</strong> — для корректного отображения дат в карточке тикета;</li>
+    <li><strong>Локаль</strong> — язык интерфейса.</li>
+  </ul>
+
+  <p>После сохранения новому агенту отправляется письмо-приглашение с ссылкой на установку пароля. Альтернативно — администратор задаёт пароль вручную в карточке агента.</p>
+
+  <h3>Деактивация и аудит</h3>
+  <p>Удалять учётные записи агентов не рекомендуется — их подписи остаются на закрытых тикетах. Вместо этого используется деактивация:</p>
+  <ul>
+    <li>Деактивированный агент <strong>не может войти в систему</strong>;</li>
+    <li>Его имя и подписи на <strong>тикетах остаются</strong> для истории;</li>
+    <li>При просмотре старых тикетов рядом с подписью видно <strong>«(деактивирован)»</strong>;</li>
+    <li>Если потребуется восстановить доступ — повторно активируется в карточке.</li>
+  </ul>
+
+  <h3>Безопасность</h3>
+  <ul>
+    <li><strong>Блокировка по неактивности</strong> — сессия автоматически закрывается после периода бездействия;</li>
+    <li><strong>2FA</strong> — двухфакторная аутентификация по TOTP, включается агентом в личном профиле;</li>
+    <li><strong>Журнал действий</strong> — все изменения тикетов (ответ, переназначение, изменение статуса, удаление) логируются в системе с указанием агента;</li>
+    <li><strong>Системные учётные записи</strong> (System Agent, Audit Bot) — не имеют пароля для входа и используются только для служебных операций (webhook-уведомления, отчёты).</li>
+  </ul>
+
+  <div class="info-box">
+    <strong>Карточка агента</strong> также содержит личные настройки: подпись в письмах, шаблоны быстрых ответов, статус «в офисе / не в офисе», настройки уведомлений (push, email, звук в браузере).
   </div>
 
 </main>
 
-<script src="../js/main.js?v=924"></script>
+<script src="../js/main.js?v=925"></script>
 <script src="../js/version.js"></script>
 <script src="../js/search.js?v=790"></script>
 </body>

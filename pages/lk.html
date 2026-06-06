@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Личный кабинет и мобильные приложения — СмИТ Биллинг v2.1.0 (build 978)</title>
+  <title>Личный кабинет и мобильные приложения — СмИТ Биллинг v2.1.0 (build 980)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 2.1 — Документация">
-  <meta property="og:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v2.1.0 (build 978)">
+  <meta property="og:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v2.1.0 (build 980)">
   <meta property="og:description" content="Личный кабинет абонента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/lk.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
@@ -14,12 +14,12 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v2.1.0 (build 978)">
+  <meta name="twitter:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v2.1.0 (build 980)">
   <meta name="twitter:description" content="Личный кабинет абонента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="Личный кабинет абонента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=924">
+  <link rel="stylesheet" href="../css/style.css?v=925">
   <link rel="stylesheet" href="../css/search.css?v=790">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.26.0/dist/tabler-icons.min.css">
@@ -151,7 +151,7 @@
           <li class="sub-item"><a href="lk.html#mobile-api-public">— Public Mobile API</a></li>
           <li class="sub-item"><a href="lk.html#mobile-force-update">— Force-update</a></li>
           <li class="sub-item"><a href="lk.html#mobile-ios-distribution">— iOS TestFlight ↔ AppStore</a></li>
-          <li><a href="lk.html#lk-support">FreeScout</a></li>
+          <li><a href="lk.html#lk-support">HelpDesk</a></li>
           <li><a href="lk.html#lk-ai-chat">AI-ассистент</a></li>
           <li class="sub-item"><a href="lk.html#ai-chat-settings-787">— Управление /admin/settings/lk/ai_chat/</a></li>
           <li class="sub-item"><a href="lk.html#ai-chat-widget-feedback-794">— Feedback 👍/👎 в виджете</a></li>
@@ -176,6 +176,11 @@
           <li><a href="helpdesk.html#ai-assistant">9. AI-ассистент Claude</a></li>
           <li><a href="helpdesk.html#integration">10. Связь с биллингом</a></li>
           <li><a href="helpdesk.html#admin">11. Администрирование</a></li>
+          <li><a href="helpdesk.html#ai-sessions">12. Журнал AI-сессий</a></li>
+          <li><a href="helpdesk.html#voicemail">13. Голосовая почта</a></li>
+          <li><a href="helpdesk.html#claude-settings">14. Настройки Claude</a></li>
+          <li><a href="helpdesk.html#vk-settings">15. Интеграция VK</a></li>
+          <li><a href="helpdesk.html#users">16. Управление агентами</a></li>
         </ul>
       </li>
       <li class="has-children">
@@ -312,7 +317,7 @@
         <li><a href="#mobile-ios-distribution">iOS: TestFlight ↔ App Store</a></li>
       </ul>
     </li>
-    <li><a href="#lk-support">Поддержка через FreeScout</a></li>
+    <li><a href="#lk-support">Поддержка</a></li>
     <li><a href="#lk-ai-chat">AI-ассистент (Claude / AIDA)</a>
       <ul>
         <li><a href="#ai-chat-settings-787">— Управление AI-чатом /admin/settings/lk/ai_chat/ (build 787)</a></li>
@@ -388,7 +393,7 @@
     <li>Обещанный платёж</li>
     <li>Добровольная блокировка / снятие блокировки</li>
     <li>Просмотр активных сессий и статистики трафика</li>
-    <li>Обращения в техподдержку через FreeScout (вкладки Открытые/Закрытые, статус-точки)</li>
+    <li>Обращения в техподдержку через HelpDesk (вкладки Открытые/Закрытые, статус-точки)</li>
     <li>AI-ассистент Claude — встроенный чат с поддержкой отправки изображений и PDF</li>
     <li>Изменение профиля (имя, email, пароль)</li>
     <li>Привязка Telegram-аккаунта для уведомлений</li>
@@ -719,7 +724,7 @@
     <tbody>
       <tr><td>Telegram</td><td><code>/admin/settings/integrations/?tab=telegram</code></td><td>Bot token, username, webhook secret</td></tr>
       <tr><td>VK</td><td><code>/admin/settings/integrations/?tab=vk</code></td><td>App ID, secret key, community token</td></tr>
-      <tr><td>FreeScout</td><td><code>/admin/settings/integrations/?tab=freescout</code></td><td>URL, API key, mailbox ID</td></tr>
+      <tr><td>HelpDesk</td><td>Раздел «Настройки → Интеграции → HelpDesk»</td><td>URL HelpDesk, API-ключ, mailbox по умолчанию</td></tr>
       <tr><td>AIDA AI</td><td><code>/admin/settings/integrations/?tab=aida</code></td><td>URL, API key, LK/Mobile/Monitor toggles</td></tr>
       <tr><td>TVIP Media</td><td><code>/admin/settings/integrations/?tab=tvip</code></td><td>URL, login/password, provider ID</td></tr>
       <tr><td>LFStream</td><td><code>/admin/settings/integrations/?tab=lfstream</code></td><td>URL, login/password</td></tr>
@@ -780,7 +785,7 @@ docker compose exec web python manage.py setup_telegram_webhook --info</code></p
   </ol>
 
   <div class="info-box">
-    <strong>Важно:</strong> Один бот — один вебхук. Если тот же бот используется в FreeScout — необходимо создать отдельного бота специально для биллинга.
+    <strong>Важно:</strong> Один бот — один вебхук. Если тот же бот используется в HelpDesk — необходимо создать отдельного бота специально для биллинга.
   </div>
 
   <h3 id="telegram-admin-bot">Telegram-бот для операторов (admin bot)</h3>
@@ -942,7 +947,7 @@ https://billing.example.com/lk/payments/webhook/</code></pre>
   <ul>
     <li><strong>Главная</strong> — баланс, тариф, уведомление от оператора, последний платёж, статус блокировки</li>
     <li><strong>Финансы</strong> — история операций (фильтр по периоду), итоги (приход/расход), обещанный платёж, оплата через ЮKassa</li>
-    <li><strong>Поддержка</strong> — список обращений (активные/закрытые), создание нового тикета через FreeScout</li>
+    <li><strong>Поддержка</strong> — список обращений (активные/закрытые), создание нового тикета через HelpDesk</li>
     <li><strong>Профиль</strong> — контактные данные, привязка VK/Telegram, выход</li>
   </ul>
 
@@ -1027,8 +1032,8 @@ https://billing.example.com/lk/payments/webhook/</code></pre>
   <p>Никакой пересборки биллинга не требуется. Mobile API сразу начинает отдавать новую информацию,
     Flutter-клиенты подхватывают её при следующем <code>version/check</code> запросе.</p>
 
-  <h3 id="lk-support">Поддержка через FreeScout</h3>
-  <p>Абоненты могут создавать обращения и переписываться с операторами прямо из ЛК. Для работы требуется настроенная интеграция с FreeScout (см. раздел 4.3).</p>
+  <h3 id="lk-support">Поддержка через HelpDesk</h3>
+  <p>Абоненты могут создавать обращения и переписываться с операторами прямо из ЛК. Для работы требуется настроенная интеграция с HelpDesk (см. раздел 4.3).</p>
 
   <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;margin:16px 0">
     <img src="../img/new_lk_support.png" alt="Поддержка — Открытые обращения" class="screenshot" style="max-width:500px">
@@ -1077,11 +1082,11 @@ https://billing.example.com/lk/payments/webhook/</code></pre>
   </div>
 
   <div class="info-box">
-    <strong>Требование:</strong> У абонента должен быть указан email в профиле — именно по нему FreeScout идентифицирует клиента.
+    <strong>Требование:</strong> У абонента должен быть указан email в профиле — именно по нему HelpDesk идентифицирует клиента.
   </div>
 
   <h4 id="ai-chat-settings-787">Управление AI-чатом (build 787) — <a href="/admin/settings/lk/ai_chat/">/admin/settings/lk/ai_chat/</a></h4>
-  <p>Отдельная вкладка в разделе <strong>Настройки → ЛК и мобильные</strong> между <em>Функции</em> и <em>Безопасность</em>. Объединяет управление AI-ассистентом в одном месте: раздельные toggle для каналов ЛК и мобильного, сбор оценок 👍/👎, автоэскалация в FreeScout. Сверху — статистика за 7 дней и быстрые ссылки на промпт/few-shot/A-B варианты/дашборд.</p>
+  <p>Отдельная вкладка в разделе <strong>Настройки → ЛК и мобильные</strong> между <em>Функции</em> и <em>Безопасность</em>. Объединяет управление AI-ассистентом в одном месте: раздельные toggle для каналов ЛК и мобильного, сбор оценок 👍/👎, автоэскалация в HelpDesk. Сверху — статистика за 7 дней и быстрые ссылки на промпт/few-shot/A-B варианты/дашборд.</p>
 
   <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;margin:16px 0">
     <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/lk_ai_chat_v787/lk_ai_chat_desktop_v787.png" alt="Вкладка AI-чат (десктоп)" class="screenshot" style="max-width:760px">
@@ -1095,7 +1100,7 @@ https://billing.example.com/lk/payments/webhook/</code></pre>
       <tr><td>💻 Включить AI-чат в веб-ЛК</td><td><code>LK_FEATURE_CHAT_AI_LK</code></td><td>on (через legacy fallback)</td><td>Кнопка чата в шапке и на дашборде ЛК. Если выключить — <code>/lk/chat/</code> вернёт 503, кнопка скрыта.</td></tr>
       <tr><td>📱 Включить AI-чат в мобильном приложении</td><td><code>LK_FEATURE_CHAT_AI_MOBILE</code></td><td>on (через legacy fallback)</td><td>Endpoint <code>/mobile-api/v1/chat/message</code>. Flutter-клиент скрывает вкладку чата при <code>channel_enabled=false</code> в <code>/chat/status</code>.</td></tr>
       <tr><td>👍 Сбор оценки 👍/👎</td><td><code>LK_AI_FEEDBACK_ENABLED</code></td><td>on</td><td>Показывать кнопки оценки ответов AI в ЛК и мобильном. Без них статистика «удовлетворённости» в дашборде остаётся пустой. Mobile API возвращает <code>assistant_index</code> для адресации feedback.</td></tr>
-      <tr><td>🎧 Автоэскалация в FreeScout</td><td><code>LK_AI_AUTO_ESCALATE</code></td><td>on</td><td>При <code>ESCALATE_TO_HUMAN</code> в ответе AI — автоматически создаётся тикет с полным диалогом + данными клиента. Если выключить — AI скажет «нажмите кнопку Передать оператору».</td></tr>
+      <tr><td>🎧 Автоэскалация в HelpDesk</td><td><code>LK_AI_AUTO_ESCALATE</code></td><td>on</td><td>При <code>ESCALATE_TO_HUMAN</code> в ответе AI — автоматически создаётся тикет с полным диалогом + данными клиента. Если выключить — AI скажет «нажмите кнопку Передать оператору».</td></tr>
     </tbody>
   </table>
 
@@ -1103,12 +1108,12 @@ https://billing.example.com/lk/payments/webhook/</code></pre>
   <ul>
     <li>📝 <a href="/admin/settings/ai/lk/">Промпт ЛК</a> — system prompt для канала LK</li>
     <li>📝 <a href="/admin/settings/ai/mobile/">Промпт mobile</a> — system prompt для канала mobile</li>
-    <li>📚 <a href="/admin/settings/ai/fewshot/lk/">Few-shot LK</a> — примеры из FreeScout KB</li>
+    <li>📚 <a href="/admin/settings/ai/fewshot/lk/">Few-shot LK</a> — примеры из базы знаний HelpDesk</li>
     <li>🔀 <a href="/admin/settings/ai/ab/lk/">A/B варианты</a> — Sonnet vs Haiku</li>
-    <li>⚙ <a href="/admin/settings/integrations/?tab=freescout">Claude API key</a> — настройки ключа и прокси</li>
+    <li>⚙ <a href="/admin/settings/integrations/?tab=helpdesk">Claude API key</a> — настройки ключа и прокси</li>
   </ul>
 
-  <p><strong>Flutter feedback (Android + iOS, v1.3.1):</strong> под каждым ответом AI — кнопки 👍/👎 (16px outlined icons). Активная кнопка подсвечивается brand-цветом <code>#5BA89D</code>. Повторное нажатие на ту же кнопку = снять оценку. Оптимистичный update + rollback при HTTP-ошибке. Оценки сохраняются в <code>shared_preferences</code>, отправляются на <code>POST /mobile-api/v1/chat/feedback</code> с <code>{session_id, message_index, rating, text}</code> и зеркалятся в локальный PG <code>ai_chat_log</code> + FreeScout MySQL <code>aida_messages</code>.</p>
+  <p><strong>Flutter feedback (Android + iOS, v1.3.1):</strong> под каждым ответом AI — кнопки 👍/👎 (16px outlined icons). Активная кнопка подсвечивается brand-цветом <code>#5BA89D</code>. Повторное нажатие на ту же кнопку = снять оценку. Оптимистичный update + rollback при HTTP-ошибке. Оценки сохраняются в <code>shared_preferences</code>, отправляются на <code>POST /mobile-api/v1/chat/feedback</code> с <code>{session_id, message_index, rating, text}</code> и зеркалятся в локальный журнал AI-чата + в БД HelpDesk для общей аналитики.</p>
 
   <h4 id="ai-chat-widget-feedback-794">Feedback 👍/👎 в плавающем виджете ЛК (build 794)</h4>
   <p>Плавающий виджет AI-ассистента в правом-нижнем углу ЛК (доступный со всех страниц) теперь поддерживает оценку ответов — синхронно с full-page чатом <code>/lk/chat/</code> и Flutter-приложением.</p>
@@ -1134,7 +1139,7 @@ https://billing.example.com/lk/payments/webhook/</code></pre>
     <thead><tr><th>Хранилище</th><th>Поле</th><th>Назначение</th></tr></thead>
     <tbody>
       <tr><td>PG <code>ai_chat_log</code></td><td><code>user_feedback</code>, <code>feedback_text</code>, <code>feedback_at</code></td><td>Источник для <code>/admin/reports/ai_chat_dashboard/</code> (KPI 👍/👎)</td></tr>
-      <tr><td>FreeScout MySQL <code>aida_messages</code></td><td>те же 3 поля</td><td>Зеркало для read-only анализа из FreeScout-модуля</td></tr>
+      <tr><td>БД HelpDesk (зеркало)</td><td>те же 3 поля</td><td>Для read-only анализа из модуля HelpDesk</td></tr>
     </tbody>
   </table>
 
@@ -1272,17 +1277,17 @@ Content-Type: application/json
     <tbody>
       <tr><td><code>GET /lk/chat/</code></td><td>Страница чата в личном кабинете</td></tr>
       <tr><td><code>POST /mobile-api/v1/chat/message</code></td><td>Отправить сообщение AI (Mobile API)</td></tr>
-      <tr><td><code>POST /mobile-api/v1/chat/escalate</code></td><td>Передать переписку оператору FreeScout</td></tr>
+      <tr><td><code>POST /mobile-api/v1/chat/escalate</code></td><td>Передать переписку оператору HelpDesk</td></tr>
       <tr><td><code>GET /mobile-api/v1/chat/status</code></td><td>Проверить доступность AI</td></tr>
     </tbody>
   </table>
 
   <h4>Логирование</h4>
-  <p>Модуль <code>billing/services/claude_logger.py</code> записывает диалоги в FreeScout (отдельная база MySQL на сервере поддержки) и параллельно — в локальную PostgreSQL-таблицу <code>ai_chat_log</code> биллинга. Если один из источников недоступен — логирование во второй проходит без ошибки.</p>
+  <p>Модуль <code>billing/services/claude_logger.py</code> записывает диалоги в HelpDesk (отдельная база MySQL на сервере поддержки) и параллельно — в локальную PostgreSQL-таблицу <code>ai_chat_log</code> биллинга. Если один из источников недоступен — логирование во второй проходит без ошибки.</p>
 
   <!-- ===== AI обучение (build 603–781) ===== -->
   <h3 id="ai-assistant">AI-ассистент — обучение и управление промптом (build 603–781)</h3>
-  <p>Раздел <strong>Настройки → AI-ассистент</strong> (<code>/admin/settings/ai/</code>) — единая точка управления системными промптами, эталонными примерами (few-shot), автотестами AI-чата и A/B-вариантами. Все три канала — <strong>Личный кабинет</strong>, <strong>Мобильное приложение</strong> и <strong>Email / FreeScout</strong> — настраиваются раздельно.</p>
+  <p>Раздел <strong>Настройки → AI-ассистент</strong> (<code>/admin/settings/ai/</code>) — единая точка управления системными промптами, эталонными примерами (few-shot), автотестами AI-чата и A/B-вариантами. Все три канала — <strong>Личный кабинет</strong>, <strong>Мобильное приложение</strong> и <strong>Email / HelpDesk</strong> — настраиваются раздельно.</p>
 
   <div class="info-box">
     <strong>Что значит «обучить Claude»?</strong> В нашем контексте это <em>не</em> дообучение весов модели (Anthropic такую возможность не предоставляет). Это: правка system prompt, добавление few-shot примеров «вопрос → идеальный ответ», прогон автотестов и A/B-варианты. Полная инструкция: <code>/admin/reports/dev/?file=Документация%2F2026-05-08_Инструкция_обучение_Claude_агента_поддержки.md</code>.
@@ -1318,7 +1323,7 @@ Content-Type: application/json
   <p>Эталонные пары «сообщение клиента → идеальный ответ Алисы». Топ-8 по приоритету подмешиваются в <strong>статическую часть промпта</strong> — попадают в кеш, не пересчитываются на каждый запрос.</p>
   <img src="../img/v781/ai_fewshot_lk.png" alt="Few-shot примеры — карточки user/ideal" class="screenshot">
 
-  <p>На канал LK при первом деплое сидируется <strong>5 эталонных примеров</strong> (миграция <code>0126_ai_fewshot_seed</code>): баланс положительный, баланс отрицательный, диагностика «нет интернета», явная эскалация, OOD-отказ (нерелевантные темы). Дополнительно можно одной кнопкой 📥 импортировать 21 сценарий из <strong>FreeScout KB</strong> (S01-S20) — парсинг secций «Проблема / Шаг 3 (Решение)» в few-shot записи.</p>
+  <p>На канал LK при первом деплое сидируется <strong>5 эталонных примеров</strong> (миграция <code>0126_ai_fewshot_seed</code>): баланс положительный, баланс отрицательный, диагностика «нет интернета», явная эскалация, OOD-отказ (нерелевантные темы). Дополнительно можно одной кнопкой 📥 импортировать 21 сценарий из <strong>базы знаний HelpDesk</strong> (S01-S20) — парсинг secций «Проблема / Шаг 3 (Решение)» в few-shot записи.</p>
 
   <table>
     <thead><tr><th>Поле карточки</th><th>Назначение</th></tr></thead>
@@ -1338,7 +1343,7 @@ Content-Type: application/json
     <li><strong>Hover lift</strong> с зелёной рамкой, line-clamp 4 + click-to-expand на тексте</li>
     <li><strong>Bulk-actions</strong> через мастер-чекбокс: включить / отключить / удалить группу примеров</li>
     <li><strong>Кнопка 👁 «Что увидит Алиса»</strong> — модалка с полным собранным system prompt</li>
-    <li><strong>Кнопка 📥 «Импорт из FreeScout KB»</strong> (только LK) — синхронизация со сценариями S01-S20</li>
+    <li><strong>Кнопка 📥 «Импорт из базы знаний HelpDesk»</strong> (только LK) — синхронизация со сценариями S01-S20</li>
     <li><strong>Empty-state</strong> с канало-зависимыми подсказками (Email — про деловой стиль и подпись)</li>
   </ul>
 
@@ -1364,7 +1369,7 @@ Content-Type: application/json
       <tr><td>Сессий</td><td>Уникальных диалогов за выбранный период (1/3/7/14/30 дней)</td></tr>
       <tr><td>Помогло (👍)</td><td>Доля положительных оценок от всех проставленных</td></tr>
       <tr><td>Не помогло (👎)</td><td>Доля негативных + общий процент сессий, в которых клиент поставил оценку</td></tr>
-      <tr><td>Эскалаций</td><td>Сколько сессий завершилось передачей оператору в FreeScout</td></tr>
+      <tr><td>Эскалаций</td><td>Сколько сессий завершилось передачей оператору в HelpDesk</td></tr>
       <tr><td>Токены</td><td>Суммарный input/output расход на API за период</td></tr>
     </tbody>
   </table>
@@ -1479,11 +1484,11 @@ Content-Type: application/json
   </ul>
   <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/integrations_v466/v466_05_geo_map.png" alt="География — Карта" class="screenshot">
 
-  <h4 id="integrations-freescout-claude">Вкладка FreeScout + Claude AI</h4>
-  <p>HelpDesk-интеграция (FreeScout API + MySQL + webhook + автосинхронизация) и Claude AI-ассистент в одном разделе. Claude используется в трёх местах: ЛК-чат, мобильное приложение, FreeScout-модуль (отдельные настройки на <code>support.smit34.ru/claudeai/settings</code>).</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/integrations_v466/v466_06_freescout_top.png" alt="FreeScout — основные настройки" class="screenshot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/integrations_v466/v466_07_freescout_claude.png" alt="Claude AI как подраздел FreeScout" class="screenshot">
-  <p>Блок <strong>«Статистика»</strong> показывает количество AI-ответов сегодня (из FreeScout MySQL <code>claudeai_messages</code>) и ссылку на <a href="https://console.anthropic.com/settings/billing" target="_blank">console.anthropic.com/billing</a> для контроля баланса API.</p>
+  <h4 id="integrations-freescout-claude">Вкладка HelpDesk + Claude AI</h4>
+  <p>HelpDesk-интеграция (REST API HelpDesk + MySQL + webhook + автосинхронизация) и Claude AI-ассистент в одном разделе. Claude используется в трёх местах: ЛК-чат, мобильное приложение, модуль HelpDesk (отдельные настройки на <code>support.smit34.ru/claudeai/settings</code>).</p>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/integrations_v466/v466_06_freescout_top.png" alt="HelpDesk — основные настройки" class="screenshot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/integrations_v466/v466_07_freescout_claude.png" alt="Claude AI как подраздел HelpDesk" class="screenshot">
+  <p>Блок <strong>«Статистика»</strong> показывает количество AI-ответов сегодня (из БД HelpDesk) и ссылку на <a href="https://console.anthropic.com/settings/billing" target="_blank">console.anthropic.com/billing</a> для контроля баланса API.</p>
 
   <h4 id="integrations-footer-ai">AI-статус в футере</h4>
   <p>Футер всех страниц админки показывает живой статус AI после блока «Диск»:</p>
@@ -1515,8 +1520,8 @@ Content-Type: application/json
       <tr><td>telegram</td><td><code>POST /admin/settings/telegram/test/</code></td><td>Bot token через <code>getMe</code>, опционально через прокси</td></tr>
       <tr><td>telegram_proxy</td><td><code>POST /admin/settings/telegram/proxy_test/</code></td><td>SOCKS5 прокси соединение с api.telegram.org</td></tr>
       <tr><td>telegram_alarm</td><td><code>POST /admin/settings/telegram/alarm_test/</code></td><td>Отправка тестового аларма в чат</td></tr>
-      <tr><td>freescout</td><td><code>POST /admin/settings/freescout/test/</code></td><td>API-ключ + хост + список conversations</td></tr>
-      <tr><td>freescout_db</td><td><code>POST /admin/settings/freescout/db_test/</code></td><td>MySQL соединение к БД FreeScout</td></tr>
+      <tr><td>HelpDesk</td><td>Тест подключения через раздел «Настройки → Интеграции → HelpDesk»</td><td>API-ключ + хост + список тикетов</td></tr>
+      <tr><td>HelpDesk БД</td><td>Тест MySQL-соединения к БД HelpDesk через раздел «Настройки → Интеграции»</td><td>Проверка подключения и доступности БД</td></tr>
       <tr><td>aida</td><td><code>POST /admin/settings/aida/test/</code></td><td>HTTP <code>GET /health</code> на AIDA URL</td></tr>
       <tr><td>claude</td><td><code>POST /admin/settings/claude/test/</code></td><td>Anthropic API <code>/v1/messages</code> (через прокси)</td></tr>
       <tr><td>tvip</td><td><code>POST /admin/settings/tvip/test/</code></td><td>TvipClient через <code>/api/provider/accounts</code></td></tr>
@@ -1546,7 +1551,7 @@ Content-Type: application/json
       <tr><td>432</td><td>2026-04-25</td><td>Sprint 1: статус-бейджи на вкладках, history теста, sticky-save (Telegram)</td></tr>
       <tr><td>463</td><td>2026-05-06</td><td>Sprint A: <code>integration_tester.js</code>, кнопка «Проверить все», auto-refresh</td></tr>
       <tr><td>464</td><td>2026-05-06</td><td>GCS test fix (object-level permission через <code>list_blobs</code>)</td></tr>
-      <tr><td>465</td><td>2026-05-06</td><td>Реструктуризация: TVIP+LFStream→IPTV, Адреса+Карта→География, Claude→FreeScout (variant A); AI в футере</td></tr>
+      <tr><td>465</td><td>2026-05-06</td><td>Реструктуризация: TVIP+LFStream→IPTV, Адреса+Карта→География, Claude→HelpDesk (variant A); AI в футере</td></tr>
       <tr><td>466</td><td>2026-05-06</td><td>LFStream/TVIP test через production-клиенты; fallback на settings; контурные серые info-иконки рядом с названиями блоков</td></tr>
     </tbody>
   </table>
@@ -1866,7 +1871,7 @@ Content-Type: application/json
 
   <h3 id="lk-page-support">Поддержка (<code>/lk/support/</code>)</h3>
 
-  <p>Список обращений в техподдержку через FreeScout.</p>
+  <p>Список обращений в техподдержку через HelpDesk.</p>
 
   <ul>
     <li><strong>Вкладки</strong> — «Открытые» и «Закрытые» с цветными счётчиками.</li>
@@ -1900,8 +1905,8 @@ Content-Type: application/json
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v2.1.0 (build 978)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">06.06.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v2.1.0 (build 978)</span>&nbsp;|&nbsp;<span data-smit="updated">06.06.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v2.1.0 (build 980)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">06.06.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v2.1.0 (build 980)</span>&nbsp;|&nbsp;<span data-smit="updated">06.06.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=923"></script>
