@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Личный кабинет и мобильные приложения — СмИТ Биллинг v2.1.0 (build 1082)</title>
+  <title>Личный кабинет и мобильные приложения — СмИТ Биллинг v2.1.0 (build 1134)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 2.1 — Документация">
-  <meta property="og:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v2.1.0 (build 1082)">
+  <meta property="og:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v2.1.0 (build 1134)">
   <meta property="og:description" content="Личный кабинет абонента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/lk.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v2.1.0 (build 1082)">
+  <meta name="twitter:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v2.1.0 (build 1134)">
   <meta name="twitter:description" content="Личный кабинет абонента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="Личный кабинет абонента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
@@ -1286,12 +1286,28 @@ Content-Type: application/json
   <p>Модуль <code>billing/services/claude_logger.py</code> записывает диалоги в HelpDesk (отдельная база MySQL на сервере поддержки) и параллельно — в локальную PostgreSQL-таблицу <code>ai_chat_log</code> биллинга. Если один из источников недоступен — логирование во второй проходит без ошибки.</p>
 
   <!-- ===== AI обучение (build 603–781) ===== -->
-  <h3 id="ai-assistant">AI-ассистент — обучение и управление промптом (build 603–781)</h3>
+  <h3 id="ai-assistant">AI-ассистент — обучение и управление промптом (build 603–1091)</h3>
   <p>Раздел <strong>Настройки → AI-ассистент</strong> (<code>/admin/settings/ai/</code>) — единая точка управления системными промптами, эталонными примерами (few-shot), автотестами AI-чата и A/B-вариантами. Все три канала — <strong>Личный кабинет</strong>, <strong>Мобильное приложение</strong> и <strong>Email / HelpDesk</strong> — настраиваются раздельно.</p>
 
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1091/ai_settings_lk.png" alt="Раздел AI-ассистент: вкладка Промпт, контекст организации, прокси-статус" class="screenshot">
+
   <div class="info-box">
-    <strong>Что значит «обучить Claude»?</strong> В нашем контексте это <em>не</em> дообучение весов модели (Anthropic такую возможность не предоставляет). Это: правка system prompt, добавление few-shot примеров «вопрос → идеальный ответ», прогон автотестов и A/B-варианты. Полная инструкция: <code>/admin/reports/dev/?file=Документация%2F2026-05-08_Инструкция_обучение_Claude_агента_поддержки.md</code>.
+    <strong>Что значит «обучить нейросеть»?</strong> В нашем контексте это <em>не</em> дообучение весов модели (провайдер такую возможность не предоставляет). Это: правка system prompt, добавление few-shot примеров «вопрос → идеальный ответ», прогон автотестов и A/B-варианты. Полная инструкция: <code>/admin/reports/dev/?file=Документация%2F2026-05-08_Инструкция_обучение_Claude_агента_поддержки.md</code>.
   </div>
+
+  <h4 id="ai-multiorg">Несколько организаций (multi-org, build 1081–1091)</h4>
+  <p>Если в системе несколько организаций (напр. <strong>СмИТ</strong> — интернет-провайдер и <strong>АЙТИ Консалтинг</strong> — IT-аутсорсер), у каждой может быть свой AI-ассистент. Организация выбирается <strong>селектором в шапке</strong> (применяется ко всем разделам); справа от вкладок виден индикатор «Промпт для: …».</p>
+  <ul>
+    <li><strong>Свой system prompt</strong> на организацию (пусто = наследует глобальный).</li>
+    <li><strong>Имя AI-ассистента</strong>, <strong>модель</strong>, <strong>max_tokens</strong>, <strong>temperature</strong> — на организацию (пустые поля наследуются). API-ключ Anthropic — общий для всех.</li>
+    <li><strong>Тоггл «AI включён для организации»</strong> — можно выключить ассистента у конкретной орг.</li>
+    <li><strong>Свои few-shot примеры.</strong> Важно: если у организации <em>есть</em> свои примеры — подмешиваются <strong>только они</strong> (глобальные не попадают). Так у АЙТИ Консалтинг в промпт идут примеры про IT-услуги, а не интернет-сценарии СмИТ.</li>
+    <li><strong>Обзор организаций</strong> в правой колонке — таблица «свой промпт / глобальный» по каждой орг с кнопкой перехода к настройке.</li>
+  </ul>
+  <p>Пример: AI-ассистент АЙТИ Консалтинг обучен на услугах с сайта (IT-аутсорсинг, 1С, киберзащита, видеонаблюдение, сети и IP-телефония, веб-разработка) — отдельный промпт + 12 few-shot примеров на каждый канал.</p>
+
+  <h4 id="ai-proxy-status">Статус прокси для Нейросети</h4>
+  <p>AI-чат обращается к API нейросети через прокси (из России <code>api.anthropic.com</code> заблокирован). В правой колонке раздела — индикатор: 🟢 «N рабочих прокси», 🔴 «прокси не отвечает», ⚠ «прокси не подключён» (со ссылкой на <a href="billing.html#system-settings-proxy">Настройки системы → Прокси</a>) или «прокси выключены». Если нет живого прокси — ассистент не сможет отвечать.</p>
 
   <p><strong>4 вкладки раздела</strong> (переключаются справа от селектора канала):</p>
   <ul>
@@ -1302,14 +1318,13 @@ Content-Type: application/json
   </ul>
 
   <h4 id="ai-prompt">Вкладка «Промпт»</h4>
-  <p>Редактирование system prompt с версионированием и откатом. Поддерживается <strong>prompt caching</strong> Anthropic — статическая часть кешируется на 5 минут, экономия до 90% на повторных запросах.</p>
-  <img src="../img/v781/ai_settings_lk.png" alt="Раздел AI-настроек: вкладка Промпт" class="screenshot">
+  <p>Редактирование system prompt с версионированием и откатом. Поддерживается <strong>prompt caching</strong> — статическая часть кешируется на 5 минут, экономия до 90% на повторных запросах.</p>
 
   <table>
     <thead><tr><th>Поле</th><th>Назначение</th></tr></thead>
     <tbody>
-      <tr><td>System prompt</td><td>Текст инструкции для Claude — стиль, правила, сценарии. Динамические данные клиента (имя, баланс, тариф) добавляются автоматически на каждый запрос.</td></tr>
-      <tr><td>Модель</td><td>Haiku 4.5 (по умолчанию — быстро и дёшево), Sonnet 4.6 (точнее), Opus 4.7 (лучшее качество)</td></tr>
+      <tr><td>System prompt</td><td>Текст инструкции для нейросети — стиль, правила, сценарии. Динамические данные клиента (имя, баланс, тариф) добавляются автоматически на каждый запрос.</td></tr>
+      <tr><td>Модель</td><td>Haiku 4.5 (по умолчанию — быстро и дёшево), Sonnet 4.6 (точнее), Opus 4.7 (лучшее качество). Модель можно переопределить на организацию.</td></tr>
       <tr><td>Max tokens</td><td>Максимальная длина ответа (1024 для LK / 512 для Mobile)</td></tr>
       <tr><td>Temperature</td><td>0.0–1.0; для биллинга рекомендуется 0.3 (фактическая точность важнее креативности)</td></tr>
       <tr><td>Ключевые слова эскалации</td><td>При наличии в сообщении клиента — пропуск AI-ответа, прямой переход к оператору</td></tr>
@@ -1321,7 +1336,7 @@ Content-Type: application/json
 
   <h4 id="ai-fewshot">Вкладка «Few-shot»</h4>
   <p>Эталонные пары «сообщение клиента → идеальный ответ Алисы». Топ-8 по приоритету подмешиваются в <strong>статическую часть промпта</strong> — попадают в кеш, не пересчитываются на каждый запрос.</p>
-  <img src="../img/v781/ai_fewshot_lk.png" alt="Few-shot примеры — карточки user/ideal" class="screenshot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1091/ai_fewshot_lk.png" alt="Few-shot примеры — карточки user/ideal" class="screenshot">
 
   <p>На канал LK при первом деплое сидируется <strong>5 эталонных примеров</strong> (миграция <code>0126_ai_fewshot_seed</code>): баланс положительный, баланс отрицательный, диагностика «нет интернета», явная эскалация, OOD-отказ (нерелевантные темы). Дополнительно можно одной кнопкой 📥 импортировать 21 сценарий из <strong>базы знаний HelpDesk</strong> (S01-S20) — парсинг secций «Проблема / Шаг 3 (Решение)» в few-shot записи.</p>
 
@@ -1349,9 +1364,9 @@ Content-Type: application/json
 
   <h4 id="ai-eval">Вкладка «Eval»</h4>
   <p>Автотесты промпта на eval-датасете <code>dev_reports/Документация/ai_eval_dataset.jsonl</code> (58 кейсов в 14 категориях). Каждый кейс проверяется на <code>must_contain</code>, <code>must_not_contain</code>, корректную эскалацию и лимит слов.</p>
-  <img src="../img/v781/ai_eval_lk.png" alt="История прогонов eval-датасета" class="screenshot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1091/ai_settings_dark.png" alt="История прогонов eval-датасета" class="screenshot">
 
-  <p>Кнопка <strong>«Запустить»</strong> (с опциональным <code>limit</code>) дёргает реальный API синхронно — 30–60 секунд на полный прогон. После завершения история обновляется, видна <em>pass rate</em> с цветовым кодом: ≥90% зелёный, ≥75% оранжевый, ниже — красный.</p>
+  <p>Кнопка <strong>«Запустить»</strong> (с опциональным <code>limit</code>) дёргает реальный API нейросети синхронно — 30–60 секунд на полный прогон. После завершения история обновляется, видна <em>pass rate</em> с цветовым кодом: ≥90% зелёный, ≥75% оранжевый, ниже — красный.</p>
 
   <p>CLI-вариант для cron / CI:</p>
   <pre><code>docker compose exec web python manage.py ai_eval \
@@ -1361,7 +1376,7 @@ Content-Type: application/json
 
   <h4 id="ai-dashboard">Дашборд AI-чата</h4>
   <p>Страница <strong>Отчёты → AI-чат: дашборд</strong> (<code>/admin/reports/ai_chat_dashboard/</code>) — KPI и графики по реальной нагрузке.</p>
-  <img src="../img/v781/ai_dashboard.png" alt="AI-чат дашборд: KPI + графики" class="screenshot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1091/ai_dashboard.png" alt="AI-чат дашборд: KPI + графики" class="screenshot">
 
   <table>
     <thead><tr><th>KPI</th><th>Что показывает</th></tr></thead>
@@ -1370,9 +1385,13 @@ Content-Type: application/json
       <tr><td>Помогло (👍)</td><td>Доля положительных оценок от всех проставленных</td></tr>
       <tr><td>Не помогло (👎)</td><td>Доля негативных + общий процент сессий, в которых клиент поставил оценку</td></tr>
       <tr><td>Эскалаций</td><td>Сколько сессий завершилось передачей оператору в HelpDesk</td></tr>
-      <tr><td>Токены</td><td>Суммарный input/output расход на API за период</td></tr>
+      <tr><td>Токены</td><td>Суммарный input/output расход на API за период + <strong>оценочная стоимость в ₽</strong> (build 1086). Цены за млн токенов и курс USD→RUB настраиваются в SystemSettings: <code>AI_PRICE_IN_USD_PER_MTOK</code>, <code>AI_PRICE_OUT_USD_PER_MTOK</code>, <code>AI_USD_RUB</code>.</td></tr>
     </tbody>
   </table>
+
+  <p><strong>По организациям</strong> (multi-org, build 1084): таблица с разбивкой сессий / эскалаций / 👍 / 👎 по каждой организации. Фильтр — через селектор в шапке. У организации по умолчанию (СмИТ) учитываются и абоненты без явной привязки (<code>ORGANIZATION_ID IS NULL</code>).</p>
+
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1091/ai_dashboard_dark.png" alt="Дашборд AI-чата в тёмной теме" class="screenshot">
 
   <p>Графики:</p>
   <ul>
@@ -1905,8 +1924,8 @@ Content-Type: application/json
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v2.1.0 (build 1082)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">12.06.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v2.1.0 (build 1082)</span>&nbsp;|&nbsp;<span data-smit="updated">12.06.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v2.1.0 (build 1134)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">13.06.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v2.1.0 (build 1134)</span>&nbsp;|&nbsp;<span data-smit="updated">13.06.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=923"></script>
