@@ -1845,3 +1845,32 @@ html, body {
   .vf-arrow{transform:rotate(90deg);justify-content:center}
   .vf-step{flex:1 1 auto}
 }
+
+/* ── Mermaid диаграммы / инфографика / mindmaps (mermaid-init.js) ── */
+pre.mermaid{background:transparent;border:0;padding:8px 0;margin:16px 0;text-align:center;overflow-x:auto}
+pre.mermaid svg{max-width:100%;height:auto}
+/* до загрузки/рендера — приглушённый моноширинный исходник, не «голый» код */
+pre.mermaid:not([data-processed]):not([data-mermaid-done]){
+  color:var(--text-light);font-size:.85em;font-family:'SFMono-Regular',Consolas,monospace;
+  white-space:pre-wrap;text-align:left;background:var(--bg-light);
+  border:1px dashed var(--border);border-radius:10px;padding:14px 16px}
+
+/* zoom/pan-контейнер */
+.mmd-zoom{position:relative;margin:18px 0;border:1px solid var(--border);border-radius:12px;
+  background:var(--bg-card);overflow:hidden}
+.mmd-zoom-bar{display:flex;align-items:center;gap:6px;padding:6px 10px;
+  border-bottom:1px solid var(--border);background:var(--bg-light)}
+.mmd-zoom-bar button{display:inline-flex;align-items:center;justify-content:center;
+  width:30px;height:30px;border:1px solid var(--border);border-radius:7px;
+  background:var(--bg-card);color:var(--text);cursor:pointer;font-size:.9rem;
+  transition:background .15s,border-color .15s}
+.mmd-zoom-bar button:hover{background:var(--primary);border-color:var(--primary);color:#fff}
+.mmd-zoom-bar button:focus-visible{outline:2px solid var(--primary);outline-offset:1px}
+.mmd-zoom-pct{min-width:48px;text-align:center;font-size:.82rem;font-variant-numeric:tabular-nums;
+  color:var(--text-light);user-select:none}
+.mmd-zoom-viewport{overflow:auto;max-height:78vh;cursor:grab;padding:12px}
+.mmd-zoom-viewport.is-panning{cursor:grabbing;user-select:none}
+.mmd-zoom-stage{transform-origin:0 0;display:inline-block;min-width:100%}
+.mmd-zoom-stage pre.mermaid{margin:0;text-align:left;overflow:visible}
+.mmd-zoom-stage pre.mermaid svg{max-width:none!important}
+@media (prefers-reduced-motion:reduce){.mmd-zoom-bar button{transition:none}}

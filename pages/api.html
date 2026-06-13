@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>API — СмИТ Биллинг v2.1.0 (build 1143)</title>
+  <title>API — СмИТ Биллинг v2.1.0 (build 1151)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 2.1 — Документация">
-  <meta property="og:title" content="API — СмИТ Биллинг v2.1.0 (build 1143)">
+  <meta property="og:title" content="API — СмИТ Биллинг v2.1.0 (build 1151)">
   <meta property="og:description" content="REST API v2, SOAP API, обещанный платёж, управление абонентами. Примеры запросов curl и JSON.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/api.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
@@ -14,12 +14,12 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="API — СмИТ Биллинг v2.1.0 (build 1143)">
+  <meta name="twitter:title" content="API — СмИТ Биллинг v2.1.0 (build 1151)">
   <meta name="twitter:description" content="REST API v2, SOAP API, обещанный платёж, управление абонентами. Примеры запросов curl и JSON.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="REST API v2, SOAP API, обещанный платёж, управление абонентами. Примеры запросов curl и JSON.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=1049">
+  <link rel="stylesheet" href="../css/style.css?v=1150">
   <link rel="stylesheet" href="../css/search.css?v=790">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.26.0/dist/tabler-icons.min.css">
@@ -338,6 +338,57 @@
       <tr><td>Web Admin API</td><td>HTML/JSON</td><td><code>/admin/*</code></td><td>Cookie + CSRF</td></tr>
     </tbody>
   </table>
+
+  <p>Все интерфейсы — точки входа в единое ядро (Django 4.2 / PostgreSQL 17). Схема связей:</p>
+  <pre class="mermaid">
+flowchart TB
+    subgraph clients["Клиенты"]
+        ADMIN["Админ-панель<br/>AdminLTE"]
+        LKC["Личный кабинет"]
+        MOB["Мобильное приложение<br/>Flutter"]
+        EXT["Платёжные системы /<br/>NAS / СОРМ / FreeScout"]
+    end
+
+    subgraph api["Точки входа API"]
+        REST["REST API v2<br/>/rest_api/v2/"]
+        SOAP["SOAP API<br/>/api/"]
+        MAPI["Mobile API (JWT)<br/>/mobile-api/v1/"]
+        WADM["Web Admin<br/>/admin/"]
+    end
+
+    subgraph core["Ядро биллинга (Django 4.2)"]
+        VIEWS["Views<br/>ChangeView · AdminView · AuthView"]
+        SVC["Сервисы<br/>payment · ip_allocation ·<br/>freescout · radius_user_cache"]
+        TASKS["Celery<br/>billing_worker · nas_sync ·<br/>push · sorm_export"]
+    end
+
+    DB[("PostgreSQL 17<br/>~135 моделей")]
+    REDIS[("Redis<br/>кэш · очереди")]
+    FR["FreeRADIUS<br/>rlm_python3"]
+
+    ADMIN --> WADM
+    LKC --> REST
+    MOB --> MAPI
+    EXT --> SOAP
+    EXT --> REST
+
+    WADM --> VIEWS
+    REST --> VIEWS
+    MAPI --> VIEWS
+    SOAP --> SVC
+    VIEWS --> SVC
+    SVC --> DB
+    SVC --> REDIS
+    TASKS --> DB
+    TASKS --> REDIS
+    FR --> REDIS
+    FR --> DB
+
+    style core fill:#0f172a,stroke:#43b77a,color:#fff
+    style DB fill:#134e4a,stroke:#43b77a,color:#fff
+    style REDIS fill:#7f1d1d,stroke:#dc2626,color:#fff
+    style FR fill:#1e3a5f,stroke:#5BA89D,color:#fff
+</pre>
 
   <!-- ============================================ -->
   <h2 id="auth">Аутентификация</h2>
@@ -663,6 +714,30 @@ curl -s -b cookies.txt -X DELETE \
     <li>После успешной оплаты платёжная система вызывает <code>/lk/payments/webhook/</code>.</li>
     <li>Webhook проверяет подпись, извлекает <code>credit_amount</code> (из metadata / кэша / расчёта), вызывает <code>_credit_abonent()</code>: <code>account.ostatok += credit_amount × 10<sup>10</sup></code> и создаёт запись в <code>FinanceOperations</code>.</li>
   </ol>
+
+  <pre class="mermaid">
+sequenceDiagram
+    participant Ab as Абонент (ЛК / Mobile)
+    participant LK as Биллинг (lk/services/payment.py)
+    participant PS as Платёжная система<br/>(ЮKassa / W1)
+    participant WH as /lk/payments/webhook/
+    participant DB as AdminAccounts + FinanceOperations
+
+    Ab->>LK: amount = 500 ₽
+    LK->>LK: + комиссия 4.5% = 522.50 ₽
+    alt ЮKassa REST v3 / W1
+        LK-->>Ab: redirect_url → форма оплаты
+    else ЮKassa HTTP (legacy)
+        LK-->>Ab: form_post → автосабмит на yoomoney.ru
+    end
+    Ab->>PS: оплата на форме провайдера
+    PS->>WH: webhook (XML+MD5 или JSON)
+    WH->>WH: проверка подписи + идемпотентность
+    WH->>DB: _credit_abonent()<br/>ostatok += amount × 10¹⁰<br/>+ FinanceOperations
+    WH->>DB: авто-разблок b_negbal если ostatok ≥ 0
+    WH-->>PS: 200 OK / WMI_RESULT=OK
+    Note over Ab,DB: зачисление идёт по credit_amount,<br/>НЕ по сумме с комиссией
+</pre>
 
   <h3 id="payments-create">Инициация платежа</h3>
   <pre><code># LK — через форму (редирект для REST, или автосабмит form_post)
@@ -1508,12 +1583,13 @@ curl -s -X POST "https://billing.example.com/mobile-api/v1/push/register" \
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v2.1.0 (build 1143)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">13.06.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v2.1.0 (build 1143)</span>&nbsp;|&nbsp;<span data-smit="updated">13.06.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v2.1.0 (build 1151)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">14.06.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v2.1.0 (build 1151)</span>&nbsp;|&nbsp;<span data-smit="updated">14.06.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=923"></script>
 <script src="../js/version.js"></script>
+<script src="../js/mermaid-init.js?v=1150"></script>
 <script src="../js/search.js?v=790"></script>
 </body>
 </html>
