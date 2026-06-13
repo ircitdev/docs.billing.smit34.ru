@@ -1868,9 +1868,12 @@ pre.mermaid:not([data-processed]):not([data-mermaid-done]){
 .mmd-zoom-bar button:focus-visible{outline:2px solid var(--primary);outline-offset:1px}
 .mmd-zoom-pct{min-width:48px;text-align:center;font-size:.82rem;font-variant-numeric:tabular-nums;
   color:var(--text-light);user-select:none}
-.mmd-zoom-viewport{overflow:auto;max-height:78vh;cursor:grab;padding:12px}
-.mmd-zoom-viewport.is-panning{cursor:grabbing;user-select:none}
-.mmd-zoom-stage{transform-origin:0 0;display:inline-block;min-width:100%}
-.mmd-zoom-stage pre.mermaid{margin:0;text-align:left;overflow:visible}
-.mmd-zoom-stage pre.mermaid svg{max-width:none!important}
+/* По умолчанию: схема вписана по ширине, видна целиком, без скролла и без grab-курсора */
+.mmd-zoom-viewport{overflow:visible;cursor:default;padding:12px}
+/* При увеличении (>100%) включаем прокрутку/панорамирование */
+.mmd-zoom.is-zoomed .mmd-zoom-viewport{overflow:auto;max-height:80vh;cursor:grab}
+.mmd-zoom.is-zoomed .mmd-zoom-viewport.is-panning{cursor:grabbing;user-select:none}
+.mmd-zoom-stage{transform-origin:0 0;width:100%}
+.mmd-zoom-stage pre.mermaid{margin:0;text-align:center;overflow:visible}
+.mmd-zoom-stage pre.mermaid svg{display:block;width:100%;height:auto;margin:0 auto}
 @media (prefers-reduced-motion:reduce){.mmd-zoom-bar button{transition:none}}

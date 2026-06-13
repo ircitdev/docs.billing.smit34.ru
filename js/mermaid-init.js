@@ -117,7 +117,14 @@
     renderAll();
   }
 
-  /* ── 5. zoom/pan-обёртка вокруг отрисованной диаграммы ── */
+  /* ── 5. zoom/pan-обёртка вокруг отрисованной диаграммы ──
+   *
+   * Принцип: ДЕФОЛТ — схема вписана по ширине и читается целиком, без действий.
+   * mermaid c useMaxWidth:true сам ставит на SVG width:100%/max-width — поэтому
+   * при scale=1 диаграмма занимает всю ширину контейнера, высота — авто (без обрезки,
+   * без скролла). Зум (кнопки/Ctrl+колесо) увеличивает ОТ этой базы; скролл/pan нужны
+   * только когда пользователь сам увеличил.
+   */
   function wrapZoom(pre) {
     if (!pre || pre.dataset.zoomWrapped) return;
     pre.dataset.zoomWrapped = '1';
@@ -132,8 +139,7 @@
       '<button type="button" data-z="out" title="Уменьшить" aria-label="Уменьшить"><i class="bi bi-dash-lg" aria-hidden="true"></i></button>' +
       '<span class="mmd-zoom-pct" aria-live="polite">100%</span>' +
       '<button type="button" data-z="in" title="Увеличить" aria-label="Увеличить"><i class="bi bi-plus-lg" aria-hidden="true"></i></button>' +
-      '<button type="button" data-z="fit" title="По ширине" aria-label="Вместить по ширине"><i class="bi bi-arrows-fullscreen" aria-hidden="true"></i></button>' +
-      '<button type="button" data-z="reset" title="Сбросить (100%)" aria-label="Сбросить масштаб"><i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i></button>';
+      '<button type="button" data-z="reset" title="Сбросить" aria-label="Сбросить масштаб"><i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i></button>';
 
     pre.parentNode.insertBefore(wrap, pre);
     stage.appendChild(pre);
@@ -141,29 +147,36 @@
     wrap.appendChild(bar);
     wrap.appendChild(viewport);
 
-    var scale = 1, MIN = 0.4, MAX = 4, STEP = 0.2;
+    // SVG растягиваем на всю ширину контейнера (mermaid useMaxWidth ставит max-width
+    // в px по натуральному размеру — снимаем его, чтобы маленькие схемы тоже вписывались
+    // читаемо, но не раздувались сверх натуральной ширины).
+    var svg = pre.querySelector('svg');
+    if (svg) {
+      svg.style.width = '100%';
+      svg.style.height = 'auto';
+      svg.style.maxWidth = '100%';
+      svg.removeAttribute('width');
+      svg.removeAttribute('height');
+    }
+
+    var scale = 1, MIN = 0.5, MAX = 3, STEP = 0.25;
     var pct = bar.querySelector('.mmd-zoom-pct');
     function apply() {
-      stage.style.transform = 'scale(' + scale + ')';
+      // scale=1 → база (вписано по ширине). >1 → крупнее, появляется скролл.
+      stage.style.transform = scale === 1 ? '' : 'scale(' + scale + ')';
+      stage.style.width = scale === 1 ? '100%' : (scale * 100) + '%';
       pct.textContent = Math.round(scale * 100) + '%';
+      wrap.classList.toggle('is-zoomed', scale !== 1);
     }
     function zoom(delta) {
       scale = Math.min(MAX, Math.max(MIN, Math.round((scale + delta) * 100) / 100));
       apply();
-    }
-    function fit() {
-      var svg = pre.querySelector('svg');
-      if (!svg) return;
-      var natural = svg.getBoundingClientRect().width / (scale || 1);
-      var avail = viewport.clientWidth - 20;
-      if (natural > 0) { scale = Math.min(MAX, Math.max(MIN, avail / natural)); apply(); }
     }
     bar.addEventListener('click', function (e) {
       var btn = e.target.closest('button'); if (!btn) return;
       var z = btn.dataset.z;
       if (z === 'in') zoom(STEP);
       else if (z === 'out') zoom(-STEP);
-      else if (z === 'fit') fit();
       else if (z === 'reset') { scale = 1; apply(); viewport.scrollTo({ left: 0, top: 0 }); }
     });
 
@@ -174,10 +187,10 @@
       zoom(e.deltaY < 0 ? STEP : -STEP);
     }, { passive: false });
 
-    // drag-to-pan мышью
+    // drag-to-pan мышью (актуально только при увеличении)
     var panning = false, sx = 0, sy = 0, sl = 0, st = 0;
     viewport.addEventListener('mousedown', function (e) {
-      if (e.button !== 0) return;
+      if (e.button !== 0 || scale === 1) return;
       panning = true; viewport.classList.add('is-panning');
       sx = e.clientX; sy = e.clientY; sl = viewport.scrollLeft; st = viewport.scrollTop;
     });
