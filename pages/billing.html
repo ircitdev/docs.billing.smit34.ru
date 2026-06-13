@@ -19,7 +19,7 @@
   <meta name="twitter:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
   <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=1151">
+  <link rel="stylesheet" href="../css/style.css?v=1153">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.26.0/dist/tabler-icons.min.css">
   <link rel="stylesheet" href="../css/search.css?v=790">
@@ -1385,32 +1385,29 @@ SQL не выполняется. Эффективная capacity FreeRADIUS Pyth
 cache miss. После успешного slow-path снапшот пишется в кэш для следующих пакетов.</p>
 
 <pre class="mermaid">
-flowchart TD
-    REQ["Access-Request<br/>от NAS"] --> CACHE{"Снапшот в Redis?<br/>radius_user:login"}
-    CACHE -->|"hit"| FAST["Fast-path (1 ms)<br/>без SQL"]
-    CACHE -->|"miss"| SLOW["Slow-path (~10 ms)<br/>ORM: Users + abonent +<br/>nas + RadiusParams"]
+flowchart LR
+    REQ["Access-Request<br/>от NAS"] --> CACHE{"Снапшот<br/>в Redis?"}
+    CACHE -->|"hit"| CHKFAST{"Штатные<br/>условия?"}
+    CACHE -->|"miss"| PWD{"Пароль<br/>верный?"}
+    CHKFAST -->|"да · fast-path 1 ms"| OK["RLM_MODULE_OK<br/>+ Framed-IP<br/>+ Rate-Limit"]
+    CHKFAST -->|"нет"| PWD
 
-    FAST --> CHKFAST{"Штатные условия?<br/>enabled · NAS · IP в пуле<br/>· tarif_id есть"}
-    CHKFAST -->|"да"| OK["RLM_MODULE_OK<br/>+ Framed-IP + Rate-Limit"]
-    CHKFAST -->|"нет"| SLOW
-
-    SLOW --> PWD{"Пароль верный?"}
-    PWD -->|"нет"| REJ["RLM_MODULE_REJECT"]
-    PWD -->|"да"| TARIF{"abonent.tarif_id?"}
-    TARIF -->|"NULL"| REJT["RLM_MODULE_REJECT<br/>no tariff assigned"]
-    TARIF -->|"есть"| BLOCK{"Заблокирован?<br/>b_negbal / b_admin"}
-    BLOCK -->|"да"| SOFT["soft-block<br/>(блок-пул / REJECT)"]
-    BLOCK -->|"нет"| WRITE["Пишем снапшот в Redis<br/>TTL 5 мин"]
+    PWD -->|"нет"| REJ["REJECT"]
+    PWD -->|"да · slow-path ~10 ms"| TARIF{"tarif_id?"}
+    TARIF -->|"NULL"| REJT["REJECT<br/>no tariff"]
+    TARIF -->|"есть"| BLOCK{"Заблоки-<br/>рован?"}
+    BLOCK -->|"да"| SOFT["soft-block<br/>блок-пул"]
+    BLOCK -->|"нет"| WRITE["Снапшот → Redis<br/>TTL 5 мин"]
     WRITE --> OK
-
     OK --> AB(("Абонент<br/>в сети"))
 
     style REQ fill:#1e3a5f,stroke:#5BA89D,color:#fff
-    style FAST fill:#14532d,stroke:#16a34a,color:#fff
+    style CHKFAST fill:#14532d,stroke:#16a34a,color:#fff
     style OK fill:#43b77a,stroke:#2d9a5f,color:#fff
     style REJ fill:#7f1d1d,stroke:#dc2626,color:#fff
     style REJT fill:#7f1d1d,stroke:#dc2626,color:#fff
     style SOFT fill:#78350f,stroke:#d97706,color:#fff
+    style AB fill:#134e4a,stroke:#43b77a,color:#fff
 </pre>
 
 <h5 id="authorize-cache-invalidation">Инвалидация</h5>
@@ -8117,6 +8114,6 @@ flowchart LR
 <script src="../js/main.js?v=923"></script>
 <script src="../js/search.js?v=790"></script>
 <script src="../js/version.js"></script>
-<script src="../js/mermaid-init.js?v=1151"></script>
+<script src="../js/mermaid-init.js?v=1153"></script>
 </body>
 </html>

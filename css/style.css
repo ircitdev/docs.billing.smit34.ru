@@ -1848,7 +1848,7 @@ html, body {
 
 /* ── Mermaid диаграммы / инфографика / mindmaps (mermaid-init.js) ── */
 pre.mermaid{background:transparent;border:0;padding:8px 0;margin:16px 0;text-align:center;overflow-x:auto}
-pre.mermaid svg{max-width:100%;height:auto}
+pre.mermaid svg{max-width:100%;width:auto;height:auto;max-height:72vh}
 /* до загрузки/рендера — приглушённый моноширинный исходник, не «голый» код */
 pre.mermaid:not([data-processed]):not([data-mermaid-done]){
   color:var(--text-light);font-size:.85em;font-family:'SFMono-Regular',Consolas,monospace;
@@ -1875,5 +1875,8 @@ pre.mermaid:not([data-processed]):not([data-mermaid-done]){
 .mmd-zoom.is-zoomed .mmd-zoom-viewport.is-panning{cursor:grabbing;user-select:none}
 .mmd-zoom-stage{transform-origin:0 0;width:100%}
 .mmd-zoom-stage pre.mermaid{margin:0;text-align:center;overflow:visible}
-.mmd-zoom-stage pre.mermaid svg{display:block;width:100%;height:auto;margin:0 auto}
+/* SVG вписывается в ширину И высоту контейнера, сохраняя пропорции (viewBox).
+   НЕ растягиваем силой width:100% — иначе узкие вертикальные (TB) схемы
+   раздуваются по высоте до огромных размеров. max-height ограничивает высоту. */
+.mmd-zoom-stage pre.mermaid svg{display:block;max-width:100%;width:auto;height:auto;max-height:72vh;margin:0 auto}
 @media (prefers-reduced-motion:reduce){.mmd-zoom-bar button{transition:none}}
