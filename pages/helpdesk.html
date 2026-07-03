@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HelpDesk — СмИТ Биллинг 2.1 (build 967)</title>
+  <title>HelpDesk — СмИТ Биллинг 3.0 (build 967)</title>
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="СмИТ Биллинг 2.1 — Документация">
-  <meta property="og:title" content="HelpDesk — СмИТ Биллинг 2.1">
+  <meta property="og:site_name" content="СмИТ Биллинг 3.0 — Документация">
+  <meta property="og:title" content="HelpDesk — СмИТ Биллинг 3.0">
   <meta property="og:description" content="Система поддержки клиентов СМИТ: рабочее место оператора, канбан-доска подключений, теги, база знаний, AI-ассистент Claude.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/helpdesk.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="HelpDesk — СмИТ Биллинг 2.1">
+  <meta name="twitter:title" content="HelpDesk — СмИТ Биллинг 3.0">
   <meta name="twitter:description" content="Рабочее место оператора поддержки, канбан-доска, теги, база знаний, AI-ассистент Claude.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="Рабочее место оператора поддержки, канбан-доска, теги, база знаний, AI-ассистент Claude.">
@@ -31,7 +31,7 @@
     <button class="menu-toggle" aria-label="Меню">&#9776;</button>
     <div class="logo">
       <div class="logo-icon">С</div>
-      <div class="logo-text"><span class="logo-main">СмИТ Биллинг 2.1 </span><span>Документация</span></div>
+      <div class="logo-text"><span class="logo-main">СмИТ Биллинг 3.0 </span><span>Документация</span></div>
     </div>
   </div>
   <div class="header-search"><div class="docs-search-wrap"><input type="search" id="docsSearch" class="docs-search-input" placeholder="Поиск по документации..." autocomplete="off"><span class="docs-search-icon"><i class="ti ti-search"></i></span><div class="docs-search-results" id="docsSearchResults"></div></div></div>
@@ -165,6 +165,7 @@
         <li><a href="#ai-assistant">9. AI-ассистент Claude</a></li>
         <li><a href="#integration">10. Связь с биллингом</a></li>
         <li><a href="#admin">11. Администрирование</a></li>
+        <li><a href="#native-module">17. Нативный модуль (v3.0)</a></li>
       </ul>
     </details>
   </div>
@@ -741,6 +742,53 @@
   <div class="info-box">
     <strong>Карточка агента</strong> также содержит личные настройки: подпись в письмах, шаблоны быстрых ответов, статус «в офисе / не в офисе», настройки уведомлений (push, email, звук в браузере).
   </div>
+
+  <!-- ============================================ -->
+  <h2 id="native-module">17. Нативный модуль Поддержка (v3.0)</h2>
+
+  <p>С версии 3.0 helpdesk встроен прямо в биллинг (раздел <strong>«Поддержка»</strong>, <code>/admin/support/</code>) — это нативная замена внешнего FreeScout на Django/PostgreSQL. Данные хранятся в таблицах <code>support_*</code>, абонент привязывается напрямую (FK на <code>Abonents</code>), а настройки разнесены по отдельным страницам.</p>
+
+  <div class="mermaid">
+flowchart TB
+    SUP["Поддержка /admin/support/"]
+    SUP --> INBOX["Входящие: очередь + папки + поиск"]
+    SUP --> CARD["Карточка тикета: тред + ответ + виджет Биллинг"]
+    SUP --> SET["Настройки"]
+    CARD --> ED["Редактор ответа: форматирование + вложения"]
+    CARD --> TPL["Шаблонные ответы: вставка + переменные"]
+    SET --> MB["Ящики + Разрешения"]
+    SET --> TG["Теги + автоназначение"]
+    SET --> AL["Оповещения per-mailbox"]
+    SET --> CF["Поля пользователя"]
+    SET --> TT["Отслеживание времени"]
+  </div>
+
+  <h3 id="native-editor">Редактор ответа и вложения</h3>
+  <p>Поле ответа оператора — лёгкий визуальный редактор: форматирование (жирный/курсив/списки/ссылка), прикрепление файлов, вставка картинки из буфера (Ctrl+V). Картинки-вложения показываются миниатюрами с лайтбоксом, PDF открывается в модальном окне. Для e-mail уходит HTML-тело с вложениями, для мессенджеров — авто-очищенный plain-text.</p>
+
+  <h3 id="native-saved-replies">Шаблонные ответы с переменными</h3>
+  <p><strong>Поддержка → Шаблонные ответы</strong> (<code>/admin/support/saved-replies/</code>). Готовые тексты для быстрой вставки в редактор. Поддерживают переменные, которые раскрываются против текущего тикета: <code>{%customer.fullname%}</code>, <code>{%abonent.balance%}</code>, <code>{%abonent.contract%}</code>, <code>{%abonent.tariff%}</code>, <code>{%ticket.number%}</code>, <code>{%agent.name%}</code> и др. Видимость — глобальная / на ящик / личная. Категории группируют шаблоны (Общие / Технические / Финансы / Закрытие).</p>
+
+  <h3 id="native-tags">Теги: CRUD и автоназначение</h3>
+  <p><strong>Поддержка → Теги</strong> (<code>/admin/support/tags/</code>). Облако тегов теперь редактируемое (название + цвет). Раздел <strong>«Автоназначение тегов»</strong> навешивает теги автоматически при создании тикета по правилам:</p>
+  <ul>
+    <li><strong>ключевые слова</strong> в теме/первом сообщении (например «не работает» → тег «Авария»);</li>
+    <li><strong>канал обращения</strong> (Email / VK / Telegram / Звонок / Форма / MAX);</li>
+    <li><strong>ящик</strong> — тег всем тикетам ящика.</li>
+  </ul>
+  <p>Правило можно ограничить организацией (multi-org) — тогда оно срабатывает только для тикетов своей орг.</p>
+
+  <h3 id="native-permissions">Разрешения ящика</h3>
+  <p>Кнопка <strong>«Разрешения»</strong> в списке ящиков (<code>/admin/support/mailboxes/&lt;id&gt;/permissions/</code>). Выбор сотрудников, работающих с ящиком, сгруппированных по роли (Старший менеджер / Менеджер / Монтажник / Сэйлс). Ящик без выбранных — открыт всем; с выбранными — виден только им. Эти же сотрудники получают оповещения по ящику.</p>
+
+  <h3 id="native-alerts">Оповещения per-mailbox</h3>
+  <p><strong>Поддержка → Оповещения</strong> (<code>/admin/support/alerts/</code>). Вкладка «По умолчанию» (для всех ящиков) + вкладка на каждый доступный ящик (multi-org). Матрица событий (новый тикет / ответ клиента / назначен / просрочен) × каналов (Telegram / Email). Telegram-алерт уходит сначала в личный чат сотрудников, подключивших его в профиле; если ни у кого не подключён — в общий чат поддержки.</p>
+
+  <h3 id="native-userfields">Поля пользователя</h3>
+  <p><strong>Поддержка → Поля пользователя</strong> (<code>/admin/support/userfields/</code>). Кастомные поля тикета (текст / число / дата / список / Да-Нет / многострочный), настраиваются глобально или на ящик. Примеры: «Категория обращения» (список), «Приоритет выезда», «Адрес подключения», «Дата выезда», «Перезвонить».</p>
+
+  <h3 id="timetracking">Отслеживание времени</h3>
+  <p><strong>Поддержка → Отслеживание времени</strong> (<code>/admin/support/timetracking/</code>). KPI-отчёт по затраченному времени с разбивкой по менеджерам: часы, доля, тикетов, среднее мин/тикет. Период выбирается единым календарным виджетом (как в дашборде AI-чата), менеджер — профиль-селектором с аватарами и поиском (как в тикет-панели на карте сети). Экспорт в CSV.</p>
 
 </main>
 

@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Личный кабинет и мобильные приложения — СмИТ Биллинг v2.1.0 (build 1151)</title>
+  <title>Личный кабинет и мобильные приложения — СмИТ Биллинг v3.0.0</title>
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="СмИТ Биллинг 2.1 — Документация">
-  <meta property="og:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v2.1.0 (build 1151)">
+  <meta property="og:site_name" content="СмИТ Биллинг 3.0 — Документация">
+  <meta property="og:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v3.0.0">
   <meta property="og:description" content="Личный кабинет абонента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/lk.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v2.1.0 (build 1151)">
+  <meta name="twitter:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v3.0.0">
   <meta name="twitter:description" content="Личный кабинет абонента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="Личный кабинет абонента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
@@ -31,7 +31,7 @@
     <button class="menu-toggle" aria-label="Меню">&#9776;</button>
     <div class="logo">
       <div class="logo-icon">С</div>
-      <div class="logo-text"><span class="logo-main">СмИТ Биллинг 2.1 </span><span>Документация</span></div>
+      <div class="logo-text"><span class="logo-main">СмИТ Биллинг 3.0 </span><span>Документация</span></div>
     </div>
   </div>
   <div class="header-search"><div class="docs-search-wrap"><input type="search" id="docsSearch" class="docs-search-input" placeholder="Поиск по документации..." autocomplete="off"><span class="docs-search-icon"><i class="ti ti-search"></i></span><div class="docs-search-results" id="docsSearchResults"></div></div></div>
@@ -137,29 +137,20 @@
       <li class="has-children">
         <a href="lk.html"><i class="ti ti-device-mobile"></i> ЛК и мобильные <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
         <ul class="submenu">
-          <li><a href="lk.html#lk-overview">Обзор и возможности</a></li>
-          <li><a href="lk.html#lk-admin-settings">Раздел «ЛК и мобильные» в админке</a></li>
-          <li class="sub-item"><a href="lk.html#lk-admin-branding">— Брендинг</a></li>
-          <li class="sub-item"><a href="lk.html#lk-admin-features">— Функции (12 toggle)</a></li>
-          <li class="sub-item"><a href="lk.html#lk-admin-security">— Безопасность</a></li>
-          <li class="sub-item"><a href="lk.html#lk-admin-mobile">— Мобильное (Android+iOS)</a></li>
-          <li><a href="lk.html#lk-auth">Авторизация</a></li>
-          <li><a href="lk.html#lk-settings">Настройки интеграций</a></li>
-          <li><a href="lk.html#lk-telegram">Telegram-бот</a></li>
-          <li><a href="lk.html#lk-payments">Оплата (ЮKassa)</a></li>
-          <li><a href="lk.html#lk-mobile-app">Мобильное приложение</a></li>
-          <li class="sub-item"><a href="lk.html#mobile-api-public">— Public Mobile API</a></li>
-          <li class="sub-item"><a href="lk.html#mobile-force-update">— Force-update</a></li>
-          <li class="sub-item"><a href="lk.html#mobile-ios-distribution">— iOS TestFlight ↔ AppStore</a></li>
-          <li><a href="lk.html#lk-support">HelpDesk</a></li>
-          <li><a href="lk.html#lk-ai-chat">AI-ассистент</a></li>
-          <li class="sub-item"><a href="lk.html#ai-chat-settings-787">— Управление /admin/settings/lk/ai_chat/</a></li>
-          <li class="sub-item"><a href="lk.html#ai-chat-widget-feedback-794">— Feedback 👍/👎 в виджете</a></li>
-          <li><a href="lk.html#lk-profile">Профиль</a></li>
-          <li><a href="lk.html#lk-firebase">Push (Firebase)</a></li>
-          <li><a href="lk.html#lk-claude-ai">Claude AI</a></li>
-          <li><a href="lk.html#ai-assistant">AI обучение (промпт/few-shot/eval/дашборд)</a></li>
-          <li><a href="lk.html#telegram-admin-bot">TG бот оператора</a></li>
+          <li><a href="lk.html#lk-overview">1. Обзор</a></li>
+          <li><a href="lk.html#lk-login">2. Вход и авторизация</a></li>
+          <li><a href="lk.html#lk-dashboard">3. Дашборд</a></li>
+          <li><a href="lk.html#lk-finance">4. Финансы</a></li>
+          <li><a href="lk.html#lk-tariff">5. Тарифы</a></li>
+          <li><a href="lk.html#lk-services">6. Услуги и ТВ</a></li>
+          <li><a href="lk.html#lk-support">7. Поддержка</a></li>
+          <li><a href="lk.html#lk-ai-chat">8. AI-ассистент</a></li>
+          <li><a href="lk.html#lk-profile">9. Профиль и безопасность</a></li>
+          <li><a href="lk.html#lk-extra">10. Доп. возможности</a></li>
+          <li><a href="lk.html#lk-dark-mobile">11. Тёмная тема / мобильный</a></li>
+          <li><a href="lk.html#lk-map">12. Карта раздела</a></li>
+          <li><a href="lk.html#lk-admin">13. Настройка в админке</a></li>
+          <li><a href="lk.html#lk-mobile-app">14. Мобильные приложения</a></li>
         </ul>
       </li>
       <li class="has-children">
@@ -288,1644 +279,231 @@
 
 <main class="content">
   <div class="breadcrumb">
-    <a href="../index.html">Документация</a> <span class="sep">/</span> Личный кабинет и мобильные
+    <a href="../index.html">Документация</a> <span class="sep">/</span> Личный кабинет
   </div>
 
-    <h1>Личный кабинет абонента и мобильные приложения</h1>
-    <p>Эта страница — <strong>единственный источник правды</strong> для всего, что касается ЛК и мобильных приложений: брендинг, функциональные модули, безопасность входа, версионирование, push-уведомления.</p>
-    <div class="section-toc">
-  <details open>
-    <summary><strong>Содержание раздела</strong></summary>
-    <ul>
-    <li><a href="#lk-overview">Обзор и возможности</a></li>
-    <li><a href="#lk-admin-settings">Раздел «ЛК и мобильные» в админке</a>
-      <ul>
-        <li><a href="#lk-admin-branding">Брендинг</a></li>
-        <li><a href="#lk-admin-features">Функции (feature flags)</a></li>
-        <li><a href="#lk-admin-security">Безопасность (login attempts, password rules, 2FA, audit)</a></li>
-        <li><a href="#lk-admin-mobile">Мобильное (Android + iOS, force-update)</a></li>
-      </ul>
-    </li>
-    <li><a href="#lk-auth">Авторизация</a></li>
-    <li><a href="#lk-settings">Настройки интеграций</a></li>
-    <li><a href="#lk-telegram">Telegram-бот для уведомлений</a></li>
-    <li><a href="#lk-payments">Оплата через YooKassa</a></li>
-    <li><a href="#lk-mobile-app">Мобильное приложение</a>
-      <ul>
-        <li><a href="#mobile-api-public">Public Mobile API (branding, features, version/check)</a></li>
-        <li><a href="#mobile-force-update">Force-update механизм</a></li>
-        <li><a href="#mobile-ios-distribution">iOS: TestFlight ↔ App Store</a></li>
-      </ul>
-    </li>
-    <li><a href="#lk-support">Поддержка</a></li>
-    <li><a href="#lk-ai-chat">AI-ассистент (Claude / AIDA)</a>
-      <ul>
-        <li><a href="#ai-chat-settings-787">— Управление AI-чатом /admin/settings/lk/ai_chat/ (build 787)</a></li>
-        <li><a href="#ai-chat-widget-feedback-794">— Feedback 👍/👎 в виджете ЛК (build 794)</a></li>
-      </ul>
-    </li>
-    <li><a href="#lk-profile">Профиль абонента</a></li>
-    <li><a href="#lk-sessions">История подключений (RADIUS-сессии)</a></li>
-    <li><a href="#lk-password">Смена пароля абонента</a></li>
-    <li><a href="#lk-deploy">Развёртывание и SSL</a></li>
-    <li><a href="#lk-firebase">Firebase Push-уведомления</a></li>
-    <li><a href="#lk-claude-ai">Claude AI — конфигурация AI-ассистента</a></li>
-    <li><a href="#ai-assistant"><strong>AI-ассистент — обучение и управление промптом</strong> (build 603–781)</a>
-      <ul>
-        <li><a href="#ai-prompt">— Вкладка «Промпт»</a></li>
-        <li><a href="#ai-fewshot">— Few-shot примеры</a></li>
-        <li><a href="#ai-eval">— Eval (автотесты)</a></li>
-        <li><a href="#ai-ab-testing">— A/B варианты</a></li>
-        <li><a href="#ai-dashboard">— Дашборд AI-чата</a>
-          <ul>
-            <li><a href="#ai-dashboard-all-sessions-796">— Все сессии за период (build 796)</a></li>
-          </ul>
-        </li>
-      </ul>
-    </li>
-    <li><a href="#telegram-admin-bot">Telegram-бот для операторов (admin bot)</a></li>
-    <li><a href="#lk-design-system-489"><strong>Дизайн-система ЛК v489</strong> (выравнивание со стилем админки)</a>
-      <ul>
-        <li><a href="#lk-design-tokens-489">— Токены</a></li>
-        <li><a href="#lk-hero-cards-489">— Hero-карточки</a></li>
-        <li><a href="#lk-mobile-489">— Mobile</a></li>
-        <li><a href="#lk-screenshots-489">— Скриншоты</a></li>
-        <li><a href="#lk-build-history-489">— История builds 484-489</a></li>
-      </ul>
-    </li>
-    <li><a href="#lk-pages"><strong>Страницы Личного Кабинета</strong> (что видит абонент)</a>
-      <ul>
-        <li><a href="#lk-page-dashboard">— Дашборд</a></li>
-        <li><a href="#lk-page-profile">— Профиль</a></li>
-        <li><a href="#lk-page-pay">— Пополнение баланса</a></li>
-        <li><a href="#lk-page-payments">— История платежей</a></li>
-        <li><a href="#lk-page-audit">— История операций</a></li>
-        <li><a href="#lk-page-promise-pay">— Обещанный платёж</a></li>
-        <li><a href="#lk-page-sessions">— Подключения</a></li>
-        <li><a href="#lk-page-speedtest">— Тест скорости</a></li>
-        <li><a href="#lk-page-messages">— Сообщения</a></li>
-        <li><a href="#lk-page-tariff">— Тарифы</a></li>
-        <li><a href="#lk-page-services">— Услуги</a></li>
-        <li><a href="#lk-page-referral">— Реферальная программа</a></li>
-        <li><a href="#lk-page-block">— Добровольная блокировка</a></li>
-        <li><a href="#lk-page-support">— Поддержка</a></li>
-        <li><a href="#lk-page-contacts-required">— Заполнение контактов</a></li>
-      </ul>
-    </li>
-    </ul>
-  </details>
-  </div>
+  <h1>Личный кабинет абонента</h1>
+  <p>Личный кабинет (ЛК) — веб-портал самообслуживания абонента по адресу
+  <code>/lk/</code>. Здесь абонент видит баланс и тариф, пополняет счёт, меняет
+  тариф, подключает услуги и ТВ, общается с поддержкой и AI-ассистентом, управляет
+  профилем и безопасностью входа. Доступен с компьютера и телефона (адаптивная
+  вёрстка) и продублирован мобильными приложениями Android&nbsp;/&nbsp;iOS.</p>
+
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/lk_v1206/00_cover.jpg" alt="Личный кабинет — обзор"></p>
 
-  <h3 id="lk-overview">Обзор и возможности</h3>
-
-
-
-  <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;margin:16px 0">
-    <img src="../img/new_lk_dashboard.png" alt="Личный кабинет — Главная (десктоп)" class="screenshot" style="max-width:500px">
-    <img src="../img/new_lk_mobile_dashboard.png" alt="Личный кабинет — Главная (мобильная)" class="screenshot" style="max-width:200px;border-radius:16px;border:1px solid #dee2e6">
-  </div>
-
-  <p>Возможности личного кабинета:</p>
-  <ul>
-    <li>Просмотр баланса, истории платежей и начислений</li>
-    <li>Оплата через YooKassa (банковская карта, SberPay, Т-Банк и др.)</li>
-    <li>Смена тарифного плана</li>
-    <li>Обещанный платёж</li>
-    <li>Добровольная блокировка / снятие блокировки</li>
-    <li>Просмотр активных сессий и статистики трафика</li>
-    <li>Обращения в техподдержку через HelpDesk (вкладки Открытые/Закрытые, статус-точки)</li>
-    <li>AI-ассистент Claude — встроенный чат с поддержкой отправки изображений и PDF</li>
-    <li>Изменение профиля (имя, email, пароль)</li>
-    <li>Привязка Telegram-аккаунта для уведомлений</li>
-    <li>Авторизация через Telegram (OAuth)</li>
-    <li>PWA-режим (добавление на рабочий стол смартфона)</li>
-    <li>Полная адаптация под мобильные устройства</li>
-    <li>История RADIUS-сессий с детализацией трафика и активных соединений</li>
-  </ul>
-
-  <h3 id="lk-admin-settings">Раздел «ЛК и мобильные» в админке</h3>
-  <p>Все user-facing настройки ЛК и мобильных приложений собраны на одной странице:
-    <a href="#" class="text-decoration-none"><code>/admin/settings/lk/</code></a>
-    с 5 вкладками. Это позволяет оператору
-    <strong>перепродавать биллинг под собственным брендом</strong> или скрывать неиспользуемые модули
-    без правки шаблонов и деплоя.
-  </p>
-
-  <p>Картинки разделов ниже добавим после Phase D (когда Playwright освободится).</p>
-
-  <h4>Вкладки</h4>
-  <table>
-    <thead><tr><th>Вкладка</th><th>URL</th><th>Что настраивается</th></tr></thead>
-    <tbody>
-      <tr><td><strong>Обзор</strong></td><td><code>/admin/settings/lk/overview/</code></td>
-        <td>4 KPI-cards (push-токенов / Telegram / VK / активных сессий) + сводка брендинга и мобильных версий + <strong>таблица последних 10 входов в ЛК</strong> (login/IP/канал/метод) + <strong>круговая диаграмма каналов входа за 30 дней</strong></td></tr>
-      <tr><td><strong>Брендинг</strong></td><td><code>/admin/settings/lk/branding/</code></td>
-        <td>9 LK-overrides поверх <a href="#branding">CompanyBranding</a>: brand_short, контакты поддержки, соцсети VK/MAX, color-override</td></tr>
-      <tr><td><strong>Функции</strong></td><td><code>/admin/settings/lk/features/</code></td>
-        <td>12 toggle-флагов для скрытия/показа модулей в ЛК и мобиле</td></tr>
-      <tr><td><strong>Безопасность</strong></td><td><code>/admin/settings/lk/security/</code></td>
-        <td>16 ключей: метод авторизации, лимиты входа, требования к паролю, TTL сессии, 2FA, audit</td></tr>
-      <tr><td><strong>Мобильное</strong></td><td><code>/admin/settings/lk/mobile/</code></td>
-        <td>Android + iOS параллельно: текущая/мин. версия, force-update URLs, push-настройки, mobile features</td></tr>
-    </tbody>
-  </table>
-
-  <p>Сохранение настроек идёт через единый endpoint <code>POST /admin/settings/lk/save/</code>
-    с полем <code>_tab=</code> для определения какие ключи обновлять.
-    Все изменения пишутся в <code>AuditOperations</code> через <code>write_audit(table_name='LK_SETTINGS')</code>.
-    После сохранения 60-секундный кеш <code>lk_brand</code> context_processor инвалидируется автоматически.</p>
-
-  <h4 id="lk-admin-overview-logins">Последние входы и каналы</h4>
-  <p>На вкладке «Обзор» добавлены два аналитических блока:</p>
-  <ul>
-    <li><strong>Последние 10 входов в ЛК</strong> — таблица с колонками: время / логин / IP / канал
-      (Web/Android/iOS/прочие, цветной бейдж) / метод (пароль/VK/Telegram/JWT). Источник —
-      <code>AuditOperations</code> с <code>table_name='LK_LOGIN_SUCCESS'</code>. Кнопка «Все»
-      ведёт в полный <a href="/admin/reports/AuditOperations/?table_name=LK_LOGIN_SUCCESS">журнал аудита</a>.</li>
-    <li><strong>Круговая диаграмма каналов входа</strong> за 30 дней — Chart.js doughnut,
-      4 сегмента (Web/Android/iOS/прочие). Tooltip показывает абсолютное число и процент.
-      Под диаграммой — легенда с точными значениями. Если за 30 дней нет данных — empty-state.</li>
-  </ul>
-  <p>Audit-запись успешного входа создаётся во всех 4 точках авторизации:</p>
-  <ul>
-    <li><code>lk/views/auth.py::_record_successful_login()</code> — для пароля и Telegram</li>
-    <li><code>lk/views/oauth.py::vk_callback()</code> — для VK OAuth</li>
-    <li><code>mobile_api/views/auth.py::login_view()</code> — для Mobile JWT</li>
-  </ul>
-  <p>Канал определяется хелпером <code>_detect_lk_channel(user_agent)</code> по User-Agent:
-    UA <code>smit_billing_app/X.Y.Z</code> (мобильное приложение) → <code>android</code>
-    или <code>ios</code> в зависимости от платформенных маркеров; iPhone/iPad UA → <code>ios</code>;
-    Android browser → <code>android</code>; Mozilla/Chrome/Safari/Firefox/Edge → <code>web</code>;
-    иначе <code>unknown</code>.
-  </p>
-
-  <h4 id="lk-admin-branding">Брендинг</h4>
-  <p>На вкладке выводится <strong>read-only сводка из <code>CompanyBranding</code></strong>
-    (логотип, название, цвет, юр. реквизиты) с CTA-кнопкой
-    <strong>«Изменить брендинг компании»</strong> ведущей в общие настройки
-    <code>/admin/settings/system/?tab=branding</code>. Логотип/реквизиты не дублируются —
-    единая точка правды.</p>
-  <p>LK-overrides (9 полей):</p>
-  <ul>
-    <li><code>LK_BRAND_SHORT</code> — короткое имя бренда (для мобилы)</li>
-    <li><code>LK_SUPPORT_PHONE</code> / <code>LK_SUPPORT_EMAIL</code> / <code>LK_SUPPORT_URL</code> /
-      <code>LK_SUPPORT_HOURS</code> — контакты поддержки (если пусто, fallback к
-      <code>CompanyBranding.phone</code> / <code>email</code> / <code>website</code>)</li>
-    <li><code>LK_SOCIAL_VK</code> / <code>LK_SOCIAL_MAX</code> — соцсети
-      (<strong>только VK и MAX мессенджер</strong> — российские сервисы)</li>
-    <li><code>LK_USE_BRAND_COLORS</code> (toggle) — если выключено, использовать
-      <code>LK_PRIMARY_COLOR</code> (color picker) вместо <code>CompanyBranding.accent_color</code></li>
-    <li><strong>Способы входа:</strong>
-      <code>LK_AUTH_VK_ENABLED</code> и <code>LK_AUTH_TELEGRAM_ENABLED</code> — toggle для
-      кнопок «Войти через VK» / Telegram-widget на странице логина. Если выключены —
-      кнопки скрываются, а прямой переход на <code>/lk/auth/vk/</code> и Telegram-callback
-      возвращают «временно отключено».</li>
-    <li><strong>Фон страницы логина:</strong>
-      <code>LK_LOGIN_BG_DESKTOP</code> (1920×1080) и <code>LK_LOGIN_BG_MOBILE</code> (1080×1920) —
-      URL фоновых изображений. На экранах ≤768px используется mobile-вариант, если задан
-      (иначе — desktop). Поверх фона накладывается полупрозрачный белый/тёмный градиент
-      (35% / 45%) для контраста, в dark-mode градиент тёмнее.</li>
-    <li><strong>Frosted-glass card</strong>: <code>.login-card .card</code> получает
-      <code>backdrop-filter: blur(18px) saturate(180%)</code> + полупрозрачный фон
-      <code>rgba(255,255,255,.65)</code> + edge-light shadow. В dark-mode карточка
-      становится <code>rgba(28,30,36,.65)</code>. Для браузеров без поддержки
-      <code>backdrop-filter</code> применяется fallback с непрозрачным фоном через
-      <code>@supports</code>.</li>
-  </ul>
-  <p>В правой колонке — <strong>iframe-превью /lk/login/</strong> (sticky-top), перезагружается после
-    каждого save.</p>
-
-  <h4 id="lk-admin-features">Функции (feature flags)</h4>
-  <p>12 toggle-switches скрывают/показывают модули в ЛК и мобильном приложении:</p>
-  <ul>
-    <li><code>LK_FEATURE_IPTV</code>, <code>LK_FEATURE_CHAT_AI</code>,
-      <code>LK_FEATURE_VOLUNTARY_BLOCK</code>, <code>LK_FEATURE_PROMISE_PAY</code></li>
-    <li><code>LK_FEATURE_TARIFF_CHANGE</code>, <code>LK_FEATURE_SESSIONS_HISTORY</code>,
-      <code>LK_FEATURE_PAYMENT_HISTORY</code></li>
-    <li><code>LK_FEATURE_PAPER_INVOICE</code>, <code>LK_FEATURE_IPV6</code>,
-      <code>LK_FEATURE_SPEED_TEST</code></li>
-    <li><code>LK_FEATURE_REFERRAL</code>, <code>LK_FEATURE_BALANCE_HISTORY_CHART</code></li>
-  </ul>
-  <p>Применение мгновенное: <code>lk_features</code> context_processor (60-сек кеш) подставляет
-    флаги во все шаблоны ЛК. В sidebar пункты обёрнуты в
-    <code>{% if lk_features.X %}…{% endif %}</code>. Mobile API возвращает флаги в
-    <a href="#mobile-api-public"><code>GET /mobile-api/v1/features</code></a>.</p>
-
-  <p><strong>«Только Mobile» бейдж</strong>: 4 флага
-    (<code>LK_FEATURE_IPTV</code>, <code>LK_FEATURE_PAPER_INVOICE</code>,
-    <code>LK_FEATURE_IPV6</code>, <code>LK_FEATURE_BALANCE_HISTORY_CHART</code>) в текущей
-    версии веб-ЛК <em>не имеют читателей</em> в <code>lk/templates/lk/base.html</code> — они
-    реализованы только в Mobile App через <code>GET /mobile-api/v1/features</code>. В админке
-    эти 4 toggle отмечены синим бейджем «только Mobile» чтобы оператор не ожидал эффекта в
-    веб-кабинете. Если потребуется — добавить
-    <code>{% if lk_features.iptv %}…{% endif %}</code> блоки в шаблоны ЛК.</p>
-
-  <p><strong>Promise Pay management</strong> — 5 числовых ключей в Features tab,
-    реализуют политики доступности обещанного платежа в
-    <code>lk/views/promise_pay.py::_check_promise_pay_eligibility()</code>:</p>
-  <ul>
-    <li><code>LK_PROMISE_PAY_MIN_DEBT</code> (₽) — минимальная задолженность для активации.
-      <code>0</code> = ОП доступен при любом отрицательном балансе</li>
-    <li><code>LK_PROMISE_PAY_MAX_DURATION_DAYS</code> — override длительности из
-      <code>Usluga.end_count_days</code>. <code>0</code> = брать из услуги</li>
-    <li><code>LK_PROMISE_PAY_COOLDOWN_DAYS</code> — минимальный интервал между двумя ОП.
-      Считается от <code>promise_date_end</code> предыдущего ОП. <code>0</code> = без кулдауна</li>
-    <li><code>LK_PROMISE_PAY_MIN_AGE_DAYS</code> — минимальный возраст абонента
-      (<code>now() − create_date</code>). Защита от фрод-сценария «новый абонент
-      сразу активирует ОП и пропадает»</li>
-    <li><code>LK_PROMISE_PAY_MAX_LIMIT_OVERRIDE</code> (₽) — фиксированный максимальный лимит
-      ОП. <code>0</code> = берётся стоимость тарифа в месяц (динамически)</li>
-  </ul>
-  <p>При нарушении любой из политик возвращается понятное сообщение
-    («Между двумя обещанными платежами должно пройти 30 дней (подождите ещё 12 дн.)»),
-    и кнопка активации становится <code>disabled</code>.
-    Аналогичные проверки в <code>mobile_api/views/finance.py::promise_pay()</code> через
-    reuse того же хелпера — реакция API: HTTP 400 с
-    <code>{"detail": "...", "eligibility_error": "..."}</code>.</p>
-
-  <p><strong>Phantom-cleanup</strong>: из Security tab удалены 10 ключей которые
-    раньше отображались как настройки, но не имели читателя в коде:
-    <code>LK_AUTH_METHOD</code>, <code>LK_AUTH_OTP_LENGTH/_TTL_SECONDS</code>,
-    <code>LK_LOGIN_CAPTCHA_AFTER</code>, <code>LK_PASSWORD_HISTORY_CHECK</code>,
-    <code>LK_PASSWORD_EXPIRY_DAYS</code>, <code>LK_SESSION_TTL_MINUTES/_IDLE_LOGOUT/_SINGLE_DEVICE</code>,
-    <code>LK_TOTP_REQUIRED_FOR_PAYMENT_ABOVE</code>. Это были «фантомные» настройки —
-    UI создавал ощущение что они работают, на деле — нет. Будут добавлены обратно
-    вместе с реальной реализацией.</p>
-
-  <p><strong>Push-настройки</strong> — теперь подключены в
-    <code>billing/tasks/push_notifications.py</code>:</p>
-  <ul>
-    <li><code>MOBILE_PUSH_LOW_BALANCE_THRESHOLD</code> — порог в рублях для
-      <code>send_low_balance_alerts</code> (раньше был хардкод <code>100</code>)</li>
-    <li><code>MOBILE_PUSH_PROMISE_PAY_EXPIRE_HOURS</code> — окно «отправлять
-      предупреждение за N часов до истечения ОП» в
-      <code>send_promise_pay_expiring_alerts</code> (раньше — фиксированно «завтра»)</li>
-    <li><code>MOBILE_PUSH_QUIET_HOURS_START / _END</code> — пуши не уходят в этот период.
-      Корректно обрабатывается случай через полночь (22:00–08:00). Все three task
-      (low_balance / promise_expiring / send_to_abonent) уважают их</li>
-    <li><code>MOBILE_PUSH_MAX_PER_DAY</code> — счётчик пушей на абонента в Redis-кеше
-      (<code>push:daily:{ab_id}:{date}</code> с TTL 25h). При превышении — пуш не уходит,
-      пишется debug-лог. <code>0</code> = лимит отключён</li>
-  </ul>
-  <p>Срочные broadcast-уведомления (авария) могут передавать
-    <code>respect_quiet=False</code> и пройти через quiet-hours.
-    <code>send_push_to_abonent(force=True)</code> игнорирует и quiet-hours, и daily-limit.</p>
-
-  <h4 id="lk-admin-sprint-b">Sprint B — реализация legacy LK-флагов</h4>
-  <p>В 12 LK-настроек были мигрированы из <code>VpnConst</code> в <code>SystemSettings</code>,
-    но в коде ЛК ещё не подключены — на UI они отображались с warning-бейджем «будет реализовано».
-    В все они подключены и переведены в статус «работает».</p>
-
-  <table>
-    <thead><tr><th>Флаг</th><th>Где реализовано</th></tr></thead>
-    <tbody>
-      <tr><td><code>LK_SHOW_SERVICES</code></td><td>sidebar в <code>base.html</code> + новый раздел
-        <code>/lk/services/</code> (<code>lk/views/services.py</code>) с каталогом услуг и формами
-        connect/disconnect</td></tr>
-      <tr><td><code>LK_SHOW_AUDIT</code></td><td>sidebar в <code>base.html</code> + новый раздел
-        <code>/lk/audit/</code> — FinanceOperations за 12 мес с KPI поступления/списания</td></tr>
-      <tr><td><code>LK_SHOW_HELPDESK</code></td><td>условный show пункта «Поддержка» в sidebar</td></tr>
-      <tr><td><code>LK_SHOW_DETAILED_TRAFFIC</code></td><td><code>sessions.html</code>: переключение
-        между in/out (детально) и компактным total_bytes</td></tr>
-      <tr><td><code>LK_HIDE_TARIFF_SPEED</code></td><td><code>dashboard.html</code>: скрытие Мбит/с
-        в карточке тарифа</td></tr>
-      <tr><td><code>LK_HIDE_TARIFF_TAB</code></td><td>скрытие пункта «Тарифы» в sidebar (запрет смены)</td></tr>
-      <tr><td><code>LK_HIDE_PAYMENT_TAB</code></td><td>скрытие пунктов «Платежи» и «Оплатить» в sidebar</td></tr>
-      <tr><td><code>LK_ALLOW_MAC_CHANGE</code></td><td>card в <code>profile.html</code> + action
-        <code>change_mac</code> в <code>lk/views/profile.py</code> с валидацией формата
-        <code>AA:BB:CC:DD:EE:FF</code> и audit <code>LK_MAC_CHANGE</code></td></tr>
-      <tr><td><code>LK_TARIFF_REQUIRE_RANGE</code></td><td>фильтр в <code>lk/views/tariff.py</code>:
-        при смене тарифа предлагаются только тарифы с тем же <code>usluga_range_type_id</code></td></tr>
-      <tr><td><code>LK_REQUIRE_SAME_IP</code></td><td><code>LkAuthMiddleware</code> сохраняет IP
-        в <code>session['lk_login_ip']</code> при логине и завершает сессию при смене IP
-        (с redirect на <code>/lk/login/</code>)</td></tr>
-      <tr><td><code>LK_AUTOLOGIN_BY_IP</code></td><td><code>LkAuthMiddleware</code>: если пользователь
-        не залогинен и ровно один <code>Users</code> с <code>ip=client_ip</code> и
-        <code>enabled=True</code> — автоматический вход. Public-paths
-        (<code>/lk/login</code>, <code>/lk/auth/</code>, webhook'и) исключены. Audit
-        <code>LK_LOGIN_SUCCESS</code> с <code>method=autologin_ip</code></td></tr>
-      <tr><td><code>LK_DISABLE_PASSWORD_CHANGE</code></td><td><code>change_password()</code>
-        возвращает redirect с error на dashboard; пункт «Сменить пароль» скрыт в sidebar</td></tr>
-    </tbody>
-  </table>
-
-  <h5 id="lk-admin-services">Раздел «Услуги абонента» (<code>/lk/services/</code>)</h5>
-  <p>Новый раздел в ЛК для управления подключёнными услугами. Использует 5 ранее не
-    подключённых полей <code>Usluga</code>:</p>
-  <ul>
-    <li><code>is_show_web</code> — фильтр каталога доступных услуг</li>
-    <li><code>web_check_overlimit</code> — проверка баланса перед подключением</li>
-    <li><code>web_allow_disable</code> — кнопка «Отключить» в списке подключённых</li>
-    <li><code>allow_off_month_web</code> — минимальный срок (мес.) до возможности отключения
-      (используется <code>dateutil.relativedelta</code>)</li>
-    <li><code>zakaz_msg</code> — сообщение во flash-нотификации после успешного подключения
-      (если пусто — дефолт «Услуга подключена»)</li>
-  </ul>
-  <p>Audit <code>LK_SERVICE_CONNECT</code> и <code>LK_SERVICE_DISCONNECT</code> при каждой
-    операции. Excludes услуг с <code>system_type=11</code> (это обещанный платёж — управляется
-    отдельно).</p>
-
-  <p><strong>Legacy LK-настройки (мигрированы, реализованы)</strong> —
-    9 toggle, отображаются ниже основных feature-toggle во вкладке «Функции»:</p>
-  <ul>
-    <li><strong>Видимость разделов в ЛК</strong>: <code>LK_SHOW_SERVICES</code>,
-      <code>LK_SHOW_AUDIT</code>, <code>LK_SHOW_HELPDESK</code>,
-      <code>LK_SHOW_DETAILED_TRAFFIC</code> — показывать раздел Услуги / История операций /
-      Help Desk / детальный трафик соответственно</li>
-    <li><strong>Скрыть в ЛК</strong>: <code>LK_HIDE_TARIFF_SPEED</code> (скорость в карточке
-      тарифа), <code>LK_HIDE_TARIFF_TAB</code> (вкладка «Тариф» — запрет смены тарифа),
-      <code>LK_HIDE_PAYMENT_TAB</code> (вкладка «Оплата» — для систем со сторонней оплатой)</li>
-    <li><strong>Поведение тарифов и услуг</strong>: <code>LK_ALLOW_MAC_CHANGE</code>
-      (разрешить абоненту менять MAC-адрес через ЛК),
-      <code>LK_TARIFF_REQUIRE_RANGE</code> (предлагать только тарифы из той же линейки услуг)</li>
-    <li><strong>Уведомления</strong>: <code>LK_HELPDESK_NOTIFY_GROUP_ID</code> (целое число —
-      ID Django-группы получателей уведомлений о новых заявках Help Desk; <code>0</code> = отключить)</li>
-  </ul>
-
-  <h4 id="lk-admin-security">Безопасность</h4>
-  <p>16 настроек на 4 секции:</p>
-  <ul>
-    <li><strong>Метод авторизации</strong>: <code>auto</code> / <code>contract+phone</code> /
-      <code>email+password</code> / <code>phone+sms_otp</code> + длина OTP + TTL OTP</li>
-    <li><strong>Защита от перебора</strong>: <code>LK_LOGIN_MAX_ATTEMPTS</code> (default 5),
-      <code>LK_LOGIN_LOCKOUT_MINUTES</code> (default 15),
-      <code>LK_LOGIN_CAPTCHA_AFTER</code></li>
-    <li><strong>Пароль абонента</strong>: <code>LK_PASSWORD_MIN_LENGTH</code>,
-      <code>LK_PASSWORD_REQUIRE_DIGIT</code>, <code>LK_PASSWORD_REQUIRE_LETTER</code>,
-      <code>LK_PASSWORD_REQUIRE_SPECIAL</code>, <code>LK_PASSWORD_HISTORY_CHECK</code>,
-      <code>LK_PASSWORD_EXPIRY_DAYS</code></li>
-    <li><strong>Сессия ЛК</strong>: <code>LK_SESSION_TTL_MINUTES</code> (default 14 дней),
-      idle logout, single-device toggle</li>
-    <li><strong>2FA + audit</strong>: <code>LK_TOTP_REQUIRED_FOR_PAYMENT_ABOVE</code> (порог в ₽),
-      <code>LK_AUDIT_LOGIN_FAILURES</code>, <code>LK_AUDIT_PASSWORD_CHANGES</code></li>
-  </ul>
-  <p><strong>Lockout фактически работает</strong> в <code>lk/views/auth.py::login_view</code>: per-login + per-IP keying в Redis-cache, окно отслеживания =
-    lockout_minutes × 2. После исчерпания попыток — все логины с этого IP+login получают
-    «Слишком много неудачных попыток. Попробуйте через N мин», audit-запись
-    <code>LK_LOGIN_LOCKOUT</code>.</p>
-
-  <p><strong>Legacy LK-настройки безопасности</strong> — 3 дополнительных
-    переключателя, мигрированы из старого раздела «Настройки системы»:</p>
-  <ul>
-    <li><code>LK_REQUIRE_SAME_IP</code> — после входа доступ в ЛК разрешён только с того же
-      IP-адреса. Если абонент сменил сеть — сессия закроется. Только для локальных сетей</li>
-    <li><code>LK_AUTOLOGIN_BY_IP</code> — автоматический вход в ЛК по IP-адресу без логина и
-      пароля. Только для доверенных сегментов сети</li>
-    <li><code>LK_DISABLE_PASSWORD_CHANGE</code> — раздел «Сменить пароль» в ЛК скрыт.
-      Используется когда пароли управляются администратором</li>
-  </ul>
-
-  <h4 id="lk-admin-mobile">Мобильное (Android + iOS, force-update)</h4>
-  <p>Двухколоночный layout: <strong>Android</strong> | <strong>iOS</strong>. Параллельные настройки:</p>
-  <ul>
-    <li><code>MOBILE_ANDROID_CURRENT_VERSION</code> / <code>MOBILE_ANDROID_MIN_VERSION</code>
-      / <code>MOBILE_FORCE_UPDATE_URL_ANDROID</code></li>
-    <li><code>MOBILE_IOS_CURRENT_VERSION</code> / <code>MOBILE_IOS_MIN_VERSION</code>
-      / <code>MOBILE_FORCE_UPDATE_URL_IOS</code></li>
-    <li><code>MOBILE_IOS_DISTRIBUTION</code> — переключатель
-      <code>testflight</code> ↔ <code>appstore</code>. После релиза приложения в App Store
-      оператор переключает в UI без деплоя — Mobile API сам начнёт отдавать App Store URL.</li>
-  </ul>
-  <p>Общие настройки (применяются к обеим платформам):</p>
-  <ul>
-    <li>Тексты диалогов force/soft-update</li>
-    <li>Push: <code>MOBILE_PUSH_LOW_BALANCE_THRESHOLD</code>,
-      <code>MOBILE_PUSH_PROMISE_PAY_EXPIRE_HOURS</code>,
-      <code>MOBILE_PUSH_QUIET_HOURS_START/END</code>,
-      <code>MOBILE_PUSH_MAX_PER_DAY</code></li>
-    <li>Mobile features: <code>MOBILE_BIOMETRY_ENABLED</code> (Touch ID / Face ID),
-      <code>MOBILE_OFFLINE_MODE</code>, <code>MOBILE_DARK_THEME_DEFAULT</code></li>
-  </ul>
-  <p>На вкладке есть тест-кнопка <strong>«Превью force-update»</strong> —
-    <code>POST /admin/settings/lk/mobile/preview_force_update/</code>
-    принимает <code>platform=android|ios&amp;version=X.Y.Z</code> и показывает
-    JSON-ответ как для мобилки. Удобно проверить что
-    <code>must_update=true</code> срабатывает для нужных версий.</p>
-
-  <h3 id="lk-auth">Авторизация</h3>
-  <p>Поддерживается три способа входа:</p>
-  <img src="../img/section_lk_login.png" alt="Страница входа в ЛК" class="screenshot">
-
-  <ul>
-    <li><strong>Логин / пароль</strong> — из поля <code>LOGIN</code> / <code>PSW</code> таблицы Users биллинга</li>
-    <li><strong>Telegram OAuth</strong> — кнопка «Войти через Telegram» (Telegram Login Widget). Требует привязанного <code>telegram_chat_id</code> или первичной авторизации через бот</li>
-    <li><strong>VK OAuth</strong> — вход через аккаунт ВКонтакте (требует настройки VK App)</li>
-  </ul>
-  <p>Telegram Login Widget требует регистрации домена в BotFather: <code>/setdomain</code> → укажите домен сайта (например, <code>billing.example.com</code>).</p>
-
-  <h3 id="lk-settings">Настройки интеграций</h3>
-  <p>Все параметры интеграций настраиваются через <strong>панель управления</strong> без необходимости редактирования файлов.</p>
-
-  <p>Настройки хранятся в базе данных (таблица <code>system_settings</code>) с Redis-кэшированием (5 мин). Изменения применяются <strong>мгновенно</strong> без перезапуска сервера.</p>
-
-  <h4>Страницы настроек</h4>
-  <table>
-    <thead><tr><th>Раздел</th><th>URL</th><th>Параметры</th></tr></thead>
-    <tbody>
-      <tr><td>Telegram</td><td><code>/admin/settings/integrations/?tab=telegram</code></td><td>Bot token, username, webhook secret</td></tr>
-      <tr><td>VK</td><td><code>/admin/settings/integrations/?tab=vk</code></td><td>App ID, secret key, community token</td></tr>
-      <tr><td>HelpDesk</td><td>Раздел «Настройки → Интеграции → HelpDesk»</td><td>URL HelpDesk, API-ключ, mailbox по умолчанию</td></tr>
-      <tr><td>AIDA AI</td><td><code>/admin/settings/integrations/?tab=aida</code></td><td>URL, API key, LK/Mobile/Monitor toggles</td></tr>
-      <tr><td>TVIP Media</td><td><code>/admin/settings/integrations/?tab=tvip</code></td><td>URL, login/password, provider ID</td></tr>
-      <tr><td>LFStream</td><td><code>/admin/settings/integrations/?tab=lfstream</code></td><td>URL, login/password</td></tr>
-      <tr><td>Платежи</td><td><code>/admin/settings/payment/</code></td><td>YooKassa/W1 credentials, commission</td></tr>
-      <tr><td>Email/SMS</td><td><code>/admin/settings/messaging/</code></td><td>SMTP, SMSAero, sender name</td></tr>
-      <tr><td>Firebase</td><td><code>/admin/settings/messaging/?tab=firebase</code></td><td>Firebase credentials path</td></tr>
-      <tr><td>IPTV-пакеты</td><td><code>/admin/settings/iptv_mappings/</code></td><td>Маппинг услуг на ТВ-пакеты</td></tr>
-      <tr><td><strong>API Адреса</strong></td><td><code>/admin/settings/integrations/?tab=address_api</code></td><td>Публичный API автоподсказок и проверки покрытия</td></tr>
-    </tbody>
-  </table>
-
-  <h4 id="address-api">API проверки адреса</h4>
-  <p>Публичный API для сайта провайдера &mdash; автоподсказки адресов и проверка возможности подключения. Не требует авторизации, поддерживает CORS.</p>
-  <ul>
-    <li><code>GET /api/address/suggest/?q=Ленина</code> &mdash; возвращает до 15 совпадений из базы адресов</li>
-    <li><code>GET /api/address/check/?id=855</code> или <code>?q=текст</code> &mdash; проверка покрытия: <code>connected</code> / <code>coverage</code> / <code>unknown</code></li>
-  </ul>
-  <p>Настройки: вкладка <strong>API Адреса</strong> на странице интеграций. Включает: лимит результатов, разрешённые домены CORS, настройки AI-ассистента для автоматической проверки адресов.</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/screenshots/0408_address_api_settings.png" alt="Настройки API адресов" style="max-width:100%;border-radius:8px;border:1px solid #dee2e6;margin:12px 0">
-  <p>JS-виджет для подключения на сайте: <code>/static/js/address_widget.js</code>. Подробная документация: <strong>Разработка &rarr; Документация &rarr; API адреса интеграция</strong>.</p>
-
-  <h4>Миграция с .env</h4>
-  <p>При обновлении с предыдущей версии выполните одноразовый перенос настроек из <code>.env</code> в базу данных:</p>
-  <pre><code>docker compose exec web python manage.py migrate_env_to_db</code></pre>
-  <p>Команда безопасна для повторного запуска — создаёт только отсутствующие ключи.</p>
-
-  <div class="info-box">
-    Инфраструктурные параметры (<code>DB_*</code>, <code>REDIS_URL</code>, <code>SECRET_KEY</code>, <code>DEBUG</code>) по-прежнему задаются в <code>.env</code> файле. В панель вынесены только настройки интеграций и платежей.
-  </div>
-
-  <h3 id="lk-telegram">Telegram-бот для уведомлений</h3>
-  <p>Бот используется для двух целей: OAuth-авторизация в ЛК и push-уведомления абоненту (списание, пополнение, блокировка).</p>
-  <img src="../img/section_telegram_bot.png" alt="Telegram-бот настройки" class="screenshot">
-
-
-  <p><strong>Создание бота:</strong></p>
-  <ol>
-    <li>Написать <code>@BotFather</code> в Telegram</li>
-    <li><code>/newbot</code> — создать бота, получить токен</li>
-    <li><code>/setdomain</code> → указать домен сайта (для Login Widget)</li>
-    <li>Прописать токен в <strong>Настройки &rarr; Интеграции &rarr; Telegram</strong></li>
-  </ol>
-
-  <p><strong>Регистрация вебхука:</strong></p>
-  <pre><code>docker compose exec web python manage.py setup_telegram_webhook \
-  --url https://billing.example.com/lk/telegram/webhook/
-
-# Проверка:
-docker compose exec web python manage.py setup_telegram_webhook --info</code></pre>
-
-  <p><strong>Как абонент привязывает Telegram:</strong></p>
-  <ol>
-    <li>В ЛК → Профиль → блок «Уведомления в Telegram» → кнопка «Привязать»</li>
-    <li>ЛК генерирует одноразовый токен (действует 10 минут) и показывает ссылку вида <code>https://t.me/BotName?start=TOKEN</code></li>
-    <li>Абонент переходит в бот, отправляет <code>/start TOKEN</code></li>
-    <li>Бот сохраняет <code>telegram_chat_id</code> в профиль абонента</li>
-    <li>После привязки уведомления отправляются автоматически через Celery-задачи</li>
-  </ol>
-
-  <div class="info-box">
-    <strong>Важно:</strong> Один бот — один вебхук. Если тот же бот используется в HelpDesk — необходимо создать отдельного бота специально для биллинга.
-  </div>
-
-  <h3 id="telegram-admin-bot">Telegram-бот для операторов (admin bot)</h3>
-  <p>Отдельный бот для технического персонала оператора. Позволяет управлять абонентами, мониторить NAS и выполнять экстренные операции прямо из Telegram — без доступа к веб-интерфейсу.</p>
-
-  <div class="info-box">
-    <strong>Безопасность:</strong> Все команды доступны <strong>только</strong> пользователям из списка <em>Администраторы бота (Telegram user IDs)</em>. Настройка: <strong>Настройки → Интеграции → Telegram</strong>.
-  </div>
-
-  <h4>Настройка</h4>
-  <ol>
-    <li>Создать бота через <code>@BotFather</code> → <code>/newbot</code></li>
-    <li>Прописать токен в <strong>Настройки → Интеграции → Telegram</strong></li>
-    <li>Добавить администратора в блок <em>Администраторы бота</em> — по Telegram ID или @username. Бот отобразит аватарку, имя и ссылку на профиль</li>
-    <li>Указать Chat ID и Thread ID (топик) супергруппы для алармов</li>
-    <li>Зарегистрировать webhook кнопкой «Зарег. webhook» или командой:<br>
-      <code>docker compose exec web python manage.py setup_telegram_webhook --url https://yourdomain.ru/lk/telegram/webhook/</code></li>
-  </ol>
-
-  <h4>Команды диагностики</h4>
-  <table>
-    <thead><tr><th style="width:35%">Команда</th><th>Описание</th></tr></thead>
-    <tbody>
-      <tr><td><code>/billdiag</code></td><td>Полный диагностический отчёт: состояние сервисов (PostgreSQL, Redis, FreeRADIUS, Celery), метрики БД (размер, соединения, медленные запросы), NAS (онлайн/оффлайн), абоненты (активные, RADIUS-ready, онлайн)</td></tr>
-      <tr><td><code>/stats</code></td><td>Сводная статистика: всего абонентов, активных, онлайн, тарифов, NAS, должников</td></tr>
-      <tr><td><code>/debtors</code></td><td>Должники: количество абонентов с отрицательным балансом и суммарный долг</td></tr>
-      <tr><td><code>/revenue [today|week|month]</code></td><td>Выручка за период (сумма входящих платежей). Без параметра — за текущий месяц</td></tr>
-    </tbody>
-  </table>
-
-  <h4>Управление абонентами</h4>
-  <table>
-    <thead><tr><th style="width:35%">Команда</th><th>Описание</th></tr></thead>
-    <tbody>
-      <tr><td><code>/find &lt;запрос&gt;</code></td><td>Поиск абонента по имени, логину, номеру договора или IP-адресу. Возвращает до 5 результатов с ID, именем, балансом и статусом</td></tr>
-      <tr><td><code>/balance &lt;id&gt;</code></td><td>Детальная карточка абонента: баланс, тариф, статус (активен/заблокирован), логин, IP</td></tr>
-      <tr><td><code>/block &lt;id&gt; [причина]</code></td><td>Заблокировать абонента (устанавливает флаг <code>b_admin</code>). Причина блокировки сохраняется в комментарии</td></tr>
-      <tr><td><code>/unblock &lt;id&gt;</code></td><td>Разблокировать абонента (снимает все административные блокировки)</td></tr>
-      <tr><td><code>/disconnect &lt;id&gt;</code></td><td>Принудительно отключить активную сессию абонента: сначала через RADIUS CoA Disconnect-Request, при неудаче — через SSH (для MikroTik)</td></tr>
-      <tr><td><code>/pay &lt;id&gt; &lt;сумма&gt;</code></td><td>Зачислить платёж на счёт абонента. Создаёт запись в <code>FinanceOperations</code> и обновляет баланс</td></tr>
-    </tbody>
-  </table>
-
-  <h4>Мониторинг NAS / Сеть</h4>
-  <table>
-    <thead><tr><th style="width:35%">Команда</th><th>Описание</th></tr></thead>
-    <tbody>
-      <tr><td><code>/nas</code></td><td>Список всех NAS с IP-адресами и количеством онлайн-абонентов из биллинга (<code>USERS_RADIUSAUTH</code>)</td></tr>
-      <tr><td><code>/sessions &lt;nas_id&gt;</code></td><td>Активные PPPoE сессии на конкретном NAS (через SSH или MikroTik API): логин, IP, uptime</td></tr>
-      <tr><td><code>/sync &lt;nas_id&gt;</code></td><td>Принудительная синхронизация сессий NAS ↔ биллинг: сравнивает онлайн-пользователей, отключает «призраков», обновляет статусы</td></tr>
-    </tbody>
-  </table>
-
-  <h4>Экстренные операции</h4>
-  <table>
-    <thead><tr><th style="width:35%">Команда</th><th>Описание</th></tr></thead>
-    <tbody>
-      <tr><td><code>/logs &lt;service&gt; [N]</code></td><td>Последние N строк лога контейнера. Сервисы: <code>web</code>, <code>celery</code>, <code>radius</code>, <code>beat</code>, <code>db</code>. По умолчанию 20 строк</td></tr>
-      <tr><td><code>/restart radius</code></td><td>Перезапуск контейнера <code>app-freeradius-1</code> (регенерация <code>clients.conf</code> из таблицы NAS)</td></tr>
-      <tr><td><code>/restart celery</code></td><td>Перезапуск Celery workers (<code>app-celery-1</code>)</td></tr>
-      <tr><td><code>/broadcast "&lt;текст&gt;"</code></td><td>Массовая рассылка сообщения всем активным абонентам через все доступные каналы (SMS, Email, Telegram)</td></tr>
-    </tbody>
-  </table>
-
-  <h4>Алармы (автоматические уведомления)</h4>
-  <p>Система автоматически отправляет алармы в супергруппу (Chat ID + Thread ID) при следующих событиях:</p>
-  <table>
-    <thead><tr><th>Событие</th><th>Триггер</th><th>Настройка</th></tr></thead>
-    <tbody>
-      <tr><td>NAS offline</td><td>NAS не отвечает на ping (TCP-connect)</td><td><em>NAS offline</em> ✓</td></tr>
-      <tr><td>RADIUS ошибка</td><td>Исключение в <code>authorize()</code> или <code>accounting()</code></td><td><em>RADIUS</em> ✓</td></tr>
-      <tr><td>Медленные запросы БД</td><td>PostgreSQL: запрос выполняется &gt;10 сек</td><td><em>SQL</em> ✓</td></tr>
-      <tr><td>Сервис упал</td><td>PostgreSQL / Redis недоступны</td><td><em>Сервисы</em> ✓</td></tr>
-      <tr><td>Проблемы синхронизации</td><td>Много «призраков» или рассинхрон &gt;порога</td><td><em>NAS sync</em> ✓</td></tr>
-    </tbody>
-  </table>
-
-  <h4>Уведомления о документах разработки</h4>
-  <p>Бот автоматически отправляет уведомления в настроенные чаты при появлении новых <code>.md</code>-файлов в папке <code>dev_reports/</code>. Настройка выполняется в <strong>Настройки → Интеграции → Telegram</strong> (<code>/admin/settings/integrations/?tab=telegram</code>):</p>
-  <ul>
-    <li><strong>Per-chat</strong> — для каждого чата (супергруппа или личный чат) можно включить/выключить уведомления о документах</li>
-    <li><strong>Per-folder</strong> — выбор папок (Документация, Отчёты, Планы, пользовательские), о новых файлах в которых будет приходить уведомление</li>
-    <li><strong>Ответы на комментарии</strong> — если у пользователя привязан <code>telegram_chat_id</code>, он получит уведомление в личный Telegram при ответе на его комментарий в разделе <a href="#dev-reports">Разработка и логи</a></li>
-  </ul>
-
-  <h4>Прокси для Telegram</h4>
-  <p>Если сервер находится в России, прямой доступ к <code>api.telegram.org</code> может быть заблокирован. Настройте SOCKS5-прокси в <strong>Настройки → Интеграции → Telegram → Прокси</strong>. Система использует <code>socks5h</code> (DNS через прокси) для корректной работы.</p>
-  <pre><code># Проверка прокси вручную
-curl -x socks5h://user:pass@proxy_host:port https://api.telegram.org</code></pre>
-
-  <h3 id="lk-payments">Оплата через YooKassa</h3>
-  <p>Абоненты могут пополнять счёт банковской картой через YooKassa (бывший ЮMoney Business). Оплата доступна из личного кабинета на сайте и из мобильного приложения.</p>
-
-  <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;margin:16px 0">
-    <img src="../img/new_lk_pay.png" alt="Оплата через ЮKassa в ЛК" class="screenshot" style="max-width:500px">
-    <img src="../img/new_lk_mobile_payments.png" alt="Платежи — мобильная версия" class="screenshot" style="max-width:200px;border-radius:16px;border:1px solid #dee2e6">
-  </div>
-
-  <h4>Поддерживаемые протоколы</h4>
-  <p>Система автоматически определяет протокол по формату секретного ключа:</p>
-  <table>
-    <thead><tr><th>Протокол</th><th>Формат ключа</th><th>Описание</th></tr></thead>
-    <tbody>
-      <tr><td><strong>REST API v3</strong> (рекомендуется)</td><td>Начинается с <code>live_</code> или <code>test_</code></td><td>Современный протокол. Создание платежа через JSON API, webhook — JSON.</td></tr>
-      <tr><td><strong>HTTP-протокол</strong> (старый)</td><td>Любой другой (например, <code>SmitSecretKey</code>)</td><td>Старый Yandex.Kassa. Форма POST на <code>yoomoney.ru/eshop.xml</code>, webhook — XML с MD5.</td></tr>
-    </tbody>
-  </table>
-
-  <h4>Настройка через админ-панель</h4>
-  <p>Перейдите в <strong>Настройки → Настройки ЮKassa</strong> (<code>/admin/settings/payment/</code>). На странице можно:</p>
-  <ul>
-    <li>Указать <code>shopId</code>, <code>scid</code> и секретный ключ</li>
-    <li>Задать URL-ы возврата после оплаты (shopSuccessURL, shopFailURL)</li>
-    <li>Скопировать webhook-адрес для настройки в кабинете ЮKassa</li>
-    <li>Проверить подключение кнопкой «Проверить подключение»</li>
-  </ul>
-
-  <h4 id="lk-payments-setup">Настройка вручную через .env</h4>
-  <p>Переменные окружения для YooKassa:</p>
-  <table>
-    <thead><tr><th>Переменная</th><th>Описание</th><th>Пример</th></tr></thead>
-    <tbody>
-      <tr><td><code>LK_YOOKASSA_SHOP_ID</code></td><td>ID магазина</td><td><code>267304</code></td></tr>
-      <tr><td><code>LK_YOOKASSA_SECRET_KEY</code></td><td>Секретный ключ (REST API v3) или shopPassword (HTTP)</td><td><code>live_ABC...</code> или <code>SmitSecretKey</code></td></tr>
-      <tr><td><code>LK_YOOKASSA_SCID</code></td><td>Номер витрины (только HTTP-протокол)</td><td><code>2487841</code></td></tr>
-      <tr><td><code>LK_YOOKASSA_SUCCESS_URL</code></td><td>URL после успешной оплаты</td><td><code>https://billing.example.com/lk/payments/result/</code></td></tr>
-      <tr><td><code>LK_YOOKASSA_FAIL_URL</code></td><td>URL при ошибке оплаты</td><td><code>https://billing.example.com/lk/payments/result/?status=failure</code></td></tr>
-    </tbody>
-  </table>
-
-  <h4>Webhook (уведомления об оплате)</h4>
-  <p>В настройках магазина ЮKassa укажите URL для уведомлений:</p>
-  <pre><code># Для обоих протоколов (checkUrl, avisoUrl, HTTP-уведомления):
-https://billing.example.com/lk/payments/webhook/</code></pre>
-
-  <p>Webhook обрабатывает:</p>
-  <ul>
-    <li><strong>HTTP-протокол:</strong> <code>checkOrder</code> (проверка заказа) и <code>paymentAviso</code> (зачисление). Ответ — XML с MD5-подписью.</li>
-    <li><strong>REST API v3:</strong> JSON-уведомление <code>payment.succeeded</code>. Зачисление по <code>metadata.abonent_id</code>.</li>
-  </ul>
-
-  <h4>Как работает зачисление</h4>
-  <ol>
-    <li>ЮKassa отправляет POST на webhook</li>
-    <li>Система проверяет подпись (MD5 или JSON)</li>
-    <li>Находит абонента по <code>customerNumber</code> / <code>metadata.abonent_id</code></li>
-    <li>Увеличивает баланс (<code>account.ostatok</code>)</li>
-    <li>Создаёт запись в истории операций: «Онлайн-оплата (YooKassa)»</li>
-  </ol>
-
-  <div class="info-box">
-    <strong>Важно:</strong> После смены домена или сервера необходимо обновить checkUrl / avisoUrl в кабинете ЮKassa — иначе уведомления об оплате не будут приходить и зачисление не произойдёт.
-  </div>
-
-  <h3 id="lk-mobile-app">Мобильное приложение</h3>
-  <p>Android-приложение «СмИТ Биллинг» для абонентов. Работает через Mobile API (<code>/mobile-api/v1/</code>).</p>
-
-  <h4>Возможности приложения</h4>
-  <ul>
-    <li><strong>Главная</strong> — баланс, тариф, уведомление от оператора, последний платёж, статус блокировки</li>
-    <li><strong>Финансы</strong> — история операций (фильтр по периоду), итоги (приход/расход), обещанный платёж, оплата через ЮKassa</li>
-    <li><strong>Поддержка</strong> — список обращений (активные/закрытые), создание нового тикета через HelpDesk</li>
-    <li><strong>Профиль</strong> — контактные данные, привязка VK/Telegram, выход</li>
-  </ul>
-
-  <h4>Оплата в приложении</h4>
-  <p>При нажатии «Пополнить» приложение вызывает <code>POST /mobile-api/v1/finance/pay</code>. Ответ содержит URL платёжной страницы — приложение открывает его в браузере. После оплаты баланс обновляется автоматически.</p>
-
-  <h4 id="mobile-api-endpoints">Mobile API</h4>
-  <p>Авторизация: JWT (simplejwt). Эндпоинты:</p>
-  <table>
-    <thead><tr><th>Метод</th><th>URL</th><th>Описание</th></tr></thead>
-    <tbody>
-      <tr><td>POST</td><td><code>/mobile-api/v1/auth/login</code></td><td>Авторизация (contract + password → JWT)</td></tr>
-      <tr><td>POST</td><td><code>/mobile-api/v1/auth/refresh</code></td><td>Обновление токена</td></tr>
-      <tr><td>GET</td><td><code>/mobile-api/v1/account/status</code></td><td>Баланс, тариф, блокировки, уведомление, последний платёж</td></tr>
-      <tr><td>GET</td><td><code>/mobile-api/v1/account/tariffs</code></td><td>Доступные тарифы</td></tr>
-      <tr><td>POST</td><td><code>/mobile-api/v1/account/tariff</code></td><td>Смена тарифа</td></tr>
-      <tr><td>GET</td><td><code>/mobile-api/v1/finance/history</code></td><td>История платежей (фильтр, пагинация)</td></tr>
-      <tr><td>POST</td><td><code>/mobile-api/v1/finance/pay</code></td><td>Создание платежа (YooKassa)</td></tr>
-      <tr><td>GET/POST/DELETE</td><td><code>/mobile-api/v1/finance/promise_pay</code></td><td>Обещанный платёж</td></tr>
-      <tr><td>GET/POST</td><td><code>/mobile-api/v1/support/tickets</code></td><td>Тикеты (список + создание)</td></tr>
-      <tr><td>POST</td><td><code>/mobile-api/v1/push/register</code></td><td>Регистрация FCM/APNS токена</td></tr>
-    </tbody>
-  </table>
-
-  <h4 id="mobile-api-public">Public Mobile API</h4>
-  <p>Три новых публичных эндпоинта <strong>без auth</strong> для конфига приложения при старте.
-    Кэшируются на стороне клиента 5 мин (Cache-Control header).</p>
-  <table>
-    <thead><tr><th>Метод</th><th>URL</th><th>Описание</th></tr></thead>
-    <tbody>
-      <tr><td>GET</td><td><code>/mobile-api/v1/branding</code></td>
-        <td>Снимок брендинга: logo, colors, name, support contacts, social (VK/MAX), legal (ИНН/КПП/адрес).
-            Источник: <code>CompanyBranding</code> + LK-overrides.</td></tr>
-      <tr><td>GET</td><td><code>/mobile-api/v1/features</code></td>
-        <td>Feature flags (12 LK + 3 mobile-only): iptv, chat_ai, voluntary_block, promise_pay,
-            tariff_change, sessions_history, payment_history, paper_invoice, ipv6, speed_test,
-            referral, balance_history_chart, biometry, offline_mode, dark_theme_default.</td></tr>
-      <tr><td>GET</td><td><code>/mobile-api/v1/version/check?platform=android|ios&amp;version=X.Y.Z</code></td>
-        <td>Force/soft-update check. Возвращает <code>must_update</code>, <code>should_update</code>,
-            <code>store_url</code>, <code>title</code>, <code>text</code>. Для iOS дополнительно
-            <code>distribution: testflight|appstore</code>.</td></tr>
-    </tbody>
-  </table>
-  <p>Эти endpoints вызываются Flutter-приложением при старте, чтобы:</p>
-  <ol>
-    <li>Применить актуальный <code>primary_color</code> к Theme</li>
-    <li>Обновить контакты поддержки в Profile-tab без релиза приложения</li>
-    <li>Скрыть/показать табы по feature flags</li>
-    <li>Показать force-update диалог если установленная версия &lt; min</li>
-  </ol>
-
-  <h4 id="mobile-force-update">Force-update механизм</h4>
-  <p>При запуске Flutter-приложения вызывает <code>GET /mobile-api/v1/version/check</code>:</p>
-  <ul>
-    <li><code>must_update=true</code> — установленная версия &lt;
-      <code>MOBILE_{ANDROID|IOS}_MIN_VERSION</code>. Показывается blocking-диалог
-      «Требуется обновление» (текст из <code>MOBILE_FORCE_UPDATE_TITLE</code> +
-      <code>MOBILE_FORCE_UPDATE_TEXT</code>) с CTA в стор.
-      Пользователь не может пользоваться приложением до обновления.</li>
-    <li><code>should_update=true</code> — версия старше N дней (из
-      <code>MOBILE_SOFT_UPDATE_THRESHOLD_DAYS</code>) или &lt; current. Показывается
-      non-blocking баннер «Доступна новая версия» с кнопками «Обновить»/«Позже».</li>
-    <li>Иначе — current = installed, обновлять не нужно.</li>
-  </ul>
-  <p>Семвер-сравнение делается через split('.') и числовой compare. Robust к мусорным значениям —
-    при ошибках возвращает <code>[0,0,0]</code>.</p>
-
-  <h4 id="mobile-ios-distribution">iOS: TestFlight ↔ App Store</h4>
-  <p>iOS-приложение проходит несколько стадий релиза:</p>
-  <ol>
-    <li><strong>TestFlight (beta)</strong>: пока приложение не в App Store —
-      <code>MOBILE_FORCE_UPDATE_URL_IOS</code> ведёт на <code>testflight.apple.com/join/...</code>,
-      <code>MOBILE_IOS_DISTRIBUTION=testflight</code>. На вкладке Мобильное жёлтый бейдж «TestFlight (beta)».</li>
-    <li><strong>App Store (production)</strong>: после релиза оператор:
-      <ul>
-        <li>Меняет URL на <code>https://apps.apple.com/app/...</code></li>
-        <li>Переключает <code>MOBILE_IOS_DISTRIBUTION</code> на <code>appstore</code></li>
-        <li>Вкладка показывает зелёный бейдж «App Store (production)»</li>
-      </ul>
-    </li>
-  </ol>
-  <p>Никакой пересборки биллинга не требуется. Mobile API сразу начинает отдавать новую информацию,
-    Flutter-клиенты подхватывают её при следующем <code>version/check</code> запросе.</p>
-
-  <h3 id="lk-support">Поддержка через HelpDesk</h3>
-  <p>Абоненты могут создавать обращения и переписываться с операторами прямо из ЛК. Для работы требуется настроенная интеграция с HelpDesk (см. раздел 4.3).</p>
-
-  <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;margin:16px 0">
-    <img src="../img/new_lk_support.png" alt="Поддержка — Открытые обращения" class="screenshot" style="max-width:500px">
-    <img src="../img/new_lk_mobile_support.png" alt="Поддержка — мобильная версия" class="screenshot" style="max-width:200px;border-radius:16px;border:1px solid #dee2e6">
-  </div>
-
-  <p>Возможности раздела поддержки в ЛК:</p>
-  <ul>
-    <li><strong>Вкладки «Открытые» и «Закрытые»</strong> — с бейджами-счётчиками количества обращений</li>
-    <li>Даты в формате «5 часов назад», «3 дня назад», «2 недели назад»</li>
-    <li><strong>Статус-точки</strong> на мобильных: <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#dc3545"></span> красная — ждёт ответа оператора, <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#28a745"></span> зелёная — получен ответ, <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#adb5bd"></span> серая — закрыто</li>
-    <li>Создание нового обращения с темой, описанием и вложениями (до 20 МБ, форматы: jpg/png/gif/webp/pdf)</li>
-    <li>Переписка в рамках существующего обращения</li>
-    <li>Закрытие обращения из ЛК</li>
-    <li>Оценка качества обслуживания (если выставлена оператором)</li>
-  </ul>
-
-  <h3 id="lk-ai-chat">AI-ассистент (Claude / AIDA)</h3>
-  <p>Встроенный чат с AI-ассистентом. Основной провайдер — <strong>Claude (Anthropic)</strong>; при отсутствии ключа автоматически используется резервный провайдер <strong>AIDA</strong>. Отвечает на вопросы абонента о балансе, тарифе, оплате и технических проблемах. При невозможности помочь — автоматически передаёт вопрос оператору.</p>
-
-  <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;margin:16px 0">
-    <img src="../img/new_lk_chat.png" alt="AI-чат (десктоп)" class="screenshot" style="max-width:500px">
-    <img src="../img/new_lk_mobile_chat.png" alt="AI-чат (мобильная версия)" class="screenshot" style="max-width:200px;border-radius:16px;border:1px solid #dee2e6">
-  </div>
-
-  <p>Возможности AI-чата:</p>
-  <ul>
-    <li>Мгновенные ответы на типовые вопросы (баланс, тариф, обещанный платёж)</li>
-    <li>Отправка изображений и PDF-файлов (до 5 файлов, 10 МБ каждый)</li>
-    <li>Превью файлов прямо в чате (миниатюры изображений, иконки PDF)</li>
-    <li>На мобильных устройствах — полноэкранный режим</li>
-    <li>Автоматическая эскалация на оператора при необходимости (код <code>ESCALATE_TO_HUMAN</code>)</li>
-    <li>История переписки сохраняется в течение сессии (24 часа)</li>
-  </ul>
-
-  <table>
-    <thead><tr><th>Провайдер</th><th>Переменная .env</th><th>Условие</th></tr></thead>
-    <tbody>
-      <tr><td><strong>Claude (Anthropic)</strong></td><td><code>ANTHROPIC_API_KEY</code></td><td>Используется при наличии ключа (основной)</td></tr>
-      <tr><td><strong>AIDA</strong></td><td><code>AIDA_API_URL</code> + <code>AIDA_API_KEY</code></td><td>Резервный — при отсутствии Claude-ключа</td></tr>
-    </tbody>
-  </table>
-
-  <div class="info-box">
-    <strong>Настройка:</strong> В <code>.env</code> задайте <code>ANTHROPIC_API_KEY</code>. Claude API-запросы проходят через прокси из настроек Telegram (<code>TELEGRAM_PROXY_HOST/PORT</code>) — это необходимо, так как <code>api.anthropic.com</code> заблокирован с российских IP-адресов.
-  </div>
-
-  <div class="info-box">
-    <strong>Требование:</strong> У абонента должен быть указан email в профиле — именно по нему HelpDesk идентифицирует клиента.
-  </div>
-
-  <h4 id="ai-chat-settings-787">Управление AI-чатом (build 787) — <a href="/admin/settings/lk/ai_chat/">/admin/settings/lk/ai_chat/</a></h4>
-  <p>Отдельная вкладка в разделе <strong>Настройки → ЛК и мобильные</strong> между <em>Функции</em> и <em>Безопасность</em>. Объединяет управление AI-ассистентом в одном месте: раздельные toggle для каналов ЛК и мобильного, сбор оценок 👍/👎, автоэскалация в HelpDesk. Сверху — статистика за 7 дней и быстрые ссылки на промпт/few-shot/A-B варианты/дашборд.</p>
-
-  <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;margin:16px 0">
-    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/lk_ai_chat_v787/lk_ai_chat_desktop_v787.png" alt="Вкладка AI-чат (десктоп)" class="screenshot" style="max-width:760px">
-    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/lk_ai_chat_v787/lk_ai_chat_mobile_v787.png" alt="Вкладка AI-чат (mobile)" class="screenshot" style="max-width:220px;border-radius:8px;border:1px solid #dee2e6">
-  </div>
-
-  <p><strong>4 переключателя:</strong></p>
-  <table>
-    <thead><tr><th>Переключатель</th><th>Ключ</th><th>По умолчанию</th><th>Что делает</th></tr></thead>
-    <tbody>
-      <tr><td>💻 Включить AI-чат в веб-ЛК</td><td><code>LK_FEATURE_CHAT_AI_LK</code></td><td>on (через legacy fallback)</td><td>Кнопка чата в шапке и на дашборде ЛК. Если выключить — <code>/lk/chat/</code> вернёт 503, кнопка скрыта.</td></tr>
-      <tr><td>📱 Включить AI-чат в мобильном приложении</td><td><code>LK_FEATURE_CHAT_AI_MOBILE</code></td><td>on (через legacy fallback)</td><td>Endpoint <code>/mobile-api/v1/chat/message</code>. Flutter-клиент скрывает вкладку чата при <code>channel_enabled=false</code> в <code>/chat/status</code>.</td></tr>
-      <tr><td>👍 Сбор оценки 👍/👎</td><td><code>LK_AI_FEEDBACK_ENABLED</code></td><td>on</td><td>Показывать кнопки оценки ответов AI в ЛК и мобильном. Без них статистика «удовлетворённости» в дашборде остаётся пустой. Mobile API возвращает <code>assistant_index</code> для адресации feedback.</td></tr>
-      <tr><td>🎧 Автоэскалация в HelpDesk</td><td><code>LK_AI_AUTO_ESCALATE</code></td><td>on</td><td>При <code>ESCALATE_TO_HUMAN</code> в ответе AI — автоматически создаётся тикет с полным диалогом + данными клиента. Если выключить — AI скажет «нажмите кнопку Передать оператору».</td></tr>
-    </tbody>
-  </table>
-
-  <p><strong>Статистика за 7 дней</strong> — KPI-карточки (сессии / сообщения / лайки / дизлайки), бейдж активного провайдера (Claude API / AIDA / Не настроен), предупреждение о доле эскалации, 5 быстрых ссылок:</p>
-  <ul>
-    <li>📝 <a href="/admin/settings/ai/lk/">Промпт ЛК</a> — system prompt для канала LK</li>
-    <li>📝 <a href="/admin/settings/ai/mobile/">Промпт mobile</a> — system prompt для канала mobile</li>
-    <li>📚 <a href="/admin/settings/ai/fewshot/lk/">Few-shot LK</a> — примеры из базы знаний HelpDesk</li>
-    <li>🔀 <a href="/admin/settings/ai/ab/lk/">A/B варианты</a> — Sonnet vs Haiku</li>
-    <li>⚙ <a href="/admin/settings/integrations/?tab=helpdesk">Claude API key</a> — настройки ключа и прокси</li>
-  </ul>
-
-  <p><strong>Flutter feedback (Android + iOS, v1.3.1):</strong> под каждым ответом AI — кнопки 👍/👎 (16px outlined icons). Активная кнопка подсвечивается brand-цветом <code>#5BA89D</code>. Повторное нажатие на ту же кнопку = снять оценку. Оптимистичный update + rollback при HTTP-ошибке. Оценки сохраняются в <code>shared_preferences</code>, отправляются на <code>POST /mobile-api/v1/chat/feedback</code> с <code>{session_id, message_index, rating, text}</code> и зеркалятся в локальный журнал AI-чата + в БД HelpDesk для общей аналитики.</p>
-
-  <h4 id="ai-chat-widget-feedback-794">Feedback 👍/👎 в плавающем виджете ЛК (build 794)</h4>
-  <p>Плавающий виджет AI-ассистента в правом-нижнем углу ЛК (доступный со всех страниц) теперь поддерживает оценку ответов — синхронно с full-page чатом <code>/lk/chat/</code> и Flutter-приложением.</p>
-
-  <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;margin:16px 0">
-    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/lk_ai_chat_v794/lk_chat_widget_fb_zoom_v794.png" alt="Виджет AI с кнопками 👍/👎 под AI-ответом" class="screenshot" style="max-width:380px;border-radius:12px;border:1px solid #dee2e6">
-    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/lk_ai_chat_v794/lk_chat_widget_feedback_final_v794.png" alt="Виджет AI в ЛК — общий вид" class="screenshot" style="max-width:600px">
-  </div>
-
-  <p><strong>Поведение:</strong></p>
-  <ul>
-    <li>Кнопки появляются ТОЛЬКО под AI-ответами с <code>assistant_index</code> (welcome-сообщение и системные «Ошибка…» без них — туда оценку не поставишь)</li>
-    <li>Виден ровно при <code>LK_AI_FEEDBACK_ENABLED=1</code> — toggle в <code>/admin/settings/lk/ai_chat/</code>. Если выключить — кнопки исчезнут из всех каналов сразу</li>
-    <li>Активная 👍 окрашивается brand-цветом <code>#43b77a</code>, 👎 — красным <code>#dc3545</code></li>
-    <li>Повторное нажатие на активную кнопку = снять оценку (rating="")</li>
-    <li>Оптимистичный UI: статус меняется мгновенно, при HTTP-ошибке откатывается. Console остаётся чистым</li>
-    <li>Восстановление при reopen: при загрузке истории через <code>GET /lk/chat/history/</code> сохранённые оценки рендерятся обратно (хранятся в <code>ai_chat_log</code>)</li>
-    <li>Endpoint: <code>POST /lk/chat/feedback/</code> — общий для full-page <code>/lk/chat/</code> и виджета</li>
-  </ul>
-
-  <p><strong>Где зеркалится feedback:</strong></p>
-  <table>
-    <thead><tr><th>Хранилище</th><th>Поле</th><th>Назначение</th></tr></thead>
-    <tbody>
-      <tr><td>PG <code>ai_chat_log</code></td><td><code>user_feedback</code>, <code>feedback_text</code>, <code>feedback_at</code></td><td>Источник для <code>/admin/reports/ai_chat_dashboard/</code> (KPI 👍/👎)</td></tr>
-      <tr><td>БД HelpDesk (зеркало)</td><td>те же 3 поля</td><td>Для read-only анализа из модуля HelpDesk</td></tr>
-    </tbody>
-  </table>
-
-  <p><strong>Технические детали:</strong></p>
-  <ul>
-    <li><code>chat_send</code> response: добавлены <code>assistant_index</code> (0-based индекс среди assistant-сообщений в claude_history) и <code>feedback_enabled</code> (bool из <code>LK_AI_FEEDBACK_ENABLED</code>)</li>
-    <li>Context processor <code>lk_features</code>: новые ключи <code>chat_ai_lk</code> (заменяет legacy condition в условии видимости виджета) и <code>ai_feedback</code></li>
-    <li>CSS <code>lk-chat-widget.css</code>: <code>.lk-chat-fb-row</code> + <code>.lk-chat-fb-btn</code> с focus-visible 2px brand outline, <code>prefers-reduced-motion</code> отключает transitions</li>
-    <li>На деплое: после обновления CSS обязательно <code>collectstatic --noinput</code> + <code>restart web</code> — иначе whitenoise отдаёт закешированный файл</li>
-  </ul>
-
-  <div class="info-box">
-    <strong>Совместимость:</strong> Legacy <code>LK_FEATURE_CHAT_AI</code> остаётся master-fallback — если новые ключи <code>LK_FEATURE_CHAT_AI_LK</code>/<code>LK_FEATURE_CHAT_AI_MOBILE</code> не заданы, runtime использует legacy значение. Это позволяет обновляться без миграции данных.
-  </div>
-
-  <h3 id="lk-profile">Профиль абонента</h3>
-
-  <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;margin:16px 0">
-    <img src="../img/new_lk_profile.png" alt="Профиль абонента" class="screenshot" style="max-width:500px">
-    <img src="../img/new_lk_mobile_profile.png" alt="Профиль — мобильная версия" class="screenshot" style="max-width:200px;border-radius:16px;border:1px solid #dee2e6">
-  </div>
-
-  <p>В разделе «Профиль» абонент может:</p>
-  <ul>
-    <li>Изменить отображаемое имя и email</li>
-    <li>Сменить пароль</li>
-    <li>Просмотреть активные сессии (IP, время входа, устройство)</li>
-    <li>Завершить все сессии кроме текущей</li>
-    <li>Привязать / отвязать Telegram для уведомлений</li>
-    <li>Настроить вход через Telegram (OAuth) — если домен прописан в BotFather</li>
-  </ul>
-
-  <h3 id="lk-deploy">Развёртывание и SSL</h3>
-  <p>ЛК входит в тот же Docker Compose проект, что и биллинг — отдельная установка не требуется. Nginx проксирует запросы:</p>
-  <img src="../img/section_lk_profile.png" alt="Профиль абонента в ЛК" class="screenshot">
-
-  <ul>
-    <li><code>/lk/</code> → gunicorn (Django)</li>
-    <li><code>/lk/static/</code> → whitenoise / static files</li>
-  </ul>
-  <p>SSL-сертификат для домена биллинга автоматически покрывает и ЛК. Если ЛК работает на отдельном поддомене — выпустить сертификат через certbot:</p>
-  <pre><code>certbot --nginx -d lk.example.com</code></pre>
-
-  <p>Для PWA-режима обязателен HTTPS. После перехода на HTTPS абоненты могут добавить ЛК на рабочий стол смартфона как приложение.</p>
-
-  <!-- ===== 6.10 Firebase Push-уведомления ===== -->
-  <h3 id="lk-firebase">Firebase Push-уведомления</h3>
-  <p>Push-уведомления для мобильного приложения (Android и iOS) реализованы через Firebase Cloud Messaging (FCM). Настройка в административном разделе <strong>Настройки → Интеграции → Firebase</strong> (<code>/admin/settings/firebase/</code>).</p>
-  <img src="../img/section_firebase.png" alt="Firebase Push-уведомления" class="screenshot">
-
-
-  <h4>Настройка Firebase</h4>
-  <ol>
-    <li>Откройте <a href="https://console.firebase.google.com/" target="_blank" rel="noopener">Firebase Console</a> → «Настройки проекта» → «Аккаунты служб»</li>
-    <li>Нажмите «Создать закрытый ключ» — скачается JSON-файл сервисного аккаунта</li>
-    <li>Укажите путь к этому файлу в поле <strong>Service Account JSON</strong></li>
-  </ol>
-
-  <h4>Регистрация токена (Mobile API)</h4>
-  <p>Мобильное приложение регистрирует FCM/APNS-токен при запуске:</p>
-  <pre><code>POST /mobile-api/v1/push/register
-Content-Type: application/json
-
-{
-  "token": "fcm_device_token_here",
-  "platform": "android"   // или "ios"
-}</code></pre>
-
-  <h4>Автоматические задачи (Celery beat)</h4>
-  <table>
-    <thead><tr><th>Задача</th><th>Расписание</th><th>Описание</th></tr></thead>
-    <tbody>
-      <tr>
-        <td><code>push-low-balance</code></td>
-        <td>Ежедневно</td>
-        <td>Уведомляет абонентов с низким балансом (<code>low_balance_alerts</code>)</td>
-      </tr>
-      <tr>
-        <td><code>push-promise-expiring</code></td>
-        <td>Ежедневно</td>
-        <td>Напоминает об истечении обещанного платежа (<code>promise_pay_expiring</code>)</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <h4>Ручная отправка</h4>
-  <p>Доступны также функции разовой отправки:</p>
-  <ul>
-    <li><code>broadcast</code> — массовая рассылка всем активным абонентам с токенами</li>
-    <li><code>send_to_abonent</code> — отправка конкретному абоненту (из карточки абонента через форму «Отправить сообщение»)</li>
-  </ul>
-  <p>Исходный код задач: <code>billing/tasks/push_notifications.py</code></p>
-
-  <div class="info-box">
-    <strong>Тестирование:</strong> Откройте карточку абонента → раздел «Отпр. сообщения» → установите флажок «Push-уведомление» → введите текст → «Отправить».
-  </div>
-
-  <!-- ===== 6.11 Claude AI ===== -->
-  <h3 id="lk-claude-ai">Claude AI — конфигурация AI-ассистента</h3>
-  <p>Управление параметрами AI-ассистента: <strong>Настройки → Интеграции</strong> (<code>/admin/settings/integrations/</code>) — вкладка <strong>AIDA / AI</strong>.</p>
-  <img src="../img/section_aida.png" alt="Claude AI / AIDA настройки" class="screenshot">
-
-
-  <h4>Переменные окружения (.env)</h4>
-  <table>
-    <thead><tr><th>Переменная</th><th>Описание</th></tr></thead>
-    <tbody>
-      <tr><td><code>ANTHROPIC_API_KEY</code></td><td>API-ключ Claude (Anthropic). При наличии — используется как основной провайдер.</td></tr>
-      <tr><td><code>AIDA_API_URL</code></td><td>URL эндпоинта AIDA (резервный провайдер)</td></tr>
-      <tr><td><code>AIDA_API_KEY</code></td><td>API-ключ AIDA</td></tr>
-      <tr><td><code>TELEGRAM_PROXY_HOST</code></td><td>Хост прокси-сервера для Claude API</td></tr>
-      <tr><td><code>TELEGRAM_PROXY_PORT</code></td><td>Порт прокси-сервера</td></tr>
-      <tr><td><code>TELEGRAM_PROXY_LOGIN</code></td><td>Логин прокси (если требует аутентификации)</td></tr>
-      <tr><td><code>TELEGRAM_PROXY_PASSWORD</code></td><td>Пароль прокси</td></tr>
-    </tbody>
-  </table>
-
-  <div class="info-box">
-    <strong>Почему нужен прокси?</strong> Домен <code>api.anthropic.com</code> не имеет IPv4-записей и недоступен из России напрямую. Docker-контейнер не может маршрутизировать IPv6-трафик без настройки. Прокси (например, Telegram-прокси) решает эту проблему.
-  </div>
-
-  <h4>Переключатели в панели управления</h4>
-  <table>
-    <thead><tr><th>Настройка</th><th>Описание</th></tr></thead>
-    <tbody>
-      <tr><td>AI в личном кабинете</td><td>Включить/выключить AI-чат на странице <code>/lk/chat/</code></td></tr>
-      <tr><td>AI в мобильном приложении</td><td>Включить/выключить чат в Mobile API (<code>/mobile-api/v1/chat/message</code>)</td></tr>
-      <tr><td>Мониторинг биллинга</td><td>Разрешить AIDA/Claude обращаться к данным абонентов через REST API</td></tr>
-    </tbody>
-  </table>
-
-  <h4>Эндпоинты чата</h4>
-  <table>
-    <thead><tr><th>URL</th><th>Описание</th></tr></thead>
-    <tbody>
-      <tr><td><code>GET /lk/chat/</code></td><td>Страница чата в личном кабинете</td></tr>
-      <tr><td><code>POST /mobile-api/v1/chat/message</code></td><td>Отправить сообщение AI (Mobile API)</td></tr>
-      <tr><td><code>POST /mobile-api/v1/chat/escalate</code></td><td>Передать переписку оператору HelpDesk</td></tr>
-      <tr><td><code>GET /mobile-api/v1/chat/status</code></td><td>Проверить доступность AI</td></tr>
-    </tbody>
-  </table>
-
-  <h4>Логирование</h4>
-  <p>Модуль <code>billing/services/claude_logger.py</code> записывает диалоги в HelpDesk (отдельная база MySQL на сервере поддержки) и параллельно — в локальную PostgreSQL-таблицу <code>ai_chat_log</code> биллинга. Если один из источников недоступен — логирование во второй проходит без ошибки.</p>
-
-  <!-- ===== AI обучение (build 603–781) ===== -->
-  <h3 id="ai-assistant">AI-ассистент — обучение и управление промптом (build 603–1091)</h3>
-  <p>Раздел <strong>Настройки → AI-ассистент</strong> (<code>/admin/settings/ai/</code>) — единая точка управления системными промптами, эталонными примерами (few-shot), автотестами AI-чата и A/B-вариантами. Все три канала — <strong>Личный кабинет</strong>, <strong>Мобильное приложение</strong> и <strong>Email / HelpDesk</strong> — настраиваются раздельно.</p>
-
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1091/ai_settings_lk.png" alt="Раздел AI-ассистент: вкладка Промпт, контекст организации, прокси-статус" class="screenshot">
-
-  <div class="info-box">
-    <strong>Что значит «обучить нейросеть»?</strong> В нашем контексте это <em>не</em> дообучение весов модели (провайдер такую возможность не предоставляет). Это: правка system prompt, добавление few-shot примеров «вопрос → идеальный ответ», прогон автотестов и A/B-варианты. Полная инструкция: <code>/admin/reports/dev/?file=Документация%2F2026-05-08_Инструкция_обучение_Claude_агента_поддержки.md</code>.
-  </div>
-
-  <h4 id="ai-multiorg">Несколько организаций (multi-org, build 1081–1091)</h4>
-  <p>Если в системе несколько организаций (напр. <strong>СмИТ</strong> — интернет-провайдер и <strong>АЙТИ Консалтинг</strong> — IT-аутсорсер), у каждой может быть свой AI-ассистент. Организация выбирается <strong>селектором в шапке</strong> (применяется ко всем разделам); справа от вкладок виден индикатор «Промпт для: …».</p>
-  <ul>
-    <li><strong>Свой system prompt</strong> на организацию (пусто = наследует глобальный).</li>
-    <li><strong>Имя AI-ассистента</strong>, <strong>модель</strong>, <strong>max_tokens</strong>, <strong>temperature</strong> — на организацию (пустые поля наследуются). API-ключ Anthropic — общий для всех.</li>
-    <li><strong>Тоггл «AI включён для организации»</strong> — можно выключить ассистента у конкретной орг.</li>
-    <li><strong>Свои few-shot примеры.</strong> Важно: если у организации <em>есть</em> свои примеры — подмешиваются <strong>только они</strong> (глобальные не попадают). Так у АЙТИ Консалтинг в промпт идут примеры про IT-услуги, а не интернет-сценарии СмИТ.</li>
-    <li><strong>Обзор организаций</strong> в правой колонке — таблица «свой промпт / глобальный» по каждой орг с кнопкой перехода к настройке.</li>
-  </ul>
-  <p>Пример: AI-ассистент АЙТИ Консалтинг обучен на услугах с сайта (IT-аутсорсинг, 1С, киберзащита, видеонаблюдение, сети и IP-телефония, веб-разработка) — отдельный промпт + 12 few-shot примеров на каждый канал.</p>
-
-  <h4 id="ai-proxy-status">Статус прокси для Нейросети</h4>
-  <p>AI-чат обращается к API нейросети через прокси (из России <code>api.anthropic.com</code> заблокирован). В правой колонке раздела — индикатор: 🟢 «N рабочих прокси», 🔴 «прокси не отвечает», ⚠ «прокси не подключён» (со ссылкой на <a href="billing.html#system-settings-proxy">Настройки системы → Прокси</a>) или «прокси выключены». Если нет живого прокси — ассистент не сможет отвечать.</p>
-
-  <p><strong>4 вкладки раздела</strong> (переключаются справа от селектора канала):</p>
-  <ul>
-    <li><a href="#ai-prompt">⚙ <strong>Промпт</strong></a> — system prompt + история версий + откат</li>
-    <li><a href="#ai-fewshot">🎓 <strong>Few-shot</strong></a> — эталонные примеры с drag-to-reorder, KB-импорт</li>
-    <li><a href="#ai-eval">🧪 <strong>Eval</strong></a> — автотесты на датасете</li>
-    <li><a href="#ai-ab-testing">🔀 <strong>A/B</strong></a> — варианты промпта на части трафика (build 781)</li>
-  </ul>
-
-  <h4 id="ai-prompt">Вкладка «Промпт»</h4>
-  <p>Редактирование system prompt с версионированием и откатом. Поддерживается <strong>prompt caching</strong> — статическая часть кешируется на 5 минут, экономия до 90% на повторных запросах.</p>
-
-  <table>
-    <thead><tr><th>Поле</th><th>Назначение</th></tr></thead>
-    <tbody>
-      <tr><td>System prompt</td><td>Текст инструкции для нейросети — стиль, правила, сценарии. Динамические данные клиента (имя, баланс, тариф) добавляются автоматически на каждый запрос.</td></tr>
-      <tr><td>Модель</td><td>Haiku 4.5 (по умолчанию — быстро и дёшево), Sonnet 4.6 (точнее), Opus 4.7 (лучшее качество). Модель можно переопределить на организацию.</td></tr>
-      <tr><td>Max tokens</td><td>Максимальная длина ответа (1024 для LK / 512 для Mobile)</td></tr>
-      <tr><td>Temperature</td><td>0.0–1.0; для биллинга рекомендуется 0.3 (фактическая точность важнее креативности)</td></tr>
-      <tr><td>Ключевые слова эскалации</td><td>При наличии в сообщении клиента — пропуск AI-ответа, прямой переход к оператору</td></tr>
-      <tr><td>Prompt caching</td><td>Включает заголовок <code>anthropic-beta: prompt-caching-2024-07-31</code> и кеширует статическую часть промпта</td></tr>
-    </tbody>
-  </table>
-
-  <p><strong>История версий</strong> справа сохраняет последние 30 правок. Кнопка ↶ восстанавливает любую версию — текущая при этом тоже сохраняется в истории, можно вернуться обратно.</p>
-
-  <h4 id="ai-fewshot">Вкладка «Few-shot»</h4>
-  <p>Эталонные пары «сообщение клиента → идеальный ответ Алисы». Топ-8 по приоритету подмешиваются в <strong>статическую часть промпта</strong> — попадают в кеш, не пересчитываются на каждый запрос.</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1091/ai_fewshot_lk.png" alt="Few-shot примеры — карточки user/ideal" class="screenshot">
-
-  <p>На канал LK при первом деплое сидируется <strong>5 эталонных примеров</strong> (миграция <code>0126_ai_fewshot_seed</code>): баланс положительный, баланс отрицательный, диагностика «нет интернета», явная эскалация, OOD-отказ (нерелевантные темы). Дополнительно можно одной кнопкой 📥 импортировать 21 сценарий из <strong>базы знаний HelpDesk</strong> (S01-S20) — парсинг secций «Проблема / Шаг 3 (Решение)» в few-shot записи.</p>
-
-  <table>
-    <thead><tr><th>Поле карточки</th><th>Назначение</th></tr></thead>
-    <tbody>
-      <tr><td>Интент</td><td>Метка для группировки. В UI показывается на русском с эмодзи («🏠 Смена адреса», «🤝 Обещанный платёж») через словарь <code>INTENT_LABELS</code>, в БД хранится английский ключ.</td></tr>
-      <tr><td>Приоритет (0–100)</td><td>Семантическая метка <strong>ТОП</strong> (≥80), <strong>ВАЖНО</strong> (≥50) или <strong>РЕЗЕРВ</strong> (&lt;50) + цветовой бар. Можно менять перетаскиванием карточки за <i class="fas fa-grip-vertical"></i> handle в правом-верхнем углу (drop → AJAX, priority пересчитывается линейно 100→1).</td></tr>
-      <tr><td>Сообщение клиента</td><td>Реальный (или гипотетический) запрос абонента</td></tr>
-      <tr><td>Эталонный ответ Алисы</td><td>Образцовая формулировка — длина, стиль, структура</td></tr>
-    </tbody>
-  </table>
-
-  <p><strong>UI-фичи</strong> (Sprint 1+2, builds 775-780):</p>
-  <ul>
-    <li><strong>KPI-фильтры</strong> — клик по плитке «В промпте 8 / В резерве 12 / Отключено 0» фильтрует список</li>
-    <li><strong>Sticky-toolbar</strong> с поиском (<kbd>Ctrl+K</kbd>), фильтром по интенту, сортировкой</li>
-    <li><strong>Horizontal divider</strong> «Ниже резерв, в промпт не попадает» — визуальная граница топ-8</li>
-    <li><strong>Hover lift</strong> с зелёной рамкой, line-clamp 4 + click-to-expand на тексте</li>
-    <li><strong>Bulk-actions</strong> через мастер-чекбокс: включить / отключить / удалить группу примеров</li>
-    <li><strong>Кнопка 👁 «Что увидит Алиса»</strong> — модалка с полным собранным system prompt</li>
-    <li><strong>Кнопка 📥 «Импорт из базы знаний HelpDesk»</strong> (только LK) — синхронизация со сценариями S01-S20</li>
-    <li><strong>Empty-state</strong> с канало-зависимыми подсказками (Email — про деловой стиль и подпись)</li>
-  </ul>
-
-  <h4 id="ai-eval">Вкладка «Eval»</h4>
-  <p>Автотесты промпта на eval-датасете <code>dev_reports/Документация/ai_eval_dataset.jsonl</code> (58 кейсов в 14 категориях). Каждый кейс проверяется на <code>must_contain</code>, <code>must_not_contain</code>, корректную эскалацию и лимит слов.</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1091/ai_settings_dark.png" alt="История прогонов eval-датасета" class="screenshot">
-
-  <p>Кнопка <strong>«Запустить»</strong> (с опциональным <code>limit</code>) дёргает реальный API нейросети синхронно — 30–60 секунд на полный прогон. После завершения история обновляется, видна <em>pass rate</em> с цветовым кодом: ≥90% зелёный, ≥75% оранжевый, ниже — красный.</p>
-
-  <p>CLI-вариант для cron / CI:</p>
-  <pre><code>docker compose exec web python manage.py ai_eval \
-  --channel lk --note "after weekly review N"</code></pre>
-
-  <p>Кнопка <strong>«Подробнее»</strong> на строке прогона открывает модал со всеми кейсами: ID, интент, сообщение, ответ AI, проваленные проверки, время выполнения, токены.</p>
-
-  <h4 id="ai-dashboard">Дашборд AI-чата</h4>
-  <p>Страница <strong>Отчёты → AI-чат: дашборд</strong> (<code>/admin/reports/ai_chat_dashboard/</code>) — KPI и графики по реальной нагрузке.</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1091/ai_dashboard.png" alt="AI-чат дашборд: KPI + графики" class="screenshot">
-
-  <table>
-    <thead><tr><th>KPI</th><th>Что показывает</th></tr></thead>
-    <tbody>
-      <tr><td>Сессий</td><td>Уникальных диалогов за выбранный период (1/3/7/14/30 дней)</td></tr>
-      <tr><td>Помогло (👍)</td><td>Доля положительных оценок от всех проставленных</td></tr>
-      <tr><td>Не помогло (👎)</td><td>Доля негативных + общий процент сессий, в которых клиент поставил оценку</td></tr>
-      <tr><td>Эскалаций</td><td>Сколько сессий завершилось передачей оператору в HelpDesk</td></tr>
-      <tr><td>Токены</td><td>Суммарный input/output расход на API за период + <strong>оценочная стоимость в ₽</strong> (build 1086). Цены за млн токенов и курс USD→RUB настраиваются в SystemSettings: <code>AI_PRICE_IN_USD_PER_MTOK</code>, <code>AI_PRICE_OUT_USD_PER_MTOK</code>, <code>AI_USD_RUB</code>.</td></tr>
-    </tbody>
-  </table>
-
-  <p><strong>По организациям</strong> (multi-org, build 1084): таблица с разбивкой сессий / эскалаций / 👍 / 👎 по каждой организации. Фильтр — через селектор в шапке. У организации по умолчанию (СмИТ) учитываются и абоненты без явной привязки (<code>ORGANIZATION_ID IS NULL</code>).</p>
-
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1091/ai_dashboard_dark.png" alt="Дашборд AI-чата в тёмной теме" class="screenshot">
-
-  <p>Графики:</p>
-  <ul>
-    <li><strong>Активность по дням</strong> — line chart сессий и эскалаций + bar chart 👍/👎</li>
-    <li><strong>По каналам</strong> — pie chart распределения сессий между LK / Mobile / Email</li>
-    <li><strong>Последние 👎</strong> — клик по строке открывает модал с полным транскриптом сессии (для разбора и пополнения few-shot)</li>
-    <li><strong>Худшие eval-кейсы за период</strong> — какие тесты чаще всего падали (источник для правки промпта)</li>
-  </ul>
-
-  <h5 id="ai-dashboard-all-sessions-796">Все сессии за период (build 796)</h5>
-  <p>Новый блок внизу дашборда — полный список диалогов за период с фильтрами и поиском (limit 500). Раньше посмотреть сессию можно было только если клиент поставил 👎 или через прямой URL <code>/admin/reports/ai_chat_session/&lt;sid&gt;/</code>.</p>
-
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_chat_dashboard_v796/ai_dashboard_all_sessions_v796.png" alt="Все сессии за период — таблица с фильтрами" class="screenshot">
-
-  <p><strong>Фильтры:</strong></p>
-  <ul>
-    <li><strong>Канал:</strong> Все / LK / Mobile (раздельно или вместе)</li>
-    <li><strong>Feedback:</strong> Все / 👍 / 👎 / 🎧 Эскал. — оставляет только сессии с конкретным сигналом</li>
-    <li><strong>Поиск</strong> по <code>session_id</code> / имени абонента / номеру договора</li>
-  </ul>
-
-  <p><strong>Колонки</strong> (можно сортировать кликом на заголовок):</p>
-  <ul>
-    <li><strong>Последняя реплика</strong> — время последнего сообщения в сессии (по умолчанию desc — самое свежее наверху)</li>
-    <li><strong>Канал</strong> — цветной бейдж <code>LK</code> (синий) / <code>Mobile</code> (зелёный)</li>
-    <li><strong>Абонент</strong> — ФИО + номер договора, клик ведёт на профиль в новой вкладке</li>
-    <li><strong>Сообщений</strong> — общее (user/ai)</li>
-    <li><strong>Оценки</strong> — 👍N / 👎N / 🎧 (если эскалирована) или прочерк</li>
-    <li><strong>Session ID</strong> — monospace, для копирования или поиска в логах</li>
-  </ul>
-
-  <p>Клик по любой строке → существующая модалка с полным диалогом (та же что для «Последние 👎»).</p>
-
-  <div class="info-box">
-    <strong>Производительность:</strong> backend агрегирует <code>ai_chat_log</code> через <code>GROUP BY session_id</code> с лимитом 500 строк. Запрос укладывается в индекс <code>ix_ai_chat_log_created</code> + <code>ix_ai_chat_log_abonent</code>. Фильтрация / сортировка — на клиенте без дополнительных запросов.
-  </div>
-
-  <h4>Telegram-алерты</h4>
-  <p>Celery-задача <code>ai-health-check</code> запускается каждые 15 минут и проверяет показатели за последний час. Если <code>escalation_pct ≥ 40%</code> или <code>down_feedback_pct ≥ 40%</code> — отправляет алерт в Telegram-канал <code>nas_down</code>. Дедуп по severity и дате (один алерт на проблему в сутки).</p>
-
-  <p>Управляющие настройки в SystemSettings (категория <code>ai</code>):</p>
-  <table>
-    <thead><tr><th>Ключ</th><th>Значение</th></tr></thead>
-    <tbody>
-      <tr><td><code>AI_HEALTH_TELEGRAM_ALERT</code></td><td>1 = включено, 0 = выключено</td></tr>
-      <tr><td><code>AI_ESCALATION_ALERT_PCT</code></td><td>Порог % эскалаций для алерта (по умолчанию 40)</td></tr>
-      <tr><td><code>AI_DOWN_FEEDBACK_ALERT_PCT</code></td><td>Порог % 👎-оценок для алерта (по умолчанию 40)</td></tr>
-      <tr><td><code>AI_HEALTH_MIN_SAMPLE</code></td><td>Минимальный размер выборки (по умолчанию 5)</td></tr>
-    </tbody>
-  </table>
-
-  <h4 id="ai-ab-testing">Вкладка «A/B» (build 781)</h4>
-  <p>Страница <code>/admin/settings/ai/ab/&lt;channel&gt;/</code> — UI для A/B-тестирования промптов на части трафика без Django shell.</p>
-  <img src="../img/v781/ai_ab_lk.png" alt="A/B варианты промпта — traffic bar + карточки" class="screenshot">
-
-  <p><strong>Как работает сплит:</strong></p>
-  <ol>
-    <li>При каждом запросе абонента строитель промпта считает <code>hash(abonent.pk + channel) % 100</code> — детерминированное число 0–99</li>
-    <li>Если число попадает в диапазон веса варианта → возвращается его prompt вместо control</li>
-    <li>Иначе → control (основной промпт из раздела «Промпт»)</li>
-  </ol>
-  <p>Один абонент <strong>всегда</strong> видит один вариант — метрики 👍/👎/эскалация атрибутируются варианту честно. В <code>ai_chat_log</code> поле <code>ab_variant</code> хранит выбранный вариант для аналитики через <code>GROUP BY ab_variant</code>.</p>
-
-  <p><strong>Что есть в UI:</strong></p>
-  <ul>
-    <li><strong>Traffic-bar</strong> сверху — визуализация распределения трафика (Control + N вариантов в %)</li>
-    <li><strong>Карточки вариантов</strong> — название, модель, температура, кеш, доля трафика, заметка, дата</li>
-    <li><strong>Модалка create/edit</strong> — все поля (name, weight, model, max_tokens, temperature, prompt, escalation_keywords, caching)</li>
-    <li><strong>📈 Статистика за 7 дней</strong> — кнопка на карточке открывает modal с SQL-агрегацией по <code>ai_chat_log</code>: сессий, ответов AI, 👍, 👎, 👍%, эскалаций%, среднее число слов в ответе — для control и каждого варианта в одной таблице</li>
-    <li><strong>Бейджи статуса</strong> — Активен / Откл. / 0% (для отключённых)</li>
-    <li><strong>Раскрывающийся блок «Как работает A/B сплит?»</strong> внизу страницы</li>
-  </ul>
-
-  <p><strong>Рекомендация:</strong> начинайте новый эксперимент с <code>weight=10-30%</code>, дайте поработать минимум 7 дней (для статистической значимости), сверьте метрики. Если новый вариант лучше — поднимайте до 100% и копируйте промпт в Control (вкладка «Промпт»). Если хуже — отключите вариант (галка «Активен») или ставьте <code>weight=0</code>.</p>
-
-  <h4>Регламент использования</h4>
-  <ul>
-    <li><strong>Ежедневно (5 мин)</strong>: открыть дашборд за сегодня → проверить эскалации и количество 👎.</li>
-    <li><strong>Еженедельно (30 мин)</strong>: посмотреть 30 👎-сессий за неделю → пометить «правильный ответ» в формате few-shot → создать 5–10 новых записей или поправить промпт → запустить ai_eval — pass rate не должен упасть.</li>
-    <li><strong>При кардинальных изменениях</strong>: создать <code>AIPromptVariant(weight=30)</code>, дать поработать неделю, сверить метрики, раскатать на 100% или откатить.</li>
-  </ul>
-
-  <!-- ===== 6.13 Раздел «Интеграции» ===== -->
-  <h3 id="integrations">Раздел «Интеграции» — единый центр</h3>
-  <p>Страница <code>/admin/settings/integrations/</code> — единая точка управления всеми внешними сервисами биллинга. После реструктуризации — <strong>7 разделов вместо 11</strong>: связанные интеграции объединены в группы со sub-tabs и общими info-карточками.</p>
-
-  <h4 id="integrations-overview">Вкладка «Обзор»</h4>
-  <p>Сводная таблица всех интеграций со статусами, KPI-карточками и кнопками <strong>«Проверить все»</strong> / <strong>«Остановить»</strong> / <strong>«Обновить статусы»</strong>. Last-test, ссылки на документацию и шестерёнки для перехода в нужный раздел.</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/integrations_v466/v466_01_overview.png" alt="Обзор всех интеграций" class="screenshot">
-  <ul>
-    <li><strong>Универсальный JS-модуль</strong> <code>billing/static/js/integration_tester.js</code> — <code>window.IntegrationTester.run()</code> / <code>runAll()</code> / <code>refreshStatus()</code> / <code>showToast()</code></li>
-    <li><strong>Batch-тест</strong> прогоняет все configured интеграции последовательно (~5-10 сек) с прогресс-баром и summary-списком результатов</li>
-    <li><strong>Auto-poll</strong> каждые 60 сек обновляет статус-точки на вкладках без F5</li>
-    <li><strong>Backend-fallback</strong>: каждый <code>*_test</code> endpoint читает settings из БД когда форма не открыта (для batch с Обзора)</li>
-  </ul>
-
-  <h4 id="integrations-iptv">Вкладка IPTV (TVIP + LFStream)</h4>
-  <p>Объединяет двух IPTV-провайдеров. Sub-pills переключают между TVIP Media (middleware) и LFStream «Смотрёшка» (CMS). Info-карточка сверху — общий контекст и счётчики маппингов услуг.</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/integrations_v466/v466_02_iptv_tvip.png" alt="IPTV — TVIP" class="screenshot">
-  <p><strong>Тесты используют production-клиенты</strong> <code>billing/services/iptv/tvip.py::TvipClient</code> и <code>billing/services/iptv/lfstream.py::LfstreamClient</code> с правильной авторизацией (HTTP Basic для TVIP, session-based через CMS <code>/login</code> + CSRF для LFStream).</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/integrations_v466/v466_03_iptv_lfstream.png" alt="IPTV — LFStream" class="screenshot">
-
-  <h4 id="integrations-geo">Вкладка География (Адреса + Карта)</h4>
-  <p>Геокодер DaData/Яндекс и тайловый слой карты абонентов. KPI-блок сверху: всего адресов, с координатами, точность дома, с абонентами.</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/integrations_v466/v466_04_geo_address.png" alt="География — Адреса" class="screenshot">
-  <ul>
-    <li>Sub-tab <strong>«Геокодер адресов»</strong> — DaData токен, лимиты, CORS-домены, AJAX-эндпоинты автоподсказок и проверки покрытия</li>
-    <li>Sub-tab <strong>«Тайловый слой карты»</strong> — выбор провайдера: OpenStreetMap (бесплатно) / 2GIS / Яндекс.Карты</li>
-  </ul>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/integrations_v466/v466_05_geo_map.png" alt="География — Карта" class="screenshot">
-
-  <h4 id="integrations-freescout-claude">Вкладка HelpDesk + Claude AI</h4>
-  <p>HelpDesk-интеграция (REST API HelpDesk + MySQL + webhook + автосинхронизация) и Claude AI-ассистент в одном разделе. Claude используется в трёх местах: ЛК-чат, мобильное приложение, модуль HelpDesk (отдельные настройки на <code>support.smit34.ru/claudeai/settings</code>).</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/integrations_v466/v466_06_freescout_top.png" alt="HelpDesk — основные настройки" class="screenshot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/integrations_v466/v466_07_freescout_claude.png" alt="Claude AI как подраздел HelpDesk" class="screenshot">
-  <p>Блок <strong>«Статистика»</strong> показывает количество AI-ответов сегодня (из БД HelpDesk) и ссылку на <a href="https://console.anthropic.com/settings/billing" target="_blank">console.anthropic.com/billing</a> для контроля баланса API.</p>
-
-  <h4 id="integrations-footer-ai">AI-статус в футере</h4>
-  <p>Футер всех страниц админки показывает живой статус AI после блока «Диск»:</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/integrations_v466/v466_08_footer_ai.png" alt="Футер с AI статусом" class="screenshot">
-  <p>Источник — <code>server_load_api</code> возвращает <code>ai_status</code> из <code>IntegrationStatusCache</code> (последний результат теста Claude) + <code>ai_messages_today</code> (cached 5 мин). Возможные значения:</p>
-  <table>
-    <thead><tr><th>Знак</th><th>Значение</th></tr></thead>
-    <tbody>
-      <tr><td>✓ AI</td><td>Claude доступен (последний тест успешен)</td></tr>
-      <tr><td>✗ AI</td><td>Claude отвечает с ошибкой</td></tr>
-      <tr><td>⏸ AI</td><td>AI отключён в настройках</td></tr>
-      <tr><td>? AI</td><td>Не настроен или ещё не тестировался</td></tr>
-    </tbody>
-  </table>
-  <p>Если в системе зафиксированы AI-ответы за сегодня — отображается «✓ AI: 12 сегодня». Tooltip показывает текст последнего теста.</p>
-
-  <h4 id="integrations-batch-test">Batch-тест всех интеграций</h4>
-  <p>Кнопка <strong>«Проверить все»</strong> на Обзоре прогоняет последовательно все настроенные интеграции и выдаёт сводный отчёт:</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/integrations_v466/v466_09_batch_all_green.png" alt="Batch-тест: все интеграции зелёные" class="screenshot">
-  <p>Каждый тест получает зелёную/красную иконку, сообщение endpoint'а, обновление last-test в таблице ниже. Пропущенные «Не настроено»-интеграции выводятся в финальной строке summary.</p>
-
-  <h4 id="integrations-info-icons">Info-иконки</h4>
-  <p>Каждый функциональный блок (карточка) имеет <strong>контурную серую info-иконку</strong> сразу после названия — клик открывает соответствующий раздел документации в новой вкладке. Реализовано через <code>relocateInfoIcons()</code> JS-функцию + <code>MutationObserver</code> для динамически добавленных блоков.</p>
-
-  <h4 id="integrations-test-endpoints">Test endpoints (для разработки)</h4>
-  <table>
-    <thead><tr><th>Slug</th><th>Endpoint</th><th>Что проверяет</th></tr></thead>
-    <tbody>
-      <tr><td>telegram</td><td><code>POST /admin/settings/telegram/test/</code></td><td>Bot token через <code>getMe</code>, опционально через прокси</td></tr>
-      <tr><td>telegram_proxy</td><td><code>POST /admin/settings/telegram/proxy_test/</code></td><td>SOCKS5 прокси соединение с api.telegram.org</td></tr>
-      <tr><td>telegram_alarm</td><td><code>POST /admin/settings/telegram/alarm_test/</code></td><td>Отправка тестового аларма в чат</td></tr>
-      <tr><td>HelpDesk</td><td>Тест подключения через раздел «Настройки → Интеграции → HelpDesk»</td><td>API-ключ + хост + список тикетов</td></tr>
-      <tr><td>HelpDesk БД</td><td>Тест MySQL-соединения к БД HelpDesk через раздел «Настройки → Интеграции»</td><td>Проверка подключения и доступности БД</td></tr>
-      <tr><td>aida</td><td><code>POST /admin/settings/aida/test/</code></td><td>HTTP <code>GET /health</code> на AIDA URL</td></tr>
-      <tr><td>claude</td><td><code>POST /admin/settings/claude/test/</code></td><td>Anthropic API <code>/v1/messages</code> (через прокси)</td></tr>
-      <tr><td>tvip</td><td><code>POST /admin/settings/tvip/test/</code></td><td>TvipClient через <code>/api/provider/accounts</code></td></tr>
-      <tr><td>lfstream</td><td><code>POST /admin/settings/lfstream/test/</code></td><td>LfstreamClient через CMS-логин + <code>/candidates/</code></td></tr>
-      <tr><td>gcs</td><td><code>POST /admin/settings/gcs/test/</code></td><td><code>list_blobs</code> с object-level permission</td></tr>
-      <tr><td>address_api</td><td><code>POST /admin/settings/integrations/dadata_test/</code></td><td>DaData API token + лимиты</td></tr>
-      <tr><td>status_json</td><td><code>GET /admin/settings/integrations/status_json/</code></td><td>Все статусы (для auto-poll бейджей)</td></tr>
-    </tbody>
-  </table>
-
-  <p><strong>JSON-формат ответа</strong> у всех test endpoints:</p>
-  <pre><code>{
-  "ok": true|false,
-  "message": "Подключено. Тикетов: 50",  // human-readable
-  "diag": {  // опционально, для модалки расширенной диагностики
-    "url": "https://...",
-    "http_status": 200,
-    "latency_ms": 145,
-    "body_preview": "..."
-  }
-}</code></pre>
-
-  <h4 id="integrations-build-history">История изменений</h4>
-  <table>
-    <thead><tr><th>Build</th><th>Дата</th><th>Изменения</th></tr></thead>
-    <tbody>
-      <tr><td>432</td><td>2026-04-25</td><td>Sprint 1: статус-бейджи на вкладках, history теста, sticky-save (Telegram)</td></tr>
-      <tr><td>463</td><td>2026-05-06</td><td>Sprint A: <code>integration_tester.js</code>, кнопка «Проверить все», auto-refresh</td></tr>
-      <tr><td>464</td><td>2026-05-06</td><td>GCS test fix (object-level permission через <code>list_blobs</code>)</td></tr>
-      <tr><td>465</td><td>2026-05-06</td><td>Реструктуризация: TVIP+LFStream→IPTV, Адреса+Карта→География, Claude→HelpDesk (variant A); AI в футере</td></tr>
-      <tr><td>466</td><td>2026-05-06</td><td>LFStream/TVIP test через production-клиенты; fallback на settings; контурные серые info-иконки рядом с названиями блоков</td></tr>
-    </tbody>
-  </table>
-
-  <h2 id="lk-design-system-489">Дизайн-система ЛК v489 — выравнивание со стилем админки</h2>
   <div class="section-toc">
-  <details open>
-    <summary><strong>Содержание раздела</strong></summary>
-    <ul>
-    <li><a href="#lk-design-tokens-489">Токены дизайн-системы</a></li>
-    <li><a href="#lk-hero-cards-489">Hero-карточки на всех ключевых страницах</a></li>
-    <li><a href="#lk-mobile-489">Мобильная версия</a></li>
-    <li><a href="#lk-screenshots-489">Скриншоты</a></li>
-    <li><a href="#lk-build-history-489">История доработок ЛК (builds 484-489)</a></li>
-    </ul>
-  </details>
+    <details open>
+      <summary><strong>Содержание</strong></summary>
+      <ul>
+        <li><a href="#lk-overview">1. Обзор</a></li>
+        <li><a href="#lk-login">2. Вход и способы авторизации</a></li>
+        <li><a href="#lk-dashboard">3. Дашборд</a></li>
+        <li><a href="#lk-finance">4. Финансы (баланс, пополнение, история)</a></li>
+        <li><a href="#lk-tariff">5. Тарифы</a></li>
+        <li><a href="#lk-services">6. Услуги и ТВ</a></li>
+        <li><a href="#lk-support">7. Поддержка и заявки</a></li>
+        <li><a href="#lk-ai-chat">8. AI-ассистент</a></li>
+        <li><a href="#lk-profile">9. Профиль и безопасность</a></li>
+        <li><a href="#lk-extra">10. Доп. возможности (сессии, тест скорости, ОП, рефералы)</a></li>
+        <li><a href="#lk-dark-mobile">11. Тёмная тема и мобильный вид</a></li>
+        <li><a href="#lk-map">12. Карта раздела</a></li>
+        <li><a href="#lk-admin">13. Настройка ЛК в админке</a></li>
+        <li><a href="#lk-mobile-app">14. Мобильные приложения и Public API</a></li>
+      </ul>
+    </details>
   </div>
 
-<div class="page-toc">
-<details open>
-  <summary><strong><i class="bi bi-book"></i> Содержание раздела</strong></summary>
+  <h2 id="lk-overview">1. Обзор</h2>
+  <p>ЛК закрывает весь цикл самообслуживания, разгружая поддержку:</p>
   <ul>
-    <li><a href="#lk-design-tokens-489">Токены дизайн-системы</a></li>
-    <li><a href="#lk-hero-cards-489">Hero-карточки на всех ключевых страницах</a></li>
-    <li><a href="#lk-mobile-489">Мобильная версия</a></li>
-    <li><a href="#lk-screenshots-489">Скриншоты</a></li>
-    <li><a href="#lk-build-history-489">История доработок ЛК (builds 484-489)</a></li>
+    <li><strong>Финансы</strong> — баланс, онлайн-пополнение (ЮKassa / Wallet One), история платежей и операций, обещанный платёж.</li>
+    <li><strong>Тариф и услуги</strong> — смена тарифа, подключение/отключение услуг, интерактивное ТВ (IPTV).</li>
+    <li><strong>Связь</strong> — заявки в поддержку, сообщения, AI-ассистент 24/7.</li>
+    <li><strong>Профиль</strong> — контакты, смена пароля, привязка соцсетей, безопасность входа.</li>
+    <li><strong>Сервис</strong> — активные подключения (сессии), тест скорости, реферальная программа, добровольная блокировка.</li>
   </ul>
-</details>
-</div>
-
-
-  <p>Build 489 переводит весь Личный Кабинет на единую дизайн-систему с админкой биллинга. До этого ЛК использовал собственный teal-брендинг <code>#5BA89D</code> и отдельный набор CSS-переменных (<code>--lk-*</code>) — это создавало визуальный разрыв при переключении между ЛК и админкой.</p>
-
-  <h3 id="lk-design-tokens-489">Токены дизайн-системы</h3>
-
-  <p>В <code>lk/templates/lk/base.html</code> :root теперь содержит полный набор токенов админки (<code>theme-smit.css</code>):</p>
-
-  <table>
-    <thead><tr><th>Категория</th><th>Токены</th><th>Источник правды</th></tr></thead>
-    <tbody>
-      <tr><td>Brand</td><td><code>--brand-primary #43b77a</code>, <code>--brand-primary-dark</code>, <code>--brand-primary-bg</code></td><td>Совпадает с админкой</td></tr>
-      <tr><td>Status</td><td><code>--smit-state-{ok,warn,danger,info,muted}</code></td><td>Скопировано из админки</td></tr>
-      <tr><td>Surface</td><td><code>--surface-page #f5f6f8</code>, <code>--surface-card #fff</code>, <code>--surface-muted</code></td><td>Скопировано из админки</td></tr>
-      <tr><td>Border</td><td><code>--border-subtle</code>, <code>--border-default</code></td><td>Скопировано из админки</td></tr>
-      <tr><td>Text</td><td><code>--text-primary</code>, <code>--text-secondary</code>, <code>--text-muted</code></td><td>Скопировано из админки</td></tr>
-      <tr><td>Radii</td><td><code>--radius-{xs,sm,md,lg,pill}</code> (3/4/6/8/999)</td><td>Скопировано из админки</td></tr>
-      <tr><td>Shadows</td><td><code>--shadow-{sm,md,lg}</code></td><td>Скопировано из админки</td></tr>
-      <tr><td>Spacing 8-pt</td><td><code>--space-{1..6}</code> (4/8/12/16/24/32)</td><td>Скопировано из админки</td></tr>
-      <tr><td>Focus</td><td><code>--focus-ring rgba(67,183,122,.30)</code>, <code>--focus-outline #43b77a</code></td><td>Скопировано из админки</td></tr>
-      <tr><td>Backwards-compat</td><td><code>--lk-bg</code>, <code>--lk-card-bg</code>, <code>--lk-text</code>, <code>--lk-muted</code>, <code>--lk-border</code></td><td>Алиасы на новые токены — старый код не сломан</td></tr>
-    </tbody>
-  </table>
-
-  <p>Для dark-темы (<code>[data-bs-theme="dark"]</code>) переопределены: surface, border, text, shadow — те же значения что в админском <code>body.dark-theme</code>.</p>
-
-  <h3 id="lk-hero-cards-489">Hero-карточки на всех ключевых страницах</h3>
-
-  <p>Введён единый класс <code>.lk-hero-card</code> (<code>lk/static/lk/css/lk-hero.css</code>, ~190 строк) — gradient-карточка с иконкой/аватаром, title+meta+actions. Используется на:</p>
-
-  <ul>
-    <li><strong>/lk/</strong> (Дашборд) — карточка тарифа: описание, скорость in/out, линейка услуг, бейдж «N доступных вариантов апгрейда»</li>
-    <li><strong>/lk/profile/</strong> — аватар-инициалы, статус (Активен/Заблокирован/ОП), баланс, осталось дней, бейджи «email/SMS/Telegram привязан»</li>
-    <li><strong>/lk/promise-pay/</strong> — countdown «ещё N дней» + лимит + баланс для активного ОП; мотивирующая карточка для неактивного</li>
-    <li><strong>/lk/payments/</strong> — последний платёж + баланс + monthly_cost + «хватит на N дней»</li>
-    <li><strong>/lk/tariff/</strong> — все параметры текущего тарифа + 3-х колоночный grid доступных тарифов</li>
-  </ul>
-
-  <h3 id="lk-mobile-489">Мобильная версия</h3>
-
-  <p>В <code>base.html</code> добавлена секция <code>@media (max-width: 767px)</code>:</p>
-  <ul>
-    <li><strong>Touch targets ≥44px</strong>: <code>.btn</code> min-height 44px, <code>.form-control</code> 44px (обновлено через единое правило, не inline)</li>
-    <li><strong>Inputs 16px</strong>: предотвращает iOS auto-zoom при focus</li>
-    <li><strong>Компактнее padding</strong>: <code>.content-lk</code> 12px, <code>.card-stat</code> 14px, типография уменьшена</li>
-    <li><strong>Bottom-nav safe-area</strong>: <code>padding-bottom: env(safe-area-inset-bottom)</code> для iPhone с home-indicator</li>
-    <li><strong>Bottom-nav active state</strong>: brand-color подсветка через <code>color-mix</code></li>
-  </ul>
-
-  <p>Hero-карточки на mobile (<code>@media (max-width: 767px)</code>):</p>
-  <ul>
-    <li>Grid 3 колонки → 1 колонка с центрированием</li>
-    <li>Иконка 64×64 → 56×56</li>
-    <li>Title 1.35rem → 1.1rem; subtitle 0.95rem → 0.88rem</li>
-    <li>Actions row-flex с <code>min-height 44px</code> на каждой кнопке</li>
-  </ul>
-
-  <h3 id="lk-screenshots-489">Скриншоты</h3>
-
-  <p>12 скриншотов (6 страниц × desktop+mobile) сохранены в <code>docs/img/v489_lk/</code>:</p>
-
-  <table>
-    <thead><tr><th>Страница</th><th>Desktop (1440×900)</th><th>Mobile (390×844, iOS UA)</th></tr></thead>
-    <tbody>
-      <tr><td>Дашборд</td><td><code>dashboard_desktop.png</code></td><td><code>dashboard_mobile.png</code></td></tr>
-      <tr><td>Профиль</td><td><code>profile_desktop.png</code></td><td><code>profile_mobile.png</code></td></tr>
-      <tr><td>ОП</td><td><code>promise_pay_desktop.png</code></td><td><code>promise_pay_mobile.png</code></td></tr>
-      <tr><td>Платежи</td><td><code>payments_desktop.png</code></td><td><code>payments_mobile.png</code></td></tr>
-      <tr><td>Тариф</td><td><code>tariff_desktop.png</code></td><td><code>tariff_mobile.png</code></td></tr>
-      <tr><td>Speedtest</td><td><code>speedtest_desktop.png</code></td><td><code>speedtest_mobile.png</code></td></tr>
-    </tbody>
-  </table>
-
-  <h3 id="lk-build-history-489">История доработок ЛК (builds 484-489)</h3>
-
-  <table>
-    <thead><tr><th>Build</th><th>Дата</th><th>Что изменилось</th></tr></thead>
-    <tbody>
-      <tr><td>484</td><td>2026-05-07</td><td>Hero-карточка <code>/lk/tariff/</code>: все параметры текущего тарифа, фильтрация доступных по <code>allow_change_to</code> + <code>transfer_only_more_money</code> + <code>usluga_range_type</code>; чипы delta-price; empty-state с support-ссылкой</td></tr>
-      <tr><td>485</td><td>2026-05-07</td><td>Fix <code>_get_address()</code>: использовался несуществующий <code>home.city_name</code> вместо <code>home.city</code> → адрес «Не указан». Унифицирован через template-фильтр <code>home_city_street()</code></td></tr>
-      <tr><td>486</td><td>2026-05-07</td><td>Speedtest: при <code>NETWORK_MODE=external</code> или VPN — кнопка <code>disabled</code> с иконкой 🚫 и tooltip; убран <code>confirm()</code> dialog</td></tr>
-      <tr><td>487</td><td>2026-05-07</td><td>E1 mobile_api проверен (баг отсутствует, использует <code>home_city_street</code>) + <code>_get_address</code> унифицирован. E2 hero-карточка тарифа на дашборде: description, speed_in/out, линейка, upgrade_count. E3 inline-edit email/SMS вместо read-only</td></tr>
-      <tr><td>488</td><td>2026-05-07</td><td>F-prep <code>lk-hero.css</code>: 4 chip-цвета (success/warning/danger/info), dark-mode, mobile-адаптив. F1 hero <code>/lk/profile/</code>. F2 hero <code>/lk/promise-pay/</code> с countdown. F3 hero <code>/lk/payments/</code> с last/next</td></tr>
-      <tr><td>489</td><td>2026-05-07</td><td>Brand <code>#5BA89D</code> → <code>#43b77a</code> (выравнивание с админкой). Полный набор токенов админки в :root. Mobile-секция в base.html: ≥44px touch, 16px inputs, safe-area. <code>card-stat</code>/buttons/focus-states выровнены</td></tr>
-    </tbody>
-  </table>
-
-
-  <h2 id="lk-pages">Страницы Личного Кабинета</h2>
-  <div class="section-toc">
-  <details open>
-    <summary><strong>Содержание раздела</strong></summary>
-    <ul>
-    <li><a href="#lk-page-dashboard">Дашборд (/lk/)</a></li>
-    <li><a href="#lk-page-profile">Профиль (/lk/profile/)</a></li>
-    <li><a href="#lk-page-pay">Пополнение баланса (/lk/payments/pay/)</a></li>
-    <li><a href="#lk-page-payments">История платежей (/lk/payments/)</a></li>
-    <li><a href="#lk-page-audit">История операций (/lk/audit/)</a></li>
-    <li><a href="#lk-page-promise-pay">Обещанный платёж (/lk/promise-pay/)</a></li>
-    <li><a href="#lk-page-sessions">Подключения (/lk/sessions/)</a></li>
-    <li><a href="#lk-page-speedtest">Тест скорости (/lk/speedtest/)</a></li>
-    <li><a href="#lk-page-messages">Сообщения (/lk/messages/)</a></li>
-    <li><a href="#lk-page-tariff">Тарифы (/lk/tariff/)</a></li>
-    <li><a href="#lk-page-services">Услуги (/lk/services/)</a></li>
-    <li><a href="#lk-page-referral">Реферальная программа (/lk/referral/)</a></li>
-    <li><a href="#lk-page-block">Добровольная блокировка (/lk/block/)</a></li>
-    <li><a href="#lk-page-support">Поддержка (/lk/support/)</a></li>
-    <li><a href="#lk-page-contacts-required">Заполнение контактов (/lk/profile/contacts-required/)</a></li>
-    </ul>
-  </details>
+  <div class="info-box" style="border-left:4px solid #43b77a; background:rgba(67,183,122,.06); padding:12px 16px; margin:16px 0">
+    <p class="mb-0">Брендинг, набор включённых функций и тексты настраиваются администратором
+    в разделе <a href="#lk-admin">«ЛК и мобильные»</a>; при мультиоператорной конфигурации —
+    отдельно для каждой организации.</p>
   </div>
 
-<div class="page-toc">
-<details open>
-  <summary><strong><i class="bi bi-book"></i> Содержание раздела</strong></summary>
+  <h2 id="lk-login">2. Вход и способы авторизации</h2>
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/lk_v1206/10_login.jpg" alt="Страница входа в ЛК"></p>
+  <p>Страница входа <code>/lk/login/</code>. Основной вход — по <strong>логину
+  и паролю</strong> (договор / логин абонента). Дополнительно доступны способы входа,
+  которые включает оператор:</p>
   <ul>
-    <li><a href="#lk-page-dashboard">Дашборд</a></li>
-    <li><a href="#lk-page-profile">Профиль</a></li>
-    <li><a href="#lk-page-pay">Пополнение баланса</a></li>
-    <li><a href="#lk-page-payments">История платежей</a></li>
-    <li><a href="#lk-page-audit">История операций</a></li>
-    <li><a href="#lk-page-promise-pay">Обещанный платёж</a></li>
-    <li><a href="#lk-page-sessions">Подключения</a></li>
-    <li><a href="#lk-page-speedtest">Тест скорости</a></li>
-    <li><a href="#lk-page-messages">Сообщения</a></li>
-    <li><a href="#lk-page-tariff">Тарифы</a></li>
-    <li><a href="#lk-page-services">Услуги</a></li>
-    <li><a href="#lk-page-referral">Реферальная программа</a></li>
-    <li><a href="#lk-page-block">Добровольная блокировка</a></li>
-    <li><a href="#lk-page-support">Поддержка</a></li>
-    <li><a href="#lk-page-contacts-required">Заполнение контактов</a></li>
+    <li><strong>VK</strong>, <strong>Google</strong>, <strong>Apple</strong>,
+    <strong>Яндекс</strong> — вход через OAuth-аккаунт.</li>
+    <li><strong>Telegram</strong> — вход через Telegram-виджет.</li>
+    <li><strong>Passkey (FIDO2 / WebAuthn)</strong> — вход по биометрии/ключу без пароля.</li>
   </ul>
-</details>
-</div>
+  <p><strong>Восстановление пароля</strong> (<code>/lk/forgot-password/</code>) —
+  по SMS или Email (выбирается оператором). Фон страницы входа и страницы заполнения
+  контактов настраивается в брендинге.</p>
 
-  <p>Что видит абонент на каждой странице ЛК и какие действия ему доступны.</p>
-
-  <h3 id="lk-page-dashboard">Дашборд (<code>/lk/</code>)</h3>
-
-  <p>Главная страница ЛК — сводный обзор состояния аккаунта.</p>
-
+  <h2 id="lk-dashboard">3. Дашборд</h2>
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/lk_v1206/01_dashboard.jpg" alt="Дашборд ЛК"></p>
+  <p>Главная страница <code>/lk/</code> — сводка по абоненту:</p>
   <ul>
-    <li><strong>Шапка</strong> — название тарифа, абонплата, текущий баланс, инициал имени и номер договора. Клик по балансу ведёт на пополнение, клик по тарифу — на смену тарифа (если разрешено настройками).</li>
-    <li><strong>Алерты</strong> — уведомления о низком балансе, активном Обещанном платеже, запланированных работах. Каждый алерт можно скрыть крестиком (запоминается в cookie на год). На мобильном CTA («Пополнить →») располагается под текстом полной шириной для удобного тапа.</li>
-    <li><strong>Карточка «Тариф + Подключение»</strong> — в одной карточке: название тарифа, цена/мес, скорость скачивания, остаток дней до начисления; ниже отделённый блок со статусом подключения (Онлайн/Не подключён), временем последнего входа, ссылкой «История →» и кнопкой «Сменить тариф».</li>
-    <li><strong>Балансовая зона</strong> — сумма на счёте, прогноз «хватит на N дней» при текущем расходе.</li>
-    <li><strong>Быстрые действия</strong> — пополнить, открыть поддержку, посмотреть последний платёж.</li>
+    <li><strong>Баланс</strong> крупной цифрой + кнопка «Пополнить».</li>
+    <li><strong>Договор и статус</strong> подключения (Активен / Заблокирован / Приостановлен).</li>
+    <li><strong>Текущий тариф</strong> + быстрая кнопка «Сменить тариф».</li>
+    <li><strong>Поддержка</strong> — индикатор активных заявок и быстрая ссылка «Написать».</li>
+    <li><strong>Последний платёж</strong>.</li>
+    <li><strong>Баннер уведомлений</strong> — текст от оператора (техработы, акции) сверху.</li>
   </ul>
+  <p>Слева — навигация по разделам, сгруппированная: Финансы, Услуги, Поддержка.
+  Справа в шапке — баланс, договор, переключатель темы и меню профиля. AI-чат
+  доступен плавающей кнопкой в правом нижнем углу.</p>
 
-  <h3 id="lk-page-profile">Профиль (<code>/lk/profile/</code>)</h3>
-
-  <p>Управление контактными данными и привязками.</p>
-
+  <h2 id="lk-finance">4. Финансы</h2>
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/lk_v1206/02_pay.jpg" alt="Пополнение баланса"></p>
   <ul>
-    <li><strong>Hero-карточка</strong> с аватаром-инициалом, ФИО, № договора и адресом. Бейджи статуса (Активен / Заблокирован / ОП активен) и привязок (e-mail, SMS, Telegram-бот). Кнопки «Сменить пароль» и «Пополнить» (если баланс &lt; 100 ₽).</li>
-    <li><strong>Контактные данные</strong> — поля e-mail и телефон с inline-edit. Кнопка «Сохранить» становится активной только при наличии изменений; индикатор «Есть несохранённые изменения» появляется при правке.</li>
-    <li><strong>Безопасность</strong> — пункт «Сменить пароль» (ведёт на отдельную страницу) и «Изменить MAC-адрес» (если функция включена админом — раскрывается inline).</li>
-    <li><strong>Привязки</strong> — VK, вход через Telegram, уведомления в Telegram-боте. Каждая строка показывает статус «Привязан/Не привязан» и кнопку «Привязать»/«Отвязать». Уведомления подключаются через одноразовую ссылку на бота с deep-link (10-минутный токен).</li>
+    <li><strong>Пополнить баланс</strong> (<code>/lk/payments/pay/</code>) — ввод суммы и
+    оплата картой через <strong>ЮKassa</strong> или <strong>Wallet One</strong>. После
+    успешной оплаты баланс зачисляется автоматически по webhook.</li>
+    <li><strong>История платежей</strong> (<code>/lk/payments/</code>) — список пополнений
+    с датой/суммой/способом, экспорт в CSV.</li>
+    <li><strong>История операций</strong> (<code>/lk/audit/</code>) — все списания и
+    начисления (абонплата, услуги, корректировки), бесконечная прокрутка.</li>
+    <li><strong>Обещанный платёж</strong> (<code>/lk/promise-pay/</code>) — временный
+    кредит доверия, если включён оператором.</li>
   </ul>
 
-  <h3 id="lk-page-pay">Пополнение баланса (<code>/lk/payments/pay/</code>)</h3>
+  <h2 id="lk-tariff">5. Тарифы</h2>
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/lk_v1206/03_tariff.jpg" alt="Тарифные планы в ЛК"></p>
+  <p>Страница <code>/lk/tariff/</code>: вверху — карточка текущего тарифа (скорость,
+  цена, линейка услуг), ниже — доступные для перехода тарифы с ценой и скоростью и
+  кнопкой «Перейти на этот тариф». Смена применяется сразу или со следующего
+  расчётного периода в зависимости от настроек тарифа.</p>
 
-  <p>Форма для онлайн-оплаты услуг.</p>
-
+  <h2 id="lk-services">6. Услуги и ТВ</h2>
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/lk_v1206/04_services.jpg" alt="Услуги в ЛК"></p>
   <ul>
-    <li><strong>Текущий баланс</strong> — крупно, зелёный при положительном или красный при отрицательном. При долге — пометка «Услуги могут быть приостановлены».</li>
-    <li><strong>Сумма</strong> — крупное поле с символом ₽. Минимум — сумма, достаточная для погашения долга (если есть).</li>
-    <li><strong>Подсказки сумм</strong> — 4 chip-кнопки с рекомендованными суммами на основе абонплаты тарифа. Активная подсвечивается.</li>
-    <li><strong>Прогноз «После оплаты»</strong> — расчёт нового баланса после зачисления и срок, на который его хватит («2 месяца и 14 дней»).</li>
-    <li><strong>Комиссия</strong> — отдельная плашка с процентом и итоговой суммой к списанию (если ненулевая).</li>
-    <li><strong>Платёжная система</strong> — карточка с иконкой, названием (ЮKassa / Wallet One), описанием поддерживаемых способов (Visa/Mastercard/МИР/СБП) и SSL-бейджем.</li>
-    <li><strong>Кнопка «Оплатить»</strong> — после клика блокируется и показывает спиннер «Перенаправление…» (защита от двойной отправки).</li>
-    <li><strong>Сайдбар</strong> — последние 5 платежей с датой, временем и суммой; ссылка «Все →».</li>
+    <li><strong>Дополнительные услуги</strong> (<code>/lk/services/</code>) — подключение
+    и отключение доступных услуг в один клик.</li>
+    <li><strong>Интерактивное ТВ</strong> (<code>/lk/iptv/</code>) — подключение IPTV-пакетов
+    (TVIP / LFStream «Смотрёшка»).</li>
   </ul>
 
-  <h3 id="lk-page-payments">История платежей (<code>/lk/payments/</code>)</h3>
+  <h2 id="lk-support">7. Поддержка и заявки</h2>
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/lk_v1206/05_support.jpg" alt="Поддержка в ЛК"></p>
+  <p>Раздел <code>/lk/support/</code> — заявки в техподдержку (нативная Поддержка СмІТ
+  Биллинг): список обращений со статусами, создание новой заявки, переписка с
+  оператором и вложения. Отдельно — <strong>Сообщения</strong> (<code>/lk/messages/</code>):
+  уведомления и рассылки от оператора.</p>
 
-  <p>Список финансовых операций абонента.</p>
+  <h2 id="lk-ai-chat">8. AI-ассистент</h2>
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/lk_v1206/08_chat.jpg" alt="AI-чат в ЛК"></p>
+  <p>AI-ассистент (<code>/lk/chat/</code> + плавающий виджет) отвечает на вопросы 24/7
+  на базе AI (Claude / ChatGPT / Gemini через модуль AIDA), использует базу знаний
+  поддержки и видит контекст абонента (баланс, тариф). При сложном вопросе
+  автоматически создаёт заявку и передаёт диалог живому оператору. Абонент может
+  оценить ответы 👍/👎. Срок хранения истории чата настраивается оператором.</p>
 
+  <h2 id="lk-profile">9. Профиль и безопасность</h2>
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/lk_v1206/06_profile.jpg" alt="Профиль абонента в ЛК"></p>
+  <p>Страница <code>/lk/profile/</code>: контактные данные (email/телефон с
+  подтверждением), <strong>смена пароля</strong> (<code>/lk/password/</code>),
+  <strong>привязка соцсетей</strong> (VK / Telegram / Google / Apple / Яндекс) и
+  passkey, переключатель темы. При первом входе, если оператор требует контакты,
+  абонент проходит экран <code>/lk/profile/contacts-required/</code>.</p>
+
+  <h2 id="lk-extra">10. Дополнительные возможности</h2>
   <ul>
-    <li><strong>Hero</strong> — последний платёж (дата + сумма), баланс, абонплата, прогноз «хватит на N дней», всего операций. Кнопки «Пополнить» и «CSV» (выгрузка с учётом текущих фильтров).</li>
-    <li><strong>Фильтры</strong> — chip-строка периодов (Сегодня/Неделя/Месяц/3 мес/Год/Всё) и chip-строка типа (Все/Поступления/Списания). Кнопка «Точный фильтр» раскрывает аккордеон с датами «от-до» и суммой «от-до». Активные фильтры показываются как плашка под формой.</li>
-    <li><strong>Сводка</strong> — 4 плитки: Поступления, Списания, Всего операций, Средний платёж.</li>
-    <li><strong>График по месяцам</strong> — bar chart за 12 месяцев (поступления + списания).</li>
-    <li><strong>Список операций</strong> — каждая операция в виде карточки: иконка-стрелка слева (вверх/вниз), дата + время + цветной pill типа в первой строке, описание во второй (truncate с tooltip), сумма bold справа.</li>
-    <li><strong>Пагинация</strong> — компактные кнопки 36×36 с активной страницей в brand-цвете.</li>
+    <li><strong>Подключения</strong> (<code>/lk/sessions/</code>) — активные и недавние
+    сессии абонента (IP, время, трафик).</li>
+    <li><strong>Тест скорости</strong> (<code>/lk/speedtest/</code>) — замер скорости
+    канала.</li>
+    <li><strong>История операций</strong> (<code>/lk/audit/</code>) — см. ниже.</li>
+    <li><strong>Реферальная программа</strong> (<code>/lk/referral/</code>) — приглашение
+    друзей и бонусы.</li>
+    <li><strong>Добровольная блокировка</strong> (<code>/lk/block/</code>) — «отпуск»:
+    приостановка услуг на время отъезда.</li>
+  </ul>
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/lk_v1206/07_audit.jpg" alt="История операций в ЛК"></p>
+
+  <h2 id="lk-dark-mobile">11. Тёмная тема и мобильный вид</h2>
+  <p>ЛК поддерживает <strong>тёмную тему</strong> (переключатель в шапке; выбор
+  сохраняется в браузере) и полностью адаптивен — на телефоне навигация сворачивается,
+  карточки перестраиваются в одну колонку.</p>
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/lk_v1206/09_dashboard_dark.jpg" alt="ЛК в тёмной теме"></p>
+
+  <h2 id="lk-map">12. Карта раздела</h2>
+  <pre class="mermaid">
+flowchart TB
+    LOGIN["Вход /lk/login/<br/>пароль · VK · TG · Google<br/>Apple · Яндекс · passkey"] --> DASH["Дашборд /lk/<br/>баланс · тариф · статус"]
+
+    DASH --> FIN["Финансы"]
+    DASH --> SRV["Услуги"]
+    DASH --> SUP["Поддержка"]
+    DASH --> PROF["Профиль"]
+
+    FIN --> PAY["Пополнить<br/>ЮKassa · W1"]
+    FIN --> HIST["История платежей<br/>/операций · ОП"]
+    SRV --> TAR["Тарифы"]
+    SRV --> SVC["Услуги · IPTV"]
+    SUP --> TICK["Заявки · Сообщения"]
+    SUP --> AI["AI-ассистент<br/>24/7"]
+    PROF --> SEC["Пароль · соцсети<br/>passkey · контакты"]
+
+    AI -.->|"сложный вопрос"| TICK
+
+    style LOGIN fill:#1e3a5f,stroke:#5BA89D,color:#fff
+    style DASH fill:#134e4a,stroke:#43b77a,color:#fff
+    style PAY fill:#43b77a,stroke:#2d9a5f,color:#fff
+    style AI fill:#1e3a5f,stroke:#5BA89D,color:#fff
+    style TICK fill:#78350f,stroke:#d97706,color:#fff
+  </pre>
+
+  <h2 id="lk-admin">13. Настройка ЛК в админке</h2>
+  <p>Раздел <em>Настройки → ЛК и мобильные</em> (<code>/admin/settings/lk/</code>) —
+  6 вкладок:</p>
+  <ul>
+    <li><strong>Обзор</strong> — сводка: подключения приложений, привязки соцсетей,
+    текущая конфигурация, статистика AI-ассистента.</li>
+    <li><strong>Брендинг</strong> (<code>#lk-admin-branding</code>) — баннер уведомлений
+    (с живым примером), цвет ЛК, визуальные эффекты (тёмная тема / анимация / стекло),
+    фоны страниц логина и онбординга (с превью в модалке).</li>
+    <li><strong>Функции</strong> (<code>#lk-admin-features</code>) — флаги видимости
+    разделов (Услуги, Аудит, HelpDesk, смена MAC и др.) и поведения.</li>
+    <li><strong>AI-чат</strong> — каналы (веб-ЛК / мобильное), сбор оценок, автоэскалация,
+    срок хранения истории.</li>
+    <li><strong>Безопасность</strong> (<code>#lk-admin-security</code>) — вход по IP,
+    автологин по IP, запрет смены пароля.</li>
+    <li><strong>Мобильное</strong> (<code>#lk-admin-mobile</code>) — версии Android/iOS,
+    ссылки в сторы (с превью приложения), тексты force-update, push, особенности.</li>
   </ul>
 
-  <h3 id="lk-page-audit">История операций (<code>/lk/audit/</code>)</h3>
+  <h2 id="lk-mobile-app">14. Мобильные приложения и Public API</h2>
+  <p>ЛК продублирован приложениями <strong>Android</strong> (Google Play) и
+  <strong>iOS</strong> (App Store / TestFlight) на Flutter. Приложения используют
+  <strong>Public Mobile API</strong> (<code>/mobile-api/v1/</code>, JWT-авторизация):
+  баланс/тариф/блокировки, платежи, тарифы, услуги, заявки поддержки, AI-чат,
+  регистрация push-токена.</p>
+  <h3 id="mobile-force-update">Force-update</h3>
+  <p>В админке (вкладка «Мобильное») задаются текущая и минимальная версии Android/iOS.
+  Если у абонента версия старее минимальной — приложение показывает диалог
+  обязательного обновления со ссылкой в стор; для версий между минимальной и текущей —
+  мягкое предложение обновиться.</p>
+  <h3 id="lk-firebase">Push-уведомления (Firebase)</h3>
+  <p>Push работают при загруженном файле сервисного аккаунта <code>firebase-key.json</code>
+  и включаются на странице <em>Сообщения → Push</em>. Низкий баланс, истечение
+  обещанного платежа и рассылки оператора уходят пушами в приложение. Расписание
+  отправки — глобальное (Настройки системы → Сообщения).</p>
 
-  <p>Подробный аудит начислений и списаний за последний год.</p>
-
-  <ul>
-    <li><strong>Сводка</strong> — 3 плитки: Поступления, Списания, Всего операций.</li>
-    <li><strong>Список операций</strong> — карточки с иконкой-стрелкой, датой + временем + типом в первой строке, описанием во второй, суммой справа.</li>
-    <li><strong>Бесконечная загрузка</strong> — следующие 50 операций подгружаются автоматически при скролле к низу. По завершении — индикатор «Это все операции за период».</li>
-  </ul>
-
-  <h3 id="lk-page-promise-pay">Обещанный платёж (<code>/lk/promise-pay/</code>)</h3>
-
-  <p>Управление услугой временного кредитования.</p>
-
-  <ul>
-    <li><strong>Активный ОП</strong> — отображается дата окончания, оставшийся срок, лимит и текущий баланс. Кнопка «Пополнить» для досрочного погашения.</li>
-    <li><strong>Доступен для активации</strong> — карточка с условиями (срок, цена/день, лимит, баланс) и калькулятор «Если активировать ОП сейчас» считает: текущий баланс, зачисление, итоговый баланс, дату окончания, итог к возврату.</li>
-    <li><strong>Недоступен</strong> — карточка-предупреждение с конкретной причиной (превышен лимит/малый возраст аккаунта/cooldown/недостаточный долг) и подсказкой что делать.</li>
-    <li><strong>Активация</strong> — кнопка с подтверждением (модальное окно с деталями: срок, стоимость, лимит, время восстановления интернета).</li>
-    <li><strong>История ОП</strong> — последние операции с датой, описанием и суммой.</li>
-  </ul>
-
-  <h3 id="lk-page-sessions">Подключения (<code>/lk/sessions/</code>)</h3>
-
-  <p>История RADIUS-сессий абонента.</p>
-
-  <ul>
-    <li><strong>Сводка</strong> — 4 плитки: Всего сессий, Активных сейчас, Скачано, Загружено.</li>
-    <li><strong>Список сессий</strong> — для каждой: иконка Wi-Fi, дата + время старта, бейдж «онлайн» для активных, длительность, IP-адрес, VLAN, причина завершения. Активная сессия выделена brand-полосой слева и пульсирующей точкой на иконке.</li>
-    <li><strong>Трафик</strong> — справа в каждой строке. Если в настройках включена детализация — отдельно показывается скачано (DL) и загружено (UL); иначе — суммарный трафик.</li>
-  </ul>
-
-  <h3 id="lk-page-speedtest">Тест скорости (<code>/lk/speedtest/</code>)</h3>
-
-  <p>Замер фактической скорости интернета через Cloudflare Speed.</p>
-
-  <ul>
-    <li><strong>Тариф-карточка</strong> — заявленная скорость по тарифу (DL и UL).</li>
-    <li><strong>Предупреждения</strong> — обнаружение, что абонент находится не в сети оператора (внешний IP) или подключён через VPN/прокси (сравнение WebRTC IP с server IP). При обнаружении кнопка теста блокируется с пояснением.</li>
-    <li><strong>Индикатор замера</strong> — круговой gauge с brand-цветом, отображает текущий замер. Большое значение в Мбит/с в центре, подпись текущего этапа («измеряем ping…», «скачивание…», «отправка…»).</li>
-    <li><strong>Результаты</strong> — 4 плитки: скачивание, загрузка, ping (мс), jitter (мс).</li>
-    <li><strong>Сравнение с тарифом</strong> — цветная плашка: зелёная (≥80% от тарифа), жёлтая (50–80%), красная (&lt;50%).</li>
-    <li><strong>CTA при низкой скорости</strong> — отдельная карточка со списком рекомендаций (провод вместо Wi-Fi, перезагрузить роутер, закрыть торренты) и кнопкой «Создать обращение» с pre-filled темой и телом тикета (включая результаты теста).</li>
-    <li><strong>История тестов</strong> — последние 10 замеров (хранятся в браузере) с датой, DL, UL, ping. Кнопка «Очистить».</li>
-    <li><strong>Блокировка при долге</strong> — если баланс отрицательный, страница показывает заглушку с кнопками «Пополнить» и «Обещанный платёж».</li>
-  </ul>
-
-  <h3 id="lk-page-messages">Сообщения (<code>/lk/messages/</code>)</h3>
-
-  <p>Рассылки и системные уведомления от оператора.</p>
-
-  <ul>
-    <li>Каждое сообщение — карточка с иконкой конверта (закрытый — непрочитанное, открытый — прочитанное), заголовком, временем (формат «вчера», «2 дн назад», «14 апр»), полным текстом и пиллами каналов доставки (Email, SMS, Telegram, Push, VK).</li>
-    <li>Непрочитанные выделены brand-полосой слева и тонированным фоном.</li>
-    <li>Пустое состояние с подсказкой если сообщений нет.</li>
-  </ul>
-
-  <h3 id="lk-page-tariff">Тарифы (<code>/lk/tariff/</code>)</h3>
-
-  <p>Просмотр текущего тарифа и смена на другой.</p>
-
-  <ul>
-    <li><strong>Текущий тариф</strong> — большая brand-карточка: название, описание, цена/мес, параметры (скорость DL/UL, линейка услуг, минимальный срок до смены, комиссия за смену) и флаги-условия (доступна ли смена, разрешён только переход на более дорогие, смена с 1-го числа, смена в конце дня).</li>
-    <li><strong>Доступные тарифы</strong> — каталог карточек. Каждая показывает название, описание, цену, скорости, флаги-условия (с 1-го числа, комиссия, только вверх). Тег «дешевле»/«дороже» с дельтой относительно текущего тарифа. Кнопка «Перейти на этот тариф».</li>
-    <li><strong>Если смена недоступна</strong> — предупреждение с указанием причины и ссылкой на создание обращения.</li>
-  </ul>
-
-  <h3 id="lk-page-services">Услуги (<code>/lk/services/</code>)</h3>
-
-  <p>Подключение/отключение дополнительных услуг.</p>
-
-  <ul>
-    <li><strong>Подключённые услуги</strong> — список карточек: иконка статуса (включена/приостановлена), название, дата подключения, описание, цена/мес справа, кнопка «Отключить» (или «доступно с DD.MM» если есть минимальный срок до отключения).</li>
-    <li><strong>Доступно для подключения</strong> — каталог карточек: иконка-кубик, название, описание, цена (или «бесплатно»), кнопка «Подключить». Недоступные карточки приглушены и показывают причину блокировки.</li>
-  </ul>
-
-  <h3 id="lk-page-referral">Реферальная программа (<code>/lk/referral/</code>)</h3>
-
-  <p>Приглашение друзей с бонусом за подключение.</p>
-
-  <ul>
-    <li><strong>Hero</strong> — иконка-подарок и крупная сумма бонуса «+X ₽». Текст: «За каждого друга, который подключится по вашей ссылке».</li>
-    <li><strong>Реферальная ссылка</strong> — readonly-поле + кнопка «Копировать» (всплывающее уведомление при успешном копировании). Под полем — кнопки шеринга: VK, Telegram, MAX, Email, системное «Поделиться» (если поддерживается браузером).</li>
-    <li><strong>Статистика</strong> — 3 карточки: Приглашено, Оплатили, Заработано.</li>
-    <li><strong>Как это работает</strong> — 4-шаговая инструкция с указанием срока начисления бонуса (24 часа после подключения реферала).</li>
-    <li><strong>Если программа отключена</strong> — карточка-уведомление «Реферальная программа временно приостановлена».</li>
-  </ul>
-
-  <h3 id="lk-page-block">Добровольная блокировка (<code>/lk/block/</code>)</h3>
-
-  <p>Временная приостановка услуг на период отъезда.</p>
-
-  <ul>
-    <li><strong>Услуги активны</strong> — зелёная карточка с галочкой и кнопкой «Приостановить услуги». Подтверждение через модальное окно со списком последствий.</li>
-    <li><strong>Услуги приостановлены</strong> — оранжевая карточка с паузой и кнопкой «Возобновить услуги».</li>
-    <li><strong>Недоступно</strong> — серая карточка с заглушкой и кнопкой «Создать обращение в поддержку» (если функция отключена для тарифа).</li>
-    <li><strong>Что произойдёт при приостановке</strong> — отдельная информационная карточка с 4 пунктами: интернет отключится за 1–2 минуты, абонплата перестанет списываться, IPTV-услуги приостановятся, возобновить можно в любой момент.</li>
-  </ul>
-
-  <h3 id="lk-page-support">Поддержка (<code>/lk/support/</code>)</h3>
-
-  <p>Список обращений в техподдержку через HelpDesk.</p>
-
-  <ul>
-    <li><strong>Вкладки</strong> — «Открытые» и «Закрытые» с цветными счётчиками.</li>
-    <li><strong>Список тикетов</strong> — карточки со статусной иконкой в круге слева, заголовком темы (clamp 2 строки), мета-строкой (#id · обновлено · цветной pill статуса), стрелкой при наведении.</li>
-    <li><strong>4 цвета статуса</strong>: <em>waiting</em> (красный, ждёт ответа оператора), <em>active</em> (зелёный, в работе), <em>pending</em> (оранжевый, ожидает), <em>closed</em> (серый, закрыт).</li>
-    <li><strong>Кнопка «Новое обращение»</strong> — переход на форму создания. Если у абонента не указан e-mail — отдельное предупреждение со ссылкой на профиль.</li>
-    <li><strong>Пустое состояние</strong> — сообщение с подсказкой для каждой вкладки.</li>
-  </ul>
-
-  <h3 id="lk-page-contacts-required">Заполнение контактов (<code>/lk/profile/contacts-required/</code>)</h3>
-
-  <p>Принудительный сценарий заполнения контактов при первом входе в ЛК (если включён в настройках).</p>
-
-  <ul>
-    <li><strong>Шаг 1</strong> — карточка с brand-шапкой и индикатором шагов. Поля e-mail и/или телефон (в зависимости от настроек). Блок «Зачем это нужно» объясняет назначение контактов. Если требуется верификация e-mail — отдельная плашка-напоминание о возможном попадании письма в «Спам».</li>
-    <li><strong>Шаг 2</strong> — карточки верификации для каждого канала: для SMS — крупное OTP-поле и кнопка «Отправить ещё раз» (cooldown 60 сек, иконка-таймер при countdown); для e-mail — индикация «Откройте письмо и кликните по ссылке» + плашка про «Спам» + кнопка «Отправить повторно».</li>
-    <li><strong>Автоматическая проверка</strong> — после отправки письма страница каждые 5 секунд проверяет, подтверждён ли e-mail, и автоматически переходит на главную ЛК, как только все каналы подтверждены.</li>
-    <li><strong>Возврат к шагу 1</strong> — если контакты были введены неверно, кнопка «Вернуться к шагу 1» сбрасывает данные.</li>
-  </ul>
-
-  <p>Иллюстрации страниц:</p>
-
-  <p>
-    <img src="../img/v585_lk/dashboard_desktop.png" alt="Дашборд" loading="lazy" style="max-width:100%;border:1px solid var(--border-default);border-radius:8px;margin-bottom:8px">
-    <img src="../img/v585_lk/payments_desktop.png" alt="История платежей" loading="lazy" style="max-width:100%;border:1px solid var(--border-default);border-radius:8px;margin-bottom:8px">
-    <img src="../img/v585_lk/profile_desktop.png" alt="Профиль" loading="lazy" style="max-width:100%;border:1px solid var(--border-default);border-radius:8px;margin-bottom:8px">
-    <img src="../img/v585_lk/tariff_desktop.png" alt="Тарифы" loading="lazy" style="max-width:100%;border:1px solid var(--border-default);border-radius:8px;margin-bottom:8px">
+  <p style="margin-top:2rem; color:#6c757d; font-size:.9rem">
+    Скриншоты и обложка: <code>gs://uspeshnyy-projects/smit/billing/lk_v1206/</code>.
+    Production: <a href="https://rbill.smit34.ru/lk/">rbill.smit34.ru/lk/</a>.
   </p>
-
 
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v2.1.0 (build 1151)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">14.06.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v2.1.0 (build 1151)</span>&nbsp;|&nbsp;<span data-smit="updated">14.06.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.0.0</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">03.07.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.0.0</span>&nbsp;|&nbsp;<span data-smit="updated">03.07.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=923"></script>

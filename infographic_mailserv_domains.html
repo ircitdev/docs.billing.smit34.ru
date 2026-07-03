@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8">
+<style>
+  :root{--brand:#43b77a;--ink:#1d2733;--muted:#5d6b7a;--line:#d8e0e8;--bg:#f4f7fa;--card:#fff;--blue:#2f6fb0}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--ink);padding:34px;width:1280px}
+  h1{font-size:28px;font-weight:800;letter-spacing:-.5px;margin-bottom:4px}
+  h1 .c{color:var(--brand)}
+  .sub{color:var(--muted);font-size:15px;margin-bottom:28px}
+  .hub{display:flex;align-items:center;gap:0;margin-bottom:30px}
+  .server{background:linear-gradient(135deg,#43b77a,#2f9e6a);color:#fff;border-radius:16px;padding:24px 26px;width:330px;flex-shrink:0;box-shadow:0 6px 22px rgba(67,183,122,.28)}
+  .server .lbl{font-size:12px;text-transform:uppercase;letter-spacing:1.3px;opacity:.85}
+  .server .nm{font-size:23px;font-weight:800;margin:4px 0}
+  .server .ip{font-family:monospace;font-size:14px;opacity:.92}
+  .server .meta{margin-top:14px;font-size:12.5px;line-height:1.7;opacity:.95}
+  .fan{flex:1;display:flex;align-items:center}
+  .lines{width:60px;display:flex;flex-direction:column;justify-content:center;color:var(--brand);font-size:26px;font-weight:800;align-items:center;gap:34px}
+  .orgs{flex:1;display:flex;flex-direction:column;gap:14px}
+  .org{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;border-left:5px solid var(--blue)}
+  .org .on{font-weight:800;font-size:15.5px}
+  .org .od{color:var(--muted);font-size:12.5px;margin-top:3px}
+  .org .doms{margin-top:8px;display:flex;flex-wrap:wrap;gap:7px}
+  .chip{background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:4px 10px;font-family:monospace;font-size:12px;color:var(--ink)}
+  .note{color:var(--muted);font-size:12px;margin:4px 0 28px}
+  .dns{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px}
+  .dns h2{font-size:13px;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin-bottom:16px;font-weight:700}
+  .dnsrow{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .dnsc{text-align:center;padding:14px 10px;background:var(--bg);border-radius:11px;border:1px solid var(--line)}
+  .dnsc .ic{font-size:26px}
+  .dnsc .t{font-weight:700;font-size:13.5px;margin-top:7px}
+  .dnsc .d{color:var(--muted);font-size:11.5px;margin-top:3px}
+  .foot{margin-top:24px;color:var(--muted);font-size:12px;display:flex;justify-content:space-between;border-top:1px solid var(--line);padding-top:14px}
+  .badge{background:var(--blue);color:#fff;padding:3px 11px;border-radius:20px;font-weight:700;font-size:11.5px}
+</style></head>
+<body>
+  <h1><span class="c">Один сервер</span> — много доменов и организаций</h1>
+  <div class="sub">Multi-org: режим «Все» показывает почту всех организаций; конкретная организация — только свою. На одну организацию — несколько доменов.</div>
+
+  <div class="hub">
+    <div class="server">
+      <div class="lbl">📭 Почтовый сервер</div>
+      <div class="nm">mailserv 1.0</div>
+      <div class="ip">rbill.smit34.ru · 193.232.2.128</div>
+      <div class="meta">Postfix + Dovecot + Rspamd + SOGo<br>стек <b>smit-mail</b> (изолирован)<br>source of truth — БД биллинга</div>
+    </div>
+    <div class="fan">
+      <div class="lines"><div>╲</div><div>━</div><div>╱</div></div>
+      <div class="orgs">
+        <div class="org"><div class="on">СмИТ</div><div class="od">основной бренд</div>
+          <div class="doms"><span class="chip">billing.smit34.ru</span><span class="chip">support.smit34.ru</span><span class="chip">mx1.smit34.ru</span></div></div>
+        <div class="org" style="border-left-color:#7a52c2"><div class="on">ИТ Консалтинг</div><div class="od">itc34.ru</div>
+          <div class="doms"><span class="chip">itc34.ru</span></div></div>
+        <div class="org" style="border-left-color:#c2522f"><div class="on">РоборНЭТ</div><div class="od">robornet.ru</div>
+          <div class="doms"><span class="chip">robornet.ru</span></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="note">↳ Каждый домен входа имеет собственный брендинг login-страницы (фон, обложка, видео, заголовок, favicon) — настраивается во вкладке «Страница входа».</div>
+
+  <div class="dns">
+    <h2>☁️ Домены и DNS — Cloudflare API из биллинга</h2>
+    <div class="dnsrow">
+      <div class="dnsc"><div class="ic">📋</div><div class="t">Записи A/CNAME/MX/TXT</div><div class="d">просмотр и правка без входа в CF</div></div>
+      <div class="dnsc"><div class="ic">📧</div><div class="t">Почта в 1 клик</div><div class="d">MX · SPF · DKIM · DMARC</div></div>
+      <div class="dnsc"><div class="ic">🔗</div><div class="t">Поддомен под сервис</div><div class="d">ЛК · mail · support</div></div>
+      <div class="dnsc"><div class="ic">🩺</div><div class="t">Авто-диагностика</div><div class="d">DNS для Поддержки и CRM</div></div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <div>Per-org Cloudflare creds · API-прокси (CF блокирован для RU) · Scoped Token / Global Key</div>
+    <div class="badge">multi-org · per-domain branding</div>
+  </div>
+</body></html>

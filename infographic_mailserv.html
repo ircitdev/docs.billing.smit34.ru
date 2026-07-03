@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8">
+<style>
+  :root{--brand:#43b77a;--ink:#1d2733;--muted:#5d6b7a;--line:#d8e0e8;--bg:#f4f7fa;--card:#fff;--accent:#2f6fb0}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--ink);padding:34px;width:1280px}
+  h1{font-size:30px;font-weight:800;letter-spacing:-.5px;margin-bottom:4px}
+  h1 .c{color:var(--brand)}
+  .sub{color:var(--muted);font-size:15px;margin-bottom:26px}
+  .grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+  .card h2{font-size:13px;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin-bottom:14px;font-weight:700}
+  .layer{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:9px;background:var(--bg);margin-bottom:9px;border:1px solid var(--line)}
+  .layer:last-child{margin-bottom:0}
+  .dot{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;color:#fff;font-weight:700}
+  .layer .t{font-weight:700;font-size:14.5px}
+  .layer .d{color:var(--muted);font-size:12px}
+  .flow{display:flex;align-items:stretch;gap:0;margin-top:26px}
+  .step{flex:1;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:15px 14px;position:relative;text-align:center}
+  .step .n{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--brand);color:#fff;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px}
+  .step .ic{font-size:24px;margin:8px 0 6px}
+  .step .st{font-weight:700;font-size:13.5px}
+  .step .sd{color:var(--muted);font-size:11.5px;margin-top:3px}
+  .arrow{display:flex;align-items:center;justify-content:center;color:var(--brand);font-size:22px;font-weight:800;padding:0 6px}
+  .full{margin-top:18px}
+  .phases{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px}
+  .ph{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:14px;border-left:4px solid var(--brand)}
+  .ph .ttl{font-weight:800;font-size:14px}
+  .ph .ds{color:var(--muted);font-size:11.5px;margin-top:4px;line-height:1.45}
+  .ph .ok{color:var(--brand);font-weight:700;font-size:12px;margin-top:7px;display:block}
+  .foot{margin-top:24px;color:var(--muted);font-size:12px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding-top:14px}
+  .badge{background:var(--brand);color:#fff;padding:3px 11px;border-radius:20px;font-weight:700;font-size:11.5px}
+</style></head>
+<body>
+  <h1><span class="c">СмИТ</span> Почтовый сервер <span style="font-size:18px;color:var(--muted);font-weight:600">— модуль mailserv</span></h1>
+  <div class="sub">Собственный почтовый сервер как лицензируемый модуль биллинга. Изолированный стек на rbill (193.232.2.128), управление из админки.</div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>🧱 Стек приёма/отправки</h2>
+      <div class="layer"><div class="dot" style="background:#2f6fb0">📨</div><div><div class="t">Postfix</div><div class="d">MTA · SMTP 25 · submission 587</div></div></div>
+      <div class="layer"><div class="dot" style="background:#7a52c2">📥</div><div><div class="t">Dovecot</div><div class="d">IMAP/LMTP · SQL passdb (PostgreSQL)</div></div></div>
+      <div class="layer"><div class="dot" style="background:#c2522f">🛡️</div><div><div class="t">Rspamd</div><div class="d">антиспам · DKIM-подпись</div></div></div>
+      <div class="layer"><div class="dot" style="background:#43b77a">🌐</div><div><div class="t">SOGo</div><div class="d">webmail · :8443 · брендинг</div></div></div>
+    </div>
+
+    <div class="card">
+      <h2>🗄️ Source of truth — БД биллинга</h2>
+      <div class="layer"><div class="dot" style="background:#43b77a">D</div><div><div class="t">MailDomain</div><div class="d">домены, привязка к организации</div></div></div>
+      <div class="layer"><div class="dot" style="background:#43b77a">A</div><div><div class="t">MailAccount</div><div class="d">ящики · {SHA512-CRYPT} · квота</div></div></div>
+      <div class="layer"><div class="dot" style="background:#43b77a">L</div><div><div class="t">MailAlias</div><div class="d">псевдонимы пересылки</div></div></div>
+      <div class="layer"><div class="dot" style="background:#2f6fb0">B</div><div><div class="t">MailLoginBranding</div><div class="d">фон/обложка/видео по hostname</div></div></div>
+    </div>
+
+    <div class="card">
+      <h2>🎛️ Управление из админки</h2>
+      <div class="layer"><div class="dot" style="background:#5d6b7a">①</div><div><div class="t">Обзор</div><div class="d">статус · backend-свитч · DKIM/SPF</div></div></div>
+      <div class="layer"><div class="dot" style="background:#5d6b7a">②</div><div><div class="t">Ящики · Домены · Админы</div><div class="d">CRUD без входа в Mailcow</div></div></div>
+      <div class="layer"><div class="dot" style="background:#5d6b7a">③</div><div><div class="t">Страница входа</div><div class="d">брендинг login по доменам</div></div></div>
+      <div class="layer"><div class="dot" style="background:#2f6fb0">④</div><div><div class="t">Домены и DNS</div><div class="d">Cloudflare API · MX/SPF/DKIM 1-клик</div></div></div>
+    </div>
+  </div>
+
+  <h2 style="margin-top:30px;font-size:13px;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);font-weight:700">E2E поток письма</h2>
+  <div class="flow">
+    <div class="step"><div class="n">1</div><div class="ic">🌍</div><div class="st">SMTP 25</div><div class="sd">Postfix принимает</div></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">2</div><div class="ic">🛡️</div><div class="st">Rspamd</div><div class="sd">антиспам-милтер</div></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">3</div><div class="ic">📥</div><div class="st">LMTP</div><div class="sd">Dovecot → Maildir</div></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">4</div><div class="ic">📖</div><div class="st">IMAP / SOGo</div><div class="sd">чтение клиентом</div></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">5</div><div class="ic">✉️</div><div class="st">587 + DKIM</div><div class="sd">отправка наружу</div></div>
+  </div>
+
+  <h2 style="margin-top:30px;font-size:13px;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);font-weight:700">Готовность по фазам</h2>
+  <div class="phases">
+    <div class="ph"><div class="ttl">Ф0–Ф1 · Control-plane</div><div class="ds">Гейт доставляемости 8.9/10. Стек поднят, E2E-приём письма.</div><span class="ok">✔ готово</span></div>
+    <div class="ph"><div class="ttl">Ф2–Ф3 · БД + UI</div><div class="ds">Auth-мост к PostgreSQL. Раздел админки на backend-свитче MAIL_BACKEND.</div><span class="ok">✔ готово</span></div>
+    <div class="ph"><div class="ttl">Ф4–Ф5 · Отправка + webmail</div><div class="ds">DKIM-подпись, submission SASL. SOGo webmail с брендингом.</div><span class="ok">✔ готово</span></div>
+    <div class="ph"><div class="ttl">Ф6–Ф7 · Миграция + модуль</div><div class="ds">Импорт структуры Mailcow. Лицензируемый модуль (tier=pro).</div><span class="ok">✔ готово</span></div>
+  </div>
+
+  <div class="foot">
+    <div>СмИТ Биллинг v3.0.0 (build 1225) · стек <b>smit-mail</b> на rbill · backend = <b>mailserv</b></div>
+    <div class="badge">ВСЕ Ф0–Ф7 ГОТОВЫ 🎉</div>
+  </div>
+</body></html>
