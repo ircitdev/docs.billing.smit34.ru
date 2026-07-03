@@ -226,6 +226,14 @@
     stashSources();
     renderAll();
 
+    // Страховка от гонки на тяжёлых страницах: если первый прогон не успел
+    // (CDN ещё грузился / main.js переключал тему) — повторяем после полной
+    // загрузки страницы и отложенными ретраями. renderAll() идемпотентен
+    // (:not([data-processed]):not([data-mermaid-done])) — лишние вызовы бесплатны.
+    window.addEventListener('load', function () { stashSources(); renderAll(); });
+    setTimeout(function () { stashSources(); renderAll(); }, 2000);
+    setTimeout(function () { stashSources(); renderAll(); }, 6000);
+
     // Реакция на переключение темы: main.js меняет <html data-theme>
     var lastTheme = document.documentElement.getAttribute('data-theme');
     var mo = new MutationObserver(function () {
