@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>API — СмИТ Биллинг v3.0.0 (build 1425)</title>
+  <title>API — СмИТ Биллинг v3.0.0 (build 1426)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 3.0 — Документация">
-  <meta property="og:title" content="API — СмИТ Биллинг v3.0.0 (build 1425)">
+  <meta property="og:title" content="API — СмИТ Биллинг v3.0.0 (build 1426)">
   <meta property="og:description" content="REST API v2, SOAP API, обещанный платёж, управление абонентами. Примеры запросов curl и JSON.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/api.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="API — СмИТ Биллинг v3.0.0 (build 1425)">
+  <meta name="twitter:title" content="API — СмИТ Биллинг v3.0.0 (build 1426)">
   <meta name="twitter:description" content="REST API v2, SOAP API, обещанный платёж, управление абонентами. Примеры запросов curl и JSON.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="REST API v2, SOAP API, обещанный платёж, управление абонентами. Примеры запросов curl и JSON.">
@@ -938,6 +938,45 @@ WMI_MERCHANT_ID=123456
   <p>UI настроек: <code>/admin/settings/payment/</code> — кнопки «Проверить подключение» для обеих систем.</p>
 
   <!-- ============================================ -->
+  <h3 id="payments-receipt">Фискализация на стороне ЮKassa (54-ФЗ)</h3>
+
+  <p>Биллинг передаёт фискальный чек (<code>receipt</code>) в каждый онлайн-платёж —
+  ЮKassa сама пробивает чек и отправляет его покупателю. Работает для обоих
+  протоколов и для всех точек оплаты (ЛК, мобильное приложение, гостевой Wi-Fi):</p>
+
+  <ul>
+    <li><strong>REST API v3</strong> — объект <code>receipt</code> в теле платежа.
+      Если магазин ещё не включил «Чеки от ЮKassa» и API отвечает ошибкой на
+      <code>receipt</code>, платёж автоматически повторяется без чека (оплата
+      не блокируется, в лог пишется предупреждение);</li>
+    <li><strong>HTTP-протокол</strong> — поле <code>ym_merchant_receipt</code>
+      (JSON: <code>customerContact</code> + позиции с <code>tax</code>,
+      <code>paymentSubjectType</code>, <code>paymentMethodType</code>).</li>
+  </ul>
+
+  <p>Чек формируется одной позицией «Пополнение лицевого счёта, договор N» на
+  полную сумму платежа (с комиссией) — суммы чека и платежа всегда совпадают.
+  Контакт покупателя выбирается каскадом: email абонента → телефон (11 цифр,
+  E.164) → <code>LK_YOOKASSA_RECEIPT_FALLBACK_EMAIL</code>. Если контакта нет —
+  платёж уходит без чека, а в лог пишется предупреждение.</p>
+
+  <table>
+    <thead><tr><th>Ключ</th><th>Описание</th></tr></thead>
+    <tbody>
+      <tr><td><code>LK_YOOKASSA_RECEIPT_ENABLED</code></td><td>Передавать чек (по умолчанию <code>1</code>)</td></tr>
+      <tr><td><code>LK_YOOKASSA_VAT_CODE</code></td><td>Ставка НДС в чеке (<code>1</code> = без НДС/УСН, <code>4</code> = НДС 20%)</td></tr>
+      <tr><td><code>LK_YOOKASSA_PAYMENT_SUBJECT</code></td><td>Признак предмета расчёта (по умолчанию <code>service</code>)</td></tr>
+      <tr><td><code>LK_YOOKASSA_PAYMENT_MODE</code></td><td>Признак способа расчёта (по умолчанию <code>full_prepayment</code> — пополнение баланса = предоплата услуг связи)</td></tr>
+      <tr><td><code>LK_YOOKASSA_RECEIPT_FALLBACK_EMAIL</code></td><td>Email для чека, когда у абонента нет контактов (опционально)</td></tr>
+    </tbody>
+  </table>
+
+  <p><strong>Требование на стороне ЮKassa:</strong> в личном кабинете магазина
+  должна быть включена опция «Чеки от ЮKassa» (фискализация силами ЮKassa по
+  54-ФЗ). Мультиорганизационные кассы используют ту же логику — чек уходит из
+  кассы организации абонента.</p>
+
+  <!-- ============================================ -->
   <h3 id="payments-finops">Запись в FinanceOperations</h3>
 
   <p>После успешного зачисления создаётся запись в <code>FinanceOperations</code>:</p>
@@ -1584,8 +1623,8 @@ curl -s -X POST "https://billing.example.com/mobile-api/v1/push/register" \
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.0.0 (build 1425)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">04.07.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.0.0 (build 1425)</span>&nbsp;|&nbsp;<span data-smit="updated">04.07.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.0.0 (build 1426)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">04.07.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.0.0 (build 1426)</span>&nbsp;|&nbsp;<span data-smit="updated">04.07.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=923"></script>

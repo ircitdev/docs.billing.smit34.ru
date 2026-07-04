@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Интеграция с СОРМ3 — СмИТ Биллинг v3.0.0 (build 1425)</title>
+  <title>Интеграция с СОРМ3 — СмИТ Биллинг v3.0.0 (build 1426)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 3.0 — Документация">
-  <meta property="og:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v3.0.0 (build 1425)">
+  <meta property="og:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v3.0.0 (build 1426)">
   <meta property="og:description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/sorm.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v3.0.0 (build 1425)">
+  <meta name="twitter:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v3.0.0 (build 1426)">
   <meta name="twitter:description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
@@ -523,6 +523,27 @@
     <li><strong>DETACH fallback</strong> — <code>COALESCE(DISABLED_DATE, CREATE_DATE_SYSTEM, CREATE_DATE)</code>. У 2285 неактивных абонентов <code>DISABLED_DATE</code> не было перенесено из EBS-импорта, теперь поле всегда заполнено</li>
     <li><strong>Нормализация ФИО</strong> — <code>regexp_replace(NAME, '[0-9.&quot;&laquo;&raquo;№]+', '', 'g')</code> + <code>NULLIF</code> для пустоты. Убирает мусор типа «7006», «Сергей.», «Колюжнова Р.М.», «Абонент №6649»</li>
     <li><strong>Фильтр Обещанного Платежа</strong> в ABONENT_SRV — <code>usluga.name NOT ILIKE '%обещанн%'</code> и исключение usluga_id из списка {30353, -3, -4}. ОП — это внутренние транзакции биллинга, не «услуги связи»</li>
+  </ul>
+
+  <h3 id="sorm-fixes-2026-07">Правки по замечаниям куратора от 03.07.2026</h3>
+  <ul>
+    <li><strong>IP_PLAN дополнен технологическими подсетями</strong> — помимо
+      абонентских пулов (<code>100.99.0.0/16</code> частями /23 и
+      <code>10.77.0.0/16</code>) в план включены сети управления NAS и
+      транспортные: <code>10.100.100.0/24</code>, <code>10.233.1.0/24</code>,
+      <code>10.200.100.0/24</code>, <code>10.22.17.0/24</code>,
+      <code>10.25.0.0/24</code>. Технологические записи добавляются
+      <code>UNION</code>-блоком в SQL отчёта — справочник абонентских пулов не
+      засоряется;</li>
+    <li><strong>ABONENT_IDENT: динамическая адресация без IP</strong> — у
+      абонентов, получающих адрес динамически из пула (в сети это 100%
+      абонентов, доступ только через RADIUS), поля <code>IP_TYPE</code>,
+      <code>IPV4</code> и <code>IPV4_MASK</code> выгружаются пустыми;
+      идентификатор абонента — поле <code>LOGIN</code> (совпадает с
+      <code>username</code> в RADIUS-потоке);</li>
+    <li><strong>Проверка «кто мимо RADIUS»</strong> — абонентов с постоянным
+      доступом без авторизации нет (<code>ALWAYS_LOGGED</code> = 0 записей),
+      статических привязок вне RADIUS в выгрузке не бывает.</li>
   </ul>
 
   <h3 id="prikaz-573-audit-cmd">Команда аудита качества данных</h3>
@@ -1136,8 +1157,8 @@ python manage.py merge_sorm_attribute_dups --by-name --apply</code></pre>
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.0.0 (build 1425)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">04.07.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.0.0 (build 1425)</span>&nbsp;|&nbsp;<span data-smit="updated">04.07.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.0.0 (build 1426)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">04.07.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.0.0 (build 1426)</span>&nbsp;|&nbsp;<span data-smit="updated">04.07.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=923"></script>

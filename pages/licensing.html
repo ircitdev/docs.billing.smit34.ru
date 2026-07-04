@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Лицензирование и оплата — СмИТ Биллинг v3.0.0 (build 1425)">
+  <meta name="twitter:title" content="Лицензирование и оплата — СмИТ Биллинг v3.0.0 (build 1426)">
   <meta name="twitter:description" content="Порядок поставки ПО, решение проблем с оплатой, акты сверки, работа системы при неоплате.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="Порядок поставки ПО, решение проблем с оплатой, акты сверки, работа системы при неоплате.">
@@ -394,6 +394,38 @@
   </div>
 
   <!-- ═══ 5. API ═══ -->
+  <h2 id="modules-catalog">4А. Каталог модулей: версии, changelog, зависимости</h2>
+
+  <p>Сервер лицензий ведёт каталог из <strong>20 модулей</strong> с версиями и
+  историей изменений. У каждого модуля: категория, иконка, текущая версия,
+  changelog по версиям и зависимости (например, «AI-ассистент» требует модуль
+  «Поддержка», «Автообзвон» — «IP-телефонию»). Версия модуля показывается
+  бейджем на карточках при настройке тарифа.</p>
+
+  <ul>
+    <li><strong>Базовые модули</strong> (ядро биллинга, RADIUS, отчёты, карта
+      сети) доступны во всех тарифах и в настройке тарифа не участвуют;</li>
+    <li><strong>Тарифы</strong> — форма с карточками модулей по категориям:
+      выбранные подсвечены, невыбранные полупрозрачны; у тарифа есть обложка
+      и блок «Кто на этом тарифе» со ссылками на инсталляции;</li>
+    <li><strong>Защита от случайных изменений</strong> — состав модулей тарифа
+      заблокирован до нажатия «Изменить состав модулей», при сохранении
+      показывается список включаемых/выключаемых модулей; переключение
+      признаков «Базовый (ядро)» и «Активен» требует подтверждения, удаление —
+      ввода кода объекта.</li>
+  </ul>
+
+  <h2 id="plugin-widgets">4Б. Виджеты-плагины</h2>
+
+  <p>Каталог загружаемых виджетов для инсталляций: zip-пакет
+  (<code>widget.json</code> + <code>widget.js</code>), точка монтирования
+  (дашборд CRM, карточка сделки, дашборд биллинга, карточка абонента),
+  категория (CRM, аналитика, финансы и др.), обложка и доступность по тарифам
+  (пусто = всем). Пакет валидируется при загрузке: манифест, совпадение slug и
+  версии, наличие entry-файла; целостность — SHA-256. Инсталляции получают
+  каталог по лицензионному ключу: <code>GET /api/gw/widgets/</code> (в ответе
+  есть <code>category</code>/<code>category_name</code> для группировки).</p>
+
   <h2 id="api">5. API проверки лицензии</h2>
 
   <p>Лицензию можно проверить напрямую через браузер или curl:</p>
@@ -450,8 +482,8 @@
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.0.0 (build 1425)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">04.07.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.0.0 (build 1425)</span>&nbsp;|&nbsp;<span data-smit="updated">04.07.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.0.0 (build 1426)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">04.07.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.0.0 (build 1426)</span>&nbsp;|&nbsp;<span data-smit="updated">04.07.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=923"></script>
