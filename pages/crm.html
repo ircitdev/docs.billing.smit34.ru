@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRM — продажи и подключения — СмИТ Биллинг 3.0 (build 1424)</title>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="СмИТ Биллинг 3.0 — Документация">
+  <meta property="og:title" content="CRM — СмИТ Биллинг 3.0">
+  <meta property="og:description" content="Нативная CRM в стиле amoCRM: канбан-воронка, конструктор стадий и триггеров, источники сделок, Salesbot, Задачи, Списки, виджеты-плагины.">
+  <meta property="og:url" content="https://docs.billing.smit34.ru/pages/crm.html">
+  <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="ru_RU">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="CRM — СмИТ Биллинг 3.0">
+  <meta name="twitter:description" content="Нативная CRM в стиле amoCRM: канбан-воронка, конструктор стадий и триггеров, источники сделок, Salesbot, Задачи, Списки, виджеты-плагины.">
+  <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
+  <meta name="description" content="Нативная CRM в стиле amoCRM: канбан-воронка, конструктор стадий и триггеров, источники сделок, Salesbot, Задачи, Списки, виджеты-плагины.">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css?v=1153">
+  <link rel="stylesheet" href="../css/search.css?v=790">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.26.0/dist/tabler-icons.min.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <button class="menu-toggle" aria-label="Меню">&#9776;</button>
+    <div class="logo">
+      <div class="logo-icon">С</div>
+      <div class="logo-text"><span class="logo-main">СмИТ Биллинг 3.0 </span><span>Документация</span></div>
+    </div>
+  </div>
+  <div class="header-search"><div class="docs-search-wrap"><input type="search" id="docsSearch" class="docs-search-input" placeholder="Поиск по документации..." autocomplete="off"><span class="docs-search-icon"><i class="ti ti-search"></i></span><div class="docs-search-results" id="docsSearchResults"></div></div></div>
+  <div class="header-right">
+    <a href="../graphify/graph.html" class="header-nav-link" title="Граф зависимостей кода">
+      <i class="ti ti-topology-star-3 hnl-ico"></i><span class="hnl-txt">Граф</span>
+    </a>
+    <a href="../graphify/wiki/index.html" class="header-nav-link" title="Wiki архитектурных модулей">
+      <i class="ti ti-book-2 hnl-ico"></i><span class="hnl-txt">Wiki</span>
+    </a>
+    <button class="mobile-search-btn" aria-label="Поиск" title="Поиск"><i class="ti ti-search"></i></button>
+    <button class="theme-toggle" aria-label="Переключить тему" title="Светлая / тёмная тема">
+      <span class="icon-sun">&#9788;</span>
+      <span class="icon-moon">&#9790;</span>
+    </button>
+  </div>
+</header>
+
+<div class="search-overlay" id="searchOverlay" role="dialog" aria-label="Поиск по документации">
+  <div class="search-overlay-inner">
+    <i class="ti ti-search search-prefix-icon"></i>
+    <input type="search" id="docsSearchMobile" placeholder="Поиск по документации..." autocomplete="off">
+    <button class="search-overlay-close" aria-label="Закрыть" id="searchOverlayClose"><i class="ti ti-x"></i></button>
+    <div class="search-overlay-results" id="docsSearchResultsMobile"></div>
+  </div>
+</div>
+
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+<aside class="sidebar">
+  <nav>
+    <div class="nav-section">Разделы</div>
+    <ul>
+      <li><a href="../index.html"><i class="ti ti-home"></i> Главная</a></li>
+      <li class="has-children">
+        <a href="installation.html"><i class="ti ti-box"></i> Установка и интеграция <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="installation.html#requirements">1. Системные требования</a></li>
+          <li><a href="installation.html#docker-install">2. Установка Docker Compose</a></li>
+          <li><a href="installation.html#demo-cleanup">3. Удаление демо-данных</a></li>
+          <li><a href="installation.html#equip-integration">4. Интеграция с оборудованием</a></li>
+          <li><a href="installation.html#tariff-setup">5. Настройка тарифов</a></li>
+          <li><a href="installation.html#add-subscribers">6. Добавление абонентов</a></li>
+          <li><a href="installation.html#final-test">7. Финальное тестирование</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="billing.html"><i class="ti ti-settings"></i> Настройки биллинга <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+      </li>
+      <li class="has-children">
+        <a href="lk.html"><i class="ti ti-user"></i> Личный кабинет и мобильное приложение <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+      </li>
+      <li class="has-children">
+        <a href="helpdesk.html"><i class="ti ti-headset"></i> Поддержка (HelpDesk) <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="helpdesk.html#overview">1. Обзор модуля</a></li>
+          <li><a href="helpdesk.html#channels">2. Каналы приёма</a></li>
+          <li><a href="helpdesk.html#mailbox">3. Входящие</a></li>
+          <li><a href="helpdesk.html#conversation">4. Карточка тикета</a></li>
+          <li><a href="helpdesk.html#sidebar">5. Сайдбар тикета</a></li>
+          <li><a href="helpdesk.html#panel">6. Выезжающая панель</a></li>
+          <li><a href="helpdesk.html#attention">7. Тикеты внимания</a></li>
+          <li><a href="helpdesk.html#ai-assistant">8. AI-бот</a></li>
+          <li><a href="helpdesk.html#voicemail">9. Голосовая почта</a></li>
+          <li><a href="helpdesk.html#knowledgebase">10. База знаний</a></li>
+          <li><a href="helpdesk.html#analytics">11. Аналитика и время</a></li>
+          <li><a href="helpdesk.html#settings">12. Настройки</a></li>
+          <li><a href="helpdesk.html#messengers">13. Мессенджеры</a></li>
+          <li><a href="helpdesk.html#integration">14. Связь с биллингом</a></li>
+        </ul>
+      </li>
+      <li class="has-children active">
+        <a href="crm.html"><i class="ti ti-briefcase"></i> CRM — продажи <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="crm.html#crm-funnel">1. Воронка сделок</a></li>
+          <li><a href="crm.html#crm-constructor">2. Конструктор воронок</a></li>
+          <li><a href="crm.html#crm-sources">3. Источники сделок</a></li>
+          <li><a href="crm.html#crm-userfields">4. Доп. поля</a></li>
+          <li><a href="crm.html#crm-tasks">5. Задачи</a></li>
+          <li><a href="crm.html#crm-lists">6. Списки</a></li>
+          <li><a href="crm.html#crm-salesbot">7. Salesbot</a></li>
+          <li><a href="crm.html#widgets">8. Виджеты</a></li>
+          <li><a href="crm.html#crm-dashboard">9. Дашборд и карта</a></li>
+          <li><a href="crm.html#crm-campaigns">10. Кампании</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="server.html"><i class="ti ti-server"></i> Управление сервером <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+      </li>
+      <li class="has-children">
+        <a href="equipment.html"><i class="ti ti-broadcast"></i> Интеграция с оборудованием <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+      </li>
+      <li class="has-children">
+        <a href="sorm.html"><i class="ti ti-shield-lock"></i> Интеграция с СОРМ3 <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+      </li>
+      <li class="has-children">
+        <a href="api.html"><i class="ti ti-link"></i> API <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+      </li>
+      <li class="has-children">
+        <a href="troubleshooting.html"><i class="ti ti-tool"></i> Решение проблем <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+      </li>
+      <li class="has-children">
+        <a href="licensing.html"><i class="ti ti-file-description"></i> Лицензирование <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+      </li>
+      <li><a href="contacts.html"><i class="ti ti-phone"></i> Контакты</a></li>
+    </ul>
+
+    <div class="nav-section">Разработчикам</div>
+    <ul>
+      <li class="has-children">
+        <a href="../graphify/graph.html"><i class="ti ti-topology-star-3"></i> Архитектура кода <span class="arrow"><i class="bi bi-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="../graphify/graph.html">Граф сообществ</a></li>
+          <li><a href="../graphify/wiki/index.html">Wiki модулей</a></li>
+          <li><a href="dev/index.html">Портал разработчика</a></li>
+          <li><a href="../graphify/help.html">graphify CLI</a></li>
+        </ul>
+      </li>
+    </ul>
+  <button class="sidebar-theme-toggle" aria-label="Тема"><span class="icon-sun"><i class="ti ti-sun"></i></span><span class="icon-moon"><i class="ti ti-moon"></i></span><span class="sidebar-theme-label">Сменить тему</span></button>
+</nav>
+</aside>
+
+<main class="content">
+
+<p><strong>CRM</strong> (<code>/admin/crm/</code>) — нативный модуль работы с лидами и
+сделками в стиле amoCRM: канбан-воронка с настраиваемыми стадиями, конструктор
+триггеров-автоматизаций, источники сделок, визуальный Salesbot, Задачи и Списки.
+Полностью интегрирован с биллингом (абоненты, тарифы, адреса, Поддержка, AI-агент).</p>
+
+<h1 style="display:none">CRM — продажи и подключения</h1>
+
+<div class="page-toc">
+<details open>
+  <summary><strong><i class="bi bi-book"></i> Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#crm-funnel">1. Воронка сделок (канбан)</a></li>
+    <li><a href="#crm-constructor">2. Конструктор воронок и стадий</a></li>
+    <li><a href="#crm-sources">3. Источники сделок</a></li>
+    <li><a href="#crm-userfields">4. Доп. поля сделок</a></li>
+    <li><a href="#crm-tasks">5. Задачи</a></li>
+    <li><a href="#crm-lists">6. Списки (контакты)</a></li>
+    <li><a href="#crm-salesbot">7. Salesbot</a></li>
+    <li><a href="#widgets">8. Виджеты-плагины</a></li>
+    <li><a href="#crm-dashboard">9. Дашборд и карта</a></li>
+    <li><a href="#crm-campaigns">10. Рекламные кампании</a></li>
+    <li><a href="#crm-lead-sidebar">11. Сайдбар лида</a></li>
+  </ul>
+</details>
+</div>
+
+
+
+<p><strong>CRM</strong> (<code>/admin/crm/</code>) — нативный модуль работы с лидами и
+сделками на подключение: канбан-воронка, дашборд с картой, рекламные кампании с
+UTM-атрибуцией, автоназначение и наблюдатели. Заменил AmoCRM — все заявки
+(веб-форма, AI-виджет, голосовая почта, VK/Telegram, ручной ввод) стекаются в
+единую воронку.</p>
+
+<pre class="mermaid">
+flowchart LR
+    WF["🌐 Веб-форма<br/>заявки на подключение"] --> IN
+    AI["🤖 AI-виджет (AIDA)<br/>order-форма"] --> IN
+    VM["📞 Голосовая почта<br/>Mango + Claude-геокод"] --> IN
+    VK["🔵 VK / ✈ TG"] --> IN
+    MAN["✍ Ручной ввод<br/>оператора"] --> IN
+    IN["crm_intake<br/>единая точка приёма<br/>+ UTM-атрибуция кампании"] --> D1
+    subgraph FUNNEL["Воронка сделок"]
+      D1["Новый лид"] --> D2["Тариф выбран"] --> D3["Назначен монтаж"] --> D4["✅ Подключено"]
+      D1 -.-> D5["❌ Отказ / нет покрытия"]
+    end
+    D4 --> AB["Абонент в биллинге"]
+</pre>
+
+<h2 id="crm-funnel">Воронка сделок</h2>
+<p>URL: <code>/admin/crm/deals/</code>. Компактные колонки стадий (260px), карточка
+сделки: имя/телефон, адрес (геокодирован через DaData ФИАС), сумма, бейджи источника
+и организации, аватар ответственного.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_v1403/10_crm_deals.png" alt="CRM — воронка сделок"></p>
+
+<ul>
+  <li><strong>Чипы-фильтры</strong>: Все / Мои / Наблюдаю / Не назнач. — со счётчиками.</li>
+  <li><strong>Фильтры</strong>: источник, поиск (имя / телефон в любом формате / адрес),
+  диапазон дат с быстрыми периодами (запоминается для пользователя).</li>
+  <li><strong>Свёрнутые терминальные стадии</strong> — «Подключено» и «Отказ» показывают
+  кнопку «Показать N карточек» вместо тысяч карточек (производительность: топ-60 на
+  колонку + точные счётчики).</li>
+  <li><strong>Наблюдение</strong> — кнопка «глаз» в модалке сделки: менеджер держит
+  важную сделку на радаре, фильтр «Наблюдаю» собирает их.</li>
+  <li><strong>Undo</strong> — операции смены стадии обратимы.</li>
+  <li>При выборе конкретной организации в навбаре орг-бейджи на карточках скрываются
+  (не дублируют контекст).</li>
+</ul>
+
+<h2 id="crm-dashboard">Дашборд и карта</h2>
+<p>URL: <code>/admin/crm/</code>. KPI, блок «На карте» — геопривязанные лиды и монтажи
+с фильтрами (диапазон дат / Все / Мои / Наблюдаю) и полноэкранным режимом. Тултип
+маркера: аватарка + Фамилия / Имя Отчество, телефон, стадия, адрес. Цвет маркера —
+по стадии сделки.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_v1403/11_crm_dashboard.png" alt="CRM — дашборд с картой"></p>
+
+<h2 id="crm-campaigns">Рекламные кампании</h2>
+<p>URL: <code>/admin/crm/campaigns/</code>. Кампании и каналы с UTM-метками:
+линк-билдер + QR-код, привязка сделки к кампании по <code>utm_campaign</code> в
+момент приёма (единая точка всех каналов), дашборд CAC (стоимость привлечения).</p>
+
+<h2 id="crm-lead-sidebar">Сайдбар лида</h2>
+<p>Клик по карточке открывает сайдбар для сэйлза: контакты, возраст заявки,
+мессенджеры клиента, история, кнопки «Позвонить» и «Наблюдать», выбор монтажника
+(группа installer), геокодированный адрес на мини-карте.</p>
+
+
+<h2 id="crm-constructor">Конструктор воронок и стадий</h2>
+<p>URL: <code>/admin/crm/settings/pipelines/</code> (CRM → Настройки → Воронки и стадии).
+Стадии — колонки слева направо, как в воронке: название, цвет, тип
+(В&nbsp;работе / Успех / Проигрыш), порядок ←→. Изменения сразу применяются в
+канбане, карточке сделки, на карте и в дашборде. Под каждой стадией:</p>
+<ul>
+  <li><strong>Правила входа (Stage Gates)</strong> — «Назначен монтажник», «Указана дата
+      монтажа», «Есть телефон», «Подтверждение оператора». Плюс доп. поля с
+      признаком «🔒 Обязательно для стадии» блокируют переход, пока не заполнены.</li>
+  <li><strong>Триггеры-автоматизации</strong> — «При входе в стадию» или «Застряла N дней».
+      14 действий: задача, Telegram сотруднику, SMS/письмо клиенту, смена стадии,
+      ответственный, примечание, webhook, завершить задачи, создать сделку,
+      изменить доп. поле, сгенерировать PDF-документ, теги, запустить Salesbot.
+      С build 1423 триггеры срабатывают и при <em>создании</em> лида в первую стадию.
+      В текстах работают плейсхолдеры <code>{title} {name} {phone} {stage} {days}</code>.</li>
+  <li><strong>«Вид карточки»</strong> — состав мини-карточки канбана: слоты строк
+      (клиент/адрес/бюджет/дата/доп. поля), чипы (источник, тариф, монтаж,
+      монтажник, организация, дней в стадии, теги), аватарка ответственного,
+      последнее примечание.</li>
+  <li><strong>«Карточка»</strong> — раскладка полной карточки сделки по зонам с
+      ограничением блоков по ролям (группам Django).</li>
+</ul>
+<p class="note"><i class="fas fa-info-circle"></i> Редактирование конструктора —
+только для групп из настройки <code>CRM_PIPELINE_ADMIN_GROUPS</code>
+(по умолчанию: Директор, Старший менеджер, root); остальным разделы доступны
+в режиме просмотра.</p>
+
+<h2 id="crm-sources">Источники сделок</h2>
+<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/smit/billing/crm_v1424/crm_sources_constructor.png" alt="Источники сделок" loading="lazy">
+<p>Панель вверху конструктора (или CRM → Настройки → Источники сделок) — каналы
+приёма лидов как настраиваемые виджеты: Звонок (Mango), AI-виджет, AI Voice, VK,
+Telegram, MAX, Веб-форма, Заявка из Поддержки. На каждом канале:</p>
+<ul>
+  <li><strong>тумблер</strong> — выключенный источник не создаёт сделки;</li>
+  <li><strong>воронка</strong> — лид падает в её первую стадию (пусто = дефолт типа);</li>
+  <li><strong>организация</strong> (при модуле multiorg) и <strong>окно контроля дублей</strong>
+      в часах (0 = выключен): повторная заявка с того же телефона дополняет
+      открытую сделку примечанием, а не плодит новую;</li>
+  <li><strong>счётчик лидов за 30 дней</strong> и <strong>шестерёнка</strong> — переход в настройки
+      самого виджета (Mango → линии голосовой почты, мессенджеры → каналы
+      Поддержки, AI → <code>/admin/ai/</code>).</li>
+</ul>
+<p>Все каналы идут через единую точку приёма <code>create_deal_from_lead</code>:
+дедуп, геокод адреса, UTM-кампании и организация работают одинаково везде.</p>
+
+<h2 id="crm-userfields">Доп. поля сделок</h2>
+<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/smit/billing/crm_v1424/crm_userfields.png" alt="Доп. поля" loading="lazy">
+<p>URL: <code>/admin/crm/userfields/</code>. Панель групп слева (Договор — физ./юр.
+лицо, UTM и рекламные метки…), поля секциями справа: порядок ↑↓, «+&nbsp;поле в
+группу». У поля: тип (текст/число/дата/список/да-нет), тип сделки, тип клиента
+(физ/юр), <strong>воронка и организация</strong> (пусто = все), признак «Обязательно для
+стадии» (🔒 — Stage Gate), показывать в списке/превью. Поля отображаются в
+карточке сделки секциями по группам с учётом воронки и организации сделки.</p>
+
+<h2 id="crm-tasks">Задачи</h2>
+<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/smit/billing/crm_v1424/crm_tasks.png" alt="Задачи" loading="lazy">
+<p>URL: <code>/admin/crm/tasks/</code> (CRM → Задачи). Чипы со счётчиками:
+Активные / Сегодня / <span style="color:#e05252">Просроченные&nbsp;🔥</span> /
+Выполненные; период День/Неделя/Месяц; Мои/Все; поиск. «+&nbsp;Задача» — живой
+поиск сделки, срок, тип, ответственный. Выполнение — с <strong>результатом</strong>,
+который уходит системным примечанием в сделку. Задачи от триггеров воронки
+(«Создать задачу») появляются здесь автоматически.</p>
+
+<h2 id="crm-lists">Списки (контакты)</h2>
+<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/smit/billing/crm_v1424/crm_lists.png" alt="Списки" loading="lazy">
+<p>URL: <code>/admin/crm/contacts/</code> (CRM → Списки). «Настройки таблицы» —
+плитки-колонки: 11 стандартных + все доп. поля (выбор запоминается в браузере).
+<strong>Inline-редактор</strong>: двойной клик или Enter на ячейке
+(Наименование/Телефон/Email/Компания/доп. поля) — правка без открытия карточки;
+телефон нормализуется, значения доп. полей пишутся в последнюю сделку контакта.
+Чипы Абонент/Без абонента/Со сделками, массовые действия, карточка контакта
+со сделками и биллингом.</p>
+
+<h2 id="crm-salesbot">Salesbot</h2>
+<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/smit/billing/crm_v1424/crm_salesbot_canvas.png" alt="Salesbot" loading="lazy">
+<p>URL: <code>/admin/crm/bots/</code> (CRM → Настройки → Salesbot). Визуальный
+канвас-конструктор сценариев для входящих каналов (Telegram / VK / MAX): узлы
+перетаскиваются, связи-ветки Да/Нет/«Другой ответ» рисуются кликами по
+кружкам-выходам. Типы узлов:</p>
+<ul>
+  <li><strong>Сообщение</strong> — текст + кнопки с синонимами (в Telegram — настоящие
+      inline-кнопки, в остальных каналах — нумерованный список);</li>
+  <li><strong>Вопрос</strong> — ответ сохраняется (имя/телефон/адрес или доп. поле);</li>
+  <li><strong>Условие</strong> — ключевые слова / рабочее время / есть телефон;</li>
+  <li><strong>Действие</strong> — любое из действий автоматизаций CRM;</li>
+  <li><strong>Лид в CRM</strong> — сделка из собранных ответов в воронку и организацию
+      бота (через единую точку приёма — с дедупом и геокодом);</li>
+  <li><strong>AI-агент</strong> — передача диалога AIDA (<code>/admin/ai/</code>);</li>
+  <li><strong>Оператору</strong> — эскалация: собранные данные уходят тикетом-сводкой
+      в Поддержку; <strong>Переход</strong> и <strong>Стоп</strong>.</li>
+</ul>
+<p>Бот отвечает <em>до</em> AI-агента и оператора; после завершения сценария —
+cooldown 6 часов (не здоровается заново). Организация бота скоупит его по
+ящикам каналов (бот СмИТ не отвечает клиентам бота РОБОР). Кнопка «Тест» —
+симулятор диалога на живом движке, работает и с несохранённым сценарием.</p>
+
+<h2 id="widgets">Виджеты-плагины</h2>
+<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/smit/billing/crm_v1424/crm_widgets.png" alt="Виджеты" loading="lazy">
+<p>URL: <code>/admin/settings/widgets/</code> (Настройки → Виджеты). Каталог
+пополняется на сервере лицензий: загрузка zip-пакета (<code>widget.json</code> +
+<code>widget.js</code>) в админку лицензий — виджет появляется у всех инсталляций
+<em>без обновления биллинга</em>, с фильтрацией по тарифному плану. Установка в
+один клик: скачивание по лицензионному ключу, сверка SHA-256, распаковка только
+фронтовых файлов. Точки монтирования: дашборд CRM (демо-виджет «Сводка
+воронки»), далее — карточка сделки и карточка абонента.</p>
+
+<p class="note"><i class="fas fa-info-circle"></i> Старый CRM-планировщик Carbon 4
+(<code>/admin/crm/CrmTask/</code>) описан в <a href="#crm">разделе 4.9 (legacy)</a> —
+оставлен только для истории.</p>
+
+
+</main>
+
+<script src="../js/main.js?v=926"></script>
+<script src="../js/version.js"></script>
+<script src="../js/mermaid-init.js?v=1404"></script>
+<script src="../js/search.js?v=790"></script>
+</body>
+</html>
