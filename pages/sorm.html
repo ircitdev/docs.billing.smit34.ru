@@ -420,7 +420,7 @@
   </div>
 
   <h3 id="standartnye-otchety-sorm-3-build-324">Стандартные отчёты СОРМ-3</h3>
-  <p>При нажатии кнопки <strong>«Первоначальная настройка отчётов»</strong> создаются 13 стандартных отчётов в формате, совместимом с Carbon 4:</p>
+  <p>При нажатии кнопки <strong>«Первоначальная настройка отчётов»</strong> создаются 13 стандартных отчётов формата СОРМ-3:</p>
   <table class="data-table">
     <thead><tr><th>Префикс файла</th><th>Описание</th><th>Формат</th></tr></thead>
     <tbody>
@@ -457,9 +457,9 @@
     <code>billing/services/sorm_prikaz_573.py</code> — там для каждой из 13 таблиц СОРМ-3 собирается полный SQL с правильными именами полей, кодами и форматами.
   </div>
 
-  <h3 id="prikaz-573-key-changes">Ключевые отличия от Carbon 4</h3>
+  <h3 id="prikaz-573-key-changes">Ключевые требования Приказа №573</h3>
   <table class="data-table">
-    <thead><tr><th>Параметр</th><th>Было (Carbon 4)</th><th>Стало (Приказ №573)</th></tr></thead>
+    <thead><tr><th>Параметр</th><th>Ранее</th><th>Стало (Приказ №573)</th></tr></thead>
     <tbody>
       <tr><td>Имена полей</td><td>lowercase</td><td><strong>UPPERCASE</strong></td></tr>
       <tr><td>Расширение файлов</td><td><code>.csv</code></td><td><strong><code>.txt</code></strong></td></tr>
@@ -1064,7 +1064,7 @@ EXPORT pre-flight: report=33 missing-values=1043 in 4 fields</code></pre>
 
   <h2 id="dedup">Дубликаты атрибутов и команда merge</h2>
 
-  <p>На некоторых базах (миграция из EBS / Carbon 4) могут быть <strong>два атрибута с одинаковым именем</strong> — например «Директор» с <code>id=10</code> и <code>id=-219000</code>. Без дедупликации builder выбирает значение через <code>LIMIT 1</code> <strong>непредсказуемо</strong> — для одного абонента может выгрузиться значение из дубля, для другого — из канонической записи.</p>
+  <p>На некоторых базах (исторические записи) могут быть <strong>два атрибута с одинаковым именем</strong> — например «Директор» с <code>id=10</code> и <code>id=-219000</code>. Без дедупликации builder выбирает значение через <code>LIMIT 1</code> <strong>непредсказуемо</strong> — для одного абонента может выгрузиться значение из дубля, для другого — из канонической записи.</p>
 
   <p>Команда <code>manage.py merge_sorm_attribute_dups</code> группирует атрибуты по <code>sorm_field_code</code>, выбирает каноническую запись (наименьший положительный pk) и переносит все <code>AttributeValues</code> с дублей через <code>UPDATE attribute_id=...</code>:</p>
 
