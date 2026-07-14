@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Лендинги — конструктор сайтов — СмИТ Биллинг 3.0 (build 1556)</title>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="СмИТ Биллинг 3.0 — Документация">
+  <meta property="og:title" content="Лендинги — СмИТ Биллинг 3.0">
+  <meta property="og:description" content="Визуальный конструктор сайтов и лендингов: 22 блока, публикация на поддомене, формы в CRM, AI-генерация.">
+  <meta property="og:url" content="https://docs.billing.smit34.ru/pages/landing.html">
+  <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="ru_RU">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Лендинги — СмИТ Биллинг 3.0">
+  <meta name="twitter:description" content="Визуальный конструктор сайтов и лендингов: 22 блока, публикация на поддомене, формы в CRM, AI-генерация.">
+  <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
+  <meta name="description" content="Визуальный конструктор сайтов и лендингов: 22 блока, публикация на поддомене, формы в CRM, AI-генерация.">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css?v=1153">
+  <link rel="stylesheet" href="../css/search.css?v=790">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.26.0/dist/tabler-icons.min.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <button class="menu-toggle" aria-label="Меню">&#9776;</button>
+    <div class="logo">
+      <div class="logo-icon">С</div>
+      <div class="logo-text"><span class="logo-main">СмИТ Биллинг 3.0 </span><span>Документация</span></div>
+    </div>
+  </div>
+  <div class="header-search"><div class="docs-search-wrap"><input type="search" id="docsSearch" class="docs-search-input" placeholder="Поиск по документации..." autocomplete="off"><span class="docs-search-icon"><i class="ti ti-search"></i></span><div class="docs-search-results" id="docsSearchResults"></div></div></div>
+  <div class="header-right">
+    <a href="../graphify/graph.html" class="header-nav-link" title="Граф зависимостей кода">
+      <i class="ti ti-topology-star-3 hnl-ico"></i><span class="hnl-txt">Граф</span>
+    </a>
+    <a href="../graphify/wiki/index.html" class="header-nav-link" title="Wiki архитектурных модулей">
+      <i class="ti ti-book-2 hnl-ico"></i><span class="hnl-txt">Wiki</span>
+    </a>
+    <button class="mobile-search-btn" aria-label="Поиск" title="Поиск"><i class="ti ti-search"></i></button>
+    <button class="theme-toggle" aria-label="Переключить тему" title="Светлая / тёмная тема">
+      <span class="icon-sun">&#9788;</span>
+      <span class="icon-moon">&#9790;</span>
+    </button>
+  </div>
+</header>
+
+<div class="search-overlay" id="searchOverlay" role="dialog" aria-label="Поиск по документации">
+  <div class="search-overlay-inner">
+    <i class="ti ti-search search-prefix-icon"></i>
+    <input type="search" id="docsSearchMobile" placeholder="Поиск по документации..." autocomplete="off">
+    <button class="search-overlay-close" aria-label="Закрыть" id="searchOverlayClose"><i class="ti ti-x"></i></button>
+    <div class="search-overlay-results" id="docsSearchResultsMobile"></div>
+  </div>
+</div>
+
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+<aside class="sidebar">
+  <nav>
+    <div class="nav-section">Разделы</div>
+    <ul>
+      <li><a href="../index.html"><i class="ti ti-home"></i> Главная</a></li>
+      <li class="has-children">
+        <a href="installation.html"><i class="ti ti-box"></i> Установка и интеграция <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="installation.html#requirements">1. Системные требования</a></li>
+          <li><a href="installation.html#docker-install">2. Установка Docker Compose</a></li>
+          <li><a href="installation.html#demo-cleanup">3. Удаление демо-данных</a></li>
+          <li><a href="installation.html#equip-integration">4. Интеграция с оборудованием</a></li>
+          <li><a href="installation.html#tariff-setup">5. Настройка тарифов</a></li>
+          <li><a href="installation.html#add-subscribers">6. Добавление абонентов</a></li>
+          <li><a href="installation.html#final-test">7. Финальное тестирование</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="billing.html"><i class="ti ti-settings"></i> Настройки биллинга <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+      </li>
+      <li class="has-children">
+        <a href="lk.html"><i class="ti ti-user"></i> Личный кабинет и мобильное приложение <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+      </li>
+      <li class="has-children">
+        <a href="helpdesk.html"><i class="ti ti-headset"></i> Поддержка (HelpDesk) <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="helpdesk.html#overview">1. Обзор модуля</a></li>
+          <li><a href="helpdesk.html#channels">2. Каналы приёма</a></li>
+          <li><a href="helpdesk.html#mailbox">3. Входящие</a></li>
+          <li><a href="helpdesk.html#conversation">4. Карточка тикета</a></li>
+          <li><a href="helpdesk.html#sidebar">5. Сайдбар тикета</a></li>
+          <li><a href="helpdesk.html#panel">6. Выезжающая панель</a></li>
+          <li><a href="helpdesk.html#attention">7. Тикеты внимания</a></li>
+          <li><a href="helpdesk.html#ai-assistant">8. AI-бот</a></li>
+          <li><a href="helpdesk.html#voicemail">9. Голосовая почта</a></li>
+          <li><a href="helpdesk.html#knowledgebase">10. База знаний</a></li>
+          <li><a href="helpdesk.html#analytics">11. Аналитика и время</a></li>
+          <li><a href="helpdesk.html#settings">12. Настройки</a></li>
+          <li><a href="helpdesk.html#messengers">13. Мессенджеры</a></li>
+          <li><a href="helpdesk.html#integration">14. Связь с биллингом</a></li>
+        </ul>
+      </li>
+      <li class="has-children active">
+        <a href="crm.html"><i class="ti ti-briefcase"></i> CRM — продажи <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="crm.html#crm-overview">1. Как устроен модуль</a></li>
+          <li><a href="crm.html#crm-funnel">2. Воронка сделок</a></li>
+          <li><a href="crm.html#crm-constructor">3. Конструктор воронок</a></li>
+          <li><a href="crm.html#crm-sources">4. Источники сделок</a></li>
+          <li><a href="crm.html#crm-userfields">5. Доп. поля</a></li>
+          <li><a href="crm.html#crm-tasks">6. Задачи</a></li>
+          <li><a href="crm.html#crm-lists">7. Списки</a></li>
+          <li><a href="crm.html#crm-salesbot">8. Salesbot</a></li>
+          <li><a href="crm.html#widgets">9. Виджеты</a></li>
+          <li><a href="crm.html#crm-dashboard">10. Дашборд и карта</a></li>
+          <li><a href="crm.html#crm-campaigns">11. Кампании</a></li>
+        </ul>
+      </li>
+      <li class="has-children active">
+        <a href="landing.html"><i class="ti ti-browser"></i> Лендинги <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="landing.html#landing-overview">1. Что это</a></li>
+          <li><a href="landing.html#landing-blocks">2. Блоки-секции</a></li>
+          <li><a href="landing.html#landing-editor">3. Редактор</a></li>
+          <li><a href="landing.html#landing-ai">4. AI-генерация</a></li>
+          <li><a href="landing.html#landing-forms">5. Формы и заявки</a></li>
+          <li><a href="landing.html#landing-publish">6. Публикация на поддомене</a></li>
+          <li><a href="landing.html#landing-pd">7. Согласие ПД (152-ФЗ)</a></li>
+          <li><a href="landing.html#landing-analytics">8. Аналитика</a></li>
+          <li><a href="landing.html#landing-multiorg">9. Мульти-орг</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="server.html"><i class="ti ti-server"></i> Управление сервером <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+      </li>
+      <li class="has-children">
+        <a href="equipment.html"><i class="ti ti-broadcast"></i> Интеграция с оборудованием <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+      </li>
+      <li class="has-children">
+        <a href="sorm.html"><i class="ti ti-shield-lock"></i> Интеграция с СОРМ3 <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+      </li>
+      <li class="has-children">
+        <a href="api.html"><i class="ti ti-link"></i> API <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+      </li>
+      <li class="has-children">
+        <a href="troubleshooting.html"><i class="ti ti-tool"></i> Решение проблем <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+      </li>
+      <li class="has-children">
+        <a href="licensing.html"><i class="ti ti-file-description"></i> Лицензирование <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+      </li>
+      <li><a href="contacts.html"><i class="ti ti-phone"></i> Контакты</a></li>
+    </ul>
+
+    <div class="nav-section">Разработчикам</div>
+    <ul>
+      <li class="has-children">
+        <a href="../graphify/graph.html"><i class="ti ti-topology-star-3"></i> Архитектура кода <span class="arrow"><i class="bi bi-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="../graphify/graph.html">Граф сообществ</a></li>
+          <li><a href="../graphify/wiki/index.html">Wiki модулей</a></li>
+          <li><a href="dev/index.html">Портал разработчика</a></li>
+          <li><a href="../graphify/help.html">graphify CLI</a></li>
+        </ul>
+      </li>
+    </ul>
+  <button class="sidebar-theme-toggle" aria-label="Тема"><span class="icon-sun"><i class="ti ti-sun"></i></span><span class="icon-moon"><i class="ti ti-moon"></i></span><span class="sidebar-theme-label">Сменить тему</span></button>
+</nav>
+</aside>
+
+<main class="content">
+
+<div class="hero-block">
+  <h1>Лендинги — конструктор сайтов</h1>
+  <p class="lead">Визуальный конструктор публичных сайтов и посадочных страниц прямо в биллинге.
+  Собирайте страницы из блоков или генерируйте через AI, публикуйте на поддомене с автоматическим
+  SSL, а заявки падают лидами в CRM.</p>
+</div>
+
+<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/landing_module/cover.jpg"
+     alt="Модуль Лендинги" class="welcome-image" style="max-width:100%;border-radius:12px;margin:20px 0">
+
+<h2 id="landing-overview">Что это</h2>
+<p>Модуль «Лендинги» (<code>/admin/landing/</code>) — конструктор корпоративных сайтов уровня
+smit34.ru, robornet.ru, itc34.ru прямо в биллинге. Оператор собирает страницу из 22 блоков-секций
+(или генерирует целый сайт по описанию через AI), настраивает формы на воронки CRM и публикует на
+поддомене с автоматическим SSL. Уровень — полноценные корпоративные сайты, а не мини-лендинги.</p>
+<ul>
+  <li><strong>Раздел:</strong> «Лендинги» в меню (между CRM и Оборудование).</li>
+  <li><strong>Модуль:</strong> лицензируемый <code>landing</code>, тариф Pro+, категория «CRM и продажи».</li>
+  <li><strong>Kill-switch:</strong> <code>LANDING_ENABLED</code> — глобальный выключатель.</li>
+</ul>
+
+<h2 id="landing-blocks">Блоки-секции (22 типа)</h2>
+<p>Страница собирается из блоков. Каждый рендерится безопасно (белый список + очистка HTML),
+без произвольного кода.</p>
+<table>
+  <thead><tr><th>Группа</th><th>Блоки</th></tr></thead>
+  <tbody>
+    <tr><td>Базовые</td><td>hero, текст, преимущества, форма, подвал</td></tr>
+    <tr><td>Продажи</td><td>тарифы (динамически из биллинга), сравнение цен, калькулятор, проверка покрытия</td></tr>
+    <tr><td>Доверие</td><td>кейсы, команда, отзывы, цифры, логотипы</td></tr>
+    <tr><td>Инфо</td><td>как подключить (шаги), оборудование, FAQ, галерея, контакты, призыв-баннер</td></tr>
+    <tr><td>Интерактив</td><td>новости (модалка «подробнее»), услуги (правый сайдбар, как «Интерактивное ТВ»)</td></tr>
+  </tbody>
+</table>
+<p>Блок <strong>тарифы</strong> подтягивает тарифы из биллинга (<code>Tarif.show_crm</code>, по организации).
+Блок <strong>проверка покрытия</strong> использует публичный <code>/api/address/check/</code>.
+Глобально — floating-nav (плавающее меню), переключатель тёмной темы, cookie-баннер.</p>
+
+<h2 id="landing-editor">Редактор-конструктор</h2>
+<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/landing_module/editor.jpg"
+     alt="Редактор" style="max-width:100%;border-radius:10px;margin:12px 0;border:1px solid #e2e6ea">
+<p>Трёхколоночный редактор:</p>
+<ul>
+  <li><strong>Слева</strong> — палитра блоков (drag-and-drop) + структура страницы (переупорядочить).</li>
+  <li><strong>Центр</strong> — live-превью (клик по блоку выделяет его в инспекторе) + переключатель
+  устройств: компьютер / планшет / телефон.</li>
+  <li><strong>Справа</strong> — инспектор: вкладки «Блок» (свойства), «Сайт» (floating-nav, cookie,
+  текст согласия ПД), «Тема» (цвет, тёмная тема), «SEO».</li>
+</ul>
+<p>Панель публикации: Аналитика, Заявки, AI-помощник, Предпросмотр, Сохранить, Опубликовать.
+Кнопка сворачивания меню биллинга разворачивает редактор на весь экран.</p>
+
+<h2 id="landing-ai">AI-генерация контента</h2>
+<p>AI (Claude через прокси) помогает на всех этапах:</p>
+<ul>
+  <li><strong>Генерация сайта по брифу</strong> — опишите бизнес, AI соберёт полноценный корп-сайт
+  (7-11 секций) с floating-nav под тип бизнеса.</li>
+  <li><strong>Рерайт блока</strong> — «Переписать AI» в инспекторе: улучшает тексты, сохраняя смысл.</li>
+  <li><strong>SEO</strong> — генерация title/description/og из содержимого страницы.</li>
+  <li><strong>Генерация items</strong> — вопросы FAQ, преимущества, alt-тексты картинок.</li>
+</ul>
+<p>Всё, что генерирует AI, проходит ту же серверную валидацию, что и ручной ввод — защита от XSS.</p>
+
+<h2 id="landing-forms">Формы и заявки → CRM</h2>
+<p>Форма на странице настраивается: <strong>воронка CRM</strong>, <strong>источник лида</strong>,
+действие после отправки (сообщение / редирект / оплата), дубль в Telegram организации. Заявка
+проходит через единый приём биллинга (<code>crm_intake</code>): UTM-атрибуция, антидубль,
+автораспределение «Неразобранного». Журнал заявок и связанные сделки — в редакторе (кнопка «Заявки»).</p>
+
+<h2 id="landing-publish">Публикация на поддомене</h2>
+<p>Основной способ — <strong>поддомен организации</strong> (<code>wifi.smit34.ru</code>). При публикации
+выбирается зона Cloudflare организации, создаётся A-запись с проксированием — SSL включается
+автоматически. Интеграция с разделом <a href="billing.html#dns">Домены и DNS</a>. Если Cloudflare у
+организации не настроен — сайт доступен по пути <code>/l/&lt;slug&gt;/</code> на основном хосте.</p>
+
+<h2 id="landing-pd">Согласие на обработку ПД (152-ФЗ)</h2>
+<p>Во всех формах — обязательный чекбокс со ссылкой «обработкой персональных данных», открывающей
+модальное окно (на мобильном полноэкранное) с текстом согласия. Текст берётся из настроек страницы,
+а если не задан — <strong>генерируется AI из реквизитов организации</strong> (ИНН, адрес, название из
+<code>CompanyBranding</code>) в формате 152-ФЗ. Кнопка «Сгенерировать через AI из реквизитов» — в
+редакторе (вкладка «Сайт»). Форма не отправляется без согласия.</p>
+
+<h2 id="landing-analytics">Аналитика</h2>
+<p>По каждой странице (кнопка «Аналитика»): показы, заявки (валидные/спам), <strong>конверсия</strong>,
+лиды в CRM, разбивка по <strong>UTM-источникам</strong>, динамика заявок по дням (график).</p>
+
+<h2 id="landing-multiorg">Мульти-организации</h2>
+<p>Модуль полностью поддерживает мульти-орг:</p>
+<ul>
+  <li>Список фильтруется по организации из <strong>глобального селектора в шапке</strong> (как везде в биллинге).</li>
+  <li>При выборе «Все» в карточках показывается бейдж организации.</li>
+  <li>Поддомен создаётся в зоне организации страницы, форма → лид в организацию страницы, брендинг и
+  касса — из настроек организации.</li>
+</ul>
+<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/landing_module/mobile.jpg"
+     alt="Мобильная версия" style="max-width:280px;border-radius:10px;margin:12px 0;border:1px solid #e2e6ea">
+
+</main>
+
+
+<script src="../js/main.js?v=926"></script>
+<script src="../js/version.js"></script>
+<script src="../js/mermaid-init.js?v=1404"></script>
+<script src="../js/search.js?v=790"></script>
+</body>
+</html>
