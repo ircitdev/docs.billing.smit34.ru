@@ -20,7 +20,7 @@
   var LIBS = [
     'https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js',
     'https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js',
-    'https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js'
+    'https://cdn.jsdelivr.net/npm/markmap-lib@0.18.11/dist/browser/index.iife.js'
   ];
   var _loading = null;
   var _seq = 0;
