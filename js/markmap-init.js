@@ -132,11 +132,10 @@
       });
     }
     decorate();
-    // после добавления капсул размеры узлов изменились — пересчитать раскладку и вписать
-    setTimeout(function () { try { mm.setData(mm.state.data); mm.fit(); } catch (e) { try { mm.fit(); } catch (e2) {} } }, 60);
     // markmap перерисовывает узлы при разворачивании/зуме — повторяем decorate
     var mo = new MutationObserver(function () { decorate(); });
     mo.observe(svg, { childList: true, subtree: true });
+    setTimeout(function () { try { mm.fit(); } catch (e) {} }, 80);
 
     // кнопки
     bIn.addEventListener('click', function () { mm.rescale(1.25); });

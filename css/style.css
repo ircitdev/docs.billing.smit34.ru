@@ -1865,20 +1865,24 @@ html, body {
 .mmap-svg foreignObject,.mmap-svg foreignObject div{
   font-family:inherit!important;color:var(--text)!important;font-size:14.5px!important}
 .mmap-svg foreignObject div{white-space:nowrap}
+/* Капсулы уровней 0-1 БЕЗ изменения размеров бокса (padding ломает раскладку markmap).
+   Приём: div растягиваем чуть за текст через отрицательные margin + равный padding,
+   ширина foreignObject остаётся прежней. */
 /* уровень 0 (корень) — жирная градиентная капсула */
 .mmap-svg foreignObject[data-mmdepth="0"] div{
-  font-weight:800!important;font-size:1.05rem!important;color:#fff!important;
-  background:linear-gradient(135deg,#43b77a,#2d9a5f);padding:8px 18px;border-radius:12px;
+  font-weight:800!important;font-size:1rem!important;color:#fff!important;
+  background:linear-gradient(135deg,#43b77a,#2d9a5f);
+  padding:7px 16px;margin:-4px -14px;border-radius:11px;
   box-shadow:0 3px 10px rgba(67,183,122,.34)}
 /* уровень 1 (ветви) — жирная зелёная капсула-«таблетка» */
 .mmap-svg foreignObject[data-mmdepth="1"] div{
   font-weight:700!important;background:#e3f3ea;color:#1f6f47!important;
-  padding:5px 15px;border-radius:18px;border:1px solid #bfe3ce}
+  padding:5px 14px;margin:-3px -12px;border-radius:16px;border:1px solid #bfe3ce}
 html[data-theme="dark"] .mmap-svg foreignObject[data-mmdepth="1"] div{
-  background:rgba(67,183,122,.18);color:#8fe0b3!important;border-color:rgba(67,183,122,.35)}
+  background:rgba(67,183,122,.2);color:#9be9bd!important;border-color:rgba(67,183,122,.4)}
 /* FA-иконки в узлах */
 .mmap-svg foreignObject i.fas,.mmap-svg foreignObject i.far{margin-right:7px;color:#2d9a5f}
-html[data-theme="dark"] .mmap-svg foreignObject[data-mmdepth="1"] i{color:#8fe0b3}
+html[data-theme="dark"] .mmap-svg foreignObject[data-mmdepth="1"] i{color:#9be9bd}
 .mmap-svg foreignObject[data-mmdepth="0"] i{color:#fff}
 .mmap-svg foreignObject a{color:#43b77a!important}
 .mmap-svg .markmap-link{stroke-width:1.6px!important;opacity:.9}
