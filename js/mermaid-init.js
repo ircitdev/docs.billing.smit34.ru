@@ -86,9 +86,10 @@
       startOnLoad: false,
       securityLevel: 'strict',
       theme: 'base',                       // base + свои переменные = единый аккуратный стиль
-      // компактные схемы, перенос длинного текста, чтобы узлы не разъезжались и текст читался
-      flowchart: { useMaxWidth: true, htmlLabels: true, curve: 'basis',
-        padding: 10, nodeSpacing: 34, rankSpacing: 42, wrappingWidth: 170 },
+      // htmlLabels:false → текст рисуется SVG <text>, узел строго по размеру текста,
+      // ничего не обрезается (htmlLabels в mermaid v10 режет текст в foreignObject)
+      flowchart: { useMaxWidth: true, htmlLabels: false, curve: 'basis',
+        padding: 10, nodeSpacing: 34, rankSpacing: 42 },
       mindmap: { useMaxWidth: true, padding: 12 },
       themeVariables: tv
     });
