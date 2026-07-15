@@ -106,33 +106,35 @@
       }
     }, window.markmap.Transformer ? new window.markmap.Transformer().transform(md).root : null);
 
-    // проставить data-mmdepth на foreignObject'ах (для CSS-капсул 1-2 уровня)
-    function tagDepth() {
-      var fos = svg.querySelectorAll('foreignObject');
-      fos.forEach(function (fo) {
-        var d = fo.querySelector('div');
-        if (!d) return;
-        // глубину определяем по markmap: у fo есть родитель g с data — берём из встроенного
-        var depth = fo.getAttribute('data-depth');
-        if (depth == null && d.dataset && d.dataset.depth != null) depth = d.dataset.depth;
-        if (depth != null) fo.setAttribute('data-mmdepth', depth);
+    // Пост-обработка узлов: капсулы 1-2 уровня + FA-иконки на ветвях.
+    // Не зависим от внутренней структуры markmap — идём от текста узла.
+    var ROOT = 'Лендинги';
+    var BRANCH_ICONS = {
+      'Конструктор': 'fa-cubes', 'Hero и медиа': 'fa-photo-film',
+      'Эффекты': 'fa-wand-magic-sparkles', 'AI': 'fa-robot',
+      'Публикация': 'fa-globe', 'Заявки': 'fa-inbox', 'Аналитика': 'fa-chart-line'
+    };
+    function decorate() {
+      var divs = svg.querySelectorAll('foreignObject > div');
+      divs.forEach(function (d) {
+        if (d.dataset.smitDone) return;
+        var txt = (d.textContent || '').trim();
+        var fo = d.parentNode;
+        if (txt === ROOT) {
+          fo.setAttribute('data-mmdepth', '0'); d.dataset.smitDone = '1';
+        } else if (BRANCH_ICONS[txt]) {
+          fo.setAttribute('data-mmdepth', '1');
+          if (!d.querySelector('i')) {
+            d.innerHTML = '<i class="fas ' + BRANCH_ICONS[txt] + '"></i> ' + d.innerHTML;
+          }
+          d.dataset.smitDone = '1';
+        }
       });
     }
-    // markmap не всегда кладёт data-depth в DOM — вычислим по дереву состояния
-    (function markByState() {
-      try {
-        var root = mm.state.data;
-        var byContent = {};
-        (function walk(n) {
-          byContent[(n.content || '').replace(/<[^>]*>/g, '').trim()] = n.state.depth;
-          (n.children || []).forEach(walk);
-        })(root);
-        svg.querySelectorAll('foreignObject div').forEach(function (d) {
-          var key = (d.textContent || '').trim();
-          if (key in byContent) d.parentNode.setAttribute('data-mmdepth', byContent[key]);
-        });
-      } catch (e) { tagDepth(); }
-    })();
+    decorate();
+    // markmap перерисовывает узлы при разворачивании/зуме — повторяем decorate
+    var mo = new MutationObserver(function () { decorate(); });
+    mo.observe(svg, { childList: true, subtree: true });
 
     // кнопки
     bIn.addEventListener('click', function () { mm.rescale(1.25); });
