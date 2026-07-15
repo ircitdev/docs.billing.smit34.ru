@@ -106,6 +106,34 @@
       }
     }, window.markmap.Transformer ? new window.markmap.Transformer().transform(md).root : null);
 
+    // проставить data-mmdepth на foreignObject'ах (для CSS-капсул 1-2 уровня)
+    function tagDepth() {
+      var fos = svg.querySelectorAll('foreignObject');
+      fos.forEach(function (fo) {
+        var d = fo.querySelector('div');
+        if (!d) return;
+        // глубину определяем по markmap: у fo есть родитель g с data — берём из встроенного
+        var depth = fo.getAttribute('data-depth');
+        if (depth == null && d.dataset && d.dataset.depth != null) depth = d.dataset.depth;
+        if (depth != null) fo.setAttribute('data-mmdepth', depth);
+      });
+    }
+    // markmap не всегда кладёт data-depth в DOM — вычислим по дереву состояния
+    (function markByState() {
+      try {
+        var root = mm.state.data;
+        var byContent = {};
+        (function walk(n) {
+          byContent[(n.content || '').replace(/<[^>]*>/g, '').trim()] = n.state.depth;
+          (n.children || []).forEach(walk);
+        })(root);
+        svg.querySelectorAll('foreignObject div').forEach(function (d) {
+          var key = (d.textContent || '').trim();
+          if (key in byContent) d.parentNode.setAttribute('data-mmdepth', byContent[key]);
+        });
+      } catch (e) { tagDepth(); }
+    })();
+
     // кнопки
     bIn.addEventListener('click', function () { mm.rescale(1.25); });
     bOut.addEventListener('click', function () { mm.rescale(0.8); });
