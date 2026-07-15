@@ -1846,22 +1846,44 @@ html, body {
   .vf-step{flex:1 1 auto}
 }
 
-/* ── Markmap майндмапы (markmap-init.js) ── */
-.mmap-wrap{margin:18px 0;border:1px solid var(--border);border-radius:12px;
-  background:var(--bg-light);padding:10px 12px;overflow:hidden}
-.mmap-svg{display:block;width:100%;height:520px;max-width:100%}
-@media(max-width:640px){.mmap-svg{height:420px}}
-/* текст узлов — контрастный, крупный, наследует шрифт docs */
-.mmap-svg text{font-family:inherit!important;font-size:15px!important;fill:var(--text)!important}
-.mmap-svg .markmap-node>text,.mmap-svg .markmap-foreign{fill:var(--text)!important;color:var(--text)!important}
-.mmap-svg .markmap-foreign div{font-family:inherit!important;color:var(--text)!important;font-size:14.5px!important;white-space:nowrap}
-.mmap-svg .markmap-link{stroke-width:1.6px!important;opacity:.9}
-/* подчёркивание-акцент под текстом узла (фирменный зелёный) */
-.mmap-svg .markmap-node>line,.mmap-svg .markmap-node>path.markmap-line{stroke:#43b77a!important;stroke-width:2px!important}
-pre.markmap:not([data-markmap-done]){
-  color:var(--text-light);font-size:.85em;font-family:'SFMono-Regular',Consolas,monospace;
-  white-space:pre-wrap;text-align:left;background:var(--bg-light);
-  border:1px dashed var(--border);border-radius:10px;padding:14px 16px}
+/* ── СмИТ mindmap — древовидная структура сверху-вниз (smindmap-init.js) ──
+   Корень-капсула сверху → ветви 2-го уровня (голубые «таблетки») → листья
+   с подчёркиванием. Вертикальная раскладка, угловые коннекторы. */
+.smind{margin:20px 0;padding:18px 12px;border:1px solid var(--border);border-radius:14px;
+  background:var(--bg-light);overflow-x:auto}
+.smind ul{list-style:none;margin:0;padding:0}
+/* корень — фирменный градиент СмИТ */
+.smind>ul>li>.smind-node{display:inline-block;
+  background:linear-gradient(135deg,#43b77a,#2d9a5f);color:#fff;font-weight:700;
+  font-size:1.15rem;padding:12px 26px;border-radius:12px;border:0;
+  box-shadow:0 4px 14px rgba(67,183,122,.32)}
+.smind>ul{text-align:center}
+/* ветви (столбец под корнем) */
+.smind-branches{display:flex;flex-direction:column;gap:26px;align-items:flex-start;
+  margin-top:22px;padding-left:8px;position:relative}
+/* вертикальная ось от корня — фирменная зелёная */
+.smind-branches::before{content:'';position:absolute;left:0;top:-22px;bottom:22px;
+  width:2px;background:rgba(67,183,122,.4)}
+.smind-branch{position:relative;padding-left:26px}
+/* горизонтальный «ус» от оси к ветви */
+.smind-branch::before{content:'';position:absolute;left:0;top:16px;width:24px;height:2px;
+  background:rgba(67,183,122,.4)}
+/* ветвь 2-го уровня — зелёная капсула СмИТ */
+.smind-b-title{display:inline-block;background:#e3f3ea;color:#1f6f47;font-weight:600;
+  padding:7px 18px;border-radius:20px;font-size:1rem;border:1px solid #bfe3ce}
+html[data-theme="dark"] .smind-b-title{background:rgba(67,183,122,.16);color:#8fe0b3;
+  border-color:rgba(67,183,122,.35)}
+/* листья */
+.smind-leaves{display:flex;flex-direction:column;gap:2px;margin-top:10px;padding-left:16px}
+.smind-leaf{position:relative;padding:5px 2px 6px;font-size:.92rem;color:var(--text);
+  border-bottom:1.5px solid rgba(67,183,122,.28);max-width:340px}
+html[data-theme="dark"] .smind-leaf{border-bottom-color:rgba(67,183,122,.24)}
+.smind-leaf::before{content:'';position:absolute;left:-14px;top:15px;width:12px;height:2px;
+  background:rgba(67,183,122,.4)}
+/* вложенные под-листья (3-й уровень) — со сдвигом */
+.smind-leaf .smind-sub{margin:6px 0 2px 14px;display:flex;flex-direction:column;gap:2px}
+.smind-leaf .smind-sub .smind-leaf{font-size:.86rem;opacity:.92}
+@media(max-width:640px){.smind-b-title{font-size:.92rem}.smind-leaf{font-size:.85rem;max-width:260px}}
 
 /* ── Mermaid диаграммы / инфографика / mindmaps (mermaid-init.js) ── */
 pre.mermaid{background:transparent;border:0;padding:8px 0;margin:16px 0;text-align:center;overflow-x:auto}
