@@ -1873,13 +1873,23 @@ html, body {
 .mmap-svg foreignObject[data-mmdepth="0"] div{
   font-weight:800!important;font-size:1.02rem!important;color:#2d9a5f!important}
 html[data-theme="dark"] .mmap-svg foreignObject[data-mmdepth="0"] div{color:#43b77a!important}
-/* уровень 1 (ветви) — жирный зелёный + иконка */
+/* уровень 1 (ветви) — жирный зелёный + иконка слева (через ::before, overflow:visible
+   чтобы иконка за левой границей foreignObject не обрезалась) */
+.mmap-svg foreignObject[data-mmdepth="1"]{overflow:visible!important}
 .mmap-svg foreignObject[data-mmdepth="1"] div{
-  font-weight:700!important;color:#1f6f47!important}
+  font-weight:700!important;color:#1f6f47!important;position:relative;overflow:visible!important}
 html[data-theme="dark"] .mmap-svg foreignObject[data-mmdepth="1"] div{color:#7fd6a5!important}
-/* FA-иконки на ветвях */
-.mmap-svg foreignObject i.fas,.mmap-svg foreignObject i.far{margin-right:6px;color:#43b77a}
-html[data-theme="dark"] .mmap-svg foreignObject i.fas{color:#7fd6a5}
+.mmap-svg foreignObject[data-mmdepth="1"] div[data-mmicon]::before{
+  font-family:"Font Awesome 6 Free";font-weight:900;font-size:.85em;color:#43b77a;
+  position:absolute;left:-19px;top:50%;transform:translateY(-50%)}
+.mmap-svg foreignObject div[data-mmicon="cubes"]::before{content:"\f1b3"}
+.mmap-svg foreignObject div[data-mmicon="film"]::before{content:"\f008"}
+.mmap-svg foreignObject div[data-mmicon="wand-magic"]::before{content:"\f72b"}
+.mmap-svg foreignObject div[data-mmicon="robot"]::before{content:"\f544"}
+.mmap-svg foreignObject div[data-mmicon="globe"]::before{content:"\f0ac"}
+.mmap-svg foreignObject div[data-mmicon="inbox"]::before{content:"\f01c"}
+.mmap-svg foreignObject div[data-mmicon="chart-line"]::before{content:"\f201"}
+html[data-theme="dark"] .mmap-svg foreignObject div[data-mmicon]::before{color:#7fd6a5}
 .mmap-svg foreignObject a{color:#43b77a!important}
 .mmap-svg .markmap-link{stroke-width:1.6px!important;opacity:.9}
 .mmap-svg .markmap-node>line{stroke:#43b77a!important;stroke-width:2px!important}

@@ -109,25 +109,23 @@
     // Пост-обработка узлов: капсулы 1-2 уровня + FA-иконки на ветвях.
     // Не зависим от внутренней структуры markmap — идём от текста узла.
     var ROOT = 'Лендинги';
+    // имя иконки FA → задаём через data-атрибут, рисуем CSS ::before (НЕ трогаем
+    // innerHTML — иначе markmap сбивает расчёт ширины foreignObject и текст обрезается)
     var BRANCH_ICONS = {
-      'Конструктор': 'fa-cubes', 'Hero и медиа': 'fa-photo-film',
-      'Эффекты': 'fa-wand-magic-sparkles', 'AI': 'fa-robot',
-      'Публикация': 'fa-globe', 'Заявки': 'fa-inbox', 'Аналитика': 'fa-chart-line'
+      'Конструктор': 'cubes', 'Hero и медиа': 'film',
+      'Эффекты': 'wand-magic', 'AI': 'robot',
+      'Публикация': 'globe', 'Заявки': 'inbox', 'Аналитика': 'chart-line'
     };
     function decorate() {
       var divs = svg.querySelectorAll('foreignObject > div');
       divs.forEach(function (d) {
-        if (d.dataset.smitDone) return;
         var txt = (d.textContent || '').trim();
         var fo = d.parentNode;
         if (txt === ROOT) {
-          fo.setAttribute('data-mmdepth', '0'); d.dataset.smitDone = '1';
+          fo.setAttribute('data-mmdepth', '0');
         } else if (BRANCH_ICONS[txt]) {
           fo.setAttribute('data-mmdepth', '1');
-          if (!d.querySelector('i')) {
-            d.innerHTML = '<i class="fas ' + BRANCH_ICONS[txt] + '"></i> ' + d.innerHTML;
-          }
-          d.dataset.smitDone = '1';
+          d.setAttribute('data-mmicon', BRANCH_ICONS[txt]);
         }
       });
     }
