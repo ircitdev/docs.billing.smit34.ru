@@ -70,13 +70,13 @@
     // единый шрифт и цвета СмИТ (зелёный акцент), спокойный фон.
     var brand = '#43b77a', brandDark = '#2d9a5f';
     var tv = dark ? {
-      fontFamily: 'inherit', fontSize: '15px',
+      fontFamily: 'inherit', fontSize: '13px',
       primaryColor: '#1f2a24', primaryBorderColor: brand, primaryTextColor: '#e6edea',
       lineColor: '#4a5a52', secondaryColor: '#24303a', tertiaryColor: '#2a2f37',
       mainBkg: '#1f2a24', nodeBorder: brand, clusterBkg: 'rgba(67,183,122,.06)',
       clusterBorder: '#3a4a42', titleColor: '#e6edea', edgeLabelBackground: '#181c1a'
     } : {
-      fontFamily: 'inherit', fontSize: '15px',
+      fontFamily: 'inherit', fontSize: '13px',
       primaryColor: '#eef7f1', primaryBorderColor: brand, primaryTextColor: '#1c2b23',
       lineColor: '#9fb3a9', secondaryColor: '#f3f6f8', tertiaryColor: '#f7f9fb',
       mainBkg: '#eef7f1', nodeBorder: brandDark, clusterBkg: 'rgba(67,183,122,.05)',
@@ -86,7 +86,9 @@
       startOnLoad: false,
       securityLevel: 'strict',
       theme: 'base',                       // base + свои переменные = единый аккуратный стиль
-      flowchart: { useMaxWidth: true, htmlLabels: true, curve: 'basis', padding: 14, nodeSpacing: 42, rankSpacing: 52 },
+      // компактные схемы, перенос длинного текста, чтобы узлы не разъезжались и текст читался
+      flowchart: { useMaxWidth: true, htmlLabels: true, curve: 'basis',
+        padding: 10, nodeSpacing: 34, rankSpacing: 42, wrappingWidth: 170 },
       mindmap: { useMaxWidth: true, padding: 12 },
       themeVariables: tv
     });

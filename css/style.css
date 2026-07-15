@@ -1917,6 +1917,14 @@ pre.markmap:not([data-markmap-done]){
 /* ── Mermaid диаграммы / инфографика / mindmaps (mermaid-init.js) ── */
 pre.mermaid{background:transparent;border:0;padding:8px 0;margin:16px 0;text-align:center;overflow-x:auto}
 pre.mermaid svg{max-width:100%;width:auto;height:auto;max-height:72vh}
+/* Компактные схемы: не растягивать на всю широкую область + текст узлов не обрезается */
+.mmd-zoom-viewport{text-align:center}
+.mmd-zoom-viewport>svg,.mmd-zoom-stage>svg{max-width:min(100%,640px)!important;margin:0 auto}
+.mmd-zoom.is-zoomed .mmd-zoom-viewport>svg,.mmd-zoom.is-zoomed .mmd-zoom-stage>svg{max-width:none!important}
+.mmd-zoom-viewport svg foreignObject,.mmd-zoom-viewport svg .nodeLabel,
+.mmd-zoom-viewport svg .label{overflow:visible!important}
+.mmd-zoom-viewport svg .nodeLabel,.mmd-zoom-viewport svg foreignObject div{
+  white-space:normal!important;line-height:1.25}
 /* Mindmap: классический аккуратный вид — прямоугольники одного стиля,
    тонкие ровные ветки, единый шрифт (перекрывает «облачные» дефолты mermaid).
    Скругление углов задаётся через SVG-атрибуты rx/ry в mermaid-init (кросс-браузерно). */
