@@ -1848,9 +1848,16 @@ html, body {
 
 /* ── Markmap майндмапы (markmap-init.js) ── */
 .mmap-wrap{margin:18px 0;border:1px solid var(--border);border-radius:12px;
-  background:var(--bg-light);padding:6px 8px;overflow:hidden}
-.mmap-svg{display:block;width:100%;height:440px;max-width:100%}
-@media(max-width:640px){.mmap-svg{height:360px}}
+  background:var(--bg-light);padding:10px 12px;overflow:hidden}
+.mmap-svg{display:block;width:100%;height:520px;max-width:100%}
+@media(max-width:640px){.mmap-svg{height:420px}}
+/* текст узлов — контрастный, крупный, наследует шрифт docs */
+.mmap-svg text{font-family:inherit!important;font-size:15px!important;fill:var(--text)!important}
+.mmap-svg .markmap-node>text,.mmap-svg .markmap-foreign{fill:var(--text)!important;color:var(--text)!important}
+.mmap-svg .markmap-foreign div{font-family:inherit!important;color:var(--text)!important;font-size:14.5px!important;white-space:nowrap}
+.mmap-svg .markmap-link{stroke-width:1.6px!important;opacity:.9}
+/* подчёркивание-акцент под текстом узла (фирменный зелёный) */
+.mmap-svg .markmap-node>line,.mmap-svg .markmap-node>path.markmap-line{stroke:#43b77a!important;stroke-width:2px!important}
 pre.markmap:not([data-markmap-done]){
   color:var(--text-light);font-size:.85em;font-family:'SFMono-Regular',Consolas,monospace;
   white-space:pre-wrap;text-align:left;background:var(--bg-light);
