@@ -1849,6 +1849,21 @@ html, body {
 /* ── Mermaid диаграммы / инфографика / mindmaps (mermaid-init.js) ── */
 pre.mermaid{background:transparent;border:0;padding:8px 0;margin:16px 0;text-align:center;overflow-x:auto}
 pre.mermaid svg{max-width:100%;width:auto;height:auto;max-height:72vh}
+/* Mindmap: классический аккуратный вид — прямоугольники одного стиля,
+   тонкие ровные ветки, единый шрифт (перекрывает «облачные» дефолты mermaid).
+   Скругление углов задаётся через SVG-атрибуты rx/ry в mermaid-init (кросс-браузерно). */
+pre.mermaid .mindmap-node > rect,
+pre.mermaid .mindmap-node > .node-bkg{stroke-width:1.5px}
+pre.mermaid g.mindmap-node .node-line,
+pre.mermaid .mindmap .edge,
+pre.mermaid .edgePaths path{stroke-width:1.5px;opacity:.85}
+pre.mermaid .mindmap-node text,
+pre.mermaid .nodeLabel{font-family:inherit;font-size:14.5px}
+/* корневой узел — фирменная заливка */
+pre.mermaid .mindmap-node.section-root > rect,
+pre.mermaid .mindmap-node.section--1 > rect{fill:#43b77a;stroke:#2d9a5f}
+pre.mermaid .mindmap-node.section-root text,
+pre.mermaid .mindmap-node.section--1 text{fill:#fff;font-weight:700}
 /* до загрузки/рендера — приглушённый моноширинный исходник, не «голый» код */
 pre.mermaid:not([data-processed]):not([data-mermaid-done]){
   color:var(--text-light);font-size:.85em;font-family:'SFMono-Regular',Consolas,monospace;

@@ -65,12 +65,30 @@
 
   function initMermaid() {
     if (!window.mermaid) return;
+    var dark = isDark();
+    // Фирменная «классическая» палитра: аккуратные скруглённые узлы,
+    // единый шрифт и цвета СмИТ (зелёный акцент), спокойный фон.
+    var brand = '#43b77a', brandDark = '#2d9a5f';
+    var tv = dark ? {
+      fontFamily: 'inherit', fontSize: '15px',
+      primaryColor: '#1f2a24', primaryBorderColor: brand, primaryTextColor: '#e6edea',
+      lineColor: '#4a5a52', secondaryColor: '#24303a', tertiaryColor: '#2a2f37',
+      mainBkg: '#1f2a24', nodeBorder: brand, clusterBkg: 'rgba(67,183,122,.06)',
+      clusterBorder: '#3a4a42', titleColor: '#e6edea', edgeLabelBackground: '#181c1a'
+    } : {
+      fontFamily: 'inherit', fontSize: '15px',
+      primaryColor: '#eef7f1', primaryBorderColor: brand, primaryTextColor: '#1c2b23',
+      lineColor: '#9fb3a9', secondaryColor: '#f3f6f8', tertiaryColor: '#f7f9fb',
+      mainBkg: '#eef7f1', nodeBorder: brandDark, clusterBkg: 'rgba(67,183,122,.05)',
+      clusterBorder: '#cfe0d6', titleColor: '#1c2b23', edgeLabelBackground: '#ffffff'
+    };
     window.mermaid.initialize({
       startOnLoad: false,
       securityLevel: 'strict',
-      theme: isDark() ? 'dark' : 'default',
-      flowchart: { useMaxWidth: true },
-      themeVariables: { fontFamily: 'inherit' }
+      theme: 'base',                       // base + свои переменные = единый аккуратный стиль
+      flowchart: { useMaxWidth: true, htmlLabels: true, curve: 'basis', padding: 14, nodeSpacing: 42, rankSpacing: 52 },
+      mindmap: { useMaxWidth: true, padding: 12 },
+      themeVariables: tv
     });
     _initialized = true;
   }
@@ -85,7 +103,7 @@
       if (!_initialized) initMermaid();
       // mermaid.run читает textContent узла как исходник диаграммы
       window.mermaid.run({ nodes: nodes }).then(function () {
-        for (var i = 0; i < nodes.length; i++) wrapZoom(nodes[i]);
+        for (var i = 0; i < nodes.length; i++) { roundMindmap(nodes[i]); wrapZoom(nodes[i]); }
       }).catch(function (e) {
         console.warn('[mermaid] ошибка рендера:', e);
       });
@@ -115,6 +133,17 @@
     }
     _initialized = false; // переинициализировать с новой темой
     renderAll();
+  }
+
+  /* ── Аккуратные mindmap-узлы: скруглённые прямоугольники вместо «облаков» ──
+   * rx/ry как CSS не работают в Safari — ставим SVG-атрибутами после рендера. */
+  function roundMindmap(pre) {
+    if (!pre) return;
+    var rects = pre.querySelectorAll('.mindmap-node rect, g.mindmap-node > rect, .mindmap-node .node-bkg');
+    for (var i = 0; i < rects.length; i++) {
+      rects[i].setAttribute('rx', '10');
+      rects[i].setAttribute('ry', '10');
+    }
   }
 
   /* ── 5. zoom/pan-обёртка вокруг отрисованной диаграммы ──
