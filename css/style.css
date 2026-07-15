@@ -1952,7 +1952,21 @@ pre.mermaid:not([data-processed]):not([data-mermaid-done]){
 .mmd-zoom-pct{min-width:48px;text-align:center;font-size:.82rem;font-variant-numeric:tabular-nums;
   color:var(--text-light);user-select:none}
 /* По умолчанию: схема вписана по ширине, видна целиком, без скролла и без grab-курсора */
-.mmd-zoom-viewport{overflow:visible;cursor:default;padding:12px}
+.mmd-zoom-viewport{overflow:visible;cursor:default;padding:12px;
+  /* лёгкая «миллиметровка» (как в майндмапе): мелкая сетка + акцент каждые 5 клеток */
+  background-image:
+    linear-gradient(rgba(67,183,122,.06) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(67,183,122,.06) 1px,transparent 1px),
+    linear-gradient(rgba(67,183,122,.10) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(67,183,122,.10) 1px,transparent 1px);
+  background-size:16px 16px,16px 16px,80px 80px,80px 80px;
+  background-position:-1px -1px}
+html[data-theme="dark"] .mmd-zoom-viewport{
+  background-image:
+    linear-gradient(rgba(67,183,122,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(67,183,122,.05) 1px,transparent 1px),
+    linear-gradient(rgba(67,183,122,.09) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(67,183,122,.09) 1px,transparent 1px)}
 /* При увеличении (>100%) включаем прокрутку/панорамирование */
 .mmd-zoom.is-zoomed .mmd-zoom-viewport{overflow:auto;max-height:80vh;cursor:grab}
 .mmd-zoom.is-zoomed .mmd-zoom-viewport.is-panning{cursor:grabbing;user-select:none}
