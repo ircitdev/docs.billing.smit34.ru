@@ -237,6 +237,10 @@
           <li class="sub-item"><a href="sorm.html#sorm-telegram">— Telegram-уведомления</a></li>
           <li class="sub-item"><a href="sorm.html#sorm-history">— История выгрузок</a></li>
           <li class="sub-item"><a href="sorm.html#sorm-schedule">— Авторасписание</a></li>
+          <li><a href="sorm.html#sorm-vendors">Вендоры и вендор-паки</a></li>
+          <li class="sub-item"><a href="sorm.html#sorm-vendor-lifecycle">— Жизненный цикл пака</a></li>
+          <li class="sub-item"><a href="sorm.html#sorm-vendor-versioning">— Версионность и обновления</a></li>
+          <li class="sub-item"><a href="sorm.html#sorm-vendor-license">— Управление на лиц-сервере</a></li>
           <li><a href="sorm.html#manual-run">Управление отчётами</a></li>
           <li><a href="sorm.html#metadata">СОРМ-метаданные</a></li>
           <li><a href="sorm.html#preflight">Pre-flight валидация</a></li>
@@ -320,6 +324,7 @@
   <li><a href="#reports">Отчёты и SQL</a></li>
   <li><a href="#schedule">Расписание автоматической выгрузки</a></li>
   <li><a href="#sorm-admin">Админка: выгрузка на сервера РКН</a></li>
+  <li><a href="#sorm-vendors">Вендоры и вендор-паки</a></li>
   <li><a href="#manual-run">Управление отчётами</a></li>
   <li><a href="#metadata">СОРМ-метаданные UserAttributes</a></li>
   <li><a href="#preflight">Pre-flight валидация перед выгрузкой</a></li>
@@ -997,6 +1002,128 @@ docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 3
     <li><code>sorm_run_export &lt;sorm_id&gt;</code> — запустить выгрузку всех отчётов одной конфигурации</li>
     <li><code>sorm_run_report &lt;report_id&gt;</code> — запустить один отчёт по ID</li>
     <li><code>sorm_validate_meta</code> — проверка метаданных <code>UserAttributes</code> без UI</li>
+  </ul>
+
+
+  <h2 id="sorm-vendors">Вендоры и вендор-паки (v3.0.0)</h2>
+
+  <p>Приказ Минкомсвязи №573 — общий стандарт СОРМ-3, который принимают все вендоры
+  оборудования (СпецТехПитон, СигналТек, НОРСИ, МФИ Софт, Элком НТ, VAS Experts).
+  Отличия между вендорами — <strong>форматные</strong>: разделитель, кодировка,
+  расширение файлов, именование, hex-представление, доп. поля. Раздел «Вендоры»
+  на карточке конфигурации СОРМ (вкладка <strong>Вендоры</strong>) позволяет выбрать
+  профиль вендора и переустановить под него схему отчётов.</p>
+
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/sorm_vendors_v1717/doc_sorm_vendors.jpg" alt="Вкладка «Вендоры» — карточки вендоров с обложками, бейджем версии и кнопками"></p>
+
+  <h3 id="sorm-vendor-profiles">Профили вендоров</h3>
+
+  <p>Профиль вендора — это <strong>данные</strong> (dict формата + список отчётов),
+  а не код: <code>billing/services/sorm_vendor_profiles.py</code>. Встроенные профили
+  работают автономно; эталон — <strong>СпецТехПитон</strong> (текущий рабочий формат
+  СмІТ: <code>.txt</code>, разделитель <code>;</code>, UTF-8, Приказ №573).</p>
+
+  <table class="data-table">
+    <thead><tr><th>Вендор</th><th>slug</th><th>Роль</th><th>Примечание</th></tr></thead>
+    <tbody>
+      <tr><td>СпецТехПитон</td><td><code>spec_tech_python</code></td><td>Эталон</td><td>Текущий формат СмІТ (№573, .txt, ;, UTF-8)</td></tr>
+      <tr><td>СигналТек</td><td><code>signaltek</code></td><td>—</td><td>Формат СОРМ-3 по №573, отличия по спецификации вендора</td></tr>
+      <tr><td>НОРСИ 2020</td><td><code>norsi_2020</code></td><td>—</td><td>НОРСИ-ТРАНС, базовый набор №573 до уточнения</td></tr>
+      <tr><td>МФИ Софт</td><td><code>mfi_soft</code></td><td>—</td><td>МФИ Софт (DPI/СОРМ), базовый набор №573</td></tr>
+      <tr><td>Элком НТ</td><td><code>elkom_nt</code></td><td>—</td><td>Элком НТ, базовый набор №573</td></tr>
+      <tr><td>VAS Experts</td><td><code>vasexperts</code></td><td>—</td><td>VAS Experts (СКАТ DPI), базовый набор №573</td></tr>
+    </tbody>
+  </table>
+
+  <p>Карточка вендора показывает обложку, <strong>бейдж версии</strong> справа от
+  названия, форматные бейджи (расширение, разделитель, кодировка) и действия одной
+  строкой: <strong>«Выбрать вендора»</strong> (сменить профиль конфигурации и
+  переустановить схему отчётов — текущие уходят в архив, восстановимо) и кнопки пака.</p>
+
+  <h3 id="sorm-vendor-lifecycle">Жизненный цикл вендор-пака</h3>
+
+  <p>Вендор-паки распространяются <strong>централизованно с сервера лицензий</strong>
+  как данные (формат + схема отчётов JSON), бесплатны в рамках модуля СОРМ. Биллинг
+  тянет каталог по лицензионному ключу и зеркалит установленные паки в локальную
+  таблицу. Установленный и активный пак <strong>переопределяет</strong> встроенный
+  профиль того же slug. Недоступность сервера лицензий не трогает локальные паки
+  (offline-safety).</p>
+
+  <pre class="mermaid">
+flowchart LR
+  LS["Сервер лицензий<br/>SormVendorPack<br/>формат + схема + версия"] -->|"gw_sorm_vendors<br/>по лиц-ключу"| CAT["Каталог биллинга<br/>sorm_vendor_catalog"]
+  CAT -->|"Установить"| INST["InstalledSormVendor<br/>managed=True"]
+  INST -->|"Активировать"| ACT["Активный пак<br/>переопределяет профиль"]
+  ACT --> EXP["Выгрузка СОРМ:<br/>формат + схема пака"]
+  BUILT["Встроенный профиль<br/>эталон №573"] -.->|"пак не активен"| EXP
+</pre>
+
+  <p>Действия над паком (кнопки на карточке, endpoint
+  <code>sorm_vendor_pack</code>): <strong>Установить</strong> · <strong>Активировать</strong> ·
+  <strong>Отключить</strong> · <strong>Удалить</strong>. Кнопка
+  <strong>«Каталог паков»</strong> синхронизирует каталог с сервером лицензий и
+  показывает число доступных обновлений.</p>
+
+  <h3 id="sorm-vendor-versioning">Версионность и обновления</h3>
+
+  <p>Карточка сравнивает версию установленного пака с версией в каталоге сервера
+  лицензий. Если в каталоге версия новее — бейдж становится жёлтым и появляется
+  кнопка <strong>«Обновить до vX»</strong> (переустановка через
+  <code>update_or_create</code> — формат, схема и версия обновляются, активность
+  пака сохраняется).</p>
+
+  <p>Автообновление по умолчанию <strong>выключено</strong> — обновление вручную.
+  Два тумблера политики в настройках:</p>
+
+  <table class="data-table">
+    <thead><tr><th>Настройка</th><th>Страница</th><th>Гейт задачи</th></tr></thead>
+    <tbody>
+      <tr><td>Разрешить автообновление виджетов</td><td><code>/admin/settings/widgets/</code></td><td><code>WIDGET_AUTO_UPDATE_ENABLED</code> → <code>billing.widgets.auto_update</code></td></tr>
+      <tr><td>Разрешить автообновление модулей</td><td><code>/admin/settings/modules/</code></td><td><code>MODULE_AUTO_UPDATE_ENABLED</code> → <code>billing.sorm.vendor_auto_update</code></td></tr>
+    </tbody>
+  </table>
+
+  <pre class="mermaid">
+flowchart TB
+  NEW["Новая версия пака<br/>на сервере лицензий"] --> Q{"Тумблер<br/>автообновления<br/>включён?"}
+  Q -->|"Да"| AUTO["Celery beat раз в сутки<br/>переустановка пака"]
+  Q -->|"Нет — по умолчанию"| MAN["Кнопка «Обновить до vX»<br/>под паком/виджетом<br/>вручную"]
+</pre>
+
+  <div class="info-box">
+    <p><strong>Почему по умолчанию OFF.</strong> Формат и схема отчётов СОРМ —
+    чувствительны: автоматическая смена формата выгрузки в РКН без ведома оператора
+    нежелательна. Поэтому обновление — осознанное действие кнопкой, а авто-режим
+    включается тумблером только при необходимости.</p>
+  </div>
+
+  <h3 id="sorm-vendor-license">Управление на сервере лицензий</h3>
+
+  <p>Вендор-паки <strong>создаются, загружаются и обновляются на сервере лицензий</strong>
+  (не в биллинге). Модель <code>SormVendorPack</code>, админка
+  <code>/admin/licenses/sormvendorpack/</code> (раздел «Каталог продукта» дашборда):
+  превью обложки, быстрый бамп версии и переключатель «Доступен» прямо в списке,
+  редактор <code>format_json</code> / <code>reports_json</code>. Бамп версии в админке →
+  биллинг видит обновление через <code>gw_sorm_vendors</code> → показывает кнопку
+  «Обновить».</p>
+
+  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/sorm_vendors_v1717/doc_sorm_ls_admin.jpg" alt="Админка вендор-паков на сервере лицензий"></p>
+
+  <h3 id="sorm-vendor-model">Структуры данных и endpoint'ы</h3>
+
+  <ul>
+    <li><strong>Сервер лицензий:</strong> <code>SormVendorPack</code>
+    (slug, name, version, note, image, enabled, format_json, reports_json);
+    API <code>GET /api/gw/sorm_vendors/</code> (по лиц-ключу) отдаёт паки с обложкой.</li>
+    <li><strong>Биллинг:</strong> реестр <code>sorm_vendor_profiles.py</code> (6 встроенных
+    профилей + URL обложек в GCS), каталог <code>sorm_vendor_catalog.py</code>
+    (fetch/sync/install/set_active/uninstall), модель <code>InstalledSormVendor</code>
+    (миграция <code>0334</code>, зеркало паков), Celery
+    <code>billing.sorm.vendor_auto_update</code> (гейт <code>MODULE_AUTO_UPDATE_ENABLED</code>).</li>
+    <li><strong>Endpoint'ы биллинга:</strong>
+    <code>equipment/sorm_list/&lt;id&gt;/set_vendor/</code> (сменить профиль конфигурации),
+    <code>equipment/sorm_list/vendors/catalog/</code> (синк каталога),
+    <code>equipment/sorm_list/vendors/pack/</code> (install/activate/deactivate/uninstall).</li>
   </ul>
 
 

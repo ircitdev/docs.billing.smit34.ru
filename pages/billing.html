@@ -6953,19 +6953,19 @@ OSM. Стиль карточки в <a href="#integrations">/admin/settings/inte
 
 <pre class="mermaid">
 flowchart LR
-    W["Webhook оплаты<br/>ЮKassa · W1 · Единая касса"] --> FO
-    B["Банковская выписка<br/>Сбер · Альфа"] --> FO
-    M["billing_worker<br/>абонплата и услуги"] --> FO
-    P["Обещанный платёж<br/>выдача и закрытие"] --> FO
-    O["Оператор вручную<br/>модалка раздела"] --> FO
-    E["EBS-импорт<br/>историческая миграция"] --> FO
+    W["Webhook оплаты<br/>ЮKassa · W1"] --> FO
+    B["Банковская<br/>выписка"] --> FO
+    M["billing_worker<br/>абонплата"] --> FO
+    P["Обещанный<br/>платёж"] --> FO
+    O["Оператор<br/>вручную"] --> FO
+    E["EBS-импорт<br/>история"] --> FO
 
-    FO[("finance_operations")] --> BAL["AdminAccounts.ostatok<br/>+= op_summa"]
+    FO[("finance_operations")] --> BAL["ostatok<br/>+= op_summa"]
     BAL --> BLK{"Баланс<br/>отрицательный?"}
-    BLK -->|"да"| B1["Блокировка b_negbal<br/>+ CoA Disconnect"]
+    BLK -->|"да"| B1["b_negbal<br/>+ CoA"]
     BLK -->|"нет"| B2["Доступ активен"]
-    FO --> KKM["Кассовый чек в ОФД<br/>54-ФЗ"]
-    FO --> LK["История в ЛК<br/>и мобильном приложении"]
+    FO --> KKM["Чек в ОФД<br/>54-ФЗ"]
+    FO --> LK["История в ЛК<br/>и мобильном"]
 </pre>
 
 <p>Практический вывод: <strong>операцию нельзя «просто удалить»</strong>. Удаление не откатывает остаток счёта автоматически и рвёт связь с банковской выпиской и чеком. Для отмены влияния используйте <em>сторно</em> (обратная операция + флаг <code>storno=True</code>) — см. <a href="#finops-storno">Сторнирование</a>.</p>
@@ -7028,18 +7028,18 @@ sequenceDiagram
 <p>Скоупинг применяется не только к списку, но и к чтению и правке конкретной операции. Иначе сотрудник одной компании мог бы читать и менять чужие платежи простым перебором <code>op_id</code> в адресной строке.</p>
 
 <pre class="mermaid">
-flowchart TB
-    REQ["Запрос сотрудника"] --> ALLOW{"allowed_orgs(user)"}
-    ALLOW -->|"None — доступны все"| FULL["Фильтр не накладывается"]
-    ALLOW -->|"список организаций"| SCOPE["filter_qs_by_org<br/>via abonent__organization"]
-    FULL --> ACT{"Что делает"}
+flowchart LR
+    REQ["Запрос"] --> ALLOW{"allowed_orgs"}
+    ALLOW -->|"None"| FULL["без фильтра"]
+    ALLOW -->|"свои орг."| SCOPE["filter_qs_by_org"]
+    FULL --> ACT{"действие"}
     SCOPE --> ACT
-    ACT -->|"смотрит список"| LIST["finops_list_json"]
-    ACT -->|"открывает карточку"| DET["finops_detail_json"]
-    ACT -->|"правит или удаляет"| CRUD["finops_crud_ajax"]
-    DET --> GUARD["_get_scoped_op()<br/>чужая организация → 404"]
+    ACT -->|"список"| LIST["list_json"]
+    ACT -->|"карточка"| DET["detail_json"]
+    ACT -->|"правка"| CRUD["crud_ajax"]
+    DET --> GUARD["чужая → 404"]
     CRUD --> GUARD
-    CRUD --> ABCHK["Абонент вне доступных<br/>организаций → 403"]
+    CRUD --> ABCHK["чужой абонент → 403"]
 </pre>
 
 <p>Ответ на чужую операцию — <strong>404, а не 403</strong>: одинаковое сообщение для «нет такой» и «есть, но не ваша» не позволяет перебором выяснить, какие номера операций существуют.</p>
@@ -7156,12 +7156,12 @@ flowchart TB
     AB["Abonents<br/>абонент"] --- FO
     AA["AdminAccounts<br/>лицевой счёт"] --- FO
     FT["FinTypes<br/>тип · op_sign ±1"] --- FO
-    ORG["Organization<br/>денорм. организация"] --- FO
+    ORG["Organization<br/>денорм."] --- FO
     FO --- U["auth_user<br/>кто провёл"]
     FO --- US["Usluga<br/>за что списано"]
     FO --- CT["CreditType<br/>оплата по"]
-    FO --- SELF["FinanceOperations<br/>счёт-родитель · сторно"]
-    BSO["BankStatementOperation<br/>строка выписки"] --> FO
+    FO --- SELF["счёт-родитель<br/>сторно"]
+    BSO["строка<br/>выписки"] --> FO
     FO --> KKM["AtolConfig<br/>чек ОФД"]
 </pre>
 
