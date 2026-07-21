@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Интеграция с СОРМ3 — СмИТ Биллинг v3.0.0 (build 1673)</title>
+  <title>Интеграция с СОРМ3 — СмИТ Биллинг v3.0.0 (build 1718)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 3.0 — Документация">
-  <meta property="og:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v3.0.0 (build 1673)">
+  <meta property="og:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v3.0.0 (build 1718)">
   <meta property="og:description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/sorm.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v3.0.0 (build 1673)">
+  <meta name="twitter:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v3.0.0 (build 1718)">
   <meta name="twitter:description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
@@ -880,6 +880,80 @@ docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 3
   ставят утренние часы (например 09:00) чтобы при проблеме оператор увидел в
   начале рабочего дня.</p>
 
+  <h2 id="sorm-v1691">Мульти-организация, AI-помощник и SQL-редактор (v1.6.0)</h2>
+
+  <p>Обновление раздела по UX-аудиту от 21.07.2026: поддержка нескольких юрлиц,
+  AI-помощник по SQL и полноценный редактор запросов.</p>
+
+  <h3 id="sorm-multiorg">Мульти-организация</h3>
+
+  <p>У каждого оператора-юрлица (СмІТ / Робор / ИТЦ) своя лицензия связи и свой
+  ТСПУ, поэтому выгрузка одного юрлица не должна содержать абонентов другого.</p>
+
+  <ul>
+    <li>Поле <strong>Организация</strong> у конфигурации СОРМ (<code>Sorm.organization</code>,
+    миграция <code>0332</code>). При включённом мульти-орг — <strong>обязательное</strong>:
+    конфиг «на все организации» недопустим.</li>
+    <li>Данные выгрузок автоматически фильтруются по абонентам организации —
+    сервис <code>billing/services/sorm_org_scope.py</code> оборачивает произвольный
+    SQL отчёта: <code>SELECT * FROM (&lt;sql&gt;) WHERE "ABONENT_ID" IN (…)</code>
+    (или по <code>CONTRACT_NUMBER</code>). Справочники без абонентских колонок
+    (REGIONS, IP_PLAN, GATEWAY…) не фильтруются.</li>
+    <li>В списке конфигураций — единый <strong>бейдж организации</strong> (компонент
+    OrgBadge), фильтр по выбранной в навбаре организации.</li>
+    <li>Для инсталляции с одной организацией раздел не меняется — поведение прежнее
+    (выгрузка по всей базе).</li>
+  </ul>
+
+  <h3 id="sorm-readiness-drill">Drill-down пропусков данных</h3>
+
+  <p>В модалке «Проверка готовности» число пропусков по каждому обязательному полю
+  стало ссылкой — клик выгружает <strong>CSV со списком абонентов</strong> без этого
+  значения (ID, договор, ФИО, ссылка на карточку) для точечного исправления.
+  Endpoint <code>sorm_validate_missing_csv</code>.</p>
+
+  <h3 id="sorm-sql-editor">Редактор SQL отчёта</h3>
+
+  <ul>
+    <li><strong>CodeMirror 5</strong> (тема material-darker): подсветка PostgreSQL,
+    номера строк, перенос длинных строк, компактный шрифт.</li>
+    <li>Кнопка <strong>«Формат»</strong> — автоформатирование (beautify) SQL для
+    читаемости.</li>
+    <li>Кнопка <strong>«развернуть на весь экран»</strong> в шапке модалки.</li>
+    <li>Поле <strong>«Описание»</strong> отчёта (<code>SormReport.description</code>,
+    миграция <code>0333</code>) — показывается в списке.</li>
+    <li>Клик по <strong>названию отчёта</strong> или по шестерёнке компактной вкладки
+    (<code>?edit=&lt;id&gt;</code>) открывает единую модалку редактирования.</li>
+  </ul>
+
+  <h3 id="sorm-ai">AI-помощник по SQL</h3>
+
+  <p>Кнопка <strong>✨ AI</strong> в шапке SQL-редактора открывает чат с ассистентом
+  на базе Claude (через RU-bypass прокси). Ассистент знает схему БД и функции СОРМ
+  (<code>uf_ip2hex</code>, <code>uf_mask2hex</code>, <code>uf_date2sorm</code>), видит
+  текущий SQL отчёта и помогает его дорабатывать. Схема выходных колонок фиксирована
+  приказом РКН — без явной просьбы ассистент её не меняет. Когда решение готово,
+  предлагает новый SQL кнопкой <strong>«Применить в редактор»</strong>. Endpoint
+  <code>sorm_ai_assistant</code>.</p>
+
+  <h3 id="sorm-reports-bulk">Массовые действия по отчётам</h3>
+
+  <p>На вкладке «Отчёты» — чекбоксы у каждого отчёта + панель массовых действий:
+  задать периодичность выбранным или запустить их последовательно на FTP.</p>
+
+  <h3 id="sorm-ux-1691">UX и мелкие правки</h3>
+
+  <ul>
+    <li>Статус-строка конфига в единой рамке (как в Финоперациях) над вкладками +
+    кнопка «назад к списку».</li>
+    <li>FTP-пароль скрыт по умолчанию; исправлен рассинхрон периодичности
+    (сохранение модалки больше не сбрасывало отчёт из ежедневной выгрузки).</li>
+    <li>Селекты «Формат даты» и «Часовой пояс» (12 поясов РФ) вместо ручного ввода.</li>
+    <li>Telegram-уведомления — во второй колонке вкладки «Основные».</li>
+    <li>Bootstrap-подтверждения и тосты вместо системных диалогов; зелёные шапки
+    модалок; полноэкранные панели на мобильном; тёмная тема; aria-label.</li>
+  </ul>
+
   <h3 id="sorm-data-model">Структуры данных</h3>
 
   <table>
@@ -1172,8 +1246,8 @@ python manage.py merge_sorm_attribute_dups --by-name --apply</code></pre>
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.0.0 (build 1673)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">19.07.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.0.0 (build 1673)</span>&nbsp;|&nbsp;<span data-smit="updated">19.07.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.0.0 (build 1718)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">21.07.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.0.0 (build 1718)</span>&nbsp;|&nbsp;<span data-smit="updated">21.07.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=923"></script>
