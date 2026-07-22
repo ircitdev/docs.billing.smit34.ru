@@ -246,7 +246,7 @@ flowchart LR
     поддерживаются.</li>
 </ul>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1728/stock_dashboard.png" alt="Остатки — сводная с подсветкой ниже минимума" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1731/stock_dashboard.png" alt="Остатки — сводная с подсветкой ниже минимума" loading="lazy"></p>
 
 <div class="info-box"><strong>Как связан с остальной системой.</strong>
 Склад — не изолированный реестр: списание материалов происходит прямо из наряда
@@ -312,7 +312,7 @@ stateDiagram-v2
     in_stock --> defect: акт брака
 </pre>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1728/stock_movements.png" alt="Журнал движений со сторно" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1731/stock_movements.png" alt="Журнал движений со сторно" loading="lazy"></p>
 
 <h2 id="stock-items">Номенклатура и остатки</h2>
 <p>Позиция каталога задаёт: категорию, единицу измерения, тип учёта
@@ -324,8 +324,8 @@ stateDiagram-v2
 номенклатуры добавляет готовый набор позиций с категориями, ценами и порогами
 остатков — «Интернет-провайдер (ISP)», «Видеонаблюдение», «Домофония».
 Применение идемпотентно: существующие позиции с теми же названиями не меняются.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1728/stock_presets.png" alt="Пресеты номенклатуры" loading="lazy"></p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1728/stock_items.png" alt="Номенклатура — позиции, категории, склады" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1731/stock_presets.png" alt="Пресеты номенклатуры" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1731/stock_items.png" alt="Номенклатура — позиции, категории, склады" loading="lazy"></p>
 
 <h2 id="stock-receipt">Приход, серийники, этикетки</h2>
 <p>Приход оформляется накладной: номер документа, склад, позиции. Для серийных
@@ -337,15 +337,15 @@ USB-сканером или вручную. После проведения — 
   <li><strong>PDF-лист А4</strong> — под обычный принтер.</li>
 </ul>
 <p>На этикетке — штрихкод Code128 (или QR) со значением <code>SU-N</code> и серийник.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1728/stock_receipt.png" alt="Приход — накладная и массовое заведение серийников" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1731/stock_receipt.png" alt="Приход — накладная и массовое заведение серийников" loading="lazy"></p>
 
 <h2 id="stock-issue">Подотчёт сотрудника</h2>
 <p>Кладовщик выдаёт монтажнику оборудование по скану и расходники количеством.
 Выбор сотрудника — единый компонент ProfileSelect (аватар, роли, поиск).
 У монтажника есть свой мобильный экран «Мой подотчёт»: что на руках, возврат
 на склад, акт брака.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1728/stock_issue_profileselect.png" alt="Выдача в подотчёт — скан и единый селектор сотрудника" loading="lazy"></p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1728/stock_my.png" alt="Мой подотчёт — мобильный экран монтажника" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1731/stock_issue.png" alt="Выдача в подотчёт — скан и единый селектор сотрудника" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1731/stock_my.png" alt="Мой подотчёт — мобильный экран монтажника" loading="lazy"></p>
 
 <h2 id="stock-montazh">Материалы в наряде монтажа</h2>
 <p>На карточке наряда (<code>/admin/crm/montazh/</code>) — строка
@@ -359,8 +359,8 @@ USB-сканером или вручную. После проведения — 
 Если у сделки ещё нет абонента — модалка подскажет сначала создать его из
 карточки сделки. Настройка <code>STOCK_REQUIRE_MATERIALS_ON_DONE</code> включает
 жёсткий режим: наряд нельзя закрыть «Выполнено», пока не указаны материалы.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1728/montazh_materials_row.png" alt="Наряды монтажника — строка Материалы на карточке" loading="lazy"></p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1728/montazh_materials_modal.png" alt="Модалка материалов наряда" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1731/montazh_materials_row.png" alt="Наряды монтажника — строка Материалы на карточке" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1731/montazh_materials_modal.png" alt="Модалка материалов наряда" loading="lazy"></p>
 
 <h2 id="stock-abonent">Оборудование в карточке абонента</h2>
 <p>Вкладка «Оборудование» (прямая ссылка —
@@ -369,7 +369,7 @@ USB-сканером или вручную. После проведения — 
 и <strong>демонтаж</strong> (с вопросом «исправное или брак?»). При установке
 серийной единицы её MAC/серийник автоматически подставляются в учётку абонента
 (тумблер <code>STOCK_AUTO_FILL_MAC</code>).</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1728/abonent_equipment_tab.png" alt="Вкладка Оборудование в карточке абонента" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1731/abonent_equipment_tab.png" alt="Вкладка Оборудование в карточке абонента" loading="lazy"></p>
 
 <h2 id="stock-money">Деньги: продажа и аренда</h2>
 <p>Режим передачи определяет финансовые последствия установки:</p>
@@ -409,7 +409,7 @@ flowchart TB
     (<code>deal#N</code>, со ссылками на сделку и абонента) — сколько материалов
     и на какую сумму ушло. Сторно исключается автоматически.</li>
 </ul>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1728/stock_analytics.png" alt="Аналитика склада — KPI, обороты, подотчёты, себестоимость" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1731/stock_analytics.png" alt="Аналитика склада — KPI, обороты, подотчёты, себестоимость" loading="lazy"></p>
 
 <h2 id="stock-settings">Настройки, роли, алерты</h2>
 <p>Схема данных модуля:</p>
@@ -459,7 +459,7 @@ erDiagram
 такая позиция (и все её движения, единицы, аналитика) видна только сотрудникам
 с доступом к этой организации; позиция без организации — общая, видна всем.
 Селектор организации появляется в модалке позиции при включённом модуле
-мульти-орг, в списке добавляется колонка «Орг.» с бейджем организации.</p>
+мульти-орг, в списке номенклатуры добавляется колонка «Орг.», а на странице остатков — бейдж организации рядом с названием позиции.</p>
 <p><strong>Алерт остатков</strong>: раз в сутки задача <code>stock-min-alert</code>
 собирает позиции ниже <code>min_stock</code> и отправляет одно сообщение
 в Telegram-группу оператора со ссылкой на страницу прихода.</p>
