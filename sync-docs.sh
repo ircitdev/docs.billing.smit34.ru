@@ -181,6 +181,89 @@ print('  updated %d files (version=%s build=%s updated=%s)' % (total, v['version
 PYEOF
 )
 
+echo "=== 0b. Sync sidebar block from billing.html ==="
+# Сайдбар физически скопирован в каждую страницу. Правка меню в одном файле
+# раньше молча расходилась с остальными: на 14 страницах жила версия на 15-52
+# пункта против 146 в billing.html, и половина меню вела на удалённые якоря
+# (найдено 2026-07-22, 130 битых ссылок). Каноном считаем billing.html.
+(cd "$HERE" && $PY - <<'PYEOF'
+import io, re, glob, os
+
+MASTER = 'pages/billing.html'
+MARK = '<a href="billing.html"><i class="ti ti-settings"></i>'
+TAIL = '</ul>' + chr(10) + '      </li>'
+
+def block_of(text):
+    """Границы блока меню «Настройки биллинга» или None."""
+    i = text.find(MARK)
+    if i < 0:
+        return None
+    start = text.rfind('<li class="has-children">', 0, i)
+    end = text.find(TAIL, i)
+    if start < 0 or end < 0:
+        return None
+    return start, end + len(TAIL)
+
+master = io.open(MASTER, encoding='utf-8').read()
+span = block_of(master)
+if not span:
+    raise SystemExit('  !! блок меню не найден в %s — синхронизация пропущена' % MASTER)
+block = master[span[0]:span[1]]
+
+changed = []
+for f in sorted(glob.glob('pages/*.html')):
+    if os.path.basename(f) == 'billing.html':
+        continue
+    text = io.open(f, encoding='utf-8').read()
+    sp = block_of(text)
+    if not sp:
+        continue
+    if text[sp[0]:sp[1]] == block:
+        continue
+    io.open(f, 'w', encoding='utf-8', newline='').write(text[:sp[0]] + block + text[sp[1]:])
+    changed.append(os.path.basename(f))
+
+print('  меню: %d пунктов, обновлено страниц: %d%s'
+      % (block.count('<li'), len(changed),
+         (' (' + ', '.join(changed) + ')') if changed else ''))
+PYEOF
+)
+
+echo "=== 0c. Check anchors ==="
+# Публиковать документацию с ссылками в никуда нельзя: проверяем внутренние
+# (#anchor) и межстраничные (page.html#anchor) ссылки. Обойти — SKIP_LINK_CHECK=1.
+(cd "$HERE" && $PY - <<'PYEOF'
+import io, re, glob, os, sys
+
+ids, bad = {}, {}
+files = sorted(glob.glob('pages/*.html') + glob.glob('index.html'))
+for f in files:
+    ids[os.path.basename(f)] = set(re.findall(r'id="([^"]+)"', io.open(f, encoding='utf-8').read()))
+
+for f in files:
+    name = os.path.basename(f)
+    text = io.open(f, encoding='utf-8').read()
+    for a in set(re.findall(r'href="#([^"]+)"', text)):
+        if a not in ids[name]:
+            bad.setdefault(name, set()).add('#' + a)
+    for page, a in set(re.findall(r'href="([a-z_]+\.html)#([^"]+)"', text)):
+        if page in ids and a not in ids[page]:
+            bad.setdefault(name, set()).add(page + '#' + a)
+
+total = sum(len(v) for v in bad.values())
+if not total:
+    print('  битых якорей нет')
+    sys.exit(0)
+for name in sorted(bad):
+    print('  %s (%d): %s' % (name, len(bad[name]), ', '.join(sorted(bad[name])[:8])))
+if os.environ.get('SKIP_LINK_CHECK') == '1':
+    print('  !! %d битых ссылок — пропущено (SKIP_LINK_CHECK=1)' % total)
+    sys.exit(0)
+print('  !! %d битых ссылок. Почините или запустите с SKIP_LINK_CHECK=1' % total)
+sys.exit(1)
+PYEOF
+)
+
 echo "=== 1. Rebuild search index ==="
 (cd "$HERE" && $PY - <<'PYEOF'
 import re, json, os, glob, html
