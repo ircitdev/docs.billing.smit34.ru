@@ -1038,16 +1038,25 @@ flowchart LR
   <h3 id="monitoring-model">Как связаны объекты</h3>
 
 <pre class="mermaid">
-erDiagram
-    ORGANIZATION ||--o{ SWITCH : "обслуживает"
-    ORGANIZATION ||--o{ NAS : "обслуживает"
-    SWITCH ||--o| MONITORED_DEVICE : "наблюдается"
-    NAS ||--o| MONITORED_DEVICE : "наблюдается"
-    MONITORED_DEVICE ||--o{ DEVICE_STATUS_LOG : "события UP/DOWN"
-    MONITORED_DEVICE ||--o{ SWITCH_PORT_MAC : "снимок FDB"
-    SWITCH_PORT_MAC }o--o| USERS : "MAC совпал"
-    USERS }o--|| ABONENTS : "принадлежит"
-    ABONENTS }o--|| ORGANIZATION : "относится к"
+flowchart TB
+    ORG["Организация"]
+    SW["Коммутатор<br/>switch"]
+    NAS["NAS<br/>nas"]
+    MD["Устройство мониторинга<br/>monitoring_device"]
+    LOG["Журнал событий<br/>device_status_log"]
+    FDB["MAC на портах<br/>switch_port_mac"]
+    USR["Учётная запись<br/>users"]
+    AB["Абонент<br/>abonents"]
+
+    ORG -->|"обслуживает"| SW
+    ORG -->|"обслуживает"| NAS
+    SW -->|"наблюдается"| MD
+    NAS -->|"наблюдается"| MD
+    MD -->|"переходы UP/DOWN"| LOG
+    MD -->|"снимок FDB"| FDB
+    FDB -->|"MAC совпал"| USR
+    USR -->|"принадлежит"| AB
+    AB -->|"относится к"| ORG
 </pre>
 
   <p>Устройство мониторинга (<code>MONITORED_DEVICE</code>) не дублирует железо: оно только хранит параметры опроса и ссылается на уже заведённый коммутатор или NAS. Своей организации у него нет — она берётся у того железа, за которым оно наблюдает. Поэтому чтобы устройство корректно разделилось между компаниями, организации задаются в карточке коммутатора (см. <a href="#switch-orgs">Организации коммутатора</a>).</p>
