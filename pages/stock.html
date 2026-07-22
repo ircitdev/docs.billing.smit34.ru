@@ -211,6 +211,7 @@
     <li><a href="#stock-abonent">8. Оборудование в карточке абонента</a></li>
     <li><a href="#stock-money">9. Деньги: продажа и аренда</a></li>
     <li><a href="#stock-analytics">9а. Аналитика</a></li>
+    <li><a href="#stock-scan">9в. Скан-центр</a></li>
     <li><a href="#stock-docs">9б. Документы и CRM</a></li>
     <li><a href="#stock-settings">10. Настройки, роли, алерты</a></li>
     <li><a href="#stock-launch">11. Чек-лист запуска</a></li>
@@ -416,6 +417,23 @@ flowchart TB
 </ul>
 <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1731/stock_analytics.png" alt="Аналитика склада — KPI, обороты, подотчёты, себестоимость" loading="lazy"></p>
 
+<h2 id="stock-scan">Скан-центр: операции с телефона</h2>
+<p>Страница <code>/admin/stock/scan/</code> (пункт меню «Скан») — максимум
+автоматизации в поле: сотрудник сканирует этикетку камерой телефона (или
+вводит S/N вручную), и система <strong>сама предлагает действие по статусу
+единицы</strong>:</p>
+<ul>
+  <li>единица <b>на складе</b> — кладовщик выдаёт её сотруднику в один тап;</li>
+  <li>единица <b>в моём подотчёте</b> — вернуть на склад, оформить брак или
+    передать коллеге (если передача разрешена настройкой);</li>
+  <li>единица <b>у клиента</b> — демонтаж на склад или в брак (аренда
+    закрывается автоматически).</li>
+</ul>
+<p>После каждого действия — уведомление и журнал операций на экране; можно
+сканировать следующий код без перезагрузки. USB-сканер работает как
+клавиатура (ввод + Enter).</p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1731/stock_scan_mobile.png" alt="Скан-центр на телефоне — контекстные действия по статусу единицы" loading="lazy" style="max-width:390px"></p>
+
 <h2 id="stock-docs">Документы и интеграция с CRM</h2>
 <p>Складские операции оформляются печатными документами (PDF, реквизиты
 организации абонента подставляются автоматически):</p>
@@ -476,6 +494,10 @@ erDiagram
     <tr><td><code>STOCK_LABEL_W_MM</code> / <code>H_MM</code></td><td>40 × 14</td><td>Размер этикетки под ленту принтера</td></tr>
     <tr><td><code>STOCK_AUTO_FILL_MAC</code></td><td>ON</td><td>Подставлять MAC/серийник в учётку клиента при установке</td></tr>
     <tr><td><code>STOCK_REQUIRE_MATERIALS_ON_DONE</code></td><td>OFF</td><td>Жёсткий режим: наряд не закрывается без материалов</td></tr>
+    <tr><td><code>STOCK_ISSUE_RULES</code></td><td>—</td><td>Матрица «кто→кому»: JSON <code>{"группа выдающего": ["группы получателей"]}</code>; пусто — кладовщики выдают всем держателям</td></tr>
+    <tr><td><code>STOCK_ALLOW_STAFF_TRANSFER</code></td><td>OFF</td><td>Передача подотчёт→подотчёт между сотрудниками (движение «Перемещение»)</td></tr>
+    <tr><td><code>STOCK_MAX_STAFF_COST</code></td><td>0</td><td>Лимит стоимости подотчёта, ₽ по закупочной — выдача сверх лимита блокируется</td></tr>
+    <tr><td><code>STOCK_STALE_ISSUED_DAYS</code></td><td>0</td><td>Telegram-алерт: единица висит в подотчёте без движения дольше N дней</td></tr>
   </tbody>
 </table>
 
