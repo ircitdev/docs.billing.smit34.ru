@@ -195,6 +195,9 @@
           <li class="sub-item"><a href="billing.html#abonents-quick-add">— Новый абонент и раскладка</a></li>
           <li class="sub-item"><a href="billing.html#abonents-search">— Глобальный поиск</a></li>
           <li class="sub-item"><a href="billing.html#abonent-map">8.2. На карте</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="billing.html#abonent-map-data">— Откуда берутся точки</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="billing.html#abonent-map-multiorg">— Мультиорганизация</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="billing.html#abonent-map-performance">— Вес карты и скорость</a></li>
           <li class="sub-item"><a href="billing.html#admin-accounts">8.3. Счета</a></li>
           <li class="sub-item" style="padding-left:1.8em"><a href="billing.html#admin-accounts-map">— Что такое счёт</a></li>
           <li class="sub-item" style="padding-left:1.8em"><a href="billing.html#admin-accounts-multiorg">— Мультиорганизация и доступ</a></li>
@@ -6379,7 +6382,32 @@ text, а полноценное письмо с шаблоном <a href="#messa
 слой <strong>заявок Поддержки</strong>. URL:
 <code>/admin/abonents/map/</code>. Меню сайдбара: <em>Абоненты → 🗺 На карте</em>.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/abonent_map_v1197/01_overview_light.jpg" alt="Карта абонентов — обзор"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/map_v1741/map_01_overview.png" alt="Карта абонентов — общий вид со слоями и легендой"></p>
+
+<pre class="mermaid">
+mindmap
+  root(("На карте"))
+    Слои
+      Абоненты
+        Кластеры по плотности
+        Цвет = статус
+      NAS
+        Покрытие
+        Онлайн-панель
+      Заявки Поддержки
+    Фильтры
+      Статусы
+      Услуги
+      Поиск Ctrl+K
+    Данные
+      Только точные координаты
+      Скоуп по организации
+      Кеш 5 минут
+    Действия
+      Попап абонента
+      Карточка заявки
+      Правка координат
+</pre>
 
 <h4 id="abonent-map-features">Возможности</h4>
 <ul>
@@ -6421,6 +6449,41 @@ text, а полноценное письмо с шаблоном <a href="#messa
 </ul>
 
 <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/abonent_map_v1197/02_abonent_popup_light.jpg" alt="Popup абонента: NAS-ссылка, org-лейбл, услуги"></p>
+
+<h4 id="abonent-map-data">Откуда берутся точки</h4>
+<p>Карта не запрашивает данные при каждом движении — весь набор приходит одним
+JSON и живёт в памяти вкладки. Отсюда два следствия: панорамирование мгновенное,
+но состав точек фиксируется в момент загрузки.</p>
+
+<pre class="mermaid">
+flowchart LR
+    REQ["Открытие карты"] --> CACHE{"Кеш 5 минут<br/>по организации"}
+    CACHE -->|"есть"| JSON["JSON одним ответом"]
+    CACHE -->|"нет"| HOMES["Адреса с координатами<br/>qc_geo пусто или ≤ 1"]
+    HOMES --> SCOPE["Скоуп по организации<br/>абонента"]
+    SCOPE --> BATCH["Батч-запросы:<br/>NAS, блокировки, услуги"]
+    BATCH --> JSON
+    JSON --> RENDER["Кластеры на карте"]
+</pre>
+
+<div class="info-box">
+  <strong>Фильтр качества адреса.</strong> На карту попадают только адреса с
+  <code>qc_geo</code> ≤ 1 — «точно дом» или «улица». Адреса, которые геокодер
+  свёл к центру города (<code>qc_geo</code> ≥ 2), исключены: иначе сотни
+  абонентов слиплись бы в одну точку и карта потеряла бы смысл.
+</div>
+
+<h4 id="abonent-map-multiorg">Мультиорганизация</h4>
+<p>Точки, оборудование и заявки скоупятся по организации абонента. Важная
+деталь реализации: <strong>кеш партиционирован</strong> — ключ включает
+выбранную в шапке организацию и список доступных сотруднику компаний. Без
+этого первый открывший карту наполнил бы общий кеш своими данными, и остальные
+увидели бы чужих абонентов.</p>
+
+<p>Если у организации нет ни одного адреса с точными координатами, карта не
+молчит, а объясняет причину и ведёт в редактор координат:</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/map_v1741/map_06_empty.png" alt="Пустая карта с объяснением причины"></p>
 
 <h4 id="abonent-map-nas-panel">Сайдбар «Абоненты на NAS»</h4>
 <p>Клик по NAS-маркеру (кнопка <em>«Абоненты»</em>) или по NAS-ссылке в попапе
@@ -6466,9 +6529,43 @@ flowchart LR
 bottom-sheet.</p>
 
 <div class="row">
-  <div class="col-md-6"><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/abonent_map_v1197/05_abonent_popup_dark.jpg" alt="Popup абонента в тёмной теме"></div>
-  <div class="col-md-6"><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/abonent_map_v1197/04_nas_sidebar_dark.jpg" alt="Сайдбар NAS в тёмной теме"></div>
+  <div class="col-md-6"><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/map_v1741/map_05_dark.png" alt="Карта в тёмной теме — тёмные тайлы с русскими подписями"></div>
+  <div class="col-md-6"><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/map_v1741/map_04_mobile.png" alt="Карта на телефоне — поиск и фильтры свёрнуты в одну строку"></div>
 </div>
+
+<h4 id="abonent-map-popup">Попап абонента</h4>
+<p>Клик по маркеру открывает карточку: договор, организация, NAS, тариф, адрес,
+баланс, точка подключения и значки подключённых услуг. Кнопки ведут в карточку
+абонента, звонок и почту — из карты можно начать работу, не открывая список.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/map_v1741/map_02_popup.png" alt="Попап абонента на карте"></p>
+
+<p>Маркеры заявок открывают карточку тикета Поддержки в правой панели: история
+обращений, расшифровка звонка, приоритет и поле ответа.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/map_v1741/map_07_ticket.png" alt="Карточка заявки Поддержки с карты"></p>
+
+<h4 id="abonent-map-performance">Вес карты и скорость</h4>
+<p>Карта — самый тяжёлый JSON в системе: несколько тысяч точек одним ответом.
+Две правки (build 1741) изменили порядок величины:</p>
+
+<table>
+  <thead><tr><th>Что</th><th>Было</th><th>Стало</th></tr></thead>
+  <tbody>
+    <tr><td>Передача по сети</td><td>4585 КБ</td><td><strong>380 КБ</strong></td></tr>
+    <tr><td>Размер JSON</td><td>4584 КБ</td><td>2750 КБ</td></tr>
+    <tr><td>Загрузка страницы</td><td>11,6 с</td><td><strong>2,6 с</strong></td></tr>
+  </tbody>
+</table>
+
+<ul>
+  <li><strong>gzip для JSON в nginx</strong> — директива <code>gzip_types</code>
+  была закомментирована, поэтому сжимался только HTML. Сжатие включено для всех
+  JSON-ответов биллинга, не только карты;</li>
+  <li><strong>Ответ без экранирования кириллицы</strong> — по умолчанию Django
+  пишет русские буквы escape-последовательностями по 6 байт на символ, из-за чего
+  2,7 МБ данных превращались в 4,6 МБ.</li>
+</ul>
 
 <h4 id="abonent-map-geocoding">Геокодирование адресов</h4>
 
@@ -6504,6 +6601,14 @@ bottom-sheet.</p>
 Интеграции → География»</a> (вкладка «География → Адреса»). Здесь же
 есть кнопка <em>«Проверить»</em> для теста подключения и счётчик
 геокодированных адресов.</p>
+
+<div class="warning-box">
+  <strong>Кто может править координаты.</strong> Сдвинутая точка дома уводит с
+  карты всех его абонентов, поэтому правка адресного справочника доступна
+  суперпользователю и группам из настройки <code>ADDRESS_ADMIN_GROUPS</code>
+  (по умолчанию <code>root</code>, <code>address</code>). Остальным сотрудникам
+  сохранение вернёт 403.
+</div>
 
 <h5>Запуск геокодирования</h5>
 

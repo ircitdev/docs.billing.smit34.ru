@@ -157,6 +157,9 @@
           <li class="sub-item"><a href="billing.html#abonents-quick-add">— Новый абонент и раскладка</a></li>
           <li class="sub-item"><a href="billing.html#abonents-search">— Глобальный поиск</a></li>
           <li class="sub-item"><a href="billing.html#abonent-map">8.2. На карте</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="billing.html#abonent-map-data">— Откуда берутся точки</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="billing.html#abonent-map-multiorg">— Мультиорганизация</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="billing.html#abonent-map-performance">— Вес карты и скорость</a></li>
           <li class="sub-item"><a href="billing.html#admin-accounts">8.3. Счета</a></li>
           <li class="sub-item" style="padding-left:1.8em"><a href="billing.html#admin-accounts-map">— Что такое счёт</a></li>
           <li class="sub-item" style="padding-left:1.8em"><a href="billing.html#admin-accounts-multiorg">— Мультиорганизация и доступ</a></li>
@@ -408,6 +411,26 @@
   <!-- ═══════════ v3.0.0 build 1362-1403 — июнь-июль 2026 ═══════════ -->
   <h2 id="v3-0-0-b1426">v3.0.0 (build 1404–1444) — июль 2026</h2>
 
+  <h3 id="v301-map-audit">Карта абонентов: скорость, права и тёмная тема (build 1741)</h3>
+  <ul>
+    <li><strong>Карта грузится в 4 раза быстрее</strong>: 11,6 → 2,6 с, передача по сети
+    4585 → 380 КБ. В nginx не был включён gzip для JSON (сжимался только HTML) — теперь
+    сжимаются все JSON-ответы биллинга. Плюс ответ карты больше не экранирует кириллицу:
+    русские буквы занимали по 6 байт вместо двух. Подробнее —
+    <a href="billing.html#abonent-map-performance">Вес карты и скорость</a>.</li>
+    <li><strong>Пустая карта объясняет причину</strong>: если у организации нет адресов с
+    точными координатами, вместо молчания выводится счётчик абонентов и ссылка на редактор
+    координат. См. <a href="billing.html#abonent-map-multiorg">Мультиорганизация</a>.</li>
+    <li><strong>Правка координат дома закрыта правами</strong> — раньше сохранить координаты
+    мог любой залогиненный сотрудник. Теперь суперпользователь и группы из
+    <code>ADDRESS_ADMIN_GROUPS</code>.</li>
+    <li><strong>Тёмная тема</strong>: вернулся жёлтый индикатор «Приостановлен» в легенде
+    (правило темы гасило любой цвет, начинающийся на «f», — задевало ещё #ffc107 и #fd7e14
+    по всему проекту), тёмные тайлы получили русские подписи вместо латиницы.</li>
+    <li>Мелочи доступности: подпись маркера для скринридера, кнопка сворачивания легенды
+    выросла с 7×14 до 44×44 px, зум на мобильном — 40×40.</li>
+  </ul>
+
   <h3 id="v301-folder-routing">Папки организаций и раскладка абонентов (build 1735–1739)</h3>
   <ul>
     <li><strong>Папку верхнего уровня можно закрепить за организацией</strong> — она становится
@@ -543,7 +566,7 @@
 
   <pre class="mermaid">
 mindmap
-  root((СмИТ Биллинг<br/>v3.0.0 · build 1740—1403))
+  root((СмИТ Биллинг<br/>v3.0.0 · build 1741—1403))
     Поддержка
       Умный поиск: телефон/адрес/текст + сниппет
       Вложения: политика, сжатие, архив GCS
@@ -1078,7 +1101,7 @@ rtsh list scheme            — список доступных схем</code><
 </main>
 
 <footer class="footer">
-  &copy; 2026 СмИТ — СмИТ Биллинг v3.0.0 (build 1740)
+  &copy; 2026 СмИТ — СмИТ Биллинг v3.0.0 (build 1741)
 </footer>
 
 <script src="../js/main.js?v=1739"></script>
