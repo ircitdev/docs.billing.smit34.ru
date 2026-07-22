@@ -441,7 +441,13 @@ stateDiagram-v2
     in_stock --> defect: акт брака
 </pre>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1731/stock_movements.png" alt="Журнал движений со сторно" loading="lazy"></p>
+<p>В журнале — фильтры по типу движения и по <strong>сотруднику</strong>
+(показываются все движения, где он «откуда», «куда» или «кто провёл»);
+клик по любой фамилии в таблице подставляет её в фильтр. Колонка S/N —
+единая иконка штрихкода (во всех таблицах модуля): тултип показывает
+серийник, MAC и штрихкод, клик открывает карточку движения со всеми
+деталями. Даты — компактно «дд.мм.гг», полная дата в тултипе.</p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1731/stock_movements.png" alt="Журнал движений — фильтр по сотруднику, S/N-иконки" loading="lazy"></p>
 
 <h2 id="stock-items">Номенклатура и остатки</h2>
 <p>Позиция каталога задаёт: категорию, единицу измерения, тип учёта
@@ -475,6 +481,18 @@ USB-сканером или вручную. После проведения — 
 на склад, акт брака.</p>
 <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1731/stock_issue.png" alt="Выдача в подотчёт — скан и единый селектор сотрудника" loading="lazy"></p>
 <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1731/stock_my.png" alt="Мой подотчёт — мобильный экран монтажника" loading="lazy"></p>
+<p><strong>«Я выдал»</strong> (<code>/admin/stock/issued/</code>) — зеркальная
+страница для кладовщика: все выдачи и передачи, которые он провёл, и
+<strong>судьба каждой единицы</strong> — в чьём подотчёте сейчас, установлена
+или в аренде у абонента (ссылка на его вкладку «Оборудование»), возвращена на
+склад, списана в брак или сторнирована. В профиле сотрудника — блоки
+«Мой подотчёт» (итог материальной ответственности + акт PDF, даты выдачи)
+и «Я выдал».</p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1731/stock_issued.png" alt="Я выдал — судьба каждой выдачи" loading="lazy"></p>
+<p><strong>Передача подотчёт→подотчёт</strong>: при включённой настройке
+сотрудники передают единицы друг другу (например, бригадир — монтажнику)
+без возврата на склад; движение «Перемещение» в журнале, уведомление
+получателю, проверка матрицы прав и лимита.</p>
 
 <h2 id="stock-montazh">Материалы в наряде монтажа</h2>
 <p>На карточке наряда (<code>/admin/crm/montazh/</code>) — строка
