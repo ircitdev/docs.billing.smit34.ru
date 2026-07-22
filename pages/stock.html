@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Склад — учёт ТМЦ и оборудования — СмИТ Биллинг 3.0</title>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="СмИТ Биллинг 3.0 — Документация">
+  <meta property="og:title" content="Склад — СмИТ Биллинг 3.0">
+  <meta property="og:description" content="Складской модуль: номенклатура, серийный учёт со штрихкодами, подотчёт монтажника, материалы в наряде, продажа и аренда оборудования, алерты остатков.">
+  <meta property="og:url" content="https://docs.billing.smit34.ru/pages/stock.html">
+  <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="ru_RU">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Склад — СмИТ Биллинг 3.0">
+  <meta name="twitter:description" content="Складской модуль: номенклатура, серийный учёт со штрихкодами, подотчёт монтажника, материалы в наряде, продажа и аренда оборудования, алерты остатков.">
+  <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
+  <meta name="description" content="Складской модуль: номенклатура, серийный учёт со штрихкодами, подотчёт монтажника, материалы в наряде, продажа и аренда оборудования, алерты остатков.">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css?v=1591">
+  <link rel="stylesheet" href="../css/search.css?v=790">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.26.0/dist/tabler-icons.min.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <button class="menu-toggle" aria-label="Меню">&#9776;</button>
+    <div class="logo">
+      <div class="logo-icon">С</div>
+      <div class="logo-text"><span class="logo-main">СмИТ Биллинг 3.0 </span><span>Документация</span></div>
+    </div>
+  </div>
+  <div class="header-search"><div class="docs-search-wrap"><input type="search" id="docsSearch" class="docs-search-input" placeholder="Поиск по документации..." autocomplete="off"><span class="docs-search-icon"><i class="ti ti-search"></i></span><div class="docs-search-results" id="docsSearchResults"></div></div></div>
+  <div class="header-right">
+    <a href="../graphify/graph.html" class="header-nav-link" title="Граф зависимостей кода">
+      <i class="ti ti-topology-star-3 hnl-ico"></i><span class="hnl-txt">Граф</span>
+    </a>
+    <a href="../graphify/wiki/index.html" class="header-nav-link" title="Wiki архитектурных модулей">
+      <i class="ti ti-book-2 hnl-ico"></i><span class="hnl-txt">Wiki</span>
+    </a>
+    <button class="mobile-search-btn" aria-label="Поиск" title="Поиск"><i class="ti ti-search"></i></button>
+    <button class="theme-toggle" aria-label="Переключить тему" title="Светлая / тёмная тема">
+      <span class="icon-sun">&#9788;</span>
+      <span class="icon-moon">&#9790;</span>
+    </button>
+  </div>
+</header>
+
+<div class="search-overlay" id="searchOverlay" role="dialog" aria-label="Поиск по документации">
+  <div class="search-overlay-inner">
+    <i class="ti ti-search search-prefix-icon"></i>
+    <input type="search" id="docsSearchMobile" placeholder="Поиск по документации..." autocomplete="off">
+    <button class="search-overlay-close" aria-label="Закрыть" id="searchOverlayClose"><i class="ti ti-x"></i></button>
+    <div class="search-overlay-results" id="docsSearchResultsMobile"></div>
+  </div>
+</div>
+
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+<aside class="sidebar">
+  <nav>
+    <div class="nav-section">Разделы</div>
+    <ul>
+      <li><a href="../index.html"><i class="ti ti-home"></i> Главная</a></li>
+      <li class="has-children">
+        <a href="installation.html"><i class="ti ti-box"></i> Установка и интеграция <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="installation.html#requirements">1. Системные требования</a></li>
+          <li><a href="installation.html#docker-install">2. Установка Docker Compose</a></li>
+          <li><a href="installation.html#demo-cleanup">3. Удаление демо-данных</a></li>
+          <li><a href="installation.html#equip-integration">4. Интеграция с оборудованием</a></li>
+          <li><a href="installation.html#tariff-setup">5. Настройка тарифов</a></li>
+          <li><a href="installation.html#add-subscribers">6. Добавление абонентов</a></li>
+          <li><a href="installation.html#final-test">7. Финальное тестирование</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="billing.html"><i class="ti ti-settings"></i> Настройки биллинга <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+      </li>
+      <li class="has-children">
+        <a href="lk.html"><i class="ti ti-user"></i> Личный кабинет и мобильное приложение <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+      </li>
+      <li class="has-children active">
+        <a href="stock.html"><i class="ti ti-packages"></i> Склад <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="stock.html#stock-overview">1. Как устроен модуль</a></li>
+          <li><a href="stock.html#stock-quickstart">2. Быстрый старт</a></li>
+          <li><a href="stock.html#stock-flow">3. Движения и статусы</a></li>
+          <li><a href="stock.html#stock-items">4. Номенклатура и остатки</a></li>
+          <li><a href="stock.html#stock-receipt">5. Приход и этикетки</a></li>
+          <li><a href="stock.html#stock-issue">6. Подотчёт сотрудника</a></li>
+          <li><a href="stock.html#stock-montazh">7. Материалы в наряде</a></li>
+          <li><a href="stock.html#stock-abonent">8. Оборудование абонента</a></li>
+          <li><a href="stock.html#stock-money">9. Деньги: продажа и аренда</a></li>
+          <li><a href="stock.html#stock-settings">10. Настройки и роли</a></li>
+          <li><a href="stock.html#stock-launch">11. Чек-лист запуска</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="helpdesk.html"><i class="ti ti-headset"></i> Поддержка (HelpDesk) <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="helpdesk.html#overview">1. Обзор модуля</a></li>
+          <li><a href="helpdesk.html#channels">2. Каналы приёма</a></li>
+          <li><a href="helpdesk.html#mailbox">3. Входящие</a></li>
+          <li><a href="helpdesk.html#conversation">4. Карточка тикета</a></li>
+          <li><a href="helpdesk.html#sidebar">5. Сайдбар тикета</a></li>
+          <li><a href="helpdesk.html#panel">6. Выезжающая панель</a></li>
+          <li><a href="helpdesk.html#attention">7. Тикеты внимания</a></li>
+          <li><a href="helpdesk.html#ai-assistant">8. AI-бот</a></li>
+          <li><a href="helpdesk.html#voicemail">9. Голосовая почта</a></li>
+          <li><a href="helpdesk.html#knowledgebase">10. База знаний</a></li>
+          <li><a href="helpdesk.html#analytics">11. Аналитика и время</a></li>
+          <li><a href="helpdesk.html#settings">12. Настройки</a></li>
+          <li><a href="helpdesk.html#messengers">13. Мессенджеры</a></li>
+          <li><a href="helpdesk.html#integration">14. Связь с биллингом</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="crm.html"><i class="ti ti-briefcase"></i> CRM — продажи <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="crm.html#crm-overview">1. Как устроен модуль</a></li>
+          <li><a href="crm.html#crm-funnel">2. Воронка сделок</a></li>
+          <li><a href="crm.html#crm-constructor">3. Конструктор воронок</a></li>
+          <li><a href="crm.html#crm-sources">4. Источники сделок</a></li>
+          <li><a href="crm.html#crm-userfields">5. Доп. поля</a></li>
+          <li><a href="crm.html#crm-tasks">6. Задачи</a></li>
+          <li><a href="crm.html#crm-lists">7. Списки</a></li>
+          <li><a href="crm.html#crm-salesbot">8. Salesbot</a></li>
+          <li><a href="crm.html#widgets">9. Виджеты</a></li>
+          <li><a href="crm.html#crm-dashboard">10. Дашборд и карта</a></li>
+          <li><a href="crm.html#crm-campaigns">11. Кампании</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="landing.html"><i class="ti ti-browser"></i> Лендинги <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="landing.html#landing-overview">1. Что это</a></li>
+          <li><a href="landing.html#landing-blocks">2. Блоки-секции</a></li>
+          <li><a href="landing.html#landing-media">3. Слайдер, медиа-фон и эффекты</a></li>
+          <li><a href="landing.html#landing-editor">4. Редактор</a></li>
+          <li><a href="landing.html#landing-ai">5. AI-генерация</a></li>
+          <li><a href="landing.html#landing-forms">6. Формы и заявки</a></li>
+          <li><a href="landing.html#landing-publish">7. Публикация на поддомене</a></li>
+          <li><a href="landing.html#landing-pd">8. Согласие ПД (152-ФЗ)</a></li>
+          <li><a href="landing.html#landing-analytics">9. Аналитика</a></li>
+          <li><a href="landing.html#landing-multiorg">10. Мульти-орг</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="server.html"><i class="ti ti-server"></i> Управление сервером <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+      </li>
+      <li class="has-children">
+        <a href="equipment.html"><i class="ti ti-broadcast"></i> Интеграция с оборудованием <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+      </li>
+      <li class="has-children">
+        <a href="sorm.html"><i class="ti ti-shield-lock"></i> Интеграция с СОРМ3 <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+      </li>
+      <li class="has-children">
+        <a href="api.html"><i class="ti ti-link"></i> API <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+      </li>
+      <li class="has-children">
+        <a href="troubleshooting.html"><i class="ti ti-tool"></i> Решение проблем <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+      </li>
+      <li class="has-children">
+        <a href="licensing.html"><i class="ti ti-file-description"></i> Лицензирование <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+      </li>
+      <li><a href="contacts.html"><i class="ti ti-phone"></i> Контакты</a></li>
+    </ul>
+
+    <div class="nav-section">Разработчикам</div>
+    <ul>
+      <li class="has-children">
+        <a href="../graphify/graph.html"><i class="ti ti-topology-star-3"></i> Архитектура кода <span class="arrow"><i class="bi bi-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="../graphify/graph.html">Граф сообществ</a></li>
+          <li><a href="../graphify/wiki/index.html">Wiki модулей</a></li>
+          <li><a href="dev/index.html">Портал разработчика</a></li>
+          <li><a href="../graphify/help.html">graphify CLI</a></li>
+        </ul>
+      </li>
+    </ul>
+  <button class="sidebar-theme-toggle" aria-label="Тема"><span class="icon-sun"><i class="ti ti-sun"></i></span><span class="icon-moon"><i class="ti ti-moon"></i></span><span class="sidebar-theme-label">Сменить тему</span></button>
+</nav>
+</aside>
+
+<main class="content">
+
+<p><strong>Склад</strong> (<code>/admin/stock/</code>) — универсальный учёт ТМЦ и
+оборудования провайдера: от закупки до установки у клиента. Каждое перемещение —
+неизменяемая запись-движение (как финансовые операции: не правим, а сторнируем),
+поэтому остатки всегда сходятся, а история — доказуема. Модуль интегрирован с
+<a href="crm.html#crm-montazh">нарядами монтажника</a>, карточкой абонента и
+деньгами: продажа списывает с лицевого счёта, аренда начисляется ежемесячно.</p>
+
+<div class="page-toc">
+<details open>
+  <summary><strong><i class="bi bi-book"></i> Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#stock-overview">1. Как устроен модуль</a></li>
+    <li><a href="#stock-quickstart">2. Быстрый старт</a></li>
+    <li><a href="#stock-flow">3. Движения и статусы единиц</a></li>
+    <li><a href="#stock-items">4. Номенклатура и остатки</a></li>
+    <li><a href="#stock-receipt">5. Приход, серийники, этикетки</a></li>
+    <li><a href="#stock-issue">6. Подотчёт сотрудника</a></li>
+    <li><a href="#stock-montazh">7. Материалы в наряде монтажа</a></li>
+    <li><a href="#stock-abonent">8. Оборудование в карточке абонента</a></li>
+    <li><a href="#stock-money">9. Деньги: продажа и аренда</a></li>
+    <li><a href="#stock-settings">10. Настройки, роли, алерты</a></li>
+    <li><a href="#stock-launch">11. Чек-лист запуска</a></li>
+  </ul>
+</details>
+</div>
+
+<h2 id="stock-overview">Как устроен модуль</h2>
+<p>Ядро модели — <strong>цепочка держателей</strong>. Товар (или конкретная серийная
+единица) в каждый момент времени находится у одного держателя: на складе, в подотчёте
+сотрудника или у клиента. Перемещения между держателями фиксируются движениями:</p>
+
+<pre class="mermaid">
+flowchart LR
+    P["📦 Закупка<br>(накладная, поставщик)"] -->|"приход (receipt)"| W["🏬 Склад<br>остатки · min_stock"]
+    W -->|"выдача (issue)"| S["🧰 Подотчёт сотрудника<br>монтажник · скан"]
+    S -->|"установка (install)"| C["👤 Клиент<br>ответхранение · продажа · аренда"]
+    S -->|"возврат (return)"| W
+    C -->|"демонтаж"| W
+    W -->|"акт брака (defect)"| D["🗑 Брак"]
+    S -->|"акт брака"| D
+    style W fill:#e8f5e9,stroke:#43b77a
+    style C fill:#e7f0fb,stroke:#0d6efd
+    style D fill:#fdecea,stroke:#dc3545
+</pre>
+
+<p>Два типа учёта в одной модели:</p>
+<ul>
+  <li><strong>Поштучный (серийный)</strong> — роутеры, ONU, камеры: каждая единица
+    со своим серийником, MAC и этикеткой со штрихкодом <code>SU-N</code>. Всегда
+    видно, «где сейчас этот роутер» и вся его биография.</li>
+  <li><strong>Количественный</strong> — кабель метрами, коннекторы, крепёж:
+    остаток держателя считается по сумме движений, дробные количества
+    поддерживаются.</li>
+</ul>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1728/stock_dashboard.png" alt="Остатки — сводная с подсветкой ниже минимума" loading="lazy"></p>
+
+<div class="info-box"><strong>Как связан с остальной системой.</strong>
+Склад — не изолированный реестр: списание материалов происходит прямо из наряда
+монтажника (CRM), установленное оборудование видно в карточке абонента, продажа
+создаёт финансовую операцию, аренда — периодическую услугу, а низкие остатки
+прилетают в Telegram.</div>
+
+<pre class="mermaid">
+flowchart TB
+    ST["📦 Склад<br>номенклатура · единицы · движения"]
+    CRM["🛠 Наряд монтажа (CRM)<br>кнопка «Материалы»"]
+    AB["👤 Карточка абонента<br>вкладка «Оборудование»"]
+    FIN["💰 Финансы<br>FinanceOperations"]
+    UU["🔁 Услуги абонента<br>UsersUsluga «Аренда оборудования»"]
+    BW["⚙️ billing_worker<br>ежемесячные списания"]
+    TG["✈️ Telegram<br>алерт min_stock"]
+    AUD["🗒 Аудит<br>каждое движение"]
+    CRM -->|"install (ref: deal#N)"| ST
+    AB -->|"install / демонтаж"| ST
+    ST -->|"продажа: −sale_price"| FIN
+    ST -->|"аренда: услуга rent_price/мес"| UU
+    UU --> BW
+    ST --> TG
+    ST --> AUD
+    style ST fill:#e8f5e9,stroke:#43b77a,stroke-width:2px
+</pre>
+
+<h2 id="stock-quickstart">Быстрый старт</h2>
+<ol>
+  <li>Включите модуль «Склад» на <code>/admin/settings/modules/</code> и тумблер
+    <code>STOCK_ENABLED</code> в настройках (категория «Склад»).</li>
+  <li>Добавьте кладовщика в группу <code>storekeeper</code>
+    (настройка <code>STOCK_KEEPER_GROUPS</code>); монтажников — в группы из
+    <code>STOCK_HOLDER_GROUPS</code>.</li>
+  <li>Заведите категории и номенклатуру (<code>/admin/stock/items/</code>) — или
+    посмотрите на демо-данных: <code>manage.py seed_stock_demo</code>
+    (удаление — <code>--clear</code>).</li>
+  <li>Проведите стартовую инвентаризацию: приход с типом «инвентаризация
+    (correction)» на текущие остатки.</li>
+  <li>Распечатайте этикетки на серийные единицы и выдайте монтажникам их
+    текущее «железо» в подотчёт.</li>
+</ol>
+
+<h2 id="stock-flow">Движения и статусы единиц</h2>
+<p>Движение (<code>StockMovement</code>) — append-only запись: тип, позиция,
+количество, откуда → куда, цена, документ, привязка к наряду
+(<code>ref_type/ref_id</code>). Ошиблись — нажимаете <strong>сторно</strong>:
+создаётся обратная запись, а единица возвращается к держателю-источнику.
+Серийная единица (<code>StockUnit</code>) дополнительно несёт статус:</p>
+
+<pre class="mermaid">
+stateDiagram-v2
+    [*] --> in_stock: приход
+    in_stock --> issued: выдача в подотчёт
+    issued --> in_stock: возврат
+    in_stock --> installed: установка (кладовщик)
+    issued --> installed: установка (custody)
+    issued --> sold: продажа
+    issued --> rented: аренда
+    installed --> in_stock: демонтаж
+    rented --> in_stock: демонтаж (аренда закрывается)
+    issued --> defect: акт брака
+    in_stock --> defect: акт брака
+</pre>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1728/stock_movements.png" alt="Журнал движений со сторно" loading="lazy"></p>
+
+<h2 id="stock-items">Номенклатура и остатки</h2>
+<p>Позиция каталога задаёт: категорию, единицу измерения, тип учёта
+(поштучный/количественный), <strong>режим передачи клиенту</strong>
+(ответхранение / продажа / аренда — можно переопределить при установке),
+три цены (закупочная, продажи, аренды в месяц) и минимальный остаток
+<code>min_stock</code> для алертов.</p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1728/stock_items.png" alt="Номенклатура — позиции, категории, склады" loading="lazy"></p>
+
+<h2 id="stock-receipt">Приход, серийники, этикетки</h2>
+<p>Приход оформляется накладной: номер документа, склад, позиции. Для серийных
+позиций серийники сканируются подряд — камерой телефона (BarcodeDetector),
+USB-сканером или вручную. После проведения — печать этикеток:</p>
+<ul>
+  <li><strong>PNG-пачка (ZIP)</strong> — под мобильный термопринтер
+    (Niimbot B18, 203 dpi, размер ленты из настроек, по умолчанию 40×14 мм);</li>
+  <li><strong>PDF-лист А4</strong> — под обычный принтер.</li>
+</ul>
+<p>На этикетке — штрихкод Code128 (или QR) со значением <code>SU-N</code> и серийник.</p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1728/stock_receipt.png" alt="Приход — накладная и массовое заведение серийников" loading="lazy"></p>
+
+<h2 id="stock-issue">Подотчёт сотрудника</h2>
+<p>Кладовщик выдаёт монтажнику оборудование по скану и расходники количеством.
+Выбор сотрудника — единый компонент ProfileSelect (аватар, роли, поиск).
+У монтажника есть свой мобильный экран «Мой подотчёт»: что на руках, возврат
+на склад, акт брака.</p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1728/stock_issue_profileselect.png" alt="Выдача в подотчёт — скан и единый селектор сотрудника" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1728/stock_my.png" alt="Мой подотчёт — мобильный экран монтажника" loading="lazy"></p>
+
+<h2 id="stock-montazh">Материалы в наряде монтажа</h2>
+<p>На карточке наряда (<code>/admin/crm/montazh/</code>) — строка
+«Материалы: N». Модалка позволяет прямо с телефона на объекте:</p>
+<ul>
+  <li>добавить оборудование из своего подотчёта (или отсканировать серийник);</li>
+  <li>списать расходники: кабель метрами, коннекторы штуками;</li>
+  <li>убрать ошибочное списание (сторно — единица вернётся в подотчёт);</li>
+</ul>
+<p>Все списания привязываются к сделке (<code>deal#N</code>) и к учётке абонента.
+Если у сделки ещё нет абонента — модалка подскажет сначала создать его из
+карточки сделки. Настройка <code>STOCK_REQUIRE_MATERIALS_ON_DONE</code> включает
+жёсткий режим: наряд нельзя закрыть «Выполнено», пока не указаны материалы.</p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1728/montazh_materials_row.png" alt="Наряды монтажника — строка Материалы на карточке" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1728/montazh_materials_modal.png" alt="Модалка материалов наряда" loading="lazy"></p>
+
+<h2 id="stock-abonent">Оборудование в карточке абонента</h2>
+<p>Вкладка «Оборудование» (прямая ссылка —
+<code>/admin/Abonents/&lt;id&gt;/equipment/</code>): всё оборудование со склада у
+клиента со статусами, история установок со сторно, ручная установка из подотчёта
+и <strong>демонтаж</strong> (с вопросом «исправное или брак?»). При установке
+серийной единицы её MAC/серийник автоматически подставляются в учётку абонента
+(тумблер <code>STOCK_AUTO_FILL_MAC</code>).</p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1728/abonent_equipment_tab.png" alt="Вкладка Оборудование в карточке абонента" loading="lazy"></p>
+
+<h2 id="stock-money">Деньги: продажа и аренда</h2>
+<p>Режим передачи определяет финансовые последствия установки:</p>
+
+<pre class="mermaid">
+flowchart TB
+    I["Установка клиенту<br>(наряд / карточка / API)"]
+    I --> CU["Ответхранение<br>(custody)"]
+    I --> SA["Продажа<br>(sale)"]
+    I --> RE["Аренда<br>(rent)"]
+    CU --> CU2["Только движение и статус.<br>Оборудование — собственность оператора"]
+    SA --> SA2["FinanceOperations:<br>−цена продажи с лицевого счёта<br>метка [stock:mv:N]"]
+    RE --> RE2["UsersUsluga «Аренда оборудования»<br>цена/мес · начисления с 1-го числа<br>следующего месяца (billing_worker)"]
+    SA2 -.->|сторно| SA3["Деньги возвращаются на счёт,<br>операция помечается «сторно»"]
+    RE2 -.->|"демонтаж / сторно"| RE3["Услуга аренды выключается,<br>новых начислений нет"]
+    style SA2 fill:#fdecea,stroke:#dc3545
+    style RE2 fill:#fff3cd,stroke:#fd7e14
+    style CU2 fill:#e8f5e9,stroke:#43b77a
+</pre>
+
+<div class="info-box"><strong>Целостность.</strong> Складское движение и его
+финансовая часть выполняются в одной транзакции: если списание с лицевого счёта
+не удалось — не будет и движения. Продажа без финансовой операции невозможна.</div>
+
+<h2 id="stock-settings">Настройки, роли, алерты</h2>
+<p>Схема данных модуля:</p>
+
+<pre class="mermaid">
+erDiagram
+    StockCategory ||--o{ StockItem : "категория"
+    StockUom ||--o{ StockItem : "ед. изм."
+    StockItem ||--o{ StockUnit : "серийные единицы"
+    StockItem ||--o{ StockMovement : "движения"
+    StockUnit |o--o{ StockMovement : ""
+    StockWarehouse |o--o{ StockMovement : "src/dst склад"
+    StockUnit }o--o| Abonents : "у клиента"
+    StockMovement }o--o| FinanceOperations : "продажа [stock:mv:N]"
+    StockUnit }o--o| UsersUsluga : "аренда [stock:unit:N]"
+
+    StockItem {
+        bool is_serialized "S-N или количеством"
+        string transfer_mode "custody-sale-rent"
+        money purchase_sale_rent "3 цены"
+        decimal min_stock "порог алерта"
+    }
+    StockUnit {
+        string serial_mac_barcode "SU-N"
+        string status "in_stock-issued-installed-sold-rented-defect"
+    }
+    StockMovement {
+        string mv_type "receipt-issue-install-return-defect-storno"
+        string ref "deal-manual + id"
+    }
+</pre>
+
+<table>
+  <thead><tr><th>Настройка</th><th>Default</th><th>Назначение</th></tr></thead>
+  <tbody>
+    <tr><td><code>STOCK_ENABLED</code></td><td>OFF</td><td>Главный тумблер модуля</td></tr>
+    <tr><td><code>STOCK_KEEPER_GROUPS</code></td><td>storekeeper, root</td><td>Кладовщики: приход, выдача, сторно чужих движений, установка прямо со склада</td></tr>
+    <tr><td><code>STOCK_HOLDER_GROUPS</code></td><td>installer, …</td><td>Кому можно выдавать в подотчёт</td></tr>
+    <tr><td><code>STOCK_BARCODE_FORMAT</code></td><td>code128</td><td>Формат этикетки (code128 / qr)</td></tr>
+    <tr><td><code>STOCK_LABEL_W_MM</code> / <code>H_MM</code></td><td>40 × 14</td><td>Размер этикетки под ленту принтера</td></tr>
+    <tr><td><code>STOCK_AUTO_FILL_MAC</code></td><td>ON</td><td>Подставлять MAC/серийник в учётку клиента при установке</td></tr>
+    <tr><td><code>STOCK_REQUIRE_MATERIALS_ON_DONE</code></td><td>OFF</td><td>Жёсткий режим: наряд не закрывается без материалов</td></tr>
+  </tbody>
+</table>
+
+<p><strong>Алерт остатков</strong>: раз в сутки задача <code>stock-min-alert</code>
+собирает позиции ниже <code>min_stock</code> и отправляет одно сообщение
+в Telegram-группу оператора со ссылкой на страницу прихода.</p>
+<p><strong>Аудит</strong>: каждое движение пишется в журнал аудита
+(<code>STOCK_MOVEMENT</code>) — кто, что, куда и когда переместил.</p>
+
+<h2 id="stock-launch">Чек-лист запуска</h2>
+<ol>
+  <li>Группа <code>storekeeper</code> + учётка кладовщика в ней.</li>
+  <li>Категории и номенклатура (типовые позиции ISP: роутеры, ONU, кабель,
+    коннекторы). Для знакомства — <code>manage.py seed_stock_demo</code>,
+    очистка демо — <code>seed_stock_demo --clear</code>.</li>
+  <li>Стартовая инвентаризация — приход «инвентаризация (correction)» на
+    фактические остатки склада и подотчётов.</li>
+  <li>Печать этикеток на серийные остатки.</li>
+  <li><code>STOCK_ENABLED = ON</code> — с этого момента монтажники видят
+    «Мой подотчёт», в нарядах появляются «Материалы», в карточках абонентов —
+    вкладка «Оборудование».</li>
+</ol>
+
+
+</main>
+
+<script src="../js/main.js?v=926"></script>
+<script src="../js/version.js"></script>
+<script src="../js/mermaid-init.js?v=1591"></script>
+<script src="../js/markmap-init.js?v=1587"></script>
+<script src="../js/search.js?v=790"></script>
+</body>
+</html>
