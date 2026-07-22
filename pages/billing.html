@@ -189,7 +189,10 @@
           <li class="sub-item"><a href="billing.html#abonents-search">— Глобальный поиск</a></li>
           <li class="sub-item"><a href="billing.html#abonent-map">8.2. На карте</a></li>
           <li class="sub-item"><a href="billing.html#admin-accounts">8.3. Счета</a></li>
-          <li class="sub-item" style="padding-left:1.8em"><a href="billing.html#admin-accounts-v2">— Счета v2 (builds 918-923)</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="billing.html#admin-accounts-map">— Что такое счёт</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="billing.html#admin-accounts-multiorg">— Мультиорганизация и доступ</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="billing.html#admin-accounts-modal">— Карточка счёта</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="billing.html#admin-accounts-mobile">— Мобильная версия</a></li>
           <li class="sub-item"><a href="billing.html#finance-operations">8.4. Финансовые операции</a></li>
           <li class="sub-item" style="padding-left:1.8em"><a href="billing.html#finops-lifecycle">— Откуда берутся операции</a></li>
           <li class="sub-item" style="padding-left:1.8em"><a href="billing.html#finops-multiorg">— Мультиорганизация</a></li>
@@ -6739,207 +6742,263 @@ OSM. Стиль карточки в <a href="#integrations">/admin/settings/inte
 </div>
 
 <h3 id="admin-accounts">8.3. Счета</h3>
-<p>URL: <a href="https://testbill.smit34.ru/admin/Abonents/AdminAccounts/">/admin/Abonents/AdminAccounts/</a></p>
-<p>Лицевой счёт — основной финансовый объект абонента. На нём хранится
-<strong>остаток</strong>, <strong>дебет</strong>, <strong>кредит</strong>, <strong>стоплата</strong> и привязка к валюте.
-К одному счёту может быть привязан один или несколько абонентов
-(<code>Abonents.account_id → AdminAccounts</code>, FK PROTECT). Все
-финансовые операции (<code>FinanceOperations</code>) ссылаются на счёт
-напрямую, что позволяет вести историю по счёту независимо от смены
-абонента.</p>
+<p>URL: <a href="https://rbill.smit34.ru/admin/Abonents/AdminAccounts/">/admin/Abonents/AdminAccounts/</a></p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/accounts_v506/v506_01_list.png" alt="Лицевые счета — список"></p>
+<p><strong>Лицевой счёт</strong> (<code>AdminAccounts</code>) — кошелёк абонента. На нём лежат остаток, дебет, кредит, стоплата, лимиты и валюта. К одному счёту можно привязать нескольких абонентов (<code>Abonents.account_id → AdminAccounts</code>, FK PROTECT), а все <a href="#finance-operations">финансовые операции</a> ссылаются на счёт напрямую — поэтому история денег живёт своей жизнью и не рвётся при смене абонента.</p>
+
+<p>Разделение простое: <strong>счёт отвечает на вопрос «сколько денег сейчас»</strong>, финоперации — «откуда они взялись». На проде 6309 счетов.</p>
+
+<h4 id="admin-accounts-map">Что такое счёт: карта понятий</h4>
+
+<pre class="mermaid">
+mindmap
+  root)Лицевой счёт(
+    Деньги
+      Остаток
+      Дебет
+      Кредит
+      Стоплата
+      Баланс = остаток + дебет − кредит
+    Правила
+      Порог предупреждения
+      Порог отключения
+      Безлимит и дата
+      Валюта
+    Связи
+      Абоненты много к одному
+      Финансовые операции
+      Банковские выписки
+      Организация через абонента
+    Действия
+      Пополнить
+      Корректировка
+      Сторно последней
+      Привязать отвязать абонента
+</pre>
+
+<p>Отсюда и главная путаница раздела: <strong>«остаток» и «баланс» — разные величины</strong>. Остаток — одно поле, баланс считается по формуле. В карточке счёта формула выведена прямо под крупной цифрой, чтобы не приходилось помнить.</p>
+
+<h4 id="admin-accounts-money-flow">Как деньги попадают на счёт</h4>
+
+<pre class="mermaid">
+flowchart LR
+    W["Webhook оплаты<br/>ЮKassa · W1"] --> FO
+    B["Банковская<br/>выписка"] --> FO
+    O["Оператор:<br/>Пополнить"] --> FO
+    C["Оператор:<br/>Корректировка"] --> FO
+    M["billing_worker<br/>абонплата"] --> FO
+
+    FO(["FinanceOperations"]) --> ACC["AdminAccounts.ostatok"]
+    ACC --> BAL{"Баланс<br/>отрицательный?"}
+    BAL -->|"да"| BLK["Блокировка b_negbal<br/>+ CoA Disconnect"]
+    BAL -->|"нет"| OK["Доступ активен"]
+    ACC --> LIM{"Ниже порога<br/>предупреждения?"}
+    LIM -->|"да"| MSG["SMS · Push<br/>уведомление"]
+</pre>
+
+<p>Ни одна кнопка в разделе не меняет остаток «напрямую»: любое движение денег создаёт финоперацию, а остаток — её следствие. Поэтому удалить операцию нельзя без последствий, а для отмены есть <em>сторно</em>.</p>
 
 <h4 id="admin-accounts-list">Список счетов</h4>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/accounts_v1726/01_list.png" alt="Список лицевых счетов с KPI, чипами и колонкой организации"></p>
+
 <ul>
-  <li><strong>KPI-бейджи</strong> в шапке: Всего / Активных / Без абонента / Должников / Сумма балансов выборки. Цвет «Сумма» меняется на красный при отрицательном итоге.</li>
-  <li><strong>Чип-фильтры</strong>: 🔻 Должники (баланс &lt; 0) / Без абонента / 🔺 Плюс (баланс &gt; 0). Активный чип подсвечивается, повторный клик снимает фильтр.</li>
-  <li><strong>Поиск</strong> по ID счёта, имени абонента, договору или тарифу. Хоткей <kbd>Ctrl+K</kbd> / <kbd>⌘K</kbd> фокусирует поле.</li>
-  <li><strong>Сортировка</strong> по № и Балансу — клик по заголовку столбца.</li>
-  <li><strong>Бесконечная прокрутка</strong> (build 494): первая загрузка 100 строк, далее автоматическая подгрузка при скролле. Внизу показывается «Загружено N из M».</li>
-  <li><strong>Цветовое кодирование</strong>: должники — красный фон, без абонента — серый, выбранные — зелёный. Иконки ↓/↑ рядом с балансом — для colour-independence (a11y).</li>
-  <li><strong>CSV-экспорт</strong> по текущим фильтрам или по выбранным (через bulk-действия).</li>
-  <li><strong>Bulk-действия</strong> при выборе ≥1 строки: смена валюты, установка лимитов, CSV выбранных, удаление сирот (только без абонентов и без операций).</li>
+  <li><strong>KPI-бейджи</strong>: Всего / Активных / Без абонента / Должников / Сумма балансов выборки. Кликабельны — работают как быстрый фильтр.</li>
+  <li><strong>Чипы</strong>: Должники (баланс &lt; 0) · Без абонента · Плюс (баланс &gt; 0). Повторный клик снимает фильтр.</li>
+  <li><strong>Поиск</strong> по ID, имени абонента, договору и тарифу; <kbd>Ctrl+K</kbd> ставит курсор в поле.</li>
+  <li><strong>Колонка «Орг.»</strong> — единый бейдж организации, см. <a href="#admin-accounts-multiorg">Мультиорганизация</a>.</li>
+  <li><strong>Наименование</strong> — только номер счёта. Деньги показывает колонка «Баланс»: раньше остаток дублировался в названии, и два разных числа в строке читались как расхождение.</li>
+  <li><strong>Бесконечная прокрутка</strong>: первая порция 100 строк, дальше подгрузка при скролле.</li>
+  <li><strong>Массовые действия</strong> при выборе строк: смена валюты, установка лимитов, CSV выбранных, удаление «сирот».</li>
+  <li><strong>CSV-экспорт</strong> по текущим фильтрам.</li>
 </ul>
 
-<h4 id="admin-accounts-modal">Модалка счёта</h4>
-<p>Клик по строке или по кнопке-карандашу открывает модальное окно (modal-xl) с
-левой навигацией на 5 вкладок. URL-параметр <code>?edit=&lt;id&gt;</code>
-автоматически открывает модалку при загрузке страницы (для глубоких ссылок).
-Старая страница <code>/admin/Abonents/AdminAccounts/&lt;id&gt;/</code>
-редиректит 302 на список с открытой модалкой.</p>
+<p>Цвет не единственный сигнал: рядом с балансом стоит стрелка направления, поэтому строка читается и при дальтонизме, и в чёрно-белой печати.</p>
 
-<h5>Вкладка «Баланс»</h5>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/accounts_v506/v506_02_modal_balance.png" alt="Модалка счёта — вкладка Баланс"></p>
+<h5 id="admin-accounts-perf">Скорость списка</h5>
+<p>Название тарифа считается по услугам тарифа, и <code>str(tarif)</code> ради этого ходит в БД <strong>дважды на каждый тариф</strong>. В списке это превращалось в 299 запросов на 100 строк и 2,7 с ответа, а выгрузка всех 6309 счетов в CSV занимала <strong>47 секунд</strong>.</p>
+<p>Теперь подписи считаются пачкой (<code>Tarif.bulk_labels(ids)</code>): те же две агрегации выполняются один раз на всю страницу.</p>
+<table>
+  <thead><tr><th>Операция</th><th>Было</th><th>Стало</th></tr></thead>
+  <tbody>
+    <tr><td>Список, 100 строк</td><td>299 запросов · 2 698 мс</td><td><strong>8 запросов · ~300 мс</strong></td></tr>
+    <tr><td>CSV всех счетов</td><td>47,3 с</td><td><strong>1,3 с</strong></td></tr>
+  </tbody>
+</table>
+
+<h4 id="admin-accounts-multiorg">Мультиорганизация и изоляция доступа</h4>
+<p>У <code>AdminAccounts</code> <strong>нет своего поля организации</strong> — она берётся у абонента счёта. Поэтому «счёт без организации» означает «абонент без организации», и гарантия стоит на абоненте.</p>
+
 <ul>
-  <li>Большая цифра текущего баланса (<code>остаток + дебет − кредит</code>) — цвет по знаку.</li>
-  <li>Сетка из 4 ячеек: Остаток / Дебет / Кредит / Стоплата.</li>
-  <li>Производные величины: Бухгалтерский (<code>остаток + дебет</code>), На конец месяца (<code>баланс − стоплата</code>) — с info-tooltip объяснением.</li>
-  <li>Три кнопки действий: <strong>Пополнить</strong>, <strong>Корректировка</strong>, <strong>Сторно последней</strong>.</li>
+  <li>Колонка <strong>«Орг.»</strong> показывается при двух условиях сразу: включена мультиорганизация <strong>и</strong> выбран режим «Все организации». При выбранной одной компании колонка вырождается в один и тот же бейдж.</li>
+  <li>Тот же бейдж — в шапке карточки счёта, сразу после номера.</li>
+  <li>Организация проставляется на уровне модели (<code>Abonents.save()</code>, <code>FinanceOperations.save()</code>): записи создают мастер, быстрое добавление, импорт, webhook'и и <code>billing_worker</code> — точечные проверки в каждом месте протекали, поэтому гарантия одна и обойти её нельзя. Порядок выбора: организация папки-родителя → организация по умолчанию (СмИТ).</li>
 </ul>
 
-<h5>Вкладка «Параметры»</h5>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/accounts_v506/v506_03_modal_params.png" alt="Модалка счёта — вкладка Параметры"></p>
-<p>Лимиты и пороги:</p>
+<h5 id="admin-accounts-isolation">Кто какие счета видит</h5>
+<p>Сотрудник видит только счета своих организаций. Проверка стоит не только в списке, но и на каждом действии с конкретным счётом — иначе чужой счёт открывался бы подстановкой номера в адрес.</p>
+
+<pre class="mermaid">
+flowchart LR
+    REQ["Запрос сотрудника"] --> ALLOW{"allowed_orgs"}
+    ALLOW -->|"None — все"| FULL["без фильтра"]
+    ALLOW -->|"свои орг."| SCOPE["filter_qs_by_org<br/>через абонента"]
+    FULL --> ACT{"действие"}
+    SCOPE --> ACT
+    ACT -->|"список"| L["accounts_json"]
+    ACT -->|"карточка"| G["accounts_get"]
+    ACT -->|"деньги"| P["payment · storno"]
+    ACT -->|"массово"| BK["bulk · csv"]
+    G --> GUARD["чужой счёт → 404"]
+    P --> GUARD
+    BK --> F403["чужой в списке → 403"]
+</pre>
+
+<p>Ответ на чужой счёт — <strong>404, а не 403</strong>: одинаковая реакция на «нет такого» и «есть, но не ваш» не даёт перебором выяснить, какие счета существуют. Массовые действия отвечают 403, если хоть один выбранный счёт вне доступа, — молча пропустить часть выборки хуже, чем отказать целиком.</p>
+
+<h4 id="admin-accounts-modal">Карточка счёта</h4>
+<p>Открывается кликом по строке или по названию. Восемь вкладок слева, действия с деньгами — на первой. Параметр <code>?edit=&lt;id&gt;</code> открывает карточку сразу при загрузке страницы (для ссылок из других разделов).</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/accounts_v1726/02_modal_balance.png" alt="Карточка счёта — вкладка Баланс"></p>
+
+<pre class="mermaid">
+flowchart TB
+    subgraph T["Вкладки карточки"]
+      direction LR
+      T1["① Баланс<br/>деньги и действия"]
+      T2["② Услуги и тарифы<br/>ожидаемое списание"]
+      T3["③ Платёжные системы<br/>история по каналам"]
+      T4["④ Параметры<br/>лимиты и пороги"]
+      T5["⑤ Абоненты<br/>привязка"]
+      T6["⑥ Финоперации<br/>последние 50"]
+      T7["⑦ Банк. выписки<br/>связанные строки"]
+      T8["⑧ Уведомления<br/>SMS · Email · Push"]
+    end
+</pre>
+
+<h5 id="admin-accounts-balance">① Баланс</h5>
+<p>Крупная цифра баланса, под ней формула <code>баланс = остаток + дебет − кредит</code>, ниже — четыре составляющие и производные величины (бухгалтерский, на конец месяца). Три кнопки: <strong>Пополнить</strong>, <strong>Корректировка</strong>, <strong>Сторно последней</strong>.</p>
+
+<h5 id="admin-accounts-services">② Услуги и тарифы</h5>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/accounts_v1726/03_tab_services.png" alt="Карточка счёта — услуги и тарифы"></p>
+<p>Услуги всех абонентов счёта с ценами и ожидаемым списанием за месяц. Каскад цены: <code>uu.summ → usluga.summa → usluga.price</code>. Бонусы (отрицательная сумма или «бонус» в названии) вынесены отдельно.</p>
+
+<h5 id="admin-accounts-payments">③ Платёжные системы</h5>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/accounts_v1726/04_tab_payments.png" alt="Карточка счёта — история платежей по каналам"></p>
+<p>Приходы за 90 дней, сгруппированные по каналу (ЮKassa, Wallet One, банковская выписка, ручная проводка, EBS). Канал определяется по <code>operator_name</code>, а при пустом — по меткам в описании. Ниже — статус интеграций со ссылками на настройки: видно, настроен ли канал вообще.</p>
+
+<h5 id="admin-accounts-params">④ Параметры</h5>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/accounts_v1726/08_tab_params.png" alt="Карточка счёта — параметры и лимиты"></p>
 <ul>
-  <li><strong>Порог предупреждения</strong> — отправка SMS/Push при пересечении.</li>
-  <li><strong>Порог отключения</strong> — автоблокировка интернета (<code>b_negbal</code>).</li>
-  <li><strong>Безлимит</strong> (toggle) + дата окончания. При активном безлимите автоблокировка не срабатывает.</li>
-  <li><strong>Валюта</strong> счёта (FK Currency).</li>
-  <li><strong>Бонусные баллы</strong> (<code>bonus_score</code>).</li>
-  <li>Очистка <code>alert_last_date_limit</code> — сбрасывает дату последнего оповещения, заставит систему отправить алерт при следующей проверке.</li>
+  <li><strong>Порог предупреждения</strong> — при пересечении уходит SMS/Push.</li>
+  <li><strong>Порог отключения</strong> — срабатывает автоблокировка (<code>b_negbal</code>).</li>
+  <li><strong>Безлимит</strong> + дата окончания: пока активен, автоблокировка не срабатывает.</li>
+  <li>Валюта, бонусные баллы, сброс даты последнего оповещения.</li>
 </ul>
 
-<h5>Вкладка «Абоненты»</h5>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/accounts_v506/v506_04_modal_abonents.png" alt="Модалка счёта — вкладка Абоненты"></p>
-<p>Список привязанных абонентов с бейджем «основной» (первый по ID), статусом и кнопками открытия профиля и отвязки. Кнопка <em>Привязать</em> открывает подмодалку с поиском (live-search через REST API). Если выбранный абонент уже привязан к другому счёту — показывается чекбокс <em>Перенести</em>.</p>
+<h5 id="admin-accounts-abonents">⑤ Абоненты</h5>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/accounts_v1726/05_tab_abonents.png" alt="Карточка счёта — привязанные абоненты"></p>
+<p>Привязанные абоненты с бейджем «основной» (первый по ID) и статусом. Кнопка <em>Привязать</em> открывает поиск; если абонент уже на другом счёте, появляется чекбокс <em>Перенести</em> — молча увести абонента с чужого счёта нельзя.</p>
 
-<h5 id="admin-accounts-finops">Вкладка «Финансовые операции»</h5>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/accounts_v506/v506_05_modal_finops.png" alt="Модалка счёта — вкладка Финансовые операции"></p>
-<p>Последние 50 операций по счёту с цветовым кодированием:</p>
+<h5 id="admin-accounts-finops">⑥ Финансовые операции</h5>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/accounts_v1726/06_tab_finops.png" alt="Карточка счёта — финансовые операции"></p>
+<p>Последние 50 операций с иконкой источника и цветом по знаку; сторнированные зачёркнуты. Ссылка <em>Все операции по счёту</em> ведёт в <a href="#finance-operations">Финансовые операции</a> с фильтром по счёту.</p>
+
+<h5 id="admin-accounts-bank">⑦ Банковские выписки</h5>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/accounts_v1726/07_tab_bank.png" alt="Карточка счёта — банковские выписки"></p>
+<p>Строки выписок, связанные с операциями счёта (<code>BankStatementOperation.fin_operation_id</code>): банк, плательщик, ИНН, назначение платежа. Нужна, когда абонент говорит «я платил через банк», а платёж не виден.</p>
+
+<h5 id="admin-accounts-payment">Пополнение, корректировка, сторно</h5>
+<div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start">
+  <figure style="flex:1 1 300px;margin:0">
+    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/accounts_v1726/09_modal_payment.png" alt="Пополнение счёта">
+    <figcaption style="font-size:.85em;opacity:.75">Пополнение — только приходные типы</figcaption>
+  </figure>
+  <figure style="flex:1 1 300px;margin:0">
+    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/accounts_v1726/10_modal_correction.png" alt="Корректировка счёта">
+    <figcaption style="font-size:.85em;opacity:.75">Корректировка — все типы, знак от типа</figcaption>
+  </figure>
+</div>
+
 <ul>
-  <li>🟢 Зелёный — приход (<code>op_summa &gt; 0</code>).</li>
-  <li>🔴 Красный — расход (<code>op_summa &lt; 0</code>).</li>
-  <li>⚪ Серый — нулевая.</li>
-  <li>~~Зачёркнутый~~ — сторнированная (<code>storno=True</code>).</li>
+  <li><strong>Пополнение</strong>: список типов отфильтрован по <code>op_sign &gt; 0</code> — расходный тип сюда не подставишь. Поле <em>ID транзакции</em> даёт идемпотентность: повторный запрос с тем же идентификатором вернёт существующую операцию, а не зачислит деньги дважды.</li>
+  <li><strong>Корректировка</strong>: те же поля, но типы все. Знак берётся из типа операции — положительная сумма при расходном типе инвертируется автоматически.</li>
+  <li><strong>Сторно последней</strong>: показывает реквизиты последней операции, создаёт обратную и помечает оригинал <code>storno=True</code>. Повторно сторнировать ту же операцию нельзя.</li>
 </ul>
-<p>Ссылка <em>Все операции по счёту</em> ведёт на отдельный раздел <a href="#finance-operations">Финансовые операции</a> с фильтром <code>?account_id=&lt;id&gt;</code>.</p>
+<p>Под формой — предпросмотр: текущий баланс, сумма, новый баланс. Сервер выполняет всё в одной транзакции с <code>SELECT FOR UPDATE</code> на счёт, поэтому два оператора не «потеряют» одно из зачислений.</p>
 
-<h5>Вкладка «Уведомления»</h5>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/accounts_v506/v506_06_modal_msgs.png" alt="Модалка счёта — вкладка Уведомления"></p>
-<p>Последние 20 SMS / Email / Push сообщений по абонентам этого счёта (<code>MsgStack</code>, поля <code>head_txt</code>, <code>text</code>, <code>send_date</code>, флаги <code>email_done</code>/<code>sms_done</code>/<code>push_done</code> и др.). Read-only.</p>
+<h4 id="admin-accounts-mobile">Мобильная версия</h4>
+<p>На телефоне у раздела другая задача: посмотреть баланс и принять оплату, а не разбирать журнал. Поэтому таблица не ужимается, а перестраивается.</p>
 
-<h4 id="admin-accounts-payment">Пополнение / Корректировка / Сторно</h4>
-<p>На вкладке «Баланс» — три кнопки финансовых действий, каждая открывает подмодалку поверх главной (stacked modal через <code>z-index</code> патч).</p>
+<div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start">
+  <figure style="flex:1 1 240px;margin:0">
+    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/accounts_v1726/12_mobile_list.png" alt="Список счетов на телефоне">
+    <figcaption style="font-size:.85em;opacity:.75">Список: поиск, фильтры, добавление — одной строкой</figcaption>
+  </figure>
+  <figure style="flex:1 1 240px;margin:0">
+    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/accounts_v1726/13_mobile_modal.png" alt="Карточка счёта на телефоне">
+    <figcaption style="font-size:.85em;opacity:.75">Карточка — полноэкранная панель</figcaption>
+  </figure>
+</div>
 
-<h5>Пополнение</h5>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/accounts_v506/v506_07_payment_modal.png" alt="Подмодалка пополнения счёта"></p>
-<p>Поля: <em>Сумма</em> (₽, обязательно), <em>Тип операции</em> (фильтрованы по <code>op_sign &gt; 0</code> — только приходные), <em>Дата</em>, <em>Номер документа</em>, <em>Описание</em>. Дополнительно: <em>ID транзакции</em> для идемпотентности — если задан и уже встречается в БД, повторный POST возвращает существующий <code>op_id</code> без двойного зачисления.</p>
-<p>Live-preview под формой показывает: текущий баланс, сумму операции, новый баланс. Цветовое кодирование зелёный/красный.</p>
-<p>Серверная логика (<code>_create_finop_atomic</code>): <code>SELECT FOR UPDATE</code> на счёт, инкремент <code>ostatok</code>, создание FinOp в одной транзакции, запись в audit (<code>ADMIN_ACCOUNTS</code> + <code>FinanceOperations</code>).</p>
+<ul>
+  <li><strong>Панель управления</strong> — одна строка: поиск, кнопка фильтров со счётчиком активных, зелёная кнопка добавления. Подписи у кнопок убраны: на 390 px они не помещаются рядом с полем поиска.</li>
+  <li><strong>Колонки</strong>: остаются наименование, абонент и баланс. Чекбокс и № скрыты — массовых действий с телефона не делают, а номер виден в наименовании.</li>
+  <li><strong>Имена не переносятся</strong>: длинное ФИО сокращается многоточием, полное — в подсказке. Иначе строки разной высоты рвут таблицу.</li>
+  <li><strong>Карточка счёта</strong> открывается полноэкранной панелью, крестик — в правом верхнем углу, тач-цель 56 px.</li>
+  <li><strong>Полоса вкладок</strong> прокручивается к выбранной вкладке, чтобы было видно, что идёт дальше.</li>
+</ul>
 
-<h5>Корректировка</h5>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/accounts_v506/v506_08_correction_modal.png" alt="Подмодалка корректировки счёта"></p>
-<p>Тот же endpoint, но без фильтра типов — оператор сам выбирает из всех 30+ типов (например, «Корректирующее списание» или «Ручная проводка»). Знак суммы определяется типом (<code>op_sign</code>): если выбран расходный тип, введённая положительная сумма автоматически инвертируется. На скриншоте — отрицательная сумма с предпросмотром нового баланса.</p>
-
-<h5 id="admin-accounts-link-modal">Привязка абонента (подмодалка)</h5>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/accounts_v506/v506_09_link_modal.png" alt="Подмодалка привязки абонента к счёту"></p>
-<p>Открывается из вкладки «Абоненты» по кнопке <em>+ Привязать</em>. Поле поиска ищет абонента по ФИО, договору, телефону, email через REST API (с debounce 300мс). Результаты отображаются с бейджами «на счёте #N» если абонент уже привязан где-то ещё. Чекбокс <em>Перенести</em> появляется только при выборе такого абонента и подтверждает перевод с другого счёта.</p>
-
-<h5>Сторно последней</h5>
-<p>Confirm-диалог с реквизитами последней операции (op_id, сумма, описание). После подтверждения создаётся обратная FinOp, у оригинала ставится <code>storno=True</code>, остаток корректируется. Сторнированную операцию повторно сторнировать нельзя.</p>
+<h4 id="admin-accounts-dark">Тёмная тема</h4>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/accounts_v1726/11_list_dark.png" alt="Список счетов в тёмной теме"></p>
+<p>Цвета раздела заданы токенами, поэтому тема переключается без отдельного набора правил.</p>
 
 <h4 id="admin-accounts-permissions">Защита от удаления</h4>
-<p>Hard-delete счёта возможен только если соблюдены оба условия:</p>
-<ul>
-  <li>К счёту НЕ привязан ни один абонент (<code>account_id_abonents.count() == 0</code>).</li>
-  <li>В счёте НЕТ ни одной финансовой операции (<code>FinanceOperations.filter(account=acc).count() == 0</code>).</li>
-</ul>
-<p>Иначе сервер возвращает HTTP 400 с понятной подсказкой («Сначала отвяжите N абонентов…» / «У счёта M операций. Удаление запрещено для сохранения истории»).</p>
+<p>Счёт удаляется только когда выполнены оба условия: к нему не привязан ни один абонент <strong>и</strong> по нему нет ни одной финансовой операции. Иначе сервер отвечает 400 с понятной причиной («Сначала отвяжите N абонентов…», «У счёта M операций — удаление запрещено для сохранения истории»).</p>
+<p>Смысл в том, что счёт — это история денег. Удалив его, вы теряете основание для всех прошлых начислений; в спорной ситуации восстановить картину будет нечем.</p>
 
-<h4 id="admin-accounts-audit">Audit-trail</h4>
-<p>Каждое действие записывается в <code>AuditOperations</code> (<code>table_name='ADMIN_ACCOUNTS'</code>) с реквизитами оператора и diff-описанием:</p>
-<ul>
-  <li><strong>Создание</strong>: «Создан счёт #N: warn=X, limit=Y, currency=Z».</li>
-  <li><strong>Изменение</strong>: «Изменён счёт #N: warn 100→200; currency 1→2».</li>
-  <li><strong>Удаление</strong>: «Удалён счёт #N (баланс был X.XX ₽)».</li>
-  <li><strong>Пополнение/Корректировка</strong>: «Пополнение/корр. счёта #N на +500.00 ₽ (op_id=12345, type=23)».</li>
-  <li><strong>Сторно</strong>: «Сторно счёта #N: op_id=12345 (новая запись op_id=12346, сумма −500.00 ₽)».</li>
-  <li><strong>Привязка/отвязка абонента</strong>: «Привязан абонент #6911 (ФИО) к счёту #9811» / «Отвязан…».</li>
-</ul>
+<h4 id="admin-accounts-audit">Аудит</h4>
+<p>Каждое действие пишется в <code>AuditOperations</code> (<code>table_name='ADMIN_ACCOUNTS'</code>) с оператором и описанием изменения: создание и правка счёта (с diff вида «warn 100→200»), пополнение и корректировка (с <code>op_id</code> и типом), сторно, привязка и отвязка абонента, удаление (с балансом на момент удаления).</p>
 
-<h4 id="admin-accounts-api">REST endpoints</h4>
+<h4 id="admin-accounts-api">Endpoints</h4>
 <table>
   <thead><tr><th>URL</th><th>Метод</th><th>Назначение</th></tr></thead>
   <tbody>
-  <tr><td><code>/admin/Abonents/AdminAccounts/</code></td><td>GET</td><td>HTML-страница списка</td></tr>
-  <tr><td><code>/admin/Abonents/accounts_json/</code></td><td>GET</td><td>JSON: список с фильтрами и пагинацией (поля <code>q</code>, <code>chip</code>, <code>page</code>, <code>per_page</code>, <code>sort</code>)</td></tr>
-  <tr><td><code>/admin/Abonents/accounts_get/&lt;id&gt;/</code></td><td>GET</td><td>JSON: счёт + абоненты + последние 50 финопов + 20 уведомлений</td></tr>
-  <tr><td><code>/admin/Abonents/accounts_crud/[&lt;id&gt;/]</code></td><td>POST</td><td>Create/Update/Delete (флаг <code>_delete=1</code>)</td></tr>
-  <tr><td><code>/admin/Abonents/accounts_payment/&lt;id&gt;/</code></td><td>POST</td><td>Пополнение / Корректировка</td></tr>
+  <tr><td><code>/admin/Abonents/AdminAccounts/</code></td><td>GET</td><td>Страница списка</td></tr>
+  <tr><td><code>/admin/Abonents/accounts_json/</code></td><td>GET</td><td>Список: <code>q</code>, <code>chip</code>, <code>page</code>, <code>per_page</code>, <code>sort</code>. Возвращает items, KPI и <code>show_org</code></td></tr>
+  <tr><td><code>/admin/Abonents/accounts_get/&lt;id&gt;/</code></td><td>GET</td><td>Счёт + абоненты + 50 операций + 20 уведомлений + организация</td></tr>
+  <tr><td><code>/admin/Abonents/accounts_crud/[&lt;id&gt;/]</code></td><td>POST</td><td>Создание / правка / удаление (<code>_delete=1</code>)</td></tr>
+  <tr><td><code>/admin/Abonents/accounts_payment/&lt;id&gt;/</code></td><td>POST</td><td>Пополнение и корректировка</td></tr>
   <tr><td><code>/admin/Abonents/accounts_storno/&lt;id&gt;/</code></td><td>POST</td><td>Сторно последней операции</td></tr>
-  <tr><td><code>/admin/Abonents/accounts_link/&lt;id&gt;/</code></td><td>POST</td><td>Привязать абонента (<code>force=1</code> — перевод с другого счёта)</td></tr>
+  <tr><td><code>/admin/Abonents/accounts_link/&lt;id&gt;/</code></td><td>POST</td><td>Привязать абонента (<code>force=1</code> — перенос с другого счёта)</td></tr>
   <tr><td><code>/admin/Abonents/accounts_unlink/&lt;id&gt;/&lt;abonent_id&gt;/</code></td><td>POST</td><td>Отвязать абонента</td></tr>
-  <tr><td><code>/admin/Abonents/accounts_bulk/</code></td><td>POST</td><td>Bulk: <code>change_currency</code> / <code>set_limits</code> / <code>delete_orphans</code></td></tr>
-  <tr><td><code>/admin/Abonents/accounts_csv/</code></td><td>GET</td><td>CSV-экспорт (UTF-8 BOM, <code>;</code>) — по фильтрам или <code>?ids=1,2,3</code></td></tr>
+  <tr><td><code>/admin/Abonents/accounts_services/&lt;id&gt;/</code></td><td>GET</td><td>Услуги и тарифы абонентов счёта</td></tr>
+  <tr><td><code>/admin/Abonents/accounts_payments_summary/&lt;id&gt;/</code></td><td>GET</td><td>Приходы по каналам + статус интеграций</td></tr>
+  <tr><td><code>/admin/Abonents/accounts_bank_ops/&lt;id&gt;/</code></td><td>GET</td><td>Связанные строки банковских выписок</td></tr>
+  <tr><td><code>/admin/Abonents/accounts_bulk/</code></td><td>POST</td><td>Массово: валюта / лимиты / удаление сирот</td></tr>
+  <tr><td><code>/admin/Abonents/accounts_csv/</code></td><td>GET</td><td>CSV (UTF-8 BOM, разделитель <code>;</code>)</td></tr>
   </tbody>
 </table>
+<p>Все endpoint'ы, принимающие <code>&lt;id&gt;</code>, проверяют доступ к счёту по организации сотрудника.</p>
 
 <h4 id="admin-accounts-money">Денежные правила</h4>
-<p>Все суммы в БД хранятся как <strong>integer × 10^10</strong> (<code>DB_MONEY_KOEF = Decimal('10000000000')</code>). Конвертация происходит автоматически в <code>MoneyField</code> / <code>MoneyFormField</code>: <code>prepare_value()</code> делит на коэффициент при отображении, <code>clean()</code> умножает обратно при сохранении. На уровне UI и REST API всегда работаем в рублях с двумя знаками после запятой.</p>
+<p>Суммы в БД хранятся как <strong>целое × 10<sup>10</sup></strong> (<code>DB_MONEY_KOEF</code>). Конвертация автоматическая в <code>MoneyField</code>: при отображении делится, при сохранении умножается. В UI и API — всегда рубли с двумя знаками.</p>
 
-<h3 id="admin-accounts-v2">8.3.1. Счета v2 — Sprint 1-5 (builds 918-923)</h3>
-<p>Версия модалки счёта, расширенная связями с FinOps modal v915, Банковскими выписками, Услугами и Платёжными системами. Sprint 1 закрыл 5 P0 находок UX-аудита 2026-05-18, Sprint 2-5 закрыли 7 P1 находок. Health Score 64 → 92/100 (Excellent).</p>
-
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/admin_accounts_v2_923/v2_01_list_overview.png" alt="Список счетов v2 — KPI кликабельные + колонка Тариф видна с md-breakpoint"></p>
-
-<h4 id="admin-accounts-header">Шапка модалки (P0-1, build 918)</h4>
-<p>Рядом с «Счёт #N» сразу видны: <strong>ФИО абонента</strong> (кликабельная ссылка на карточку), договор, тариф, иконка юр.лица (<i class="fas fa-briefcase"></i>), бейдж «Откл.» если abonent.enabled=false. Справа — бейдж баланса (цвет по знаку) и бейджи активных блокировок: <span class="badge bg-danger">b_negbal</span> <span class="badge bg-warning text-dark">b_admin</span> <span class="badge bg-info">b_own</span> <span class="badge bg-secondary">b_sys</span>.</p>
-<p>Backend: helper <code>_get_block_flags(abonent)</code> в <code>billing/views/accounts_list.py</code> читает <code>AbonentsBlock.objects.filter(abonent=ab, end_date__isnull=True)</code>. Расширение <code>ab_dict</code> в <code>_account_summary</code> отдаёт <code>enabled / block_flags / is_company</code>.</p>
-
-<h4 id="admin-accounts-balance">Вкладка ① Баланс — свёрнутые нулевые ячейки (P1-5, build 923)</h4>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/admin_accounts_v2_923/v2_02_modal_balance.png" alt="Модалка счёта — вкладка Баланс"></p>
-<p>Большая цифра баланса + 4 ячейки (Остаток / Дебет / Кредит / Стоплата). Если debit + credit + credit_adjust = 0 (типичный счёт EBS-абонента) — три нулевые ячейки скрыты, остаётся только «Остаток» + плашка «Дебет, Кредит, Стоплата = 0 — скрыто. <em>показать все ячейки</em>». Клик по ссылке выставляет <code>STATE._showAllBalance = true</code> и перерисовывает баланс.</p>
-
-<h4 id="admin-accounts-services">Вкладка ② Услуги и тарифы (P1-2, build 921)</h4>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/admin_accounts_v2_923/v2_03_services_with_tariff.png" alt="Модалка счёта — вкладка Услуги и тарифы"></p>
-<p>Для каждого абонента счёта показывается:</p>
+<h4 id="admin-accounts-maintenance">Обслуживание</h4>
 <ul>
-  <li><strong>Тариф</strong> с месячной ценой (берётся через <code>tarif.tarif_tuu.first().usluga.price/summa</code>). Клик → <code>/admin/tarifs/Tarif/?edit=&lt;id&gt;</code>.</li>
-  <li><strong>Таблица услуг</strong> (<code>UsersUsluga</code>): имя (клик → Usluga modal) / Сумма / Источник (бейдж <em>индивид.</em> / <em>шаблон</em> / <em>price</em>) / След. списание / комментарий-tooltip.</li>
-  <li><strong>Бонусы и компенсации</strong> свёрнуты в <code>&lt;details&gt;</code> — отдельной таблицей. Эвристика: <code>summ &lt; 0</code> OR <code>usluga.name</code> содержит «бонус».</li>
-  <li><strong>Каскад цены</strong>: <code>uu.summ → usluga.summa → usluga.price</code> (правило build 41).</li>
+  <li><code>manage.py backfill_abonent_org [--apply]</code> — проставляет организацию абонентам, у которых её нет (папка-родитель → организация по умолчанию). От неё зависит и организация счёта.</li>
+  <li><code>manage.py backfill_finops_org [--apply]</code> — то же для финансовых операций.</li>
 </ul>
-<p>Сверху — карточка <strong>«Ожидаемое списание следующего месяца»</strong>: сумма всех enabled услуг + тариф − активные отрицательные бонусы. Endpoint: <code>GET /admin/Abonents/accounts_services/&lt;id&gt;/</code>.</p>
+<p>Обе идемпотентны — трогают только записи с пустой организацией. После перехода гарантии на уровень модели они нужны разве что после массового импорта.</p>
 
-<h4 id="admin-accounts-payments">Вкладка ③ Платёжные системы (P1-3, build 922)</h4>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/admin_accounts_v2_923/v2_04_payments_full.png" alt="Модалка счёта — вкладка Платёжные системы"></p>
-<p>За 90 дней группировка приходов (<code>op_summa &gt; 0</code>) по каналам платежей (<code>operator_name</code>). Если <code>operator_name</code> пустой — heuristic по <code>descr</code>: <code>[txn:</code> = YooKassa, <code>[bank_op:</code> = Bank, иначе Manual. Каждый канал — карточка grid 2-col с count, sum, last_date и иконкой/цветом канала.</p>
-<p>Под каналами — список <strong>доступных интеграций</strong> (YooKassa, Wallet One, Банковские выписки) с статусом ✓/⚠ и ссылками на настройки. Endpoint: <code>GET /admin/Abonents/accounts_payments_summary/&lt;id&gt;/</code>.</p>
-
-<h4 id="admin-accounts-finops">Вкладка ⑥ Финансовые операции — source-kind + клик (P0-2, build 918)</h4>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/admin_accounts_v2_923/v2_05_finops_with_sources.png" alt="Финопеации с цветными иконками источников и чипами связей"></p>
-<p>Каждая строка теперь имеет:</p>
+<h4 id="admin-accounts-related">Смежные разделы</h4>
 <ul>
-  <li><strong>Цветная иконка источника</strong> слева (32px): <i class="fas fa-credit-card" style="color:#7b3fff"></i> YooKassa / <i class="fas fa-wallet" style="color:#1976d2"></i> W1 / <i class="fas fa-university" style="color:#2e7d32"></i> Банк / <i class="fas fa-database" style="color:#757575"></i> EBS / <i class="fas fa-handshake" style="color:#e65100"></i> ОП / <i class="fas fa-user-edit" style="color:#00796b"></i> Ручная / <i class="fas fa-calendar-day" style="color:#43b77a"></i> Ежемес. / <i class="fas fa-exchange-alt" style="color:#6a1b9a"></i> Смена тарифа.</li>
-  <li><strong>Чипы связей</strong> в колонке «Описание»: <code>🏦 банк</code> (есть BSO reverse-link), <code>⚙ услуга</code> (usluga_id), <code>🔗 родитель</code> (fin_op_id), <code>↩ сторно</code>.</li>
-  <li><strong>Клик по строке</strong> → открывает FinOps modal v915 в view-режиме через <code>window.FinopsModal.open(op_id, 'view')</code>. Fallback — открытие в новой вкладке если FinopsModal не загружен.</li>
+  <li><a href="#finance-operations">Финансовые операции</a> — журнал, который двигает остаток счёта.</li>
+  <li><a href="#abonent-card">Карточка абонента</a> — владелец счёта, там же блокировки и услуги.</li>
+  <li><a href="#bank-statements">Банковские выписки</a> — автоматические зачисления из выписок.</li>
+  <li><a href="api.html#payments-api">Платежи (API)</a> — webhook'и, создающие операции по счёту.</li>
+  <li><a href="#promise-pay-overview">Обещанный платёж</a> — временный кредит на счёте.</li>
+  <li><a href="#fiscal">Фискализация 54-ФЗ</a> — чеки по зачислениям.</li>
 </ul>
-<p>Backend использует <code>_resolve_source(op)</code> из <code>billing/views/finops_list.py</code> — единая эвристика во всех модалках. <code>select_related('usluga', 'fin_op')</code> избегает N+1.</p>
-
-<h4 id="admin-accounts-bank">Вкладка ⑦ Банковские выписки (P1-1, build 920)</h4>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/admin_accounts_v2_923/v2_06_bank_tab_empty.png" alt="Модалка счёта — вкладка Банковские выписки (empty-state)"></p>
-<p>Reverse-link на <code>BankStatementOperation</code> через <code>fin_operation_id</code>: батч-запрос для всех 50 финопеаций счёта одним SQL. Кнопки периода 30д/90д/1г. Сводка по банкам (карточки count + sum), таблица с Дата / Банк / Сумма / Плательщик+ИНН / Назначение / Сопоставление (match_strategy + match_confidence + status). Клик «→» открывает <code>/admin/finance/bank_queue/?import_id=&lt;N&gt;#bank-op-&lt;id&gt;</code>.</p>
-<p>Empty-state с иконкой <i class="fas fa-university"></i> и 2 подсказками: «Возможно платит через YooKassa/W1 — посмотрите финопеации» и «Открыть очередь bank_queue». Endpoint: <code>GET /admin/Abonents/accounts_bank_ops/&lt;id&gt;/?days=N</code>.</p>
-
-<h4 id="admin-accounts-msgs">Вкладка ⑧ Уведомления</h4>
-<p>Последние 20 SMS / Email / Push сообщений по абонентам этого счёта (<code>MsgStack</code>, см. <a href="#messaging">раздел 6.8 Сообщения</a>). Read-only.</p>
-
-<h4 id="admin-accounts-mobile">Mobile (P0-5, build 918 + build 923)</h4>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/admin_accounts_v2_923/v2_07_mobile_services.png" alt="Модалка на mobile 390px — вкладка Услуги и тарифы"></p>
-<p>На ≤768px side-nav становится горизонтальным pill-баром со scroll-overflow (помещается 8 вкладок). Шапка модалки переносит ФИО на отдельную строку (<code>flex-wrap</code>). Balance-grid 2×2. Action-кнопки (Пополнить/Корректировка/Сторно) — full-width. Колонка «№ операции» в финопеациях скрыта, source-иконки и чипы уменьшены. На вкладке «Банк. выписки» скрыты колонки «Сопоставление» и «Опер.».</p>
-
-<h4 id="admin-accounts-kpi-clickable">P1-7 KPI-карточки кликабельные (build 923)</h4>
-<p>В шапке списка счетов карточки «Без абонента» и «Должники» получили <code>data-chip-stat</code>, <code>role="button"</code>, <code>tabindex="0"</code>, <code>aria-pressed</code>. Клик применяет соответствующий chip-фильтр (синхронизация с chip-группой). Карточка «Всего» сбрасывает все фильтры. Keyboard support: Enter / Space.</p>
-
-<h4 id="admin-accounts-payment-filter">P0-3 Защита от ошибочного выбора «Обещанный платёж» в Пополнении (build 918)</h4>
-<p>В подмодалке «Пополнение» селектор «Тип операции» больше НЕ показывает promise/системные FinTypes. Backend: <code>SYSTEM_TYPE_IDS = {3, 31, 32}</code> + флаги <code>is_payment/is_system/is_promise</code> вычисляются в <code>accounts_list_view</code>. Frontend: <code>fillOpTypes('payment')</code> фильтрует по <code>t.is_payment === true</code>. В режиме «Корректировка» фильтр мягче — только <code>!t.is_system</code> (ОП доступен для бухгалтерских правок).</p>
-
-<h4 id="admin-accounts-save-disabled">P1-4 Кнопка «Сохранить» disabled до правки формы (build 923)</h4>
-<p>В модалке счёта кнопка «Сохранить» в footer теперь <code>disabled</code> по умолчанию. Tooltip объясняет: «Активируется когда вы измените поля во вкладке Параметры». Слежение через <code>form.addEventListener('input'/'change')</code>. После успешного сохранения снова disabled — защита от случайного повторного нажатия в режиме просмотра.</p>
-
-<h4 id="admin-accounts-v2-api">REST endpoints v2 (новые в Sprint 2-4)</h4>
-<table>
-  <thead><tr><th>URL</th><th>Method</th><th>Назначение</th></tr></thead>
-  <tbody>
-  <tr><td><code>/admin/Abonents/accounts_bank_ops/&lt;id&gt;/?days=N</code></td><td>GET</td><td>BSO связанные с финопеациями счёта за N дней + сводка по банкам (build 920)</td></tr>
-  <tr><td><code>/admin/Abonents/accounts_services/&lt;id&gt;/</code></td><td>GET</td><td>Тариф + UsersUsluga + бонусы + expected_monthly_charge (build 921)</td></tr>
-  <tr><td><code>/admin/Abonents/accounts_payments_summary/&lt;id&gt;/?days=N</code></td><td>GET</td><td>Сводка приходов по operator_name за N дней + статус интеграций (build 922)</td></tr>
-  </tbody>
-</table>
-
-<h4 id="admin-accounts-v2-plan">План и история</h4>
-<p>Полный план: <code>dev_reports/Планы/2026-05-19_План_AdminAccounts_v2_доработки_после_v915.md</code>. UX-аудит: <code>dev_reports/Отчёты/2026-05-18_UX_операции_абонента_и_модалки.md</code>. Все 5 спринтов закрыты builds 918→920→921→922→923 без миграций БД.</p>
 
 <h3 id="finance-operations">8.4. Финансовые операции</h3>
 <p>URL: <a href="https://rbill.smit34.ru/admin/Abonents/FinanceOperations/">/admin/Abonents/FinanceOperations/</a></p>
