@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Интеграция с оборудованием — СмИТ Биллинг v3.0.0 (build 1746)</title>
+  <title>Интеграция с оборудованием — СмИТ Биллинг v3.0.0 (build 1756)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 3.0 — Документация">
-  <meta property="og:title" content="Интеграция с оборудованием — СмИТ Биллинг v3.0.0 (build 1746)">
+  <meta property="og:title" content="Интеграция с оборудованием — СмИТ Биллинг v3.0.0 (build 1756)">
   <meta property="og:description" content="NAS/BRAS, коммутаторы, VoIP-шлюзы, IPTV, FreeRADIUS с rlm_python3, абонентское оборудование.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/equipment.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Интеграция с оборудованием — СмИТ Биллинг v3.0.0 (build 1746)">
+  <meta name="twitter:title" content="Интеграция с оборудованием — СмИТ Биллинг v3.0.0 (build 1756)">
   <meta name="twitter:description" content="NAS/BRAS, коммутаторы, VoIP-шлюзы, IPTV, FreeRADIUS с rlm_python3, абонентское оборудование.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="NAS/BRAS, коммутаторы, VoIP-шлюзы, IPTV, FreeRADIUS с rlm_python3, абонентское оборудование.">
@@ -327,6 +327,8 @@
           <li><a href="equipment.html#internet">1. Интернет (NAS/BRAS)</a></li>
           <li class="sub-item"><a href="equipment.html#switch-overview">1.1. Коммутаторы — обзор</a></li>
           <li class="sub-item"><a href="equipment.html#switch-types">1.2. Типы коммутаторов</a></li>
+          <li class="sub-item"><a href="equipment.html#equipment-monitoring">1.3. Мониторинг оборудования</a></li>
+          <li class="sub-item"><a href="equipment.html#monitoring-ports">1.4. Кем заняты порты</a></li>
           <li><a href="equipment.html#voip">2. Телефония (VoIP)</a></li>
           <li><a href="equipment.html#iptv">3. IPTV</a></li>
           <li class="sub-item"><a href="equipment.html#iptv-tvip">3.1. TVIP Media</a></li>
@@ -432,6 +434,7 @@
   <li><a href="#switch-overview">Коммутаторы (Switch) в биллинге — назначение и роль</a></li>
   <li><a href="#switch-types">Типы коммутаторов</a></li>
   <li><a href="#opt82-auth">OPT82-авторизация</a></li>
+  <li><a href="#equipment-monitoring">Мониторинг оборудования</a></li>
   <li><a href="#voip">Телефония</a></li>
   <li><a href="#iptv">IPTV</a></li>
   <li><a href="#cpe">Абонентское оборудование</a></li>
@@ -681,6 +684,7 @@ docker compose restart freeradius</code></pre>
     <li><a href="#switch-when-needed">Нужно ли вам это</a></li>
     <li><a href="#switch-cleanup">Что делать со старыми/неиспользуемыми коммутаторами</a></li>
     <li><a href="#switch-modal">Редактирование коммутаторов — модальное окно</a></li>
+    <li><a href="#switch-orgs">Организации коммутатора</a></li>
     </ul>
   </details>
   </div>
@@ -747,6 +751,29 @@ docker compose restart freeradius</code></pre>
 
   <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v334/switch_list_with_type.png" alt="Список коммутаторов с колонкой Тип" class="screenshot">
   <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v334/switch_modal_with_type.png" alt="Модалка коммутатора — поле Тип" class="screenshot">
+
+  <p>На телефоне модальное окно раскрывается на весь экран и выезжает снизу — это касается всех модальных окон биллинга, не только коммутаторов. Шапку можно потянуть пальцем вниз, чтобы закрыть панель.</p>
+
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v1755/switch_modal_mobile_sheet.png" alt="Модалка коммутатора на телефоне — полноэкранная слайд-панель" class="screenshot">
+
+  <!-- ===== Организации коммутатора ===== -->
+  <h3 id="switch-orgs">Организации коммутатора</h3>
+
+  <p>Один коммутатор в доме может обслуживать абонентов нескольких компаний, поэтому организация у коммутатора — <strong>набор</strong>, а не единственный выбор: в модальном окне это чекбоксы, а не выпадающий список. Связь хранится в таблице <code>SWITCH_ORGANIZATION</code> (как у NAS).</p>
+
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v1755/switch_modal_org.png" alt="Модалка коммутатора — чекбоксы организаций" class="screenshot">
+
+  <p>В списке <code>/admin/equipment/Switch/</code> организации показаны второй колонкой бейджами с фирменным цветом компании:</p>
+
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v1755/switch_list_org.png" alt="Список коммутаторов с колонкой Орг." class="screenshot">
+
+  <p>Что из этого следует на практике:</p>
+  <ul>
+    <li><strong>Колонка показывается не всегда.</strong> Только при включённой мульти-организации и режиме «Все организации» в шапке. Если выбрана одна компания, колонка вырождается в один и тот же бейдж и только съедает ширину — та же логика, что в NAS, тарифах и финоперациях.</li>
+    <li><strong>Список фильтруется по вашему доступу.</strong> Сотрудник видит коммутаторы своих организаций; чужое оборудование в списке не появляется. Тот же фильтр действует в модальном окне «Добавить устройство» и в «Автопоиске» мониторинга — иначе чужое железо оставалось бы видно в обход списка.</li>
+    <li><strong>Коммутаторы без организаций видны всем.</strong> Это сделано намеренно: «ничьё» оборудование иначе пропало бы у всех сразу, и назначить ему компанию было бы негде.</li>
+    <li><strong>Ссылка на карточку.</strong> Адрес <code>/admin/equipment/Switch/?edit=&lt;id&gt;</code> открывает список и сразу разворачивает модальное окно нужного коммутатора — так на него ссылаются панель абонента и мониторинг.</li>
+  </ul>
 
   <!-- ===== Типы коммутаторов ===== -->
   <h2 id="switch-types">Типы коммутаторов</h2>
@@ -857,6 +884,173 @@ docker compose restart freeradius</code></pre>
       <tr><td>NAS</td><td>Карточка NAS → вкладка Авторизация</td><td>Флаги auth_opt82_switch_ip / auth_opt82_port / auth_opt82_vlan</td></tr>
     </tbody>
   </table>
+
+  <!-- ===== Мониторинг оборудования ===== -->
+  <h2 id="equipment-monitoring">Мониторинг оборудования</h2>
+  <div class="section-toc">
+  <details open>
+    <summary><strong>Содержание раздела</strong></summary>
+    <ul>
+    <li><a href="#monitoring-purpose">Что делает раздел</a></li>
+    <li><a href="#monitoring-mindmap">Карта раздела</a></li>
+    <li><a href="#monitoring-table">Таблица устройств</a></li>
+    <li><a href="#monitoring-add">Как поставить устройство на мониторинг</a></li>
+    <li><a href="#monitoring-ports">Кем заняты порты</a></li>
+    <li><a href="#monitoring-bind">Если абонент не сопоставлен</a></li>
+    <li><a href="#monitoring-access">Права и разграничение по организациям</a></li>
+    <li><a href="#monitoring-model">Как связаны объекты</a></li>
+    </ul>
+  </details>
+  </div>
+
+  <p>Страница <code>/admin/equipment/monitoring/</code> (сайдбар «Оборудование → Мониторинг оборудования») показывает состояние управляемых коммутаторов: отвечают ли они, сколько портов поднято, насколько надёжно работали последние сутки и месяц, и — главное — <strong>кто из абонентов сидит на каждом порту</strong>.</p>
+
+  <h3 id="monitoring-purpose">Что делает раздел</h3>
+
+  <p>Биллинг раз в 5 минут опрашивает включённые устройства по SNMP (celery-задача <code>equipment-poll</code>). Из опроса берутся три вещи:</p>
+  <ul>
+    <li><strong>Отвечает ли устройство</strong> — переход UP↔DOWN записывается в журнал событий и уходит алертом в Telegram;</li>
+    <li><strong>Порты</strong> — сколько интерфейсов поднято из общего числа (IF-MIB);</li>
+    <li><strong>MAC-таблица портов (FDB)</strong> — снимается отдельной командой и сопоставляется с учётными записями абонентов.</li>
+  </ul>
+
+  <div class="info-box">
+    <strong>Мониторинг не заменяет NAS-мониторинг.</strong> «Состояние NAS» следит за шлюзами, через которые абонент выходит в сеть (RADIUS, CoA). Этот раздел — про коммутаторы доступа и OLT: где физически включён абонент и жив ли сам коммутатор.
+  </div>
+
+  <h3 id="monitoring-mindmap">Карта раздела</h3>
+
+<pre class="mermaid">
+mindmap
+  root)Мониторинг оборудования(
+    Опрос
+      SNMP IF-MIB
+      Раз в 5 минут
+      Внеочередной опрос кнопкой
+    Состояние
+      В сети / Не отвечает
+      Журнал событий UP-DOWN
+      Надёжность 24ч / 7д / 30д
+      Telegram-алерт на падение
+    Порты
+      Сколько поднято
+      MAC-таблица FDB
+      Кто сидит на порту
+      Ручная привязка MAC
+    Доступ
+      Группы управления
+      Колонка организации
+      Чужие абоненты скрыты
+</pre>
+
+  <h3 id="monitoring-table">Таблица устройств</h3>
+
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v1755/monitoring_overview.png" alt="Мониторинг оборудования — список устройств" class="screenshot">
+
+  <table class="data-table">
+    <thead>
+      <tr><th>Колонка</th><th>Что показывает</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Орг.</td><td>Организации железа — берутся у коммутатора или NAS, за которым наблюдает устройство. Видна при мульти-организации в режиме «Все организации»</td></tr>
+      <tr><td>Устройство / IP</td><td>Имя из справочника коммутаторов и адрес опроса. Значок ⚠ рядом с именем — текст последней ошибки опроса</td></tr>
+      <tr><td>Статус</td><td>В сети / Не отвечает / Неизвестно (ещё не опрашивалось)</td></tr>
+      <tr><td>Порты</td><td>Сколько интерфейсов поднято из общего числа. <strong>Кликабельно</strong> — открывает, кем они заняты</td></tr>
+      <tr><td>Надёжность</td><td>24 столбика по часам за сутки (зелёный — в сети, оранжевый — частичный простой, красный — простой больше половины часа) и uptime за 7 / 30 дней</td></tr>
+      <tr><td>Модель</td><td>sysDescr — как устройство представилось по SNMP</td></tr>
+      <tr><td>Последний опрос</td><td>Время последнего обращения к устройству</td></tr>
+      <tr><td>Действия</td><td>Опросить сейчас · Снять MAC портов · Пауза/Включить опрос · Удалить из мониторинга</td></tr>
+    </tbody>
+  </table>
+
+  <p>Сверху — счётчики (всего / в сети / не отвечают / неизвестно) и автообновление страницы: выключено, 30 секунд, 60 секунд или 5 минут. Ниже таблицы — журнал последних 50 событий UP/DOWN с длительностью простоя; события чужих организаций в него не попадают.</p>
+
+  <h3 id="monitoring-add">Как поставить устройство на мониторинг</h3>
+
+  <ol>
+    <li><strong>Кнопка «Добавить устройство»</strong> — выбрать коммутатор из справочника (показываются только те, у кого заполнен IP и кого ещё нет в мониторинге), задать SNMP community и интервал опроса.</li>
+    <li><strong>Кнопка «Автопоиск»</strong> — биллинг сам опрашивает по SNMP все коммутаторы с IP, которых ещё нет в мониторинге, и показывает ответившие: модель и число портов. Дальше их можно завести одной кнопкой.</li>
+  </ol>
+
+  <div class="warning-box">
+    <strong>Автопоиск — это сетевое сканирование.</strong> Он рассылает SNMP-запросы по всем коммутаторам с IP-адресом, поэтому доступен только сотрудникам из групп управления мониторингом (см. <a href="#monitoring-access">ниже</a>) и работает в границах ваших организаций.
+  </div>
+
+  <h3 id="monitoring-ports">Кем заняты порты</h3>
+
+  <p>Клик по счётчику портов («10 / 28») открывает снимок MAC-таблицы коммутатора: какой MAC на каком порту, в каком VLAN, какому абоненту он принадлежит, логин учётной записи, выданный IP и когда MAC был замечен.</p>
+
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v1755/monitoring_ports_modal.png" alt="Модалка: кем заняты порты коммутатора" class="screenshot">
+
+  <p>В шапке — сводка: сколько портов активно, сколько MAC найдено, сколько сопоставлено с абонентами и сколько скрыто как чужие. Поле поиска фильтрует по порту, MAC, ФИО, логину и IP.</p>
+
+  <p><strong>Клик по имени абонента открывает боковую панель</strong> — баланс, тариф, контакты, последняя сессия — прямо поверх таблицы портов, без ухода со страницы. В панели, в блоке «Последняя сессия», оборудование показано ссылками: «Шлюз» ведёт на карточку NAS, «Коммутатор» — на карточку коммутатора с номером порта и VLAN.</p>
+
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v1755/monitoring_abonent_drawer.png" alt="Панель абонента поверх таблицы портов" class="screenshot">
+
+  <p>Данные в таблице — снимок последнего снятия FDB, а не «живой» опрос. Обновить его можно кнопкой «Обновить MAC портов» в самой модалке или иконкой 🖧 в строке устройства.</p>
+
+  <h3 id="monitoring-bind">Если абонент не сопоставлен</h3>
+
+  <p>Сопоставление автоматическое: MAC с порта ищется среди MAC-адресов учётных записей. Формат при этом не важен — <code>AA:BB:CC:DD:EE:FF</code>, <code>aa-bb-cc-dd-ee-ff</code> и <code>aabbccddeeff</code> считаются одним и тем же адресом.</p>
+
+<pre class="mermaid">
+flowchart LR
+    SW["Коммутатор"] -->|"SNMP: FDB"| MACS["MAC на портах"]
+    MACS --> NORM["Приводим MAC<br/>к единому виду"]
+    NORM --> FIND{"Есть учётная запись<br/>с таким MAC?"}
+    FIND -->|"да"| LINK["Строка связана<br/>с абонентом"]
+    FIND -->|"нет"| FREE["не сопоставлен"]
+    FREE -->|"кнопка «Привязать»"| PICK["Выбрать учётную запись"]
+    PICK --> SAVE["MAC записывается<br/>в карточку учётки"]
+    SAVE --> LINK
+</pre>
+
+  <p>Строка остаётся «не сопоставленной» в двух случаях: у учётной записи не заполнен MAC, либо на порту виден MAC роутера абонента, а в карточке записан MAC компьютера. Тогда рядом со строкой есть кнопка <strong>«Привязать»</strong>: поиск учётной записи по логину, ФИО или номеру договора, выбор — и MAC записывается в карточку. Дальше связь держится сама, а действие попадает в аудит (в записи виден и прежний MAC).</p>
+
+  <div class="info-box">
+    Искать можно только «своих» абонентов — поиск ограничен вашими организациями. Иначе привязка стала бы обходом того самого разграничения, ради которого в таблице портов скрываются чужие ФИО.
+  </div>
+
+  <h3 id="monitoring-access">Права и разграничение по организациям</h3>
+
+  <p>Раздел разделяет <em>смотреть</em> и <em>управлять</em>:</p>
+
+  <table class="data-table">
+    <thead>
+      <tr><th>Действие</th><th>Кому доступно</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Смотреть список, историю событий, порты</td><td>Любому сотруднику с доступом в раздел</td></tr>
+      <tr><td>Добавить/удалить устройство, пауза опроса</td><td>Группы из настройки <code>MONITORING_ADMIN_GROUPS</code> (по умолчанию <code>root, network</code>) и суперпользователь</td></tr>
+      <tr><td>Внеочередной опрос, снятие MAC портов, «Автопоиск»</td><td>Они же</td></tr>
+      <tr><td>Привязать MAC к учётной записи</td><td>Они же, и только для абонентов своих организаций</td></tr>
+    </tbody>
+  </table>
+
+  <p>Разграничение по организациям действует на трёх уровнях:</p>
+  <ul>
+    <li><strong>Список устройств и журнал событий</strong> — только железо ваших организаций (и «ничьё», у которого организации не заданы);</li>
+    <li><strong>Личность абонента на порту</strong> — MAC, VLAN и номер порта видны всем, это сетевые данные, а ФИО и логин чужого абонента заменяются на «— другая организация»;</li>
+    <li><strong>Добавление и автопоиск</strong> — работают в границах ваших организаций.</li>
+  </ul>
+
+  <h3 id="monitoring-model">Как связаны объекты</h3>
+
+<pre class="mermaid">
+erDiagram
+    ORGANIZATION ||--o{ SWITCH : "обслуживает"
+    ORGANIZATION ||--o{ NAS : "обслуживает"
+    SWITCH ||--o| MONITORED_DEVICE : "наблюдается"
+    NAS ||--o| MONITORED_DEVICE : "наблюдается"
+    MONITORED_DEVICE ||--o{ DEVICE_STATUS_LOG : "события UP/DOWN"
+    MONITORED_DEVICE ||--o{ SWITCH_PORT_MAC : "снимок FDB"
+    SWITCH_PORT_MAC }o--o| USERS : "MAC совпал"
+    USERS }o--|| ABONENTS : "принадлежит"
+    ABONENTS }o--|| ORGANIZATION : "относится к"
+</pre>
+
+  <p>Устройство мониторинга (<code>MONITORED_DEVICE</code>) не дублирует железо: оно только хранит параметры опроса и ссылается на уже заведённый коммутатор или NAS. Своей организации у него нет — она берётся у того железа, за которым оно наблюдает. Поэтому чтобы устройство корректно разделилось между компаниями, организации задаются в карточке коммутатора (см. <a href="#switch-orgs">Организации коммутатора</a>).</p>
 
   <!-- ===== Телефония ===== -->
   <h2 id="voip">Телефония</h2>
@@ -1060,8 +1254,8 @@ IptvApiLog.objects.filter(success=False).order_by('-created_at')[:10]</code></pr
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.0.0 (build 1746)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">22.07.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.0.0 (build 1746)</span>&nbsp;|&nbsp;<span data-smit="updated">22.07.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.0.0 (build 1756)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">22.07.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.0.0 (build 1756)</span>&nbsp;|&nbsp;<span data-smit="updated">22.07.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=1739"></script>
