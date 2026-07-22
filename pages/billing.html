@@ -9694,14 +9694,85 @@ flowchart LR
 
 <p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_dashboard_v1218/dashboard_top.png" alt="Дашборд AI-сессий: KPI, активность по дням, каналы" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
 
-<h4 id="ai-dashboard-kpi">KPI и графики</h4>
-<ul>
-  <li><strong>5 KPI-карточек</strong>: Сессий (+сообщений клиента), Помогло 👍 (% от оценок), Не помогло 👎 (% оценённых), Эскалаций (% сессий), Токены (in/out + оценочная стоимость в ₽).</li>
-  <li><strong>Активность по дням</strong> — линия сессий + эскалаций + столбцы 👍/👎 (ECharts).</li>
-  <li><strong>По каналам</strong> — пончик распределения по источникам (lk/mobile/widget/bot/aida).</li>
-  <li><strong>По организациям</strong> — таблица сессий/эскалаций/оценок с фильтром (multi-org).</li>
-  <li><strong>Последние 👎</strong> и <strong>худшие eval-кейсы</strong> — для обучения промпта.</li>
-</ul>
+<h4 id="ai-dashboard-kpi">Показатели и графики</h4>
+
+<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_dash_v1763/ai_overview.png" alt="AI-чат: дашборд — показатели и графики" class="screenshot">
+
+<p>Пять карточек сверху отвечают на вопросы «сколько было разговоров», «насколько они были длинными», «дошли ли до конкретного клиента» и «сколько это стоило»:</p>
+
+<table class="data-table">
+  <thead><tr><th>Показатель</th><th>Что считается</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Сессий</strong></td><td>Уникальные диалоги за период. В подписи — сообщения клиента и сводка по оценкам (👍/👎), если их ставили.</td></tr>
+    <tr><td><strong>Реплик на диалог</strong></td><td>Все сообщения (клиент + ассистент) ÷ число сессий. Длинный диалог обычно означает, что с первого раза не поняли.</td></tr>
+    <tr><td><strong>Без абонента</strong></td><td>Доля сессий, где клиента не удалось связать с карточкой абонента. Для голосового канала это главный признак, что разговор не довели до конкретного человека.</td></tr>
+    <tr><td><strong>Эскалаций</strong></td><td>Сессии, переданные оператору; рядом — сколько из них закончились тикетом.</td></tr>
+    <tr><td><strong>Токены</strong></td><td>Вход и выход отдельно + оценочная стоимость по настройкам <code>AI_PRICE_IN_USD_PER_MTOK</code>, <code>AI_PRICE_OUT_USD_PER_MTOK</code>, <code>AI_USD_RUB</code>.</td></tr>
+  </tbody>
+</table>
+
+<div class="info-box">
+  <strong>Почему не «Помогло / Не помогло».</strong> До июля 2026 три карточки из пяти показывали оценки клиентов — и всегда ноль: за восемь месяцев их проставлено три штуки на 29 тысяч сообщений. Оценки никуда не делись (показываются строкой под «Сессиями»), но место на панели занимают метрики, которые действительно считаются из данных.
+</div>
+
+<h4 id="ai-dashboard-map">Карта раздела</h4>
+
+<pre class="mermaid">
+mindmap
+  root)AI-чат: дашборд(
+    Показатели
+      Сессий
+      Реплик на диалог
+      Без абонента
+      Эскалаций и тикеты
+      Токены и стоимость
+    Разрезы
+      Период до всего времени
+      Организация из шапки
+      Канал: голос, виджет, бот
+      Провайдер модели
+    Списки
+      Сессии страницами по 50
+      Поиск и фильтры на сервере
+      Последние отрицательные оценки
+      Проблемные eval-кейсы
+    Диалог
+      Клик по строке
+      Стенограмма в модалке
+      Форматирование ответов
+      Переход к абоненту
+</pre>
+
+<h4 id="ai-dashboard-flow">Откуда берутся цифры</h4>
+
+<pre class="mermaid">
+flowchart LR
+    LOG["Журнал диалогов<br/>ai_chat_log"] --> SESS["Сессии<br/>session_id"]
+    SESS --> KPI["Показатели"]
+    SESS --> DAY["Активность по дням"]
+    SESS --> SRC["Каналы"]
+    SESS --> LIST["Список сессий<br/>страницами"]
+    LOG --> TOK["Токены и стоимость"]
+    AB["Абоненты"] --> ORG["Организация сессии"]
+    SESS --> ORG
+    ORG --> BYORG["По организациям<br/>+ «Без организации»"]
+    EVAL["Прогоны ai_eval"] --> CASES["Проблемные кейсы"]
+</pre>
+
+<p>Организация сессии определяется один раз — по первой записи с заполненным абонентом. Поэтому сумма по организациям сходится с общим числом сессий, а диалоги без опознанного клиента попадают в отдельную строку «Без организации», а не приписываются компании по умолчанию.</p>
+
+<h4 id="ai-dashboard-sessions">Список сессий</h4>
+
+<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_dash_v1763/ai_transcript.png" alt="Стенограмма диалога в модальном окне" class="screenshot">
+
+<p>Список приходит страницами по 50 записей: поиск (по идентификатору сессии, каналу, ФИО и договору), фильтры канала и оценки, сортировка — всё считается на сервере. Клик по строке открывает стенограмму: реплики клиента и ассистента с временем, ответы в формате JSON показываются моноширинным блоком, имя абонента ведёт в его карточку.</p>
+
+<p>Адрес <code>/admin/reports/ai_chat_session/&lt;id&gt;/</code> при открытии человеком перенаправляет на дашборд с уже раскрытой сессией — раньше по этой ссылке отдавался сырой JSON.</p>
+
+<h4 id="ai-dashboard-theme">Тёмная тема и телефон</h4>
+
+<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_dash_v1763/ai_dark.png" alt="AI-дашборд в тёмной теме" class="screenshot">
+<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_dash_v1763/ai_mobile.png" alt="AI-дашборд на телефоне" class="screenshot">
 <p>Период задаётся единым date-range-picker (общий для всех отчётов). Стоимость токенов считается из настроек <code>AI_PRICE_*</code> и курса <code>AI_USD_RUB</code>.</p>
 
 <h4 id="ai-dashboard-sessions">Список сессий и транскрипт</h4>
@@ -9822,8 +9893,8 @@ flowchart LR
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">22.07.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;<span data-smit="updated">22.07.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">23.07.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;<span data-smit="updated">23.07.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=1739"></script>
