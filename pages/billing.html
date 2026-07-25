@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Основные настройки биллинга — СмИТ Биллинг v3.0.0</title>
+  <title>Основные настройки биллинга — СмИТ Биллинг v3.5.0</title>
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="СмИТ Биллинг 3.0 — Документация">
-  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v3.0.0">
+  <meta property="og:site_name" content="СмИТ Биллинг 3.5 — Документация">
+  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v3.5.0">
   <meta property="og:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/billing.html">
   <meta property="og:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v3.0.0">
+  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v3.5.0">
   <meta name="twitter:description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta name="twitter:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
   <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
@@ -31,7 +31,7 @@
     <button class="menu-toggle" aria-label="Меню"><i class="bi bi-list"></i></button>
     <div class="logo">
       <div class="logo-icon">С</div>
-      <div class="logo-text"><span class="logo-main"><span data-smit="brand-short">СмИТ Биллинг 3.0</span></span><span>Документация</span></div>
+      <div class="logo-text"><span class="logo-main"><span data-smit="brand-short">СмИТ Биллинг 3.5</span></span><span>Документация</span></div>
     </div>
   </div>
   <div class="header-search">
@@ -6227,6 +6227,7 @@ Push / Telegram) и RADIUS-параметров (если статус долж�
         <li><a href="#ai-tools">— Инструменты на ORM (tool-use)</a></li>
         <li><a href="#ai-voice">— Голос: Mango → расшифровка → анализ</a></li>
         <li><a href="#ai-widget">— Виджет для сайтов и воронка лидов</a></li>
+        <li><a href="#ai-widget-per-org">— Брендинг виджета по организации (data-org)</a></li>
         <li><a href="#ai-voice-widget">— Голосовой режим виджета (Gemini Live)</a></li>
         <li><a href="#ai-order-forms">— Формы заказа на сайтах → лиды в CRM</a></li>
         <li><a href="#ai-test-chat">— Тестовый AI-чат</a></li>
@@ -9954,8 +9955,22 @@ flowchart TD
 <p>Публичный анонимный AI-чат для встраивания на сайты (<code>smit34.ru</code>, <code>robornet.ru</code>, <code>itc34.ru</code> и любые другие). Виджет <strong>полностью наш</strong> — <code>static/js/smit-ai-widget.js</code>, без внешних зависимостей и сторонних серверов. Заменяет прежний внешний <code>aida-widget.js</code>.</p>
 <p><strong>Все настройки — в БД биллинга</strong> (карточка «Виджет на сайтах» в хабе <code>/admin/ai/</code>): цвет, заголовок, приветствие, аватар, кнопки-подсказки, положение кнопки, разрешённые домены (CORS). Виджет самонастраивается — при загрузке тянет конфиг из <code>GET /api/ai/widget/config/</code> и строится только если включён.</p>
 <p>Подключение сайтом — одна строка (код берётся по кнопке «Код встраивания»):</p>
-<pre><code>&lt;script src="https://rbill.smit34.ru/static/js/smit-ai-widget.js" data-api="https://rbill.smit34.ru" defer&gt;&lt;/script&gt;</code></pre>
+<pre><code>&lt;script src="https://rbill.smit34.ru/static/js/smit-ai-widget.js" data-api="https://rbill.smit34.ru" data-org="3" defer&gt;&lt;/script&gt;</code></pre>
+
+<h4 id="ai-widget-per-org">Брендинг по организации (<code>data-org</code>)</h4>
+<p>Один файл виджета обслуживает все сайты, а оформление и маршрутизация подстраиваются под <strong>организацию сайта</strong>. Атрибут <code>data-org</code> на теге <code>&lt;script&gt;</code> задаёт id организации (на этой инсталляции: <strong>СмІТ = 1, ИТЦ = 2, Робор = 3</strong>).</p>
+<ul>
+  <li><strong>Фирменный цвет.</strong> Для организации, отличной от основной, цвет виджета берётся из её <strong>акцентного цвета в брендинге</strong> (карточка организации → Брендинг): Робор — <code>#00D4FF</code>, ИТЦ — <code>#42b1e7</code>. Основная организация (СмІТ) остаётся на общем цвете виджета (<code>AI_WIDGET_COLOR</code>, зелёный <code>#43b77a</code>). Цвет применяется к кнопке-лаунчеру, шапке окна, пузырям сообщений, кнопкам и полю ввода.</li>
+  <li><strong>Маршрутизация чата и лидов.</strong> Диалог и заявки уходят в <strong>свою организацию</strong>: ассистент отвечает её персоной, показывает её тарифы, лид/тикет создаётся в её воронке и Поддержке.</li>
+  <li><strong>Определение организации.</strong> Приоритет — явный <code>data-org</code>; если не задан, организация определяется по <strong>домену сайта</strong> (Origin) из списка организаций. Пусто и домен не распознан → основная организация.</li>
+</ul>
+<p>Если <code>data-org</code> не указывать, виджет работает как раньше — в оформлении и маршрутизации основной организации.</p>
+
+<p><strong>Совместимость с оформлением сайта.</strong> Виджет встраивается в страницу напрямую (не в изолированный контейнер), поэтому его стили заданы <em>явно</em> и не зависят от CSS сайта-хозяина: иконки табов «Чат/Голос» стоят в одну строку с подписью даже на сайтах с Tailwind (где базовый стиль делает <code>svg</code> блочным), а поле ввода всегда с тёмным текстом на белом фоне (на тёмнотемных сайтах иначе наследовался бы светлый текст — нечитаемо).</p>
+
 <p>Лиды и обращения попадают в собственную CRM биллинга: заявка → <strong>сделка в воронке Deal</strong> (через <code>crm_intake</code>, с дедупом по телефону, геокодом и UTM), эскалация чата → <strong>тикет во внутренней Поддержке</strong> (<code>SupportConversation</code>), без зависимости от FreeScout/AmoCRM. AmoCRM-зеркало — опционально, по флагу.</p>
+
+<div class="note"><strong>Пример: robornet.ru.</strong> На сайте РоборНЭТ старый чат заменён этим виджетом с <code>data-org="3"</code> — он появляется в фирменном голубом цвете <code>#00D4FF</code>, а обращения идут в организацию «Робор». Кнопки «Подключить тариф …» на сайте открывают виджет и сразу передают выбранный тариф в диалог.</div>
 
 <p><strong>Архитектура виджета (всё в биллинге):</strong></p>
 <pre class="mermaid">
@@ -10234,8 +10249,8 @@ flowchart LR
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">23.07.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;<span data-smit="updated">23.07.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">25.07.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;<span data-smit="updated">25.07.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=1739"></script>
