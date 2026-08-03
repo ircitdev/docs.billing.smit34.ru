@@ -331,6 +331,7 @@
         <li><a href="#panel">6. Выезжающая панель и мобильная версия</a></li>
         <li><a href="#attention">7. Тикеты, требующие внимания</a></li>
         <li><a href="#ai-assistant">8. AI-бот</a></li>
+        <li><a href="#phone-ai">8А. Телефонный AI (61-32-40)</a></li>
         <li><a href="#voicemail">9. Голосовая почта</a></li>
         <li><a href="#call-transcribe" style="padding-left:1em">— Расшифровка и суть звонка (AI)</a></li>
         <li><a href="#knowledgebase">10. База знаний</a></li>
@@ -615,6 +616,53 @@ flowchart TD
     расход токенов. Настройки провайдеров (Claude / ChatGPT / Gemini, ключи,
     промпты) — в разделе <code>/admin/ai/</code>.</li>
   </ul>
+
+  <!-- ============================================ -->
+  <h2 id="phone-ai">8А. Телефонный AI (звонок на 61-32-40)</h2>
+
+  <p>Абонент <strong>звонит на 61-32-40</strong> и разговаривает с голосовым
+  AI-ассистентом вживую: тот здоровается фирменно и по имени, называет баланс/тариф,
+  меняет тариф, оформляет обещанный платёж — <strong>сразу, без ввода кода</strong>
+  (клиент опознаётся по номеру, с которого звонит). Это отдельный AI-канал
+  <strong>«Телефон»</strong> со своим промптом и настройками, независимый от голосового
+  виджета на сайте.</p>
+
+  <pre class="mermaid">
+flowchart LR
+    A["Абонент 61-32-40"] --> N["Novofon"]
+    N --> AST["Asterisk"]
+    AST --> BR["Мост smit-phone-ai"]
+    BR --> BILL["Биллинг: АОН → абонент,<br/>промпт, ключ, движок"]
+    BR --> AI{"Realtime"}
+    AI --> GEM["Gemini Live"]
+    AI --> OAI["OpenAI Realtime<br/>(фолбэк)"]
+    BR --> LOG["Журнал звонков<br/>ai_chat_dashboard"]
+  </pre>
+
+  <ul>
+    <li><strong>Опознание по номеру (АОН)</strong> — CallerID сопоставляется с абонентом;
+    баланс/тариф выдаются сразу. Приветствие собирается автоматически: компания +
+    Имя Отчество + статус («баланс положительный», «подключение активно» — если это так).</li>
+    <li><strong>Движок с фолбэком</strong> — Gemini Live; при недоступности ключа
+    автоматически переключается на OpenAI Realtime, с Telegram-алертом.</li>
+    <li><strong>Журнал звонков</strong> — все звонки попадают в
+    <code>/admin/reports/ai_chat_dashboard/</code> (чип «Телефон»): транскрипт, токены,
+    стоимость, «Кто» = номер, форма оценки «для обучения».</li>
+    <li><strong>Настройки</strong> — карточка «Телефонный AI» в <code>/admin/ai/</code>:
+    движок, голос, приветствие, номер линии, кнопка «Проверить ключ», per-org.
+    Промпт — на <code>/admin/settings/ai/phone/</code>.</li>
+  </ul>
+
+  <figure>
+    <img src="../img/phone_ai/phone_card.png" alt="Карточка «Телефонный AI» в /admin/ai/"
+         style="max-width:100%;border:1px solid var(--border,#e3e8ea);border-radius:8px">
+    <figcaption>Карточка «Телефонный AI 61-32-40» в разделе AI-агент.</figcaption>
+  </figure>
+  <figure>
+    <img src="../img/phone_ai/phone_settings.png" alt="Панель настроек телефонного AI"
+         style="max-width:100%;border:1px solid var(--border,#e3e8ea);border-radius:8px">
+    <figcaption>Панель настроек: движок, живой статус ключа, голос, приветствие, per-org.</figcaption>
+  </figure>
 
   <!-- ============================================ -->
   <h2 id="voicemail">9. Голосовая почта</h2>
