@@ -379,7 +379,7 @@ flowchart LR
     поддерживаются.</li>
 </ul>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1731/stock_dashboard.png" alt="Остатки — сводная с подсветкой ниже минимума" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/stock_dashboard.png" alt="Остатки — сводная с подсветкой ниже минимума" loading="lazy"></p>
 
 <div class="info-box"><strong>Как связан с остальной системой.</strong>
 Склад — не изолированный реестр: списание материалов происходит прямо из наряда
@@ -451,7 +451,7 @@ stateDiagram-v2
 единая иконка штрихкода (во всех таблицах модуля): тултип показывает
 серийник, MAC и штрихкод, клик открывает карточку движения со всеми
 деталями. Даты — компактно «дд.мм.гг», полная дата в тултипе.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1731/stock_movements.png" alt="Журнал движений — фильтр по сотруднику, S/N-иконки" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/stock_movements.png" alt="Журнал движений — фильтр по сотруднику, S/N-иконки" loading="lazy"></p>
 
 <h2 id="stock-items">Номенклатура и остатки</h2>
 <p>Позиция каталога задаёт: категорию, единицу измерения, тип учёта
@@ -463,8 +463,8 @@ stateDiagram-v2
 номенклатуры добавляет готовый набор позиций с категориями, ценами и порогами
 остатков — «Интернет-провайдер (ISP)», «Видеонаблюдение», «Домофония».
 Применение идемпотентно: существующие позиции с теми же названиями не меняются.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1731/stock_presets.png" alt="Пресеты номенклатуры" loading="lazy"></p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1731/stock_items.png" alt="Номенклатура — позиции, категории, склады" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/stock_presets.png" alt="Пресеты номенклатуры" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/stock_items.png" alt="Номенклатура — позиции, категории, склады" loading="lazy"></p>
 
 <h2 id="stock-receipt">Приход, серийники, этикетки</h2>
 <p>Приход оформляется накладной: номер документа, склад, позиции. Для серийных
@@ -483,15 +483,15 @@ Code128 кодирует только латиницу и цифры — есл�
 таблицах модуля при наведении на иконку штрихкода всплывает
 <strong>сканируемая картинка кода</strong> — сканер прикладывают прямо к экрану,
 не отходя к принтеру этикеток.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1731/stock_receipt.png" alt="Приход — накладная и массовое заведение серийников" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/stock_receipt.png" alt="Приход — накладная и массовое заведение серийников" loading="lazy"></p>
 
 <h2 id="stock-issue">Подотчёт сотрудника</h2>
 <p>Кладовщик выдаёт монтажнику оборудование по скану и расходники количеством.
 Выбор сотрудника — единый компонент ProfileSelect (аватар, роли, поиск).
 У монтажника есть свой мобильный экран «Мой подотчёт»: что на руках, возврат
 на склад, акт брака.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1731/stock_issue.png" alt="Выдача в подотчёт — скан и единый селектор сотрудника" loading="lazy"></p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1731/stock_my.png" alt="Мой подотчёт — мобильный экран монтажника" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/stock_issue.png" alt="Выдача в подотчёт — скан и единый селектор сотрудника" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/stock_my.png" alt="Мой подотчёт — мобильный экран монтажника" loading="lazy"></p>
 <p><strong>«Я выдал»</strong> (<code>/admin/stock/issued/</code>) — зеркальная
 страница для кладовщика: все выдачи и передачи, которые он провёл, и
 <strong>судьба каждой единицы</strong> — в чьём подотчёте сейчас, установлена
@@ -499,7 +499,7 @@ Code128 кодирует только латиницу и цифры — есл�
 склад, списана в брак или сторнирована. В профиле сотрудника — блоки
 «Мой подотчёт» (итог материальной ответственности + акт PDF, даты выдачи)
 и «Я выдал».</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1731/stock_issued.png" alt="Я выдал — судьба каждой выдачи" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/stock_issued.png" alt="Я выдал — судьба каждой выдачи" loading="lazy"></p>
 <p><strong>Передача подотчёт→подотчёт</strong>: при включённой настройке
 сотрудники передают единицы друг другу (например, бригадир — монтажнику)
 без возврата на склад; движение «Перемещение» в журнале, уведомление
@@ -525,8 +525,8 @@ Code128 кодирует только латиницу и цифры — есл�
 <code>/admin/crm/montazh/</code>). Кладовщик, суперпользователь и менеджеры
 работают без ограничения. Смена статуса единиц по-прежнему возможна только для
 того, что в <strong>своём подотчёте</strong>.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1731/montazh_materials_row.png" alt="Наряды монтажника — строка Материалы на карточке" loading="lazy"></p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1731/montazh_materials_modal.png" alt="Модалка материалов наряда" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/montazh_materials_row.png" alt="Наряды монтажника — строка Материалы на карточке" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/montazh_materials_modal.png" alt="Модалка материалов наряда" loading="lazy"></p>
 
 <h2 id="stock-abonent">Оборудование в карточке абонента</h2>
 <p>Вкладка «Оборудование» (прямая ссылка —
@@ -535,7 +535,7 @@ Code128 кодирует только латиницу и цифры — есл�
 и <strong>демонтаж</strong> (с вопросом «исправное или брак?»). При установке
 серийной единицы её MAC/серийник автоматически подставляются в учётку абонента
 (тумблер <code>STOCK_AUTO_FILL_MAC</code>).</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1731/abonent_equipment_tab.png" alt="Вкладка Оборудование в карточке абонента" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/abonent_equipment_tab.png" alt="Вкладка Оборудование в карточке абонента" loading="lazy"></p>
 
 <h2 id="stock-money">Деньги: продажа и аренда</h2>
 <p>Режим передачи определяет финансовые последствия установки:</p>
@@ -579,7 +579,7 @@ flowchart TB
     (<code>deal#N</code>, со ссылками на сделку и абонента) — сколько материалов
     и на какую сумму ушло. Сторно исключается автоматически.</li>
 </ul>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1731/stock_analytics.png" alt="Аналитика склада — KPI, обороты, подотчёты, себестоимость" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/stock_analytics.png" alt="Аналитика склада — KPI, обороты, подотчёты, себестоимость" loading="lazy"></p>
 
 <h2 id="stock-scan">Скан-центр: операции с телефона</h2>
 <p>Страница <code>/admin/stock/scan/</code> (пункт меню «Скан») — максимум
@@ -613,7 +613,7 @@ flowchart TB
 браузерах. После каждого действия — уведомление и журнал операций на экране;
 можно сканировать следующий код без перезагрузки. USB-сканер работает как
 клавиатура (ввод + Enter).</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1731/stock_scan_mobile.png" alt="Скан-центр на телефоне — контекстные действия по статусу единицы" loading="lazy" style="max-width:390px"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/stock_scan_mobile.png" alt="Скан-центр на телефоне — контекстные действия по статусу единицы" loading="lazy" style="max-width:390px"></p>
 
 <h2 id="stock-docs">Документы и интеграция с CRM</h2>
 <p>Складские операции оформляются печатными документами (PDF, реквизиты
