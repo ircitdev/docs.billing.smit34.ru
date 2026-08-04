@@ -9912,15 +9912,15 @@ flowchart LR
 
 <h3 id="ai-hub">Обзор модуля (хаб)</h3>
 <p>Главная страница <code>/admin/ai/</code> — единая точка управления: статусы API-ключей трёх провайдеров (Claude / ChatGPT / Gemini), список каналов с выбранной моделью, стоимость токенов за месяц в рублях, переходы к разделам (промпты, база знаний, журнал звонков, сессии и дашборд). Ключи хранятся в БД (<code>SystemSettings</code>), не в <code>.env</code> — настраиваются из интерфейса.</p>
-<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_module_v1132/ai_hub_light.png" alt="AI-агент — обзорная страница хаба" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_hub.png" alt="AI-агент — обзорная страница хаба" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
 
 <h3 id="ai-providers">Мультипровайдер: Claude, ChatGPT, Gemini</h3>
 <p>Для каждого канала (Личный кабинет, Мобильное, Email/HelpDesk, Виджет, Голос, Подсказка оператору) выбирается провайдер и конкретная модель. Запросы маршрутизируются единым движком <code>ai_prompt_builder.build()</code>; ответы и токены логируются в <code>ai_chat_log</code> с разбивкой по провайдеру. Запросы к <code>api.anthropic.com</code> / <code>api.openai.com</code> идут через прокси (эти сервисы заблокированы из РФ).</p>
 
 <h3 id="ai-kb">База знаний</h3>
 <p>Раздел <code>/admin/ai/kb/</code> — сценарии решения проблем (статьи <code>KnowledgeArticle</code>) с кодом, приоритетом и аудиторией (бот / оператор / оба). Интерфейс повторяет рабочую базу знаний поддержки: четыре вкладки (<strong>Сценарии решения</strong>, <strong>Дерево диагностики</strong>, <strong>Шаблоны ответов</strong>, <strong>Аналитика</strong>), фильтры по аудитории и приоритету, поиск. Карточка-аккордеон раскрывается в четыре колонки-шага (Уточнение → Диагностика → Решение → Если не помогло) с блоком эскалации и примечаниями. Активные статьи автоматически подмешиваются в системный промпт бота.</p>
-<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_module_v1132/ai_kb_light.png" alt="База знаний — список сценариев с фильтрами" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
-<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_module_v1132/ai_kb_expanded.png" alt="База знаний — развёрнутый сценарий с четырьмя шагами" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_kb.png" alt="База знаний — список сценариев с фильтрами" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_kb.png" alt="База знаний — развёрнутый сценарий с четырьмя шагами" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
 
 <h3 id="ai-tools">Инструменты на ORM (tool-use)</h3>
 <p>AI-ассистент умеет вызывать нативные функции напрямую через ORM, без HTTP к самому себе. Инструменты делятся на две группы:</p>
@@ -10032,7 +10032,7 @@ flowchart LR
 
 <h4 id="ai-test-chat">Тестовый AI-чат</h4>
 <p>Страница <code>/admin/ai/test_chat/</code> — отработка сценариев ассистента так, как его видит клиент на сайте. Использует тот же движок, что и боевой виджет: создаёт реальные лиды и тикеты, показывает <code>session_id</code>, факт эскалации, номер тикета и ссылку на сессию в дашборде. Эскалация (фраза вроде «хочу оператора» или жалоба) создаёт тикет во внутренней Поддержке.</p>
-<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/order_forms_v1212/ai_test_chat.png" alt="Тестовый AI-чат в админке с панелью состояния сессии" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_test_chat.png" alt="Тестовый AI-чат в админке с панелью состояния сессии" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
 
 <p><strong>Эскалация чата в тикет:</strong></p>
 <pre class="mermaid">
@@ -10048,11 +10048,11 @@ flowchart LR
 <h3 id="ai-dashboard">Дашборд AI-сессий и история AIDA</h3>
 <p>Дашборд <code>/admin/reports/ai_chat_dashboard/</code> — единая аналитика всех AI-диалогов (ЛК, мобильное приложение, виджет на сайте, AIDA). Это рабочий инструмент для оценки качества ассистента и обучения промпта. Сюда перенесена вся история внешнего сервиса AIDA — <strong>19 332 строки</strong> (1811 диалогов, 18 171 сообщение, 1161 вызов инструментов), сопоставленные с абонентами по телефону.</p>
 
-<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_dashboard_v1218/dashboard_top.png" alt="Дашборд AI-сессий: KPI, активность по дням, каналы" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_dashboard.png" alt="Дашборд AI-сессий: KPI, активность по дням, каналы" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
 
 <h4 id="ai-dashboard-kpi">Показатели и графики</h4>
 
-<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_dash_v1763/ai_overview.png" alt="AI-чат: дашборд — показатели и графики" class="screenshot">
+<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_dashboard.png" alt="AI-чат: дашборд — показатели и графики" class="screenshot">
 
 <p>Пять карточек сверху отвечают на вопросы «сколько было разговоров», «насколько они были длинными», «дошли ли до конкретного клиента» и «сколько это стоило»:</p>
 
@@ -10119,7 +10119,7 @@ flowchart LR
 
 <h4 id="ai-dashboard-sessions">Список сессий</h4>
 
-<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_dash_v1763/ai_transcript.png" alt="Стенограмма диалога в модальном окне" class="screenshot">
+<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_transcript.png" alt="Стенограмма диалога в модальном окне" class="screenshot">
 
 <p>Список приходит страницами по 50 записей: поиск (по идентификатору сессии, каналу, ФИО и договору), фильтры канала и оценки, сортировка — всё считается на сервере. Клик по строке открывает стенограмму: реплики клиента и ассистента с временем, ответы в формате JSON показываются моноширинным блоком, имя абонента ведёт в его карточку.</p>
 
@@ -10127,14 +10127,14 @@ flowchart LR
 
 <h4 id="ai-dashboard-theme">Тёмная тема и телефон</h4>
 
-<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_dash_v1763/ai_dark.png" alt="AI-дашборд в тёмной теме" class="screenshot">
-<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_dash_v1763/ai_mobile.png" alt="AI-дашборд на телефоне" class="screenshot">
+<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_dashboard_dark.png" alt="AI-дашборд в тёмной теме" class="screenshot">
+<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_dashboard_mobile.png" alt="AI-дашборд на телефоне" class="screenshot">
 <p>Период задаётся единым date-range-picker (общий для всех отчётов). Стоимость токенов считается из настроек <code>AI_PRICE_*</code> и курса <code>AI_USD_RUB</code>.</p>
 
 <h4 id="ai-dashboard-sessions">Список сессий и транскрипт</h4>
 <p>Блок <strong>«Все сессии за период»</strong> — таблица с фильтрами по каналу (Все/LK/Mobile) и фидбеку (Все/👍/👎/Эскал.), живым поиском (ID/абонент/договор) и сортировкой по столбцам. Клик по строке открывает <strong>транскрипт диалога в стиле iMessage</strong>: реплики клиента — справа (светло-серый градиент), Аиды — слева, с поддержкой markdown-форматирования (<code>**жирный**</code>, заголовки <code>#/##/###</code>, <code>`код`</code>). Клик по имени абонента открывает <strong>slide-панель абонента</strong> (как в других разделах) — без ухода со страницы.</p>
 
-<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_dashboard_v1218/session_imessage.png" alt="Транскрипт AI-сессии в стиле iMessage с markdown-анализом" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_transcript.png" alt="Транскрипт AI-сессии в стиле iMessage с markdown-анализом" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
 
 <p><strong>Поток данных дашборда:</strong></p>
 <pre class="mermaid">
