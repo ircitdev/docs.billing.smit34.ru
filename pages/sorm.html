@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Интеграция с СОРМ3 — СмИТ Биллинг v3.5.0 (build 1846)</title>
+  <title>Интеграция с СОРМ3 — СмИТ Биллинг v3.5.0 (build 1847)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 3.5 — Документация">
-  <meta property="og:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v3.5.0 (build 1846)">
+  <meta property="og:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v3.5.0 (build 1847)">
   <meta property="og:description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/sorm.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v3.5.0 (build 1846)">
+  <meta name="twitter:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v3.5.0 (build 1847)">
   <meta name="twitter:description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
@@ -788,7 +788,7 @@ docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 3
 
   <p>Таблица показывает по каждой конфигурации:</p>
   <ul>
-    <li><strong>Vendor</strong> — поставщик СОРМ-оборудования: СигналТек, НОРСИ 2020, СпецТехПитон, МФИ Софт, Элком НТ, VAS Experts</li>
+    <li><strong>Вендор</strong> — поставщик СОРМ-оборудования: СигналТек, НОРСИ 2020, СпецТехПитон, МФИ Софт, Элком НТ, VAS Experts</li>
     <li><strong>FTP</strong> — хост и путь выгрузки на стенде РКН (если не задан — предупреждение)</li>
     <li><strong>Расписание</strong> — время автоматической выгрузки</li>
     <li><strong>Отчётов</strong> — количество настроенных <code>SormReport</code> (по дефолту 12 — без ABONENT_USER и ABONENT_LEGAL)</li>
@@ -799,7 +799,13 @@ docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 3
   <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_v963/sorm_card_v963.png" alt="Карточка СОРМ — список отчётов"></p>
 
   <p>Кнопки в строке: <strong>⚙</strong> открыть настройки, <strong>▶</strong>
-  запустить выгрузку сейчас, <strong>🗑</strong> удалить конфигурацию.</p>
+  запустить выгрузку сейчас, <strong>🗑</strong> удалить конфигурацию. Запуск и удаление
+  подтверждаются диалогом с перечнем последствий.</p>
+
+  <p><strong>Мобильная версия</strong> (UX-аудит 2026-08-04): на телефоне каждая строка
+  превращается в карточку с подписями полей — колонки FTP, расписание, число отчётов и
+  статус последней выгрузки не прячутся, а показываются строками карточки. Горизонтального
+  скролла нет.</p>
 
   <p>В шапке слева — кнопка <strong>Проверить готовность</strong> (анализирует
   пропуски обязательных полей у абонентов, см. <a href="#sorm-readiness">22.2</a>).
@@ -1020,7 +1026,15 @@ docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 3
     (или по <code>CONTRACT_NUMBER</code>). Справочники без абонентских колонок
     (REGIONS, IP_PLAN, GATEWAY…) не фильтруются.</li>
     <li>В списке конфигураций — единый <strong>бейдж организации</strong> (компонент
-    OrgBadge), фильтр по выбранной в навбаре организации.</li>
+    OrgBadge). Список скоуплен по <strong>правам сотрудника</strong> (<code>allowed_orgs</code>),
+    а не только по выбору в навбаре — оператор видит лишь конфиги своих организаций
+    и общие (<code>organization=NULL</code>).</li>
+    <li><strong>Изоляция по прямой ссылке</strong> (UX-аудит 2026-08-04): переход по URL
+    <code>/admin/equipment/sorm_list/&lt;id&gt;/…</code> проверяет права сотрудника
+    (декоратор <code>@sorm_org_guard</code> → <code>object_allowed</code>). Если организация
+    конфига не входит в <code>allowed_orgs</code> — <strong>404</strong>: нельзя открыть,
+    запустить или удалить чужой конфиг (в форме виден FTP-пароль, при запуске — выгрузка
+    PII абонентов). Общие конфиги видны всем. Раньше по прямой ссылке проверки не было.</li>
     <li>Для инсталляции с одной организацией раздел не меняется — поведение прежнее
     (выгрузка по всей базе).</li>
   </ul>
@@ -1488,8 +1502,8 @@ python manage.py merge_sorm_attribute_dups --by-name --apply</code></pre>
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 1846)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">04.08.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 1846)</span>&nbsp;|&nbsp;<span data-smit="updated">04.08.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 1847)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">04.08.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 1847)</span>&nbsp;|&nbsp;<span data-smit="updated">04.08.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=1739"></script>
