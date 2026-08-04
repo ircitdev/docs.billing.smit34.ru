@@ -476,7 +476,13 @@ BarcodeDetector, на iPhone — ZXing), USB-сканером или вручн�
     (Niimbot B18, 203 dpi, размер ленты из настроек, по умолчанию 40×14 мм);</li>
   <li><strong>PDF-лист А4</strong> — под обычный принтер.</li>
 </ul>
-<p>На этикетке — штрихкод Code128 (или QR) со значением <code>SU-N</code> и серийник.</p>
+<p>На этикетке — штрихкод Code128 (или QR) со значением <code>SU-N</code> и серийник.
+Code128 кодирует только латиницу и цифры — если значение штрихкода содержит
+кириллицу, система <strong>автоматически строит QR-код</strong> (кодирует любой
+текст, сканируется камерой телефона), чтобы код оставался читаемым. Во всех
+таблицах модуля при наведении на иконку штрихкода всплывает
+<strong>сканируемая картинка кода</strong> — сканер прикладывают прямо к экрану,
+не отходя к принтеру этикеток.</p>
 <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1731/stock_receipt.png" alt="Приход — накладная и массовое заведение серийников" loading="lazy"></p>
 
 <h2 id="stock-issue">Подотчёт сотрудника</h2>
@@ -511,6 +517,14 @@ BarcodeDetector, на iPhone — ZXing), USB-сканером или вручн�
 Если у сделки ещё нет абонента — модалка подскажет сначала создать его из
 карточки сделки. Настройка <code>STOCK_REQUIRE_MATERIALS_ON_DONE</code> включает
 жёсткий режим: наряд нельзя закрыть «Выполнено», пока не указаны материалы.</p>
+<p><strong>Установка только «своим» клиентам</strong>: настройка
+<code>STOCK_INSTALL_REQUIRE_MONTAGE</code> (по умолчанию выкл.) ограничивает
+монтажников — установить или демонтировать оборудование клиенту можно, только
+если у монтажника есть на него наряд в CRM (сделка, где он назначен монтажником
+и проставлена дата монтажа — то же, что «мой наряд» на
+<code>/admin/crm/montazh/</code>). Кладовщик, суперпользователь и менеджеры
+работают без ограничения. Смена статуса единиц по-прежнему возможна только для
+того, что в <strong>своём подотчёте</strong>.</p>
 <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1731/montazh_materials_row.png" alt="Наряды монтажника — строка Материалы на карточке" loading="lazy"></p>
 <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1731/montazh_materials_modal.png" alt="Модалка материалов наряда" loading="lazy"></p>
 
@@ -665,6 +679,7 @@ erDiagram
     <tr><td><code>STOCK_ALLOW_STAFF_TRANSFER</code></td><td>OFF</td><td>Передача подотчёт→подотчёт между сотрудниками (движение «Перемещение»)</td></tr>
     <tr><td><code>STOCK_MAX_STAFF_COST</code></td><td>0</td><td>Лимит стоимости подотчёта, ₽ по закупочной — выдача сверх лимита блокируется</td></tr>
     <tr><td><code>STOCK_STALE_ISSUED_DAYS</code></td><td>0</td><td>Telegram-алерт: единица висит в подотчёте без движения дольше N дней</td></tr>
+    <tr><td><code>STOCK_INSTALL_REQUIRE_MONTAGE</code></td><td>OFF</td><td>Монтажник ставит/демонтирует оборудование только клиентам со своим нарядом в CRM (сделка: он монтажник + дата монтажа). Кладовщик/суперюзер/менеджеры — без ограничений</td></tr>
   </tbody>
 </table>
 
