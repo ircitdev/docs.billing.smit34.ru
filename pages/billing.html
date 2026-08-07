@@ -19,10 +19,10 @@
   <meta name="twitter:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
   <meta name="description" content="Управление абонентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=1739">
+  <link rel="stylesheet" href="../css/style.css?v=1898">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.26.0/dist/tabler-icons.min.css">
-  <link rel="stylesheet" href="../css/search.css?v=1739">
+  <link rel="stylesheet" href="../css/search.css?v=1898">
 </head>
 <body>
 
@@ -233,6 +233,7 @@
           <li class="sub-item"><a href="billing.html#ai-test-chat">12.4.2. Тестовый AI-чат</a></li>
           <li class="sub-item"><a href="billing.html#ai-eval">12.5. Тест-кейсы AI</a></li>
           <li class="sub-item"><a href="billing.html#ai-dashboard">12.6. Дашборд AI-сессий</a></li>
+          <li class="sub-item"><a href="billing.html#ai-dashboard-costs">12.6.1. Расходы на модели и бюджет</a></li>
           <li class="sub-item"><a href="billing.html#ai-dashboard-sessions">12.5.1. Сессии и транскрипт</a></li>
           <li><a href="billing.html#autodial-telephony">13. Автообзвон и телефония</a></li>
           <li class="sub-item"><a href="billing.html#autodial-providers">13.1. Мультипровайдер</a></li>
@@ -10084,17 +10085,48 @@ flowchart LR
 <table class="data-table">
   <thead><tr><th>Показатель</th><th>Что считается</th></tr></thead>
   <tbody>
-    <tr><td><strong>Сессий</strong></td><td>Уникальные диалоги за период. В подписи — сообщения клиента и сводка по оценкам (👍/👎), если их ставили.</td></tr>
+    <tr><td><strong>Сессий</strong></td><td>Обращения за период. В мессенджерах одна переписка тянется годами (<code>session_id</code> — это <code>chat_id</code>), поэтому обращения разделяются паузой: перерыв дольше <code>AI_DIALOG_GAP_MIN</code> минут (по умолчанию 30) начинает новое. В подписи — сообщения клиента и сводка по оценкам (👍/👎), если их ставили.</td></tr>
     <tr><td><strong>Решено без человека</strong><br><span class="text-muted">(build 1885)</span></td><td><em>Contained rate</em> — доля сессий, где ассистент справился сам: без эскалации на оператора и без создания тикета. Главная метрика качества. В подписи — <strong>повторные обращения того же абонента в течение 72 часов</strong>: если их много, вопросы на деле не решаются, даже когда эскалаций мало.</td></tr>
     <tr><td><strong>Реплик на диалог</strong></td><td>Все сообщения (клиент + ассистент) ÷ число сессий. Длинный диалог обычно означает, что с первого раза не поняли.</td></tr>
     <tr><td><strong>Без абонента</strong></td><td>Доля сессий, где клиента не удалось связать с карточкой абонента. Для голосового канала это главный признак, что разговор не довели до конкретного человека.</td></tr>
-    <tr><td><strong>Эскалаций</strong></td><td>Сессии, переданные оператору; рядом — сколько из них закончились тикетом.</td></tr>
+    <tr><td><strong>Эскалаций</strong></td><td>Обращения, переданные оператору; рядом — сколько из них закончились тикетом. Под диаграммой каналов эскалации разделены по <strong>причине</strong>: клиент сам попросил человека, сорвалась проверка личности, оформлена заявка по регламенту или бот не справился. Метрика качества — последняя: нажатая кнопка «Позвать оператора» это штатная работа, а не провал.</td></tr>
     <tr><td><strong>Токены</strong></td><td>Вход и выход отдельно + оценочная стоимость по настройкам <code>AI_PRICE_IN_USD_PER_MTOK</code>, <code>AI_PRICE_OUT_USD_PER_MTOK</code>, <code>AI_USD_RUB</code>.</td></tr>
   </tbody>
 </table>
 
 <div class="info-box">
   <strong>Почему не «Помогло / Не помогло».</strong> До июля 2026 три карточки из пяти показывали оценки клиентов — и всегда ноль: за восемь месяцев их проставлено три штуки на 29 тысяч сообщений. Оценки никуда не делись (показываются строкой под «Сессиями»), но место на панели занимают метрики, которые действительно считаются из данных.
+</div>
+
+<h4 id="ai-dashboard-costs">Расходы на модели и бюджет месяца</h4>
+
+<p>Блок «Расходы на модели» показывает, куда уходят деньги, в двух разрезах — по моделям и
+свёрнуто по провайдерам. Стоимость считается <strong>по прайсу каждой модели</strong> и курсу
+из настроек AI: до этого весь расход пересчитывался единой ценой, и цифра по Gemini или GPT
+не имела отношения к действительности.</p>
+
+<table class="data-table">
+  <thead><tr><th>Колонка</th><th>Что показывает</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Модель / Провайдер</strong></td><td>Переключатель над таблицей. В режиме моделей рядом с названием — её провайдер.</td></tr>
+    <tr><td><strong>Сообщений</strong></td><td>Сколько ответов сгенерировано этой моделью за период.</td></tr>
+    <tr><td><strong>Токенов вход / выход</strong></td><td>Вход — промпт со всем контекстом, выход — сам ответ. Вход обычно в десятки раз больше.</td></tr>
+    <tr><td><strong>Цена, $/Mtok</strong></td><td>Прайс этой модели за миллион токенов: вход / выход.</td></tr>
+    <tr><td><strong>Стоимость, ₽</strong></td><td>Себестоимость по прайсу и курсу. Это <em>не</em> сумма, начисленная по лицензии — она считается по тарифу на сервере лицензий и включает наценку.</td></tr>
+  </tbody>
+</table>
+
+<p>Над таблицей — полоса <strong>бюджета месяца</strong>: потрачено с начала месяца, прогноз до
+конца и отметка прогноза на шкале. Цвет меняется при 80% и при превышении. Если лимит не задан
+(настройка <code>AI_BUDGET_MONTH_RUB</code>), вместо шкалы показываются суммы и ссылка на
+настройку — почтовый алерт о превышении при пустом лимите тоже молчит.</p>
+
+<div class="info-box">
+  <strong>Почему «сессий» стало меньше, а «решено без человека» — ниже.</strong> До августа 2026
+  единицей счёта был <code>session_id</code>. В мессенджерах он не заканчивается никогда, поэтому
+  одна «сессия» означала человека за всё время: внутри неё умещалось до 234 обращений, а одна
+  эскалация помечалась на всю переписку. После разделения на обращения показатель «решено без
+  человека» опустился с 94% до 73% — работа ассистента не изменилась, исчезла приписка.
 </div>
 
 <h4 id="ai-dashboard-map">Карта раздела</h4>
@@ -10112,7 +10144,11 @@ mindmap
       Период до всего времени
       Организация из шапки
       Канал: голос, виджет, бот
-      Провайдер модели
+      Модель и провайдер
+    Деньги
+      Цена по прайсу модели
+      Бюджет месяца и прогноз
+      Себестоимость против начисления
     Списки
       Сессии страницами по 50
       Поиск и фильтры на сервере
@@ -10129,7 +10165,7 @@ mindmap
 
 <pre class="mermaid">
 flowchart LR
-    LOG["Журнал диалогов<br/>ai_chat_log"] --> SESS["Сессии<br/>session_id"]
+    LOG["Журнал диалогов<br/>ai_chat_log"] --> SESS["Обращения<br/>session_id + dialog_no"]
     SESS --> KPI["Показатели"]
     SESS --> DAY["Активность по дням"]
     SESS --> SRC["Каналы"]
@@ -10275,14 +10311,14 @@ flowchart LR
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">06.08.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;<span data-smit="updated">06.08.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">07.08.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;<span data-smit="updated">07.08.2026</span></span>
 </footer>
 
-<script src="../js/main.js?v=1739"></script>
-<script src="../js/search.js?v=1739"></script>
+<script src="../js/main.js?v=1898"></script>
+<script src="../js/search.js?v=1898"></script>
 <script src="../js/version.js"></script>
-<script src="../js/mermaid-init.js?v=1739"></script>
-<script src="../js/markmap-init.js?v=1739"></script>
+<script src="../js/mermaid-init.js?v=1898"></script>
+<script src="../js/markmap-init.js?v=1898"></script>
 </body>
 </html>
