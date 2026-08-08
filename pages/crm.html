@@ -620,6 +620,67 @@ UTM-кампании и организация работают одинаков
 топ источников с конверсией; при мультиорганизации он учитывает доступные
 сотруднику организации и помечает источники-пары чипом организации.</p>
 
+<h3 id="crm-sources-connect">Как подключить форму на сайт</h3>
+<p>Порядок один для любой формы: сначала <strong>воронка</strong>, потом
+<strong>источник с токеном</strong>, потом сама форма. Токен — то, что связывает
+форму с настройками: воронкой, этапом входа, организацией, тегами,
+распределением и окном дублей.</p>
+<table class="data-table">
+  <thead><tr><th>Что подключаем</th><th>Куда уходит заявка</th><th>Включается настройкой</th></tr></thead>
+  <tbody>
+    <tr><td>Готовый виджет заказа на чужом сайте</td><td><code>/api/crm/lead/</code></td><td><code>CRM_PUBLIC_LEAD_ENABLED</code></td></tr>
+    <tr><td>Своя вёрстка формы</td><td><code>/api/crm/lead/</code></td><td><code>CRM_PUBLIC_LEAD_ENABLED</code></td></tr>
+    <tr><td>Страница конструктора сайтов</td><td><code>/l/submit/</code></td><td><code>LANDING_ENABLED</code></td></tr>
+    <tr><td>AI-виджет (чат и голос)</td><td><code>/api/ai/widget/lead/</code></td><td><code>AI_WIDGET_ENABLED</code></td></tr>
+    <tr><td>Salesbot на сайте</td><td><code>/api/crm/bot/&lt;id&gt;/</code></td><td>канал «Виджет» у бота</td></tr>
+  </tbody>
+</table>
+<p><strong>Виджет заказа.</strong> В карточке источника — кнопка
+<strong>«Скопировать код вставки»</strong>: сниппет уже содержит ваш токен.
+Виджет сам подтянет тарифы, соберёт UTM-метки из адреса страницы и отправит
+заявку:</p>
+<pre><code>&lt;script src="https://rbill.smit34.ru/static/js/order_widget.js"
+        data-api="https://rbill.smit34.ru"
+        data-token="9f2c41ab77e0d5c3"
+        data-auto-init&gt;&lt;/script&gt;</code></pre>
+<p>Параметры: <code>data-title</code>, <code>data-subtitle</code>,
+<code>data-color</code>, <code>data-button</code>, <code>data-tariff="0"</code>
+(скрыть выбор тарифа), <code>data-address="0"</code> (скрыть адрес). Открыть
+форму из своей кнопки — <code>SmitOrderWidget.openCentered()</code>. Есть и
+готовая страница заказа без встраивания: <code>/order</code>.</p>
+<p><strong>Своя форма.</strong> Отправьте JSON — обязателен только телефон;
+остальные поля заполняют карточку (см. <a href="#crm-intake-card">единый
+приём</a>):</p>
+<pre><code>fetch('https://rbill.smit34.ru/api/crm/lead/', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    phone: '+7 917 000-11-22',
+    name: 'Иванов Иван',
+    address: 'г. Волгоград, ул. Мира, д. 10',
+    comment: 'Звонить после 18:00',
+    source: 'form',
+    source_token: '9f2c41ab77e0d5c3',
+    utm: { utm_source: 'yandex', utm_medium: 'cpc', utm_campaign: 'internet-vlg' }
+  })
+})</code></pre>
+<p>Ответ — <code>{"ok": true, "deal_id": 12345}</code>. Если сработал контроль
+дублей, вернётся номер уже существующей сделки: для посетителя это по-прежнему
+«заявка принята», а в CRM вместо второй карточки появится примечание
+«Повторная заявка» со всеми новыми данными.</p>
+<div class="info-box"><strong>Три частые причины «форма отправилась, а лида
+нет».</strong> (1) Не включена настройка приёма — endpoint отвечает
+<code>disabled</code>. (2) Выключен тумблер источника — заявка отбрасывается
+намеренно. (3) Превышен лимит: 10 заявок с одного IP за 10 минут. Приём никогда
+не роняет форму: любая внутренняя ошибка пишется в журнал, а посетитель видит
+«спасибо» — поэтому после настройки отправьте тестовую заявку и убедитесь, что
+сделка появилась в канбане.</div>
+<p>Организацию, воронку и этап источник задаёт сам, но заявка может указать их
+явно (<code>organization_id</code>, <code>pipeline_id</code>, <code>stage</code>) —
+явное указание приоритетнее настроек источника. Полный список полей заявки и
+рецепты подключения — во внутренней инструкции «Формы создают лиды в CRM»
+(раздел «Разработчикам» → Документация).</p>
+
 <h3 id="crm-intake-card">Единый приём: как заполняется карточка</h3>
 <p>Все каналы (веб-форма, AI-виджет чата и голоса, звонки Mango, голосовая почта,
 VK/Telegram/MAX, Email, Salesbot, импорт CSV) сходятся в одной функции приёма
