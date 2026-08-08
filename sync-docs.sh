@@ -308,9 +308,12 @@ fi
 
 echo "=== 4. Deploy to server ==="
 cd "$HERE"
-tar -czf /tmp/docs-deploy.tar.gz --exclude=sync-docs.sh --exclude=update-understand.sh --exclude=build_search_index.py .
-scp /tmp/docs-deploy.tar.gz root@31.44.7.144:/tmp/
+# TMPDIR задаётся снаружи: в Git Bash под Windows каталога /tmp нет и шаг падал
+LOCAL_TMP="${DOCS_TMP:-/tmp}"
+mkdir -p "$LOCAL_TMP"
+tar -czf "$LOCAL_TMP/docs-deploy.tar.gz" --exclude=sync-docs.sh --exclude=update-understand.sh --exclude=build_search_index.py .
+scp "$LOCAL_TMP/docs-deploy.tar.gz" root@31.44.7.144:/tmp/
 ssh root@31.44.7.144 "cd $SERVER_PATH && tar -xzf /tmp/docs-deploy.tar.gz && rm /tmp/docs-deploy.tar.gz && echo '  deploy OK'"
-rm /tmp/docs-deploy.tar.gz
+rm "$LOCAL_TMP/docs-deploy.tar.gz"
 
 echo "=== DONE ==="
