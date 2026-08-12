@@ -812,6 +812,8 @@ flowchart LR
 «UTM campaign» в настройках таблицы и выгружает картину по источникам без отчётов.</p>
 
 <h2 id="crm-salesbot">Salesbot</h2>
+<p>Пункт меню: <strong>CRM → Salesbot</strong> (раньше лежал в «Настройках» —
+сценарии правят чаще, чем воронки).</p>
 <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_v1846/crm_salesbot_canvas.png" alt="Salesbot — канвас-редактор сценария" loading="lazy"></p>
 <p>URL: <code>/admin/crm/bots/</code> (CRM → Настройки → Salesbot). Визуальный
 конструктор чат-сценариев для входящих каналов и веб-виджета: узлы перетаскиваются
@@ -998,6 +1000,18 @@ window.SmitWidget.register('funnel-summary', function (el, settings) {
 видимость из настроек профиля продолжает действовать поверх.</p>
 <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/smit/billing/docs_v1430/widgets_abonent.png" alt="Карточка абонента с виджетами" loading="lazy"></p>
 
+
+<h3 id="widget-campaigns">Виджет «Рекламные кампании»</h3>
+<p>Точка монтирования — дашборд CRM, стоит сразу под воронкой по организациям.
+За 30 дней: топ-3 кампании по заявкам, сделки, выручка и окупаемость, снизу
+итог по всем. Суммы коротко («403,5К»), точное значение — в подсказке. ROI
+считается только у кампаний с заявками. Клик по названию открывает дашборд
+кампании.</p>
+
+<h3 id="widget-salesbot">Виджет «Salesbot»</h3>
+<p>Отвечает на один вопрос — работают боты или молчат: диалоги за 30 дней,
+сколько дошло до заявки и какая доля. У каждого бота отметка «включён».
+Ссылка ведёт в конструктор сценариев.</p>
 
 <h3 id="widget-org-summary">Виджет «Организации: сводка»</h3>
 <p>Точка монтирования — дашборд CRM. Показывает, как распределены сделки между
