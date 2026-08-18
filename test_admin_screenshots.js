@@ -65,7 +65,7 @@ async function tryScreenshot(page, filename, label) {
     console.log('[ERR] Login: ' + e.message);
   }
 
-  // ---- 2. Список абонентов (папка) ----
+  // ---- 2. Список клиентов (папка) ----
   try {
     await page.goto(BASE + '/admin/Abonents/9001/', { waitUntil: 'networkidle2', timeout: 20000 });
     await page.waitForSelector('.content-wrapper', { timeout: 10000 });
@@ -76,7 +76,7 @@ async function tryScreenshot(page, filename, label) {
     console.log('[ERR] Abonents folder: ' + e.message);
   }
 
-  // ---- 3. Глобальный поиск абонентов ----
+  // ---- 3. Глобальный поиск клиентов ----
   try {
     await page.goto(BASE + '/admin/Abonents/search/', { waitUntil: 'networkidle2', timeout: 20000 });
     await page.waitForSelector('body', { timeout: 10000 });
@@ -115,7 +115,7 @@ async function tryScreenshot(page, filename, label) {
     console.log('[ERR] Settings: ' + e.message);
   }
 
-  // ---- 6. Карточка абонента #3296 ----
+  // ---- 6. Карточка клиента #3296 ----
   try {
     await page.goto(BASE + '/admin/Abonents/3296/', { waitUntil: 'networkidle2', timeout: 20000 });
     await page.waitForSelector('.nav-tabs, .content-wrapper', { timeout: 10000 });
@@ -126,7 +126,7 @@ async function tryScreenshot(page, filename, label) {
     console.log('[ERR] Abonent card: ' + e.message);
   }
 
-  // ---- 7. Вкладка Операции абонента ----
+  // ---- 7. Вкладка Операции клиента ----
   try {
     await page.goto(BASE + '/admin/Abonents/3296/?tab=fin_ops', { waitUntil: 'networkidle2', timeout: 20000 });
     await page.waitForSelector('.content-wrapper', { timeout: 10000 });
@@ -136,7 +136,7 @@ async function tryScreenshot(page, filename, label) {
     console.log('[ERR] Abonent operations: ' + e.message);
   }
 
-  // ---- 8. Вкладка Услуги абонента ----
+  // ---- 8. Вкладка Услуги клиента ----
   try {
     await page.goto(BASE + '/admin/Abonents/3296/?tab=usluga', { waitUntil: 'networkidle2', timeout: 20000 });
     await page.waitForSelector('.content-wrapper', { timeout: 10000 });
@@ -146,7 +146,7 @@ async function tryScreenshot(page, filename, label) {
     console.log('[ERR] Abonent uslugi: ' + e.message);
   }
 
-  // ---- 9. Мастер создания абонента ----
+  // ---- 9. Мастер создания клиента ----
   try {
     await page.goto(BASE + '/admin/Abonents/9001/?action=wizard', { waitUntil: 'networkidle2', timeout: 20000 }).catch(() => {});
     // Try the wizard button approach

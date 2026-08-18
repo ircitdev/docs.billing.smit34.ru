@@ -74,7 +74,7 @@
           <li><a href="pages/installation.html#demo-cleanup">3. Удаление демо-данных</a></li>
           <li><a href="pages/installation.html#equip-integration">4. Интеграция с оборудованием</a></li>
           <li><a href="pages/installation.html#tariff-setup">5. Настройка тарифов</a></li>
-          <li><a href="pages/installation.html#add-subscribers">6. Добавление абонентов</a></li>
+          <li><a href="pages/installation.html#add-subscribers">6. Добавление клиентов</a></li>
           <li><a href="pages/installation.html#final-test">7. Финальное тестирование</a></li>
         </ul>
       </li>
@@ -86,8 +86,8 @@
           <li class="sub-item"><a href="pages/billing.html#system-settings">1.2. Настройки системы</a></li>
           <li class="sub-item"><a href="pages/billing.html#user-interfaces">1.4. Интерфейсы</a></li>
           <li class="sub-item"><a href="pages/billing.html#access-control">1.7. Права доступа</a></li>
-          <li><a href="pages/billing.html#subscribers">2. Работа с абонентами</a></li>
-          <li class="sub-item"><a href="pages/billing.html#create-subscriber">2.1. Создание абонента</a></li>
+          <li><a href="pages/billing.html#subscribers">2. Работа с клиентами</a></li>
+          <li class="sub-item"><a href="pages/billing.html#create-subscriber">2.1. Создание клиента</a></li>
           <li class="sub-item"><a href="pages/billing.html#search">2.6. Поиск</a></li>
           <li class="sub-item"><a href="pages/billing.html#finance-operations">2.7. Финансовые операции</a></li>
           <li class="sub-item"><a href="pages/billing.html#block-unblock">2.13. Блокировка</a></li>
@@ -164,7 +164,7 @@
           <li><a href="pages/stock.html#stock-receipt">5. Приход и этикетки</a></li>
           <li><a href="pages/stock.html#stock-issue">6. Подотчёт сотрудника</a></li>
           <li><a href="pages/stock.html#stock-montazh">7. Материалы в наряде</a></li>
-          <li><a href="pages/stock.html#stock-abonent">8. Оборудование абонента</a></li>
+          <li><a href="pages/stock.html#stock-abonent">8. Оборудование клиента</a></li>
           <li><a href="pages/stock.html#stock-money">9. Деньги: продажа и аренда</a></li>
           <li><a href="pages/stock.html#stock-analytics">9а. Аналитика</a></li>
           <li><a href="pages/stock.html#stock-settings">10. Настройки и роли</a></li>
@@ -269,7 +269,7 @@
         <a href="pages/troubleshooting.html"><i class="ti ti-tool"></i> Решение проблем <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
         <ul class="submenu">
           <li><a href="pages/troubleshooting.html#general">1. Общие вопросы</a></li>
-          <li><a href="pages/troubleshooting.html#auth">2. Абоненты и авторизация</a></li>
+          <li><a href="pages/troubleshooting.html#auth">2. Клиенты и авторизация</a></li>
           <li><a href="pages/troubleshooting.html#billing-payments">3. Биллинг и платежи</a></li>
           <li><a href="pages/troubleshooting.html#server-perf">4. Сервер и производительность</a></li>
         </ul>
@@ -341,7 +341,7 @@
         <g id="mm-center">
           <circle cx="400" cy="260" r="78" fill="url(#mm-grad)" filter="url(#mm-glow)"/>
           <text x="400" y="255" text-anchor="middle" fill="#fff" font-size="18" font-weight="700">СмИТ Биллинг</text>
-          <text x="400" y="278" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="13">v3.5.0 · build 1982</text>
+          <text x="400" y="278" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="13">v3.5.0 · build 1999</text>
         </g>
       </svg>
       <div class="mindmap-panel" id="mindmap-panel" role="status" aria-live="polite">
@@ -353,10 +353,10 @@
   <script>
   (function(){
     var NODES = [
-      { id: 'subs',     label: 'Абоненты',        icon: 'people',       href: 'pages/billing.html#subscribers',  title: 'Управление абонентами', desc: 'Поиск, массовые операции, папки, CRM, блокировки, обещанные платежи. Карточка абонента: услуги, счета, сессии, документы.' },
+      { id: 'subs',     label: 'Клиенты',        icon: 'people',       href: 'pages/billing.html#subscribers',  title: 'Управление клиентами', desc: 'Поиск, массовые операции, папки, CRM, блокировки, обещанные платежи. Карточка клиента: услуги, счета, сессии, документы.' },
       { id: 'tarifs',   label: 'Тарификация',     icon: 'tags',         href: 'pages/billing.html#tariffs',      title: 'Тарифы и услуги', desc: 'Гибкая тарификация, пакеты услуг, скидки, лояльность, бонусы, периодические списания.' },
       { id: 'pay',      label: 'Платежи',         icon: 'credit-card',  href: 'pages/api.html#payments-api',     title: 'Платёжные системы', desc: 'YooKassa (REST v3 и HTTP), Wallet One, универсальный webhook. История операций и фискализация ATOL.' },
-      { id: 'lk',       label: 'ЛК и мобильные',  icon: 'phone',        href: 'pages/lk.html',                   title: 'ЛК абонента и мобильные приложения', desc: 'Личный кабинет /lk/, Android + iOS приложения. Брендинг, feature flags, безопасность входа (lockout), force-update, Public Mobile API без auth (branding/features/version), AI-чат с Claude, VK/Telegram авторизация.' },
+      { id: 'lk',       label: 'ЛК и мобильные',  icon: 'phone',        href: 'pages/lk.html',                   title: 'ЛК клиента и мобильные приложения', desc: 'Личный кабинет /lk/, Android + iOS приложения. Брендинг, feature flags, безопасность входа (lockout), force-update, Public Mobile API без auth (branding/features/version), AI-чат с Claude, VK/Telegram авторизация.' },
       { id: 'radius',   label: 'FreeRADIUS',      icon: 'broadcast',    href: 'pages/billing.html#radius',       title: 'RADIUS-сервер', desc: 'FreeRADIUS 3.2 + rlm_python3, авторизация NAS, accounting, IP-pool, CoA disconnect, online-мониторинг.' },
       { id: 'sorm',     label: 'СОРМ-3',          icon: 'shield-check', href: 'pages/sorm.html',                 title: 'Интеграция СОРМ', desc: '13 стандартных отчётов в формате ФЗ, автоматическая выгрузка по FTP, пользовательские схемы.' },
       { id: 'api',      label: 'API',             icon: 'braces',       href: 'pages/api.html',                  title: 'Открытое API', desc: 'REST API v2, SOAP UserService/FiscalService, Mobile API (JWT), SmsAero, FreeScout, Firebase Push.' },
@@ -426,13 +426,13 @@
     <a href="pages/billing.html" class="card">
       <div class="icon"><i class="bi bi-gear"></i></div>
       <h3>Основные настройки биллинга</h3>
-      <p>Управление абонентами, тарификация, платёжные системы, отчёты, справочники.</p>
+      <p>Управление клиентами, тарификация, платёжные системы, отчёты, справочники.</p>
     </a>
 
     <a href="pages/lk.html" class="card">
       <div class="icon"><i class="bi bi-phone"></i></div>
       <h3>ЛК и мобильные</h3>
-      <p>Личный кабинет абонента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.</p>
+      <p>Личный кабинет клиента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.</p>
     </a>
 
     <a href="pages/helpdesk.html" class="card">
@@ -474,7 +474,7 @@
     <a href="pages/api.html" class="card">
       <div class="icon"><i class="bi bi-link-45deg"></i></div>
       <h3>API</h3>
-      <p>REST API v2, SOAP, Mobile API (JWT), обещанный платёж, управление абонентами. Примеры curl и JSON.</p>
+      <p>REST API v2, SOAP, Mobile API (JWT), обещанный платёж, управление клиентами. Примеры curl и JSON.</p>
     </a>
 
     <a href="pages/troubleshooting.html" class="card">
@@ -504,8 +504,8 @@
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 1982)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">17.08.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 1982)</span>&nbsp;|&nbsp;<span data-smit="updated">17.08.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 1999)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">18.08.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 1999)</span>&nbsp;|&nbsp;<span data-smit="updated">18.08.2026</span></span>
 </footer>
 
 <script src="js/main.js?v=1905"></script>

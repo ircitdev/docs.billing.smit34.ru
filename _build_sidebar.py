@@ -22,7 +22,7 @@ SIDEBAR_BLOCK = '''<aside class="sidebar">
           <li><a href="installation.html#demo-cleanup">3. Удаление демо-данных</a></li>
           <li><a href="installation.html#equip-integration">4. Интеграция с оборудованием</a></li>
           <li><a href="installation.html#tariff-setup">5. Настройка тарифов</a></li>
-          <li><a href="installation.html#add-subscribers">6. Добавление абонентов</a></li>
+          <li><a href="installation.html#add-subscribers">6. Добавление клиентов</a></li>
           <li><a href="installation.html#final-test">7. Финальное тестирование</a></li>
         </ul>
       </li>
@@ -34,8 +34,8 @@ SIDEBAR_BLOCK = '''<aside class="sidebar">
           <li class="sub-item"><a href="billing.html#system-settings">1.2. Настройки системы</a></li>
           <li class="sub-item"><a href="billing.html#user-interfaces">1.4. Интерфейсы</a></li>
           <li class="sub-item"><a href="billing.html#access-control">1.7. Права доступа</a></li>
-          <li><a href="billing.html#subscribers">2. Работа с абонентами</a></li>
-          <li class="sub-item"><a href="billing.html#create-subscriber">2.1. Создание абонента</a></li>
+          <li><a href="billing.html#subscribers">2. Работа с клиентами</a></li>
+          <li class="sub-item"><a href="billing.html#create-subscriber">2.1. Создание клиента</a></li>
           <li class="sub-item"><a href="billing.html#search">2.6. Поиск</a></li>
           <li class="sub-item"><a href="billing.html#finance-operations">2.7. Финансовые операции</a></li>
           <li class="sub-item"><a href="billing.html#block-unblock">2.13. Блокировка</a></li>
@@ -178,7 +178,7 @@ SIDEBAR_BLOCK = '''<aside class="sidebar">
         <a href="troubleshooting.html"><i class="ti ti-tool"></i> Решение проблем <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
         <ul class="submenu">
           <li><a href="troubleshooting.html#general">1. Общие вопросы</a></li>
-          <li><a href="troubleshooting.html#auth">2. Абоненты и авторизация</a></li>
+          <li><a href="troubleshooting.html#auth">2. Клиенты и авторизация</a></li>
           <li><a href="troubleshooting.html#billing-payments">3. Биллинг и платежи</a></li>
           <li><a href="troubleshooting.html#server-perf">4. Сервер и производительность</a></li>
         </ul>

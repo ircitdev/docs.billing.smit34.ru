@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Установка и интеграция — СмИТ Биллинг v3.5.0 (build 1982)</title>
+  <title>Установка и интеграция — СмИТ Биллинг v3.5.0 (build 1999)</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 3.5 — Документация">
-  <meta property="og:title" content="Установка и интеграция — СмИТ Биллинг v3.5.0 (build 1982)">
+  <meta property="og:title" content="Установка и интеграция — СмИТ Биллинг v3.5.0 (build 1999)">
   <meta property="og:description" content="Системные требования, установка через Docker Compose, интеграция с оборудованием, настройка тарифов и видеоинструкции.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/installation.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Установка и интеграция — СмИТ Биллинг v3.5.0 (build 1982)">
+  <meta name="twitter:title" content="Установка и интеграция — СмИТ Биллинг v3.5.0 (build 1999)">
   <meta name="twitter:description" content="Системные требования, установка через Docker Compose, интеграция с оборудованием, настройка тарифов и видеоинструкции.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta name="description" content="Системные требования, установка через Docker Compose, интеграция с оборудованием, настройка тарифов и видеоинструкции.">
@@ -78,7 +78,7 @@
           <li><a href="installation.html#demo-cleanup">3. Удаление демо-данных</a></li>
           <li><a href="installation.html#equip-integration">4. Интеграция с оборудованием</a></li>
           <li><a href="installation.html#tariff-setup">5. Настройка тарифов</a></li>
-          <li><a href="installation.html#add-subscribers">6. Добавление абонентов</a></li>
+          <li><a href="installation.html#add-subscribers">6. Добавление клиентов</a></li>
           <li><a href="installation.html#final-test">7. Финальное тестирование</a></li>
         </ul>
       </li>
@@ -91,7 +91,7 @@
           <li class="sub-item"><a href="billing.html#dashboard-alerts">1.3. Свежие проблемы</a></li>
           <li class="sub-item"><a href="billing.html#dashboard-cash">1.4. Касса месяца</a></li>
           <li class="sub-item"><a href="billing.html#dashboard-payments-today">1.5. Платежи сегодня</a></li>
-          <li class="sub-item"><a href="billing.html#dashboard-hot">1.6. Горячие абоненты + CRM</a></li>
+          <li class="sub-item"><a href="billing.html#dashboard-hot">1.6. Горячие клиенты + CRM</a></li>
           <li class="sub-item"><a href="billing.html#dashboard-extras">1.7. Heat-map + Цели + Что нового</a></li>
           <li class="sub-item"><a href="billing.html#dashboard-finance">1.8. Финансовая динамика</a></li>
           <li><a href="billing.html#tarifs">2. Тарификация</a></li>
@@ -170,7 +170,7 @@
           <li class="sub-item"><a href="billing.html#abonents-block-overview">— Блокировки: обзор</a></li>
           <li class="sub-item"><a href="billing.html#users-overview">— Учётные записи: обзор</a></li>
           <li class="sub-item"><a href="billing.html#connection-points-overview">— Точки подключения: обзор</a></li>
-          <li class="sub-item"><a href="billing.html#abonent-folders-overview">— Папки абонентов: обзор</a></li>
+          <li class="sub-item"><a href="billing.html#abonent-folders-overview">— Папки клиентов: обзор</a></li>
           <li class="sub-item"><a href="billing.html#statuses-overview">— Статусы: обзор</a></li>
           <li class="sub-item"><a href="billing.html#framework-fields-overview">— FrameworkFormGroupFields: обзор</a></li>
           <li class="sub-item"><a href="billing.html#custom-reports-overview">— SQL-отчёты: обзор</a></li>
@@ -186,11 +186,11 @@
           <li class="sub-item"><a href="billing.html#report-types">7.8. Типы отчётов</a></li>
           <li class="sub-item"><a href="billing.html#units">7.9. Единицы измерения</a></li>
           <li class="sub-item"><a href="billing.html#periods">7.10. Периоды</a></li>
-          <li><a href="billing.html#abonents">8. Абоненты</a></li>
-          <li class="sub-item"><a href="billing.html#abonents-list">8.1. Абоненты</a></li>
-          <li class="sub-item"><a href="billing.html#abonents-folder-view">— Папка абонентов</a></li>
+          <li><a href="billing.html#abonents">8. Клиенты</a></li>
+          <li class="sub-item"><a href="billing.html#abonents-list">8.1. Клиенты</a></li>
+          <li class="sub-item"><a href="billing.html#abonents-folder-view">— Папка клиентов</a></li>
           <li class="sub-item"><a href="billing.html#abonents-multiorg">— Мультиорганизация</a></li>
-          <li class="sub-item"><a href="billing.html#abonents-quick-add">— Новый абонент и раскладка</a></li>
+          <li class="sub-item"><a href="billing.html#abonents-quick-add">— Новый клиент и раскладка</a></li>
           <li class="sub-item"><a href="billing.html#abonents-search">— Глобальный поиск</a></li>
           <li class="sub-item"><a href="billing.html#abonent-map">8.2. На карте</a></li>
           <li class="sub-item" style="padding-left:1.8em"><a href="billing.html#abonent-map-data">— Откуда берутся точки</a></li>
@@ -207,11 +207,11 @@
           <li class="sub-item" style="padding-left:1.8em"><a href="billing.html#modal-finops">— Карточка операции</a></li>
           <li class="sub-item" style="padding-left:1.8em"><a href="billing.html#finops-mobile">— Мобильная версия</a></li>
           <li class="sub-item" style="padding-left:1.8em"><a href="billing.html#finance-operations-types">— Типы операций (FinTypes)</a></li>
-          <li><a href="billing.html#abonent-card">9. Карточка абонента</a></li>
+          <li><a href="billing.html#abonent-card">9. Карточка клиента</a></li>
           <li><a href="billing.html#video-surveillance">10. Видеонаблюдение</a></li>
           <li class="sub-item"><a href="billing.html#video-revenue">10.1. 3 слоя дохода + цены</a></li>
           <li class="sub-item"><a href="billing.html#video-admin">10.2. Раздел /admin/video/</a></li>
-          <li class="sub-item"><a href="billing.html#video-abonent">10.3. Вкладка абонента + ЛК</a></li>
+          <li class="sub-item"><a href="billing.html#video-abonent">10.3. Вкладка клиента + ЛК</a></li>
           <li class="sub-item"><a href="billing.html#video-billing-flow">10.3.1. Как списываются подписки</a></li>
           <li class="sub-item"><a href="billing.html#video-archive-lk">10.3.2. Архив: календарь + выделение</a></li>
           <li class="sub-item"><a href="billing.html#video-notify">10.3.3. Уведомления о сбоях</a></li>
@@ -275,7 +275,7 @@
           <li><a href="stock.html#stock-receipt">5. Приход и этикетки</a></li>
           <li><a href="stock.html#stock-issue">6. Подотчёт сотрудника</a></li>
           <li><a href="stock.html#stock-montazh">7. Материалы в наряде</a></li>
-          <li><a href="stock.html#stock-abonent">8. Оборудование абонента</a></li>
+          <li><a href="stock.html#stock-abonent">8. Оборудование клиента</a></li>
           <li><a href="stock.html#stock-money">9. Деньги: продажа и аренда</a></li>
           <li><a href="stock.html#stock-analytics">9а. Аналитика</a></li>
           <li><a href="stock.html#stock-settings">10. Настройки и роли</a></li>
@@ -390,7 +390,7 @@
         <a href="troubleshooting.html"><i class="ti ti-tool"></i> Решение проблем <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
         <ul class="submenu">
           <li><a href="troubleshooting.html#general">1. Общие вопросы</a></li>
-          <li><a href="troubleshooting.html#auth">2. Абоненты и авторизация</a></li>
+          <li><a href="troubleshooting.html#auth">2. Клиенты и авторизация</a></li>
           <li><a href="troubleshooting.html#billing-payments">3. Биллинг и платежи</a></li>
           <li><a href="troubleshooting.html#server-perf">4. Сервер и производительность</a></li>
         </ul>
@@ -447,7 +447,7 @@
   <li><a href="#demo-cleanup">Этап 3. Удаление демо-данных</a></li>
   <li><a href="#equip-integration">Этап 4. Интеграция с оборудованием</a></li>
   <li><a href="#tariff-setup">Этап 5. Настройка тарифов</a></li>
-  <li><a href="#add-subscribers">Этап 6. Добавление абонентов</a></li>
+  <li><a href="#add-subscribers">Этап 6. Добавление клиентов</a></li>
   <li><a href="#final-test">Этап 7. Финальное тестирование</a></li>
   <li><a href="#video">Видеоинструкции</a></li>
   <li><a href="#children">Дочерние страницы</a></li>
@@ -500,7 +500,7 @@ docker compose exec web python manage.py collectstatic --noinput</code></pre>
   </div>
 
   <h2 id="demo-cleanup">Этап 3. Удаление демо-данных</h2>
-  <p>Удалите демонстрационные тарифы и абонентов через веб-интерфейс (<strong>Настройки &rarr; Очистка базы данных</strong>) или через Django management-команду:</p>
+  <p>Удалите демонстрационные тарифы и клиентов через веб-интерфейс (<strong>Настройки &rarr; Очистка базы данных</strong>) или через Django management-команду:</p>
   <pre><code>docker compose exec web python manage.py flush --no-input
 docker compose exec web python manage.py loaddata initial_data</code></pre>
 
@@ -528,8 +528,8 @@ docker compose exec web python manage.py loaddata initial_data</code></pre>
     <li>Создайте VoIP NAS с IP-адресом АТС</li>
     <li>Настройте услуги телефонии</li>
     <li>Настройте пулы телефонных номеров</li>
-    <li>Назначьте услуги и номера абонентам</li>
-    <li>Протестируйте: звонки с положительным балансом, недостаточный баланс, отключение абонента во время звонка, корректность тарификации</li>
+    <li>Назначьте услуги и номера клиентам</li>
+    <li>Протестируйте: звонки с положительным балансом, недостаточный баланс, отключение клиента во время звонка, корректность тарификации</li>
   </ol>
 
   <h3 id="iptv">IPTV</h3>
@@ -554,16 +554,16 @@ docker compose exec web python manage.py loaddata initial_data</code></pre>
     </p>
   </div>
 
-  <h2 id="add-subscribers">Этап 6. Добавление абонентов</h2>
+  <h2 id="add-subscribers">Этап 6. Добавление клиентов</h2>
   <div class="info-box" style="border-left:4px solid #43b77a; background:rgba(67,183,122,.06); padding:12px 16px; margin:16px 0">
-    <p class="mb-1"><strong><i class="ti ti-arrow-right"></i> Подробная документация по абонентам — в основном руководстве</strong></p>
-    <p>Создайте абонентские аккаунты, заполните персональные данные и внесите средства на баланс. Полное описание работы с абонентами (карточка, контакты, договор, баланс, точка подключения, СОРМ-данные, юр.лица, импорт CSV):</p>
+    <p class="mb-1"><strong><i class="ti ti-arrow-right"></i> Подробная документация по клиентам — в основном руководстве</strong></p>
+    <p>Создайте абонентские аккаунты, заполните персональные данные и внесите средства на баланс. Полное описание работы с клиентами (карточка, контакты, договор, баланс, точка подключения, СОРМ-данные, юр.лица, импорт CSV):</p>
     <p style="margin:8px 0 0">
       <a href="../pages/billing.html#subscribers" class="btn btn-success btn-sm">
-        <i class="ti ti-users"></i> Открыть раздел «Абоненты»
+        <i class="ti ti-users"></i> Открыть раздел «Клиенты»
       </a>
-      <a href="../pages/billing.html#create-subscriber" class="btn btn-outline-success btn-sm">Создание абонента</a>
-      <a href="../pages/billing.html#edit-subscriber" class="btn btn-outline-success btn-sm">Карточка абонента</a>
+      <a href="../pages/billing.html#create-subscriber" class="btn btn-outline-success btn-sm">Создание клиента</a>
+      <a href="../pages/billing.html#edit-subscriber" class="btn btn-outline-success btn-sm">Карточка клиента</a>
     </p>
   </div>
 
@@ -577,18 +577,18 @@ docker compose exec web python manage.py loaddata initial_data</code></pre>
 </details>
 </div>
 
-  <p>Перед вводом в эксплуатацию пройдите полный цикл на одном-двух тестовых абонентах. Это проверит, что все компоненты (биллинг, RADIUS, NAS, платёжный шлюз, ЛК) корректно связаны.</p>
+  <p>Перед вводом в эксплуатацию пройдите полный цикл на одном-двух тестовых клиентах. Это проверит, что все компоненты (биллинг, RADIUS, NAS, платёжный шлюз, ЛК) корректно связаны.</p>
 
   <h3 id="final-test-checklist">Чек-лист приёмки</h3>
   <ol>
-    <li><strong>Тестовый абонент</strong> — создайте абонента (см. <a href="../pages/billing.html#create-subscriber">Создание абонента</a>), назначьте тариф, привяжите учётную запись (login/password) и точку подключения.</li>
+    <li><strong>Тестовый клиент</strong> — создайте клиента (см. <a href="../pages/billing.html#create-subscriber">Создание клиента</a>), назначьте тариф, привяжите учётную запись (login/password) и точку подключения.</li>
     <li><strong>RADIUS-авторизация</strong> — выполните <code>radtest &lt;login&gt; &lt;password&gt; 127.0.0.1 0 testing123</code> внутри контейнера <code>freeradius</code>. Ответ должен быть <code>Access-Accept</code> с корректным <code>Framed-IP-Address</code> и <code>Mikrotik-Rate-Limit</code>. Альтернатива — кнопка «Тест авторизации» (🧪) в карточке учётной записи (<a href="../pages/billing.html#tariffs">подробнее</a>).</li>
     <li><strong>Платёж</strong> — пополните баланс через тестовый шлюз (YooKassa тестовый магазин или ручной приход через <code>/admin/Abonents/finance/</code>). Убедитесь, что <code>FinanceOperations</code> создалась и баланс обновился.</li>
-    <li><strong>Блокировка по балансу</strong> — выставьте абоненту отрицательный баланс или активируйте флаг <code>b_admin</code>. Проверьте, что в RADIUS приходит <code>Access-Reject</code> и сессия завершается через CoA-Disconnect.</li>
-    <li><strong>Разблокировка</strong> — пополните баланс или снимите блок. Через 1–2 минуты RADIUS должен снова отвечать <code>Access-Accept</code>, абонент получит интернет.</li>
-    <li><strong>Личный кабинет</strong> — войдите в ЛК (<code>/lk/</code>) под тестовым абонентом, убедитесь, что отображаются баланс, тариф, история операций. См. <a href="../pages/lk.html">документацию ЛК</a>.</li>
-    <li><strong>Отчёты</strong> — откройте <code>/admin/reports/dashboard/</code> и проверьте, что новый абонент попал в KPI «Активные», а его платёж — в «Финансовая динамика». Запустите SQL-отчёт «Активные абоненты» из <a href="../pages/billing.html#report-constructor">конструктора отчётов</a>.</li>
-    <li><strong>FreeScout / поддержка</strong> (если интегрирован) — создайте тестовый тикет от абонента, убедитесь, что HelpDesk-вкладка в карточке абонента подтянула тикет.</li>
+    <li><strong>Блокировка по балансу</strong> — выставьте клиенту отрицательный баланс или активируйте флаг <code>b_admin</code>. Проверьте, что в RADIUS приходит <code>Access-Reject</code> и сессия завершается через CoA-Disconnect.</li>
+    <li><strong>Разблокировка</strong> — пополните баланс или снимите блок. Через 1–2 минуты RADIUS должен снова отвечать <code>Access-Accept</code>, клиент получит интернет.</li>
+    <li><strong>Личный кабинет</strong> — войдите в ЛК (<code>/lk/</code>) под тестовым клиентом, убедитесь, что отображаются баланс, тариф, история операций. См. <a href="../pages/lk.html">документацию ЛК</a>.</li>
+    <li><strong>Отчёты</strong> — откройте <code>/admin/reports/dashboard/</code> и проверьте, что новый клиент попал в KPI «Активные», а его платёж — в «Финансовая динамика». Запустите SQL-отчёт «Активные клиенты» из <a href="../pages/billing.html#report-constructor">конструктора отчётов</a>.</li>
+    <li><strong>FreeScout / поддержка</strong> (если интегрирован) — создайте тестовый тикет от клиента, убедитесь, что HelpDesk-вкладка в карточке клиента подтянула тикет.</li>
   </ol>
   <p>После прохождения всех 8 пунктов биллинг готов к работе. Если на одном из шагов возникла ошибка — см. <a href="../pages/troubleshooting.html">Диагностика и решение проблем</a>.</p>
 
@@ -601,7 +601,7 @@ docker compose exec web python manage.py loaddata initial_data</code></pre>
     <ul>
     <li><a href="#ustanovka">Установка</a></li>
     <li><a href="#nastroyka-sistemy">Настройка системы</a></li>
-    <li><a href="#rabota-s-abonentami">Работа с абонентами</a></li>
+    <li><a href="#rabota-s-abonentami">Работа с клиентами</a></li>
     <li><a href="#tarifikatsiya">Тарификация</a></li>
     <li><a href="#integratsiya">Интеграция</a></li>
     <li><a href="#dopolnitelno">Дополнительно</a></li>
@@ -623,16 +623,16 @@ docker compose exec web python manage.py loaddata initial_data</code></pre>
   </div>
   <p>Создание администратора биллинга</p>
 
-  <h3 id="rabota-s-abonentami">Работа с абонентами</h3>
+  <h3 id="rabota-s-abonentami">Работа с клиентами</h3>
   <div class="video-container">
     <iframe src="https://rutube.ru/play/embed/adb95bb1127338b436c9761e18cd9825" frameborder="0" allowfullscreen></iframe>
   </div>
-  <p>Создание абонента</p>
+  <p>Создание клиента</p>
 
   <div class="video-container">
     <iframe src="https://rutube.ru/play/embed/6e027c3a89af2118e82ac1cf7cae1e01" frameborder="0" allowfullscreen></iframe>
   </div>
-  <p>Миграция абонентов в СмИТ Биллинг v3.5.0</p>
+  <p>Миграция клиентов в СмИТ Биллинг v3.5.0</p>
 
   <div class="video-container">
     <iframe src="https://rutube.ru/play/embed/2537e4e338b3ef22e3e296d3b122b2ed" frameborder="0" allowfullscreen></iframe>
@@ -685,8 +685,8 @@ docker compose exec web python manage.py loaddata initial_data</code></pre>
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 1982)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">17.08.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 1982)</span>&nbsp;|&nbsp;<span data-smit="updated">17.08.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 1999)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">18.08.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 1999)</span>&nbsp;|&nbsp;<span data-smit="updated">18.08.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=1905"></script>

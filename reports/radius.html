@@ -88,7 +88,7 @@ img{max-width:100%;border:1px solid var(--border);border-radius:6px;margin:10px 
   <li><a href="#instruction">Инструкция администратора</a>
     <ol>
       <li><a href="#instr-nas">Управление NAS-устройствами</a></li>
-      <li><a href="#instr-user">Назначение IP абоненту</a></li>
+      <li><a href="#instr-user">Назначение IP клиенту</a></li>
       <li><a href="#instr-radius">Проверка RADIUS</a></li>
       <li><a href="#instr-deploy">Развёртывание конфигурации</a></li>
     </ol>
@@ -251,7 +251,7 @@ exec freeradius -f "$@"</code></pre>
 <tr><td>TarifRadiusParams</td><td>TARIF_RADIUS_PARAMS</td><td>RADIUS-атрибуты по тарифу</td></tr>
 <tr><td>VoipLog</td><td>VOIP_LOG</td><td>CDR записи VoIP-звонков</td></tr>
 <tr><td>VoipNas</td><td>VOIP_NAS</td><td>VoIP-специфичные NAS</td></tr>
-<tr><td>AbonentsSpeed</td><td>ABONENTS_SPEED</td><td>QoS скорости абонентов</td></tr>
+<tr><td>AbonentsSpeed</td><td>ABONENTS_SPEED</td><td>QoS скорости клиентов</td></tr>
 </table>
 
 <h3 id="models-carbon4">4.2. Полнота моделей (Carbon 4)</h3>
@@ -419,7 +419,7 @@ exec freeradius -f "$@"</code></pre>
 <h4>Настройки авторизации (вкладка «Расширенные»):</h4>
 <ul>
 <li><strong>auth_login</strong> — авторизация по логину (PPPoE/VPN) — <em>обязательно для MikroTik</em></li>
-<li><strong>reject_block</strong> — отклонять заблокированных абонентов при RADIUS-запросе</li>
+<li><strong>reject_block</strong> — отклонять заблокированных клиентов при RADIUS-запросе</li>
 </ul>
 
 <h4>Настройки аккаунтинга:</h4>
@@ -434,12 +434,12 @@ exec freeradius -f "$@"</code></pre>
 <pre><code>docker compose -f docker-compose.prod.yml restart freeradius</code></pre>
 </div>
 
-<h3 id="instr-user">9.2. Назначение IP абоненту</h3>
+<h3 id="instr-user">9.2. Назначение IP клиенту</h3>
 
-<p>Чтобы назначить IP-адрес и привязать абонента к NAS:</p>
+<p>Чтобы назначить IP-адрес и привязать клиента к NAS:</p>
 
 <ol>
-<li>Перейдите в <strong>Абоненты</strong>, найдите нужного абонента</li>
+<li>Перейдите в <strong>Клиенты</strong>, найдите нужного клиента</li>
 <li>На вкладке <strong>Учётные записи</strong> откройте карточку пользователя (Users)</li>
 </ol>
 
@@ -448,7 +448,7 @@ exec freeradius -f "$@"</code></pre>
 <ol start="3">
 <li>Заполните поля:
   <ul>
-    <li><strong>IPv4</strong> — статический IP-адрес абонента (например <code>10.77.0.100</code>)</li>
+    <li><strong>IPv4</strong> — статический IP-адрес клиента (например <code>10.77.0.100</code>)</li>
     <li><strong>Nas</strong> — выберите NAS-устройство из выпадающего списка</li>
     <li><strong>Тип авторизации</strong> — выберите «по vpn pptp, pppoe» (ID=100) или «любая через RADIUS» (ID=6)</li>
     <li><strong>Маска</strong> — маска подсети (обычно 32 для одиночного IP)</li>
@@ -466,12 +466,12 @@ exec freeradius -f "$@"</code></pre>
 <ul>
 <li><strong>Пул IP адресов</strong> — пул для динамической выдачи (если не задан статический IP)</li>
 <li><strong>Host Пул</strong> — пул для VPN-хостов</li>
-<li><strong>MAC</strong> — MAC-адрес оборудования абонента</li>
+<li><strong>MAC</strong> — MAC-адрес оборудования клиента</li>
 </ul>
 
 <h3 id="instr-radius">9.3. Проверка RADIUS</h3>
 
-<p>Для проверки авторизации абонента подключитесь к контейнеру FreeRADIUS и выполните:</p>
+<p>Для проверки авторизации клиента подключитесь к контейнеру FreeRADIUS и выполните:</p>
 
 <pre><code># Войти в контейнер
 docker compose -f docker-compose.prod.yml exec freeradius bash
@@ -482,7 +482,7 @@ radtest &lt;логин&gt; &lt;пароль&gt; 127.0.0.1 0 testing123
 # Пример:
 radtest 2105 2243179 127.0.0.1 0 testing123</code></pre>
 
-<p>Ожидаемый результат для валидного абонента:</p>
+<p>Ожидаемый результат для валидного клиента:</p>
 <pre><code>Received Access-Accept Id 17 from 127.0.0.1:714
     Framed-IP-Address = 10.99.56.101</code></pre>
 
