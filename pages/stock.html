@@ -93,6 +93,7 @@
           <li><a href="billing.html#tarifs">2. Тарификация</a></li>
           <li class="sub-item"><a href="billing.html#tarif-list">2.1. Тарифы</a></li>
           <li class="sub-item" style="padding-left:1.8em"><a href="billing.html#tarif-folder">— Директория тарифа</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="billing.html#tarif-org">— Тарифы и организация</a></li>
           <li class="sub-item"><a href="billing.html#usluga-list">2.2. Услуги и Бонусы</a></li>
           <li class="sub-item"><a href="billing.html#tarif-ruleset">2.3. Правила и сети</a></li>
           <li class="sub-item"><a href="billing.html#card-series">2.4. Карты оплаты</a></li>
@@ -340,7 +341,9 @@
     <li><a href="#stock-quickstart">2. Быстрый старт</a></li>
     <li><a href="#stock-flow">3. Движения и статусы единиц</a></li>
     <li><a href="#stock-items">4. Номенклатура и остатки</a></li>
-    <li><a href="#stock-cards">4а. Карточки позиции и единицы</a></li>
+    <li><a href="#stock-balances">4а. Остатки: деньги и дефицит</a></li>
+    <li><a href="#stock-cards">4б. Карточки позиции и единицы</a></li>
+    <li><a href="#stock-issued">6а. «Я выдал» и журнал</a></li>
     <li><a href="#stock-receipt">5. Приход, серийники, этикетки</a></li>
     <li><a href="#stock-issue">6. Подотчёт сотрудника</a></li>
     <li><a href="#stock-montazh">7. Материалы в наряде монтажа</a></li>
@@ -472,6 +475,38 @@ stateDiagram-v2
 <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/stock_presets.png" alt="Пресеты номенклатуры" loading="lazy"></p>
 <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/stock_items.png" alt="Номенклатура — позиции, категории, склады" loading="lazy"></p>
 
+<h3 id="stock-balances">Остатки: где лежит запас и сколько он стоит</h3>
+<p>Страница «Остатки» отвечает на вопрос «что у нас есть» не только штуками,
+но и деньгами. Над таблицей — полоса распределения: сколько лежит на складе,
+сколько на руках у монтажников, сколько уже стоит у клиентов и сколько
+списано в брак. Рядом с количеством — сумма по закупочной цене, чтобы было
+видно, сколько денег заморожено на складе и в подотчётах.</p>
+
+<pre class="mermaid">
+flowchart LR
+    S["Склад<br/>2445 шт · 138 751 ₽"] -->|выдача| P["Подотчёты монтажников<br/>486 шт · 48 815 ₽"]
+    P -->|установка| C["У клиентов<br/>518 шт"]
+    P -->|возврат| S
+    C -->|демонтаж| S
+    P -->|акт брака| D["Брак<br/>7 шт"]
+    S -->|акт брака| D
+</pre>
+
+<p>Таблица сортируется кликом по любому заголовку, фильтруется по складу и
+категории и выгружается в CSV — ровно тот срез, который на экране. Внизу —
+строка итогов: сколько позиций попало в выборку и на какую сумму.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v2018/stock_balances.png" alt="Остатки: полоса распределения, суммы по закупочной, фильтр склада" loading="lazy"></p>
+
+<h3 id="stock-deficit">Дефицит и список к закупке</h3>
+<p>У позиции задаётся минимальный остаток. В номенклатуре рядом с остатком
+показывается <strong>дефицит</strong> — сколько не хватает до минимума с
+учётом того, что уже на руках у монтажников. Кнопка «К закупке» выгружает
+CSV со списком: что докупить, сколько и на какую сумму по закупочной цене —
+такой файл можно сразу отдать снабженцу.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v2018/stock_items_deficit.png" alt="Номенклатура: колонка «Дефицит» и кнопка «К закупке»" loading="lazy"></p>
+
 <h2 id="stock-cards">Карточка позиции и карточка единицы</h2>
 
 <p>Чтобы посмотреть, что происходит с конкретной позицией или с конкретной
@@ -496,9 +531,9 @@ stateDiagram-v2
 владения</em>: приход → выдача в подотчёт → передача другому сотруднику →
 установка клиенту → демонтаж или брак. Сторнированные события зачёркнуты.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v2014/drawer_item.png" alt="Карточка позиции: распределение остатка, деньги, дефицит, единицы" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v2018/stock_item_card.png" alt="Карточка позиции: распределение остатка, деньги, дефицит, вкладки" loading="lazy"></p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v2014/drawer_unit.png" alt="Карточка единицы: текущее место и таймлайн владения" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v2018/stock_unit_card.png" alt="Карточка единицы: где она сейчас и таймлайн владения" loading="lazy"></p>
 
 <p>Обе карточки уважают организацию: чужую позицию или единицу открыть нельзя
 (см. <a href="#stock-multiorg">10а. Несколько организаций</a>).</p>
@@ -541,6 +576,24 @@ Code128 кодирует только латиницу и цифры — есл�
 сотрудники передают единицы друг другу (например, бригадир — монтажнику)
 без возврата на склад; движение «Перемещение» в журнале, уведомление
 получателю, проверка матрицы прав и лимита.</p>
+
+<h3 id="stock-issued">«Я выдал»: что стало с выданным</h3>
+<p>Кладовщику важно не то, что он выдал, а что с этим стало. Страница «Я
+выдал» показывает каждую выдачу и передачу вместе с текущей судьбой единицы,
+а сверху — счётчики по судьбам: сколько ещё в подотчёте, сколько уже стоит у
+клиентов, сколько вернулось, сколько ушло в брак и сколько сторнировано.
+Клик по счётчику оставляет в списке только эти строки; рядом — фильтры «кому
+выдал» и период.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v2018/stock_issued_fates.png" alt="«Я выдал»: счётчики по судьбам, фильтры по получателю и периоду" loading="lazy"></p>
+
+<h3 id="stock-journal">Журнал движений</h3>
+<p>Журнал — полная история склада: приход, выдача, передача, установка,
+возврат, брак и сторно. Фильтры — период, организация, склад, сотрудник и
+тип движения; выгрузка в CSV отдаёт тот же отфильтрованный срез. Из карточки
+движения открываются карточка единицы и карточка позиции.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v2018/stock_journal.png" alt="Журнал движений: период, организация, склад, тип и выгрузка CSV" loading="lazy"></p>
 
 <h2 id="stock-montazh">Материалы в наряде монтажа</h2>
 <p>На карточке наряда (<code>/admin/crm/montazh/</code>) — строка
@@ -747,6 +800,22 @@ erDiagram
     <tr><td>Сотрудник</td><td>Организациям из профиля</td><td>Выдать и передать подотчёт можно только сотруднику своей организации</td></tr>
   </tbody>
 </table>
+
+<pre class="mermaid">
+flowchart TB
+    subgraph A["Организация «СмИТ»"]
+        A1[Склад СмИТ] --> A2[Позиция: ONU]
+        A2 --> A3[Единица SU-56]
+        A3 --> A4[Клиент СмИТ]
+    end
+    subgraph B["Организация «ИТЦ»"]
+        B1[Склад ИТЦ] --> B2[Позиция: ONU]
+        B2 --> B3[Единица SU-77]
+        B3 --> B4[Клиент ИТЦ]
+    end
+    A3 -. запрещено .-> B4
+    B3 -. запрещено .-> A4
+</pre>
 
 <p><strong>Установка клиенту — только внутри своей организации.</strong>
 Оборудование организации А нельзя поставить клиенту организации Б: система
