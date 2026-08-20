@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Лицензирование — СмИТ Биллинг v3.5.0</title>
+  <title>Видеонаблюдение — объекты, пульт, архив — СмИТ Биллинг 3.5</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 3.5 — Документация">
-  <meta property="og:title" content="Лицензирование — СмИТ Биллинг v3.5.0">
-  <meta property="og:description" content="Сервер лицензий, выдача и активация ключей, управление лицензиями через Django admin, API проверки.">
-  <meta property="og:url" content="https://docs.billing.smit34.ru/pages/licensing.html">
+  <meta property="og:title" content="Видеонаблюдение — СмИТ Биллинг 3.5">
+  <meta property="og:description" content="Модуль видеонаблюдения: объекты и камеры, воронка проектов, пульт ЧОПа, медиа-сервер go2rtc, архив записей, сервисные планы и подписки, отчётность по SLA, связь со складом и CRM.">
+  <meta property="og:url" content="https://docs.billing.smit34.ru/pages/video.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Лицензирование и оплата — СмИТ Биллинг v3.5.0 (build 2044)">
-  <meta name="twitter:description" content="Порядок поставки ПО, решение проблем с оплатой, акты сверки, работа системы при неоплате.">
+  <meta name="twitter:title" content="Видеонаблюдение — СмИТ Биллинг 3.5">
+  <meta name="twitter:description" content="Модуль видеонаблюдения: объекты и камеры, воронка проектов, пульт ЧОПа, медиа-сервер go2rtc, архив записей, сервисные планы и подписки, отчётность по SLA, связь со складом и CRM.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
-  <meta name="description" content="Порядок поставки ПО, решение проблем с оплатой, акты сверки, работа системы при неоплате.">
+  <meta name="description" content="Модуль видеонаблюдения: объекты и камеры, воронка проектов, пульт ЧОПа, медиа-сервер go2rtc, архив записей, сервисные планы и подписки, отчётность по SLA, связь со складом и CRM.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../css/style.css?v=2033">
   <link rel="stylesheet" href="../css/search.css?v=2033">
@@ -245,69 +245,6 @@
         </ul>
       </li>
       <li class="has-children">
-        <a href="lk.html"><i class="ti ti-device-mobile"></i> ЛК и мобильные <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
-        <ul class="submenu">
-          <li><a href="lk.html#lk-overview">Обзор и возможности</a></li>
-          <li><a href="lk.html#lk-admin">Раздел «ЛК и мобильные» в админке</a></li>
-          <li class="sub-item"><a href="lk.html#lk-admin">— Брендинг</a></li>
-          <li class="sub-item"><a href="lk.html#lk-admin">— Функции (12 toggle)</a></li>
-          <li class="sub-item"><a href="lk.html#lk-admin">— Безопасность</a></li>
-          <li class="sub-item"><a href="lk.html#lk-mobile-app">— Мобильное (Android+iOS)</a></li>
-          <li><a href="lk.html#lk-login">Авторизация</a></li>
-          <li><a href="lk.html#lk-admin">Настройки интеграций</a></li>
-          <li><a href="lk.html#lk-extra">Telegram-бот</a></li>
-          <li><a href="lk.html#lk-finance">Оплата (ЮKassa)</a></li>
-          <li><a href="lk.html#lk-mobile-app">Мобильное приложение</a></li>
-          <li class="sub-item"><a href="lk.html#lk-mobile-app">— Public Mobile API</a></li>
-          <li class="sub-item"><a href="lk.html#mobile-force-update">— Force-update</a></li>
-          <li class="sub-item"><a href="lk.html#lk-mobile-app">— iOS TestFlight ↔ AppStore</a></li>
-          <li><a href="lk.html#lk-support">FreeScout</a></li>
-          <li><a href="lk.html#lk-ai-chat">AI-ассистент</a></li>
-          <li><a href="lk.html#lk-profile">Профиль</a></li>
-          <li><a href="lk.html#lk-firebase">Push (Firebase)</a></li>
-          <li><a href="lk.html#lk-ai-chat">Claude AI</a></li>
-          <li><a href="billing.html#messaging">TG бот оператора</a></li>
-        </ul>
-      </li>
-      <li class="has-children">
-        <a href="stock.html"><i class="ti ti-packages"></i> Склад <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
-        <ul class="submenu">
-          <li><a href="stock.html#stock-overview">1. Как устроен модуль</a></li>
-          <li><a href="stock.html#stock-quickstart">2. Быстрый старт</a></li>
-          <li><a href="stock.html#stock-flow">3. Движения и статусы</a></li>
-          <li><a href="stock.html#stock-items">4. Номенклатура и остатки</a></li>
-          <li><a href="stock.html#stock-receipt">5. Приход и этикетки</a></li>
-          <li><a href="stock.html#stock-issue">6. Подотчёт сотрудника</a></li>
-          <li><a href="stock.html#stock-inventory">6б. Инвентаризация</a></li>
-          <li><a href="stock.html#stock-reserve">6в. Резерв под наряд</a></li>
-          <li><a href="stock.html#stock-move">6г. Перемещение</a></li>
-          <li><a href="stock.html#stock-suppliers">6д. Поставщики</a></li>
-          <li><a href="stock.html#stock-montazh">7. Материалы в наряде</a></li>
-          <li><a href="stock.html#stock-abonent">8. Оборудование клиента</a></li>
-          <li><a href="stock.html#stock-money">9. Деньги: продажа и аренда</a></li>
-          <li><a href="stock.html#stock-analytics">9а. Аналитика</a></li>
-          <li><a href="stock.html#stock-settings">10. Настройки и роли</a></li>
-          <li><a href="stock.html#stock-launch">11. Чек-лист запуска</a></li>
-        </ul>
-      </li>
-      <li class="has-children">
-        <a href="video.html"><i class="ti ti-device-cctv"></i> Видеонаблюдение <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
-        <ul class="submenu">
-          <li><a href="video.html#video-overview">1. Как устроен модуль</a></li>
-          <li><a href="video.html#video-objects">2. Объекты и камеры</a></li>
-          <li><a href="video.html#video-projects">3. Проекты и документы</a></li>
-          <li><a href="video.html#video-plans">4. Планы и подписки</a></li>
-          <li><a href="video.html#video-catalog">5. Каталог и склад</a></li>
-          <li><a href="video.html#video-media">6. Медиа-сервер</a></li>
-          <li><a href="video.html#video-archive">7. Архив записей</a></li>
-          <li><a href="video.html#video-dispatch">8. Пульт ЧОПа</a></li>
-          <li><a href="video.html#video-reports">9. Отчётность по SLA</a></li>
-          <li><a href="video.html#video-access">10. Права и организации</a></li>
-          <li><a href="video.html#video-settings">11. Настройки модуля</a></li>
-          <li><a href="video.html#video-launch">12. Чек-лист запуска</a></li>
-        </ul>
-      </li>
-      <li class="has-children">
         <a href="helpdesk.html"><i class="ti ti-headset"></i> Поддержка (HelpDesk) <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
         <ul class="submenu">
           <li><a href="helpdesk.html#overview">1. Обзор модуля</a></li>
@@ -328,6 +265,19 @@
       </li>
       <li class="has-children">
         <a href="crm.html"><i class="ti ti-briefcase"></i> CRM — продажи <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="crm.html#crm-overview">1. Как устроен модуль</a></li>
+          <li><a href="crm.html#crm-funnel">2. Воронка сделок</a></li>
+          <li><a href="crm.html#crm-constructor">3. Конструктор воронок</a></li>
+          <li><a href="crm.html#crm-sources">4. Источники сделок</a></li>
+          <li><a href="crm.html#crm-userfields">5. Доп. поля</a></li>
+          <li><a href="crm.html#crm-tasks">6. Задачи</a></li>
+          <li><a href="crm.html#crm-lists">7. Списки</a></li>
+          <li><a href="crm.html#crm-salesbot">8. Salesbot</a></li>
+          <li><a href="crm.html#widgets">9. Виджеты</a></li>
+          <li><a href="crm.html#crm-dashboard">10. Дашборд и карта</a></li>
+          <li><a href="crm.html#crm-campaigns">11. Кампании</a></li>
+        </ul>
       </li>
       <li class="has-children">
         <a href="landing.html"><i class="ti ti-browser"></i> Лендинги <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
@@ -345,309 +295,256 @@
         </ul>
       </li>
       <li class="has-children">
-        <a href="server.html"><i class="ti ti-server"></i> Управление сервером <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <a href="video.html"><i class="ti ti-device-cctv"></i> Видеонаблюдение <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
         <ul class="submenu">
-          <li><a href="server.html#server-setup">1. Настройка сервера</a></li>
-          <li><a href="server.html#maintenance">2. Сервисное обслуживание</a></li>
-          <li class="sub-item"><a href="server.html#backup">2.1. Резервное копирование</a></li>
-          <li class="sub-item"><a href="server.html#backup-ui">2.2. Бекапы (веб-интерфейс)</a></li>
-          <li><a href="server.html#modules">3. Управление модулями</a></li>
-          <li><a href="server.html#remote">4. Удалённое управление</a></li>
+          <li><a href="video.html#video-overview">1. Как устроен модуль</a></li>
+          <li><a href="video.html#video-objects">2. Объекты и камеры</a></li>
+          <li><a href="video.html#video-projects">3. Проекты и документы</a></li>
+          <li><a href="video.html#video-plans">4. Планы и подписки</a></li>
+          <li><a href="video.html#video-catalog">5. Каталог и склад</a></li>
+          <li><a href="video.html#video-media">6. Медиа-сервер</a></li>
+          <li><a href="video.html#video-archive">7. Архив записей</a></li>
+          <li><a href="video.html#video-dispatch">8. Пульт ЧОПа</a></li>
+          <li><a href="video.html#video-reports">9. Отчётность по SLA</a></li>
+          <li><a href="video.html#video-access">10. Права и организации</a></li>
+          <li><a href="video.html#video-settings">11. Настройки модуля</a></li>
+          <li><a href="video.html#video-launch">12. Чек-лист запуска</a></li>
         </ul>
+      </li>
+      <li class="has-children">
+        <a href="server.html"><i class="ti ti-server"></i> Управление сервером <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
       </li>
       <li class="has-children">
         <a href="equipment.html"><i class="ti ti-broadcast"></i> Интеграция с оборудованием <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
-        <ul class="submenu">
-          <li><a href="equipment.html#internet">1. Интернет (NAS/BRAS)</a></li>
-          <li class="sub-item"><a href="equipment.html#switch-types">1.1. Типы коммутаторов</a></li>
-          <li><a href="equipment.html#voip">2. Телефония (VoIP)</a></li>
-          <li><a href="equipment.html#iptv">3. IPTV</a></li>
-          <li class="sub-item"><a href="equipment.html#iptv-tvip">3.1. TVIP Media</a></li>
-          <li class="sub-item"><a href="equipment.html#iptv-lfstream">3.2. LFStream</a></li>
-          <li class="sub-item"><a href="equipment.html#iptv-mappings">3.3. Маппинг пакетов</a></li>
-          <li><a href="equipment.html#cpe">4. Абонентское оборудование</a></li>
-        </ul>
       </li>
       <li class="has-children">
         <a href="sorm.html"><i class="ti ti-shield-lock"></i> Интеграция с СОРМ3 <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
-        <ul class="submenu">
-          <li><a href="sorm.html#principle">Принцип работы</a></li>
-          <li><a href="sorm.html#integrated">Интегрированные решения</a></li>
-          <li><a href="sorm.html#pending">Ожидающие интеграции</a></li>
-          <li><a href="sorm.html#setup">Настройка подключения</a></li>
-          <li class="sub-item"><a href="sorm.html#sorm-add-modal">— Модальное окно «Добавить»</a></li>
-          <li><a href="sorm.html#reports">Отчёты и SQL</a></li>
-          <li><a href="sorm.html#schedule">Расписание выгрузки</a></li>
-          <li><a href="sorm.html#sorm-admin">Админ-UI: список и FTP</a></li>
-          <li class="sub-item"><a href="sorm.html#sorm-list">— Список конфигураций</a></li>
-          <li class="sub-item"><a href="sorm.html#sorm-readiness">— Проверка готовности</a></li>
-          <li class="sub-item"><a href="sorm.html#sorm-ftp">— FTP-сервер РКН</a></li>
-          <li class="sub-item"><a href="sorm.html#sorm-telegram">— Telegram-уведомления</a></li>
-          <li class="sub-item"><a href="sorm.html#sorm-history">— История выгрузок</a></li>
-          <li class="sub-item"><a href="sorm.html#sorm-schedule">— Авторасписание</a></li>
-          <li><a href="sorm.html#manual-run">Управление отчётами</a></li>
-          <li><a href="sorm.html#metadata">СОРМ-метаданные</a></li>
-          <li><a href="sorm.html#preflight">Pre-flight валидация</a></li>
-          <li><a href="sorm.html#dedup">Дубликаты атрибутов</a></li>
-          <li><a href="sorm.html#api">REST API готовности</a></li>
-          <li><a href="sorm.html#children">Схемы настройки</a></li>
-        </ul>
       </li>
       <li class="has-children">
         <a href="api.html"><i class="ti ti-link"></i> API <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
-        <ul class="submenu">
-          <li><a href="api.html#overview">1. Обзор API</a></li>
-          <li><a href="api.html#auth">2. Аутентификация</a></li>
-          <li><a href="api.html#rest-v2">3. REST API v2</a></li>
-          <li><a href="api.html#promise-pay">4. Обещанный платёж</a></li>
-          <li><a href="api.html#payments-api">5. Платёжные API (ЮKassa, W1)</a></li>
-          <li class="sub-item"><a href="api.html#payments-endpoints">5.0. Список endpoint</a></li>
-          <li class="sub-item"><a href="api.html#payments-flow">5.1. Схема платежа</a></li>
-          <li class="sub-item"><a href="api.html#yookassa-rest">5.2. ЮKassa REST v3</a></li>
-          <li class="sub-item"><a href="api.html#yookassa-http">5.3. ЮKassa HTTP</a></li>
-          <li class="sub-item"><a href="api.html#w1-api">5.4. Wallet One</a></li>
-          <li class="sub-item"><a href="api.html#payments-settings">5.5. Настройки</a></li>
-          <li><a href="api.html#soap">6. SOAP API</a></li>
-          <li><a href="api.html#mobile-api">7. Mobile API</a></li>
-        </ul>
       </li>
       <li class="has-children">
         <a href="troubleshooting.html"><i class="ti ti-tool"></i> Решение проблем <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
-        <ul class="submenu">
-          <li><a href="troubleshooting.html#general">1. Общие вопросы</a></li>
-          <li><a href="troubleshooting.html#auth">2. Клиенты и авторизация</a></li>
-          <li><a href="troubleshooting.html#billing-payments">3. Биллинг и платежи</a></li>
-          <li><a href="troubleshooting.html#server-perf">4. Сервер и производительность</a></li>
-        </ul>
       </li>
       <li class="has-children">
         <a href="licensing.html"><i class="ti ti-file-description"></i> Лицензирование <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
-        <ul class="submenu">
-          <li><a href="licensing.html#delivery">1. Порядок поставки ПО</a></li>
-          <li><a href="licensing.html#payment-issues">2. Не проходит оплата</a></li>
-        </ul>
       </li>
       <li><a href="contacts.html"><i class="ti ti-phone"></i> Контакты</a></li>
     </ul>
 
-      <div class="nav-section">Разработчикам</div>
-      <ul>
-        <li class="has-children">
-          <a href="../graphify/graph.html"><i class="ti ti-topology-star-3"></i> Архитектура кода <span class="arrow"><i class="bi bi-chevron-right"></i></span></a>
-          <ul class="submenu">
-            <li><a href="../graphify/graph.html">Граф сообществ</a></li>
-            <li><a href="../graphify/wiki/index.html">Wiki модулей</a></li>
-            <li><a href="dev/index.html">Портал разработчика</a></li>
-            <li><a href="../graphify/help.html">graphify CLI</a></li>
-          </ul>
-        </li>
-      </ul>
+    <div class="nav-section">Разработчикам</div>
+    <ul>
+      <li class="has-children">
+        <a href="../graphify/graph.html"><i class="ti ti-topology-star-3"></i> Архитектура кода <span class="arrow"><i class="bi bi-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="../graphify/graph.html">Граф сообществ</a></li>
+          <li><a href="../graphify/wiki/index.html">Wiki модулей</a></li>
+          <li><a href="dev/index.html">Портал разработчика</a></li>
+          <li><a href="../graphify/help.html">graphify CLI</a></li>
+        </ul>
+      </li>
+    </ul>
   <button class="sidebar-theme-toggle" aria-label="Тема"><span class="icon-sun"><i class="ti ti-sun"></i></span><span class="icon-moon"><i class="ti ti-moon"></i></span><span class="sidebar-theme-label">Сменить тему</span></button>
 </nav>
 </aside>
 
 <main class="content">
-  <div class="breadcrumb">
-    <a href="../index.html">Документация</a> <span class="sep">/</span> Лицензирование и оплата
-  </div>
 
-  <h1>Лицензирование Smit Billing</h1>
+<p><strong>Видеонаблюдение</strong> (<code>/admin/video/</code>) — продажа и
+обслуживание видеонаблюдения как услуги: от заявки до ежемесячной абонплаты.
+Модуль ведёт объекты клиента с камерами, воронку монтажных проектов с
+документами, пульт оператора охраны, собственный медиа-сервер и архив записей.
+Деньги идут через отдельный лицевой счёт объекта, оборудование — через
+<a href="stock.html">склад</a>, сделки — общие с <a href="crm.html">CRM</a>.</p>
+
 <div class="page-toc">
 <details open>
-  <summary><strong>Содержание страницы</strong></summary>
+  <summary><strong><i class="bi bi-book"></i> Содержание раздела</strong></summary>
   <ul>
-  <li><a href="#license-server">1. Сервер лицензий</a></li>
-  <li><a href="#issue-license">2. Выдача новой лицензии</a></li>
-  <li><a href="#activate">3. Активация лицензии в биллинге</a></li>
-  <li><a href="#manage">4. Управление лицензиями</a></li>
-  <li><a href="#api">5. API проверки лицензии</a></li>
-  <li><a href="#delivery">6. Порядок поставки и учёта программного обеспечения</a></li>
-  <li><a href="#payment-issues">7. Не проходит оплата</a></li>
+    <li><a href="#video-overview">1. Как устроен модуль</a></li>
+    <li><a href="#video-objects">2. Объекты и камеры</a></li>
+    <li><a href="#video-projects">3. Проекты: воронка и документы</a></li>
+    <li><a href="#video-plans">4. Сервисные планы и подписки</a></li>
+    <li><a href="#video-catalog">5. Каталог оборудования и склад</a></li>
+    <li><a href="#video-media">6. Медиа-сервер go2rtc</a></li>
+    <li><a href="#video-archive">7. Архив записей</a></li>
+    <li><a href="#video-dispatch">8. Пульт ЧОПа</a></li>
+    <li><a href="#video-reports">9. Отчётность по SLA</a></li>
+    <li><a href="#video-access">10. Права и организации</a></li>
+    <li><a href="#video-settings">11. Настройки модуля</a></li>
+    <li><a href="#video-launch">12. Чек-лист запуска</a></li>
   </ul>
 </details>
 </div>
 
+<h2 id="video-overview">Как устроен модуль</h2>
+<p>Ядро — <strong>объект наблюдения</strong>: адрес клиента, на котором стоят
+камеры. У объекта свой лицевой счёт, поэтому долг за видео блокирует камеры, но
+не трогает интернет. Всё остальное навешивается на объект:</p>
 
-  <p>Система лицензирования СмИТ Биллинг v3.5.0 состоит из двух компонентов: центрального сервера лицензий и раздела «Лицензия» в каждой инсталляции биллинга. Лицензия привязана к домену инсталляции и проверяется онлайн.</p>
+<pre class="mermaid">
+flowchart LR
+  A["Клиент"] --> B["Объект наблюдения"]
+  B --> C["Камеры"]
+  B --> D["Оборудование"]
+  B --> E["Подписки"]
+  B --> F["Проект (сделка)"]
+  E --> G["Списания billing_worker"]
+  C --> H["Медиа-сервер go2rtc"]
+  H --> I["Архив MediaMTX"]
+  B --> J["Пульт ЧОПа"]
+</pre>
 
-  <div class="info-box">
-    <strong>Архитектура:</strong> биллинг пингует <code>https://license.billing.smit34.ru/api/verify/</code>, передавая ключ и домен. Сервер возвращает данные лицензиата. Ответ кешируется на 1 час — кратковременная недоступность сервера не влияет на работу системы.
-  </div>
+<div class="note">
+  <p><strong>Объект и проект — разные вещи.</strong> Объект живёт постоянно
+  (камеры, подписки, архив), проект — это разовая сделка на монтаж или
+  расширение. У одного объекта может быть несколько проектов: первая очередь,
+  вторая, ремонт после грозы.</p>
+</div>
 
-  <div class="protected-section" data-gate="staff"><div class="protected-cover"><div class="protected-cover-inner"><i class="ti ti-lock" style="font-size:2rem;color:#5BA89D"></i><div class="protected-title"><strong>Раздел только для сотрудников</strong></div><p>Для доступа введите пароль.</p><input type="password" class="protected-pass" placeholder="Пароль" autocomplete="off"><button class="protected-btn" type="button">Разблокировать</button><div class="protected-err" style="display:none;color:#dc3545;margin-top:8px">Неверный пароль</div></div></div>
-  <!-- ═══ 1. Сервер лицензий ═══ -->
-  <h2 id="license-server">1. Сервер лицензий</h2>
+<h2 id="video-objects">Объекты и камеры</h2>
+<p>Список объектов — <code>/admin/video/objects/</code>. Колонка
+<strong>«В эфире»</strong> показывает, сколько камер реально отдают видео из
+общего числа: «3 / 4» зелёным — всё в порядке, «0 / 4» красным — объект
+молчит. Если медиа-сервер недоступен, вместо счётчика показывается просто
+количество камер — система не выдаёт «ноль в эфире» за факт.</p>
+<p>Чипы над таблицей отбирают объекты с подписками, заблокированные и
+должников. Карточка объекта открывается модалкой: клиент, название, тип
+(частный дом, СМБ, МКД, госучреждение, <strong>охраняемый объект ЧОП</strong>,
+другое), организация-владелец и адрес.</p>
+<p>Тот же список объектов клиента доступен из его карточки — вкладка
+<strong>«Видео»</strong>, там же камеры, оборудование и подписки.</p>
 
-  <table>
-    <thead><tr><th>Параметр</th><th>Значение</th></tr></thead>
-    <tbody>
-      <tr><td>URL</td><td><a href="https://license.billing.smit34.ru" target="_blank">https://license.billing.smit34.ru</a></td></tr>
-      <tr><td>Админка</td><td><a href="https://license.billing.smit34.ru/admin/" target="_blank">https://license.billing.smit34.ru/admin/</a></td></tr>
-      <tr><td>Логин</td><td>admin / admin</td></tr>
-      <tr><td>Хостинг</td><td>31.44.7.144 — Docker (PostgreSQL + gunicorn:8878), Nginx + SSL</td></tr>
-      <tr><td>API info</td><td><a href="https://license.billing.smit34.ru/api/info/" target="_blank">/api/info/</a></td></tr>
-    </tbody>
-  </table>
+<h2 id="video-projects">Проекты: воронка и документы</h2>
+<p>Канбан проектов — <code>/admin/video/projects/</code>. Девять стадий: заявка,
+обследование, проект/КП, договор, монтаж, ПНР, сдан, на сервисе, отменён. В
+шапке колонки — количество сделок и сумма по стадии.</p>
+<p>Проект видеонаблюдения — это <strong>та же сделка, что в CRM</strong>
+(<code>deal_type='video'</code>), просто показанная в своём разрезе. Из канбана
+есть переход «В CRM», из карточки сделки — задачи, звонки, теги и история
+стадий. Отдельная страница карточки видео-сделки сохранена ради генератора
+документов.</p>
+<p>С карточки проекта печатаются пять документов: акт обследования,
+коммерческое предложение, договор, акт сдачи-приёмки и согласие на обработку
+персональных данных (152-ФЗ). Тексты редактируются в едином центре документов
+<code>/admin/documents/templates/</code> — шапка с реквизитами, логотип и
+печать берутся из брендинга организации.</p>
 
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/docs/licenses/license_04_license_list.png"
-       alt="Список лицензий в Django admin" style="max-width:100%;border-radius:8px;border:1px solid #dee2e6;margin:12px 0">
+<h2 id="video-plans">Сервисные планы и подписки</h2>
+<p><code>/admin/video/plans/</code> — карточки планов обслуживания: диапазон
+камер, цена в месяц, срок хранения архива, SLA реакции, квартальный
+health-check и услуга каталога, по которой идёт списание.</p>
+<p>Подписка привязывает план к объекту и создаёт периодическую услугу
+(<code>system_type=20</code>), которую ежемесячно списывает
+<code>billing_worker</code> — с отдельного видео-счёта объекта, без скидок
+интернет-лояльности.</p>
 
-  <!-- ═══ 2. Выдача лицензии ═══ -->
-  <h2 id="issue-license">2. Выдача новой лицензии</h2>
+<h2 id="video-catalog">Каталог оборудования и склад</h2>
+<p><code>/admin/video/models/</code> — справочник моделей: камеры, регистраторы,
+PoE-коммутаторы, ИБП, накопители. У модели есть характеристики (мегапиксели,
+PTZ, уличная), цена-ориентир для сметы и ссылка на паспорт — она открывается
+иконкой прямо из списка.</p>
+<p>Модель связывается с <strong>позицией склада</strong>. Тогда в каталоге
+видно фото, закупочную цену и остаток, а в карточке сделки считается
+<strong>экономика проекта</strong>: смета оборудования и работ против
+фактической себестоимости списанного со склада, маржа в рублях и процентах.
+Пока по сделке ничего не списано, маржа не показывается — иначе она равнялась
+бы всей сумме КП.</p>
 
-  <ol>
-    <li>Открыть <a href="https://license.billing.smit34.ru/admin/licenses/installation/add/" target="_blank">Добавить лицензию</a></li>
-    <li>Заполнить поля:</li>
-  </ol>
+<h2 id="video-media">Медиа-сервер go2rtc</h2>
+<p><code>/admin/video/streams/</code> — все потоки медиа-сервера и их
+сопоставление с камерами биллинга. Для каждого потока видно состояние (онлайн,
+оффлайн, не заведён), клиента, объект и наличие архива.</p>
+<div class="note">
+  <p><strong>Пароли камер не показываются.</strong> В списке и в API строка
+  источника маскируется (<code>rtsp://user:•••@host</code>). Полный адрес
+  открывает только администратор — кнопкой в модалке потока, и каждый показ
+  записывается в аудит.</p>
+</div>
+<p>Если камера заведена в биллинге, но потока в go2rtc нет, строка помечается
+и предлагает действие <strong>«Завести»</strong>; кнопка «Завести все» в шапке
+создаёт потоки для всех таких камер разом.</p>
 
-  <table>
-    <thead><tr><th>Поле</th><th>Описание</th><th>Пример</th></tr></thead>
-    <tbody>
-      <tr><td><strong>Домен</strong></td><td>FQDN инсталляции (без https://)</td><td><code>client.billing.smit34.ru</code></td></tr>
-      <tr><td><strong>Организация</strong></td><td>Полное юридическое наименование</td><td>ООО СМИТ</td></tr>
-      <tr><td><strong>ИНН</strong></td><td>10 или 12 цифр</td><td>3461009378</td></tr>
-      <tr><td><strong>КПП</strong></td><td>9 цифр</td><td>346101001</td></tr>
-      <tr><td><strong>Юридический адрес</strong></td><td>Полный почтовый адрес</td><td>400080, г. Волгоград, ул. 40 лет ВЛКСМ, д. 80, оф.1</td></tr>
-      <tr><td><strong>Контактное лицо</strong></td><td>Должность и ФИО</td><td>Генеральный директор П.Е. Письменный</td></tr>
-      <tr><td><strong>Действует до</strong></td><td>Дата окончания или пусто</td><td>пусто = бессрочно</td></tr>
-      <tr><td><strong>Макс. клиентов</strong></td><td>Лимит или 0</td><td>0 = без ограничений</td></tr>
-    </tbody>
-  </table>
+<h2 id="video-archive">Архив записей</h2>
+<p>Архив камеры открывается из списка потоков или карточки объекта. На странице
+живой поток, шкала суток с сегментами записи и список фрагментов.</p>
+<ul>
+  <li><strong>Выбор даты</strong> — стрелки день назад и вперёд, поле даты,
+  кнопка «Сегодня». Без выбора показываются последние сутки.</li>
+  <li><strong>Шкала</strong> — 24 часа с отметками записи: сразу видно, в
+  котором часу записи нет. Клик по сегменту проигрывает фрагмент.</li>
+  <li><strong>Кадр</strong> — сохранить текущий стоп-кадр камеры.</li>
+  <li><strong>Скачать фрагмент</strong> — иконка у каждого интервала, файл
+  mp4 отдаёт MediaMTX.</li>
+</ul>
 
-  <p>После сохранения ключ генерируется автоматически в формате <code>SMIT-XXXXXXXX-XXXXXXXX-XXXXXXXX</code> и отображается в карточке с кнопкой «Копировать».</p>
+<h2 id="video-dispatch">Пульт ЧОПа</h2>
+<p><code>/admin/dispatch/</code> — рабочее место оператора охраны: стена камер
+охраняемых объектов, счётчики и панель тревог. Плитка камеры честно показывает
+своё состояние: «в эфире», «нет сигнала» (поток есть, источник молчит), «не
+заведена» или «выключена».</p>
+<p>У тревоги один жизненный цикл и всегда одно очевидное действие: новая —
+«Принять», принятая — «Обработана»; отдельной кнопкой можно пометить ложной.
+Рядом видно, кто принял и когда, а у непринятой тикает счётчик ожидания — это
+и есть время реакции, которое потом попадает в отчёт по SLA.</p>
+<p>На телефоне тревоги стоят первым блоком, выше стены камер: оператор не
+должен пролистывать десятки плиток, чтобы увидеть тревогу.</p>
 
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/docs/licenses/license_05_license_detail.png"
-       alt="Карточка лицензии — лицензионный ключ" style="max-width:100%;border-radius:8px;border:1px solid #dee2e6;margin:12px 0">
+<h2 id="video-reports">Отчётность по SLA</h2>
+<p><code>/admin/video/reports/</code> — отчёт по охраняемым объектам за период
+(7 / 30 / 90 дней, год): доступность, простой, тревоги, время реакции и
+выручка. Кроме таблиц есть два графика: доступность по дням и тревоги со
+средним временем реакции.</p>
+<div class="note">
+  <p>Доступность считается по событиям потери и восстановления связи. Если
+  таких событий за период не было, отчёт пишет «нет данных» и ставит прочерк —
+  а не рисует ровные 100 %, которых никто не измерял.</p>
+</div>
+<p>Кнопка «Экспорт CSV» выгружает те же данные для сводных таблиц.</p>
 
-  </div>
+<h2 id="video-access">Права и организации</h2>
+<p>Раздел скоупится по организациям: сотрудник видит объекты, камеры, сметы и
+тревоги только своих компаний, а переключатель организации в шапке фильтрует
+списки. Переход по прямой ссылке на чужой объект отдаёт 404.</p>
+<p>Права разведены на два ключа:</p>
+<ul>
+  <li><code>sec_video</code> — раздел «Видеонаблюдение»: объекты, проекты,
+  планы, каталог, медиа-сервер, отчётность;</li>
+  <li><code>sec_dispatch</code> — пульт ЧОПа. Группа
+  <code>security_operator</code> заведена для операторов охраны: пульт им
+  нужен, воронка продаж со сметами — нет.</li>
+</ul>
+<p>Настраиваются в <code>/admin/settings/permission_settings/</code>.</p>
 
-  <!-- ═══ 3. Активация ═══ -->
-  <h2 id="activate">3. Активация лицензии в биллинге</h2>
+<h2 id="video-settings">Настройки модуля</h2>
+<p><code>/admin/video/settings/</code> — четыре группы:</p>
+<ul>
+  <li><strong>Основные</strong> — включение модуля, отдельный счёт под видео.</li>
+  <li><strong>Биллинг и блокировки</strong> — блокировать камеры при минусе,
+  блокировать ли заодно интернет (по умолчанию нет), аванс по проекту в
+  процентах, партнёрская услуга реагирования ЧОО.</li>
+  <li><strong>Облако VSaaS</strong> — провайдер, адрес и ключ API, проверка
+  связи. Пусто означает работу на собственном медиа-сервере.</li>
+  <li><strong>Архив записей</strong> — запись MediaMTX на диск, дублирование в
+  облачное хранилище и удаление локального сегмента после выгрузки.</li>
+</ul>
 
-  <p>Клиент открывает <strong>Настройки → Лицензия</strong> (<code>/admin/settings/license/</code>):</p>
+<h2 id="video-launch">Чек-лист запуска</h2>
+<ol>
+  <li>Включить модуль в <code>/admin/settings/modules/</code>.</li>
+  <li>Завести услуги типа «Видеонаблюдение» в каталоге услуг и сервисные планы
+  на их основе.</li>
+  <li>Наполнить каталог моделей и связать их с позициями склада — иначе
+  себестоимость проектов не сойдётся.</li>
+  <li>Настроить медиа-сервер: адрес go2rtc и публичный URL для плееров.</li>
+  <li>Включить архив, если записи хранятся на своей стороне.</li>
+  <li>Раздать права: <code>sec_video</code> инженерам и продажам,
+  <code>sec_dispatch</code> — операторам пульта.</li>
+  <li>Завести первый объект, камеру и подписку; проверить, что списание
+  прошло по видео-счёту.</li>
+</ol>
 
-  <ol>
-    <li>Ввести полученный ключ в поле <strong>«Лицензионный ключ»</strong> (кнопка 👁 показывает введённое значение)</li>
-    <li>URL сервера лицензий уже заполнен: <code>https://license.billing.smit34.ru</code></li>
-    <li>Нажать <strong>«Сохранить и проверить»</strong></li>
-    <li>Страница обновится — статус изменится на <strong>✅ Лицензия действующая</strong></li>
-  </ol>
-
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/docs/licenses/license_01_billing_page.png"
-       alt="Страница лицензии в настройках биллинга" style="max-width:100%;border-radius:8px;border:1px solid #dee2e6;margin:12px 0">
-
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/docs/licenses/license_02_billing_full.png"
-       alt="Активированная лицензия — данные лицензиата" style="max-width:100%;border-radius:8px;border:1px solid #dee2e6;margin:12px 0">
-
-  <!-- ═══ 4. Управление ═══ -->
-  <h2 id="manage">4. Управление лицензиями</h2>
-
-  <table>
-    <thead><tr><th>Действие</th><th>Как выполнить</th></tr></thead>
-    <tbody>
-      <tr><td><strong>Деактивировать</strong></td><td>Снять галочку «Активна» в карточке или выбрать действие «Деактивировать» в списке</td></tr>
-      <tr><td><strong>Продлить</strong></td><td>Изменить поле «Действует до» в карточке</td></tr>
-      <tr><td><strong>Сменить ключ</strong></td><td>Действие «Сгенерировать новый ключ» в списке (старый немедленно перестаёт работать)</td></tr>
-      <tr><td><strong>Просмотр статистики</strong></td><td>Поля «Последняя проверка» и «Проверок» — показывают активность инсталляции</td></tr>
-    </tbody>
-  </table>
-
-  <div class="warning-box">
-    Смена ключа через действие «Сгенерировать новый ключ» немедленно инвалидирует старый. Клиент не сможет войти в раздел «Лицензия» до ввода нового ключа. Заранее уведомите клиента.
-  </div>
-
-  <!-- ═══ 5. API ═══ -->
-  <h2 id="modules-catalog">4А. Каталог модулей: версии, changelog, зависимости</h2>
-
-  <p>Сервер лицензий ведёт каталог из <strong>20 модулей</strong> с версиями и
-  историей изменений. У каждого модуля: категория, иконка, текущая версия,
-  changelog по версиям и зависимости (например, «AI-ассистент» требует модуль
-  «Поддержка», «Автообзвон» — «IP-телефонию»). Версия модуля показывается
-  бейджем на карточках при настройке тарифа.</p>
-
-  <ul>
-    <li><strong>Базовые модули</strong> (ядро биллинга, RADIUS, отчёты, карта
-      сети) доступны во всех тарифах и в настройке тарифа не участвуют;</li>
-    <li><strong>Тарифы</strong> — форма с карточками модулей по категориям:
-      выбранные подсвечены, невыбранные полупрозрачны; у тарифа есть обложка
-      и блок «Кто на этом тарифе» со ссылками на инсталляции;</li>
-    <li><strong>Защита от случайных изменений</strong> — состав модулей тарифа
-      заблокирован до нажатия «Изменить состав модулей», при сохранении
-      показывается список включаемых/выключаемых модулей; переключение
-      признаков «Базовый (ядро)» и «Активен» требует подтверждения, удаление —
-      ввода кода объекта.</li>
-  </ul>
-
-  <h2 id="plugin-widgets">4Б. Виджеты-плагины</h2>
-
-  <p>Каталог загружаемых виджетов для инсталляций: zip-пакет
-  (<code>widget.json</code> + <code>widget.js</code>), точка монтирования
-  (дашборд CRM, карточка сделки, дашборд биллинга, карточка клиента),
-  категория (CRM, аналитика, финансы и др.), обложка и доступность по тарифам
-  (пусто = всем). Пакет валидируется при загрузке: манифест, совпадение slug и
-  версии, наличие entry-файла; целостность — SHA-256. Инсталляции получают
-  каталог по лицензионному ключу: <code>GET /api/gw/widgets/</code> (в ответе
-  есть <code>category</code>/<code>category_name</code> для группировки).</p>
-
-  <h2 id="api">5. API проверки лицензии</h2>
-
-  <p>Лицензию можно проверить напрямую через браузер или curl:</p>
-
-  <pre><code>GET https://license.billing.smit34.ru/api/verify/?key=SMIT-XXXX-XXXX-XXXX&amp;domain=client.smit34.ru</code></pre>
-
-  <p>Ответ при действующей лицензии:</p>
-
-  <pre><code>{
-  "valid": true,
-  "status": "Действующая",
-  "product": "Smit Billing",
-  "company": "ООО СМИТ",
-  "inn": "3461009378",
-  "kpp": "346101001",
-  "domain": "testbill.smit34.ru",
-  "issued_at": "2026-04-08",
-  "expires_at": null,
-  "max_abonents": 0
-}</code></pre>
-
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/docs/licenses/license_06_api_response.png"
-       alt="API ответ сервера лицензий" style="max-width:100%;border-radius:8px;border:1px solid #dee2e6;margin:12px 0">
-
-  <p><code>expires_at: null</code> означает бессрочную лицензию. При <code>valid: false</code> поле <code>error</code> содержит причину отказа.</p>
-
-  <!-- ═══ 6. Порядок поставки ═══ -->
-  <h2 id="delivery">6. Порядок поставки и учёта программного обеспечения</h2>
-
-  <p>Процедура приобретения СмИТ Биллинг v3.5.0:</p>
-
-  <ol>
-    <li><strong>Заявка</strong> — отправьте запрос на <a href="mailto:sales@smit34.ru">sales@smit34.ru</a> с указанием домена инсталляции, планируемого числа клиентов и необходимых модулей.</li>
-    <li><strong>Коммерческое предложение</strong> — менеджер подготовит КП со стоимостью лицензии и ежегодной платой за поддержку.</li>
-    <li><strong>Договор и оплата</strong> — заключается договор поставки ПО. Оплата по безналичному расчёту.</li>
-    <li><strong>Поставка</strong> — после оплаты предоставляется: лицензионный ключ, Docker-образы, документация, доступ к обновлениям.</li>
-    <li><strong>Активация</strong> — клиент вводит ключ в Настройки → Лицензия. Система онлайн проверяет ключ на сервере лицензий.</li>
-    <li><strong>Учёт</strong> — лицензия регистрируется в реестре ПО. Поставляется акт приёма-передачи неисключительных прав.</li>
-  </ol>
-
-  <!-- ═══ 7. Проблемы с оплатой ═══ -->
-  <h2 id="payment-issues">7. Не проходит оплата</h2>
-
-  <ul>
-    <li><strong>Ошибка в реквизитах</strong> — запросите актуальные реквизиты у менеджера.</li>
-    <li><strong>Платёж не зачислен</strong> — зачисление до 3 рабочих дней. По истечении — направьте платёжное поручение с отметкой банка на <a href="mailto:sales@smit34.ru">sales@smit34.ru</a>.</li>
-    <li><strong>Нужна корректировка счёта</strong> — обратитесь к менеджеру для выставления нового счёта.</li>
-  </ul>
-
-  <div class="welcome-image" style="margin-top:3rem">
-    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/robot_license.jpg"
-         alt="Лицензирование СмИТ Биллинг">
-  </div>
 </main>
-
-<footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2044)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">20.08.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2044)</span>&nbsp;|&nbsp;<span data-smit="updated">20.08.2026</span></span>
-</footer>
 
 <script src="../js/main.js?v=2033"></script>
 <script src="../js/version.js"></script>
