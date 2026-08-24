@@ -19,7 +19,7 @@
   <meta name="twitter:image" content="https://docs.billing.smit34.ru/img/og/billing.png?v=214">
   <meta name="description" content="Управление клиентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=2101">
+  <link rel="stylesheet" href="../css/style.css?v=2169">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.26.0/dist/tabler-icons.min.css">
   <link rel="stylesheet" href="../css/search.css?v=2033">
@@ -492,6 +492,21 @@
 
 <!-- ===== 1. ДАШБОРД ===== -->
 <h2 id="dashboard">1. Дашборд</h2>
+
+<div class="info-box" id="dash-video-player">
+<strong>Обучающий ролик для персонала</strong> — две с половиной минуты о том, как читать
+главную страницу: период и организация, ключевые показатели, сводки по модулям, деньги,
+цели и работа с телефона.
+<video controls preload="none" playsinline
+       poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v2166/dashboard_video_poster.jpg"
+       style="width:100%;max-width:900px;display:block;margin:.9rem 0 .4rem;border-radius:10px">
+  <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/dashboard-training-voice.mp4" type="video/mp4">
+  <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/dashboard-training-voice.mp4">Скачать ролик (MP4)</a>
+</video>
+<small>MP4 · 1920×1080 · 2 мин 35 с · с озвучкой ·
+<a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/dashboard-training-voice.mp4" target="_blank" rel="noopener">открыть отдельно</a></small>
+</div>
+
 <p>Главная страница админки по адресу <a href="https://testbill.smit34.ru/admin/welcome/">/admin/welcome/</a>.
 Перестроена в build 539–558 после <code>/critique</code>-аудита: иерархия KPI с hero-метрикой, единый
 визуальный язык компактных карточек (<code>.dash-tile</code>), все блоки скрываются автоматически
@@ -545,12 +560,6 @@
     <li><a href="#dashboard-auto-refresh">Auto-refresh</a></li>
   </ul>
 </details>
-</div>
-
-<div class="note">
-  <strong>Видео для персонала.</strong> Разбор страницы за две с половиной минуты — период
-  и организация, ключевые показатели, сводки по модулям, деньги, цели и работа с телефона:
-  <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/dashboard-training-voice.mp4" target="_blank" rel="noopener">смотреть ролик</a>.
 </div>
 
 <h3 id="dashboard-period">Период и организация — общие для всей страницы</h3>
@@ -861,13 +870,21 @@ GROUP BY 1, 2;</code></pre>
 <p>Раздел меню <strong>«Тарификация»</strong> содержит всё, что связано с услугами,
 которые получают клиенты, и правилами их тарификации.</p>
 
-<div class="info-box">
-<strong>Обучающий ролик для персонала</strong> — 3 минуты о том, чем тариф
-отличается от услуги, откуда берётся цена в счёте, зачем нужны линейки и почему
-правило сети не работает без выгрузки в ACL:
-<a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/tarifs-training.mp4"
-   target="_blank" rel="noopener">смотреть (MP4, 1920×1080, с озвучкой)</a>.
-</div>
+<figure class="doc-video">
+  <video controls preload="none" playsinline
+         poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/tarifs-training-poster.jpg">
+    <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/tarifs-training.mp4" type="video/mp4">
+    Ваш браузер не проигрывает видео —
+    <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/tarifs-training.mp4">скачайте файл</a>.
+  </video>
+  <figcaption>
+    <b>Обучающий ролик для персонала.</b>
+    <span>Чем тариф отличается от услуги, откуда берётся цена в счёте, зачем
+    нужны линейки и почему правило сети не работает без выгрузки в ACL.</span>
+    <span class="dv-meta">2:56 · 1920×1080 · с озвучкой ·
+    <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/tarifs-training.mp4" target="_blank" rel="noopener">скачать</a></span>
+  </figcaption>
+</figure>
 
 <div class="page-toc">
 <details open>

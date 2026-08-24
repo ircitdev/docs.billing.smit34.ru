@@ -903,6 +903,34 @@ pre code {
 .info-block h4 { margin-top: 0; color: var(--primary-dark); }
 [data-theme="dark"] .info-block h4 { color: var(--primary); }
 
+/* Обучающий ролик: плеер прямо в тексте раздела.
+   Ссылка «смотреть» уводила со страницы, и ролик смотрели единицы. */
+.doc-video {
+  margin: 20px 0;
+  max-width: 860px;
+}
+
+.doc-video video {
+  width: 100%;
+  display: block;
+  border-radius: 10px;
+  background: #0f141a;
+  box-shadow: 0 2px 10px var(--shadow);
+}
+
+.doc-video figcaption {
+  margin-top: 8px;
+  font-size: .84rem;
+  color: var(--text-light);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  align-items: baseline;
+}
+
+.doc-video figcaption b { color: var(--text); font-weight: 600; }
+.doc-video figcaption .dv-meta { white-space: nowrap; }
+
 /* Warning box */
 .warning-box {
   background: #fff3e0;
