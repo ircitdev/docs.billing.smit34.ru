@@ -141,6 +141,9 @@
           <li class="sub-item"><a href="billing.html#bank-parsers">6.4.2. Банки и парсеры</a></li>
           <li class="sub-item"><a href="billing.html#bank-queue">6.4.3. Очередь модерации</a></li>
           <li class="sub-item"><a href="billing.html#bank-imports">6.4.4. Журнал импортов</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="billing.html#bank-queue-link-2171">— Привязка платежа и данные ФНС</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="billing.html#bank-org-2171">— Организация платежа</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="billing.html#bank-client-tab">— Вкладка «Банк» в карточке</a></li>
           <li class="sub-item"><a href="billing.html#mailserver">6.4.5. Почтовый сервер</a></li>
           <li class="sub-item" style="padding-left:1.8em"><a href="billing.html#mailserver-webmail">— Веб-почта и календарь</a></li>
           <li class="sub-item" style="padding-left:1.8em"><a href="billing.html#mailserver-identity">— Имя, подпись, фото</a></li>
@@ -5028,6 +5031,54 @@ backup-коды 2FA; IP-список fail-open при пустоте; авари
 <h4 id="bank-queue-onboarding">Onboarding-tooltip</h4>
 <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v914/bank_v914_queue_onboarding.png" alt="Onboarding-tooltip 4 шага" loading="lazy"></p>
 <p>При первом визите показывает 4-step tour: Bulk-операции → Keyboard shortcuts → Undo → Risk-проверка. Bump версии (v4 → v5 в JS) — снова покажется после новых фич. Shift+Click на help-иконку (клавиатура в toolbar) — перезапуск.</p>
+
+<h4 id="bank-queue-2171">Разбор очереди, организации и аудит (build 2171)</h4>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v2171/queue.png" alt="Очередь модерации: поиск, период, итоги, колонка организации" loading="lazy"></p>
+
+<p>Аудит модуля 24.08.2026 показал, что очередь стояла не из-за неудобств интерфейса, а из-за трёх дефектов.</p>
+
+<ul>
+  <li><strong>Ручная привязка платежа была невозможна.</strong> Поиск клиента уходил на <code>/rest_api/v2/Abonents/?search=…</code>, а этот API не знает параметра <code>search</code> — возвращались первые абоненты подряд. Плюс в разметке результатов стояло <code>a.pk</code>, тогда как ключ называется <code>id</code>: строки рисовались как <code>#undefined</code>, а клик отправлял <code>abonent_id=undefined</code>. Отсюда платежи, висевшие на модерации с мая.</li>
+  <li><strong>Баннер отката висел постоянно.</strong> Класс <code>.bq-hidden</code> объявлен выше по файлу, чем <code>.bq-undo-banner{display:flex}</code> — при равной специфичности побеждает нижнее правило. Жёлтая плашка «операция выполнена» показывалась на каждой загрузке, а панель массовых операций была развёрнута всегда.</li>
+  <li><strong>Счётчик импортов на странице парсеров</strong> запрашивал JSON у страницы, которая отдаёт HTML — спиннеры крутились вечно.</li>
+</ul>
+
+<h4 id="bank-queue-link-2171">Привязка платежа: контекст и данные ФНС</h4>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v2171/link_modal.png" alt="Модалка привязки: карточка платежа, подсказки номеров, реквизиты из ФНС" loading="lazy"></p>
+
+<p>Поиск клиента идёт по ФИО или названию, номеру договора, телефону, e-mail, ИНН и номеру клиента. Клиенты с совпавшим ИНН поднимаются в начало списка.</p>
+
+<p>Модалка показывает сам платёж — сумму, дату, банк, плательщика с ИНН и назначение — и предлагает кнопки-подсказки с номерами из назначения: клиент часто пишет туда номер договора. Если ИНН плательщика в базе не найден, реквизиты подтягиваются из ФНС через DaData: название, адрес, руководитель и кнопка «Искать по названию из ФНС».</p>
+
+<h4 id="bank-org-2171">Организация платежа</h4>
+<p>Импорт и операция запоминают юрлицо-получателя — оно определяется по расчётному счёту из выписки. В очереди и журнале появилась колонка «Орг.», списки скоупятся переключателем организации в шапке и правами сотрудника.</p>
+
+<p><strong>Счёт и акт теперь выписываются от того юрлица, на чей счёт пришли деньги.</strong> Раньше реквизиты брались без указания организации, то есть всегда у организации по умолчанию — клиент другой компании получал документ с чужим ИНН и чужим расчётным счётом. У каждого юрлица своя серия номеров документов: сквозная нумерация оставляла бы в нумерации одной компании дыры на местах документов другой.</p>
+
+<h4 id="bank-risks-2171">Флаги расхождений в сопоставлении</h4>
+<p>Три случая помечаются значком и подсветкой строки: совпадение по похожести ФИО, один ИНН у разных клиентов, расхождение ФИО плательщика и клиента. Такие строки <strong>не попадают в массовое выделение</strong> — их разбирают по одному. При установке галочки «выбрать все» оператор видит, сколько платежей пропущено и почему.</p>
+
+<h4 id="bank-queue-tools-2171">Поиск, период, постраничный вывод и итоги</h4>
+<ul>
+  <li>Поиск по плательщику, ИНН, лицевому счёту, назначению, имени и договору клиента, номеру операции</li>
+  <li>Диапазон дат через общий компонент выбора периода</li>
+  <li>20 / 50 / 100 / 200 строк на странице, постраничная навигация</li>
+  <li>Итог по отфильтрованному: сколько платежей и на какую сумму</li>
+  <li>Фильтр по клиенту <code>?abonent=&lt;id&gt;</code> — переход из карточки клиента</li>
+</ul>
+
+<h4 id="bank-audit-2171">Журнал аудита</h4>
+<p>Запись создаётся на каждое изменение: сохранение настроек с перечнем правок (включая выключатель автозачисления), ручной забор писем, повторный разбор импорта, автонастройка почтового ящика, массовые действия, ручная привязка с суммой и плательщиком, генерация документов с указанием организации, приём письма и определение организации.</p>
+
+<h4 id="bank-client-tab">Вкладка «Банк» в карточке клиента (build 2172)</h4>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v2171/client_tab.png" alt="Вкладка «Банк» в карточке клиента" loading="lazy"></p>
+
+<p>До этого из карточки клиента к его банковским платежам было не попасть, а выписанный по платежу счёт нельзя было найти вообще. Вкладка показывает платежи клиента из выписок — дата, банк, сумма, плательщик, назначение, статус и ссылка на финоперацию — и выписанные счета с актами с кнопкой открытия PDF. В шапке сумма зачисленного и переход в очередь, отфильтрованную по этому клиенту.</p>
+
+<h4 id="bank-mobile-2171">На телефоне</h4>
+<p><img class="screenshot welcome-image" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v2171/mobile.png" alt="Очередь модерации на телефоне: карточки вместо таблицы" loading="lazy"></p>
+
+<p>Таблица шириной в полтора экрана раньше просто обрезалась: оператор видел номер, дату, слово «Альфа» и кнопку «Зачислить» — без суммы и без плательщика. Теперь строка разворачивается карточкой «поле — значение», сумма показана крупно, кнопки во всю ширину. Чекбоксы массового выбора на телефоне скрыты: платежи здесь разбирают по одному.</p>
 
 <h3 id="bank-imports">6.4.4. Журнал импортов</h3>
 <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v961/bank_v961_imports.png" alt="Журнал импортов выписок" loading="lazy"></p>
@@ -11459,6 +11510,22 @@ flowchart LR
 <p>Один экземпляр СмИТ Биллинг может обслуживать несколько компаний-операторов как самостоятельные юрлица. Сейчас в контуре три организации: <strong>СмИТ</strong> (провайдер, по умолчанию), <strong>АЙТИ Консалтинг</strong> (ИТ-услуги / охранное абонентское обслуживание, домен <code>itc34.ru</code>) и <strong>Робор</strong> (домен <code>robornet.ru</code>). У каждой компании — свои реквизиты, платёжные кассы, счёт приёма оплат, документы, брендинг, домен ЛК и маршрутизация поддержки. Сотрудники видят данные только своих компаний.</p>
 <p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/multiorg_ayti_v2026_06_08/multiorg.svg" alt="Multi-org: один биллинг — несколько компаний" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
 
+<figure class="doc-video">
+  <video controls preload="none" playsinline
+         poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/org-training-poster.jpg">
+    <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/org-training.mp4" type="video/mp4">
+    Ваш браузер не проигрывает видео —
+    <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/org-training.mp4">скачайте файл</a>.
+  </video>
+  <figcaption>
+    <b>Обучающий ролик для персонала.</b>
+    <span>Список компаний и лимит лицензии, шесть вкладок карточки: основное и домен ЛК,
+    брендинг, реквизиты для счетов, своя касса, почта и Telegram-бот организации.</span>
+    <span class="dv-meta">2:49 · 1920×1080 · с озвучкой ·
+    <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/org-training.mp4" target="_blank" rel="noopener">скачать</a></span>
+  </figcaption>
+</figure>
+
 <details class="section-toc">
   <summary><strong>Содержание раздела</strong></summary>
   <ul>
@@ -12119,8 +12186,8 @@ flowchart LR
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">24.08.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;<span data-smit="updated">24.08.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">25.08.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;<span data-smit="updated">25.08.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2033"></script>
