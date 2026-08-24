@@ -4397,8 +4397,105 @@ backup-коды 2FA; IP-список fail-open при пустоте; авари
 <p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v960/mailserver_domain_select.png" alt="Селект «Основной домен»" loading="lazy" style="max-width:760px"></p>
 
 <h4 id="mailserver-mailboxes">Вкладка «Ящики»</h4>
-<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v960/mailserver_mailboxes.png" alt="Список ящиков" loading="lazy"></p>
-<p>AJAX-таблица всех ящиков выбранного домена. Колонки: Email | Имя | Квота (использовано / лимит) | Активен | Создан | Действия (редактировать / сменить пароль / удалить). Поиск по email/имени с debounce. У защищённых ящиков рядом с email иконка-щит (<code>fa-shield-alt</code>).</p>
+
+<p>Список всех ящиков сервера: кто владелец, сколько занято, что ящик обслуживает.
+Строки подгружаются AJAX-ом, поиск идёт по адресу и имени.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2130/mailboxes_desktop.jpg" alt="Список ящиков: тулбар, организации, роли" loading="lazy"></p>
+<p class="img-caption"><em>Одна строка тулбара: домен, тип ящика, поиск, колонки, добавление. Ниже — таблица с организацией, счётчиком писем и ролями.</em></p>
+
+<h5 id="mailserver-mailboxes-list">Что показывает таблица</h5>
+<table style="font-size:.92em">
+<tr><th>Колонка</th><th>Что в ней</th></tr>
+<tr><td>Активность</td><td>Точка: зелёная — ящик принимает и отправляет письма, серая — выключен. Колонка без подписи, самая узкая, скрыть её нельзя.</td></tr>
+<tr><td>Орг.</td><td>Организация домена — тот же бейдж, что в остальных списках биллинга (мультиорг).</td></tr>
+<tr><td>Email</td><td>Адрес. У системных ящиков — щит: их нельзя удалить, на них держатся выписки, рассылка и приём обращений. Скрыть колонку нельзя.</td></tr>
+<tr><td>Имя</td><td>Отображаемое имя — оно же уходит в подпись и в адресную книгу почты.</td></tr>
+<tr><td>Квота</td><td>Занято из выделенного. По умолчанию колонка скрыта, значение видно в подсказке к счётчику писем.</td></tr>
+<tr><td>Писем</td><td>Непрочитанных из всех. Клик открывает ящик в почте без ввода пароля.</td></tr>
+<tr><td>Создан</td><td>Дата создания, полностью, без сокращения.</td></tr>
+<tr><td>Чей</td><td>Сотрудник-владелец с аватаркой. У системного ящика владельца нет — прочерк.</td></tr>
+<tr><td>Роли</td><td>Что ящик обслуживает: приём обращений, голосовая почта, рассылки, банковские выписки. Нажатие переключает роль.</td></tr>
+<tr><td>Ред.</td><td>Меню строки: войти в ящик, редактировать, сменить пароль, включить или выключить, удалить.</td></tr>
+</table>
+
+<div class="note">
+  <strong>Набор колонок настраивается под себя.</strong> Кнопка «Колонки» прячет ненужные,
+  заголовки можно перетаскивать и тянуть за правый край — выбор сохраняется в профиле. По
+  умолчанию скрыты «Квота» и «Кем создан»: без них таблица целиком влезает в экран. Служебные
+  колонки (отметка выбора, активность, счётчик писем, дата, меню) заданной ширины — их не
+  тянут и не прячут, чтобы значения не обрезались.
+</div>
+
+<div class="screenshot-pair">
+  <figure>
+    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2130/columns_picker.jpg" alt="Выбор колонок списка ящиков" loading="lazy">
+    <figcaption>Выбор колонок: служебные — без флажка, их не отключить.</figcaption>
+  </figure>
+  <figure>
+    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2130/row_actions.jpg" alt="Меню действий над ящиком" loading="lazy">
+    <figcaption>Меню строки: вход в ящик, пароль, включение и выключение, удаление.</figcaption>
+  </figure>
+</div>
+
+<h5 id="mailserver-mailboxes-roles">Роли ящика</h5>
+<p>Роль — это ответ на вопрос «что этот ящик делает для биллинга». Назначенная роль показана
+подписью, остальные остаются значком с подсказкой: в списке на сотню строк важно видеть
+включённое, а не перечень возможного.</p>
+
+<pre class="mermaid">
+flowchart LR
+  BOX["Ящик<br/>ask@support.smit34.ru"]
+  BOX -->|Поддержка| TICKETS["Обращения<br/>письмо → тикет"]
+  BOX -->|Голосовая| VOICE["Голосовая почта<br/>запись → заявка"]
+  BOX -->|Рассылка| SEND["Уведомления и рассылки<br/>отправитель писем"]
+  BOX -->|Выписки| BANK["Банковские выписки<br/>разбор вложений"]
+  classDef on fill:#e8f7ef,stroke:#43b77a,color:#1b5e3f
+  classDef box fill:#f4f6f8,stroke:#adb5bd,color:#212529
+  class BOX box
+  class TICKETS,VOICE,SEND,BANK on
+</pre>
+
+<div class="note">
+  <strong>Роль настраивает ящик сама.</strong> При включении роли параметры IMAP и SMTP, защита
+  и расписание разбора прописываются автоматически — вручную ничего дописывать не нужно.
+  Роль занята одним ящиком в организации: назначили другому — с прежнего она снимается.
+</div>
+
+<h5 id="mailserver-mailboxes-mobile">На телефоне</h5>
+<p>Сверху остаётся то, за чем в раздел заходят: выбор домена и «Добавить». Ниже — поиск,
+«Фильтры» и обновление в одну строку; фильтр по типу ящика открывается шторкой снизу.
+Таблица превращается в карточки — по строке на ящик, без горизонтальной прокрутки.</p>
+
+<div class="screenshot-pair">
+  <figure>
+    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2130/mailboxes_mobile.jpg" alt="Список ящиков на телефоне" loading="lazy">
+    <figcaption>Телефон: домен и «Добавить», под ними поиск с «Фильтрами».</figcaption>
+  </figure>
+  <figure>
+    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2130/filters_sheet_mobile.jpg" alt="Шторка фильтров списка ящиков" loading="lazy">
+    <figcaption>Шторка «Фильтры»: персонал и системные ящики.</figcaption>
+  </figure>
+</div>
+
+<pre class="mermaid">
+flowchart TB
+  subgraph D["Десктоп"]
+    T["Одна строка тулбара:<br/>домен · тип ящика · поиск · колонки · добавить"]
+    TB["Таблица:<br/>настраиваемые колонки, роли в строке"]
+    T --> TB
+  end
+  subgraph M["Телефон"]
+    P["Домен + Добавить"]
+    S["Поиск + Фильтры + Обновить"]
+    SH["Шторка: тип ящика"]
+    C["Карточки ящиков"]
+    P --> S --> C
+    S -.-> SH
+  end
+  D -.->|те же элементы, другая раскладка| M
+</pre>
+
 
 <p><strong>Добавление ящика</strong> (кнопка «Добавить ящик»):</p>
 <p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v960/mailserver_mailbox_add_modal.png" alt="Модалка «Добавить ящик»" loading="lazy" style="max-width:820px"></p>
@@ -4614,6 +4711,53 @@ flowchart TD
             пишется в аудит; если такой доступ не нужен — выключите.</td></tr>
   </tbody>
 </table>
+
+<h4 id="mailserver-health">Здоровье сервера и доставляемость</h4>
+
+<p>Вкладка «Сервер» отвечает на два вопроса: работает ли почта прямо сейчас и дойдут ли письма
+до получателя, а не в спам.</p>
+
+<p><strong>Здоровье сервера</strong> — по строке на каждую часть почты. Все строки зелёные —
+почта принимается и отправляется. Очередь показывает, сколько писем ждёт отправки; норма — ноль.
+Кнопка с круговой стрелкой перезапускает одну упавшую часть, не трогая остальные.</p>
+
+<pre class="mermaid">
+flowchart LR
+  NET["Интернет"] -->|SMTP| PF["Приём и отправка<br/>postfix"]
+  PF --> RS["Антиспам<br/>rspamd"]
+  RS --> DC["Хранение и чтение<br/>dovecot"]
+  DC --> SG["Веб-почта<br/>sogo"]
+  SG --> NG["Веб-почта, сайт<br/>sogo-nginx"]
+  NG -->|браузер| USER["Сотрудник"]
+  RD["Кэш<br/>redis"] --- RS
+  RD --- SG
+  BIL["Биллинг"] -->|IMAP: обращения, выписки| DC
+  BIL -->|SMTP: уведомления| PF
+</pre>
+
+<div class="note">
+  <strong>Как читать схему.</strong> Письмо снаружи проходит приём, антиспам и попадает в
+  хранилище; сотрудник видит его через веб-почту. Биллинг подключается к тем же частям: читает
+  обращения и выписки по IMAP, отправляет уведомления через SMTP. Поэтому красная строка
+  «Приём и отправка» означает и молчащие уведомления, а красное «Хранение и чтение» —
+  необработанные обращения.
+</div>
+
+<p><strong>Письма доходят, а не в спам</strong> — четыре проверки на каждый домен: подпись
+писем, разрешение на отправку, защита от подделки и запись приёма почты. Все зелёные означают,
+что письма с этого домена принимают Gmail, Mail.ru и Яндекс; красная — письма могут уходить в
+спам, и настраивать её нужно в разделе «Домены и DNS».</p>
+
+<div class="screenshot-pair">
+  <figure>
+    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2130/server_health_mobile.jpg" alt="Здоровье почтового сервера" loading="lazy">
+    <figcaption>Состояние частей почты и очередь отправки.</figcaption>
+  </figure>
+  <figure>
+    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2130/server_deliv_mobile.jpg" alt="Проверки доставляемости по домену" loading="lazy">
+    <figcaption>Четыре проверки на домен: подпись, разрешение, защита, приём.</figcaption>
+  </figure>
+</div>
 
 <h4 id="mailserver-mailbox-counters">Колонка «Писем» в списке ящиков</h4>
 
