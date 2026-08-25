@@ -2439,3 +2439,12 @@ body.search-open { overflow: hidden; }
   .landing-cta .lc-facts { flex: 1 1 100%; gap: 18px; }
 }
 @media (prefers-reduced-motion: reduce) { .landing-cta .lc-btn { transition: none; } }
+
+/* Значок раздела в заголовке: набор тот же, что в меню. Из навигации и поиска
+   он не попадает — подпись там строится из текста. */
+.content h2 .h-ico {
+  margin-right: 10px;
+  color: var(--primary);
+  font-size: .92em;
+  vertical-align: -2px;
+}
