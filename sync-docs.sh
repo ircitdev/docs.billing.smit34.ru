@@ -181,84 +181,78 @@ print('  updated %d files (version=%s build=%s updated=%s)' % (total, v['version
 PYEOF
 )
 
-echo "=== 0b. Sync sidebar block from billing.html ==="
-# Сайдбар физически скопирован в каждую страницу. Правка меню в одном файле
-# раньше молча расходилась с остальными: на 14 страницах жила версия на 15-52
-# пункта против 146 в billing.html, и половина меню вела на удалённые якоря
-# (найдено 2026-07-22, 130 битых ссылок). Каноном считаем billing.html.
-(cd "$HERE" && $PY - <<'PYEOF'
-import io, re, glob, os
+echo "=== 0b. Sync sidebar from _nav.html ==="
+# Меню физически скопировано в каждую страницу, и копии расходились молча:
+# набралось девять вариантов, где-то не хватало целых групп, а у одной страницы
+# группа была с заголовком, но без содержимого. Единственный источник —
+# _nav.html; {PFX} — путь до pages/, {ROOT} — до корня сайта.
+(cd "$HERE" && $PY - <<'NAVEOF'
+import io, glob
 
-MASTER = 'pages/dashboard.html'
-FIRST = '<a href="dashboard.html"><i class="ti ti-layout-dashboard"></i>'
-LAST = '<a href="extras.html"><i class="ti ti-apps"></i>'
-TAIL = '</ul>' + chr(10) + '      </li>'
-
-def block_of(text):
-    """Границы блока из десяти групп раздела биллинга или None.
-
-    Раздел живёт на десяти страницах, поэтому блок задаётся первой группой
-    («Дашборд») и концом последней («Дополнительные разделы»).
-    """
-    i = text.find(FIRST)
-    j = text.find(LAST)
-    if i < 0 or j < 0:
-        return None
-    start = text.rfind('<li class="has-children">', 0, i)
-    end = text.find(TAIL, j)
-    if start < 0 or end < 0:
-        return None
-    return start, end + len(TAIL)
-
-master = io.open(MASTER, encoding='utf-8').read()
-span = block_of(master)
-if not span:
-    raise SystemExit('  !! блок меню не найден в %s — синхронизация пропущена' % MASTER)
-block = master[span[0]:span[1]]
-
+nav = io.open('_nav.html', 'rb').read().decode('utf-8')
 changed = []
-for f in sorted(glob.glob('pages/*.html')):
-    if os.path.basename(f) == 'dashboard.html':
+for path in ['index.html'] + sorted(glob.glob('pages/*.html')):
+    pfx, rt = ('pages/', '') if path == 'index.html' else ('', '../')
+    block = nav.replace('{PFX}', pfx).replace('{ROOT}', rt)
+    txt = io.open(path, 'rb').read().decode('utf-8')
+    a, b = txt.index('<nav'), txt.index('</nav>') + len('</nav>')
+    if txt[a:b] == block:
         continue
-    text = io.open(f, encoding='utf-8').read()
-    sp = block_of(text)
-    if not sp:
-        continue
-    if text[sp[0]:sp[1]] == block:
-        continue
-    io.open(f, 'w', encoding='utf-8', newline='').write(text[:sp[0]] + block + text[sp[1]:])
-    changed.append(os.path.basename(f))
-
+    io.open(path, 'wb').write((txt[:a] + block + txt[b:]).encode('utf-8'))
+    changed.append(path)
 print('  меню: %d пунктов, обновлено страниц: %d%s'
-      % (block.count('<li'), len(changed),
+      % (nav.count('<li'), len(changed),
          (' (' + ', '.join(changed) + ')') if changed else ''))
-PYEOF
+NAVEOF
 )
 
-echo "=== 0c. Check anchors ==="
-# Публиковать документацию с ссылками в никуда нельзя: проверяем внутренние
-# (#anchor) и межстраничные (page.html#anchor) ссылки. Обойти — SKIP_LINK_CHECK=1.
-(cd "$HERE" && $PY - <<'PYEOF'
+echo "=== 0c. Check links ==="
+# Публиковать документацию с ссылками в никуда нельзя. Проверяем внутренние
+# (#anchor), межстраничные (page.html#anchor) и каждую ссылку меню.
+# Прежний шаблон [a-z_]+\.html не видел имён с дефисом, поэтому ссылки на
+# nas-equipment.html и settings-services.html не проверялись вовсе.
+# Обойти — SKIP_LINK_CHECK=1.
+(cd "$HERE" && $PY - <<'LINKEOF'
 import io, re, glob, os, sys
 
 ids, bad = {}, {}
 files = sorted(glob.glob('pages/*.html') + glob.glob('index.html'))
 for f in files:
-    ids[os.path.basename(f)] = set(re.findall(r'id="([^"]+)"', io.open(f, encoding='utf-8').read()))
+    ids[os.path.basename(f)] = set(
+        re.findall(r'\sid="([^"]+)"', io.open(f, encoding='utf-8').read()))
 
+LINK = re.compile(r'href="(?:pages/)?([A-Za-z0-9_-]+\.html)#([^"]+)"')
 for f in files:
     name = os.path.basename(f)
     text = io.open(f, encoding='utf-8').read()
     for a in set(re.findall(r'href="#([^"]+)"', text)):
         if a not in ids[name]:
             bad.setdefault(name, set()).add('#' + a)
-    for page, a in set(re.findall(r'href="([a-z_]+\.html)#([^"]+)"', text)):
-        if page in ids and a not in ids[page]:
+    for page, a in set(LINK.findall(text)):
+        if page not in ids:
+            bad.setdefault(name, set()).add(page + ' (нет страницы)')
+        elif a not in ids[page]:
             bad.setdefault(name, set()).add(page + '#' + a)
+
+# Меню проверяем отдельно: оно одно на весь сайт, и одна битая ссылка в нём
+# повторилась бы на каждой странице.
+nav = io.open('_nav.html', encoding='utf-8').read()
+nav_links = re.findall(r'href="\{(PFX|ROOT)\}([^"]+)"', nav)
+for pfx, href in nav_links:
+    page, _, anchor = href.partition('#')
+    path = ('pages/' + page) if pfx == 'PFX' else page
+    if not os.path.exists(path):
+        bad.setdefault('_nav.html', set()).add(href + ' (нет файла)')
+        continue
+    if anchor:
+        have = set(re.findall(r'\sid="([^"]+)"',
+                              io.open(path, encoding='utf-8').read()))
+        if anchor not in have:
+            bad.setdefault('_nav.html', set()).add(href)
 
 total = sum(len(v) for v in bad.values())
 if not total:
-    print('  битых якорей нет')
+    print('  битых ссылок нет (в меню проверено %d)' % len(nav_links))
     sys.exit(0)
 for name in sorted(bad):
     print('  %s (%d): %s' % (name, len(bad[name]), ', '.join(sorted(bad[name])[:8])))
@@ -267,7 +261,7 @@ if os.environ.get('SKIP_LINK_CHECK') == '1':
     sys.exit(0)
 print('  !! %d битых ссылок. Почините или запустите с SKIP_LINK_CHECK=1' % total)
 sys.exit(1)
-PYEOF
+LINKEOF
 )
 
 echo "=== 1. Rebuild search index ==="
