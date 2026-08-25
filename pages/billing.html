@@ -4925,6 +4925,21 @@ backup-коды 2FA; IP-список fail-open при пустоте; авари
 
 <h3 id="bank-statements">6.4.1. Банковские выписки (автообработка)</h3>
 
+<figure class="doc-video">
+  <video controls preload="none" playsinline
+         poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/bank-statements-training-poster.jpg">
+    <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/bank-statements-training.mp4" type="video/mp4">
+    Ваш браузер не проигрывает видео —
+    <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/bank-statements-training.mp4">скачайте файл</a>.
+  </video>
+  <figcaption>
+    <b>Обучающий ролик для персонала.</b>
+    <span>Как разбирать поступления по безналу: очередь платежей, привязка платежа к клиенту, сводные реестры приёмщиков платежей, вкладка «Банк» в карточке клиента и работа с телефона.</span>
+    <span class="dv-meta">2:43 · 1920×1080 · с озвучкой ·
+    <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/bank-statements-training.mp4" target="_blank" rel="noopener">скачать</a></span>
+  </figcaption>
+</figure>
+
 <p>Модуль автоматического приёма и зачисления платежей из банковских выписок. Письма с CSV/TXT-вложениями приходят на собственный почтовый ящик <code>bank@billing.smit34.ru</code> (Mailcow на 31.44.7.144), парсер раскладывает операции в очередь модерации, matching сопоставляет с клиентами по 4 стратегиям (ИНН/лицевой счёт/назначение/fuzzy), оператор подтверждает или система автоматически зачисляет high-confidence матчи. Для юр.лиц генерируются PDF счёт-фактуры и акты (WeasyPrint), опционально загружаются в GCS и отправляются клиенту на email через <code>noreply@billing.smit34.ru</code>.</p>
 
 <p><strong>Полная карта URL:</strong></p>
@@ -7972,7 +7987,7 @@ Push / Telegram) и RADIUS-параметров (если статус долж�
     <b>Обучающий ролик для персонала.</b>
     <span>Папка и глобальный поиск, счётчики-фильтры и цвет строки, одиннадцать массовых
     действий, создание клиента с учётной записью и IP, карточка клиента и карта.</span>
-    <span class="dv-meta">2:46 · 1920×1080 · с озвучкой ·
+    <span class="dv-meta">2:50 · 1920×1080 · с озвучкой ·
     <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/clients-training.mp4" target="_blank" rel="noopener">скачать</a></span>
   </figcaption>
 </figure>
@@ -8246,7 +8261,21 @@ Push / Telegram) и RADIUS-параметров (если статус долж�
   <li><strong>ℹ Подробнее</strong> — кнопка открывает <a href="#abonent-details-drawer">drawer-панель</a> без перехода на полную карточку.</li>
 </ol>
 
-<p><strong>Подсветка строк:</strong> красный фон — заблокированные за неуплату, синий — soft-deleted (видны только администратору), оранжевая полоса слева — глубокий долг (более одной месячной абонплаты).</p>
+<p id="abonents-folder-rows"><strong>Подсветка строк</strong> (класс строки задаётся в <code>abonents_folder_rows.html</code>):</p>
+<ul>
+  <li><strong>Розовый фон</strong> — блокировка <em>за неуплату</em>: есть запись
+      в <code>ABONENTS_BLOCK</code> с флагом <code>b_negbal</code>. Просто минус на
+      счёте строку не красит — пока автоблокировка не сработала, клиент выглядит обычным;</li>
+  <li><strong>Жёлтый фон</strong> — любая другая блокировка: административная или
+      добровольная («отпуск»);</li>
+  <li><strong>Красный фон</strong> — клиент выключен (<code>enabled=false</code>) и при
+      этом не заблокирован;</li>
+  <li><strong>Голубой фон</strong> — это не клиент, а <em>папка</em>;</li>
+  <li><strong>Усиленный красноватый фон</strong> добавляется поверх остальных при долге
+      более 500&nbsp;₽ (<code>is_deep_debt</code>).</li>
+</ul>
+<p>Тумблер <strong>«Цвет маркер»</strong> над таблицей гасит подсветку целиком; выбор
+запоминается за оператором.</p>
 
 <h5 id="folder-scroll">Бесконечная подгрузка</h5>
 <p>Папка не использует пагинацию. При прокрутке вниз автоматически догружается следующая порция (по 100 записей) через AJAX-endpoint <code>/admin/Abonents/&lt;id&gt;/children_json/</code>. На больших папках (1000+ клиентов) загрузка остаётся плавной — браузер рендерит только видимый кусок.</p>
@@ -8454,8 +8483,9 @@ debounce 300&nbsp;мс. Шорткат <kbd>Ctrl</kbd>+<kbd>K</kbd> ставит
   <li><strong>Статус</strong> — цветной бейдж (Активен / Заблок. / Удалён).</li>
 </ol>
 
-<p>Подсветка строк: красный фон — заблокированные, синий — удалённые,
-оранжевая полоса слева — глубокий долг (более одной месячной абонплаты).</p>
+<p>Подсветка строк — та же, что в папке: розовый фон — блокировка за неуплату,
+жёлтый — другая блокировка, красный — выключен, усиленный красноватый — долг
+более 500&nbsp;₽. Разбор классов — в <a href="#abonents-folder-rows">описании папки</a>.</p>
 
 <h5 id="abonents-search-scroll">Бесконечный скролл</h5>
 <p>Глобальный поиск не использует пагинацию: при прокрутке вниз подгружается
