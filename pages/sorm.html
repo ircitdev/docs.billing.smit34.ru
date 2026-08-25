@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Интеграция с СОРМ3 — СмИТ Биллинг v3.5.0</title>
+  <title>Интеграция с СОРМ3 — СмИТ Биллинг</title>
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="СмИТ Биллинг 3.5 — Документация">
-  <meta property="og:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v3.5.0">
+  <meta property="og:site_name" content="СмИТ Биллинг — Документация">
+  <meta property="og:title" content="Интеграция с СОРМ3 — СмИТ Биллинг">
   <meta property="og:description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/sorm.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
@@ -14,14 +14,14 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v3.5.0">
+  <meta name="twitter:title" content="Интеграция с СОРМ3 — СмИТ Биллинг">
   <meta name="twitter:description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=2187">
-  <link rel="stylesheet" href="../css/search.css?v=2187">
-  <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css?v=2187">
+  <link rel="stylesheet" href="../css/style.css?v=2188">
+  <link rel="stylesheet" href="../css/search.css?v=2188">
+  <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css?v=2188">
 </head>
 <body>
 
@@ -30,7 +30,7 @@
     <button class="menu-toggle" aria-label="Меню">&#9776;</button>
     <div class="logo">
       <div class="logo-icon">С</div>
-      <div class="logo-text"><span class="logo-main">СмИТ Биллинг 3.5 </span><span>Документация</span></div>
+      <div class="logo-text"><span class="logo-main">СмИТ Биллинг</span><span>Документация</span></div>
     </div>
   </div>
   <div class="header-search"><div class="docs-search-wrap"><input type="search" id="docsSearch" class="docs-search-input" placeholder="Поиск по документации..." autocomplete="off"><span class="docs-search-icon"><i class="ti ti-search"></i></span><div class="docs-search-results" id="docsSearchResults"></div></div></div>
@@ -545,7 +545,7 @@ flowchart LR
 
   <h2 id="principle">Принцип работы</h2>
 
-  <p>Система СмИТ Биллинг 3.5 <strong>не подключается напрямую</strong> к центрам оперативного управления ФСБ. Вместо этого используются сторонние сертифицированные решения, выступающие посредниками между биллинговой системой и органами.</p>
+  <p>Система СмИТ Биллинг <strong>не подключается напрямую</strong> к центрам оперативного управления ФСБ. Вместо этого используются сторонние сертифицированные решения, выступающие посредниками между биллинговой системой и органами.</p>
 
   <p>Выгрузка данных реализована как Celery-задача и передаётся в базы данных СОРМ-систем по протоколу <strong>FTP</strong> в формате <strong>CSV</strong> и его модификациях:</p>
   <ul>
@@ -742,32 +742,36 @@ flowchart LR
   </table>
 
   <h3 id="prikaz-573-data-fixes">Исправления качества данных в SQL</h3>
-  <p>По замечаниям куратора СОРМ от 02.06.2026 в SQL добавлены:</p>
+  <p>Выгрузка не полагается на то, что поля заполнены аккуратно, и приводит
+  данные в порядок прямо в запросе:</p>
   <ul>
-    <li><strong>DETACH fallback</strong> — <code>COALESCE(DISABLED_DATE, CREATE_DATE_SYSTEM, CREATE_DATE)</code>. У 2285 неактивных абонентов <code>DISABLED_DATE</code> не было перенесено из EBS-импорта, теперь поле всегда заполнено</li>
-    <li><strong>Нормализация ФИО</strong> — <code>regexp_replace(NAME, '[0-9.&quot;&laquo;&raquo;№]+', '', 'g')</code> + <code>NULLIF</code> для пустоты. Убирает мусор типа «7006», «Сергей.», «Колюжнова Р.М.», «Абонент №6649»</li>
-    <li><strong>Фильтр Обещанного Платежа</strong> в ABONENT_SRV — <code>usluga.name NOT ILIKE '%обещанн%'</code> и исключение usluga_id из списка {30353, -3, -4}. ОП — это внутренние транзакции биллинга, не «услуги связи»</li>
+    <li><strong>Дата отключения</strong> — <code>COALESCE(DISABLED_DATE, CREATE_DATE_SYSTEM, CREATE_DATE)</code>.
+      При переносе из прежней системы дата отключения часто теряется, поэтому
+      берётся первая непустая из трёх — поле в выгрузке заполнено всегда;</li>
+    <li><strong>Нормализация ФИО</strong> — <code>regexp_replace(NAME, '[0-9.&quot;&laquo;&raquo;№]+', '', 'g')</code>
+      и <code>NULLIF</code> для пустого результата. Убирает из имени цифры,
+      кавычки, точки и номера договора, которые операторы вписывают в поле ФИО;</li>
+    <li><strong>Обещанный платёж не считается услугой связи</strong> — в
+      ABONENT_SRV отсекаются <code>usluga.name NOT ILIKE '%обещанн%'</code> и
+      служебные идентификаторы услуги. Это внутренние проводки биллинга.</li>
   </ul>
 
-  <h3 id="sorm-fixes-2026-07">Правки по замечаниям куратора от 03.07.2026</h3>
+  <h3 id="sorm-fixes-2026-07">Технологические сети и динамическая адресация</h3>
   <ul>
-    <li><strong>IP_PLAN дополнен технологическими подсетями</strong> — помимо
-      абонентских пулов (<code>100.99.0.0/16</code> частями /23 и
-      <code>10.77.0.0/16</code>) в план включены сети управления NAS и
-      транспортные: <code>10.100.100.0/24</code>, <code>10.233.1.0/24</code>,
-      <code>10.200.100.0/24</code>, <code>10.22.17.0/24</code>,
-      <code>10.25.0.0/24</code>. Технологические записи добавляются
-      <code>UNION</code>-блоком в SQL отчёта — справочник абонентских пулов не
-      засоряется;</li>
-    <li><strong>ABONENT_IDENT: динамическая адресация без IP</strong> — у
-      абонентов, получающих адрес динамически из пула (в сети это 100%
-      абонентов, доступ только через RADIUS), поля <code>IP_TYPE</code>,
-      <code>IPV4</code> и <code>IPV4_MASK</code> выгружаются пустыми;
-      идентификатор абонента — поле <code>LOGIN</code> (совпадает с
-      <code>username</code> в RADIUS-потоке);</li>
-    <li><strong>Проверка «кто мимо RADIUS»</strong> — абонентов с постоянным
-      доступом без авторизации нет (<code>ALWAYS_LOGGED</code> = 0 записей),
-      статических привязок вне RADIUS в выгрузке не бывает.</li>
+    <li><strong>IP_PLAN включает технологические подсети</strong> — помимо
+      абонентских пулов в план попадают сети управления оборудованием и
+      транспортные. Они добавляются <code>UNION</code>-блоком в SQL отчёта,
+      поэтому справочник абонентских пулов не засоряется. Перечень
+      технологических сетей задаётся в самом отчёте под вашу сеть;</li>
+    <li><strong>ABONENT_IDENT при динамической адресации</strong> — если
+      клиент получает адрес из пула, поля <code>IP_TYPE</code>,
+      <code>IPV4</code> и <code>IPV4_MASK</code> выгружаются пустыми, а
+      идентификатором служит <code>LOGIN</code> (он же <code>username</code>
+      в RADIUS-потоке). Это штатный случай для сети, где доступ выдаётся
+      только через RADIUS;</li>
+    <li><strong>Доступ мимо RADIUS</strong> — клиенты с постоянным доступом без
+      авторизации (<code>ALWAYS_LOGGED</code>) в выгрузку статических привязок
+      не попадают. Перед сдачей отчёта проверьте, что таких записей нет.</li>
   </ul>
 
   <h3 id="prikaz-573-audit-cmd">Команда аудита качества данных</h3>
@@ -1590,14 +1594,14 @@ python manage.py merge_sorm_attribute_dups --by-name --apply</code></pre>
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">25.08.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0</span>&nbsp;|&nbsp;<span data-smit="updated">25.08.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full"></span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">25.08.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full"></span>&nbsp;|&nbsp;<span data-smit="updated">25.08.2026</span></span>
 </footer>
 
-<script src="../js/main.js?v=2187"></script>
+<script src="../js/main.js?v=2188"></script>
 <script src="../js/version.js"></script>
-<script src="../js/mermaid-init.js?v=2187"></script>
-<script src="../js/markmap-init.js?v=2187"></script>
-<script src="../js/search.js?v=2187"></script>
+<script src="../js/mermaid-init.js?v=2188"></script>
+<script src="../js/markmap-init.js?v=2188"></script>
+<script src="../js/search.js?v=2188"></script>
 </body>
 </html>

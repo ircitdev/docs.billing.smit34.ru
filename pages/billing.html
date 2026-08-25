@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Основные настройки биллинга — СмИТ Биллинг v3.5.0</title>
+  <title>Основные настройки биллинга — СмИТ Биллинг</title>
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="СмИТ Биллинг 3.5 — Документация">
-  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг v3.5.0">
+  <meta property="og:site_name" content="СмИТ Биллинг — Документация">
+  <meta property="og:title" content="Основные настройки биллинга — СмИТ Биллинг">
   <meta property="og:description" content="Управление клиентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/billing.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
@@ -14,14 +14,14 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг v3.5.0">
+  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг">
   <meta name="twitter:description" content="Управление клиентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Управление клиентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=2187">
-  <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css?v=2187">
-  <link rel="stylesheet" href="../css/search.css?v=2187">
+  <link rel="stylesheet" href="../css/style.css?v=2188">
+  <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css?v=2188">
+  <link rel="stylesheet" href="../css/search.css?v=2188">
 </head>
 <body>
 
@@ -30,7 +30,7 @@
     <button class="menu-toggle" aria-label="Меню"><i class="ti ti-menu-2"></i></button>
     <div class="logo">
       <div class="logo-icon">С</div>
-      <div class="logo-text"><span class="logo-main"><span data-smit="brand-short">СмИТ Биллинг 3.5</span></span><span>Документация</span></div>
+      <div class="logo-text"><span class="logo-main"><span data-smit="brand-short">СмИТ Биллинг</span></span><span>Документация</span></div>
     </div>
   </div>
   <div class="header-search">
@@ -4536,7 +4536,7 @@ maxBytes 10 МБ, backupCount 5, в просмотрщике видны как <
   <li><strong>Уровень детализации FreeRADIUS</strong> задаётся переменной
   <code>RADIUS_DEBUG_LEVEL</code> в <code>.env</code> (читается <code>docker/freeradius/entrypoint.sh</code>):
   <code>info</code> (без флага, ~1 ГБ/сутки, только Accept/Reject и блокировки), <code>debug</code>
-  (<code>-x</code>), <code>trace</code> (<code>-xx</code>, не использовать в проде). После правки —
+  (<code>-x</code>), <code>trace</code> (<code>-xx</code>, не использовать в проде). Если переменная не задана вовсе, контейнер стартует именно с <code>trace</code> — на новой установке задайте <code>info</code> явно. После правки —
   <code>docker compose up -d --force-recreate freeradius</code>.</li>
   <li><strong><code>/etc/logrotate.d/smit-freeradius</code></strong> — ротация нативного лога
   (daily, rotate 5, maxsize 100M, compress, <code>copytruncate</code> — обязателен, т.к. FreeRADIUS
@@ -6394,12 +6394,19 @@ X-Timestamp: 1715091045   # Unix epoch</code></pre>
 
 <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_msg_templates.png" alt="Сообщения — шаблоны"></p>
 
-<p>Поддерживаемые события: низкий баланс, обещанный платёж активирован,
-обещанный платёж истёк, услуга подключена, услуга отключена, тариф изменён,
-платёж зачислен, блокировка / разблокировка. Доступные переменные:
-<code>{{ abonent.name }}</code>, <code>{{ contract_number }}</code>,
-<code>{{ balance }}</code>, <code>{{ tariff }}</code>, <code>{{ amount }}</code>,
-<code>{{ end_date }}</code> и т.д.</p>
+<p>Поддерживаемые события (19):</p>
+<ul>
+<li><strong>Блокировки:</strong> автоблокировка по балансу, административная блокировка, разблокировка, добровольная блокировка, снятие добровольной блокировки;</li>
+<li><strong>Деньги:</strong> поступление платежа, баланс ниже порога, отрицательный баланс, обещанный платёж активирован, обещанный платёж истекает, обещанный платёж истёк;</li>
+<li><strong>Услуги и тариф:</strong> подключение услуги, отключение услуги, смена тарифа, смена статуса подключения;</li>
+<li><strong>Прочее:</strong> приветственное сообщение, восстановление пароля, ответ техподдержки, технические работы.</li>
+</ul>
+<p>Доступные переменные — полный список, других подстановок нет:
+<code>%(abonent_name)s</code> — ФИО клиента, <code>%(contract_number)s</code> — номер договора,
+<code>%(balance)s</code> — текущий баланс, <code>%(currecy)s</code> — валюта,
+<code>%(tarif_name)s</code> — тариф клиента, <code>%(operator_name)s</code> — название оператора,
+<code>%(text)s</code> — дополнительный текст (услуга, сумма), <code>%(psw_token)s</code> — проверочный код.
+При включённом флаге «Jinja» те же имена пишутся как <code>{{ abonent_name }}</code>.</p>
 
 <h4 id="messaging-template-editor">Редактор шаблонов: Plain + HTML</h4>
 <p>Модальное окно редактирования шаблона расширено: <strong>2 вкладки</strong> —
@@ -7733,7 +7740,7 @@ flowchart LR
 <ul>
   <li><strong>Не удалять автоматически</strong>. Адресная база заполнялась заранее (DaData импорт), пустые адреса ждут подключения новых клиентов;</li>
   <li><strong>Удалять только конкретные ошибки</strong> — дубли, неверные индексы, переименованные улицы. Удаление через UI кнопкой 🗑;</li>
-  <li><strong>Защита FK</strong>: на <code>homes</code> ссылаются <code>NO ACTION</code> поля из <code>Abonents</code>, <code>users</code>, <code>switch</code>, <code>nas</code>, <code>CONNECTION_POINTS</code>. UI заблокирует удаление если есть хоть одна привязка.</li>
+  <li><strong>Защита FK</strong>: на <code>homes</code> ссылаются <code>NO ACTION</code> поля из <code>abonents</code>, <code>users</code>, <code>switch</code>, <code>nas</code>, <code>CONNECTION_POINTS</code>, <code>EQUIPMENT</code>, <code>netmap_node</code>, <code>video_object</code>, <code>video_project</code>, а также сам <code>homes</code> через <code>PARENT_ID</code>. UI заблокирует удаление, если есть хоть одна привязка — в том числе когда у адреса есть вложенные адреса.</li>
 </ul>
 
 <div class="info-box">
@@ -11498,9 +11505,10 @@ flowchart LR
 <code>/admin/stock/act/staff/…</code>) собирают таблицу оборудования и рендерят её
 <strong>через эти редактируемые шаблоны</strong> — правки в редакторе реально
 меняют выпускаемый акт. Если шаблон не менялся, берётся дефолтное тело. Плейсхолдеры:
-<code>{{ rows_table }}</code>, <code>{{ subject_name }}</code>,
-<code>{{ contract }}</code>, <code>{{ total }}</code>,
-<code>{{ executor_name }}</code> и др.</p>
+<code>{{ rows_table }}</code> — готовая таблица оборудования, <code>{{ subject_name }}</code> — клиент или сотрудник,
+<code>{{ contract }}</code> — номер договора, <code>{{ total }}</code> — итог,
+<code>{{ executor_name }}</code> и <code>{{ executor_signer }}</code> — организация и подписант,
+<code>{{ doc_title }}</code>, <code>{{ doc_number }}</code>, <code>{{ today }}</code> и <code>{{ ref_note }}</code> — заголовок, номер, дата и ссылка на основание.</p>
 
 <h4 id="documents-mobile">Модалки на мобильном</h4>
 <p>Все модальные окна (предпросмотр PDF, редактор и предпросмотр шаблонов, формы,
@@ -12261,10 +12269,10 @@ flowchart LR
   <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;<span data-smit="updated">25.08.2026</span></span>
 </footer>
 
-<script src="../js/main.js?v=2187"></script>
-<script src="../js/search.js?v=2187"></script>
+<script src="../js/main.js?v=2188"></script>
+<script src="../js/search.js?v=2188"></script>
 <script src="../js/version.js"></script>
-<script src="../js/mermaid-init.js?v=2187"></script>
-<script src="../js/markmap-init.js?v=2187"></script>
+<script src="../js/mermaid-init.js?v=2188"></script>
+<script src="../js/markmap-init.js?v=2188"></script>
 </body>
 </html>

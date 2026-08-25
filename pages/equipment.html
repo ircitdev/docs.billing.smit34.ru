@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Интеграция с оборудованием — СмИТ Биллинг v3.5.0</title>
+  <title>Интеграция с оборудованием — СмИТ Биллинг</title>
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="СмИТ Биллинг 3.5 — Документация">
-  <meta property="og:title" content="Интеграция с оборудованием — СмИТ Биллинг v3.5.0">
+  <meta property="og:site_name" content="СмИТ Биллинг — Документация">
+  <meta property="og:title" content="Интеграция с оборудованием — СмИТ Биллинг">
   <meta property="og:description" content="NAS/BRAS, коммутаторы, VoIP-шлюзы, IPTV, FreeRADIUS с rlm_python3, абонентское оборудование.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/equipment.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
@@ -14,14 +14,14 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Интеграция с оборудованием — СмИТ Биллинг v3.5.0">
+  <meta name="twitter:title" content="Интеграция с оборудованием — СмИТ Биллинг">
   <meta name="twitter:description" content="NAS/BRAS, коммутаторы, VoIP-шлюзы, IPTV, FreeRADIUS с rlm_python3, абонентское оборудование.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="NAS/BRAS, коммутаторы, VoIP-шлюзы, IPTV, FreeRADIUS с rlm_python3, абонентское оборудование.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=2187">
-  <link rel="stylesheet" href="../css/search.css?v=2187">
-  <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css?v=2187">
+  <link rel="stylesheet" href="../css/style.css?v=2188">
+  <link rel="stylesheet" href="../css/search.css?v=2188">
+  <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css?v=2188">
 </head>
 <body>
 
@@ -30,7 +30,7 @@
     <button class="menu-toggle" aria-label="Меню">&#9776;</button>
     <div class="logo">
       <div class="logo-icon">С</div>
-      <div class="logo-text"><span class="logo-main">СмИТ Биллинг 3.5 </span><span>Документация</span></div>
+      <div class="logo-text"><span class="logo-main">СмИТ Биллинг</span><span>Документация</span></div>
     </div>
   </div>
   <div class="header-search"><div class="docs-search-wrap"><input type="search" id="docsSearch" class="docs-search-input" placeholder="Поиск по документации..." autocomplete="off"><span class="docs-search-icon"><i class="ti ti-search"></i></span><div class="docs-search-results" id="docsSearchResults"></div></div></div>
@@ -466,7 +466,7 @@
   </div>
 
   <h1>Интеграция с оборудованием</h1>
-  <p>Раздел описывает интеграцию СмИТ Биллинг v3.5.0 с сетевым оборудованием: NAS/BRAS-серверами, коммутаторами, VoIP-шлюзами, IPTV-системами и абонентским оборудованием.</p>
+  <p>Раздел описывает интеграцию СмИТ Биллинг с сетевым оборудованием: NAS/BRAS-серверами, коммутаторами, VoIP-шлюзами, IPTV-системами и абонентским оборудованием.</p>
 
   <div class="welcome-image">
     <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/robot_integrat.jpg" alt="Интеграция с оборудованием" loading="lazy">
@@ -530,7 +530,7 @@ flowchart LR
 
 
 
-  <p>Для интеграции нестандартного NAS-оборудования с СмИТ Биллинг 3.5 используется пользовательская схема. Процесс интеграции состоит из 5 шагов:</p>
+  <p>Для интеграции нестандартного NAS-оборудования с СмИТ Биллинг используется пользовательская схема. Процесс интеграции состоит из 5 шагов:</p>
 
   <ol>
     <li><strong>Добавить NAS</strong> — зарегистрируйте новое NAS-устройство в разделе <em>Оборудование &rarr; NAS</em> веб-интерфейса биллинга. Укажите IP-адрес, тип устройства, RADIUS-secret.</li>
@@ -651,7 +651,7 @@ docker compose restart freeradius</code></pre>
   <ul>
     <li><strong>Если NAS — реальное оборудование, временно выключенное</strong> (на профилактике, заменён на новый и отдан на склад) — оставить с <code>enabled=false</code>. Не удалять. Возможно потом вернёте в работу.</li>
     <li><strong>Если NAS точно списан</strong> и <strong>не упомянут</strong> в полях <code>USERS_RADIUSAUTH</code>, <code>RADIUS_SESSIONS</code>, <code>nas_radius_params</code> — можно удалять. Удаление через UI кнопкой 🗑.</li>
-    <li><strong>FK-защита</strong>: на <code>nas</code> ссылаются с <code>NO ACTION</code> поля <code>users.NAS_ID</code> и <code>USERS_RADIUSAUTH.NAS_ID</code> — если у вас есть Users привязанные к этому NAS, удаление заблокируется. Сначала переведите Users на другой NAS или обнулите <code>NAS_ID</code>.</li>
+    <li><strong>FK-защита</strong>: на <code>nas</code> ссылаются с <code>NO ACTION</code> клиентские поля <code>users.NAS_ID</code> и <code>usluga.NAS_ID</code>, служебные журналы (<code>NAS_RADIUS_PARAMS</code>, <code>NAS_STATUS_LOG</code>, <code>EVENTS_STACK</code>, <code>VOIP_LOG</code>, <code>SENSORS_LOG</code>), привязка к организации, карта сети и мониторинг, а также сам <code>nas</code> через <code>NEXT_NAS_ID</code> (цепочка пулов). Если на этом NAS есть хоть один клиент — удаление заблокируется: сначала переведите Users на другой NAS или обнулите <code>NAS_ID</code>. У <code>USERS_RADIUSAUTH</code> внешнего ключа нет — эта таблица удалению не мешает.</li>
   </ul>
 
   <div class="info-box">
@@ -804,7 +804,7 @@ docker compose restart freeradius</code></pre>
     <li><strong>Старые маленькие коммутаторы доступа</strong> (D-Link, SNR на 24 порта) — если им больше 5 лет и у них нет ни одного клиента, чаще всего это рудимент после декомиссии. Можно удалять <strong>после</strong> подтверждения от инженера, что эта железка реально снята.</li>
     <li><strong>Тестовые записи</strong> (имя совпадает с IP, тип не указан, дом не указан) — обычно безопасно удалять.</li>
   </ol>
-  <p>Удаление выполняется через UI <code>/admin/equipment/Switch/</code> кнопкой 🗑 в строке. SQL-каскад: <code>switch</code> защищён <strong>NO ACTION</strong> на FK из <code>users.SWITCH_ID</code>, <code>CONNECTION_POINTS.SWITCH_ID</code>, <code>ip_pull.SWITCH_ID</code> — то есть удаление заблокируется, если есть хотя бы одна привязка. Это safety net.</p>
+  <p>Удаление выполняется через UI <code>/admin/equipment/Switch/</code> кнопкой 🗑 в строке. SQL-каскад: <code>switch</code> защищён <strong>NO ACTION</strong> на FK из <code>users.SWITCH_ID</code>, <code>CONNECTION_POINTS.SWITCH_ID</code>, <code>ip_pull.SWITCH_ID</code>, <code>SWITCH_ORGANIZATION.switch_id</code>, <code>monitoring_device.switch_id</code> и <code>netmap_node.switch_id</code> — то есть удаление заблокируется, если есть хотя бы одна привязка. Это safety net.</p>
 
   <div class="info-box">
     <strong>Рекомендация:</strong> прежде чем удалять коммутатор «потому что 0 пользователей», убедитесь у сетевого инженера, что это не запасное оборудование на складе с заранее заведённой записью в биллинге. Удаление 4 пустых записей не даёт экономии (БД от них не тормозит), а ошибочное удаление действующего OLT — это потенциальный геморрой когда на нём появятся новые клиенты.
@@ -1139,7 +1139,7 @@ flowchart TB
   </div>
 
 
-  <p>Типовой план интеграции VoIP-оборудования с СмИТ Биллинг v3.5.0 занимает <strong>20-30 минут</strong> и состоит из 7 этапов:</p>
+  <p>Типовой план интеграции VoIP-оборудования с СмИТ Биллинг занимает <strong>20-30 минут</strong> и состоит из 7 этапов:</p>
 
   <ol>
     <li>Настройка OSS-схемы подключения к VoIP-шлюзу/АТС.</li>
@@ -1197,7 +1197,7 @@ flowchart TB
 
 
 
-  <p>СмИТ Биллинг v3.5.0 интегрируется с IPTV-платформами для автоматического управления аккаунтами клиентов, ТВ-пакетами и блокировками. Интеграция работает в двух режимах:</p>
+  <p>СмИТ Биллинг интегрируется с IPTV-платформами для автоматического управления аккаунтами клиентов, ТВ-пакетами и блокировками. Интеграция работает в двух режимах:</p>
   <ul>
     <li><strong>Событийный</strong> — при блокировке/разблокировке клиента или переключении услуги биллинг мгновенно синхронизирует состояние с IPTV-платформой.</li>
     <li><strong>Периодический</strong> — ежедневная полная сверка через Celery Beat для устранения рассинхронизаций.</li>
@@ -1322,14 +1322,14 @@ IptvApiLog.objects.filter(success=False).order_by('-created_at')[:10]</code></pr
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">25.08.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0</span>&nbsp;|&nbsp;<span data-smit="updated">25.08.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full"></span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">25.08.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full"></span>&nbsp;|&nbsp;<span data-smit="updated">25.08.2026</span></span>
 </footer>
 
-<script src="../js/main.js?v=2187"></script>
+<script src="../js/main.js?v=2188"></script>
 <script src="../js/version.js"></script>
-<script src="../js/mermaid-init.js?v=2187"></script>
-<script src="../js/markmap-init.js?v=2187"></script>
-<script src="../js/search.js?v=2187"></script>
+<script src="../js/mermaid-init.js?v=2188"></script>
+<script src="../js/markmap-init.js?v=2188"></script>
+<script src="../js/search.js?v=2188"></script>
 </body>
 </html>
