@@ -19,8 +19,8 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="NAS/BRAS, коммутаторы, VoIP-шлюзы, IPTV, FreeRADIUS с rlm_python3, абонентское оборудование.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=2185">
-  <link rel="stylesheet" href="../css/search.css?v=2185">
+  <link rel="stylesheet" href="../css/style.css?v=2186">
+  <link rel="stylesheet" href="../css/search.css?v=2186">
   <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css">
 </head>
 <body>
@@ -490,7 +490,28 @@
 </div>
 
 
-<img src="../img/p50364669_isp_equipment.png" alt="Схема интеграции оборудования ISP" class="content-image">
+<pre class="mermaid">
+flowchart LR
+    subgraph net["Сеть оператора"]
+        NAS["Сервер доступа<br/>выдаёт адрес, считает трафик"]
+        SW["Коммутатор<br/>порт = квартира"]
+        CPE["Оборудование<br/>у клиента"]
+    end
+    subgraph bill["Биллинг"]
+        AUTH["Проверка учётной записи"]
+        SESS["Учёт сессий"]
+        CARD["Карточка клиента"]
+        MON["Состояние оборудования"]
+    end
+    CPE --> SW --> NAS
+    NAS -->|"запрос на вход"| AUTH
+    AUTH -->|"разрешено: адрес и скорость"| NAS
+    NAS -->|"объём и длительность"| SESS
+    SW -->|"номер порта"| CARD
+    SESS --> CARD
+    NAS -.->|"опрос доступности"| MON
+    SW -.->|"опрос портов"| MON
+</pre>
 
   <!-- ===== Интернет оборудование ===== -->
   <h2 id="internet">Интернет оборудование — Пользовательская схема</h2>
@@ -1186,10 +1207,7 @@ flowchart TB
   <h3 id="iptv-tvip">TVIP Media (TMS)</h3>
 
   <p><strong>TVIP TMS</strong> — IPTV/OTT middleware для управления телевизионными услугами, клиентами и STB-приставками. Подключение через REST API с HTTP Basic Auth.</p>
-
-  <img src="../img/new_iptv_tvip_settings.png" alt="Настройки TVIP Media" class="screenshot">
-
-  <p>Настройка: <strong>Настройки &rarr; Интеграции &rarr; TVIP Media</strong></p>
+<p>Настройка: <strong>Настройки &rarr; Интеграции &rarr; TVIP Media</strong></p>
 
   <table>
     <thead><tr><th>Параметр</th><th>Описание</th></tr></thead>
@@ -1217,10 +1235,7 @@ flowchart TB
   <h3 id="iptv-lfstream">LFStream (Смотрёшка)</h3>
 
   <p><strong>LFStream</strong> — IPTV-прокси/CDN для доставки телевизионного контента. Управление аккаунтами клиентов и ТВ-пакетами через CMS-панель провайдера.</p>
-
-  <img src="../img/new_iptv_lfstream_settings.png" alt="Настройки LFStream" class="screenshot">
-
-  <p>Настройка: <strong>Настройки &rarr; Интеграции &rarr; LFStream</strong></p>
+<p>Настройка: <strong>Настройки &rarr; Интеграции &rarr; LFStream</strong></p>
 
   <table>
     <thead><tr><th>Параметр</th><th>Описание</th></tr></thead>
@@ -1235,7 +1250,7 @@ flowchart TB
 
   <p>Для каждого IPTV-провайдера необходимо настроить соответствие между услугами биллинга и пакетами во внешней системе. Настройка: <strong>Настройки &rarr; IPTV-пакеты</strong>.</p>
 
-  <img src="../img/new_iptv_mappings.png" alt="Маппинг IPTV-пакетов" class="screenshot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/shots_v2185/iptv_packages.jpg" alt="Маппинг IPTV-пакетов" class="screenshot">
 
   <p>Таблица маппинга содержит:</p>
   <table>
@@ -1312,10 +1327,10 @@ IptvApiLog.objects.filter(success=False).order_by('-created_at')[:10]</code></pr
   <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0</span>&nbsp;|&nbsp;<span data-smit="updated">25.08.2026</span></span>
 </footer>
 
-<script src="../js/main.js?v=2185"></script>
+<script src="../js/main.js?v=2186"></script>
 <script src="../js/version.js"></script>
-<script src="../js/mermaid-init.js?v=2185"></script>
-<script src="../js/markmap-init.js?v=2185"></script>
-<script src="../js/search.js?v=2185"></script>
+<script src="../js/mermaid-init.js?v=2186"></script>
+<script src="../js/markmap-init.js?v=2186"></script>
+<script src="../js/search.js?v=2186"></script>
 </body>
 </html>

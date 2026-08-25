@@ -19,8 +19,8 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=2185">
-  <link rel="stylesheet" href="../css/search.css?v=2185">
+  <link rel="stylesheet" href="../css/style.css?v=2186">
+  <link rel="stylesheet" href="../css/search.css?v=2186">
   <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css">
 </head>
 <body>
@@ -496,7 +496,29 @@
 
 
 
-<img src="../img/p112754989_BillingSormFSB_scheme.png" alt="Схема интеграции СОРМ3 с биллингом" class="content-image">
+<pre class="mermaid">
+flowchart LR
+    subgraph src["Данные биллинга"]
+        AB["Клиенты и договоры"]
+        USR["Учётные записи"]
+        PAY["Платежи"]
+        NET["Адреса и оборудование"]
+    end
+    RUN["Формирование отчётов<br/>по расписанию"]
+    CHK["Проверка готовности<br/>обязательные поля заполнены"]
+    FILES["Выгрузка<br/>в требуемом формате"]
+    FTP["Приёмник надзорного органа"]
+    LOG["История выгрузок<br/>и уведомления"]
+
+    AB --> RUN
+    USR --> RUN
+    PAY --> RUN
+    NET --> RUN
+    RUN --> CHK
+    CHK -->|"данные полные"| FILES --> FTP
+    CHK -->|"чего-то не хватает"| LOG
+    FILES --> LOG
+</pre>
 
 <figure class="doc-video">
   <div class="dv-head">
@@ -1572,10 +1594,10 @@ python manage.py merge_sorm_attribute_dups --by-name --apply</code></pre>
   <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0</span>&nbsp;|&nbsp;<span data-smit="updated">25.08.2026</span></span>
 </footer>
 
-<script src="../js/main.js?v=2185"></script>
+<script src="../js/main.js?v=2186"></script>
 <script src="../js/version.js"></script>
-<script src="../js/mermaid-init.js?v=2185"></script>
-<script src="../js/markmap-init.js?v=2185"></script>
-<script src="../js/search.js?v=2185"></script>
+<script src="../js/mermaid-init.js?v=2186"></script>
+<script src="../js/markmap-init.js?v=2186"></script>
+<script src="../js/search.js?v=2186"></script>
 </body>
 </html>
