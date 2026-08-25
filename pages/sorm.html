@@ -19,9 +19,8 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=2184">
-  <link rel="stylesheet" href="../css/search.css?v=2184">
-  <link rel="stylesheet" href="../css/vendor/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../css/style.css?v=2185">
+  <link rel="stylesheet" href="../css/search.css?v=2185">
   <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css">
 </head>
 <body>
@@ -449,7 +448,7 @@
       <div class="nav-section">Разработчикам</div>
       <ul>
         <li class="has-children">
-          <a href="../graphify/graph.html"><i class="ti ti-topology-star-3"></i> Архитектура кода <span class="arrow"><i class="bi bi-chevron-right"></i></span></a>
+          <a href="../graphify/graph.html"><i class="ti ti-topology-star-3"></i> Архитектура кода <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
           <ul class="submenu">
             <li><a href="../graphify/graph.html">Граф сообществ</a></li>
             <li><a href="../graphify/wiki/index.html">Wiki модулей</a></li>
@@ -557,7 +556,7 @@
   <h2 id="setup">Настройка подключения</h2>
 <div class="page-toc">
 <details open>
-  <summary><strong><i class="bi bi-book"></i> Содержание раздела</strong></summary>
+  <summary><strong><i class="ti ti-book"></i> Содержание раздела</strong></summary>
   <ul>
     <li><a href="#sorm-add-modal">Модальное окно «Добавить настройку СОРМ»</a></li>
   </ul>
@@ -819,7 +818,7 @@ docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 3
 
 <div class="page-toc">
 <details open>
-  <summary><strong><i class="bi bi-book"></i> Содержание раздела</strong></summary>
+  <summary><strong><i class="ti ti-book"></i> Содержание раздела</strong></summary>
   <ul>
     <li><a href="#sorm-list">Список конфигураций</a></li>
     <li><a href="#sorm-readiness">Проверка готовности данных</a></li>
@@ -1374,7 +1373,7 @@ flowchart TB
   <p>Builder выбирает все <code>UserAttributes</code> где <code>is_sorm=True</code>, <code>sorm_field_code != ''</code> и тип отчёта присутствует в <code>sorm_report_types</code>, упорядочивает по <code>order_no</code> и собирает SELECT-подзапросы. Для атрибутов с <code>sorm_alt_names</code> используется <code>WHERE NAME IN (...)</code> — это покрывает обе графемы одновременно (например на одной БД хранятся записи и с кириллической «р/с», и с латинской «р/c»).</p>
 
   <div class="info-box">
-    <strong>Защита от случайного переименования:</strong> UI <code>/admin/dictionary/UserAttributes/</code> показывает красный щит <i class="fas fa-shield-alt" style="color:#dc3545"></i> для СОРМ-атрибутов и блокирует переименование без явного подтверждения. Запрос изменения имени возвращает HTTP 400 с флагом <code>sorm_rename_blocked: true</code>; UI просит подтвердить через диалог с предупреждением. Поле <code>sorm_field_code</code> валидируется регэкспом <code>^[a-z][a-z0-9_]*$</code>.
+    <strong>Защита от случайного переименования:</strong> UI <code>/admin/dictionary/UserAttributes/</code> показывает красный щит <i class="ti ti-shield" style="color:#dc3545"></i> для СОРМ-атрибутов и блокирует переименование без явного подтверждения. Запрос изменения имени возвращает HTTP 400 с флагом <code>sorm_rename_blocked: true</code>; UI просит подтвердить через диалог с предупреждением. Поле <code>sorm_field_code</code> валидируется регэкспом <code>^[a-z][a-z0-9_]*$</code>.
   </div>
 
   <h3 id="upravlenie-metadannymi-v-ui">Управление метаданными в UI</h3>
@@ -1391,8 +1390,8 @@ flowchart TB
   <p>В таблице атрибутов цветовая индикация:</p>
 
   <ul>
-    <li><i class="fas fa-shield-alt" style="color:#dc3545"></i> <strong>Красный щит</strong> + tooltip с <code>field_code</code> — атрибут полноценно настроен для СОРМ.</li>
-    <li><i class="fas fa-shield-alt" style="color:#ffc107"></i> <strong>Жёлтый щит</strong> — флаг <code>is_sorm=True</code>, но <code>sorm_field_code</code> пустой. Builder его пропустит — нужно дозаполнить метаданные.</li>
+    <li><i class="ti ti-shield" style="color:#dc3545"></i> <strong>Красный щит</strong> + tooltip с <code>field_code</code> — атрибут полноценно настроен для СОРМ.</li>
+    <li><i class="ti ti-shield" style="color:#ffc107"></i> <strong>Жёлтый щит</strong> — флаг <code>is_sorm=True</code>, но <code>sorm_field_code</code> пустой. Builder его пропустит — нужно дозаполнить метаданные.</li>
     <li>Серая точка — обычный (не СОРМ) атрибут.</li>
   </ul>
 
@@ -1481,9 +1480,9 @@ flowchart TB
   <p>В верхней панели страницы <code>/admin/equipment/sorm_list/</code> появился сводный бейдж готовности — показывает результат последней проверки и время:</p>
 
   <ul>
-    <li><i class="fas fa-check-circle" style="color:#198754"></i> <strong>Все данные готовы</strong> — нет ни meta_issues, ни data_issues.</li>
-    <li><i class="fas fa-exclamation-triangle" style="color:#ffc107"></i> <strong>Пропусков: N</strong> — есть data_issues (значения), но метаданные в порядке.</li>
-    <li><i class="fas fa-times-circle" style="color:#dc3545"></i> <strong>Проблем: M meta + N data</strong> — есть проблемы метаданных, требует исправления до выгрузки.</li>
+    <li><i class="ti ti-circle-check" style="color:#198754"></i> <strong>Все данные готовы</strong> — нет ни meta_issues, ни data_issues.</li>
+    <li><i class="ti ti-alert-triangle" style="color:#ffc107"></i> <strong>Пропусков: N</strong> — есть data_issues (значения), но метаданные в порядке.</li>
+    <li><i class="ti ti-circle-x" style="color:#dc3545"></i> <strong>Проблем: M meta + N data</strong> — есть проблемы метаданных, требует исправления до выгрузки.</li>
   </ul>
 
   <h3 id="pre-flight-v-celery-zadache-vygruzki">Pre-flight в Celery-задаче выгрузки</h3>
@@ -1573,10 +1572,10 @@ python manage.py merge_sorm_attribute_dups --by-name --apply</code></pre>
   <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0</span>&nbsp;|&nbsp;<span data-smit="updated">25.08.2026</span></span>
 </footer>
 
-<script src="../js/main.js?v=2184"></script>
+<script src="../js/main.js?v=2185"></script>
 <script src="../js/version.js"></script>
-<script src="../js/mermaid-init.js?v=2184"></script>
-<script src="../js/markmap-init.js?v=2184"></script>
-<script src="../js/search.js?v=2184"></script>
+<script src="../js/mermaid-init.js?v=2185"></script>
+<script src="../js/markmap-init.js?v=2185"></script>
+<script src="../js/search.js?v=2185"></script>
 </body>
 </html>

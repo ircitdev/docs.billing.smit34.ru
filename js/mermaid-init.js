@@ -185,10 +185,10 @@
 
     var bar = document.createElement('div'); bar.className = 'mmd-zoom-bar';
     bar.innerHTML =
-      '<button type="button" data-z="out" title="Уменьшить" aria-label="Уменьшить"><i class="bi bi-dash-lg" aria-hidden="true"></i></button>' +
+      '<button type="button" data-z="out" title="Уменьшить" aria-label="Уменьшить"><i class="ti ti-minus" aria-hidden="true"></i></button>' +
       '<span class="mmd-zoom-pct" aria-live="polite">100%</span>' +
-      '<button type="button" data-z="in" title="Увеличить" aria-label="Увеличить"><i class="bi bi-plus-lg" aria-hidden="true"></i></button>' +
-      '<button type="button" data-z="reset" title="Сбросить" aria-label="Сбросить масштаб"><i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i></button>';
+      '<button type="button" data-z="in" title="Увеличить" aria-label="Увеличить"><i class="ti ti-plus" aria-hidden="true"></i></button>' +
+      '<button type="button" data-z="reset" title="Сбросить" aria-label="Сбросить масштаб"><i class="ti ti-rotate" aria-hidden="true"></i></button>';
 
     pre.parentNode.insertBefore(wrap, pre);
     stage.appendChild(pre);

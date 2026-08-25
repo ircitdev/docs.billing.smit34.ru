@@ -278,12 +278,12 @@ document.addEventListener('DOMContentLoaded', function () {
       cover.className = 'protected-cover';
       cover.innerHTML =
         '<div class="protected-cover-inner">' +
-          '<div class="protected-icon"><i class="bi bi-shield-lock"></i></div>' +
+          '<div class="protected-icon"><i class="ti ti-shield-lock"></i></div>' +
           '<h3>' + title + '</h3>' +
           '<p>' + hint + '</p>' +
           '<form class="protected-form" autocomplete="off">' +
             '<input type="password" placeholder="Пароль" autocomplete="new-password" required>' +
-            '<button type="submit"><i class="bi bi-unlock"></i> Открыть</button>' +
+            '<button type="submit"><i class="ti ti-lock-open"></i> Открыть</button>' +
           '</form>' +
           '<div class="protected-error" hidden>Неверный пароль</div>' +
         '</div>';
@@ -359,18 +359,18 @@ document.addEventListener('DOMContentLoaded', function () {
     var bar = document.createElement('div');
     bar.className = 'code-block-bar';
     bar.innerHTML = '<span class="code-block-lang">' + (lang || 'code') + '</span>' +
-      '<button class="code-copy-btn" type="button" title="Скопировать в буфер"><i class="bi bi-clipboard"></i><span> Копировать</span></button>';
+      '<button class="code-copy-btn" type="button" title="Скопировать в буфер"><i class="ti ti-clipboard"></i><span> Копировать</span></button>';
     wrap.insertBefore(bar, pre);
 
     bar.querySelector('.code-copy-btn').addEventListener('click', function () {
       var btn = this;
       copyToClipboard(text).then(function () {
         btn.classList.add('copied');
-        btn.querySelector('i').className = 'bi bi-check2';
+        btn.querySelector('i').className = 'ti ti-check';
         btn.querySelector('span').textContent = ' Скопировано';
         setTimeout(function () {
           btn.classList.remove('copied');
-          btn.querySelector('i').className = 'bi bi-clipboard';
+          btn.querySelector('i').className = 'ti ti-clipboard';
           btn.querySelector('span').textContent = ' Копировать';
         }, 1600);
       });
@@ -425,7 +425,7 @@ document.addEventListener('DOMContentLoaded', function () {
     btn.type = 'button';
     btn.title = 'Скопировать ссылку на раздел';
     btn.setAttribute('aria-label', 'Поделиться ссылкой на раздел');
-    btn.innerHTML = '<i class="bi bi-link-45deg"></i>';
+    btn.innerHTML = '<i class="ti ti-link"></i>';
     h.appendChild(btn);
     btn.addEventListener('click', function (e) {
       e.preventDefault();
