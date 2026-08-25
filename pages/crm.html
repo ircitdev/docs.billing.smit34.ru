@@ -19,8 +19,8 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Нативная CRM: канбан-воронка, конструктор стадий и триггеров, источники сделок, Salesbot, Задачи, Списки, виджеты-плагины.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=2181">
-  <link rel="stylesheet" href="../css/search.css?v=2181">
+  <link rel="stylesheet" href="../css/style.css?v=2182">
+  <link rel="stylesheet" href="../css/search.css?v=2182">
   <link rel="stylesheet" href="../css/vendor/bootstrap-icons.min.css">
   <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css">
 </head>
@@ -784,7 +784,7 @@ UTM-кампании и организация работают одинаков
 <p>Параметры: <code>data-title</code>, <code>data-subtitle</code>,
 <code>data-color</code>, <code>data-button</code>, <code>data-tariff="0"</code>
 (скрыть выбор тарифа), <code>data-address="0"</code> (скрыть адрес). Открыть
-форму из своей кнопки — <code>SmitOrderWidget.openCentered</code>. Есть и
+форму из своей кнопки — <code>SmitOrderWidget.openCentered()</code>. Есть и
 готовая страница заказа без встраивания: <code>/order</code>.</p>
 <p><strong>Своя форма.</strong> Отправьте JSON — обязателен только телефон;
 остальные поля заполняют карточку (см. <a href="#crm-intake-card">единый
@@ -1210,7 +1210,7 @@ sequenceDiagram
     B->>B: сверка SHA-256, распаковка<br>только фронтовых файлов
     P->>B: страница с точкой монтирования
     B-->>P: widget.js + контейнер
-    P->>P: SmitWidget.register → рендер
+    P->>P: SmitWidget.register() → рендер
 </pre>
 
 <p>Пакет — zip с манифестом и фронтовым кодом (серверный код в v1 не исполняется):</p>
@@ -1224,7 +1224,7 @@ sequenceDiagram
 <pre><code>// widget.js — контейнер уже в DOM, settings — из настроек установки
 window.SmitWidget.register('funnel-summary', function (el, settings) {
   fetch('/admin/crm/deals/json/?type=' + (settings.type || 'internet'))
-    .then(r =&gt; r.json)
+    .then(r =&gt; r.json())
     .then(d =&gt; { el.innerHTML = /* счётчики по d.counts */; });
 });</code></pre>
 <p>На плитке каталога: версия, размер, точка монтирования, кнопки
@@ -1321,7 +1321,7 @@ window.SmitWidget.register('funnel-summary', function (el, settings) {
 маркера: аватарка + Фамилия / Имя Отчество, телефон, стадия, адрес. Цвет маркера —
 по стадии сделки.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/crm_v1846/crm_dashboard.png" alt="CRM — дашборд с картой"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_v1846/crm_dashboard.png" alt="CRM — дашборд с картой"></p>
 
 <h3 id="crm-insights">Инсайты периода</h3>
 <p>Полоса над KPI: <strong>новые лиды · подключено · выручка подключений ·
@@ -1508,10 +1508,10 @@ click-to-call; i-иконки справки в заголовках — <strong
 
 </main>
 
-<script src="../js/main.js?v=2181"></script>
+<script src="../js/main.js?v=2182"></script>
 <script src="../js/version.js"></script>
-<script src="../js/mermaid-init.js?v=2181"></script>
-<script src="../js/markmap-init.js?v=2181"></script>
-<script src="../js/search.js?v=2181"></script>
+<script src="../js/mermaid-init.js?v=2182"></script>
+<script src="../js/markmap-init.js?v=2182"></script>
+<script src="../js/search.js?v=2182"></script>
 </body>
 </html>

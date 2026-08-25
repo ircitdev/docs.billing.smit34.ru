@@ -19,8 +19,8 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="REST API v2, SOAP API, обещанный платёж, управление клиентами. Примеры запросов curl и JSON.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=2181">
-  <link rel="stylesheet" href="../css/search.css?v=2181">
+  <link rel="stylesheet" href="../css/style.css?v=2182">
+  <link rel="stylesheet" href="../css/search.css?v=2182">
   <link rel="stylesheet" href="../css/vendor/bootstrap-icons.min.css">
   <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css">
 </head>
@@ -888,7 +888,7 @@ curl -s -b cookies.txt -X DELETE \
     <li>Сервис рассчитывает <em>сумму к оплате</em> = <code>amount × (1 + commission_rate)</code>. По умолчанию комиссия <code>0.045</code> (4.5 %), настраивается в <code>LK_PAYMENT_COMMISSION</code>.</li>
     <li>Для ЮKassa REST / W1 — редирект на форму оплаты; для ЮKassa HTTP — форма <code>POST</code> на <code>yoomoney.ru/eshop.xml</code>.</li>
     <li>После успешной оплаты платёжная система вызывает <code>/lk/payments/webhook/</code>.</li>
-    <li>Webhook проверяет подпись, извлекает <code>credit_amount</code> (из metadata / кэша / расчёта), вызывает <code>_credit_abonent</code>: <code>account.ostatok += credit_amount × 10<sup>10</sup></code> и создаёт запись в <code>FinanceOperations</code>.</li>
+    <li>Webhook проверяет подпись, извлекает <code>credit_amount</code> (из metadata / кэша / расчёта), вызывает <code>_credit_abonent()</code>: <code>account.ostatok += credit_amount × 10<sup>10</sup></code> и создаёт запись в <code>FinanceOperations</code>.</li>
   </ol>
 
   <pre class="mermaid">
@@ -909,7 +909,7 @@ sequenceDiagram
     Ab->>PS: оплата на форме провайдера
     PS->>WH: webhook (XML+MD5 или JSON)
     WH->>WH: проверка подписи + идемпотентность
-    WH->>DB: _credit_abonent<br/>ostatok += amount × 10¹⁰<br/>+ FinanceOperations
+    WH->>DB: _credit_abonent()<br/>ostatok += amount × 10¹⁰<br/>+ FinanceOperations
     WH->>DB: авто-разблок b_negbal если ostatok ≥ 0
     WH-->>PS: 200 OK / WMI_RESULT=OK
     Note over Ab,DB: зачисление идёт по credit_amount,<br/>НЕ по сумме с комиссией
@@ -1162,7 +1162,7 @@ WMI_MERCHANT_ID=123456
       <tr><td><code>op_summa</code></td><td><code>credit_amount × 10<sup>10</sup></code> (положительное число)</td></tr>
       <tr><td><code>abonent_id</code></td><td>ID клиента из <code>metadata</code> / <code>customerNumber</code> / <code>WMI_PAYMENT_NO</code></td></tr>
       <tr><td><code>descr</code></td><td>«Онлайн-оплата (YooKassa/W1). Оплачено: X.XX, комиссия: Y.YY»</td></tr>
-      <tr><td><code>op_date</code></td><td><code>timezone.now</code></td></tr>
+      <tr><td><code>op_date</code></td><td><code>timezone.now()</code></td></tr>
     </tbody>
   </table>
 
@@ -1480,18 +1480,18 @@ exit 0</code></pre>
 )
 
 # Сгенерировать SQL для отчёта ABONENT_LEGAL
-sql = SormReportBuilder('ABONENT_LEGAL').build_sql
+sql = SormReportBuilder('ABONENT_LEGAL').build_sql()
 
 # Получить порядок колонок CSV
-codes = SormReportBuilder('ABONENT_LEGAL').get_field_codes
+codes = SormReportBuilder('ABONENT_LEGAL').get_field_codes()
 # ['inn', 'kpp', 'ogrn', 'legal_address', ...]
 
 # Список поддерживаемых типов отчётов
-SormReportBuilder.supported_report_types
+SormReportBuilder.supported_report_types()
 # ['ABONENT_LEGAL']  # на только этот тип имеет builder-шаблон
 
 # Валидация метаданных (без обращения к БД клиентов)
-issues = SormReportBuilder.validate_meta
+issues = SormReportBuilder.validate_meta()
 # [{'kind': 'missing_field_code', 'attribute_id': 13, ...}, ...]
 
 # Валидация заполнения данных у активных клиентов
@@ -1802,10 +1802,10 @@ curl -s -X POST "https://billing.example.com/mobile-api/v1/push/register" \
   <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0</span>&nbsp;|&nbsp;<span data-smit="updated">25.08.2026</span></span>
 </footer>
 
-<script src="../js/main.js?v=2181"></script>
+<script src="../js/main.js?v=2182"></script>
 <script src="../js/version.js"></script>
-<script src="../js/mermaid-init.js?v=2181"></script>
-<script src="../js/markmap-init.js?v=2181"></script>
-<script src="../js/search.js?v=2181"></script>
+<script src="../js/mermaid-init.js?v=2182"></script>
+<script src="../js/markmap-init.js?v=2182"></script>
+<script src="../js/search.js?v=2182"></script>
 </body>
 </html>

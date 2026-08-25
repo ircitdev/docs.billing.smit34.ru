@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Журнал изменений — СмИТ Биллинг 3.5</title>
-  <link rel="stylesheet" href="../css/style.css?v=2181">
+  <link rel="stylesheet" href="../css/style.css?v=2182">
   <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css">
 </head>
 <body>
@@ -816,7 +816,7 @@ mindmap
     <li><strong>Объединение «Договор и контакты»</strong> — subgroup 26 «Договор» + 61 «Контактная информация» в единый блок. Юр-поля (Отправлять счёт / Формировать акт / Дата выставления акта) показываются динамически по чекбоксу «Юр. лицо».</li>
     <li><strong>Скрыто</strong>: ФИО-заголовок в форме (дублировал шапку), поле «Точка подключения» (есть отдельная вкладка), «Группа» (parent), «Скидка %» (рекомендуется лояльность), весь блок «Особые настройки» (17 технических полей).</li>
     <li><strong>Подзаголовки в «Смена тарифа / Блокировки»</strong> — три смысловые группы: Запланированная смена / Добровольная блокировка / Административная блокировка.</li>
-    <li><strong>Маски и валидация email/телефон</strong> — jQuery MaskedInput для <code>+7 (999) 999-99-99</code>, авто-нормализация существующих значений, серверная валидация в <code>Abonents.clean</code>.</li>
+    <li><strong>Маски и валидация email/телефон</strong> — jQuery MaskedInput для <code>+7 (999) 999-99-99</code>, авто-нормализация существующих значений, серверная валидация в <code>Abonents.clean()</code>.</li>
     <li><strong>Подсветка пустых полей</strong> — незаполненные обязательные поля в «Договор и контакты» получают красную рамку (.smit-empty).</li>
     <li><strong>Интерактив «Юр. лицо»</strong> — при включении на физ-тарифе предлагает выбрать Business-тариф через модалку смены, серверная валидация требует <code>Tarif.is_business=true</code>.</li>
   </ul>
@@ -841,7 +841,7 @@ mindmap
 
   <h3 id="v200-other-fixes">Прочие фиксы</h3>
   <ul>
-    <li><strong>CRIT</strong>: <code>_block_negative_balance</code> не блокировал должников после первых ~200 по pk — фикс через <code>annotate(has_negbal=Exists(...))</code>.</li>
+    <li><strong>CRIT</strong>: <code>_block_negative_balance()</code> не блокировал должников после первых ~200 по pk — фикс через <code>annotate(has_negbal=Exists(...))</code>.</li>
     <li><strong>Quick Add</strong>: убран чекбокс «Отпр. договор», «Назначить NAS и IP сразу» активен по умолчанию.</li>
     <li><strong>i-иконки документации</strong> — на legend'ах hero-блоков ссылки на соответствующие якоря в docs.billing.smit34.ru.</li>
   </ul>
@@ -952,10 +952,10 @@ mindmap
 
   <h3 id="radius-sessii-build-323">RADIUS / Сессии</h3>
   <ul>
-    <li><strong>Сброс RADIUS-сессий</strong> — кнопка ⏻ в шапке карточки клиента теперь работает: помимо CoA Disconnect на NAS принудительно приводит БД в офлайн (<code>Users.LOGGED=false</code>, <code>USERS_RADIUSAUTH.LOGGED=0</code>, <code>RADIUS_SESSIONS.END_TIME=now</code> с <code>END_REASON='Admin reset'</code>).</li>
+    <li><strong>Сброс RADIUS-сессий</strong> — кнопка ⏻ в шапке карточки клиента теперь работает: помимо CoA Disconnect на NAS принудительно приводит БД в офлайн (<code>Users.LOGGED=false</code>, <code>USERS_RADIUSAUTH.LOGGED=0</code>, <code>RADIUS_SESSIONS.END_TIME=now()</code> с <code>END_REASON='Admin reset'</code>).</li>
     <li><strong>Recovery missed Accounting-Start</strong> — если NAS шлёт только Interim-Update (без Start), <code>_radius_sessions_update</code> теперь закрывает осиротевшие открытые сессии и создаёт новую запись.</li>
     <li><strong>Монитор сессий</strong> — бейдж «Online» теперь только при совпадении <code>ACCT_SESSION_ID</code> между <code>RADIUS_SESSIONS</code> и <code>USERS_RADIUSAUTH</code>; сортировка по <code>UPDATE_TIME DESC</code>.</li>
-    <li><strong>cleanup_stale_sessions</strong> (Celery beat ежечасно) — закрывает зависшие <code>RADIUS_SESSIONS</code> с <code>UPDATE_TIME &lt; now-60min</code>.</li>
+    <li><strong>cleanup_stale_sessions</strong> (Celery beat ежечасно) — закрывает зависшие <code>RADIUS_SESSIONS</code> с <code>UPDATE_TIME &lt; now()-60min</code>.</li>
   </ul>
 
   <h3 id="adresa-fias-dadata-build-297-301-324">Адреса / ФИАС / DaData</h3>
@@ -1202,8 +1202,8 @@ rtsh list scheme            — список доступных схем</code><
   &copy; 2026 СмИТ — СмИТ Биллинг v3.5.0
 </footer>
 
-<script src="../js/main.js?v=2181"></script>
-<script src="../js/mermaid-init.js?v=2181"></script>
-<script src="../js/markmap-init.js?v=2181"></script>
+<script src="../js/main.js?v=2182"></script>
+<script src="../js/mermaid-init.js?v=2182"></script>
+<script src="../js/markmap-init.js?v=2182"></script>
 </body>
 </html>

@@ -19,10 +19,10 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Управление клиентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=2181">
+  <link rel="stylesheet" href="../css/style.css?v=2182">
   <link rel="stylesheet" href="../css/vendor/bootstrap-icons.min.css">
   <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css">
-  <link rel="stylesheet" href="../css/search.css?v=2181">
+  <link rel="stylesheet" href="../css/search.css?v=2182">
 </head>
 <body>
 
@@ -832,7 +832,7 @@ JS-обновление каждые 60 сек через <code>/admin/dictionar
 <p><strong>Heat-map платежей 7×24</strong> (фиолетовая палитра) — день недели × час, цветовая
 интенсивность <code>rgba(#6f42c1, alpha)</code> от количества платежей. SQL:</p>
 <pre><code>SELECT EXTRACT(ISODOW FROM "OP_DATE"), EXTRACT(HOUR FROM "OP_DATE"), COUNT(*)
-FROM finance_operations WHERE "OP_DATE" &gt;= now - 7 days AND "OP_SUMMA" &gt; 0
+FROM finance_operations WHERE "OP_DATE" &gt;= now() - 7 days AND "OP_SUMMA" &gt; 0
 GROUP BY 1, 2;</code></pre>
 <p>Hover увеличивает ячейку 1.4× с tooltip «N пл.». Помогает увидеть паттерн —
 например, пик платежей в Пн ~17:00.</p>
@@ -974,7 +974,7 @@ GROUP BY 1, 2;</code></pre>
   <li><strong>Привязка к клиенту</strong>: <code>Abonents.TARIF_ID</code> (главное поле), опционально <code>Users.TARIF_ID</code> для специальных учёток;</li>
   <li><strong>Ежемесячное списание</strong> (<code>billing_worker.py</code>):
     <ul>
-      <li>Берёт <code>abonent.tarif.tarif_tuu.all</code> — все услуги тарифа;</li>
+      <li>Берёт <code>abonent.tarif.tarif_tuu.all()</code> — все услуги тарифа;</li>
       <li>Для каждой услуги ищет соответствующую <code>UsersUsluga</code> у клиента (или создаёт новую);</li>
       <li>Списывает <strong>каскадно</strong>: <code>UsersUsluga.summ → usluga.summa → usluga.price</code> (берётся первое заполненное);</li>
       <li>Создаёт <code>FINANCE_OPERATIONS</code> с <code>op_type=32</code> (тарифное списание);</li>
@@ -2497,7 +2497,7 @@ flowchart LR
 когда тысячи клиентов одновременно переавторизуются, FreeRADIUS не успевает
 обрабатывать пакеты из-за серии SQL-запросов на каждый Access-Request.</p>
 
-<p>Без кэша один <code>authorize</code> делал 5 SQL-запросов:
+<p>Без кэша один <code>authorize()</code> делал 5 SQL-запросов:
 <code>Users + abonent + nas + NasRadiusParams + TarifRadiusParams + VpnConst</code>,
 суммарно 5–15 ms на пакет. При 1000 пакетов/сек FreeRADIUS не успевал,
 очередь <code>max_requests=16384</code> заполнялась за 16 сек, NAS retry'ил пакеты,
@@ -2588,7 +2588,7 @@ flowchart LR
 <code>POST /admin/equipment/radius_cache_flush/</code> сбрасывает весь кэш (только superuser).</p>
 
 <p><strong>Реальная статистика рабочего сервера</strong> через 5 минут после деплоя при штатной нагрузке ~10–20 авторизаций/сек: hits=838, misses=92, hit ratio=<strong>90.1%</strong>.
-При hit ratio 90% среднее время <code>authorize</code> снизилось с 10 ms до ~2 ms,
+При hit ratio 90% среднее время <code>authorize()</code> снизилось с 10 ms до ~2 ms,
 эффективная пропускная способность выросла в ~5 раз без увеличения ресурсов.</p>
 
 <h4 id="radius-tariff-required">RADIUS REJECT без тарифа</h4>
@@ -3197,7 +3197,7 @@ flowchart LR
     <tr><td><code>choices[1^Янв|2^Фев|3^Мар]</code></td><td><code>WHERE month = :Месяц|choices[1^Январь|2^Февраль]$</code></td><td>Dropdown с фиксированными значениями</td></tr>
   </tbody>
 </table>
-<p>Парсинг — regex в <code>AdminCustomReports._get_sql_fields</code>, подстановка в <code>_execute_sql</code> с защитой от SQL-injection.</p>
+<p>Парсинг — regex в <code>AdminCustomReports._get_sql_fields()</code>, подстановка в <code>_execute_sql()</code> с защитой от SQL-injection.</p>
 
 <h5 id="cr-types">Типы отчётов</h5>
 <p>Справочник <code>ADMIN_CUSTOM_REPORTS_TYPE</code> — 7 категорий с цветными бейджами:</p>
@@ -3219,7 +3219,7 @@ flowchart LR
   <li>Live-counter параметров — автоматически считает <code>:Имя|тип$</code> в коде;</li>
   <li>Подсветка плейсхолдеров жёлтым overlay'ем;</li>
   <li>Hot-keys: Ctrl+/ comment, Ctrl+F find, Tab indent;</li>
-  <li>Auto-fix SQL — <code>_fix_sql_column_case</code> для миграций Carbon4 → PostgreSQL (uppercase ID → lowercase id).</li>
+  <li>Auto-fix SQL — <code>_fix_sql_column_case()</code> для миграций Carbon4 → PostgreSQL (uppercase ID → lowercase id).</li>
 </ul>
 <p><strong>AI Builder</strong>: кнопка «✨ AI» в toolbar. Открывает чат с AI-ассистентом:</p>
 <ol>
@@ -3722,7 +3722,7 @@ flowchart TD
     PERM --> NULL
 </pre>
 
-<p><strong>Журнал, KPI и CSV</strong> заскоуплены через <code>_apply_msg_org</code> по
+<p><strong>Журнал, KPI и CSV</strong> заскоуплены через <code>_apply_msg_org()</code> по
 <code>abonent__organization_id</code>. Контракт: <em>записи без определимой организации
 (системные, без клиента) видны всем</em> — иначе «ничьи» уведомления пропали бы у всех.</p>
 
@@ -4022,14 +4022,14 @@ count = 0 или count &gt; 500 (бейдж становится красным 
   <li>Записи группируются по <code>GROUP_ID</code> → каждая группа = одна вкладка формы;</li>
   <li>Внутри группы поля сортируются по <code>ORDER</code>, скрытые (<code>SHOW_ON_FORM=0</code>) исключаются;</li>
   <li>Применяются <code>VERBOSE_NAME</code> для русификации лейблов;</li>
-  <li>Кеш Django сохраняет результат — после изменения FFG нужен <code>cache.clear</code>.</li>
+  <li>Кеш Django сохраняет результат — после изменения FFG нужен <code>cache.clear()</code>.</li>
 </ol>
 
 <h5 id="ffg-pitfalls">Опасные моменты</h5>
 <ol>
   <li><strong><code>INTERFACE_ID=NULL</code> — это дефолт, не «отсутствие настройки»</strong>. Если поле <code>SHOW_ON_FORM=0</code> для <code>INTERFACE_ID=NULL</code>, оно скрыто во всех интерфейсах. Чтобы показать только в одном — нужны 2 записи: <code>NULL</code> с 0 и <code>INTERFACE_ID=1</code> с 1;</li>
   <li><strong>Дубликаты Python dict</strong> — баг был с <code>'Users'</code> ключом, появлявшимся дважды в <code>_EXCLUDE_FORMS</code>. Второе значение тихо перезаписывало первое. Перед добавлением нового ключа всегда <code>grep</code>;</li>
-  <li><strong>UPPERCASE имя таблицы</strong> — критично для PostgreSQL. <code>'abonents' != 'ABONENTS'</code>. Используйте <code>Model._meta.db_table.upper</code> чтобы не ошибиться;</li>
+  <li><strong>UPPERCASE имя таблицы</strong> — критично для PostgreSQL. <code>'abonents' != 'ABONENTS'</code>. Используйте <code>Model._meta.db_table.upper()</code> чтобы не ошибиться;</li>
   <li><strong>FIELD_NAME — Django-имя</strong>, не SQL-имя. Поле <code>create_date</code> в FFG, не <code>"CREATE_DATE"</code>.</li>
 </ol>
 
@@ -4044,7 +4044,7 @@ count = 0 или count &gt; 500 (бейдж становится красным 
 </table>
 
 <div class="info-box">
-  <strong>Где править:</strong> UI <code>/admin/settings/interface_settings/</code> (FrameworkFormGroupFieldsForm в <code>billing/forms/framework_forms.py</code>). После сохранения обязательно очистите кеш — иначе изменения не подхватятся: <code>docker exec app-web-1 python manage.py shell -c "from django.core.cache import cache; cache.clear"</code>
+  <strong>Где править:</strong> UI <code>/admin/settings/interface_settings/</code> (FrameworkFormGroupFieldsForm в <code>billing/forms/framework_forms.py</code>). После сохранения обязательно очистите кеш — иначе изменения не подхватятся: <code>docker exec app-web-1 python manage.py shell -c "from django.core.cache import cache; cache.clear()"</code>
 </div>
 
 <h3 id="interface-settings">4.8. Настройки интерфейса (формы)</h3>
@@ -4058,7 +4058,7 @@ count = 0 или count &gt; 500 (бейдж становится красным 
 </ul>
 <p>Пример использования: на форме <em>Users</em> скрыты 17 технических полей (IPV6, MASK,
 EXT_ID, IS_TEMPLATE, и т.д.) — оставлены только реально используемые. Изменения применяются
-для всех операторов одновременно после <code>cache.clear</code>.</p>
+для всех операторов одновременно после <code>cache.clear()</code>.</p>
 
 <h2 id="games">5. Игры (Маркетинг)</h2>
 <p>Модуль <strong>«Игры»</strong> — часть раздела <strong>«Маркетинг»</strong> — геймификация
@@ -4462,7 +4462,7 @@ auto-block по отрицательному балансу — работают
   </tbody>
 </table>
 
-<p>Все 4 настройки хранятся в таблице <code>system_settings</code> (category = <code>audit</code>), читаются через хелперы в <code>billing/services/settings_service.py</code> (<code>get_audit_default_period_months</code>, <code>get_audit_per_page</code>, <code>get_audit_csv_export_limit</code>, <code>is_audit_hide_system_events</code>) с clamp в коде на случай некорректного значения в БД.</p>
+<p>Все 4 настройки хранятся в таблице <code>system_settings</code> (category = <code>audit</code>), читаются через хелперы в <code>billing/services/settings_service.py</code> (<code>get_audit_default_period_months()</code>, <code>get_audit_per_page()</code>, <code>get_audit_csv_export_limit()</code>, <code>is_audit_hide_system_events()</code>) с clamp в коде на случай некорректного значения в БД.</p>
 
 <p><strong>Срок хранения записей аудита</strong> (по умолчанию 365 дней) настраивается отдельно в разделе <a href="#db-cleanup">Очистка БД</a> — параметр <code>DB_CLEANUP_AUDIT_DAYS</code>. Это сделано чтобы retention-политика управлялась рядом с другими параметрами очистки (MSG_STACK, RADIUS_SESSIONS), а не дублировалась.</p>
 
@@ -4515,7 +4515,7 @@ auto-block по отрицательному балансу — работают
 <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/backup_logs_v967/logs_colorized.png" alt="Просмотр логов с подсветкой по уровням"></p>
 
 <ul>
-  <li><strong>Чтение с конца файла</strong> — функция <code>_tail_log</code> читает последние
+  <li><strong>Чтение с конца файла</strong> — функция <code>_tail_log()</code> читает последние
   500 строк, двигаясь от конца файла чанками, не загружая его целиком в память. Поэтому даже
   лог на десятки гигабайт открывается мгновенно (в шапке показано «Показано: 500 / N строк»).
   Это защищает от переполнения памяти при открытии многогигабайтного
@@ -4745,7 +4745,7 @@ backup-коды 2FA; IP-список fail-open при пустоте; авари
   </tbody>
 </table>
 
-<p>Подключение: <code>billing/services/block_policy.py</code> в 4 точках кода — <code>radius_python/internet.py:authorize</code> (kill-switch ДО soft-block), <code>billing/models/abonents.py:block</code> (пропуск CoA), <code>billing/tasks/billing_worker.py:_process_service</code> (skip списания), <code>billing/views/finops_list.py</code> (queryset filter).</p>
+<p>Подключение: <code>billing/services/block_policy.py</code> в 4 точках кода — <code>radius_python/internet.py:authorize()</code> (kill-switch ДО soft-block), <code>billing/models/abonents.py:block()</code> (пропуск CoA), <code>billing/tasks/billing_worker.py:_process_service()</code> (skip списания), <code>billing/views/finops_list.py</code> (queryset filter).</p>
 
 <p>Статус-блок снизу: Активных / Заблокированных клиентов, по b_negbal / b_admin / b_own, активных Обещанных Платежей, заблокировано/разблокировано сегодня. Большой красный alert над формой если включён аварийный kill-switch.</p>
 
@@ -4773,7 +4773,7 @@ backup-коды 2FA; IP-список fail-open при пустоте; авари
 </div>
 
 <h5 id="system-settings-proxy-toggle">Переключатель «Использовать прокси»</h5>
-<p>Глобальный тоггл сверху. Выключен → <code>get_api_proxies</code> возвращает <code>None</code>, Telegram/Нейросеть подключаются напрямую (настройка <code>PROXY_ENABLED</code> в БД). При выключении форма/таблица/журнал скрываются.</p>
+<p>Глобальный тоггл сверху. Выключен → <code>get_api_proxies()</code> возвращает <code>None</code>, Telegram/Нейросеть подключаются напрямую (настройка <code>PROXY_ENABLED</code> в БД). При выключении форма/таблица/журнал скрываются.</p>
 
 <h5 id="system-settings-proxy-add">Добавление прокси</h5>
 <p>Список прокси по одному на строку. Поддерживаемые форматы: <code>ip:port:login:password</code>, <code>login:password@ip:port</code>, <code>ip:port</code> (без авторизации). Тип — <strong>Авто-определение</strong> (по умолчанию; живая проба HTTP→SOCKS5), HTTP или SOCKS5. Роли — «для Telegram» / «для Нейросети» (можно обе). При добавлении параллельно определяется тип и геолокация по IP (<code>ip-api.com</code>). Прокси добавляется <strong>всегда</strong>, даже если автопроверка не достучалась — со статусом 🔴 и подсказкой (например провайдер отвечает 407 при неверных кредах / IP-binding).</p>
@@ -4793,7 +4793,7 @@ backup-коды 2FA; IP-список fail-open при пустоте; авари
 
 <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/proxy_v1064/proxy_dark_table.png" alt="Вкладка Прокси в тёмной теме"></p>
 
-<p class="note">Тёмная тема и мобильная вёрстка поддержаны (UX-аудит). Потребители прокси (Telegram-рассылки, AI-чаты ЛК/мобильного, геокодер и др., ~18 точек) используют пул автоматически через <code>get_api_proxies</code>.</p>
+<p class="note">Тёмная тема и мобильная вёрстка поддержаны (UX-аудит). Потребители прокси (Telegram-рассылки, AI-чаты ЛК/мобильного, геокодер и др., ~18 точек) используют пул автоматически через <code>get_api_proxies()</code>.</p>
 
 <h3 id="print-forms">6.2. Шаблоны печати</h3>
 <p>Шаблоны документов — договоры, акты, квитанции. Шаблон — это HTML или Word-файл
@@ -4829,7 +4829,7 @@ backup-коды 2FA; IP-список fail-open при пустоте; авари
 <ol>
   <li><strong>Приём оплаты</strong> — webhook ЮKassa/W1, зачисление банковской выписки или ручное
   пополнение создаёт финоперацию (<code>FinanceOperations</code>).</li>
-  <li><strong>Движок</strong> <code>FiscalManager.enqueue</code> проверяет, подлежит ли операция
+  <li><strong>Движок</strong> <code>FiscalManager.enqueue()</code> проверяет, подлежит ли операция
   фискализации (приход реальных денег; обещанный платёж, ежемесячные списания и бонусы —
   не фискализируются), собирает состав чека по 54-ФЗ и ставит задачу в очередь.</li>
   <li><strong>Очередь Celery</strong> отправляет чек в ОФД (АТОЛ Онлайн: <code>sell</code> /
@@ -5039,7 +5039,7 @@ backup-коды 2FA; IP-список fail-open при пустоте; авари
 <p><strong>Добавление нового банка</strong> (например, Тинькофф):</p>
 <ol>
   <li>Создать парсер в <code>billing/services/bank_parsers/&lt;slug&gt;.py</code> — наследовать от <code>BankParser</code>, реализовать <code>parse(content: bytes) → List[ParsedOperation]</code></li>
-  <li>Зарегистрировать в <code>billing/services/bank_parsers/__init__.py::detect_and_parse</code> — добавить ветку определения формата</li>
+  <li>Зарегистрировать в <code>billing/services/bank_parsers/__init__.py::detect_and_parse()</code> — добавить ветку определения формата</li>
   <li>Через UI «Добавить банк» создать <code>BankParserBinding</code> с новым <code>parser_slug</code></li>
   <li>Whitelist в настройках обновится автоматически (читает из BankParserBinding)</li>
 </ol>
@@ -5204,7 +5204,7 @@ flowchart LR
 <p><strong>Действия:</strong></p>
 <ul>
   <li><strong>«Операции»</strong> (<code>fa-eye</code>) → переход в очередь модерации с фильтром <code>?import_id=&lt;pk&gt;</code> (отображает только операции этого письма)</li>
-  <li><strong>«Перепарсить»</strong> (<code>fa-redo-alt</code>) — для status=error: сбрасывает <code>parser_error</code> + ставит <code>status=new</code> + запускает <code>process_pending_imports.apply</code></li>
+  <li><strong>«Перепарсить»</strong> (<code>fa-redo-alt</code>) — для status=error: сбрасывает <code>parser_error</code> + ставит <code>status=new</code> + запускает <code>process_pending_imports.apply()</code></li>
   <li>Для status=parsed — кнопка <code>fa-sync-alt</code> для повторного парсинга (создаст дубликаты только если UNIQUE(bank, external_id) не сработает)</li>
 </ul>
 
@@ -5225,7 +5225,7 @@ flowchart LR
 <p>Переход <strong>выполняет фоновая задача Celery</strong>, оператор в нём не участвует. Цепочка:</p>
 <ol>
   <li><strong><code>bank-statements-pull</code></strong> (Celery beat, ежечасно) — приёмник <code>billing/services/imap_client.py</code> читает UNSEEN-письма из ящика <code>bank@вашдомен.ru</code> и создаёт <code>BankStatementImport</code> со статусом <code>new</code>.</li>
-  <li><strong><code>bank-statements-process</code></strong> (Celery beat, <strong>каждые 5 минут</strong>) — функция <code>process_pending_imports</code> в <code>billing/tasks/bank_statements.py</code>:
+  <li><strong><code>bank-statements-process</code></strong> (Celery beat, <strong>каждые 5 минут</strong>) — функция <code>process_pending_imports()</code> в <code>billing/tasks/bank_statements.py</code>:
     <ul>
       <li>берёт <code>BankStatementImport.objects.filter(status='new')[:20]</code>;</li>
       <li>вызывает парсер по <code>parser_slug</code> банка (<code>sber</code>/<code>alfa</code>/<code>generic</code>);</li>
@@ -5247,7 +5247,7 @@ flowchart LR
 <ul>
   <li><strong>Жив ли планировщик</strong> — контейнер <code>celery-beat</code> должен быть в статусе <code>running</code> (<code>docker ps</code>).</li>
   <li><strong>Видит ли beat банковские задачи</strong> — после деплоя новых beat-задач контейнер <code>celery-beat</code> <strong>обязательно пересоздаётся</strong>. Если он запущен на устаревшем образе, задачи из <code>CELERY_BEAT_SCHEDULE</code> в его расписание не попадают, и <code>bank-statements-process</code> молча не запускается (контейнер при этом «running», ошибок нет).</li>
-  <li><strong>Ручной запуск как обходной путь</strong> — задачу можно выполнить немедленно: <code>process_pending_imports</code> разберёт все письма со статусом <code>new</code>.</li>
+  <li><strong>Ручной запуск как обходной путь</strong> — задачу можно выполнить немедленно: <code>process_pending_imports()</code> разберёт все письма со статусом <code>new</code>.</li>
   <li><strong>Кнопка «Перепарсить»</strong> в журнале — для писем со статусом <code>error</code> сбрасывает ошибку, ставит <code>new</code> и сразу запускает разбор.</li>
 </ul>
 
@@ -5305,7 +5305,7 @@ flowchart LR
 <ul>
   <li><strong>Состояние сервера</strong> — Статус (Online/Offline) · Версия SmitMailServ · Ящиков (всего/лимит) · Использовано места. Кнопка «Проверить подключение» делает test-request к API.</li>
   <li><strong>Настройки API</strong> — Endpoint API, API-ключ (rw) с переключателем видимости, <strong>Основной домен</strong> (<code>&lt;select&gt;</code>, подгружается через <code>GET /admin/settings/mailserver/api/domains/</code>), toggle «Проверять SSL-сертификат».</li>
-  <li><strong>Защищённые ящики</strong> — <code>bank@вашдомен.ru</code>, <code>noreply@вашдомен.ru</code>, <code>ask@вашдомен.ru</code> и др. Нельзя удалить через UI (server-side защита в <code>get_protected_mailboxes</code>), чтобы не сломать банковские выписки/рассылку.</li>
+  <li><strong>Защищённые ящики</strong> — <code>bank@вашдомен.ru</code>, <code>noreply@вашдомен.ru</code>, <code>ask@вашдомен.ru</code> и др. Нельзя удалить через UI (server-side защита в <code>get_protected_mailboxes()</code>), чтобы не сломать банковские выписки/рассылку.</li>
   <li><strong>DKIM / SPF / DMARC</strong> — статус DNS-записей по нажатию «Обновить».</li>
 </ul>
 
@@ -5419,7 +5419,7 @@ flowchart TB
   <li><strong>Логин (до @)</strong> — локальная часть адреса.</li>
   <li><strong>Пароль</strong> + <strong>Подтверждение</strong> — обязательны. Генератор пароля рядом (фиолетовая иконка <code>fa-magic</code>).</li>
   <li><strong>Квота (МБ)</strong> — default 1024. <strong>Активен</strong> — toggle.</li>
-  <li>При создании <strong>системных ящиков</strong> (bank@/noreply@/ask@…) пароль автоматически синхронизируется в SystemSettings (<code>_sync_password_to_settings</code>), чтобы IMAP-парсер банковских выписок и SMTP-рассылка биллинга получили актуальный пароль одним нажатием.</li>
+  <li>При создании <strong>системных ящиков</strong> (bank@/noreply@/ask@…) пароль автоматически синхронизируется в SystemSettings (<code>_sync_password_to_settings()</code>), чтобы IMAP-парсер банковских выписок и SMTP-рассылка биллинга получили актуальный пароль одним нажатием.</li>
 </ul>
 
 <h4 id="mailserver-admins">Вкладка «Админы доменов»</h4>
@@ -5810,7 +5810,7 @@ flowchart TD
     MAX["MAX (WS)"] --> IN
     VM["Голосовая почта Mango"] --> IN
     WG["Веб-виджет"] --> IN
-    IN["ingest_message"] --> CONV["Тикет (SupportConversation)"]
+    IN["ingest_message()"] --> CONV["Тикет (SupportConversation)"]
     CONV --> AI{"AI-бот доступен?"}
     AI -- "да" --> REPLY["Автоответ"]
     AI -- "эскалация/нет" --> OP["Оператор: Входящие"]
@@ -6258,7 +6258,7 @@ Sender address rejected: not owned by user noreply@вашдомен.ru</code></p
     <tr><td>1. Биллинг → cloud</td><td><code>POST /3rdparty/v1/messages</code> возвращает <code>{"id": "...", "state": "Pending"}</code></td><td><code>sms_external_id</code> = id, <code>sms_status</code> = <code>pending</code></td></tr>
     <tr><td>2. Cloud → телефон</td><td>WebSocket-push на телефон-шлюз (если ОНЛАЙН)</td><td>не меняется</td></tr>
     <tr><td>3. Телефон → оператор</td><td>SMS отправлено в сеть мобильного оператора</td><td>webhook <code>sms:sent</code> → <code>sms_status</code> = <code>sent</code></td></tr>
-    <tr><td>4. Оператор → клиент</td><td>SMS доставлено на телефон клиента</td><td>webhook <code>sms:delivered</code> → <code>sms_status</code> = <code>delivered</code>, <code>sms_status_date</code> = now</td></tr>
+    <tr><td>4. Оператор → клиент</td><td>SMS доставлено на телефон клиента</td><td>webhook <code>sms:delivered</code> → <code>sms_status</code> = <code>delivered</code>, <code>sms_status_date</code> = now()</td></tr>
     <tr><td>4'. Ошибка</td><td>Нет связи у телефона / номер заблокирован / денег нет</td><td>webhook <code>sms:failed</code> → <code>sms_status</code> = <code>failed</code>, <code>sms_error</code> = код ошибки</td></tr>
   </tbody>
 </table>
@@ -6449,7 +6449,7 @@ X-Timestamp: 1715091045   # Unix epoch</code></pre>
 (<code>{{ name }}</code>, при включённом флаге <em>«Jinja»</em>). Каждая переменная
 обёрнута в кликабельный <code>&lt;code&gt;</code>: hover подсвечивает её зелёным,
 клик — вставляет в позицию курсора. Если активна вкладка HTML — вставка идёт
-в TinyMCE через <code>insertContent</code>; если plain — в обычное
+в TinyMCE через <code>insertContent()</code>; если plain — в обычное
 <code>&lt;textarea&gt;</code>.</p>
 
 <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/msg_templates_v596/docs_v596_msg_template_clickable_vars.png" alt="Подсветка переменной при наведении (зелёный фон)"></p>
@@ -6525,8 +6525,8 @@ X-Timestamp: 1715091045   # Unix epoch</code></pre>
 
 <p><strong>Реализация</strong>: <code>billing/services/email_presets.py</code> —
 изолированный модуль с реестром <code>PRESETS</code>. Каждый пресет — функция-сборщик
-контента, обёрнутая в общий wrapper <code>_wrap</code> с шапкой и подвалом из
-<code>_branding_dict</code>. Добавление нового пресета = одна функция + запись в
+контента, обёрнутая в общий wrapper <code>_wrap()</code> с шапкой и подвалом из
+<code>_branding_dict()</code>. Добавление нового пресета = одна функция + запись в
 <code>PRESETS</code>.</p>
 
 <h5 id="messaging-template-editor-migration">Миграция и схема</h5>
@@ -6738,7 +6738,7 @@ flowchart TD
 <p><strong>Защита от «зависших» копий</strong>: если Celery-воркер падает или
 перезапускается во время резервного копирования (например, при переезде сервера), запись
 могла навсегда остаться в статусе <code>running</code> — на странице крутился вечный
-спиннер и шёл бесконечный опрос статуса. Теперь функция <code>_reap_stale_running</code>
+спиннер и шёл бесконечный опрос статуса. Теперь функция <code>_reap_stale_running()</code>
 автоматически помечает любую запись в <code>running</code> старше <strong>30 минут</strong>
 как <em>«Ошибка»</em> с понятным сообщением. Срабатывает при открытии страницы и при каждом
 опросе статуса (раз в 3 секунды), так что зомби-запись сбрасывается сама. Дополнительно
@@ -6798,7 +6798,7 @@ flowchart TD
 <p><strong>Кнопки управления</strong>:</p>
 <ul>
   <li><em>«Применить»</em> — сохранить изменённые retention-параметры в SystemSettings (без перезапуска чистки).</li>
-  <li><em>«Запустить чистку сейчас»</em> — синхронный запуск task'а через Celery <code>.delay</code>. UI показывает spinner, через ~30 сек обновляет «Историю запусков».</li>
+  <li><em>«Запустить чистку сейчас»</em> — синхронный запуск task'а через Celery <code>.delay()</code>. UI показывает spinner, через ~30 сек обновляет «Историю запусков».</li>
   <li>Тогл <em>«Включено»</em> — глобально отключить автоочистку (полезно при миграциях/бэкапах).</li>
 </ul>
 
@@ -6829,7 +6829,7 @@ flowchart TD
   <li>Берёт ровно <strong>4 NAS</strong> (default <code>SESSION_AUDIT_NAS_PER_RUN=4</code>) — те, у которых давно не было аудита (sort by <code>last_audit_at ASC</code>). Так за сутки покрывается ~96 NAS — больше, чем у любого реального оператора.</li>
   <li>Для каждого NAS берёт батч из <strong>50 активных сессий</strong> (default <code>SESSION_AUDIT_BATCH_SIZE=50</code>). Это ~2 минуты времени NAS — не нагружает его.</li>
   <li>Для каждой сессии: <code>radclient</code> запрос <em>Status-Server</em> или <em>Accounting Interim-Update</em> к NAS — если NAS не подтверждает наличие session-id → метим как «подозрительную».</li>
-  <li>Через <strong>5 минут</strong> идёт повторная проверка тех же сессий. Если NAS ещё раз не подтверждает — сессия считается зомби, ставится <code>END_TIME=now</code>, <code>END_REASON='zombie-cleanup'</code>.</li>
+  <li>Через <strong>5 минут</strong> идёт повторная проверка тех же сессий. Если NAS ещё раз не подтверждает — сессия считается зомби, ставится <code>END_TIME=now()</code>, <code>END_REASON='zombie-cleanup'</code>.</li>
   <li>Counter подтверждённых zombie добавляется в <code>SessionAuditRun.zombie_killed</code>.</li>
   <li>Если <code>zombie_killed &gt; 0</code> — отправляется Telegram-алерт с разбивкой по NAS.</li>
 </ol>
@@ -7440,7 +7440,7 @@ flowchart LR
 <h5 id="ip-pull-purpose">Зачем нужен IP-пул</h5>
 <p>Пул решает две задачи:</p>
 <ol>
-  <li><strong>Автоматическая выдача IP клиенту</strong>. При авторизации FreeRADIUS вызывает <code>allocate_ip_from_pool</code> (см. <code>billing/services/ip_allocation.py</code>), который находит первый свободный IP в диапазоне пула, помечает его в <code>Users.IP</code> и возвращает в RADIUS-ответе как <code>Framed-IP-Address</code>. Без пула — пришлось бы вручную проставлять IP каждому клиенту в карточке.</li>
+  <li><strong>Автоматическая выдача IP клиенту</strong>. При авторизации FreeRADIUS вызывает <code>allocate_ip_from_pool()</code> (см. <code>billing/services/ip_allocation.py</code>), который находит первый свободный IP в диапазоне пула, помечает его в <code>Users.IP</code> и возвращает в RADIUS-ответе как <code>Framed-IP-Address</code>. Без пула — пришлось бы вручную проставлять IP каждому клиенту в карточке.</li>
   <li><strong>Сегментация сети</strong>. Разным NAS можно привязать разные пулы → разные подсети для разных регионов / типов услуг (PPPoE-клиенты vs Hotspot, белые IP vs NAT).</li>
 </ol>
 
@@ -7470,7 +7470,7 @@ flowchart LR
     <tr><td>TOY-1 → TOY-2 → TOY-3</td><td>510 + 510 + 510 = 1530 IP</td><td>39.6% занято (chain Σ)</td></tr>
   </tbody>
 </table>
-<p>Защита от циклов: <code>_expand_next_pull_chain</code> ограничивает глубину 10 шагами и держит set уже посещённых ID. UI отображает chain-цепочку бейджем 🔗 с tooltip-разбивкой <em>JOY-1 (510/510) → JOY-2 (14/510) → JOY-3 (0/510)</em>.</p>
+<p>Защита от циклов: <code>_expand_next_pull_chain()</code> ограничивает глубину 10 шагами и держит set уже посещённых ID. UI отображает chain-цепочку бейджем 🔗 с tooltip-разбивкой <em>JOY-1 (510/510) → JOY-2 (14/510) → JOY-3 (0/510)</em>.</p>
 
 <h5 id="ip-pull-when-needed">Когда нужно создавать новый пул</h5>
 <ul>
@@ -7488,7 +7488,7 @@ flowchart LR
 </ol>
 
 <div class="info-box">
-  <strong>Важно:</strong> при ручной правке <code>Users.IP</code> через карточку клиента, биллинг автоматически проверяет уникальность IP во всех источниках (<code>users.IP</code>, <code>users.SNATIP</code>, <code>RADIUS_SESSIONS.IP</code>) — это защита от race condition при выдаче дубля. См. <code>billing/services/ip_allocation.py::collect_used_ips</code>.
+  <strong>Важно:</strong> при ручной правке <code>Users.IP</code> через карточку клиента, биллинг автоматически проверяет уникальность IP во всех источниках (<code>users.IP</code>, <code>users.SNATIP</code>, <code>RADIUS_SESSIONS.IP</code>) — это защита от race condition при выдаче дубля. См. <code>billing/services/ip_allocation.py::collect_used_ips()</code>.
 </div>
 
 <h4 id="ip-pull">Пулы IP-адресов</h4>
@@ -7560,7 +7560,7 @@ flowchart LR
 <p>В списке пулов рядом с именем NAS показываются бейджи ролей для каждого NAS, использующего этот пул. Это помогает быстро понять «куда подключён пул» без перехода на страницу NAS.</p>
 
 <h5 id="ip-pull-chain">Цепочки пулов (next_pull)</h5>
-<p>Когда клиентов больше, чем размер одного /24-пула (254 адреса), используется <strong>цепочка</strong>: основной пул ссылается на резервный через <code>next_pull_id</code>. Алгоритм <code>allocate_ip_from_pools</code> в <code>billing/services/ip_allocation.py</code>:</p>
+<p>Когда клиентов больше, чем размер одного /24-пула (254 адреса), используется <strong>цепочка</strong>: основной пул ссылается на резервный через <code>next_pull_id</code>. Алгоритм <code>allocate_ip_from_pools()</code> в <code>billing/services/ip_allocation.py</code>:</p>
 <ol>
   <li>Проверяет основной пул (NAS.pull_id).</li>
   <li>Если он исчерпан — переходит в <code>next_pull</code>.</li>
@@ -8102,7 +8102,7 @@ Push / Telegram) и RADIUS-параметров (если статус долж�
   <strong>Поля <code>lft</code> / <code>rght</code> / <code>tree_id</code> / <code>level</code> не используйте.</strong>
   У новых записей они не заполняются: модель
   <code>Abonents</code> не подключена к MPTT-менеджеру, а значит
-  <code>rebuild</code> и <code>get_descendants</code> недоступны. Код,
+  <code>rebuild()</code> и <code>get_descendants()</code> недоступны. Код,
   который читает эти поля, обязан иметь fallback на <code>parent_id</code> —
   как это сделано в выборке клиентов по папкам
   (<code>views/messages_global.py</code>). Обход поддерева пишется обходом
@@ -8158,7 +8158,7 @@ Push / Telegram) и RADIUS-параметров (если статус долж�
 </ul>
 
 <div class="info-box">
-  <strong>Важно про корзину:</strong> при <code>Abonents.delete</code> в коде выполняется soft-delete: <code>deleted=true</code> + <code>enabled=false</code>, клиент остаётся на своём месте в дереве. Если хотите централизованную «Корзину» — настройте автоматическое перемещение в #9003 через bulk action или добавьте логику в <code>delete</code> модели.
+  <strong>Важно про корзину:</strong> при <code>Abonents.delete()</code> в коде выполняется soft-delete: <code>deleted=true</code> + <code>enabled=false</code>, клиент остаётся на своём месте в дереве. Если хотите централизованную «Корзину» — настройте автоматическое перемещение в #9003 через bulk action или добавьте логику в <code>delete()</code> модели.
 </div>
 
 <h3 id="abonents-list">8.1. Клиенты</h3>
@@ -8394,7 +8394,7 @@ URL <code>/admin/Abonents/search/</code>) — плоский список все
     <td><code>sms IS NULL OR sms = ''</code></td></tr>
 <tr><td><strong>Онлайн</strong></td><td>📡</td>
     <td>Сейчас в RADIUS-сессии (&lt; 15 минут с last update)</td>
-    <td><code>USERS_RADIUSAUTH.LOGGED = 1 AND RADIUS_UPDATE &gt;= now - 15&nbsp;min</code></td></tr>
+    <td><code>USERS_RADIUSAUTH.LOGGED = 1 AND RADIUS_UPDATE &gt;= now() - 15&nbsp;min</code></td></tr>
 <tr><td><strong>Заблокированные</strong></td><td>🚫</td>
     <td>Любая активная блокировка (admin / negbal / own)</td>
     <td>есть запись в <code>ABONENTS_BLOCK</code> с активным флагом</td></tr>
@@ -9102,7 +9102,7 @@ OSM. Стиль карточки в <a href="#integrations">/admin/settings/inte
 </div>
 
 <h5 id="pp-eligibility">Eligibility — 4 политики</h5>
-<p>Перед активацией <code>_check_promise_pay_eligibility</code> в <code>lk/views/promise_pay.py</code> проверяет:</p>
+<p>Перед активацией <code>_check_promise_pay_eligibility()</code> в <code>lk/views/promise_pay.py</code> проверяет:</p>
 <ol>
   <li><code>LK_PROMISE_PAY_MIN_DEBT</code> — минимальный долг (например, ОП доступен только при балансе &lt; -100 ₽);</li>
   <li><code>LK_PROMISE_PAY_MAX_LIMIT_OVERRIDE</code> — макс. лимит ОП (если задан, перебивает расчёт по тарифу);</li>
@@ -9148,7 +9148,7 @@ OSM. Стиль карточки в <a href="#integrations">/admin/settings/inte
     <tr>
       <td><strong>B. Истечение по таймеру</strong></td>
       <td><code>Abonents.promise_date_end &lt; now</code></td>
-      <td>Celery beat <code>check_expired_promises</code> (раз в 15 мин). Вызывает <code>del_promise_pay(reverse_finance=True, reason='истёк срок')</code>. Если баланс &lt; 0 — ставит <code>b_negbal</code> через <code>abonent.block</code></td>
+      <td>Celery beat <code>check_expired_promises</code> (раз в 15 мин). Вызывает <code>del_promise_pay(reverse_finance=True, reason='истёк срок')</code>. Если баланс &lt; 0 — ставит <code>b_negbal</code> через <code>abonent.block()</code></td>
     </tr>
     <tr>
       <td><strong>C. Ручное удаление через UI</strong></td>
@@ -9184,7 +9184,7 @@ OSM. Стиль карточки в <a href="#integrations">/admin/settings/inte
 </ul>
 
 <h5 id="pp-audit">Audit</h5>
-<p>Все операции с ОП пишутся в <code>AUDIT_OPERATIONS</code> с <code>TABLE_NAME='USERS_USLUGA'</code> через <code>billing.services.audit_log.write_audit</code>:</p>
+<p>Все операции с ОП пишутся в <code>AUDIT_OPERATIONS</code> с <code>TABLE_NAME='USERS_USLUGA'</code> через <code>billing.services.audit_log.write_audit()</code>:</p>
 <ul>
   <li>Активация через ЛК / SMS — «Обещанный платёж активирован через ЛК/SMS: {usluga.name} (#id, UU={pk}), лимит {N} ₽, до DD.MM.YYYY»;</li>
   <li>Завершение (любой из 4 сценариев) — «Обещанный платёж завершён ({reason}): {N} ₽, удалено UU={count}»;</li>
@@ -9244,7 +9244,7 @@ OSM. Стиль карточки в <a href="#integrations">/admin/settings/inte
     <tr><th>Поле</th><th>Что это</th><th>Кто меняет</th></tr>
   </thead>
   <tbody>
-    <tr><td><code>Abonents.enabled</code></td><td>Главный «выключатель» клиента. Если <code>false</code> — RADIUS отвечает Reject, услуги не работают</td><td>Метод <code>block</code> ставит в <code>false</code>, <code>unblock</code> — в <code>true</code> (если других блокировок нет)</td></tr>
+    <tr><td><code>Abonents.enabled</code></td><td>Главный «выключатель» клиента. Если <code>false</code> — RADIUS отвечает Reject, услуги не работают</td><td>Метод <code>block()</code> ставит в <code>false</code>, <code>unblock()</code> — в <code>true</code> (если других блокировок нет)</td></tr>
     <tr><td><code>AbonentsBlock</code></td><td>Запись о <em>причине</em> блокировки (флаги <code>b_negbal/b_admin/b_own</code>)</td><td><code>process_blocks</code> Celery, <code>accounts_payment_ajax</code>, ручные действия</td></tr>
   </tbody>
 </table>
@@ -9257,10 +9257,10 @@ OSM. Стиль карточки в <a href="#integrations">/admin/settings/inte
       <li><code>process_blocks</code> (Celery, раз в 5 мин) — сравнивает <code>OSTATOK</code> с <code>LIMIT</code> у всех клиентов и создаёт <code>b_negbal</code>;</li>
       <li><code>accounts_payment_ajax</code> — мгновенно блокирует если расход через UI ушёл в минус;</li>
       <li>Кнопка «Заблокировать» в карточке клиента — ставит <code>b_admin</code>;</li>
-      <li><code>Abonents.add_promise_pay</code> при истечении срока ОП — возвращает <code>b_negbal</code> если баланс остался отрицательный.</li>
+      <li><code>Abonents.add_promise_pay()</code> при истечении срока ОП — возвращает <code>b_negbal</code> если баланс остался отрицательный.</li>
     </ul>
   </li>
-  <li><strong>Активные действия при блокировке</strong> (см. <code>Abonents.block</code>):
+  <li><strong>Активные действия при блокировке</strong> (см. <code>Abonents.block()</code>):
     <ul>
       <li>Создаётся / обновляется запись в <code>ABONENTS_BLOCK</code>;</li>
       <li><code>Abonents.enabled = false</code>;</li>
@@ -9293,7 +9293,7 @@ OSM. Стиль карточки в <a href="#integrations">/admin/settings/inte
 <p>Без CoA Disconnect блокировка работала бы только при следующей перерегистрации клиента — а это иногда раз в сутки. С CoA — за 5-10 секунд.</p>
 
 <div class="info-box">
-  <strong>Аудит блокировок</strong>: все блокировки и снятие блокировок теперь пишутся в <code>AUDIT_OPERATIONS</code> через <code>Abonents.block</code> / <code>Abonents.unblock</code>. Все события блокировок видны во вкладке «Аудит» карточки клиента.
+  <strong>Аудит блокировок</strong>: все блокировки и снятие блокировок теперь пишутся в <code>AUDIT_OPERATIONS</code> через <code>Abonents.block</code> / <code>Abonents.unblock()</code>. Все события блокировок видны во вкладке «Аудит» карточки клиента.
 </div>
 
 <!-- ===== AdminAccounts: обзор ===== -->
@@ -9544,7 +9544,7 @@ flowchart LR
 <ul>
   <li>Колонка <strong>«Орг.»</strong> показывается при двух условиях сразу: включена мультиорганизация <strong>и</strong> выбран режим «Все организации». При выбранной одной компании колонка вырождается в один и тот же бейдж.</li>
   <li>Тот же бейдж — в шапке карточки счёта, сразу после номера.</li>
-  <li>Организация проставляется на уровне модели (<code>Abonents.save</code>, <code>FinanceOperations.save</code>): записи создают мастер, быстрое добавление, импорт, webhook'и и <code>billing_worker</code> — точечные проверки в каждом месте протекали, поэтому гарантия одна и обойти её нельзя. Порядок выбора: организация папки-родителя → организация по умолчанию (СмИТ).</li>
+  <li>Организация проставляется на уровне модели (<code>Abonents.save()</code>, <code>FinanceOperations.save()</code>): записи создают мастер, быстрое добавление, импорт, webhook'и и <code>billing_worker</code> — точечные проверки в каждом месте протекали, поэтому гарантия одна и обойти её нельзя. Порядок выбора: организация папки-родителя → организация по умолчанию (СмИТ).</li>
 </ul>
 
 <h5 id="admin-accounts-isolation">Кто какие счета видит</h5>
@@ -9866,7 +9866,7 @@ flowchart LR
 <h5 id="finops-modal-v915-footer">Управление</h5>
 <ul>
   <li><em>Открыть полную форму</em> — на <code>/admin/Abonents/FinanceOperations/&lt;id&gt;/</code> с 30+ полями (банковские реквизиты, чек, операторские поля).</li>
-  <li><em>Удалить</em> — через модалку подтверждения с предупреждением о балансе, дочерних операциях и связи с выпиской. Нативный <code>confirm</code> не используется.</li>
+  <li><em>Удалить</em> — через модалку подтверждения с предупреждением о балансе, дочерних операциях и связи с выпиской. Нативный <code>confirm()</code> не используется.</li>
   <li><em>Редактировать</em> — переключение режима без перезагрузки данных.</li>
 </ul>
 
@@ -10221,8 +10221,8 @@ flowchart LR
 <ul>
   <li><strong>Хранение</strong>: <code>SystemSettings</code> с категорией <code>abonent_profile</code>. 32 boolean/choice ключа + 1 JSON-ключ (<code>ABONENT_PROFILE_TABS_CONFIG</code>) + <code>ABONENT_PROFILE_TABS_STYLE</code> (choice).</li>
   <li><strong>Передача в шаблоны</strong>: context_processor <code>billing.context_processors.smit_version</code> отдаёт <code>SMIT_PROFILE_PREFS</code> dict. Кешируется через Redis 60с в ключе <code>ctxproc:abonent_profile_v2</code>.</li>
-  <li><strong>Сброс кеша</strong>: автоматически при сохранении формы (<code>cache.delete</code> в POST handler).</li>
-  <li><strong>Без миграций БД</strong> — используется готовая инфраструктура <code>settings_service.set_setting/get_setting</code>.</li>
+  <li><strong>Сброс кеша</strong>: автоматически при сохранении формы (<code>cache.delete()</code> в POST handler).</li>
+  <li><strong>Без миграций БД</strong> — используется готовая инфраструктура <code>settings_service.set_setting()/get_setting()</code>.</li>
   <li><strong>Backward compat</strong>: все дефолты подобраны так, что поведение до фичи сохраняется при пустой БД настроек.</li>
 </ul>
 
@@ -10282,7 +10282,7 @@ flowchart LR
   <li><strong>Точечный refresh</strong> кнопкой «Проверить сейчас» — fetch <code>/admin/Abonents/&lt;id&gt;/diagnose/</code> + обновление DOM без перезагрузки страницы. Прокрутка и открытые вкладки не теряются.</li>
   <li><strong>Skeleton-loader</strong> — пока ждём ответ, чипы становятся полупрозрачными и по ним идёт shimmer-анимация, иконка светофора крутится. Анимация GPU-композитная (через <code>transform: translateX</code>), уважает <code>prefers-reduced-motion</code>.</li>
   <li><strong>Toast-уведомления</strong> — copy / refresh / результаты действий показывают всплывающее уведомление 2.2с в правом нижнем углу с цветной иконкой success/error/info.</li>
-  <li><strong>Защита от падения</strong> — каждая из 5 проверок обёрнута в <code>_safe_check</code>. Если одна из них падает (например, повреждена запись в БД) — она возвращает grey-результат «Ошибка проверки», остальные продолжают работать.</li>
+  <li><strong>Защита от падения</strong> — каждая из 5 проверок обёрнута в <code>_safe_check()</code>. Если одна из них падает (например, повреждена запись в БД) — она возвращает grey-результат «Ошибка проверки», остальные продолжают работать.</li>
   <li><strong>Toggle</strong> через <code>VpnConst CONNECTIVITY_DIAG_ENABLED</code> (default <code>True</code>). При отключении плашка не рендерится, остальная карточка не затронута.</li>
 </ul>
 
@@ -10314,7 +10314,7 @@ flowchart LR
 <h4 id="abonent-diagnose-impl">Реализация (для разработчиков)</h4>
 
 <ul>
-  <li><strong>Service-layer</strong>: <code>billing/services/connectivity.py</code> — 5 функций <code>check_*</code> + <code>connectivity_diagnose</code> + <code>build_advice</code>. Read-only, ≤6 SQL. Покрыто 37 unit-тестами в <code>billing/tests/test_connectivity.py</code>.</li>
+  <li><strong>Service-layer</strong>: <code>billing/services/connectivity.py</code> — 5 функций <code>check_*()</code> + <code>connectivity_diagnose()</code> + <code>build_advice()</code>. Read-only, ≤6 SQL. Покрыто 37 unit-тестами в <code>billing/tests/test_connectivity.py</code>.</li>
   <li><strong>Endpoint</strong>: <code>billing/views/diagnose.py</code> — <code>diagnose_view</code> (GET), <code>diag_action_view</code> (POST для 3 actions), <code>diagnose_rest_api</code> (REST API).</li>
   <li><strong>UI</strong>: <code>billing/templates/abonents_form/abonent_post_status.html</code> — плашка-баннер + раскрывающиеся детали + sparkline + auto-actions + JS-обработчики + ~400 строк CSS.</li>
   <li><strong>Интеграция с карточкой</strong>: <code>BlockStatusView</code> в <code>billing/views/abonents.py</code> — передаёт <code>diag</code> через try/except в контекст шаблона.</li>
@@ -10341,7 +10341,7 @@ flowchart LR
 </ul>
 
 <h5 id="abonent-card-company-toggle">Чекбокс «Юр. лицо» и валидация тарифа</h5>
-<p>При включении чекбокса «Юр. лицо» на физлице с физическим тарифом (<code>Tarif.is_business=false</code>) JavaScript показывает confirm-диалог и при подтверждении открывает модалку смены тарифа с автоматическим переключением на фильтр «Юр.лица». Серверная валидация (<code>Abonents.clean</code>) дополнительно проверяет: если <code>company=true</code> и текущий тариф не Business — <code>ValidationError</code> на поле <code>tarif</code> с понятным текстом.</p>
+<p>При включении чекбокса «Юр. лицо» на физлице с физическим тарифом (<code>Tarif.is_business=false</code>) JavaScript показывает confirm-диалог и при подтверждении открывает модалку смены тарифа с автоматическим переключением на фильтр «Юр.лица». Серверная валидация (<code>Abonents.clean()</code>) дополнительно проверяет: если <code>company=true</code> и текущий тариф не Business — <code>ValidationError</code> на поле <code>tarif</code> с понятным текстом.</p>
 
 <h5 id="abonent-card-email-phone-validation">Маски и валидация email/телефон</h5>
 <p>Оба контактных поля имеют клиентскую и серверную валидацию:</p>
@@ -10637,10 +10637,10 @@ endpoints <code>finops_ajax</code>, <code>finops_crud_ajax</code>,
 <p>Helpers backend (<code>billing.services.settings_service</code>):</p>
 <ul>
   <li><code>can_user_manage_finops(user)</code> — может ли пользователь создавать/редактировать/удалять</li>
-  <li><code>is_usluga_in_manual_finops_allowed</code></li>
-  <li><code>get_manual_finop_max_amount</code></li>
-  <li><code>is_manual_finop_descr_required</code></li>
-  <li><code>is_finop_delete_allowed</code></li>
+  <li><code>is_usluga_in_manual_finops_allowed()</code></li>
+  <li><code>get_manual_finop_max_amount()</code></li>
+  <li><code>is_manual_finop_descr_required()</code></li>
+  <li><code>is_finop_delete_allowed()</code></li>
 </ul>
 
 <p><strong>Важно</strong>: ограничения касаются <strong>только ручных операций
@@ -10665,7 +10665,7 @@ endpoints <code>finops_ajax</code>, <code>finops_crud_ajax</code>,
 
 <p>При уходе баланса в минус — Celery beat task <code>process_blocks</code>
 (каждые 5 минут) автоматически создаст <code>AbonentsBlock(b_negbal=True)</code>
-+ CoA-disconnect через <code>_block_negative_balance</code>.</p>
++ CoA-disconnect через <code>_block_negative_balance()</code>.</p>
 
 <!-- ===== Connection Points: обзор ===== -->
 <h4 id="connection-points-overview">Точки подключения — назначение и роль</h4>
@@ -10797,10 +10797,10 @@ endpoints <code>finops_ajax</code>, <code>finops_crud_ajax</code>,
 
 <h5 id="users-lifecycle">Жизненный цикл</h5>
 <ol>
-  <li><strong>Создание</strong> — вручную через карточку клиента (<code>users_inline.html</code> модалка) или автоматически через <code>Abonents.add_service</code> при добавлении услуги с флагом <code>create_login=True</code>;</li>
+  <li><strong>Создание</strong> — вручную через карточку клиента (<code>users_inline.html</code> модалка) или автоматически через <code>Abonents.add_service()</code> при добавлении услуги с флагом <code>create_login=True</code>;</li>
   <li><strong>Первая авторизация</strong> — RADIUS заполняет <code>NAS_ID</code>, <code>IP</code>, <code>LOGGED=true</code>, выдаёт IP из пула;</li>
   <li><strong>Сессия</strong> — пишутся записи в <code>RADIUS_SESSIONS</code>; Acct-Interim каждые ~10 мин обновляет статус;</li>
-  <li><strong>Блокировка</strong> — при <code>Abonents.block</code> все Users этого клиента получают <code>enabled=false</code> + CoA Disconnect (см. <a href="#abonents-block-overview">Блокировки</a>);</li>
+  <li><strong>Блокировка</strong> — при <code>Abonents.block()</code> все Users этого клиента получают <code>enabled=false</code> + CoA Disconnect (см. <a href="#abonents-block-overview">Блокировки</a>);</li>
   <li><strong>Удаление</strong> — мягкое (<code>enabled=false</code>) при удалении клиента, или жёсткое через UI после отсоединения от точек подключения и сессий.</li>
 </ol>
 
@@ -10859,7 +10859,7 @@ endpoints <code>finops_ajax</code>, <code>finops_crud_ajax</code>,
 <ol>
   <li><strong>Acct-Start</strong> — NAS отправляет RADIUS Accounting-Request с типом Start. Биллинг создаёт запись в <code>RADIUS_SESSIONS</code> с <code>END_TIME=NULL</code> + обновляет <code>USERS_RADIUSAUTH(LOGGED=1, IP=...)</code>;</li>
   <li><strong>Acct-Interim-Update</strong> — NAS шлёт каждые ~10 минут (по <code>Acct-Interim-Interval</code>). Обновляются <code>OCTETS_IN/OUT</code>, <code>SESSION_TIME</code>, <code>RADIUS_UPDATE</code> — БЕЗ создания новой записи;</li>
-  <li><strong>Acct-Stop</strong> — при отключении клиента NAS шлёт Stop. Биллинг проставляет <code>END_TIME=now</code>, <code>END_REASON=&lt;причина&gt;</code> + сбрасывает <code>USERS_RADIUSAUTH.LOGGED=0</code>.</li>
+  <li><strong>Acct-Stop</strong> — при отключении клиента NAS шлёт Stop. Биллинг проставляет <code>END_TIME=now()</code>, <code>END_REASON=&lt;причина&gt;</code> + сбрасывает <code>USERS_RADIUSAUTH.LOGGED=0</code>.</li>
 </ol>
 
 <h5 id="rs-end-reasons">Причины завершения (END_REASON)</h5>
@@ -10883,7 +10883,7 @@ endpoints <code>finops_ajax</code>, <code>finops_crud_ajax</code>,
   <li>Причина: NAS не успел отправить Stop при выключении / NAT crash / power loss;</li>
   <li>Решение — Celery beat <code>cleanup_stale_sessions</code> (раз в час, + UTC fix):
     <ul>
-      <li>Находит <code>USERS_RADIUSAUTH WHERE LOGGED=1 AND RADIUS_UPDATE &lt; now - 60min</code> (нет Interim больше часа);</li>
+      <li>Находит <code>USERS_RADIUSAUTH WHERE LOGGED=1 AND RADIUS_UPDATE &lt; now() - 60min</code> (нет Interim больше часа);</li>
       <li>Закрывает соответствующие <code>RADIUS_SESSIONS</code> с <code>END_REASON='Stale'</code>;</li>
       <li>Сбрасывает <code>USERS_RADIUSAUTH.LOGGED=0</code>.</li>
     </ul>
@@ -11084,7 +11084,7 @@ endpoints <code>finops_ajax</code>, <code>finops_crud_ajax</code>,
   <li><strong>prefers-reduced-motion: reduce</strong> отключает все анимации (пульсация, flash, sparkline transition).</li>
   <li><strong>scope="col"</strong> на всех <code>&lt;th&gt;</code> + <code>role="grid"</code> + <code>&lt;caption class="visually-hidden"&gt;</code> для скрин-ридеров.</li>
   <li><strong>Цвет НЕ единственный сигнал</strong> — везде есть иконки (fa-arrow-down/up для трафика, fa-circle для Online, fa-check для Завершена и т.д.).</li>
-  <li><strong>Фикс таймзоны</strong>: ранее времена показывались с лишним сдвигом +3 ч. Корень — <code>fmt_dt</code> делал двойную конвертацию UTC → MSK, тогда как Django при <code>USE_TZ=False</code> и <code>TIME_ZONE='Europe/Moscow'</code> уже отдаёт naive datetime в локальной TZ. Теперь повторная конвертация только для aware-datetime, naive — как есть.</li>
+  <li><strong>Фикс таймзоны</strong>: ранее времена показывались с лишним сдвигом +3 ч. Корень — <code>fmt_dt()</code> делал двойную конвертацию UTC → MSK, тогда как Django при <code>USE_TZ=False</code> и <code>TIME_ZONE='Europe/Moscow'</code> уже отдаёт naive datetime в локальной TZ. Теперь повторная конвертация только для aware-datetime, naive — как есть.</li>
   <li><strong>Фикс контраста CoA-кнопки на Online</strong>: жёлтый <code>btn-outline-warning</code> сливался с салатовым фоном Online-строки. Заменён на <code>btn-outline-danger</code> (красный — семантически точнее «опасно») + явный override для активных строк (белый фон + красная обводка).</li>
 </ul>
 
@@ -11224,7 +11224,7 @@ endpoints <code>finops_ajax</code>, <code>finops_crud_ajax</code>,
 flowchart LR
     BEAT["Celery beat<br/>dispatch_scheduled_reports"] --> DUE{"Пора?<br/>(час/мин, частота,<br/>не слали сегодня)"}
     DUE -- да --> PAR["Авто-параметры:<br/>даты = период по частоте<br/>(день/7дн/30дн),<br/>строковые фильтры пусты"]
-    PAR --> SQL["_execute_sql<br/>(та же подстановка,<br/>что в ручном запуске)"]
+    PAR --> SQL["_execute_sql()<br/>(та же подстановка,<br/>что в ручном запуске)"]
     SQL --> MSG["ChatMessage role=system<br/>«📊 Отчёт …» в комнату"]
     MSG --> TOAST["Toast + бейдж<br/>у участников"]
 </pre>
@@ -11391,7 +11391,7 @@ flowchart LR
   <span>+</span>
   <span class="badge" style="background:#0d1117;color:#fff;padding:.4rem .7rem;border-radius:6px">VideoSubscription (подписки)</span>
   <span>→</span>
-  <span class="badge" style="background:#43b77a;color:#fff;padding:.4rem .7rem;border-radius:6px">_collect_report</span>
+  <span class="badge" style="background:#43b77a;color:#fff;padding:.4rem .7rem;border-radius:6px">_collect_report()</span>
   <span>→</span>
   <span class="badge" style="background:#dcfce7;color:#166534;padding:.4rem .7rem;border-radius:6px">KPI + таблицы + CSV</span>
 </div>
@@ -11778,7 +11778,7 @@ flowchart LR
 <p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_hub.png" alt="AI-агент — обзорная страница хаба" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
 
 <h3 id="ai-providers">Мультипровайдер: выбор модели</h3>
-<p>Для каждого канала (Личный кабинет, Мобильное, Email/HelpDesk, Виджет, Голос, Подсказка оператору) выбирается провайдер и конкретная модель. Запросы маршрутизируются единым движком <code>ai_prompt_builder.build</code>; ответы и токены логируются в <code>ai_chat_log</code> с разбивкой по провайдеру. Запросы к внешним API провайдеров идут через прокси (эти сервисы заблокированы из РФ).</p>
+<p>Для каждого канала (Личный кабинет, Мобильное, Email/HelpDesk, Виджет, Голос, Подсказка оператору) выбирается провайдер и конкретная модель. Запросы маршрутизируются единым движком <code>ai_prompt_builder.build()</code>; ответы и токены логируются в <code>ai_chat_log</code> с разбивкой по провайдеру. Запросы к внешним API провайдеров идут через прокси (эти сервисы заблокированы из РФ).</p>
 
 <h3 id="ai-kb">База знаний</h3>
 <p>Раздел <code>/admin/ai/kb/</code> — сценарии решения проблем (статьи <code>KnowledgeArticle</code>) с кодом, приоритетом и аудиторией (бот / оператор / оба). Интерфейс повторяет рабочую базу знаний поддержки: четыре вкладки (<strong>Сценарии решения</strong>, <strong>Дерево диагностики</strong>, <strong>Шаблоны ответов</strong>, <strong>Аналитика</strong>), фильтры по аудитории и приоритету, поиск. Карточка-аккордеон раскрывается в четыре колонки-шага (Уточнение → Диагностика → Решение → Если не помогло) с блоком эскалации и примечаниями. Активные статьи автоматически подмешиваются в системный промпт бота.</p>
@@ -11902,7 +11902,7 @@ flowchart LR
     MSG["Сообщение<br/>клиента"] --> AI["AI-движок"]
     AI --> ESC{"Нужен<br/>оператор?"}
     ESC -->|"нет"| ANS["Ответ<br/>клиенту"]
-    ESC -->|"да · ESCALATE_TO_HUMAN"| TK["support_tickets<br/>create_ticket"]
+    ESC -->|"да · ESCALATE_TO_HUMAN"| TK["support_tickets<br/>create_ticket()"]
     TK --> CONV[("Тикет<br/>Поддержки<br/>SupportConversation")]
     TK --> ANS
 </pre>
@@ -12170,7 +12170,7 @@ flowchart LR
     <tr><td><strong>CallButton</strong></td><td>Кнопка «Позвонить» (click-to-call через провайдера телефонии).</td><td>Тикеты, CRM, поиск, карточка клиента</td></tr>
     <tr><td><strong>SmitDrawer</strong></td><td>Боковая панель: заголовок с иконкой и подзаголовком, вкладки, кнопки действий, загрузка содержимого по адресу, стопка вложенных панелей.</td><td>Карточки позиции и единицы склада, тикеты Поддержки, дровер сделки и заявки CRM, карточка клиента, профиль, разделы AI, редактор ботов, монитор сессий</td></tr>
     <tr><td><strong>SmitToast</strong></td><td>Всплывающие уведомления (стек справа-сверху / снизу на мобильном).</td><td>Замена ~18 частных toast-копий (инкрементально)</td></tr>
-    <tr><td><strong>SmitConfirm</strong></td><td>Модалка подтверждения вместо <code>confirm</code> (тот ломал тёмную тему).</td><td>Замена ~90 native <code>confirm</code> (инкрементально)</td></tr>
+    <tr><td><strong>SmitConfirm</strong></td><td>Модалка подтверждения вместо <code>confirm()</code> (тот ломал тёмную тему).</td><td>Замена ~90 native <code>confirm()</code> (инкрементально)</td></tr>
     <tr><td><strong>SmitCopy</strong></td><td>Копирование в буфер (clipboard + execCommand fallback + тост).</td><td>Замена ~29 копий clipboard-логики (IP / MAC / договор / e-mail / телефон)</td></tr>
   </tbody>
 </table>
@@ -12271,10 +12271,10 @@ flowchart LR
   <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;<span data-smit="updated">25.08.2026</span></span>
 </footer>
 
-<script src="../js/main.js?v=2181"></script>
-<script src="../js/search.js?v=2181"></script>
+<script src="../js/main.js?v=2182"></script>
+<script src="../js/search.js?v=2182"></script>
 <script src="../js/version.js"></script>
-<script src="../js/mermaid-init.js?v=2181"></script>
-<script src="../js/markmap-init.js?v=2181"></script>
+<script src="../js/mermaid-init.js?v=2182"></script>
+<script src="../js/markmap-init.js?v=2182"></script>
 </body>
 </html>

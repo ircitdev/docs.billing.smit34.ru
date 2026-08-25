@@ -19,8 +19,8 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=2181">
-  <link rel="stylesheet" href="../css/search.css?v=2181">
+  <link rel="stylesheet" href="../css/style.css?v=2182">
+  <link rel="stylesheet" href="../css/search.css?v=2182">
   <link rel="stylesheet" href="../css/vendor/bootstrap-icons.min.css">
   <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css">
 </head>
@@ -1131,7 +1131,7 @@ docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 3
   <h3 id="sorm-ai">AI-помощник по SQL</h3>
 
   <p>Кнопка <strong>✨ AI</strong> в шапке SQL-редактора открывает чат с AI-ассистентом (через прокси). Ассистент знает схему БД и функции СОРМ
-  (<code>uf_ip2hex</code>, <code>uf_mask2hex</code>, <code>uf_date2sorm</code>), видит
+  (<code>uf_ip2hex()</code>, <code>uf_mask2hex()</code>, <code>uf_date2sorm()</code>), видит
   текущий SQL отчёта и помогает его дорабатывать. Схема выходных колонок фиксирована
   приказом РКН — без явной просьбы ассистент её не меняет. Когда решение готово,
   предлагает новый SQL кнопкой <strong>«Применить в редактор»</strong>. Endpoint
@@ -1338,7 +1338,7 @@ flowchart TB
         <li><em>CSV</em> — скачивает файл в браузер</li>
       </ul>
     </li>
-    <li><strong>✏ Редактировать</strong> — модальное окно с SQL-редактором, настройкой периодичности, префикса файла. Доступны функции: <code>uf_ip2hex</code>, <code>uf_mask2hex</code>, <code>uf_date2sorm</code></li>
+    <li><strong>✏ Редактировать</strong> — модальное окно с SQL-редактором, настройкой периодичности, префикса файла. Доступны функции: <code>uf_ip2hex()</code>, <code>uf_mask2hex()</code>, <code>uf_date2sorm()</code></li>
     <li><strong>🗑 В архив</strong> — мягкое удаление с возможностью восстановления из блока «Архив»</li>
   </ul>
 
@@ -1573,10 +1573,10 @@ python manage.py merge_sorm_attribute_dups --by-name --apply</code></pre>
   <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0</span>&nbsp;|&nbsp;<span data-smit="updated">25.08.2026</span></span>
 </footer>
 
-<script src="../js/main.js?v=2181"></script>
+<script src="../js/main.js?v=2182"></script>
 <script src="../js/version.js"></script>
-<script src="../js/mermaid-init.js?v=2181"></script>
-<script src="../js/markmap-init.js?v=2181"></script>
-<script src="../js/search.js?v=2181"></script>
+<script src="../js/mermaid-init.js?v=2182"></script>
+<script src="../js/markmap-init.js?v=2182"></script>
+<script src="../js/search.js?v=2182"></script>
 </body>
 </html>
