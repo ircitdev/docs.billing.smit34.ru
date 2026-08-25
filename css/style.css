@@ -1504,97 +1504,6 @@ html, body {
   }
 }
 
-/* ═══ Mindmap на главной ═══ */
-.mindmap-section {
-  margin: 28px 0 32px;
-  padding: 20px;
-  border-radius: 12px;
-  background: linear-gradient(180deg, rgba(91,168,157,.05), transparent 60%);
-  border: 1px solid var(--table-border);
-}
-.mindmap-title {
-  margin: 0 0 4px;
-  font-size: 1.4rem;
-}
-.mindmap-hint {
-  margin: 0 0 16px;
-  color: var(--text-light);
-  font-size: .9rem;
-}
-.mindmap-wrap {
-  display: grid;
-  grid-template-columns: 1fr 300px;
-  gap: 20px;
-  align-items: center;
-}
-.mindmap-svg {
-  width: 100%;
-  height: auto;
-  max-height: 520px;
-}
-.mindmap-panel {
-  min-height: 180px;
-  padding: 16px 18px;
-  background: var(--bg-card);
-  border: 1px solid var(--table-border);
-  border-radius: 10px;
-  font-size: .95rem;
-  line-height: 1.55;
-  transition: border-color .2s;
-}
-.mindmap-panel:has(.mm-panel-title) {
-  border-color: #5BA89D;
-  box-shadow: 0 2px 12px rgba(91,168,157,.15);
-}
-.mm-panel-title { font-weight: 700; color: #5BA89D; margin-bottom: 6px; font-size: 1.05rem; }
-.mm-panel-desc  { color: var(--text-light); margin-bottom: 10px; }
-.mm-panel-link  { color: #5BA89D; font-weight: 600; text-decoration: none; font-size: .9rem; }
-.mm-panel-link:hover { text-decoration: underline; }
-.mindmap-hint-inline { color: var(--text-light); font-style: italic; font-size: .9rem; }
-
-.mm-node { cursor: pointer; }
-.mm-node-bg {
-  fill: var(--bg-card);
-  stroke: #5BA89D;
-  stroke-width: 2;
-  transition: fill .2s, transform .2s;
-  transform-origin: center;
-  transform-box: fill-box;
-}
-.mm-node-label {
-  fill: var(--text);
-  font-size: 14px;
-  font-weight: 600;
-  pointer-events: none;
-  user-select: none;
-}
-.mm-node:hover .mm-node-bg,
-.mm-node.mm-active .mm-node-bg {
-  fill: #5BA89D;
-  filter: drop-shadow(0 4px 12px rgba(91,168,157,.45));
-}
-.mm-node:hover .mm-node-label,
-.mm-node.mm-active .mm-node-label {
-  fill: #fff;
-}
-#mm-lines line { transition: stroke-opacity .2s, stroke-width .2s; }
-#mm-lines line.mm-line-active {
-  stroke: #5BA89D;
-  stroke-opacity: 1;
-  stroke-width: 3;
-}
-
-@media (max-width: 768px) {
-  .mindmap-wrap {
-    grid-template-columns: 1fr;
-  }
-  .mindmap-panel {
-    min-height: 100px;
-    order: -1;
-  }
-  .mm-node-label { font-size: 12px; }
-}
-
 /* Welcome image on index page */
 .welcome-image {
   margin: 20px 0 28px;
@@ -1634,22 +1543,6 @@ html, body {
     max-height: none;
     height: auto;
     width: 100%;
-  }
-
-  /* Mindmap — stack vertically on mobile */
-  .mindmap-wrap {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-  .mindmap-svg {
-    max-width: 100%;
-  }
-  .mindmap-panel {
-    order: 2;
-    min-height: 120px;
-  }
-  .mindmap-section {
-    padding: 14px;
   }
 
   /* Tables — no horizontal scroll, stack as blocks with labels */
@@ -2447,4 +2340,56 @@ body.search-open { overflow: hidden; }
   color: var(--primary);
   font-size: .92em;
   vertical-align: -2px;
+}
+
+/* ── Возможности платформы: сетка карточек ───────────────────────────
+   Пришла на смену радиальной карте: у четырёх подписей из двенадцати текст
+   вылезал за кружок, четыре пары узлов накладывались, а описание раздела
+   показывалось только по наведению — на телефоне его было не увидеть. */
+.capabilities { margin: 40px 0; }
+.capabilities .cap-title { margin: 0 0 8px; }
+.capabilities .cap-lead {
+  margin: 0 0 22px; max-width: 720px;
+  color: var(--text-light); font-size: .94rem; line-height: 1.55;
+}
+.capabilities .cap-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(268px, 1fr));
+  gap: 14px;
+}
+.capabilities .cap-card {
+  display: flex; flex-direction: column; gap: 6px;
+  padding: 18px 18px 20px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg-card);
+  text-decoration: none;
+  transition: border-color .18s, transform .18s, box-shadow .18s;
+}
+.capabilities .cap-card:hover {
+  border-color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px var(--shadow);
+}
+.capabilities .cap-card:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.capabilities .cap-ico {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 38px; height: 38px; margin-bottom: 4px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--primary) 14%, transparent);
+  color: var(--primary-dark);
+  font-size: 1.2rem;
+}
+.capabilities .cap-name { font-size: 1rem; font-weight: 600; color: var(--text); }
+.capabilities .cap-desc { font-size: .84rem; line-height: 1.45; color: var(--text-light); }
+
+[data-theme="dark"] .capabilities .cap-ico { color: var(--primary); }
+
+@media (max-width: 575.98px) {
+  .capabilities .cap-grid { grid-template-columns: 1fr; gap: 10px; }
+  .capabilities .cap-card { padding: 15px 16px 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .capabilities .cap-card { transition: none; }
+  .capabilities .cap-card:hover { transform: none; }
 }

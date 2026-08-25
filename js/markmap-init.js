@@ -13,10 +13,13 @@
 (function () {
   'use strict';
 
+  // Библиотеки лежат рядом с документацией: сторонний CDN доступен не всегда,
+  // а без него карта не рисуется вовсе. Путь считаем от расположения страницы.
+  var BASE = (location.pathname.indexOf('/pages/') >= 0 ? '../' : './') + 'js/vendor/';
   var LIBS = [
-    'https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js',
-    'https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js',
-    'https://cdn.jsdelivr.net/npm/markmap-lib@0.18.11/dist/browser/index.iife.js'
+    BASE + 'd3.min.js',
+    BASE + 'markmap-view.js',
+    BASE + 'markmap-lib.js'
   ];
   var _loading = null, _seq = 0;
 
@@ -96,7 +99,7 @@
     var dark = isDark();
     var mm = window.markmap.Markmap.create(svg, {
       autoFit: true, duration: 350, spacingVertical: 10, spacingHorizontal: 88,
-      paddingX: 16, initialExpandLevel: -1, maxWidth: 260,
+      paddingX: 16, initialExpandLevel: 2, maxWidth: 260,
       color: function (node) { return PALETTE[(node.state.depth || 0) % PALETTE.length]; },
       style: function (sid) {
         var tc = dark ? '#e6edea' : '#1c2b23';

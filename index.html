@@ -19,9 +19,9 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Документация биллинговой платформы СмИТ Биллинг 3.5 для операторов связи и сервис-провайдеров. Python 3.11, Django 4.2, PostgreSQL 16, Docker Compose.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/style.css?v=2186">
+  <link rel="stylesheet" href="css/style.css?v=2187">
   <link rel="stylesheet" href="css/vendor/tabler-icons.min.css">
-  <link rel="stylesheet" href="css/search.css?v=2186">
+  <link rel="stylesheet" href="css/search.css?v=2187">
 </head>
 <body>
 
@@ -477,133 +477,74 @@
     <strong>Технологический стек:</strong> Python 3.11, Django 4.2 LTS, PostgreSQL 16, Redis 7, Celery 5, FreeRADIUS 3.2.3, Docker Compose, Gunicorn, Nginx, AdminLTE 3 + Bootstrap 5.3.
   </div>
 
-    <!-- Interactive mindmap -->
-  <div class="mindmap-section">
-    <h2 class="mindmap-title">Возможности платформы</h2>
-    <p class="mindmap-hint">Наведите на узел — чтобы увидеть подробности. Кликните — перейти в раздел документации.</p>
-    <div class="mindmap-wrap">
-      <svg class="mindmap-svg" viewBox="0 0 800 520" role="img" aria-label="Mindmap СмИТ Биллинг">
-        <defs>
-          <filter id="mm-glow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="6" result="blur"/>
-            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-          </filter>
-          <linearGradient id="mm-grad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#5BA89D"/>
-            <stop offset="100%" stop-color="#43b77a"/>
-          </linearGradient>
-        </defs>
-        <g id="mm-lines" stroke="#5BA89D" stroke-width="1.5" stroke-opacity=".35" fill="none"></g>
-        <g id="mm-nodes"></g>
-        <g id="mm-center">
-          <circle cx="400" cy="260" r="78" fill="url(#mm-grad)" filter="url(#mm-glow)"/>
-          <text x="400" y="254" text-anchor="middle" fill="#fff" font-size="18" font-weight="700">СмИТ Биллинг</text>
-          <text x="400" y="277" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="12.5">версия 3.5</text>
-        </g>
-      </svg>
-      <div class="mindmap-panel" id="mindmap-panel" role="status" aria-live="polite">
-        <span class="mindmap-hint-inline">🖱 Наведите на любой узел</span>
-      </div>
+  <section class="capabilities">
+    <h2 class="cap-title">Возможности платформы</h2>
+    <p class="cap-lead">Двенадцать направлений, из которых собирается работа
+    оператора связи. Выберите нужное — попадёте в соответствующий раздел
+    справочника.</p>
+    <div class="cap-grid">
+      <a class="cap-card" href="pages/billing.html#abonents">
+        <span class="cap-ico"><i class="ti ti-users" aria-hidden="true"></i></span>
+        <span class="cap-name">Клиенты</span>
+        <span class="cap-desc">Поиск и массовые операции, папки, блокировки, обещанные платежи</span>
+      </a>
+      <a class="cap-card" href="pages/billing.html#tarifs">
+        <span class="cap-ico"><i class="ti ti-tags" aria-hidden="true"></i></span>
+        <span class="cap-name">Тарификация</span>
+        <span class="cap-desc">Тарифы и услуги, скидки, программы лояльности, бонусы</span>
+      </a>
+      <a class="cap-card" href="pages/api.html#payments-api">
+        <span class="cap-ico"><i class="ti ti-credit-card" aria-hidden="true"></i></span>
+        <span class="cap-name">Платежи</span>
+        <span class="cap-desc">Платёжные системы, банковские выписки, фискализация</span>
+      </a>
+      <a class="cap-card" href="pages/lk.html#lk-overview">
+        <span class="cap-ico"><i class="ti ti-device-mobile" aria-hidden="true"></i></span>
+        <span class="cap-name">Личный кабинет</span>
+        <span class="cap-desc">Баланс, тарифы, оплата и заявки; приложения для Android и iOS</span>
+      </a>
+      <a class="cap-card" href="pages/equipment.html#nas-overview">
+        <span class="cap-ico"><i class="ti ti-router" aria-hidden="true"></i></span>
+        <span class="cap-name">Сеть и авторизация</span>
+        <span class="cap-desc">Вход абонента, учёт сессий, пулы адресов, состояние оборудования</span>
+      </a>
+      <a class="cap-card" href="pages/crm.html#crm-overview">
+        <span class="cap-ico"><i class="ti ti-chart-arrows" aria-hidden="true"></i></span>
+        <span class="cap-name">CRM</span>
+        <span class="cap-desc">Воронки сделок, задачи, источники заявок, боты-помощники</span>
+      </a>
+      <a class="cap-card" href="pages/helpdesk.html#overview">
+        <span class="cap-ico"><i class="ti ti-headset" aria-hidden="true"></i></span>
+        <span class="cap-name">Поддержка</span>
+        <span class="cap-desc">Единое окно обращений из почты, мессенджеров и звонков</span>
+      </a>
+      <a class="cap-card" href="pages/stock.html#stock-overview">
+        <span class="cap-ico"><i class="ti ti-package" aria-hidden="true"></i></span>
+        <span class="cap-name">Склад</span>
+        <span class="cap-desc">Приход, выдача в подотчёт, установка у клиента, инвентаризация</span>
+      </a>
+      <a class="cap-card" href="pages/video.html#video-overview">
+        <span class="cap-ico"><i class="ti ti-video" aria-hidden="true"></i></span>
+        <span class="cap-name">Видеонаблюдение</span>
+        <span class="cap-desc">Объекты и камеры, проекты подключения, подписки и документы</span>
+      </a>
+      <a class="cap-card" href="pages/sorm.html#sorm-admin">
+        <span class="cap-ico"><i class="ti ti-shield-lock" aria-hidden="true"></i></span>
+        <span class="cap-name">СОРМ</span>
+        <span class="cap-desc">Отчёты в требуемом формате и выгрузка по расписанию</span>
+      </a>
+      <a class="cap-card" href="pages/billing.html#reports">
+        <span class="cap-ico"><i class="ti ti-report-analytics" aria-hidden="true"></i></span>
+        <span class="cap-name">Отчёты</span>
+        <span class="cap-desc">Готовые отчёты и свои запросы, журналы платежей и действий</span>
+      </a>
+      <a class="cap-card" href="pages/api.html#overview">
+        <span class="cap-ico"><i class="ti ti-plug-connected" aria-hidden="true"></i></span>
+        <span class="cap-name">Интеграции и API</span>
+        <span class="cap-desc">Программный доступ к данным, приём платежей и заявок, сообщения</span>
+      </a>
     </div>
-  </div>
-
-  <script>
-  (function () {
-    var NODES = [
-      { id: 'subs',    label: 'Клиенты',      href: 'pages/billing.html#abonents',
-        title: 'Клиенты и карточка клиента',
-        desc: 'Поиск и массовые операции, папки и организации, блокировки, обещанные платежи. В карточке — услуги, счета, сессии, документы и переписка.' },
-      { id: 'tarifs',  label: 'Тарификация',  href: 'pages/billing.html#tarifs',
-        title: 'Тарифы и услуги',
-        desc: 'Тарифы и линейки услуг, разовые и периодические начисления, скидки, программы лояльности, бонусы.' },
-      { id: 'pay',     label: 'Платежи',      href: 'pages/api.html#payments-api',
-        title: 'Приём платежей',
-        desc: 'Платёжные системы и универсальный приём уведомлений, банковские выписки, фискализация, история операций.' },
-      { id: 'lk',      label: 'Личный кабинет', href: 'pages/lk.html#lk-overview',
-        title: 'Личный кабинет и мобильные приложения',
-        desc: 'Что видит клиент: баланс, тарифы, оплата, заявки. Приложения для Android и iOS, брендинг под организацию.' },
-      { id: 'radius',  label: 'RADIUS и сеть', href: 'pages/equipment.html#nas-overview',
-        title: 'Оборудование и авторизация',
-        desc: 'Авторизация абонентов, учёт сессий, пулы адресов, разрыв сессии оператором, состояние оборудования.' },
-      { id: 'crm',     label: 'CRM',          href: 'pages/crm.html#crm-overview',
-        title: 'CRM: заявки и продажи',
-        desc: 'Воронки сделок и стадии, задачи, источники заявок, боты-помощники, наряды монтажников.' },
-      { id: 'support', label: 'Поддержка',    href: 'pages/helpdesk.html#overview',
-        title: 'Обращения клиентов',
-        desc: 'Единое окно обращений из почты, мессенджеров и звонков. Шаблонные ответы, база знаний, учёт времени.' },
-      { id: 'stock',   label: 'Склад',        href: 'pages/stock.html#stock-overview',
-        title: 'Склад и оборудование',
-        desc: 'Учёт материалов и техники: приход, выдача в подотчёт, установка у клиента, возврат, инвентаризация.' },
-      { id: 'video',   label: 'Видеонаблюдение', href: 'pages/video.html#video-overview',
-        title: 'Видеонаблюдение',
-        desc: 'Объекты и камеры, проекты подключения, подписки с ежемесячным списанием, документы по проекту.' },
-      { id: 'sorm',    label: 'СОРМ',         href: 'pages/sorm.html#sorm-admin',
-        title: 'Выгрузка в СОРМ',
-        desc: 'Отчёты в требуемом формате, автоматическая выгрузка по расписанию, проверка готовности данных.' },
-      { id: 'reports', label: 'Отчёты',       href: 'pages/billing.html#reports',
-        title: 'Отчёты и аналитика',
-        desc: 'Библиотека готовых отчётов, свои запросы, журналы платежей и действий, финансовая динамика.' },
-      { id: 'api',     label: 'API',          href: 'pages/api.html#overview',
-        title: 'Интеграции и API',
-        desc: 'Программный доступ к данным биллинга, приём платежей и заявок, отправка сообщений, мобильное приложение.' },
-    ];
-
-    var svg = document.querySelector('.mindmap-svg');
-    if (!svg) return;
-    // Двенадцать узлов на одном кольце сталкиваются подписями, поэтому
-    // чётные отодвигаются дальше от центра.
-    var cx = 400, cy = 260, rNear = 168, rFar = 214;
-    var linesG = svg.querySelector('#mm-lines');
-    var nodesG = svg.querySelector('#mm-nodes');
-    var panel = document.getElementById('mindmap-panel');
-
-    NODES.forEach(function(n, i){
-      var ang = (i / NODES.length) * Math.PI * 2 - Math.PI / 2;
-      var rO = (i % 2 === 0) ? rFar : rNear;
-      var x = cx + rO * Math.cos(ang);
-      var y = cy + rO * Math.sin(ang);
-      // line
-      var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-      line.setAttribute('x1', cx); line.setAttribute('y1', cy);
-      line.setAttribute('x2', x);  line.setAttribute('y2', y);
-      line.setAttribute('data-id', n.id);
-      linesG.appendChild(line);
-      // group
-      var g = document.createElementNS('http://www.w3.org/2000/svg', 'a');
-      g.setAttributeNS('http://www.w3.org/1999/xlink', 'href', n.href);
-      g.setAttribute('href', n.href);
-      g.classList.add('mm-node');
-      g.setAttribute('data-id', n.id);
-      var c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-      c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', 42);
-      c.setAttribute('class', 'mm-node-bg');
-      g.appendChild(c);
-      var t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-      t.setAttribute('x', x); t.setAttribute('y', y + 4);
-      t.setAttribute('text-anchor', 'middle');
-      t.setAttribute('class', 'mm-node-label');
-      t.textContent = n.label;
-      g.appendChild(t);
-      g.setAttribute('tabindex', '0');
-      g.setAttribute('aria-label', n.title);
-      ['mouseenter', 'focus'].forEach(function (ev) { g.addEventListener(ev, function () {
-        panel.innerHTML = '<div class="mm-panel-title">' + n.title + '</div><div class="mm-panel-desc">' + n.desc + '</div><a class="mm-panel-link" href="' + n.href + '">Подробнее →</a>';
-        nodesG.querySelectorAll('.mm-node').forEach(function(el){ el.classList.toggle('mm-active', el === g); });
-        linesG.querySelectorAll('line').forEach(function(el){ el.classList.toggle('mm-line-active', el.getAttribute('data-id') === n.id); });
-      }); });
-      nodesG.appendChild(g);
-    });
-
-    var wrap = document.querySelector('.mindmap-wrap');
-    if (wrap) {
-      wrap.addEventListener('mouseleave', function(){
-        nodesG.querySelectorAll('.mm-node').forEach(function(el){ el.classList.remove('mm-active'); });
-        linesG.querySelectorAll('line').forEach(function(el){ el.classList.remove('mm-line-active'); });
-        panel.innerHTML = '<span class="mindmap-hint-inline">🖱 Наведите на любой узел</span>';
-      });
-    }
-  })();
-  </script>
+  </section>
 
 
 
@@ -950,10 +891,10 @@
   <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0</span>&nbsp;|&nbsp;<span data-smit="updated">25.08.2026</span></span>
 </footer>
 
-<script src="js/main.js?v=2186"></script>
+<script src="js/main.js?v=2187"></script>
 <script src="js/version.js"></script>
-<script src="js/mermaid-init.js?v=2186"></script>
-<script src="js/markmap-init.js?v=2186"></script>
-<script src="js/search.js?v=2186"></script>
+<script src="js/mermaid-init.js?v=2187"></script>
+<script src="js/markmap-init.js?v=2187"></script>
+<script src="js/search.js?v=2187"></script>
 </body>
 </html>
