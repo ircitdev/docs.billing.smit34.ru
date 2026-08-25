@@ -2343,3 +2343,18 @@ body.search-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .to-top, .page-pager .pg-link { transition: none; }
 }
+
+/* В тёмной теме страница усыпана светлыми снимками экрана — они бьют по
+   глазам. Приглушаем, при наведении показываем как есть. */
+[data-theme="dark"] .content img.screenshot,
+[data-theme="dark"] .content .welcome-image img,
+[data-theme="dark"] .content .content-image {
+  filter: brightness(.86) contrast(1.02);
+  transition: filter .2s;
+}
+[data-theme="dark"] .content img.screenshot:hover,
+[data-theme="dark"] .content .welcome-image img:hover,
+[data-theme="dark"] .content .content-image:hover { filter: none; }
+@media (prefers-reduced-motion: reduce) {
+  [data-theme="dark"] .content img.screenshot { transition: none; }
+}
