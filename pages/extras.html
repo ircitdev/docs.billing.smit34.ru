@@ -1,0 +1,1667 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Дополнительные разделы — СмИТ Биллинг</title>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="СмИТ Биллинг — Документация">
+  <meta property="og:title" content="Дополнительные разделы — СмИТ Биллинг">
+  <meta property="og:description" content="Видеонаблюдение и домофония, мультиорганизация, AI-агент, автообзвон и телефония, интерфейсные компоненты и внутренний мессенджер.">
+  <meta property="og:url" content="https://docs.billing.smit34.ru/pages/billing.html">
+  <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="ru_RU">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг">
+  <meta name="twitter:description" content="Управление клиентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
+  <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
+  <meta name="description" content="Видеонаблюдение и домофония, мультиорганизация, AI-агент, автообзвон и телефония, интерфейсные компоненты и внутренний мессенджер.">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css?v=2189">
+  <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css?v=2189">
+  <link rel="stylesheet" href="../css/search.css?v=2189">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <button class="menu-toggle" aria-label="Меню"><i class="ti ti-menu-2"></i></button>
+    <div class="logo">
+      <div class="logo-icon">С</div>
+      <div class="logo-text"><span class="logo-main"><span data-smit="brand-short">СмИТ Биллинг</span></span><span>Документация</span></div>
+    </div>
+  </div>
+  <div class="header-search">
+    <div class="docs-search-wrap">
+      <input type="search" id="docsSearch" class="docs-search-input" placeholder="Поиск по документации..." autocomplete="off">
+      <span class="docs-search-icon"><i class="ti ti-search"></i></span>
+      <div class="docs-search-results" id="docsSearchResults"></div>
+    </div>
+  </div>
+  <div class="header-right">
+    <a href="../graphify/graph.html" class="header-nav-link" title="Граф зависимостей кода">
+      <i class="ti ti-topology-star-3 hnl-ico"></i><span class="hnl-txt">Граф</span>
+    </a>
+    <a href="../graphify/wiki/index.html" class="header-nav-link" title="Wiki архитектурных модулей">
+      <i class="ti ti-book-2 hnl-ico"></i><span class="hnl-txt">Wiki</span>
+    </a>
+    <button class="mobile-search-btn" aria-label="Поиск" title="Поиск по документации">
+      <i class="ti ti-search"></i>
+    </button>
+    <button class="theme-toggle" aria-label="Переключить тему" title="Светлая / тёмная тема">
+      <span class="icon-sun"><i class="ti ti-sun"></i></span>
+      <span class="icon-moon"><i class="ti ti-moon"></i></span>
+    </button>
+  </div>
+</header>
+
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+<div class="search-overlay" id="searchOverlay" role="dialog" aria-label="Поиск по документации">
+  <div class="search-overlay-inner">
+    <i class="ti ti-search search-prefix-icon"></i>
+    <input type="search" id="docsSearchMobile" placeholder="Поиск по документации..." autocomplete="off">
+    <button class="search-overlay-close" aria-label="Закрыть" id="searchOverlayClose"><i class="ti ti-x"></i></button>
+    <div class="docs-search-results search-overlay-results" id="docsSearchResultsMobile"></div>
+  </div>
+</div>
+
+<aside class="sidebar">
+  <nav>
+    <div class="nav-section">Разделы</div>
+    <ul>
+      <li><a href="../index.html"><i class="ti ti-home"></i> Главная</a></li>
+      <li class="has-children">
+        <a href="installation.html"><i class="ti ti-box"></i> Установка и интеграция <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="installation.html#requirements">1. Системные требования</a></li>
+          <li><a href="installation.html#docker-install">2. Установка Docker Compose</a></li>
+          <li><a href="installation.html#demo-cleanup">3. Удаление демо-данных</a></li>
+          <li><a href="installation.html#equip-integration">4. Интеграция с оборудованием</a></li>
+          <li><a href="installation.html#tariff-setup">5. Настройка тарифов</a></li>
+          <li><a href="installation.html#add-subscribers">6. Добавление клиентов</a></li>
+          <li><a href="installation.html#final-test">7. Финальное тестирование</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="dashboard.html"><i class="ti ti-layout-dashboard"></i> Дашборд <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="dashboard.html#dashboard">1. Дашборд</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-kpi">1.1. Шапка: 6 KPI</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-pools-ebs">1.2. IP-пулы + EBS</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-alerts">1.3. Свежие проблемы</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-cash">1.4. Касса месяца</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-payments-today">1.5. Платежи сегодня</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-hot">1.6. Горячие клиенты + CRM</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-extras">1.7. Heat-map + Цели + Что нового</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-finance">1.8. Финансовая динамика</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="tariffs.html"><i class="ti ti-receipt"></i> Тарифы и услуги <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="tariffs.html#tarifs">2. Тарификация</a></li>
+          <li class="sub-item"><a href="tariffs.html#tarif-list">2.1. Тарифы</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="tariffs.html#tarif-folder">— Директория тарифа</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="tariffs.html#tarif-org">— Тарифы и организация</a></li>
+          <li class="sub-item"><a href="tariffs.html#usluga-list">2.2. Услуги и Бонусы</a></li>
+          <li class="sub-item"><a href="tariffs.html#tarif-ruleset">2.3. Правила и сети</a></li>
+          <li class="sub-item"><a href="tariffs.html#ruleset-conditions">2.3.1. Условия правила</a></li>
+          <li class="sub-item"><a href="tariffs.html#tarif-bulk">2.3.2. Массовые действия</a></li>
+          <li class="sub-item"><a href="tariffs.html#card-series">2.4. Карты оплаты</a></li>
+          <li class="sub-item"><a href="tariffs.html#loyalty">2.5. Программы лояльности</a></li>
+          <li class="sub-item"><a href="tariffs.html#usluga-range">2.6. Линейки услуг</a></li>
+          <li class="sub-item"><a href="tariffs.html#tarif-overview">— Тарифы: обзор</a></li>
+          <li class="sub-item"><a href="tariffs.html#usluga-overview">— Услуги: обзор</a></li>
+          <li class="sub-item"><a href="tariffs.html#service-policies">— Политики начислений</a></li>
+          <li class="sub-item"><a href="tariffs.html#loyalty-overview">— Лояльность: обзор</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="nas-equipment.html"><i class="ti ti-server"></i> Оборудование <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="nas-equipment.html#equipment">3. Оборудование</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#equip-nas">3.1. NAS</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#nas-map">— Что такое NAS</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#nas-multiorg">— Мультиорганизация и доступ</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#nas-modal">— Карточка устройства</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#nas-status">3.2. Состояние NAS</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#nas-danger">— Опасные операции</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#equip-monitoring">3.2А. Мониторинг оборудования</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#equip-iptv">3.3. IPTV</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#switch">3.4. Коммутаторы</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#switch-type">3.5. Типы коммутаторов</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#sorm-list">3.6. Настройки СОРМ</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="reports.html"><i class="ti ti-chart-bar"></i> Отчёты <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="reports.html#reports">4. Отчёты</a></li>
+          <li class="sub-item"><a href="reports.html#director-dashboard">4.0. Панель директора</a></li>
+          <li class="sub-item"><a href="reports.html#custom-reports">4.1. Библиотека отчётов</a></li>
+          <li class="sub-item"><a href="reports.html#audit">4.2. Аудит</a></li>
+          <li class="sub-item"><a href="reports.html#paylog">4.3. Журнал платежей</a></li>
+          <li class="sub-item"><a href="reports.html#messages-journal">4.4. Журнал сообщений</a></li>
+          <li class="sub-item"><a href="reports.html#dev-reports">4.5. Разработка и логи</a></li>
+          <li class="sub-item"><a href="reports.html#debtors">4.6. Должники</a></li>
+          <li class="sub-item"><a href="reports.html#migration">4.7. Миграция с других биллингов</a></li>
+          <li><a href="reports.html#games">5. Игры (Маркетинг)</a></li>
+          <li class="sub-item"><a href="reports.html#framework-fields-overview">— FrameworkFormGroupFields: обзор</a></li>
+          <li class="sub-item"><a href="reports.html#custom-reports-overview">— SQL-отчёты: обзор</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="settings.html"><i class="ti ti-settings"></i> Настройки: система и платежи <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="settings.html#settings">6. Настройки</a></li>
+          <li class="sub-item"><a href="settings.html#system-settings">6.1. Настройки системы</a></li>
+          <li class="sub-item"><a href="settings.html#print-forms">6.2. Шаблоны печати</a></li>
+          <li class="sub-item"><a href="settings.html#atol-config">6.3. Фискализация</a></li>
+          <li class="sub-item"><a href="settings.html#fiscal">6.3.1. Модуль фискализации 54-ФЗ</a></li>
+          <li class="sub-item"><a href="settings.html#payment-systems">6.4. Платёжные системы</a></li>
+          <li class="sub-item"><a href="settings.html#bank-statements">6.4.1. Банковские выписки</a></li>
+          <li class="sub-item"><a href="settings.html#bank-parsers">6.4.2. Банки и парсеры</a></li>
+          <li class="sub-item"><a href="settings.html#bank-queue">6.4.3. Очередь модерации</a></li>
+          <li class="sub-item"><a href="settings.html#bank-imports">6.4.4. Журнал импортов</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#bank-flow">— Путь платежа (схема)</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#bank-registry">— Сводные реестры</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#bank-queue-link-2171">— Привязка платежа и данные ФНС</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#bank-org-2171">— Организация платежа</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#bank-client-tab">— Вкладка «Банк» в карточке</a></li>
+          <li class="sub-item"><a href="settings.html#mailserver">6.4.5. Почтовый сервер</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#mailserver-webmail">— Веб-почта и календарь</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#mailserver-identity">— Имя, подпись, фото</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#mailserver-addressbook">— Адресная книга</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#mailserver-mail-tab">— Вкладка «Почта»</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#mailserver-server-settings">— Настройки сервера</a></li>
+          <li class="sub-item"><a href="settings.html#dns">6.4.5А. Домены и DNS</a></li>
+          <li class="sub-item"><a href="settings.html#mail-provisioning">6.4.6. Автонастройка почты</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="settings-services.html"><i class="ti ti-plug"></i> Настройки: связь и сервисы <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li class="sub-item"><a href="settings-services.html#integrations">6.5. Интеграции</a></li>
+          <li class="sub-item"><a href="settings-services.html#voice">6.5А. Голосовая связь</a></li>
+          <li class="sub-item"><a href="settings-services.html#iptv-mappings">6.6. IPTV-пакеты</a></li>
+          <li class="sub-item"><a href="settings-services.html#iptv-watch">6.6.1. Просмотр ТВ в ЛК</a></li>
+          <li class="sub-item"><a href="settings-services.html#lk-mobile">6.7. ЛК и мобильные</a></li>
+          <li class="sub-item"><a href="settings-services.html#messaging">6.8. Сообщения</a></li>
+          <li class="sub-item"><a href="settings-services.html#staff">6.9. Персонал и доступ</a></li>
+          <li class="sub-item"><a href="settings-services.html#license">6.10. Лицензия</a></li>
+          <li class="sub-item"><a href="settings-services.html#modules">6.10А. Модули и расширения</a></li>
+          <li class="sub-item"><a href="settings-services.html#backup">6.11. Резервные копии</a></li>
+          <li class="sub-item"><a href="settings-services.html#db-cleanup">6.12. Очистка БД и сессий</a></li>
+          <li class="sub-item"><a href="settings-services.html#diagnostics">6.13. Диагностика</a></li>
+          <li class="sub-item"><a href="settings-services.html#mass-actions">6.14. Массовые действия</a></li>
+          <li class="sub-item"><a href="settings-services.html#performance">6.15. Производительность и оптимизация</a></li>
+          <li class="sub-item"><a href="settings-services.html#captive-portal">6.16. Captive Portal (финблокировка)</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-readiness">— Готовность и проверка</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-emergency">— Аварийный режим</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-access">— Организации и права</a></li>
+          <li class="sub-item"><a href="settings-services.html#guest-wifi-portal">6.16.1. Гостевой Wi-Fi портал</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-payments">— Платежи</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-acl">— Белые списки (ACL)</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-sorm">— Гости в СОРМ и хранение</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-mobile">— С телефона</a></li>
+          <li class="sub-item"><a href="settings-services.html#support">— Поддержка: единое окно</a></li>
+          <li class="sub-item"><a href="settings-services.html#support-ticket">— Поддержка: карточка тикета</a></li>
+          <li class="sub-item"><a href="settings-services.html#support-panel">— Поддержка: выезжающая панель</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="dictionaries.html"><i class="ti ti-book"></i> Справочники <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="dictionaries.html#dictionary">7. Справочники</a></li>
+          <li class="sub-item"><a href="dictionaries.html#pools">7.1. Пулы IP и VLAN</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="dictionaries.html#ip-pull-overview">— IP-пул: обзор</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="dictionaries.html#vlan-pull-overview">— VLAN-пул: обзор</a></li>
+          <li class="sub-item"><a href="dictionaries.html#acl">7.2. Контроль доступа</a></li>
+          <li class="sub-item"><a href="dictionaries.html#addresses">7.3. Все адреса</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="dictionaries.html#addresses-overview">— Адреса: обзор</a></li>
+          <li class="sub-item"><a href="dictionaries.html#statuses-overview">— Статусы: обзор</a></li>
+          <li class="sub-item"><a href="dictionaries.html#requisites">7.4. Реквизиты</a></li>
+          <li class="sub-item"><a href="dictionaries.html#currency">7.5. Валюты</a></li>
+          <li class="sub-item"><a href="dictionaries.html#weekends">7.6. Выходные дни</a></li>
+          <li class="sub-item"><a href="dictionaries.html#statuses">7.7. Управление статусами</a></li>
+          <li class="sub-item"><a href="dictionaries.html#report-types">7.8. Типы отчётов</a></li>
+          <li class="sub-item"><a href="dictionaries.html#units">7.9. Единицы измерения</a></li>
+          <li class="sub-item"><a href="dictionaries.html#periods">7.10. Периоды</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="abonents.html"><i class="ti ti-users"></i> Абоненты <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li class="sub-item"><a href="abonents.html#admin-accounts-overview">— Счета: обзор</a></li>
+          <li class="sub-item"><a href="abonents.html#finops-overview">— Финоперации: обзор</a></li>
+          <li class="sub-item"><a href="abonents.html#promise-pay-overview">— Обещанный платёж: обзор</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-block-overview">— Блокировки: обзор</a></li>
+          <li class="sub-item"><a href="abonents.html#abonent-folders-overview">— Папки клиентов: обзор</a></li>
+          <li><a href="abonents.html#abonents">8. Клиенты</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-list">8.1. Клиенты</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-folder-view">— Папка клиентов</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-multiorg">— Мультиорганизация</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-quick-add">— Новый клиент и раскладка</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-search">— Глобальный поиск</a></li>
+          <li class="sub-item"><a href="abonents.html#abonent-map">8.2. На карте</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#abonent-map-data">— Откуда берутся точки</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#abonent-map-multiorg">— Мультиорганизация</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#abonent-map-performance">— Вес карты и скорость</a></li>
+          <li class="sub-item"><a href="abonents.html#admin-accounts">8.3. Счета</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#admin-accounts-map">— Что такое счёт</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#admin-accounts-multiorg">— Мультиорганизация и доступ</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#admin-accounts-modal">— Карточка счёта</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#admin-accounts-mobile">— Мобильная версия</a></li>
+          <li class="sub-item"><a href="abonents.html#finance-operations">8.4. Финансовые операции</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#finops-lifecycle">— Откуда берутся операции</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#finops-multiorg">— Мультиорганизация</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#modal-finops">— Карточка операции</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#finops-mobile">— Мобильная версия</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#finance-operations-types">— Типы операций (FinTypes)</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="abonent-card.html"><i class="ti ti-id"></i> Карточка абонента <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li class="sub-item"><a href="abonent-card.html#users-overview">— Учётные записи: обзор</a></li>
+          <li class="sub-item"><a href="abonent-card.html#connection-points-overview">— Точки подключения: обзор</a></li>
+          <li class="sub-item"><a href="abonent-card.html#radius-sessions-overview">— RADIUS-сессии: обзор</a></li>
+          <li><a href="abonent-card.html#abonent-card">9. Карточка клиента</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="extras.html"><i class="ti ti-apps"></i> Дополнительные разделы <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="extras.html#video-surveillance">10. Видеонаблюдение</a></li>
+          <li class="sub-item"><a href="extras.html#video-revenue">10.1. 3 слоя дохода + цены</a></li>
+          <li class="sub-item"><a href="extras.html#video-admin">10.2. Раздел /admin/video/</a></li>
+          <li class="sub-item"><a href="extras.html#video-abonent">10.3. Вкладка клиента + ЛК</a></li>
+          <li class="sub-item"><a href="extras.html#video-billing-flow">10.3.1. Как списываются подписки</a></li>
+          <li class="sub-item"><a href="extras.html#video-archive-lk">10.3.2. Архив: календарь + выделение</a></li>
+          <li class="sub-item"><a href="extras.html#video-notify">10.3.3. Уведомления о сбоях</a></li>
+          <li class="sub-item"><a href="extras.html#video-docs">10.4. Документы (КП/договор/акт)</a></li>
+          <li class="sub-item"><a href="extras.html#video-block">10.5. Блокировка камер по балансу</a></li>
+          <li class="sub-item"><a href="extras.html#video-vsaas">10.6. Облако VSaaS</a></li>
+          <li><a href="extras.html#domofon-demo">11. Домофонный домен</a></li>
+          <li class="sub-item"><a href="extras.html#domofon-model">11.1. Доменная модель</a></li>
+          <li class="sub-item"><a href="extras.html#domofon-demo-data">11.2. Что заведено в демо</a></li>
+          <li><a href="extras.html#ai-agent">12. AI-агент</a></li>
+          <li class="sub-item"><a href="extras.html#ai-hub">12.1. Обзор модуля (хаб)</a></li>
+          <li class="sub-item"><a href="extras.html#ai-kb">12.2. База знаний</a></li>
+          <li class="sub-item"><a href="extras.html#ai-voice">12.3. Голос (Mango → анализ)</a></li>
+          <li class="sub-item"><a href="extras.html#ai-widget">12.4. Виджет + воронка</a></li>
+          <li class="sub-item"><a href="extras.html#ai-order-forms">12.4.1. Формы заказа → лиды</a></li>
+          <li class="sub-item"><a href="extras.html#ai-test-chat">12.4.2. Тестовый AI-чат</a></li>
+          <li class="sub-item"><a href="extras.html#ai-eval">12.5. Тест-кейсы AI</a></li>
+          <li class="sub-item"><a href="extras.html#ai-dashboard">12.6. Дашборд AI-сессий</a></li>
+          <li class="sub-item"><a href="extras.html#ai-dashboard-costs">12.6.1. Расходы на модели и бюджет</a></li>
+          <li class="sub-item"><a href="extras.html#ai-org-routing">12.6.2. Определение организации</a></li>
+          <li class="sub-item"><a href="extras.html#ai-dashboard-sessions">12.5.1. Сессии и транскрипт</a></li>
+          <li><a href="extras.html#autodial-telephony">13. Автообзвон и телефония</a></li>
+          <li class="sub-item"><a href="extras.html#autodial-providers">13.1. Мультипровайдер</a></li>
+          <li class="sub-item"><a href="extras.html#autodial-asterisk">13.2. Своя телефония (Asterisk)</a></li>
+          <li class="sub-item"><a href="extras.html#autodial-consent">13.3. Согласие и ограничения</a></li>
+          <li class="sub-item"><a href="extras.html#autodial-card-tab">13.4. Вкладка «Звонки» в карточке</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="lk.html"><i class="ti ti-device-mobile"></i> ЛК и мобильные <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="lk.html#lk-overview">Обзор и возможности</a></li>
+          <li><a href="lk.html#lk-admin">Раздел «ЛК и мобильные» в админке</a></li>
+          <li class="sub-item"><a href="lk.html#lk-admin">— Брендинг</a></li>
+          <li class="sub-item"><a href="lk.html#lk-admin">— Функции</a></li>
+          <li class="sub-item"><a href="lk.html#lk-admin">— Безопасность</a></li>
+          <li class="sub-item"><a href="lk.html#lk-mobile-app">— Мобильное (Android+iOS)</a></li>
+          <li><a href="lk.html#lk-login">Авторизация</a></li>
+          <li><a href="lk.html#lk-admin">Настройки интеграций</a></li>
+          <li><a href="lk.html#lk-extra">Telegram-бот</a></li>
+          <li><a href="lk.html#lk-finance">Оплата (ЮKassa)</a></li>
+          <li><a href="lk.html#lk-mobile-app">Мобильное приложение</a></li>
+          <li><a href="lk.html#lk-support">HelpDesk</a></li>
+          <li><a href="lk.html#lk-ai-chat">AI-ассистент</a></li>
+          <li><a href="lk.html#lk-profile">Профиль</a></li>
+          <li><a href="lk.html#lk-firebase">Push (Firebase)</a></li>
+          <li><a href="lk.html#lk-ai-chat">AI-чат</a></li>
+          <li><a href="settings-services.html#messaging">TG бот оператора</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="crm.html"><i class="ti ti-briefcase"></i> CRM — продажи <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="crm.html#crm-overview">1. Как устроен модуль</a></li>
+          <li><a href="crm.html#crm-quickstart">2. Быстрый старт</a></li>
+          <li><a href="crm.html#crm-funnel">3. Воронка сделок</a></li>
+          <li><a href="crm.html#crm-constructor">4. Конструктор воронок</a></li>
+          <li><a href="crm.html#crm-sources">5. Источники сделок</a></li>
+          <li><a href="crm.html#crm-userfields">6. Доп. поля</a></li>
+          <li><a href="crm.html#crm-tasks">7. Задачи</a></li>
+          <li><a href="crm.html#crm-lists">8. Списки (контакты)</a></li>
+          <li><a href="crm.html#crm-salesbot">9. Salesbot</a></li>
+          <li><a href="crm.html#widgets">10. Виджеты-плагины</a></li>
+          <li><a href="crm.html#crm-setup">11. Мастер настройки</a></li>
+          <li><a href="crm.html#crm-montazh">12. Наряды монтажника</a></li>
+          <li><a href="crm.html#crm-dashboard">13. Дашборд и карта</a></li>
+          <li><a href="crm.html#crm-campaigns">14. Рекламные кампании</a></li>
+          <li><a href="crm.html#crm-drawer">15. Карточка сделки</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="stock.html"><i class="ti ti-packages"></i> Склад <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="stock.html#stock-overview">1. Как устроен модуль</a></li>
+          <li><a href="stock.html#stock-quickstart">2. Быстрый старт</a></li>
+          <li><a href="stock.html#stock-flow">3. Движения и статусы</a></li>
+          <li><a href="stock.html#stock-items">4. Номенклатура и остатки</a></li>
+          <li><a href="stock.html#stock-receipt">5. Приход и этикетки</a></li>
+          <li><a href="stock.html#stock-issue">6. Подотчёт сотрудника</a></li>
+          <li><a href="stock.html#stock-inventory">6б. Инвентаризация</a></li>
+          <li><a href="stock.html#stock-reserve">6в. Резерв под наряд</a></li>
+          <li><a href="stock.html#stock-move">6г. Перемещение</a></li>
+          <li><a href="stock.html#stock-suppliers">6д. Поставщики</a></li>
+          <li><a href="stock.html#stock-montazh">7. Материалы в наряде</a></li>
+          <li><a href="stock.html#stock-abonent">8. Оборудование клиента</a></li>
+          <li><a href="stock.html#stock-money">9. Деньги: продажа и аренда</a></li>
+          <li><a href="stock.html#stock-analytics">9а. Аналитика</a></li>
+          <li><a href="stock.html#stock-settings">10. Настройки и роли</a></li>
+          <li><a href="stock.html#stock-launch">11. Чек-лист запуска</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="video.html"><i class="ti ti-device-cctv"></i> Видеонаблюдение <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="video.html#video-overview">1. Как устроен модуль</a></li>
+          <li><a href="video.html#video-objects">2. Объекты и камеры</a></li>
+          <li><a href="video.html#video-projects">3. Проекты и документы</a></li>
+          <li><a href="video.html#video-plans">4. Планы и подписки</a></li>
+          <li><a href="video.html#video-catalog">5. Каталог и склад</a></li>
+          <li><a href="video.html#video-media">6. Медиа-сервер</a></li>
+          <li><a href="video.html#video-archive">7. Архив записей</a></li>
+          <li><a href="video.html#video-dispatch">8. Пульт ЧОПа</a></li>
+          <li><a href="video.html#video-reports">9. Отчётность по SLA</a></li>
+          <li><a href="video.html#video-access">10. Права и организации</a></li>
+          <li><a href="video.html#video-settings">11. Настройки модуля</a></li>
+          <li><a href="video.html#video-launch">12. Чек-лист запуска</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="helpdesk.html"><i class="ti ti-headset"></i> Поддержка (HelpDesk) <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="helpdesk.html#overview">1. Обзор модуля</a></li>
+          <li><a href="helpdesk.html#channels">2. Каналы приёма</a></li>
+          <li><a href="helpdesk.html#mailbox">3. Входящие</a></li>
+          <li><a href="helpdesk.html#conversation">4. Карточка тикета</a></li>
+          <li><a href="helpdesk.html#sidebar">5. Сайдбар тикета</a></li>
+          <li><a href="helpdesk.html#panel">6. Выезжающая панель</a></li>
+          <li><a href="helpdesk.html#attention">7. Тикеты внимания</a></li>
+          <li><a href="helpdesk.html#ai-assistant">8. AI-бот</a></li>
+          <li><a href="helpdesk.html#voicemail">9. Голосовая почта</a></li>
+          <li><a href="helpdesk.html#knowledgebase">10. База знаний</a></li>
+          <li><a href="helpdesk.html#analytics">11. Аналитика и время</a></li>
+          <li><a href="helpdesk.html#settings">12. Настройки</a></li>
+          <li><a href="helpdesk.html#messengers">13. Мессенджеры</a></li>
+          <li><a href="helpdesk.html#integration">14. Связь с биллингом</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="landing.html"><i class="ti ti-browser"></i> Лендинги <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="landing.html#landing-overview">1. Что это</a></li>
+          <li><a href="landing.html#landing-blocks">2. Блоки-секции</a></li>
+          <li><a href="landing.html#landing-media">3. Слайдер, медиа-фон и эффекты</a></li>
+          <li><a href="landing.html#landing-editor">4. Редактор</a></li>
+          <li><a href="landing.html#landing-ai">5. AI-генерация</a></li>
+          <li><a href="landing.html#landing-forms">6. Формы и заявки</a></li>
+          <li><a href="landing.html#landing-publish">7. Публикация на поддомене</a></li>
+          <li><a href="landing.html#landing-pd">8. Согласие ПД (152-ФЗ)</a></li>
+          <li><a href="landing.html#landing-analytics">9. Аналитика</a></li>
+          <li><a href="landing.html#landing-multiorg">10. Мульти-орг</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="server.html"><i class="ti ti-server"></i> Управление сервером <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="server.html#server-setup">1. Настройка сервера</a></li>
+          <li><a href="server.html#maintenance">2. Сервисное обслуживание</a></li>
+          <li class="sub-item"><a href="server.html#backup">2.1. Резервное копирование</a></li>
+          <li class="sub-item"><a href="server.html#backup-ui">2.2. Бекапы (веб-интерфейс)</a></li>
+          <li><a href="server.html#modules">3. Управление модулями</a></li>
+          <li><a href="server.html#remote">4. Удалённое управление</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="equipment.html"><i class="ti ti-broadcast"></i> Интеграция с оборудованием <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="equipment.html#internet">1. Интернет (NAS/BRAS)</a></li>
+          <li class="sub-item"><a href="equipment.html#switch-types">1.1. Типы коммутаторов</a></li>
+          <li><a href="equipment.html#voip">2. Телефония (VoIP)</a></li>
+          <li><a href="equipment.html#iptv">3. IPTV</a></li>
+          <li class="sub-item"><a href="equipment.html#iptv-tvip">3.1. TVIP Media</a></li>
+          <li class="sub-item"><a href="equipment.html#iptv-lfstream">3.2. LFStream</a></li>
+          <li class="sub-item"><a href="equipment.html#iptv-mappings">3.3. Маппинг пакетов</a></li>
+          <li><a href="equipment.html#cpe">4. Абонентское оборудование</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="sorm.html"><i class="ti ti-shield-lock"></i> Интеграция с СОРМ3 <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="sorm.html#principle">Принцип работы</a></li>
+          <li><a href="sorm.html#integrated">Интегрированные решения</a></li>
+          <li><a href="sorm.html#pending">Ожидающие интеграции</a></li>
+          <li><a href="sorm.html#setup">Настройка подключения</a></li>
+          <li class="sub-item"><a href="sorm.html#sorm-add-modal">— Модальное окно «Добавить»</a></li>
+          <li><a href="sorm.html#reports">Отчёты и SQL</a></li>
+          <li><a href="sorm.html#schedule">Расписание выгрузки</a></li>
+          <li><a href="sorm.html#sorm-admin">Админ-UI: список и FTP</a></li>
+          <li><a href="sorm.html#manual-run">Управление отчётами</a></li>
+          <li><a href="sorm.html#metadata">СОРМ-метаданные</a></li>
+          <li><a href="sorm.html#preflight">Pre-flight валидация</a></li>
+          <li><a href="sorm.html#api">REST API готовности</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="api.html"><i class="ti ti-link"></i> API <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="api.html#overview">1. Обзор API</a></li>
+          <li><a href="api.html#auth">2. Аутентификация</a></li>
+          <li><a href="api.html#rest-v2">3. REST API v2</a></li>
+          <li><a href="api.html#promise-pay">4. Обещанный платёж</a></li>
+          <li><a href="api.html#payments-api">5. Платёжные API (ЮKassa, W1)</a></li>
+          <li><a href="api.html#soap">6. SOAP API</a></li>
+          <li><a href="api.html#mobile-api">7. Mobile API</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="troubleshooting.html"><i class="ti ti-tool"></i> Решение проблем <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="troubleshooting.html#general">1. Общие вопросы</a></li>
+          <li><a href="troubleshooting.html#auth">2. Клиенты и авторизация</a></li>
+          <li><a href="troubleshooting.html#billing-payments">3. Биллинг и платежи</a></li>
+          <li><a href="troubleshooting.html#server-perf">4. Сервер и производительность</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="licensing.html"><i class="ti ti-file-description"></i> Лицензирование <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="licensing.html#delivery">1. Порядок поставки ПО</a></li>
+          <li><a href="licensing.html#payment-issues">2. Не проходит оплата</a></li>
+        </ul>
+      </li>
+      <li><a href="contacts.html"><i class="ti ti-phone"></i> Контакты</a></li>
+      <li><a href="changelog.html"><i class="ti ti-history"></i> Журнал изменений</a></li>
+    </ul>
+
+      <div class="nav-section">Разработчикам</div>
+      <ul>
+        <li class="has-children">
+          <a href="../graphify/graph.html"><i class="ti ti-topology-star-3"></i> Архитектура кода <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+          <ul class="submenu">
+            <li><a href="../graphify/graph.html">Граф сообществ</a></li>
+            <li><a href="../graphify/wiki/index.html">Wiki модулей</a></li>
+            <li><a href="dev/index.html">Портал разработчика</a></li>
+            <li><a href="../graphify/help.html">graphify CLI</a></li>
+          </ul>
+        </li>
+      </ul>
+  <button class="sidebar-theme-toggle" aria-label="Тема"><span class="icon-sun"><i class="ti ti-sun"></i></span><span class="icon-moon"><i class="ti ti-moon"></i></span><span class="sidebar-theme-label">Сменить тему</span></button>
+</nav>
+</aside>
+
+<main class="content">
+  <div class="breadcrumb">
+    <a href="../index.html">Документация</a> <span class="sep">/</span> Дополнительные разделы
+  </div>
+
+  <h1>Дополнительные разделы</h1>
+  <p>Видеонаблюдение и домофония, мультиорганизация, AI-агент, автообзвон и телефония, интерфейсные компоненты и внутренний мессенджер.</p>
+
+<div class="page-toc">
+<details open>
+  <summary><strong><i class="ti ti-book"></i> Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#chat-messenger">Внутренний чат персонала</a></li>
+    <li class="sub-item"><a href="#chat-report-schedules">Отчёты по расписанию в чат</a></li>
+    <li class="sub-item"><a href="#chat-toasts">Toast-уведомления о новых сообщениях</a></li>
+    <li><a href="#ui-ux">Интерфейс: темы и единые паттерны</a></li>
+    <li class="sub-item"><a href="#ui-theme">Переключатель темы (Система / Светлая / Тёмная)</a></li>
+    <li class="sub-item"><a href="#ui-patterns">Единые паттерны настроек</a></li>
+    <li><a href="#video-surveillance">Видеонаблюдение — доп.услуга «под ключ»</a></li>
+    <li class="sub-item"><a href="#video-revenue">3 слоя дохода — как продавать правильно</a></li>
+    <li class="sub-item"><a href="#video-admin">Раздел /admin/video/</a></li>
+    <li class="sub-item"><a href="#chop-reports">Отчётность ЧОП (Фаза 4) — SLA, uptime, выручка</a></li>
+    <li class="sub-item"><a href="#video-abonent">Вкладка клиента и ЛК</a></li>
+    <li class="sub-item"><a href="#video-billing-flow">Как списываются подписки — пошагово</a></li>
+    <li class="sub-item"><a href="#video-archive-lk">Архив записей в ЛК — календарь, выделение, выбор камеры</a></li>
+    <li class="sub-item"><a href="#video-notify">Уведомления о сбоях записи</a></li>
+    <li class="sub-item"><a href="#documents">Модуль «Документы»: реестр, шаблоны, реквизиты</a></li>
+    <li class="sub-item"><a href="#video-docs">Документы (КП / договор / акт / согласие 152-ФЗ)</a></li>
+    <li class="sub-item"><a href="#video-settings">Настройки модуля</a></li>
+    <li class="sub-item"><a href="#video-block">Блокировка камер по балансу</a></li>
+    <li class="sub-item"><a href="#video-vsaas">Облако VSaaS (вариант B)</a></li>
+    <li class="sub-item"><a href="#video-models">Справочник моделей оборудования</a></li>
+    <li class="sub-item"><a href="#video-organization">Мульти-орг: чей клиент</a></li>
+    <li class="sub-item"><a href="#video-license">Модуль в реестре и лицензии</a></li>
+    <li><a href="#domofon-demo">Домофонный домен</a></li>
+    <li class="sub-item"><a href="#domofon-model">Доменная модель</a></li>
+    <li class="sub-item"><a href="#domofon-demo-data">Что заведено в демо</a></li>
+    <li><a href="#multi-org">Мульти-организации и SLA-сервис</a></li>
+    <li class="sub-item"><a href="#multi-org-model">Модель организаций</a></li>
+    <li class="sub-item"><a href="#multi-org-credit">Платежи и выручка по организации</a></li>
+    <li class="sub-item"><a href="#multi-org-fiscal">Фискализация по организации (54-ФЗ)</a></li>
+    <li class="sub-item"><a href="#multi-org-staff">Изоляция персонала по компаниям</a></li>
+    <li class="sub-item"><a href="#sla-docs">SLA-документы: счета и акты по подписке</a></li>
+    <li class="sub-item"><a href="#sla-tickets">Поддержка со SLA-уровнями</a></li>
+    <li class="sub-item"><a href="#multi-org-isolation">Изоляция входа в ЛК по домену</a></li>
+    <li class="sub-item"><a href="#multi-org-brand">Брендинг ЛК и писем по организации</a></li>
+    <li class="sub-item"><a href="#org-mail">Почта организации (SMTP)</a></li>
+    <li class="sub-item"><a href="#multi-org-telegram">Telegram-бот организации</a></li>
+    <li class="sub-item"><a href="#api-proxy">API-прокси для внешних сервисов</a></li>
+    <li><a href="#ai-agent">AI-агент — единый универсальный AI-модуль</a></li>
+    <li class="sub-item"><a href="#ai-hub">Обзор модуля (хаб)</a></li>
+    <li class="sub-item"><a href="#ai-providers">Мультипровайдер: выбор модели</a></li>
+    <li class="sub-item"><a href="#ai-kb">База знаний</a></li>
+    <li class="sub-item"><a href="#ai-tools">Инструменты на ORM (tool-use)</a></li>
+    <li class="sub-item"><a href="#ai-voice">Голос: Mango → расшифровка → анализ</a></li>
+    <li class="sub-item"><a href="#ai-widget">Собственный виджет для сайтов (конфиг из админки)</a></li>
+    <li class="sub-item"><a href="#ai-eval">Тест-кейсы и регрессионные прогоны</a></li>
+    <li class="sub-item"><a href="#ai-dashboard">Дашборд AI-сессий</a></li>
+    <li><a href="#ui-components">Единые компоненты интерфейса</a></li>
+    <li class="sub-item"><a href="#ui-components-list">Состав библиотеки</a></li>
+    <li class="sub-item"><a href="#ui-drawer">Боковые панели: одна механика на весь биллинг</a></li>
+    <li class="sub-item"><a href="#ui-components-arch">Как это устроено</a></li>
+    <li><a href="#autodial-telephony">Автообзвон и своя телефония</a></li>
+    <li class="sub-item"><a href="#autodial-providers">Мультипровайдер</a></li>
+    <li class="sub-item"><a href="#autodial-asterisk">Своя телефония на Asterisk</a></li>
+    <li class="sub-item"><a href="#autodial-consent">Согласие и ограничения</a></li>
+    <li class="sub-item"><a href="#autodial-card-tab">Вкладка «Звонки» в карточке клиента</a></li>
+  </ul>
+</details>
+</div>
+
+<!-- ===== Внутренний чат персонала ===== -->
+<h2 id="chat-messenger"><i class="ti ti-message-circle h-ico" aria-hidden="true"></i>Внутренний чат персонала</h2>
+
+<p>Встроенный мессенджер для сотрудников — выдвижная панель «Чаты» доступна с любой
+страницы админки (иконка-колокольчик в навбаре). Личные диалоги, групповые чаты,
+чат «Поддержка разработчика» (AI-ассистент + эскалация специалисту), вкладка
+«Уведомления» с системными событиями.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_v1403/12_chat_sidebar.png" alt="Внутренний чат — панель"></p>
+
+<ul>
+  <li><strong>Комнаты</strong>: личные (direct), групповые (group, с обложкой),
+  поддержка (support). Markdown в сообщениях (жирный/курсив/код/ссылки/списки),
+  вложения (GCS), реакции-эмодзи, ответы на сообщения, галочки прочтения.</li>
+  <li><strong>Бейдж непрочитанных</strong> в навбаре — опрос каждые 30 сек, работает
+  даже при закрытой панели.</li>
+</ul>
+
+<h3 id="chat-report-schedules">Отчёты по расписанию в чат</h3>
+<p>Любой SQL-отчёт (<a href="reports.html#custom-reports-overview">каталог отчётов</a>) можно
+отправлять в выбранный чат автоматически: ежедневно / еженедельно (Пн) /
+ежемесячно (1-е число) в заданное время. Сообщение — компактная текстовая таблица
+(первые 4 колонки, до N строк).</p>
+
+<pre class="mermaid">
+flowchart LR
+    BEAT["Celery beat<br/>dispatch_scheduled_reports"] --> DUE{"Пора?<br/>(час/мин, частота,<br/>не слали сегодня)"}
+    DUE -- да --> PAR["Авто-параметры:<br/>даты = период по частоте<br/>(день/7дн/30дн),<br/>строковые фильтры пусты"]
+    PAR --> SQL["_execute_sql()<br/>(та же подстановка,<br/>что в ручном запуске)"]
+    SQL --> MSG["ChatMessage role=system<br/>«📊 Отчёт …» в комнату"]
+    MSG --> TOAST["Toast + бейдж<br/>у участников"]
+</pre>
+
+<p class="note"><i class="ti ti-info-circle"></i> Параметризованные отчёты
+(<code>:Дата_начала|date$</code> и т.п.) поддерживаются: даты авто-заполняются
+периодом по частоте расписания, строковые фильтры трактуются как «без ограничения».
+</p>
+
+<h3 id="chat-toasts">Toast-уведомления о новых сообщениях</h3>
+<p>Новое личное или групповое сообщение показывает <strong>toast в правом нижнем
+углу</strong> (на мобильном — полноширинный снизу): аватарка отправителя (реальное
+фото профиля или инициалы), имя, время, многострочный текст, кнопки
+<strong>«Ответить»</strong> (открывает нужный чат) и закрыть. Эффект матового стекла
+(backdrop-blur), тёмная тема, авто-скрытие через 9 сек, стек до 4 штук.
+Открытая комната не тостится; свои сообщения не триггерят.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_v1403/13_chat_toast.png" alt="Toast новых сообщений чата"></p>
+
+<!-- ===== Интерфейс: темы и единые паттерны ===== -->
+<!-- ===== Интерфейс: темы и единые паттерны ===== -->
+<h2 id="ui-ux"><i class="ti ti-palette h-ico" aria-hidden="true"></i>Интерфейс: темы и единые паттерны</h2>
+
+<h3 id="ui-theme">Переключатель темы (Система / Светлая / Тёмная)</h3>
+<p>В выпадающем меню профиля (аватар в навбаре) — трёхпозиционный переключатель
+темы. <strong>«Система»</strong> следует настройке ОС (авто-смена день/ночь),
+выбор запоминается за пользователем. Тёмная тема покрывает весь админ-интерфейс
+(<code>theme-smit.css</code>).</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_v1403/14_theme_toggle.png" alt="Переключатель темы в меню профиля"></p>
+
+<h3 id="ui-patterns">Единые паттерны настроек</h3>
+<ul>
+  <li><strong>Кнопка «Сохранить» с dirty-отслеживанием</strong> — неактивна (серая),
+  пока на странице ничего не изменено; активируется при первом изменении. Общий
+  механизм (<code>.js-dirty-save</code>) применён во всех разделах настроек
+  (Поддержка, CRM, платежи, интеграции и др.).</li>
+  <li><strong>i-иконки с popover</strong> — пояснения к опциям убраны из текста
+  страницы в компактные серые иконки-подсказки рядом с названием опции. Ссылки-«i»
+  у заголовков блоков ведут в соответствующий раздел этой документации.</li>
+  <li><strong>Единый вид блоков-«карточек»</strong> — радиус 10px, светло-серые
+  заголовки-полосы, одинаковые отступы (эталон — дашборд).</li>
+  <li><strong>Стили вкладок</strong> — выбранный в «Настройки системы → Профиль»
+  стиль (classic / pills / underline / compact / tubelight / glow) применяется ко
+  всем разделам с вкладками: карточка клиента, Поддержка, настройки.</li>
+</ul>
+
+<h2 id="video-surveillance"><i class="ti ti-video h-ico" aria-hidden="true"></i>Видеонаблюдение — доп.услуга «под ключ»</h2>
+<p>Модуль продажи видеонаблюдения через биллинг: от заявки и обследования до монтажа, recurring-подписок и документов. Реализован как собственный сервисно-инсталляционный домен (объект → проект → камеры/оборудование → подписки), а не плоская интеграция. Использует существующее ядро биллинга: тарификацию <code>Usluga</code>/<code>UsersUsluga</code>, ежемесячное списание <code>billing_worker</code>, <code>FinanceOperations</code>, генерацию PDF (WeasyPrint), фискализацию.</p>
+
+<h3 id="video-revenue">3 слоя дохода — как продавать правильно</h3>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_module_v2026_06_06/video_revenue_layers.png" alt="3 слоя дохода видеонаблюдения" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+<p>Ключевой принцип: <strong>маржа бизнеса — в recurring-подписке, а не в разовом монтаже</strong>. Продажа только «установки под ключ» убыточна, потому что облако (хранилище, трафик) — постоянная затрата, которую нужно отбивать ежемесячной платой.</p>
+<table>
+  <thead><tr><th>Слой</th><th>Услуга</th><th>Цена</th><th>Тип</th></tr></thead>
+  <tbody>
+    <tr><td>1. Разовый проект</td><td>Установка камеры под ключ</td><td>13 500 ₽</td><td>разово</td></tr>
+    <tr><td>2. Облако на камеру</td><td>Cloud Start (архив 7 дн)</td><td>490 ₽/камера/мес</td><td>recurring</td></tr>
+    <tr><td>2. Облако на камеру</td><td>Cloud Pro (архив 30 дн + аналитика)</td><td>690 ₽/камера/мес</td><td>recurring</td></tr>
+    <tr><td>3. Сервис на объект</td><td>Сервис Home (до 4 камер, ТО+гарантия)</td><td>390 ₽/мес</td><td>recurring</td></tr>
+    <tr><td>3. Сервис на объект</td><td>Сервис Pro (5+ камер, SLA-выезд)</td><td>990 ₽/мес</td><td>recurring</td></tr>
+  </tbody>
+</table>
+<p><strong>Пример экономики</strong> (частный дом, 4 камеры): установка 13 500 ₽ разово <em>+ recurring</em> 4×490 (облако) + 390 (сервис) = <strong>2 350 ₽/мес = 28 200 ₽/год</strong>. Recurring-слой — это то, чего нет при продаже «только установки».</p>
+<p>Цены хранятся в каталоге услуг (<code>Usluga.summa</code>, тип «Видеонаблюдение») и редактируются оператором. Конкретная сумма подписки берётся из услуги/плана, но может быть переопределена индивидуально на клиенте.</p>
+
+<p>Жизненный цикл сделки — от заявки до ежемесячной выручки:</p>
+<pre class="mermaid">
+flowchart LR
+  L["📥 Заявка<br/>VideoLead"] --> P["📋 Проект<br/>обследование · КП · договор"]
+  P --> I["🔧 Монтаж + ПНР<br/>разовый платёж 13 500 ₽"]
+  I --> O["🏠 Объект сдан<br/>VideoObject"]
+  O --> S["🔁 Подписки<br/>облако + сервис"]
+  S --> B["💰 billing_worker<br/>списание/мес с видео-счёта"]
+  B -.->|каждый месяц| S
+  style L fill:#eef2ff,stroke:#6366f1
+  style I fill:#fef9c3,stroke:#ca8a04
+  style S fill:#dcfce7,stroke:#16a34a
+  style B fill:#43b77a,stroke:#2d9a5f,color:#fff
+</pre>
+
+<h3 id="video-admin">Раздел /admin/video/</h3>
+<p>Раздел сайдбара «Видеонаблюдение» с 5 страницами: дашборд, проекты (канбан), объекты, сервисные планы, заявки.</p>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_module_v2026_06_06/video_dashboard.png" alt="Дашборд видеонаблюдения" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+<ul>
+  <li><strong>Дашборд</strong> — 8 KPI: объекты, камеры, активные проекты, подписки, <strong>MRR</strong> (recurring/мес), сумма воронки, конверсия, attach-rate; воронка проектов по 9 статусам; последние проекты.</li>
+  <li><strong>Проекты (канбан)</strong> — drag-drop по статусам (Заявка → Обследование → Проект/КП → Договор → Монтаж → ПНР → Сдан → На сервисе); на карточке — кнопки документов.</li>
+  <li><strong>Сервисные планы</strong> — CRUD SLA-пакетов (камеры от/до, цена/мес, SLA-реакция, health-check, связь с услугой каталога).</li>
+</ul>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_module_v2026_06_06/video_projects.png" alt="Канбан проектов видеонаблюдения" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+
+<h4 id="video-admin-ux">UI/UX раздела</h4>
+<p>Раздел прошёл UI/UX-аудит. Реализованы фильтры, inline-редактирование в модалках, просмотр камер и тёмная/мобильная адаптация:</p>
+<ul>
+  <li><strong>Объекты</strong> — фильтры по типу и компании, чипы «С подписками / Заблокированные / Долг» со счётчиками, <strong>редактирование и удаление в модальных окнах</strong> (с выбором организации), цветовая индикация баланса (красный долг / зелёный плюс).</li>
+  <li><strong>Проекты</strong> — на карточке лейбл организации; меню «⋮» содержит <strong>Редактировать</strong> и <strong>Удалить</strong> (модалка редактирования сметы + confirm-удаление).</li>
+  <li><strong>Медиа-сервер</strong> — отдельная колонка «Клиент», фильтры (онлайн / оффлайн / архив / не привязан), <strong>модалка просмотра камеры</strong> (live-видео через HLS + список архивных записей за 24ч), <strong>добавление/редактирование потока</strong> с привязкой к клиенту и автоматическим заведением в go2rtc.</li>
+  <li><strong>Настройки</strong> — раскладка в 2 колонки на десктопе; новая группа «Архив записей (MediaMTX + GCS)» с тумблером <code>Записывать в GCS</code> (резервное копирование сегментов архива в облако через Celery-задачу <code>video-archive-gcs-upload</code>).</li>
+  <li><strong>Тёмная тема и мобильный</strong> — исправлена читаемость бейджей и код-блоков в тёмной теме; широкие таблицы заменены адаптивными карточками на экранах &lt;768px.</li>
+</ul>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_audit_v2026_06_12/objects_light.png" alt="Объекты — фильтры, чипы, цвет баланса" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_audit_v2026_06_12/stream_view_modal.png" alt="Модалка просмотра камеры — live + архив" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_audit_v2026_06_12/settings_2col.png" alt="Настройки видеонаблюдения в 2 колонки" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+
+<h4 id="video-admin-ux-1130">Превью камер, просмотр в модалке и «Диск, Гб»</h4>
+<p>Доработка раздела «Объекты» и панели объекта: камеры теперь с превью и просмотром live/архива прямо в модальном окне, без перехода на другую страницу.</p>
+<ul>
+  <li><strong>Превью камер в панели объекта</strong> — при клике на клиента в списке «Объекты» открывается боковая панель (drawer), а в ней блок «Видеонаблюдение» → панель объекта со списком камер. Каждая камера показана <strong>стоп-кадром</strong> (snapshot go2rtc <code>/api/frame.jpeg</code>), а если поток не заведён — плейсхолдером.</li>
+  <li><strong>Кнопки «Трансляция / Архив / Поток»</strong> у каждой камеры. <strong>Трансляция</strong> и <strong>Архив</strong> открываются в <strong>модальном окне</strong> (плеер в iframe поверх панели), не в новой вкладке. Клик по самому превью также открывает трансляцию. Внутри модалки есть кнопка «открыть в новой вкладке» и закрытие по Esc / клику вне / крестику (поток и звук останавливаются при закрытии).</li>
+  <li><strong>Страница архива камеры</strong> (<code>/admin/video/camera/&lt;id&gt;/archive/</code>) — live-видео (HLS через hls.js) + таймлайн архивных записей за 24 часа с возможностью проиграть любой фрагмент. Для встраивания в модалку используется облегчённый режим <code>?embed=1</code> (без сайдбара).</li>
+  <li><strong>Колонка «Диск, Гб»</strong> вместо «Счёт, ₽» в списке объектов — показывает, сколько гигабайт занимает архив объекта в Google Cloud Storage (суммарно по всем камерам). «—» если выгрузка архива в GCS выключена.</li>
+  <li><strong>Компактная колонка «Компания»</strong> — без фона-бейджа, текст в одну строку с сокращением (полное название во всплывающей подсказке), приглушённая иконка.</li>
+</ul>
+<div class="flow-diagram" style="display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin:1rem 0;font-size:.9rem">
+  <span class="badge" style="background:#0d1117;color:#fff;padding:.4rem .7rem;border-radius:6px">Камера в панели объекта (превью — snapshot go2rtc)</span>
+  <span>→ «Трансляция» →</span>
+  <span class="badge" style="background:#43b77a;color:#fff;padding:.4rem .7rem;border-radius:6px">Модалка: live-плеер (go2rtc <code style="color:#fff">stream.html</code> в iframe)</span>
+  <span>· «Архив» →</span>
+  <span class="badge" style="background:#cfe8d8;color:#1a5c38;padding:.4rem .7rem;border-radius:6px">Модалка: embed-страница — live + таймлайн 24ч</span>
+  <span>· «Поток» →</span>
+  <span class="badge" style="background:#e9ecef;color:#333;padding:.4rem .7rem;border-radius:6px">Модалка: WebRTC (low-latency)</span>
+</div>
+<div class="flow-diagram" style="display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin:1rem 0;font-size:.9rem">
+  <span class="badge" style="background:#e0f2fe;color:#075985;padding:.4rem .7rem;border-radius:6px">Сегменты архива: MediaMTX</span>
+  <span>→ через прокси (роль GCS) →</span>
+  <span class="badge" style="background:#43b77a;color:#fff;padding:.4rem .7rem;border-radius:6px">Google Cloud Storage</span>
+  <span>→ подсчёт размера →</span>
+  <span class="badge" style="background:#dcfce7;color:#166534;padding:.4rem .7rem;border-radius:6px">Колонка «Диск, Гб» (по объекту)</span>
+</div>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_v1130/01_objects_light.png" alt="Объекты: колонки «Компания» (компактная) и «Диск, Гб»"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_v1130/03_object_drawer_cameras.png" alt="Панель объекта: камеры с превью и кнопками Трансляция / Архив / Поток"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_v1130/05_modal_stream.png" alt="Модальное окно трансляции камеры (live-плеер go2rtc)"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_v1130/04_modal_archive.png" alt="Модальное окно архива камеры: live + таймлайн записей за 24 часа"></p>
+
+<h4 id="video-gcs-proxy">Архив в GCS через прокси (роль «GCS»)</h4>
+<p>Из российских сетей <code>storage.googleapis.com</code> и <code>oauth2.googleapis.com</code> недоступны напрямую. Чтобы биллинг мог считать размер архива и выгружать сегменты в облако, добавлена отдельная <strong>роль «GCS» у прокси-сервера</strong>.</p>
+<ul>
+  <li>В разделе <a href="settings.html#system-settings">Настройки → Система → Прокси</a> у каждого прокси в меню «⋮» появился пункт <strong>«Добавить / Снять роль GCS»</strong> — это дополнительная роль, не сбрасывает роли Telegram и Нейросеть.</li>
+  <li>Для GCS используется <strong>HTTP-прокси (CONNECT)</strong> — он нативно поддерживается клиентом Google Cloud Storage. Доступность прокси проверяется по <code>storage.googleapis.com</code>.</li>
+  <li>Подсчёт «Диск, Гб» делает один запрос со списком объектов GCS (с кэшем 10 минут) и суммирует размеры по каждой камере объекта.</li>
+</ul>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_v1130/07_proxy_roles.png" alt="Меню прокси: пункт «Добавить роль GCS» рядом с ролями Telegram / Нейросеть"></p>
+
+<h3 id="chop-reports">Отчётность ЧОП (Фаза 4) — SLA, uptime, выручка</h3>
+<p>Раздел <a href="#chop-reports"><code>/admin/video/reports/</code></a> («Видео → Отчётность ЧОП») — единый экран по охраняемым объектам ЧОПа. Отвечает на три вопроса заказчика: насколько стабильна связь (SLA-uptime %), как быстро оператор реагирует на тревоги (время реакции + % в пределах SLA) и сколько объект приносит в месяц (recurring-выручка). Это <strong>доказуемый SLA</strong> — ключевая ценность, которую мы продаём охранным предприятиям.</p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/chop_reports_v1150/reports_overview.png" alt="Дашборд отчётности ЧОП: KPI, таблица по объектам, сводка по ЧОПам и операторам"></p>
+<h4 id="chop-reports-kpi">KPI и как они считаются</h4>
+<table>
+  <thead><tr><th>KPI</th><th>Источник / формула</th></tr></thead>
+  <tbody>
+    <tr><td>📡 Средний uptime</td><td>downtime из пар тревог <code>offline → restore</code> (<code>SecurityAlarm</code>); <code>1 − downtime/период</code>. «—» если событий связи за период нет</td></tr>
+    <tr><td>⏱ Ср. реакция</td><td><code>acked_at − event_time</code> по принятым тревогам (среднее + медиана)</td></tr>
+    <tr><td>✅ % в пределах SLA</td><td>доля тревог с реакцией ≤ <code>VideoServicePlan.sla_react_minutes</code> (числовое целевое время реакции по плану)</td></tr>
+    <tr><td>💰 Выручка/мес (MRR)</td><td>Σ активных <code>VideoSubscription.price_month</code> (для облака × число камер)</td></tr>
+    <tr><td>🛡 Объектов охраны</td><td><code>VideoObject(object_type='security')</code> + сколько с заблокированными камерами</td></tr>
+    <tr><td>🚨 Тревог за период</td><td>всего + сколько принято операторами</td></tr>
+  </tbody>
+</table>
+<p>Под KPI — таблица <strong>по объектам</strong> (uptime, простой, тревоги, реакция, выручка), сводка <strong>по охранным предприятиям</strong> (группировка по <code>security_company</code>) и <strong>реакция по операторам</strong> (через <code>acked_by</code>).</p>
+<h4 id="chop-reports-period">Период и экспорт</h4>
+<p>Кнопки периода <strong>7 / 30 / 90 дней / Год</strong> перезапрашивают данные через <code>/admin/video/reports/json/</code> без перезагрузки. <strong>Экспорт CSV</strong> (<code>/admin/video/reports/export/</code>) — UTF-8 BOM + <code>;</code> для Excel, колонки по объектам.</p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/chop_reports_v1150/reports_90d.png" alt="Отчётность ЧОП за 90 дней"></p>
+<div class="flow-diagram" style="display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin:1rem 0;font-size:.9rem">
+  <span class="badge" style="background:#0d1117;color:#fff;padding:.4rem .7rem;border-radius:6px">SecurityAlarm (тревоги, реакция, offline/restore)</span>
+  <span>+</span>
+  <span class="badge" style="background:#0d1117;color:#fff;padding:.4rem .7rem;border-radius:6px">VideoSubscription (подписки)</span>
+  <span>→</span>
+  <span class="badge" style="background:#43b77a;color:#fff;padding:.4rem .7rem;border-radius:6px">_collect_report()</span>
+  <span>→</span>
+  <span class="badge" style="background:#dcfce7;color:#166534;padding:.4rem .7rem;border-radius:6px">KPI + таблицы + CSV</span>
+</div>
+<p>Тёмная тема и мобильная вёрстка поддержаны; uptime начнёт наполняться, когда заработает <a href="#video-surveillance">приём сигналов с панелей</a> (Фаза 3) — сейчас приёмник выключен до аудита оборудования ЧОПа.</p>
+
+<h3 id="video-abonent">Вкладка клиента и ЛК</h3>
+<p>На карточке клиента — вкладка «📹 Видеонаблюдение»: объекты → камеры / оборудование / подписки / проекты, с модалкой объекта (side-nav). У каждого объекта — отдельный лицевой счёт под видео (не смешивается с интернет-балансом). Recurring-подписки списываются с этого счёта; при минусе блокируются камеры/облако (настройка <code>VIDEO_BLOCK_ON_NEGBAL</code>), интернет не трогается.</p>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_module_v2026_06_06/video_abonent_tab.png" alt="Вкладка видеонаблюдения на карточке клиента" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+<p>В <strong>личном кабинете</strong> (<code>/lk/video/</code>) и <strong>мобильном приложении</strong> (<code>GET /mobile-api/v1/video/objects</code>) клиент видит свои объекты, камеры, подписки, статус проекта, баланс видео-счёта и кнопку пополнения.</p>
+<p><img class="screenshot" src="../img/video_v1049/04_lk_video_list.png" alt="ЛК: объект «Ворота» — 4 камеры, подписка 390 ₽/мес, кнопка Пополнить"></p>
+
+<h3 id="video-billing-flow">Как списываются подписки — пошагово</h3>
+<p>Видеоподписка — это recurring-услуга (<code>UsersUsluga</code>, <code>system_type=20</code>), которую <code>billing_worker</code> списывает <strong>1-го числа каждого месяца</strong>. Деньги берутся с <strong>отдельного видео-счёта объекта</strong> (<code>VideoObject.account</code>) — интернет-баланс клиента не затрагивается.</p>
+
+<div class="video-flow">
+  <div class="vf-step">
+    <div class="vf-ico">🏠</div>
+    <div class="vf-body"><b>Объект</b><span>«Ворота» клиента</span></div>
+  </div>
+  <div class="vf-arrow">→</div>
+  <div class="vf-step">
+    <div class="vf-ico">🔄</div>
+    <div class="vf-body"><b>Подписка</b><span>Сервис на объект<br>390 ₽/мес</span></div>
+  </div>
+  <div class="vf-arrow">→</div>
+  <div class="vf-step">
+    <div class="vf-ico">💳</div>
+    <div class="vf-body"><b>Видео-счёт объекта</b><span>отдельный от интернета</span></div>
+  </div>
+  <div class="vf-arrow">→</div>
+  <div class="vf-step vf-step-charge">
+    <div class="vf-ico">📅</div>
+    <div class="vf-body"><b>1-го числа</b><span>billing_worker<br>списывает 390 ₽</span></div>
+  </div>
+  <div class="vf-arrow">→</div>
+  <div class="vf-step vf-step-block">
+    <div class="vf-ico">🔒</div>
+    <div class="vf-body"><b>Если баланс &lt; 0</b><span>камеры блокируются<br>(интернет работает)</span></div>
+  </div>
+</div>
+
+<table>
+  <thead><tr><th>Тип подписки</th><th>Цена считается</th><th>Пример</th></tr></thead>
+  <tbody>
+    <tr><td><b>Сервис / SLA</b> (service)</td><td>фиксировано за объект</td><td>Сервис Home 390 ₽, Сервис Pro 990 ₽</td></tr>
+    <tr><td><b>Облако</b> (cloud)</td><td>× число камер</td><td>Cloud Start 490 ₽ × 4 камеры = 1960 ₽/мес</td></tr>
+  </tbody>
+</table>
+<div class="note">
+  <p><strong>Важно:</strong> цены подписок хранятся в <a href="#video-revenue">каталоге услуг</a> (тип «Видеонаблюдение»), а <strong>не в тарифах</strong> — линейка «Видеонаблюдение» в разделе «Тарифы» остаётся пустой намеренно. Скидки лояльности интернета на видео не распространяются — это отдельный продукт со своим счётом.</p>
+</div>
+
+<h3 id="video-archive-lk">Архив записей в ЛК — календарь, выделение, выбор камеры</h3>
+<p>Страница архива камеры (<code>/lk/video/archive/&lt;camera&gt;/</code>) даёт клиенту просмотр и выгрузку записей за период хранения (retention из подписки).</p>
+<ul>
+  <li><b>Календарь даты</b> — выбор дня в пределах глубины архива; дни с записью помечены точкой.</li>
+  <li><b>Таймлайн суток</b> — зелёным показаны интервалы доступной записи; клик по таймлайну запускает просмотр с выбранного момента.</li>
+  <li><b>Выделение участка</b> (как обрезка в онлайн-сервисах) — потяните по таймлайну, появятся две ручки и панель «Просмотр / Скачать фрагмент / Сбросить». Вырезанный фрагмент скачивается одним файлом MP4.</li>
+  <li><b>Выбор камеры</b> — если у объекта несколько камер с записью, в шапке появляется селектор камеры (дата сохраняется при переключении).</li>
+</ul>
+<p><img class="screenshot" src="../img/video_v1049/02_calendar_open.png" alt="Архив видео: календарь выбора даты с точками на днях с записью, таймлайн суток"></p>
+<p><img class="screenshot" src="../img/video_v1049/03_selection.png" alt="Архив видео: выделение участка на таймлайне (5 ч 31 мин) + кнопки Просмотр / Скачать фрагмент / Сбросить"></p>
+
+<h3 id="video-notify">Уведомления о сбоях записи</h3>
+<p>Клиент может подключить уведомления о прерывании записи прямо в ЛК (вкладка «Архив» карточки объекта). Опция доступна <strong>только если у объекта активна запись</strong>. Канал — Telegram / Email / оба; контакты берутся из профиля клиента.</p>
+<p>Серверный health-мониторинг (<code>video-archive-health</code>, каждые 10 мин) проверяет свежесть последнего записанного сегмента по каждой <code>archive_enabled</code> камере. Если записи нет дольше 15 минут — запись считается отвалившейся: <code>billing_worker</code>-независимая задача шлёт Telegram-алерт оператору, а при включённой подписке на уведомления — ещё и клиенту (группировка по объекту, анти-спам 6 ч).</p>
+<p><img class="screenshot" src="../img/video_v1049/06_notify_on.png" alt="ЛК: переключатель «Уведомлять о сбоях записи» включён, выбор канала Telegram/Email"></p>
+
+<h3 id="documents">Модуль «Документы»: реестр, шаблоны, реквизиты</h3>
+<p>Раздел меню <strong>«Документы»</strong> — единый документооборот: три подстраницы
+работают с одной таблицей выпущенных PDF и общими шаблонами.</p>
+
+<pre class="mermaid">
+flowchart LR
+    T["Шаблоны<br/>(редактор HTML)"] -->|"движок + реквизиты<br/>организации"| G["Генерация PDF<br/>WeasyPrint"]
+    R["Реквизиты и печать<br/>(per-org)"] --> G
+    G --> REG["Реестр документов<br/>(журнал PDF)"]
+    REG -->|"скачать · предпросмотр<br/>подписать · аннулировать"| U["Оператор"]
+</pre>
+
+<h4 id="documents-registry">Реестр документов</h4>
+<p><code>/admin/documents/</code> — журнал всех выпущенных PDF (по клиенту, сделке,
+сотруднику). Фильтры: поиск по номеру/названию, категория, статус и
+<strong>единый компонент диапазона дат</strong> (как в отчётах). Организация
+выбирается в шапке навбара — отдельного фильтра на странице нет.</p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/documents_v1773/01_registry.png" alt="Реестр документов: фильтры (категория/статус/диапазон дат), таблица с колонкой Организация, действия"></p>
+<ul>
+  <li><strong>Действия в строке</strong>: предпросмотр PDF (модалка), скачивание,
+    отметка «подписан», аннулирование (статус <em>void</em>, файл сохраняется).</li>
+  <li><strong>Мульти-орг</strong>: реестр показывает документы организации клиента
+    (по выбору в навбаре); документы без организации видны всем. Колонка
+    <em>«Организация»</em> (<a href="#ui-components">OrgBadge</a>) — только в режиме
+    «Все организации». Скачивание/предпросмотр/аннулирование по ID заскоуплены —
+    оператор не видит и не трогает документы чужой компании.</li>
+  <li><strong>Реквизиты и печать</strong> (<code>/admin/documents/requisites/</code>)
+    — единый экран поверх реквизитов организаций (те же данные, что в карточке
+    организации и «Брендинге»), per-org.</li>
+</ul>
+
+<h4 id="documents-templates">Шаблоны документов</h4>
+<p><code>/admin/documents/templates/</code> — редактор шаблонов по типам:
+<em>Интернет / IPTV / Информ. услуги / Доп.услуга / Кадры / Склад</em>. Вкладки
+типов, чьи модули выключены, скрываются автоматически. Тело шаблона (HTML с
+плейсхолдерами) правится визуально; шапка с реквизитами организации, логотип и
+подписи добавляются единым движком. Есть предпросмотр на демо-данных.</p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/documents_v1773/02_stock_tab.png" alt="Шаблоны документов: вкладки типов сделок, включая вкладку Склад"></p>
+
+<h4 id="documents-stock">Вкладка «Склад» — акты оборудования</h4>
+<p>При включённом модуле <strong>Склад</strong> появляется вкладка «Склад» с двумя
+шаблонами: <strong>Акт приёма-передачи оборудования</strong> (клиенту) и
+<strong>Акт подотчёта сотрудника</strong> (материальная ответственность).
+Генераторы PDF (<code>/admin/stock/act/abonent/…</code>,
+<code>/admin/stock/act/staff/…</code>) собирают таблицу оборудования и рендерят её
+<strong>через эти редактируемые шаблоны</strong> — правки в редакторе реально
+меняют выпускаемый акт. Если шаблон не менялся, берётся дефолтное тело. Плейсхолдеры:
+<code>{{ rows_table }}</code> — готовая таблица оборудования, <code>{{ subject_name }}</code> — клиент или сотрудник,
+<code>{{ contract }}</code> — номер договора, <code>{{ total }}</code> — итог,
+<code>{{ executor_name }}</code> и <code>{{ executor_signer }}</code> — организация и подписант,
+<code>{{ doc_title }}</code>, <code>{{ doc_number }}</code>, <code>{{ today }}</code> и <code>{{ ref_note }}</code> — заголовок, номер, дата и ссылка на основание.</p>
+
+<h4 id="documents-mobile">Модалки на мобильном</h4>
+<p>Все модальные окна (предпросмотр PDF, редактор и предпросмотр шаблонов, формы,
+подтверждения) на телефоне (≤768px) разворачиваются на весь экран и выезжают
+справа полноэкранной слайд-панелью со «прилипающими» шапкой и кнопками действий.
+Это <strong>общесистемное поведение</strong> (единое правило SmitUI, opt-out —
+класс <code>.modal-nofull</code>), не только в «Документах».</p>
+
+<h3 id="video-docs">Документы (КП / договор / акт / согласие 152-ФЗ)</h3>
+<p>Из проекта генерируются 5 типов PDF (WeasyPrint, реквизиты из настроек компании, загрузка в облако):</p>
+<ul>
+  <li><strong>Акт обследования</strong> объекта</li>
+  <li><strong>Коммерческое предложение</strong> (оборудование + работы + сервис)</li>
+  <li><strong>Договор</strong> на установку</li>
+  <li><strong>Акт сдачи-приёмки</strong> с 11-пунктным чек-листом приёмки</li>
+  <li><strong>Согласие на обработку ПДн (152-ФЗ)</strong> — обязательно до начала съёмки (видео с людьми = персональные данные)</li>
+</ul>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_module_v2026_06_06/video_plans.png" alt="Сервисные планы видеонаблюдения" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+
+<h3 id="video-settings">Настройки модуля</h3>
+<p>Страница <code>/admin/video/settings/</code> — 4 группы настроек в карточках: <strong>Основные</strong> (включение, отдельный счёт), <strong>Биллинг и блокировки</strong>, <strong>Облако VSaaS</strong>. У облака — кнопка «Проверить соединение» прямо со страницы.</p>
+
+<h3 id="video-block">Блокировка камер по балансу</h3>
+<p>Настройка <code>VIDEO_BLOCK_ON_NEGBAL</code> реально работает: при отрицательном балансе видео-счёта камеры объекта блокируются, при пополнении — разблокируются. Срабатывает в трёх точках:</p>
+<ul>
+  <li><strong>После списания</strong> подписки в <code>billing_worker</code> — мгновенная блокировка при уходе в минус;</li>
+  <li><strong>При пополнении</strong> видео-счёта — мгновенная разблокировка;</li>
+  <li><strong>Ежечасная фоновая задача</strong> (<code>video.enforce_balances</code>) — подстраховка, обходит все объекты с отдельным счётом.</li>
+</ul>
+<p>Логика облако-агностична: флаг <code>cameras_blocked</code> на объекте + вызов VSaaS-провайдера (в MVP без облака — только флаг и запись в аудит, интернет клиента не трогается).</p>
+
+<h3 id="video-vsaas">Облако VSaaS (вариант B)</h3>
+<p>Ядро готово к реселлу облачного видеонаблюдения: абстракция провайдера (<code>BaseVsaasProvider</code>) + заглушка (MVP без облака) + реестр. Реальный облачный провайдер добавляется без переписывания вызывающего кода — выбирается в настройках (<code>VIDEO_CLOUD_PROVIDER</code>) вместе с API URL и ключом. Пока спрос/поставщик не определены — модуль работает в режиме «локальный NVR».</p>
+<p>По исследованиям (финансовая модель + анализ платформ) платформа старта — <strong>TRASSIR Cloud (DSSL)</strong>: провайдер <code>TrassirProvider</code> зарегистрирован в реестре (каркас, реальные вызовы API — при получении ключа). Стратегия: TRASSIR Cloud (0–12 мес) → собственное облако Xeoma при достижении ~1000 камер. На дашборде <code>/admin/video/</code> — метрика «камер в облаке / порог 1000» с сигналом «пора на своё облако» и расчётом дополнительной прибыли.</p>
+<p><strong>Срок архива</strong> — параметр сервисного плана (<code>retention_days</code>: Дом 7 дн, Семья/Бизнес 30 дн, Бизнес+ 90 дн). Указывается в согласии на обработку ПДн (152-ФЗ — «видеозаписи хранятся не дольше N дней»).</p>
+
+<h3 id="video-models">Справочник моделей оборудования</h3>
+<p>Модели камер и оборудования ведутся в каталоге <code>/admin/video/models/</code> (раздел «Видео» → «Модели оборудования»), а не вводятся текстом. Каждая модель — тип (камера/NVR/PoE/ИБП/диск), бренд, модель, характеристики (Мп/PTZ/уличная для камер), цена-ориентир. В модалках камеры и оборудования объекта — выбор из справочника с автозаполнением характеристик; свободный текст остаётся как fallback. Цена-ориентир используется в КП/смете проекта.</p>
+
+<h3 id="video-organization">Мульти-орг: чей клиент</h3>
+<p>Один биллинг обслуживает несколько компаний. Клиент привязан к организации (с кем подписан договор); объект видеонаблюдения наследует организацию от клиента, при необходимости переопределяется вручную (один клиент — разные компании по разным объектам). От организации зависят реквизиты документов (КП/договор/акт/152-ФЗ). В карточке клиента в блоке «Договор и контакты» отображается «Чей клиент: <организация>».</p>
+
+<h3 id="video-license">Модуль в реестре и лицензии</h3>
+<p>Видеонаблюдение — продаваемый модуль тарифа <strong>Pro</strong>. Управляется на <code>/admin/settings/modules/</code>: включение/выключение, замок при отсутствии в тарифе. При выключении модуль недоступен <strong>везде</strong> — раздел скрыт из меню, прямой URL даёт редирект, AJAX/API отвечает 403, вкладка в карточке клиента и раздел в ЛК/мобильном скрыты.</p>
+<p>Выключение модуля также <strong>скрывает связанные с ним сущности в тарификации и CRM</strong>: линейки услуг, тарифы этих линеек, вкладки типов сделок в разделе «Документы» CRM и типы сделок в воронке. Для модуля «Видеонаблюдение» это линейки <em>Видеонаблюдение</em>, <em>Домофон</em> и <em>ЧОП</em> (домофон и охрана — часть видеонаправления). Привязка линейки к модулю определяется полем «Модуль» в карточке линейки, а если оно пустое — по названию линейки. Услуги отдельно не скрываются: они низкоуровневые и уходят из вида вместе со своими тарифами.</p>
+
+<div class="note">
+  <p><strong>Перед запуском:</strong> модуль выключен по умолчанию (<code>VIDEO_ENABLED=false</code>). Включается после заведения услуг-пакетов, реквизитов компании и юридического контура 152-ФЗ (согласия + уведомление РКН). Охранный мониторинг с реагированием оказывает партнёр-ЧОО (лицензия), оператор связи — технический сервис.</p>
+</div>
+
+<h2 id="domofon-demo"><i class="ti ti-door h-ico" aria-hidden="true"></i>Домофонный домен</h2>
+<p>Домофония для новостроек реализована как <strong>рескин</strong> существующего биллинга, а не отдельный модуль: иерархия «оператор → ЖК → подъезд → квартира» укладывается на MPTT-дерево клиентов один-в-один, пакеты домофона — это тарифы, абонентская плата — recurring-услуги (списываются <code>billing_worker</code>). Все клиенты домофонных/видео-услуг привязаны к оператору домофонии (отдельная папка-юр.лицо).</p>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/demo_domofon_v1029/demo_domain_model.svg" alt="Доменная модель домофонного проекта" class="screenshot" style="max-width:720px"></p>
+<h3 id="domofon-model">Доменная модель</h3>
+<ul>
+  <li><strong>Оператор</strong> = папка клиентов (<code>is_folder=True, company=True</code>) с реквизитами юр.лица.</li>
+  <li><strong>ЖК / подъезд</strong> = вложенные папки.</li>
+  <li><strong>Квартира</strong> = клиент (<code>Abonents</code>) с тарифом-пакетом, адресом (<code>Homes</code>) и отдельным лицевым счётом.</li>
+  <li><strong>Пакеты домофона</strong> = тарифы: Standard 52 ₽, IP Smart 75 ₽, Integrated 145 ₽ (цена через <code>TarifUsersUsluga → Usluga.summa</code>).</li>
+  <li><strong>Видеонаблюдение</strong> = модуль <code>VideoObject</code> (объект → камеры → подписки) с отдельным видео-счётом; <strong>дверь</strong> = доп.услуга «Мобильный доступ к двери».</li>
+</ul>
+<h3 id="domofon-demo-data">Что заведено в демо</h3>
+<p>40 квартир-клиентов · 3 тарифа-пакета · 40 лицевых счетов · 4 видео-объекта + 8 камер + 4 видео-подписки (390 ₽) · 2 подписки «дверь» (50 ₽) · 4 демо-платежа. Всего <strong>46 живых recurring-услуг</strong> с <code>sched_date</code> — списываются <code>billing_worker</code> 1-го числа. Открыть: <code>/admin/Abonents/9482/</code>.</p>
+<p>На карточке квартиры видны все три услуги сразу (вкладка «Услуги») и объект видеонаблюдения с камерами (вкладка «Видео»):</p>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/demo_domofon_v1029/demo_flat_services.png" alt="Услуги квартиры: домофон + видео + дверь" class="screenshot" style="max-width:720px"></p>
+<div class="note">
+  <p>Демо-данные — для показа полного flow, не боевые клиенты.</p>
+</div>
+
+<h2 id="multi-org"><i class="ti ti-building h-ico" aria-hidden="true"></i>Мульти-организации и SLA-сервис</h2>
+<p>Один экземпляр СмИТ Биллинг может обслуживать несколько компаний-операторов как самостоятельные юрлица. В контуре может быть несколько организаций: основная — провайдер связи (она же по умолчанию), рядом с ней дочерние или партнёрские компании со своими доменами — например, ИТ-услуги или охранное абонентское обслуживание. У каждой компании — свои реквизиты, платёжные кассы, счёт приёма оплат, документы, брендинг, домен ЛК и маршрутизация поддержки. Сотрудники видят данные только своих компаний.</p>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/multiorg_ayti_v2026_06_08/multiorg.svg" alt="Multi-org: один биллинг — несколько компаний" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+
+<figure class="doc-video">
+  <div class="dv-head">
+    <span class="dv-kind"><i class="ti ti-player-play-filled" aria-hidden="true"></i> Обучающее видео</span>
+    <span class="dv-time">2:49</span>
+  </div>
+  <div class="dv-media">
+    <video controls preload="none" playsinline
+             poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/org-training-poster.jpg">
+        <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/org-training.mp4" type="video/mp4">
+        Ваш браузер не проигрывает видео —
+        <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/org-training.mp4">скачайте файл</a>.
+      </video>
+  </div>
+  <figcaption>
+    <p class="dv-desc">Список компаний и лимит лицензии, шесть вкладок карточки: основное и домен ЛК, брендинг, реквизиты для счетов, своя касса, почта и Telegram-бот организации.</p>
+    <div class="dv-foot">
+      <span class="dv-spec">1920×1080</span>
+      <span class="dv-spec">с озвучкой</span>
+      <a class="dv-download" href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/org-training.mp4" target="_blank" rel="noopener" aria-label="Скачать видеофайл"><i class="ti ti-download" aria-hidden="true"></i> Скачать</a>
+    </div>
+  </figcaption>
+</figure>
+
+<details class="section-toc">
+  <summary><strong>Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#multi-org-model">Модель организаций</a></li>
+    <li><a href="#multi-org-credit">Платежи и выручка по организации</a></li>
+    <li><a href="#multi-org-fiscal">Фискализация по организации (54-ФЗ)</a></li>
+    <li><a href="#multi-org-staff">Изоляция персонала по компаниям</a></li>
+    <li><a href="#sla-docs">SLA-документы (счёт/акт по подписке)</a></li>
+    <li><a href="#sla-tickets">Поддержка со SLA-уровнями</a></li>
+    <li><a href="#multi-org-isolation">Изоляция входа в ЛК по домену</a></li>
+    <li><a href="#multi-org-brand">Брендинг ЛК и писем по организации</a></li>
+    <li><a href="#multi-org-telegram">Telegram-бот организации</a></li>
+    <li><a href="#api-proxy">API-прокси для внешних сервисов</a></li>
+  </ul>
+</details>
+
+<h3 id="multi-org-model">Модель организаций</h3>
+<ul>
+  <li><strong>Организация</strong> (<code>Organization</code>): <code>name</code>, <code>slug</code> (<code>provider</code>/<code>partner</code>), <code>domain</code>, <code>is_default</code>, иконка, SMTP-отправитель рассылок.</li>
+  <li><strong>Клиент</strong> привязан к организации (<code>Abonents.organization</code>) — «чей клиент». Финоперации и документы наследуют организацию от клиента.</li>
+  <li><strong>Реквизиты</strong> (<code>CompanyBranding</code>) — свои для каждой организации: счета/акты печатаются с реквизитами той компании, с которой у клиента договор.</li>
+  <li><strong>Управление в одном окне:</strong> <code>/admin/settings/organizations/</code> — список компаний + редактирование в модалке с шестью вкладками:
+    <ul>
+      <li><strong>Основное</strong> — название, код, домен ЛК, иконка, статус;</li>
+      <li><strong>Брендинг</strong> — фирменные цвета (светлая/тёмная тема), логотип и favicon, фоны страницы входа в ЛК и дашборда (см. <a href="#multi-org-brand">ниже</a>);</li>
+      <li><strong>Реквизиты</strong> — ИНН/КПП/ОГРН, юр./почтовый адрес, директор, банковские реквизиты, ставка НДС, гл. бухгалтер, шрифт PDF, печать и подписи (загрузка прямо в окне);</li>
+      <li><strong>Платежи</strong> — своя касса YooKassa/W1 и расчётный счёт приёма оплат (см. ниже);</li>
+      <li><strong>Почта (SMTP)</strong> — отдельный отправитель рассылок организации;</li>
+      <li><strong>Telegram</strong> — бот организации и супергруппа с топиками для уведомлений (см. <a href="#multi-org-telegram">ниже</a>).</li>
+    </ul>
+  </li>
+</ul>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/multiorg_v1155/01_org_list.jpg" alt="Список организаций" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+
+<h3 id="multi-org-credit">Платежи и выручка по организации</h3>
+<p>Каждая компания принимает оплату <strong>на свой счёт через свою кассу</strong>. На вкладке «Платежи» в карточке организации задаются её YooKassa (Shop ID / секретный ключ / SCID), Wallet One и расчётный счёт приёма оплат (модель <code>OrgPaymentSettings</code>). Если у организации касса не задана — используются общие настройки провайдера (СмИТ).</p>
+<ul>
+  <li><strong>Онлайн-оплата</strong> (ЛК / мобильное приложение): платёж клиента уходит на кассу <em>его</em> компании. Возврат после оплаты ведёт на домен ЛК этой компании. Webhook верифицирует платёж той же кассой, что его приняла.</li>
+  <li><strong>Банковская выписка:</strong> платёж относится к компании по <strong>счёту получателя</strong> в выписке (на чей расчётный счёт реально пришли деньги), с резервным определением по организации клиента.</li>
+  <li><strong>Выручка:</strong> в каждую финоперацию записывается организация — доход корректно разносится между компаниями. Готовые отчёты «Выручка по организациям» (за месяц и за год) показывают суммы по каждой компании с разбивкой банк / онлайн.</li>
+</ul>
+
+<h3 id="multi-org-fiscal">Фискализация по организации (54-ФЗ)</h3>
+<p>По 54-ФЗ касса и ОФД привязаны к ИНН юрлица — у каждой компании свой ИНН и своя касса. Чек пробивается кассой той компании, на чей счёт пришли деньги, с её реквизитами продавца (ИНН, система налогообложения берутся из реквизитов организации). Касса привязывается к компании на странице <code>/admin/settings/atol_config/</code> (поле «Компания» в карточке кассы). Если у компании своя касса не заведена — чек не пробивается по чужому ИНН.</p>
+
+<h3 id="multi-org-staff">Изоляция персонала по компаниям</h3>
+<p>Сотрудник видит клиентов, финоперации и счета только тех компаний, к которым он привязан. Привязка задаётся в карточке сотрудника (<code>/admin/settings/staff/</code> → мультиселект «Доступные организации», можно несколько). Суперпользователь видит все компании. Селектор организаций в шапке показывает сотруднику только его компании; выбрать чужую нельзя. Функция управляется тумблером «Изоляция персонала» в разделе Настройки → Безопасность (мгновенный откат при необходимости).</p>
+
+<h3 id="sla-docs">SLA-документы: счета и акты по подписке</h3>
+<p>Для сервисных договоров (абонентское обслуживание со SLA) счёт и акт выставляются <strong>по подписке за период</strong> — не по факту банковского платежа. Документы генерируются в PDF (WeasyPrint) с реквизитами организации клиента, имеют отдельную нумерацию <code>СЛА-ГГГГ-NNNN</code> / <code>АКТСЛА-ГГГГ-NNNN</code> (атомарный счётчик). Каждая выдача журналируется в аудит (приказ ФСТЭК №21: кто/когда/что). SLA-подписки (пакеты «Базовый / Расширенный / Критический») списываются ежемесячно штатным механизмом абонплаты.</p>
+
+<h3 id="sla-tickets">Поддержка со SLA-уровнями</h3>
+<p>Тикеты поддержки маршрутизируются по организации клиента: клиенты дочерней компании попадают в свой почтовый ящик поддержки (<code>support@вашдомен.ru</code>). Тикету проставляются теги организации и SLA-уровня (Базовый / Расширенный / Критический); уровень также сохраняется в карточке клиента. Критический уровень → приоритетная реакция.</p>
+
+<h3 id="multi-org-isolation">Изоляция входа в ЛК по домену</h3>
+<p>Клиент может войти в личный кабинет только на домене своей организации: на домене дочерней компании — только её клиенты, на домене провайдера — только его. Проверка применяется во всех точках входа (логин/пароль, Telegram OAuth, автологин по IP, активная сессия). Попытка чужого клиента → отказ с записью в аудит. Это исключает перекрёстный доступ между компаниями.</p>
+
+<h3 id="multi-org-brand">Брендинг ЛК и писем по организации</h3>
+<p>Цвета, название, логотип и контакты в ЛК, письмах и служебных страницах берутся из брендинга организации клиента. У каждой организации своя палитра и своё название в письмах. Письма уходят с адреса организации (<code>noreply@вашдомен.ru</code>) под её SMTP-аккаунтом (корректные SPF/DKIM), темой с названием организации и её телефоном поддержки. Для клиентов без интернет-услуги (видео/домофон/SLA) скрываются интернет-специфичные разделы ЛК («Подключения», «Тест скорости»).</p>
+
+<p>Весь визуальный брендинг компании настраивается прямо в карточке организации на вкладке <strong>«Брендинг»</strong> (<code>/admin/settings/organizations/</code> → значок палитры в строке компании или кнопка «Редактировать» → вкладка «Брендинг»):</p>
+<ul>
+  <li><strong>Фирменные цвета</strong> — акцентный цвет для светлой и тёмной темы (выбор пипеткой + HEX-поле с предпросмотром). Применяется к кнопкам, ссылкам и шапке в ЛК организации. Пустой цвет тёмной темы → используется цвет светлой.</li>
+  <li><strong>Логотип и favicon</strong> — логотип (свет/тёмная тема) и favicon вкладки браузера, загрузка прямо в окне с превью.</li>
+  <li><strong>Фон страницы входа в ЛК</strong> — отдельные изображения для светлой и тёмной темы.</li>
+  <li><strong>Фон дашборда админки</strong> — свет/тёмная тема.</li>
+</ul>
+<p>Изображения до 2&nbsp;МБ (PNG/JPG/WEBP/SVG). Файлы можно загружать только у сохранённой организации. У организации по умолчанию (СмИТ) брендинг хранится в общей записи реквизитов, у остальных компаний — в собственной.</p>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/multiorg_v1155/02_brand_tab_light.jpg" alt="Вкладка «Брендинг» — фирменные цвета, логотип, фоны входа и дашборда" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/multiorg_ayti_v2026_06_08/03_dashboard.png" alt="Личный кабинет организации" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+
+<h3 id="org-mail">Почта организации (SMTP)</h3>
+<p>Карточка организации (<code>/admin/settings/organizations/</code>) открывается <strong>правым выезжающим сайдбаром</strong> — на мобильном он занимает всю ширину. Вкладка <strong>«Почта (SMTP)»</strong> задаёт, через какой сервер уходят письма клиентам этой компании.</p>
+<ul>
+  <li><strong>Пусто</strong> → используется глобальный SMTP системы.</li>
+  <li><strong>Заполнено</strong> → письма организации уходят с её адреса и домена.</li>
+</ul>
+
+<h4 id="org-mail-auto">Автонастройка и проверки</h4>
+<ul>
+  <li><strong>«Автонастроить ящик»</strong> — создаёт <code>noreply@&lt;домен-организации&gt;</code> в почтовом сервере, прописывает DNS (MX/SPF/DKIM/DMARC) и заполняет параметры SMTP. Подробнее — <a href="settings.html#mail-provisioning">6.4.6. Автонастройка почтовых ящиков и DNS</a>.</li>
+  <li><strong>«Проверить»</strong> — реальное подключение к SMTP с авторизацией и TLS; понятная ошибка, если логин/пароль неверны или хост не резолвится.</li>
+  <li><strong>«Отправить тест-письмо»</strong> — HTML-письмо на e-mail текущего пользователя: сразу видно, доходит ли почта.</li>
+</ul>
+
+<div class="note">
+<strong>Домен имеет значение.</strong> Автонастройка берёт домен из вкладки «Основное». Если у организации указан поддомен личного кабинета (например <code>lk.example.ru</code>), почтовый хост <code>mail.lk.example.ru</code> может не резолвиться — тогда либо укажите почтовый домен, либо оставьте SMTP пустым и используйте глобальный.
+</div>
+
+<h4 id="org-telegram-card">Карточки Telegram-бота и супергруппы</h4>
+<p>На вкладке <strong>Telegram</strong>, если задан токен бота, подтягиваются его аватар, имя и <code>@username</code> (ссылка открывает бота в Telegram). При указанном <code>chat_id</code> показывается аватар и название супергруппы. Данные читаются через Telegram Bot API (запросы идут через прокси); если бот не добавлен в группу — вместо карточки выводится предупреждение.</p>
+
+<h3 id="multi-org-telegram">Telegram-бот организации</h3>
+<p>У каждой компании может быть <strong>свой Telegram-бот</strong> для уведомлений в собственную супергруппу с топиками. Настройка — на вкладке <strong>«Telegram»</strong> в карточке организации:</p>
+<ul>
+  <li><strong>Токен бота</strong> — токен из <code>@BotFather</code> (хранится как секрет; при редактировании пустое поле = «не менять»). Бот должен быть администратором супергруппы.</li>
+  <li><strong>Ссылка на супергруппу</strong> — <code>https://t.me/…</code> на супергруппу с топиками для уведомлений.</li>
+  <li><strong>Chat ID супергруппы</strong> — числовой идентификатор (например <code>-1002910452601</code>) для отправки через Bot API.</li>
+</ul>
+<p>Если поля пусты — используется глобальный бот системы (поведение СмИТ не меняется). Топики (<code>thread_id</code>) под конкретные типы уведомлений настраиваются отдельно; здесь задаётся бот и супергруппа организации.</p>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/multiorg_v1155/03_telegram_tab_light.jpg" alt="Вкладка «Telegram» — токен бота, ссылка на супергруппу, Chat ID" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+
+<h3 id="api-proxy">API-прокси для внешних сервисов</h3>
+<p>Запросы к недоступным из РФ сервисам (AI-провайдеры, Telegram) идут через собственный forward-прокси на сервере с прямым доступом к этим API. Настройка <code>API_PROXY_URL</code> — единая точка для всех внешних вызовов (AI-чат, уведомления, фискализация, геокодер). Это устранило таймауты AI-ассистента: ответ приходит за ~1–2 сек.</p>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/multiorg_ayti_v2026_06_08/api_proxy.svg" alt="Схема API-прокси" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+
+<div class="note">
+  <p><strong>Статус:</strong> мульти-орг полностью реализован (2026-06-13, вкладки «Брендинг» и «Telegram» добавлены 2026-06-16). Per-организацию: реквизиты и документы, визуальный брендинг (цвета/логотип/favicon/фоны), платёжные кассы и счёт приёма оплат, маршрутизация онлайн-платежей и банковских выписок, фискализация (54-ФЗ), изоляция входа в ЛК и брендинг по домену, изоляция персонала по компаниям, свой Telegram-бот и супергруппа уведомлений, SLA-сервис и API-прокси. Состав компаний ведётся в карточках организаций. Платёжные/фискальные реквизиты вводятся в карточке организации по мере оформления юр.лиц.</p>
+</div>
+
+
+<h2 id="ai-agent"><i class="ti ti-robot h-ico" aria-hidden="true"></i>AI-агент — единый универсальный AI-модуль</h2>
+<p>Всё, что касается искусственного интеллекта, собрано в одном нативном модуле <code>/admin/ai/</code>: мультипровайдерный чат с инструментами на прямом ORM, база знаний для бота и операторов, голосовой разбор звонков, <strong>собственный виджет для сайтов с настройками из админки</strong> и запись лидов в нашу CRM. Все ключи, промпты, история, дашборд и внешний вид виджета живут в биллинге (или на сервере лицензий), без зависимости от сторонних серверов.</p>
+<figure class="doc-video">
+  <div class="dv-head">
+    <span class="dv-kind"><i class="ti ti-player-play-filled" aria-hidden="true"></i> Обучающее видео</span>
+    <span class="dv-time">2:48</span>
+  </div>
+  <div class="dv-media">
+    <video controls preload="none" playsinline
+             poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/ai-agent-training-poster.jpg">
+        <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/ai-agent-training.mp4" type="video/mp4">
+        Ваш браузер не проигрывает видео —
+        <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/ai-agent-training.mp4">скачайте файл</a>.
+      </video>
+  </div>
+  <figcaption>
+    <p class="dv-desc">Где живёт поведение бота, что он умеет вызывать сам, почему цены нельзя писать в промпт и что делать с очередью «бот не смог».</p>
+    <div class="dv-foot">
+      <span class="dv-spec">1920×1080</span>
+      <span class="dv-spec">с озвучкой</span>
+      <a class="dv-download" href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/ai-agent-training.mp4" target="_blank" rel="noopener" aria-label="Скачать видеофайл"><i class="ti ti-download" aria-hidden="true"></i> Скачать</a>
+    </div>
+  </figcaption>
+</figure>
+
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_module_v1132/ai_architecture.svg" alt="Архитектура AI-агента: каналы → движок → биллинг ORM → результат" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+
+<p><strong>Карта возможностей модуля:</strong></p>
+<pre class="mermaid">
+flowchart LR
+    AI(("AI-агент"))
+    AI --- P["Провайдеры"]
+    P --- P1["Подключённые провайдеры"]
+    P --- P2["ключи в БД или на лиц-сервере"]
+    AI --- CH["Каналы"]
+    CH --- CH1["ЛК и Мобильное"]
+    CH --- CH2["Виджет сайтов"]
+    CH --- CH3["Поддержка TG / VK / MAX"]
+    CH --- CH4["Email и Голос"]
+    AI --- T["Инструменты"]
+    T --- T1["Тарифы физ / бизнес"]
+    T --- T2["Покрытие по адресу"]
+    T --- T3["Баланс и сессия после SMS"]
+    T --- T4["Оформить заявку / перезвон"]
+    T --- T5["Обещанный платёж"]
+    AI --- W["Виджет"]
+    W --- W1["свой embed-скрипт"]
+    W --- W2["конфиг из админки: цвет / тексты / аватар / домены"]
+    AI --- R["Запись"]
+    R --- R1["crm_intake → сделка"]
+    R --- R2["эскалация → Поддержка"]
+    AI --- AN["Аналитика"]
+    AN --- AN1["токены по провайдеру + стоимость"]
+    AN --- AN2["сессии и дашборд"]
+</pre>
+
+<h3 id="ai-hub">Обзор модуля (хаб)</h3>
+<p>Главная страница <code>/admin/ai/</code> — единая точка управления: статусы API-ключей подключённых провайдеров, список каналов с выбранной моделью, стоимость токенов за месяц в рублях, переходы к разделам (промпты, база знаний, журнал звонков, сессии и дашборд). Ключи хранятся в БД (<code>SystemSettings</code>), не в <code>.env</code> — настраиваются из интерфейса.</p>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_hub.png" alt="AI-агент — обзорная страница хаба" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+
+<h3 id="ai-providers">Мультипровайдер: выбор модели</h3>
+<p>Для каждого канала (Личный кабинет, Мобильное, Email/HelpDesk, Виджет, Голос, Подсказка оператору) выбирается провайдер и конкретная модель. Запросы маршрутизируются единым движком <code>ai_prompt_builder.build()</code>; ответы и токены логируются в <code>ai_chat_log</code> с разбивкой по провайдеру. Запросы к внешним API провайдеров идут через прокси (эти сервисы заблокированы из РФ).</p>
+
+<h3 id="ai-kb">База знаний</h3>
+<p>Раздел <code>/admin/ai/kb/</code> — сценарии решения проблем (статьи <code>KnowledgeArticle</code>) с кодом, приоритетом и аудиторией (бот / оператор / оба). Интерфейс повторяет рабочую базу знаний поддержки: четыре вкладки (<strong>Сценарии решения</strong>, <strong>Дерево диагностики</strong>, <strong>Шаблоны ответов</strong>, <strong>Аналитика</strong>), фильтры по аудитории и приоритету, поиск. Карточка-аккордеон раскрывается в четыре колонки-шага (Уточнение → Диагностика → Решение → Если не помогло) с блоком эскалации и примечаниями. Активные статьи автоматически подмешиваются в системный промпт бота.</p>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_kb.png" alt="База знаний — список сценариев с фильтрами" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_kb.png" alt="База знаний — развёрнутый сценарий с четырьмя шагами" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+
+<h3 id="ai-tools">Инструменты на ORM (tool-use)</h3>
+<p>AI-ассистент умеет вызывать нативные функции напрямую через ORM, без HTTP к самому себе. Инструменты делятся на две группы:</p>
+<ul>
+  <li><strong>Справочные (по клиенту)</strong> — после подтверждения личности по SMS: проверка клиента и баланса, статус RADIUS-сессии, диагностика «нет интернета», история платежей, проверка массовой аварии по району, активация обещанного платежа.</li>
+  <li><strong>Диалоговые (лид/подключение)</strong> — бот сам работает с заявкой прямо в разговоре: <code>get_tariffs</code> (название, скорость, цена; фильтр физ/бизнес), <code>check_coverage</code> (проверка покрытия по адресу через базу <code>Homes</code>), <code>create_connection_lead</code> (оформить заявку → сделка в CRM, максимально заполнив карточку), <code>request_callback</code> (обращение/перезвон → тикет Поддержки). Личность для этих инструментов не требуется.</li>
+</ul>
+<p><strong>Мультипровайдер:</strong> инструменты работают на всех подключённых провайдерах (tool-use loop реализован для каждого; токены суммируются по итерациям). Включается переключателем «Инструменты AI» в хабе (<code>AI_TOOLS_ENABLED</code>).</p>
+
+<p><strong>Диалог с инструментами (упрощённо):</strong></p>
+<pre class="mermaid">
+flowchart TD
+    U["Клиент пишет/говорит"] --> M["AI-модель"]
+    M -->|"нужны данные"| T{"Инструмент"}
+    T -->|"get_tariffs"| TR["Тарифы: скорость+цена<br/>физ/бизнес"]
+    T -->|"check_coverage"| CV["Покрытие по адресу<br/>(Homes)"]
+    T -->|"check_subscriber<br/>(после SMS)"| SB["Баланс / тариф / статус"]
+    T -->|"create_connection_lead"| LD["crm_intake →<br/>сделка в CRM"]
+    T -->|"request_callback"| TK["Тикет Поддержки"]
+    TR --> M
+    CV --> M
+    SB --> M
+    LD --> M
+    TK --> M
+    M --> R["Ответ клиенту"]
+</pre>
+
+<h3 id="ai-voice">Голос: Mango → расшифровка → анализ</h3>
+<p>Раздел <code>/admin/ai/calls/</code> — журнал голосовых звонков. Webhook Mango Office (<code>/api/voice/mango/call/</code> и <code>/record/</code>) создаёт запись звонка, ищет клиента по телефону, скачивает запись и расшифровывает её через сервис распознавания речи, затем прогоняет транскрипт через AI (канал «Голос»): получается категория обращения, краткое резюме и признак необходимости эскалации — всё это попадает в тикет поддержки. Включается тумблером «Голос» в хабе (по умолчанию выключен — до подключения телефонии Mango).</p>
+
+<h3 id="ai-widget">Собственный виджет для сайтов (конфиг из админки)</h3>
+<p>Публичный анонимный AI-чат для встраивания на сайты организаций. Виджет <strong>полностью наш</strong> — <code>static/js/smit-ai-widget.js</code>, без внешних зависимостей и сторонних серверов.</p>
+<p><strong>Все настройки — в БД биллинга</strong> (карточка «Виджет на сайтах» в хабе <code>/admin/ai/</code>): цвет, заголовок, приветствие, аватар, кнопки-подсказки, положение кнопки, разрешённые домены (CORS). Виджет самонастраивается — при загрузке тянет конфиг из <code>GET /api/ai/widget/config/</code> и строится только если включён.</p>
+<p>Подключение сайтом — одна строка (код берётся по кнопке «Код встраивания»):</p>
+<pre><code>&lt;script src="адрес вашей установки/static/js/smit-ai-widget.js" data-api="адрес вашей установки" data-org="3" defer&gt;&lt;/script&gt;</code></pre>
+
+<h4 id="ai-widget-per-org">Брендинг по организации (<code>data-org</code>)</h4>
+<p>Один файл виджета обслуживает все сайты, а оформление и маршрутизация подстраиваются под <strong>организацию сайта</strong>. Атрибут <code>data-org</code> на теге <code>&lt;script&gt;</code> задаёт id организации — он виден в её карточке.</p>
+<ul>
+  <li><strong>Фирменный цвет.</strong> Для организации, отличной от основной, цвет виджета берётся из её <strong>акцентного цвета в брендинге</strong> (карточка организации → Брендинг).<code>AI_WIDGET_COLOR</code>, зелёный <code>#43b77a</code>). Цвет применяется к кнопке-лаунчеру, шапке окна, пузырям сообщений, кнопкам и полю ввода.</li>
+  <li><strong>Маршрутизация чата и лидов.</strong> Диалог и заявки уходят в <strong>свою организацию</strong>: ассистент отвечает её персоной, показывает её тарифы, лид/тикет создаётся в её воронке и Поддержке.</li>
+  <li><strong>Определение организации.</strong> Приоритет — явный <code>data-org</code>; если не задан, организация определяется по <strong>домену сайта</strong> (Origin) из списка организаций. Пусто и домен не распознан → основная организация.</li>
+</ul>
+<p>Если <code>data-org</code> не указывать, виджет работает в оформлении и маршрутизации основной организации.</p>
+
+<p><strong>Совместимость с оформлением сайта.</strong> Виджет встраивается в страницу напрямую (не в изолированный контейнер), поэтому его стили заданы <em>явно</em> и не зависят от CSS сайта-хозяина: иконки табов «Чат/Голос» стоят в одну строку с подписью даже на сайтах с Tailwind (где базовый стиль делает <code>svg</code> блочным), а поле ввода всегда с тёмным текстом на белом фоне (на тёмнотемных сайтах иначе наследовался бы светлый текст — нечитаемо).</p>
+
+<p>Лиды и обращения попадают в собственную CRM биллинга: заявка → <strong>сделка в воронке Deal</strong> (через <code>crm_intake</code>, с дедупом по телефону, геокодом и UTM), эскалация чата → <strong>тикет во внутренней Поддержке</strong> (<code>SupportConversation</code>), без внешних систем.</p>
+
+
+
+<p><strong>Архитектура виджета (всё в биллинге):</strong></p>
+<pre class="mermaid">
+flowchart LR
+    SITE["Сайт клиента<br/>&lt;script src=smit-ai-widget.js&gt;"] -->|"GET /config/"| CFG[("Настройки виджета<br/>цвет/тексты/домены<br/>в БД биллинга")]
+    SITE -->|"POST /chat/"| ENG["AI-движок биллинга<br/>+ инструменты"]
+    ENG --> LEAD["create_connection_lead<br/>/ widget lead"]
+    LEAD --> INTAKE["crm_intake<br/>(дедуп/геокод/UTM)"]
+    INTAKE --> DEAL[("Сделка CRM")]
+    ENG -->|"эскалация"| SUP[("Тикет Поддержки")]
+</pre>
+
+<h4 id="ai-voice-widget">Голосовой режим виджета</h4>
+<p>Виджет умеет вести <strong>живой голосовой диалог</strong>: клиент говорит в микрофон, ассистент отвечает голосом (голосовая модель в режиме live-аудио). В окне виджета — вкладки <strong>Чат</strong> и <strong>Голос</strong>; вкладка «Голос» появляется только если режим включён в админке.</p>
+<p>Настройка — карточка «Виджет на сайтах» → блок «Голосовой режим» в хабе <code>/admin/ai/</code>:</p>
+<ul>
+  <li><strong>Голос ассистента</strong> — 8 голосов с русскими именами и характером: <em>Заря, Ксения, Лада, Арина</em> (женские), <em>Пётр, Захар, Фёдор, Олег</em> (мужские). Кнопка <strong>«Прослушать»</strong> проигрывает образец выбранного голоса прямо в админке.</li>
+  <li><strong>Модель</strong> — выбирается из доступных голосовых моделей; <strong>язык</strong> распознавания/синтеза (BCP-47, по умолчанию <code>ru-RU</code>).</li>
+  <li><strong>Приветствие</strong> в голосе, <strong>автостарт</strong> разговора при открытии вкладки «Голос», <strong>показ транскрипта</strong> диалога, <strong>лимит длительности</strong> сессии (сек, 0 = без ограничения).</li>
+  <li><strong>WSS-URL прокси</strong> — адрес голосового прокси (<code>wss://адрес вашей установки/voicews</code>).</li>
+</ul>
+<p>Требует ключ провайдера и работающий голосовой прокси (контейнер <code>smit-voice-ws</code>).</p>
+<p><strong>Как устроено.</strong> Голосовой провайдер недоступен из России напрямую, а веб-сервер биллинга не держит WebSocket-сессии. Поэтому голос идёт через отдельный лёгкий прокси-контейнер <code>smit-voice-ws</code> на боевом сервере: браузер по защищённому WebSocket соединяется с ним, а он проксирует диалог через обходной канал. Ключ провайдера и системный промпт (с реальными тарифами) браузер получает разово по <code>GET /api/ai/widget/voice-token/</code> — в коде страницы ключ не хранится.</p>
+<pre class="mermaid">
+flowchart LR
+    MIC["Браузер клиента<br/>микрофон 16кГц"] -->|"WSS"| WS["smit-voice-ws<br/>(прокси на сервере)"]
+    WS -->|"обходной канал"| G["Голосовая модель"]
+    G -->|"аудио 24кГц"| WS --> MIC
+    TOKEN["/api/ai/widget/voice-token/<br/>ключ + промпт с тарифами"] -.-> MIC
+</pre>
+<div class="note">
+  <p><strong>Приватность и контроль.</strong> Ключ провайдера выдаётся только при включённом тумблере и не попадает в исходники страницы сайта. Разговор идёт напрямую браузер↔Google через наш прокси; текстовый чат работает независимо и без голосовых зависимостей.</p>
+</div>
+
+<h4 id="ai-order-forms">Формы заказа на сайтах → лиды в CRM</h4>
+<p>В хабе <code>/admin/ai/</code> есть конструктор форм подключения. Доступны три способа сбора заявок, все они шлют данные в один endpoint <code>POST /api/crm/lead/</code> и создают сделку в CRM:</p>
+<ul>
+  <li><strong>Встраиваемый виджет формы</strong> — <code>order_widget.js</code>: кнопка в углу сайта + модалка с формой (имя, телефон, e-mail, адрес, тариф, доп.услуги). Вставляется одной строкой <code>&lt;script ... data-auto-init&gt;</code>, изолирован через Shadow DOM, сам собирает UTM-метки страницы. Тарифы подгружаются из <code>/api/crm/tariffs/</code>.</li>
+  <li><strong>Полностраничная форма</strong> <code>/order</code> — многосекционная форма с экранами проверки и подтверждения; поддерживает UTM в query-строке. Демо встраивания виджета — <code>/order-widget-demo</code>.</li>
+  <li><strong>AI-чат</strong> — при намерении подключиться бот предлагает оставить заявку.</li>
+</ul>
+<p>Состав полей и тексты настраиваются в модалке «Формы заказа» (заголовок, цвет, телефон, видимость блоков). Главный выключатель приёма заявок — <code>CRM_PUBLIC_LEAD_ENABLED</code> (по умолчанию выключен, включается тумблером в хабе).</p>
+
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/order_forms_v1212/order_page.png" alt="Полностраничная форма заказа /order" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/order_forms_v1212/order_widget_open.png" alt="Встраиваемый виджет формы заказа в модальном окне" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+
+<p><strong>Маршрут заявки:</strong></p>
+<pre class="mermaid">
+flowchart LR
+    W["Виджет<br/>order_widget.js"] --> API["POST<br/>/api/crm/lead/"]
+    O["Страница<br/>/order"] --> API
+    CH["AI-чат"] --> API
+    API --> KS{"Приём<br/>включён?"}
+    KS -->|"нет"| OFF["Отклонено<br/>(disabled)"]
+    KS -->|"да"| INTAKE["crm_intake:<br/>поиск клиента<br/>по телефону + дедуп"]
+    INTAKE --> DEAL[("Сделка в CRM<br/>воронка Deal<br/>+ UTM")]
+</pre>
+
+<h4 id="ai-test-chat">Тестовый AI-чат</h4>
+<p>Страница <code>/admin/ai/test_chat/</code> — отработка сценариев ассистента так, как его видит клиент на сайте. Использует тот же движок, что и боевой виджет: создаёт реальные лиды и тикеты, показывает <code>session_id</code>, факт эскалации, номер тикета и ссылку на сессию в дашборде. Эскалация (фраза вроде «хочу оператора» или жалоба) создаёт тикет во внутренней Поддержке.</p>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_test_chat.png" alt="Тестовый AI-чат в админке с панелью состояния сессии" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+
+<p><strong>Эскалация чата в тикет:</strong></p>
+<pre class="mermaid">
+flowchart LR
+    MSG["Сообщение<br/>клиента"] --> AI["AI-движок"]
+    AI --> ESC{"Нужен<br/>оператор?"}
+    ESC -->|"нет"| ANS["Ответ<br/>клиенту"]
+    ESC -->|"да · ESCALATE_TO_HUMAN"| TK["support_tickets<br/>create_ticket()"]
+    TK --> CONV[("Тикет<br/>Поддержки<br/>SupportConversation")]
+    TK --> ANS
+</pre>
+
+<h3 id="ai-eval">Тест-кейсы и регрессионные прогоны</h3>
+<p>Страница <code>/admin/settings/ai/eval/&lt;канал&gt;/</code> — банк тестовых вопросов и история прогонов
+для <strong>каждого из семи каналов</strong> (ЛК, мобильное, email, виджет, голос, телефон, подсказка оператору).
+</p>
+<ul>
+  <li><strong>Кейс</strong> — вопрос клиента + критерии проверки: что ответ <em>должен</em> и <em>не должен</em>
+  содержать, ожидается ли эскалация, лимит слов, плюс тестовый контекст клиента (имя, баланс, тариф, статус).</li>
+  <li><strong>Прогон</strong> идёт тем же движком, что настроен на канале: кейсы проверяются на той же модели, что настроена на канале,
+  а не на модели «по умолчанию».</li>
+  <li><strong>«В тесты» из журнала диалогов</strong> — в карточке сессии на
+  <code>/admin/ai/playground-log/</code> кнопка заводит регрессионный кейс прямо из неудачного диалога:
+  вопрос клиента и комментарий оператора «как надо» переносятся автоматически. Кейс создаётся черновиком —
+  останется дописать критерии и включить его.</li>
+  <li>Кейсы хранятся в базе и редактируются в интерфейсе; файловый датасет репозитория продолжает
+  подмешиваться к прогону.</li>
+</ul>
+
+<div class="info-box">
+  <strong>Тестовый AI-чат безопасен.</strong> Страница <code>/admin/ai/test_chat/</code>
+  работает в режиме симуляции: реальные заявки, тикеты, SMS, звонки-верификации и платёжные ссылки
+  из тест-чата <strong>не создаются</strong> — ассистент получает ответ «действие выполнено» и продолжает
+  диалог.
+</div>
+
+<h3 id="ai-dashboard">Дашборд AI-сессий</h3>
+<p>Дашборд <code>/admin/reports/ai_chat_dashboard/</code> — единая аналитика всех AI-диалогов (ЛК, мобильное приложение, виджет на сайте). Это рабочий инструмент для оценки качества ассистента и обучения промпта. Сюда перенесена история диалогов из внешнего сервиса — <strong>19 332 строки</strong> (1811 диалогов, 18 171 сообщение, 1161 вызов инструментов), сопоставленные с клиентами по телефону.</p>
+
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_dashboard.png" alt="Дашборд AI-сессий: KPI, активность по дням, каналы" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+
+<h4 id="ai-dashboard-kpi">Показатели и графики</h4>
+
+<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_dashboard.png" alt="AI-чат: дашборд — показатели и графики" class="screenshot">
+
+<p>Пять карточек сверху отвечают на вопросы «сколько было разговоров», «насколько они были длинными», «дошли ли до конкретного клиента» и «сколько это стоило»:</p>
+
+<table class="data-table">
+  <thead><tr><th>Показатель</th><th>Что считается</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Сессий</strong></td><td>Обращения за период. В мессенджерах одна переписка тянется годами (<code>session_id</code> — это <code>chat_id</code>), поэтому обращения разделяются паузой: перерыв дольше <code>AI_DIALOG_GAP_MIN</code> минут (по умолчанию 30) начинает новое. В подписи — сообщения клиента и сводка по оценкам (👍/👎), если их ставили.</td></tr>
+    <tr><td><strong>Решено без человека</strong><br><span class="text-muted"></span></td><td><em>Contained rate</em> — доля сессий, где ассистент справился сам: без эскалации на оператора и без создания тикета. Главная метрика качества. В подписи — <strong>повторные обращения того же клиента в течение 72 часов</strong>: если их много, вопросы на деле не решаются, даже когда эскалаций мало.</td></tr>
+    <tr><td><strong>Реплик на диалог</strong></td><td>Все сообщения (клиент + ассистент) ÷ число сессий. Длинный диалог обычно означает, что с первого раза не поняли.</td></tr>
+    <tr><td><strong>Без клиента</strong></td><td>Доля сессий, где клиента не удалось связать с карточкой клиента. Для голосового канала это главный признак, что разговор не довели до конкретного человека.</td></tr>
+    <tr><td><strong>Эскалаций</strong></td><td>Обращения, переданные оператору; рядом — сколько из них закончились тикетом. Под диаграммой каналов эскалации разделены по <strong>причине</strong>: клиент сам попросил человека, сорвалась проверка личности, оформлена заявка по регламенту или бот не справился. Метрика качества — последняя: нажатая кнопка «Позвать оператора» это штатная работа, а не провал.</td></tr>
+    <tr><td><strong>Токены</strong></td><td>Вход и выход отдельно + оценочная стоимость по настройкам <code>AI_PRICE_IN_USD_PER_MTOK</code>, <code>AI_PRICE_OUT_USD_PER_MTOK</code>, <code>AI_USD_RUB</code>.</td></tr>
+  </tbody>
+</table>
+
+<div class="info-box">
+  <strong>Почему не «Помогло / Не помогло».</strong> До июля 2026 три карточки из пяти показывали оценки клиентов — и всегда ноль: за восемь месяцев их проставлено три штуки на 29 тысяч сообщений. Оценки никуда не делись (показываются строкой под «Сессиями»), но место на панели занимают метрики, которые действительно считаются из данных.
+</div>
+
+<h4 id="ai-dashboard-costs">Расходы на модели и бюджет месяца</h4>
+
+<p>Блок «Расходы на модели» показывает, куда уходят деньги, в двух разрезах — по моделям и
+свёрнуто по провайдерам. Стоимость считается <strong>по прайсу каждой модели</strong> и курсу
+из настроек AI, поэтому расход по каждой модели виден отдельно.</p>
+
+<table class="data-table">
+  <thead><tr><th>Колонка</th><th>Что показывает</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Модель / Провайдер</strong></td><td>Переключатель над таблицей. В режиме моделей рядом с названием — её провайдер.</td></tr>
+    <tr><td><strong>Сообщений</strong></td><td>Сколько ответов сгенерировано этой моделью за период.</td></tr>
+    <tr><td><strong>Токенов вход / выход</strong></td><td>Вход — промпт со всем контекстом, выход — сам ответ. Вход обычно в десятки раз больше.</td></tr>
+    <tr><td><strong>Цена, $/Mtok</strong></td><td>Прайс этой модели за миллион токенов: вход / выход.</td></tr>
+    <tr><td><strong>Стоимость, ₽</strong></td><td>Себестоимость по прайсу и курсу. Это <em>не</em> сумма, начисленная по лицензии — она считается по тарифу на сервере лицензий и включает наценку.</td></tr>
+  </tbody>
+</table>
+
+<p>Над таблицей — полоса <strong>бюджета месяца</strong>: потрачено с начала месяца, прогноз до
+конца и отметка прогноза на шкале. Цвет меняется при 80% и при превышении. Если лимит не задан
+(настройка <code>AI_BUDGET_MONTH_RUB</code>), вместо шкалы показываются суммы и ссылка на
+настройку — почтовый алерт о превышении при пустом лимите тоже молчит.</p>
+
+<div class="info-box">
+  <strong>Почему «сессий» стало меньше, а «решено без человека» — ниже.</strong> До августа 2026
+  единицей счёта был <code>session_id</code>. В мессенджерах он не заканчивается никогда, поэтому
+  одна «сессия» означала человека за всё время: внутри неё умещалось до 234 обращений, а одна
+  эскалация помечалась на всю переписку. После разделения на обращения показатель «решено без
+  человека» опустился с 94% до 73% — работа ассистента не изменилась, исчезла приписка.
+</div>
+
+<h4 id="ai-org-routing">Чья это заявка: как определяется организация</h4>
+
+<p>В мультиорганизационной установке каждый диалог, звонок и заявка должны принадлежать
+своей организации — от этого зависят и отчётность, и то, каким брендом бот
+представляется клиенту, и какие тарифы он предлагает. Признак берётся из первого
+источника, который смог ответить.</p>
+
+<table class="data-table">
+  <thead><tr><th>Откуда обращение</th><th>Порядок определения</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Чат виджета</strong></td>
+      <td>Тест-площадка (<code>pg_org</code>) → явный <code>org_id</code> в запросе →
+          <strong>домен сайта</strong> (Origin/Referer сверяется с доменами организаций) →
+          организация по умолчанию.</td>
+    </tr>
+    <tr>
+      <td><strong>Заявка из виджета</strong></td>
+      <td>Домен сайта → организация клиента, если он найден → упоминание бренда в тексте →
+          организация по умолчанию. Домен идёт первым, поэтому заявка с сайта попадает
+          в его воронку, даже если клиент ещё не в базе.</td>
+    </tr>
+    <tr>
+      <td><strong>Входящий звонок</strong></td>
+      <td>Организация клиента → <strong>номер линии</strong>, на который позвонили
+          (см. <em>CRM → Телефонные линии</em>: номер назначения задаёт сегмент,
+          организацию и тип сделки) → организация по умолчанию.</td>
+    </tr>
+    <tr>
+      <td><strong>Мессенджеры</strong></td>
+      <td>Организация ящика канала → организация клиента → организация по умолчанию.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="info-box">
+  <strong>Диалоги без опознанной организации.</strong> Если клиент не опознан, а канал
+  организацию не передал, последним шагом в цепочке стоит организация по умолчанию. Обратная сторона: по цифрам не отличить «клиент точно
+  наш» от «не смогли определить», поэтому у звонков и виджета важно держать заполненными
+  телефонные линии и домены организаций — они дают точный признак вместо умолчания.
+</div>
+
+<div class="warning-box">
+  <strong>Телефон бота и телефонная линия — разные настройки.</strong> Номер, который бот
+  называет клиенту, берётся из брендинга организации (<em>Настройки → Организации →
+  Брендинг → Телефон поддержки</em>), а маршрутизация звонков — из телефонных линий. Если
+  они разойдутся, бот продиктует номер, на котором звонки не разбираются автоматически:
+  не определится ни организация, ни сегмент.
+</div>
+
+<h4 id="ai-dashboard-map">Карта раздела</h4>
+
+<pre class="markmap">
+- AI-чат: дашборд
+  - Показатели
+    - Сессий
+    - Реплик на диалог
+    - Без клиента
+    - Эскалаций и тикеты
+    - Токены и стоимость
+  - Разрезы
+    - Период до всего времени
+    - Организация из шапки
+    - Канал: голос, виджет, бот
+    - Модель и провайдер
+  - Деньги
+    - Цена по прайсу модели
+    - Бюджет месяца и прогноз
+    - Себестоимость против начисления
+  - Списки
+    - Сессии страницами по 50
+    - Поиск и фильтры на сервере
+    - Последние отрицательные оценки
+    - Проблемные eval-кейсы
+  - Диалог
+    - Клик по строке
+    - Стенограмма в модалке
+    - Форматирование ответов
+    - Переход к клиенту
+</pre>
+
+<h4 id="ai-dashboard-flow">Откуда берутся цифры</h4>
+
+<pre class="mermaid">
+flowchart LR
+    LOG["Журнал диалогов<br/>ai_chat_log"] --> SESS["Обращения<br/>session_id + dialog_no"]
+    SESS --> KPI["Показатели"]
+    SESS --> DAY["Активность по дням"]
+    SESS --> SRC["Каналы"]
+    SESS --> LIST["Список сессий<br/>страницами"]
+    LOG --> TOK["Токены и стоимость"]
+    AB["Клиенты"] --> ORG["Организация сессии"]
+    SESS --> ORG
+    ORG --> BYORG["По организациям<br/>+ «Без организации»"]
+    EVAL["Прогоны ai_eval"] --> CASES["Проблемные кейсы"]
+</pre>
+
+<p>Организация сессии определяется один раз — по первой записи с заполненным клиентом. Поэтому сумма по организациям сходится с общим числом сессий, а диалоги без опознанного клиента попадают в отдельную строку «Без организации», а не приписываются компании по умолчанию.</p>
+
+<h4 id="ai-dashboard-sessions">Список сессий</h4>
+
+<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_transcript.png" alt="Стенограмма диалога в модальном окне" class="screenshot">
+
+<p>Список приходит страницами по 50 записей: поиск (по идентификатору сессии, каналу, ФИО и договору), фильтры канала и оценки, сортировка — всё считается на сервере. Клик по строке открывает стенограмму: реплики клиента и ассистента с временем, ответы в формате JSON показываются моноширинным блоком, имя клиента ведёт в его карточку.</p>
+
+<p>Адрес <code>/admin/reports/ai_chat_session/&lt;id&gt;/</code> при открытии человеком перенаправляет на дашборд с уже раскрытой сессией.</p>
+
+<h4 id="ai-dashboard-theme">Тёмная тема и телефон</h4>
+
+<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_dashboard_dark.png" alt="AI-дашборд в тёмной теме" class="screenshot">
+<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_dashboard_mobile.png" alt="AI-дашборд на телефоне" class="screenshot">
+<p>Период задаётся единым date-range-picker (общий для всех отчётов). Стоимость токенов считается из настроек <code>AI_PRICE_*</code> и курса <code>AI_USD_RUB</code>.</p>
+
+<h4 id="ai-dashboard-sessions">Список сессий и транскрипт</h4>
+<p>Блок <strong>«Все сессии за период»</strong> — таблица с фильтрами по каналу (Все/LK/Mobile) и фидбеку (Все/👍/👎/Эскал.), живым поиском (ID/клиент/договор) и сортировкой по столбцам. Клик по строке открывает <strong>транскрипт диалога в стиле iMessage</strong>: реплики клиента — справа (светло-серый градиент), Аиды — слева, с поддержкой markdown-форматирования (<code>**жирный**</code>, заголовки <code>#/##/###</code>, <code>`код`</code>). Клик по имени клиента открывает <strong>slide-панель клиента</strong> (как в других разделах) — без ухода со страницы.</p>
+
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_transcript.png" alt="Транскрипт AI-сессии в стиле iMessage с markdown-анализом" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+
+<p><strong>Поток данных дашборда:</strong></p>
+<pre class="mermaid">
+flowchart LR
+    LK["ЛК-чат"] --> LOG[("ai_chat_log<br/>PG")]
+    MOB["Мобильное"] --> LOG
+    WID["Виджет сайта"] --> LOG
+    BOT["Внешний источник (ETL)"] --> LOG
+    LOG --> VIEW["dashboard/data/<br/>агрегаты SQL"]
+    VIEW --> KPI["KPI + графики<br/>ECharts"]
+    VIEW --> SESS["Список сессий<br/>фильтры/поиск"]
+    SESS --> TR["Транскрипт<br/>(iMessage)"]
+    SESS --> DR["Панель клиента<br/>(AbDrawer)"]
+</pre>
+
+<p>Тёмная тема, мобильная версия и клавиатурная доступность (Enter/Space на строках, aria-sort) — поддержаны. ECharts отдаётся локально (не с CDN).</p>
+
+<div class="note">
+  <p><strong>Статус:</strong> все 7 фаз реализованы (2026-06-13). Мультипровайдер, единый хаб, база знаний, инструменты на ORM, голос, виджет с воронкой и перенос истории диалогов работают на боевом сервере. Виджет сайта организации работает на собственном endpoint. Голосовой разбор включается после подключения телефонии Mango.</p>
+</div>
+
+
+<h2 id="ui-components"><i class="ti ti-puzzle h-ico" aria-hidden="true"></i>Единые компоненты интерфейса</h2>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v1999/components_catalog.png" alt="Каталог единых компонентов"></p>
+
+<p>Каталог живёт в <em>Настройки → Лицензия и расширения → Единые компоненты</em>
+(<code>/admin/settings/components/</code>) и содержит 33 компонента с описанием, публичным API,
+местами применения и живыми демо. Среди последних добавленных:</p>
+<ul>
+  <li><strong>SmitDrawer</strong> — боковая панель проекта: карточки склада, тикеты,
+      профиль, настройки AI. Панели складываются стопкой, закрываются по Esc и клику
+      мимо, возвращают фокус на кнопку, из которой открылись.</li>
+  <li><strong>SmitIconSelect</strong> — селект с иконками; на нём все фильтры «Линейка услуг».</li>
+  <li><strong>SmitTable</strong> — таблица-основа: карточки на телефоне плюс перетаскивание,
+      ширина и состав колонок с сохранением в аккаунте.</li>
+  <li><strong>SmitOrgSwitch</strong> — смена организации у объекта: меню, подтверждение
+      со списком последствий и запрос на сервер.</li>
+  <li><strong>SmitInfiniteTable.fromArray</strong> — порционная отрисовка уже загруженного
+      списка: строки рисуются по мере прокрутки.</li>
+</ul>
+
+<p>Библиотека переиспользуемых UI-компонентов админки — единый визуальный язык вместо десятков локальных копий одной и той же логики. Каждый компонент — самодостаточный <code>&lt;script&gt;</code> без сборки и внешних зависимостей: подключается один раз в <code>base_adminlte.html</code>, публикует своё API в <code>window.*</code> и работает в любом разделе. Все компоненты поддерживают тёмную тему, мобильную вёрстку и <code>prefers-reduced-motion</code>.</p>
+
+<p><strong>Живой каталог с демо:</strong> <code>/admin/settings/components/</code> — карточка на каждый компонент с описанием, API и работающим примером.</p>
+
+<p><img src="../img/components_v1573/components_catalog.png" alt="Каталог единых компонентов интерфейса" style="max-width:100%;border-radius:8px;border:1px solid #dee2e6;"></p>
+
+<h3 id="ui-components-list">Состав библиотеки</h3>
+<table>
+  <thead><tr><th>Компонент</th><th>Назначение</th><th>Где применяется</th></tr></thead>
+  <tbody>
+    <tr><td><strong>OrgBadge</strong></td><td>Единый бейдж организации: favicon/иконка + акцентный цвет.</td><td>Линейки услуг, канбан CRM, тарифы, staff, Реестр документов, video, ATOL, mailserver</td></tr>
+    <tr><td><strong>PdfViewer</strong></td><td>Модалка-iframe предпросмотра PDF: загрузчик, ловля ошибок, кнопка скачивания.</td><td>Реестр документов, CRM «Файлы», video-проекты, лицензии, captive-portal</td></tr>
+    <tr><td><strong>SmitDateRange</strong></td><td>Диапазон дат: пресеты (сегодня / 7 дн / месяц / …) + календарь, память выбора.</td><td>Журнал сообщений, PayLog, FinOps, аудит, CRM-дашборд, тайм-трекинг (14 шаблонов)</td></tr>
+    <tr><td><strong>SmitMultiSearch</strong></td><td>Мульти-поиск: сам определяет тип запроса (телефон / договор / адрес / сумма).</td><td>Воронки CRM (эталон), глобальный поиск клиентов</td></tr>
+    <tr><td><strong>ProfileSelect</strong></td><td>Селект сотрудника: аватар + имя + группы + поиск. Кандидаты — только реальные операторы.</td><td>Канбан CRM, дровер сделки, задачи, наряды, финоперации</td></tr>
+    <tr><td><strong>SmitResponsibleSelect</strong></td><td>Фильтр «Ответственный»: обёртка над ProfileSelect + «Все» / «Без ответственного» + счётчик-бейдж.</td><td>Списки CRM, Воронки CRM, Поддержка (бейдж = открытые тикеты)</td></tr>
+    <tr><td><strong>SmitTariffSelect</strong></td><td>Красивый селект тарифа: обложка + скорость ↓/↑ + цена, поиск.</td><td>Дровер сделки CRM (вкладка «Подключение»)</td></tr>
+    <tr><td><strong>SmitPhone</strong></td><td>Номер телефона: иконка + маска <code>+7 (917) 727-17-96</code>, тултип, click-to-call.</td><td>Контакты клиента, карточки CRM/лидов, поиск, тикеты, staff, голосовая почта</td></tr>
+    <tr><td><strong>SmitHelpIcon</strong></td><td>Аккуратная круглая i-иконка справки со ссылкой на документацию.</td><td>Заголовки разделов CRM/Поддержка (<code>get_help_link</code>), карточки настроек</td></tr>
+    <tr><td><strong>SmitWatchButton</strong></td><td>Кнопка «Наблюдаю» — только иконка глаза + счётчик, зелёный фон в активном состоянии.</td><td>Поддержка (фильтр «Наблюдаю»); задел — «Наблюдать» в CRM/тикетах</td></tr>
+    <tr><td><strong>CallButton</strong></td><td>Кнопка «Позвонить» (click-to-call через провайдера телефонии).</td><td>Тикеты, CRM, поиск, карточка клиента</td></tr>
+    <tr><td><strong>SmitDrawer</strong></td><td>Боковая панель: заголовок с иконкой и подзаголовком, вкладки, кнопки действий, загрузка содержимого по адресу, стопка вложенных панелей.</td><td>Карточки позиции и единицы склада, тикеты Поддержки, дровер сделки и заявки CRM, карточка клиента, профиль, разделы AI, редактор ботов, монитор сессий</td></tr>
+    <tr><td><strong>SmitToast</strong></td><td>Всплывающие уведомления (стек справа-сверху / снизу на мобильном).</td><td>Замена ~18 частных toast-копий (инкрементально)</td></tr>
+    <tr><td><strong>SmitConfirm</strong></td><td>Модалка подтверждения вместо <code>confirm()</code> (тот ломал тёмную тему).</td><td>Замена ~90 native <code>confirm()</code> (инкрементально)</td></tr>
+    <tr><td><strong>SmitCopy</strong></td><td>Копирование в буфер (clipboard + execCommand fallback + тост).</td><td>Замена ~29 копий clipboard-логики (IP / MAC / договор / e-mail / телефон)</td></tr>
+  </tbody>
+</table>
+
+<h3 id="ui-drawer">Боковые панели: одна механика на весь биллинг</h3>
+<p>Боковая панель одна на весь биллинг: раздел передаёт заголовок, иконку, вкладки
+и содержимое, а затемнение, обработку Esc, блокировку прокрутки и порядок слоёв
+(карточка клиента → видео) берёт на себя компонент.</p>
+
+<ul>
+  <li><strong>Стопка.</strong> Панель, открытая поверх другой, ложится сверху и
+  слегка сдвигает нижнюю. Esc и клик мимо закрывают только верхнюю — предыдущая
+  остаётся там, где вы её оставили.</li>
+  <li><strong>Содержимое по адресу.</strong> Пока грузятся данные, показывается
+  скелет; если запрос не прошёл — «Повторить», а не пустая панель.</li>
+  <li><strong>Возврат фокуса.</strong> После закрытия фокус возвращается на
+  кнопку или строку таблицы, из которой панель открыли — с клавиатуры работать
+  можно без мыши.</li>
+  <li><strong>На телефоне</strong> панель занимает весь экран, закрывается свайпом
+  вниз по заголовку и кнопкой «Закрыть».</li>
+</ul>
+
+<pre class="mermaid">
+flowchart LR
+    T["Строка таблицы<br/>или кнопка"] --> D1["Панель 1<br/>карточка позиции"]
+    D1 --> D2["Панель 2<br/>карточка единицы"]
+    D2 --> D3["Панель 3<br/>вложенная — видео, IPTV"]
+    D3 -. "Esc / клик мимо" .-> D2
+    D2 -. "Esc / клик мимо" .-> D1
+    D1 -. "закрытие" .-> T
+</pre>
+
+<h3 id="ui-components-arch">Как это устроено</h3>
+<p>Каждый компонент следует одному паттерну: самовыполняющаяся функция с защитой от повторной инициализации (<code>if (window.X) return</code>), публичное API в <code>window.X</code>, инъекция своих стилей в <code>&lt;head&gt;</code>. CSS подключается в шапке <code>base_adminlte.html</code>, JS — в подвале. Разделу достаточно вызвать API или разметить элемент data-атрибутом — компонент сам себя инициализирует.</p>
+
+<pre class="mermaid">
+flowchart LR
+    REG["base_adminlte.html<br/>CSS в head + JS в подвале"] --> BUS["window.OrgBadge / SmitPhone /<br/>ProfileSelect / SmitToast / …"]
+    BUS --> M1["Разметка: data-org-badge<br/>data-smit-phone / data-smit-daterange"]
+    BUS --> M2["JS-вызов: OrgBadge.html id<br/>ProfileSelect.create"]
+    M1 --> RENDER["Автоинициализация<br/>+ MutationObserver для AJAX"]
+    M2 --> RENDER
+    RENDER --> THEME["Тёмная тема · мобильная вёрстка<br/>prefers-reduced-motion · a11y"]
+</pre>
+
+<div class="note">
+  <p><strong>Почему единые компоненты.</strong> Исправление и улучшение живут в одном файле, эффект — сразу во всех разделах: правка не теряется по копиям, тёмная тема не ломается точечно. Замена частных копий на единые (<code>SmitToast</code> / <code>SmitConfirm</code> / <code>SmitCopy</code>) идёт инкрементально.</p>
+</div>
+
+<div class="note">
+  <p><strong>Важно при добавлении.</strong> Новые файлы <code>static/js/*.js</code> и <code>*.css</code> подхватываются whitenoise только при старте web-контейнера — после добавления компонента нужен <code>manage.py collectstatic</code> + перезапуск web (обычный <code>build web</code> новые статик-файлы не собирает).</p>
+</div>
+
+
+<h2 id="autodial-telephony"><i class="ti ti-phone-call h-ico" aria-hidden="true"></i>Автообзвон и своя телефония</h2>
+<p>Модуль «Автообзвон» — исходящий обзвон роботом: система сама звонит клиенту и проигрывает голосовое сообщение (низкий баланс, обещанный платёж, опрос NPS). Робот <strong>только доносит информацию</strong> — без запроса нажатий и распознавания голоса. Раздел управления — <code>/admin/ai/dialer/</code> (сценарии, журнал, тест-звонок, чёрный список, настройки).</p>
+
+<h3 id="autodial-providers">Мультипровайдер</h3>
+<p>Способ дозвона выбирается настройкой <code>AUTODIAL_PROVIDER</code>:</p>
+<table>
+  <thead><tr><th>Провайдер</th><th>Тип</th><th>Контроль</th><th>Статус</th></tr></thead>
+  <tbody>
+    <tr><td><code>zvonok</code></td><td>облако, робот-обзвон</td><td>низкий (чужой движок)</td><td>живые звонки идут</td></tr>
+    <tr><td><code>asterisk</code></td><td>своя телефония</td><td><strong>полный</strong></td><td>стенд готов, E2E подтверждён</td></tr>
+    <tr><td><code>mango</code></td><td>callback оператор→клиент</td><td>средний</td><td>заготовка</td></tr>
+  </tbody>
+</table>
+
+<h3 id="autodial-asterisk">Своя телефония на Asterisk</h3>
+<p>Отдельный Docker-стек <code>smit-dialer</code> рядом с биллингом (не трогает прод-compose): контейнер <strong>Asterisk 22.9.0</strong> (host-network, ARI на порту 8088) и постоянный контейнер <strong>ari-listener</strong> (обрабатывает Stasis-события звонка). Синтез речи — <strong>Yandex SpeechKit</strong> (облако): биллинг превращает текст сценария в WAV-файл, кладёт его в общий каталог, а Asterisk проигрывает его в звонок. Локальный синтез на сервере невозможен (у процессора нет инструкций AVX), поэтому используется облачный TTS.</p>
+<p>Поток робот-звонка: <code>текст сценария → Yandex SpeechKit (WAV) → общий каталог → Asterisk (ARI originate) → проигрывание клиенту → завершение вызова</code>. Цикл проверен вживую (StasisStart → play → playback finished → hangup).</p>
+
+<h3 id="autodial-consent">Согласие и ограничения</h3>
+<p>Звонок не уйдёт, если: клиент не дал согласие на голосовые уведомления (поле в ЛК и мобильном приложении), номер в чёрном списке (DNC), сейчас «тихий час» или вне окна обзвона, исчерпан дневной лимит. С <strong>01.09.2026</strong> в РФ обязательна маркировка звонков от юрлиц — это учитывается при подключении телефонного транка.</p>
+
+<h3 id="autodial-card-tab">Вкладка «Звонки» в карточке клиента</h3>
+<p>В карточке клиента (<code>/admin/Abonents/&lt;id&gt;/calls/</code>) есть вкладка <strong>«Звонки»</strong> — журнал голосовых звонков клиента и панель управления исходящими вызовами. Видна, когда модуль автообзвона включён.</p>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/calls_tab_v1151/calls_light.png" alt="Вкладка «Звонки»: панель управления и журнал звонков клиента" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+<p>Панель содержит:</p>
+<ul>
+  <li><strong>Согласие на голосовые звонки (152-ФЗ)</strong> — переключатель; без согласия исходящие не уходят.</li>
+  <li><strong>Выбор сценария</strong> — какой текст проиграет робот (низкий баланс, обещанный платёж, опрос NPS и т.д.).</li>
+  <li><strong>«Звонок ботом»</strong> — робот звонит клиенту и проигрывает выбранный сценарий (через активного провайдера: Zvonok / своя телефония Asterisk).</li>
+  <li><strong>«Автодозвон»</strong> — Mango набирает оператора и соединяет его с клиентом (живой разговор, не робот).</li>
+</ul>
+<p>Журнал звонков показывает: дату, направление (входящий/исходящий с иконкой), статус (цветной бейдж), AI-категорию обращения, краткое AI-резюме. Если по звонку создан тикет в Поддержке — рядом с резюме появляется ссылка <strong>«Создан тикет #N»</strong>, ведущая в Поддержку. Для звонков с записью кнопка ▶ открывает <strong>встроенный плеер в модальном окне</strong> (прослушать или скачать запись).</p>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/calls_tab_v1151/calls_player.png" alt="Плеер записи звонка в модальном окне" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+
+<div class="note">
+  <p><strong>Статус:</strong> модуль и стенд своей телефонии готовы. Реальные звонки в телефонную сеть ждут подключения SIP-транка провайдера и маркировки звонков. До этого момента работает облачный провайдер Zvonok. Модуль по умолчанию выключен (kill-switch <code>AUTODIAL_ENABLED</code>).</p>
+</div>
+
+
+
+</main>
+
+<footer class="footer">
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">25.08.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;<span data-smit="updated">25.08.2026</span></span>
+</footer>
+
+<script src="../js/main.js?v=2189"></script>
+<script src="../js/search.js?v=2189"></script>
+<script src="../js/version.js"></script>
+<script src="../js/mermaid-init.js?v=2189"></script>
+<script src="../js/markmap-init.js?v=2189"></script>
+</body>
+</html>

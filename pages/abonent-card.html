@@ -1,0 +1,1734 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Карточка абонента — СмИТ Биллинг</title>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="СмИТ Биллинг — Документация">
+  <meta property="og:title" content="Карточка абонента — СмИТ Биллинг">
+  <meta property="og:description" content="Всё, что открывается в карточке клиента: вкладки, действия оператора, история изменений.">
+  <meta property="og:url" content="https://docs.billing.smit34.ru/pages/billing.html">
+  <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="ru_RU">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг">
+  <meta name="twitter:description" content="Управление клиентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
+  <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
+  <meta name="description" content="Всё, что открывается в карточке клиента: вкладки, действия оператора, история изменений.">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css?v=2189">
+  <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css?v=2189">
+  <link rel="stylesheet" href="../css/search.css?v=2189">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <button class="menu-toggle" aria-label="Меню"><i class="ti ti-menu-2"></i></button>
+    <div class="logo">
+      <div class="logo-icon">С</div>
+      <div class="logo-text"><span class="logo-main"><span data-smit="brand-short">СмИТ Биллинг</span></span><span>Документация</span></div>
+    </div>
+  </div>
+  <div class="header-search">
+    <div class="docs-search-wrap">
+      <input type="search" id="docsSearch" class="docs-search-input" placeholder="Поиск по документации..." autocomplete="off">
+      <span class="docs-search-icon"><i class="ti ti-search"></i></span>
+      <div class="docs-search-results" id="docsSearchResults"></div>
+    </div>
+  </div>
+  <div class="header-right">
+    <a href="../graphify/graph.html" class="header-nav-link" title="Граф зависимостей кода">
+      <i class="ti ti-topology-star-3 hnl-ico"></i><span class="hnl-txt">Граф</span>
+    </a>
+    <a href="../graphify/wiki/index.html" class="header-nav-link" title="Wiki архитектурных модулей">
+      <i class="ti ti-book-2 hnl-ico"></i><span class="hnl-txt">Wiki</span>
+    </a>
+    <button class="mobile-search-btn" aria-label="Поиск" title="Поиск по документации">
+      <i class="ti ti-search"></i>
+    </button>
+    <button class="theme-toggle" aria-label="Переключить тему" title="Светлая / тёмная тема">
+      <span class="icon-sun"><i class="ti ti-sun"></i></span>
+      <span class="icon-moon"><i class="ti ti-moon"></i></span>
+    </button>
+  </div>
+</header>
+
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+<div class="search-overlay" id="searchOverlay" role="dialog" aria-label="Поиск по документации">
+  <div class="search-overlay-inner">
+    <i class="ti ti-search search-prefix-icon"></i>
+    <input type="search" id="docsSearchMobile" placeholder="Поиск по документации..." autocomplete="off">
+    <button class="search-overlay-close" aria-label="Закрыть" id="searchOverlayClose"><i class="ti ti-x"></i></button>
+    <div class="docs-search-results search-overlay-results" id="docsSearchResultsMobile"></div>
+  </div>
+</div>
+
+<aside class="sidebar">
+  <nav>
+    <div class="nav-section">Разделы</div>
+    <ul>
+      <li><a href="../index.html"><i class="ti ti-home"></i> Главная</a></li>
+      <li class="has-children">
+        <a href="installation.html"><i class="ti ti-box"></i> Установка и интеграция <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="installation.html#requirements">1. Системные требования</a></li>
+          <li><a href="installation.html#docker-install">2. Установка Docker Compose</a></li>
+          <li><a href="installation.html#demo-cleanup">3. Удаление демо-данных</a></li>
+          <li><a href="installation.html#equip-integration">4. Интеграция с оборудованием</a></li>
+          <li><a href="installation.html#tariff-setup">5. Настройка тарифов</a></li>
+          <li><a href="installation.html#add-subscribers">6. Добавление клиентов</a></li>
+          <li><a href="installation.html#final-test">7. Финальное тестирование</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="dashboard.html"><i class="ti ti-layout-dashboard"></i> Дашборд <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="dashboard.html#dashboard">1. Дашборд</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-kpi">1.1. Шапка: 6 KPI</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-pools-ebs">1.2. IP-пулы + EBS</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-alerts">1.3. Свежие проблемы</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-cash">1.4. Касса месяца</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-payments-today">1.5. Платежи сегодня</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-hot">1.6. Горячие клиенты + CRM</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-extras">1.7. Heat-map + Цели + Что нового</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-finance">1.8. Финансовая динамика</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="tariffs.html"><i class="ti ti-receipt"></i> Тарифы и услуги <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="tariffs.html#tarifs">2. Тарификация</a></li>
+          <li class="sub-item"><a href="tariffs.html#tarif-list">2.1. Тарифы</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="tariffs.html#tarif-folder">— Директория тарифа</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="tariffs.html#tarif-org">— Тарифы и организация</a></li>
+          <li class="sub-item"><a href="tariffs.html#usluga-list">2.2. Услуги и Бонусы</a></li>
+          <li class="sub-item"><a href="tariffs.html#tarif-ruleset">2.3. Правила и сети</a></li>
+          <li class="sub-item"><a href="tariffs.html#ruleset-conditions">2.3.1. Условия правила</a></li>
+          <li class="sub-item"><a href="tariffs.html#tarif-bulk">2.3.2. Массовые действия</a></li>
+          <li class="sub-item"><a href="tariffs.html#card-series">2.4. Карты оплаты</a></li>
+          <li class="sub-item"><a href="tariffs.html#loyalty">2.5. Программы лояльности</a></li>
+          <li class="sub-item"><a href="tariffs.html#usluga-range">2.6. Линейки услуг</a></li>
+          <li class="sub-item"><a href="tariffs.html#tarif-overview">— Тарифы: обзор</a></li>
+          <li class="sub-item"><a href="tariffs.html#usluga-overview">— Услуги: обзор</a></li>
+          <li class="sub-item"><a href="tariffs.html#service-policies">— Политики начислений</a></li>
+          <li class="sub-item"><a href="tariffs.html#loyalty-overview">— Лояльность: обзор</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="nas-equipment.html"><i class="ti ti-server"></i> Оборудование <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="nas-equipment.html#equipment">3. Оборудование</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#equip-nas">3.1. NAS</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#nas-map">— Что такое NAS</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#nas-multiorg">— Мультиорганизация и доступ</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#nas-modal">— Карточка устройства</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#nas-status">3.2. Состояние NAS</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#nas-danger">— Опасные операции</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#equip-monitoring">3.2А. Мониторинг оборудования</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#equip-iptv">3.3. IPTV</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#switch">3.4. Коммутаторы</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#switch-type">3.5. Типы коммутаторов</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#sorm-list">3.6. Настройки СОРМ</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="reports.html"><i class="ti ti-chart-bar"></i> Отчёты <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="reports.html#reports">4. Отчёты</a></li>
+          <li class="sub-item"><a href="reports.html#director-dashboard">4.0. Панель директора</a></li>
+          <li class="sub-item"><a href="reports.html#custom-reports">4.1. Библиотека отчётов</a></li>
+          <li class="sub-item"><a href="reports.html#audit">4.2. Аудит</a></li>
+          <li class="sub-item"><a href="reports.html#paylog">4.3. Журнал платежей</a></li>
+          <li class="sub-item"><a href="reports.html#messages-journal">4.4. Журнал сообщений</a></li>
+          <li class="sub-item"><a href="reports.html#dev-reports">4.5. Разработка и логи</a></li>
+          <li class="sub-item"><a href="reports.html#debtors">4.6. Должники</a></li>
+          <li class="sub-item"><a href="reports.html#migration">4.7. Миграция с других биллингов</a></li>
+          <li><a href="reports.html#games">5. Игры (Маркетинг)</a></li>
+          <li class="sub-item"><a href="reports.html#framework-fields-overview">— FrameworkFormGroupFields: обзор</a></li>
+          <li class="sub-item"><a href="reports.html#custom-reports-overview">— SQL-отчёты: обзор</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="settings.html"><i class="ti ti-settings"></i> Настройки: система и платежи <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="settings.html#settings">6. Настройки</a></li>
+          <li class="sub-item"><a href="settings.html#system-settings">6.1. Настройки системы</a></li>
+          <li class="sub-item"><a href="settings.html#print-forms">6.2. Шаблоны печати</a></li>
+          <li class="sub-item"><a href="settings.html#atol-config">6.3. Фискализация</a></li>
+          <li class="sub-item"><a href="settings.html#fiscal">6.3.1. Модуль фискализации 54-ФЗ</a></li>
+          <li class="sub-item"><a href="settings.html#payment-systems">6.4. Платёжные системы</a></li>
+          <li class="sub-item"><a href="settings.html#bank-statements">6.4.1. Банковские выписки</a></li>
+          <li class="sub-item"><a href="settings.html#bank-parsers">6.4.2. Банки и парсеры</a></li>
+          <li class="sub-item"><a href="settings.html#bank-queue">6.4.3. Очередь модерации</a></li>
+          <li class="sub-item"><a href="settings.html#bank-imports">6.4.4. Журнал импортов</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#bank-flow">— Путь платежа (схема)</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#bank-registry">— Сводные реестры</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#bank-queue-link-2171">— Привязка платежа и данные ФНС</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#bank-org-2171">— Организация платежа</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#bank-client-tab">— Вкладка «Банк» в карточке</a></li>
+          <li class="sub-item"><a href="settings.html#mailserver">6.4.5. Почтовый сервер</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#mailserver-webmail">— Веб-почта и календарь</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#mailserver-identity">— Имя, подпись, фото</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#mailserver-addressbook">— Адресная книга</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#mailserver-mail-tab">— Вкладка «Почта»</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#mailserver-server-settings">— Настройки сервера</a></li>
+          <li class="sub-item"><a href="settings.html#dns">6.4.5А. Домены и DNS</a></li>
+          <li class="sub-item"><a href="settings.html#mail-provisioning">6.4.6. Автонастройка почты</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="settings-services.html"><i class="ti ti-plug"></i> Настройки: связь и сервисы <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li class="sub-item"><a href="settings-services.html#integrations">6.5. Интеграции</a></li>
+          <li class="sub-item"><a href="settings-services.html#voice">6.5А. Голосовая связь</a></li>
+          <li class="sub-item"><a href="settings-services.html#iptv-mappings">6.6. IPTV-пакеты</a></li>
+          <li class="sub-item"><a href="settings-services.html#iptv-watch">6.6.1. Просмотр ТВ в ЛК</a></li>
+          <li class="sub-item"><a href="settings-services.html#lk-mobile">6.7. ЛК и мобильные</a></li>
+          <li class="sub-item"><a href="settings-services.html#messaging">6.8. Сообщения</a></li>
+          <li class="sub-item"><a href="settings-services.html#staff">6.9. Персонал и доступ</a></li>
+          <li class="sub-item"><a href="settings-services.html#license">6.10. Лицензия</a></li>
+          <li class="sub-item"><a href="settings-services.html#modules">6.10А. Модули и расширения</a></li>
+          <li class="sub-item"><a href="settings-services.html#backup">6.11. Резервные копии</a></li>
+          <li class="sub-item"><a href="settings-services.html#db-cleanup">6.12. Очистка БД и сессий</a></li>
+          <li class="sub-item"><a href="settings-services.html#diagnostics">6.13. Диагностика</a></li>
+          <li class="sub-item"><a href="settings-services.html#mass-actions">6.14. Массовые действия</a></li>
+          <li class="sub-item"><a href="settings-services.html#performance">6.15. Производительность и оптимизация</a></li>
+          <li class="sub-item"><a href="settings-services.html#captive-portal">6.16. Captive Portal (финблокировка)</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-readiness">— Готовность и проверка</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-emergency">— Аварийный режим</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-access">— Организации и права</a></li>
+          <li class="sub-item"><a href="settings-services.html#guest-wifi-portal">6.16.1. Гостевой Wi-Fi портал</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-payments">— Платежи</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-acl">— Белые списки (ACL)</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-sorm">— Гости в СОРМ и хранение</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-mobile">— С телефона</a></li>
+          <li class="sub-item"><a href="settings-services.html#support">— Поддержка: единое окно</a></li>
+          <li class="sub-item"><a href="settings-services.html#support-ticket">— Поддержка: карточка тикета</a></li>
+          <li class="sub-item"><a href="settings-services.html#support-panel">— Поддержка: выезжающая панель</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="dictionaries.html"><i class="ti ti-book"></i> Справочники <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="dictionaries.html#dictionary">7. Справочники</a></li>
+          <li class="sub-item"><a href="dictionaries.html#pools">7.1. Пулы IP и VLAN</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="dictionaries.html#ip-pull-overview">— IP-пул: обзор</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="dictionaries.html#vlan-pull-overview">— VLAN-пул: обзор</a></li>
+          <li class="sub-item"><a href="dictionaries.html#acl">7.2. Контроль доступа</a></li>
+          <li class="sub-item"><a href="dictionaries.html#addresses">7.3. Все адреса</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="dictionaries.html#addresses-overview">— Адреса: обзор</a></li>
+          <li class="sub-item"><a href="dictionaries.html#statuses-overview">— Статусы: обзор</a></li>
+          <li class="sub-item"><a href="dictionaries.html#requisites">7.4. Реквизиты</a></li>
+          <li class="sub-item"><a href="dictionaries.html#currency">7.5. Валюты</a></li>
+          <li class="sub-item"><a href="dictionaries.html#weekends">7.6. Выходные дни</a></li>
+          <li class="sub-item"><a href="dictionaries.html#statuses">7.7. Управление статусами</a></li>
+          <li class="sub-item"><a href="dictionaries.html#report-types">7.8. Типы отчётов</a></li>
+          <li class="sub-item"><a href="dictionaries.html#units">7.9. Единицы измерения</a></li>
+          <li class="sub-item"><a href="dictionaries.html#periods">7.10. Периоды</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="abonents.html"><i class="ti ti-users"></i> Абоненты <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li class="sub-item"><a href="abonents.html#admin-accounts-overview">— Счета: обзор</a></li>
+          <li class="sub-item"><a href="abonents.html#finops-overview">— Финоперации: обзор</a></li>
+          <li class="sub-item"><a href="abonents.html#promise-pay-overview">— Обещанный платёж: обзор</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-block-overview">— Блокировки: обзор</a></li>
+          <li class="sub-item"><a href="abonents.html#abonent-folders-overview">— Папки клиентов: обзор</a></li>
+          <li><a href="abonents.html#abonents">8. Клиенты</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-list">8.1. Клиенты</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-folder-view">— Папка клиентов</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-multiorg">— Мультиорганизация</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-quick-add">— Новый клиент и раскладка</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-search">— Глобальный поиск</a></li>
+          <li class="sub-item"><a href="abonents.html#abonent-map">8.2. На карте</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#abonent-map-data">— Откуда берутся точки</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#abonent-map-multiorg">— Мультиорганизация</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#abonent-map-performance">— Вес карты и скорость</a></li>
+          <li class="sub-item"><a href="abonents.html#admin-accounts">8.3. Счета</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#admin-accounts-map">— Что такое счёт</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#admin-accounts-multiorg">— Мультиорганизация и доступ</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#admin-accounts-modal">— Карточка счёта</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#admin-accounts-mobile">— Мобильная версия</a></li>
+          <li class="sub-item"><a href="abonents.html#finance-operations">8.4. Финансовые операции</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#finops-lifecycle">— Откуда берутся операции</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#finops-multiorg">— Мультиорганизация</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#modal-finops">— Карточка операции</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#finops-mobile">— Мобильная версия</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#finance-operations-types">— Типы операций (FinTypes)</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="abonent-card.html"><i class="ti ti-id"></i> Карточка абонента <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li class="sub-item"><a href="abonent-card.html#users-overview">— Учётные записи: обзор</a></li>
+          <li class="sub-item"><a href="abonent-card.html#connection-points-overview">— Точки подключения: обзор</a></li>
+          <li class="sub-item"><a href="abonent-card.html#radius-sessions-overview">— RADIUS-сессии: обзор</a></li>
+          <li><a href="abonent-card.html#abonent-card">9. Карточка клиента</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="extras.html"><i class="ti ti-apps"></i> Дополнительные разделы <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="extras.html#video-surveillance">10. Видеонаблюдение</a></li>
+          <li class="sub-item"><a href="extras.html#video-revenue">10.1. 3 слоя дохода + цены</a></li>
+          <li class="sub-item"><a href="extras.html#video-admin">10.2. Раздел /admin/video/</a></li>
+          <li class="sub-item"><a href="extras.html#video-abonent">10.3. Вкладка клиента + ЛК</a></li>
+          <li class="sub-item"><a href="extras.html#video-billing-flow">10.3.1. Как списываются подписки</a></li>
+          <li class="sub-item"><a href="extras.html#video-archive-lk">10.3.2. Архив: календарь + выделение</a></li>
+          <li class="sub-item"><a href="extras.html#video-notify">10.3.3. Уведомления о сбоях</a></li>
+          <li class="sub-item"><a href="extras.html#video-docs">10.4. Документы (КП/договор/акт)</a></li>
+          <li class="sub-item"><a href="extras.html#video-block">10.5. Блокировка камер по балансу</a></li>
+          <li class="sub-item"><a href="extras.html#video-vsaas">10.6. Облако VSaaS</a></li>
+          <li><a href="extras.html#domofon-demo">11. Домофонный домен</a></li>
+          <li class="sub-item"><a href="extras.html#domofon-model">11.1. Доменная модель</a></li>
+          <li class="sub-item"><a href="extras.html#domofon-demo-data">11.2. Что заведено в демо</a></li>
+          <li><a href="extras.html#ai-agent">12. AI-агент</a></li>
+          <li class="sub-item"><a href="extras.html#ai-hub">12.1. Обзор модуля (хаб)</a></li>
+          <li class="sub-item"><a href="extras.html#ai-kb">12.2. База знаний</a></li>
+          <li class="sub-item"><a href="extras.html#ai-voice">12.3. Голос (Mango → анализ)</a></li>
+          <li class="sub-item"><a href="extras.html#ai-widget">12.4. Виджет + воронка</a></li>
+          <li class="sub-item"><a href="extras.html#ai-order-forms">12.4.1. Формы заказа → лиды</a></li>
+          <li class="sub-item"><a href="extras.html#ai-test-chat">12.4.2. Тестовый AI-чат</a></li>
+          <li class="sub-item"><a href="extras.html#ai-eval">12.5. Тест-кейсы AI</a></li>
+          <li class="sub-item"><a href="extras.html#ai-dashboard">12.6. Дашборд AI-сессий</a></li>
+          <li class="sub-item"><a href="extras.html#ai-dashboard-costs">12.6.1. Расходы на модели и бюджет</a></li>
+          <li class="sub-item"><a href="extras.html#ai-org-routing">12.6.2. Определение организации</a></li>
+          <li class="sub-item"><a href="extras.html#ai-dashboard-sessions">12.5.1. Сессии и транскрипт</a></li>
+          <li><a href="extras.html#autodial-telephony">13. Автообзвон и телефония</a></li>
+          <li class="sub-item"><a href="extras.html#autodial-providers">13.1. Мультипровайдер</a></li>
+          <li class="sub-item"><a href="extras.html#autodial-asterisk">13.2. Своя телефония (Asterisk)</a></li>
+          <li class="sub-item"><a href="extras.html#autodial-consent">13.3. Согласие и ограничения</a></li>
+          <li class="sub-item"><a href="extras.html#autodial-card-tab">13.4. Вкладка «Звонки» в карточке</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="lk.html"><i class="ti ti-device-mobile"></i> ЛК и мобильные <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="lk.html#lk-overview">Обзор и возможности</a></li>
+          <li><a href="lk.html#lk-admin">Раздел «ЛК и мобильные» в админке</a></li>
+          <li class="sub-item"><a href="lk.html#lk-admin">— Брендинг</a></li>
+          <li class="sub-item"><a href="lk.html#lk-admin">— Функции</a></li>
+          <li class="sub-item"><a href="lk.html#lk-admin">— Безопасность</a></li>
+          <li class="sub-item"><a href="lk.html#lk-mobile-app">— Мобильное (Android+iOS)</a></li>
+          <li><a href="lk.html#lk-login">Авторизация</a></li>
+          <li><a href="lk.html#lk-admin">Настройки интеграций</a></li>
+          <li><a href="lk.html#lk-extra">Telegram-бот</a></li>
+          <li><a href="lk.html#lk-finance">Оплата (ЮKassa)</a></li>
+          <li><a href="lk.html#lk-mobile-app">Мобильное приложение</a></li>
+          <li><a href="lk.html#lk-support">HelpDesk</a></li>
+          <li><a href="lk.html#lk-ai-chat">AI-ассистент</a></li>
+          <li><a href="lk.html#lk-profile">Профиль</a></li>
+          <li><a href="lk.html#lk-firebase">Push (Firebase)</a></li>
+          <li><a href="lk.html#lk-ai-chat">AI-чат</a></li>
+          <li><a href="settings-services.html#messaging">TG бот оператора</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="crm.html"><i class="ti ti-briefcase"></i> CRM — продажи <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="crm.html#crm-overview">1. Как устроен модуль</a></li>
+          <li><a href="crm.html#crm-quickstart">2. Быстрый старт</a></li>
+          <li><a href="crm.html#crm-funnel">3. Воронка сделок</a></li>
+          <li><a href="crm.html#crm-constructor">4. Конструктор воронок</a></li>
+          <li><a href="crm.html#crm-sources">5. Источники сделок</a></li>
+          <li><a href="crm.html#crm-userfields">6. Доп. поля</a></li>
+          <li><a href="crm.html#crm-tasks">7. Задачи</a></li>
+          <li><a href="crm.html#crm-lists">8. Списки (контакты)</a></li>
+          <li><a href="crm.html#crm-salesbot">9. Salesbot</a></li>
+          <li><a href="crm.html#widgets">10. Виджеты-плагины</a></li>
+          <li><a href="crm.html#crm-setup">11. Мастер настройки</a></li>
+          <li><a href="crm.html#crm-montazh">12. Наряды монтажника</a></li>
+          <li><a href="crm.html#crm-dashboard">13. Дашборд и карта</a></li>
+          <li><a href="crm.html#crm-campaigns">14. Рекламные кампании</a></li>
+          <li><a href="crm.html#crm-drawer">15. Карточка сделки</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="stock.html"><i class="ti ti-packages"></i> Склад <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="stock.html#stock-overview">1. Как устроен модуль</a></li>
+          <li><a href="stock.html#stock-quickstart">2. Быстрый старт</a></li>
+          <li><a href="stock.html#stock-flow">3. Движения и статусы</a></li>
+          <li><a href="stock.html#stock-items">4. Номенклатура и остатки</a></li>
+          <li><a href="stock.html#stock-receipt">5. Приход и этикетки</a></li>
+          <li><a href="stock.html#stock-issue">6. Подотчёт сотрудника</a></li>
+          <li><a href="stock.html#stock-inventory">6б. Инвентаризация</a></li>
+          <li><a href="stock.html#stock-reserve">6в. Резерв под наряд</a></li>
+          <li><a href="stock.html#stock-move">6г. Перемещение</a></li>
+          <li><a href="stock.html#stock-suppliers">6д. Поставщики</a></li>
+          <li><a href="stock.html#stock-montazh">7. Материалы в наряде</a></li>
+          <li><a href="stock.html#stock-abonent">8. Оборудование клиента</a></li>
+          <li><a href="stock.html#stock-money">9. Деньги: продажа и аренда</a></li>
+          <li><a href="stock.html#stock-analytics">9а. Аналитика</a></li>
+          <li><a href="stock.html#stock-settings">10. Настройки и роли</a></li>
+          <li><a href="stock.html#stock-launch">11. Чек-лист запуска</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="video.html"><i class="ti ti-device-cctv"></i> Видеонаблюдение <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="video.html#video-overview">1. Как устроен модуль</a></li>
+          <li><a href="video.html#video-objects">2. Объекты и камеры</a></li>
+          <li><a href="video.html#video-projects">3. Проекты и документы</a></li>
+          <li><a href="video.html#video-plans">4. Планы и подписки</a></li>
+          <li><a href="video.html#video-catalog">5. Каталог и склад</a></li>
+          <li><a href="video.html#video-media">6. Медиа-сервер</a></li>
+          <li><a href="video.html#video-archive">7. Архив записей</a></li>
+          <li><a href="video.html#video-dispatch">8. Пульт ЧОПа</a></li>
+          <li><a href="video.html#video-reports">9. Отчётность по SLA</a></li>
+          <li><a href="video.html#video-access">10. Права и организации</a></li>
+          <li><a href="video.html#video-settings">11. Настройки модуля</a></li>
+          <li><a href="video.html#video-launch">12. Чек-лист запуска</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="helpdesk.html"><i class="ti ti-headset"></i> Поддержка (HelpDesk) <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="helpdesk.html#overview">1. Обзор модуля</a></li>
+          <li><a href="helpdesk.html#channels">2. Каналы приёма</a></li>
+          <li><a href="helpdesk.html#mailbox">3. Входящие</a></li>
+          <li><a href="helpdesk.html#conversation">4. Карточка тикета</a></li>
+          <li><a href="helpdesk.html#sidebar">5. Сайдбар тикета</a></li>
+          <li><a href="helpdesk.html#panel">6. Выезжающая панель</a></li>
+          <li><a href="helpdesk.html#attention">7. Тикеты внимания</a></li>
+          <li><a href="helpdesk.html#ai-assistant">8. AI-бот</a></li>
+          <li><a href="helpdesk.html#voicemail">9. Голосовая почта</a></li>
+          <li><a href="helpdesk.html#knowledgebase">10. База знаний</a></li>
+          <li><a href="helpdesk.html#analytics">11. Аналитика и время</a></li>
+          <li><a href="helpdesk.html#settings">12. Настройки</a></li>
+          <li><a href="helpdesk.html#messengers">13. Мессенджеры</a></li>
+          <li><a href="helpdesk.html#integration">14. Связь с биллингом</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="landing.html"><i class="ti ti-browser"></i> Лендинги <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="landing.html#landing-overview">1. Что это</a></li>
+          <li><a href="landing.html#landing-blocks">2. Блоки-секции</a></li>
+          <li><a href="landing.html#landing-media">3. Слайдер, медиа-фон и эффекты</a></li>
+          <li><a href="landing.html#landing-editor">4. Редактор</a></li>
+          <li><a href="landing.html#landing-ai">5. AI-генерация</a></li>
+          <li><a href="landing.html#landing-forms">6. Формы и заявки</a></li>
+          <li><a href="landing.html#landing-publish">7. Публикация на поддомене</a></li>
+          <li><a href="landing.html#landing-pd">8. Согласие ПД (152-ФЗ)</a></li>
+          <li><a href="landing.html#landing-analytics">9. Аналитика</a></li>
+          <li><a href="landing.html#landing-multiorg">10. Мульти-орг</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="server.html"><i class="ti ti-server"></i> Управление сервером <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="server.html#server-setup">1. Настройка сервера</a></li>
+          <li><a href="server.html#maintenance">2. Сервисное обслуживание</a></li>
+          <li class="sub-item"><a href="server.html#backup">2.1. Резервное копирование</a></li>
+          <li class="sub-item"><a href="server.html#backup-ui">2.2. Бекапы (веб-интерфейс)</a></li>
+          <li><a href="server.html#modules">3. Управление модулями</a></li>
+          <li><a href="server.html#remote">4. Удалённое управление</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="equipment.html"><i class="ti ti-broadcast"></i> Интеграция с оборудованием <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="equipment.html#internet">1. Интернет (NAS/BRAS)</a></li>
+          <li class="sub-item"><a href="equipment.html#switch-types">1.1. Типы коммутаторов</a></li>
+          <li><a href="equipment.html#voip">2. Телефония (VoIP)</a></li>
+          <li><a href="equipment.html#iptv">3. IPTV</a></li>
+          <li class="sub-item"><a href="equipment.html#iptv-tvip">3.1. TVIP Media</a></li>
+          <li class="sub-item"><a href="equipment.html#iptv-lfstream">3.2. LFStream</a></li>
+          <li class="sub-item"><a href="equipment.html#iptv-mappings">3.3. Маппинг пакетов</a></li>
+          <li><a href="equipment.html#cpe">4. Абонентское оборудование</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="sorm.html"><i class="ti ti-shield-lock"></i> Интеграция с СОРМ3 <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="sorm.html#principle">Принцип работы</a></li>
+          <li><a href="sorm.html#integrated">Интегрированные решения</a></li>
+          <li><a href="sorm.html#pending">Ожидающие интеграции</a></li>
+          <li><a href="sorm.html#setup">Настройка подключения</a></li>
+          <li class="sub-item"><a href="sorm.html#sorm-add-modal">— Модальное окно «Добавить»</a></li>
+          <li><a href="sorm.html#reports">Отчёты и SQL</a></li>
+          <li><a href="sorm.html#schedule">Расписание выгрузки</a></li>
+          <li><a href="sorm.html#sorm-admin">Админ-UI: список и FTP</a></li>
+          <li><a href="sorm.html#manual-run">Управление отчётами</a></li>
+          <li><a href="sorm.html#metadata">СОРМ-метаданные</a></li>
+          <li><a href="sorm.html#preflight">Pre-flight валидация</a></li>
+          <li><a href="sorm.html#api">REST API готовности</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="api.html"><i class="ti ti-link"></i> API <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="api.html#overview">1. Обзор API</a></li>
+          <li><a href="api.html#auth">2. Аутентификация</a></li>
+          <li><a href="api.html#rest-v2">3. REST API v2</a></li>
+          <li><a href="api.html#promise-pay">4. Обещанный платёж</a></li>
+          <li><a href="api.html#payments-api">5. Платёжные API (ЮKassa, W1)</a></li>
+          <li><a href="api.html#soap">6. SOAP API</a></li>
+          <li><a href="api.html#mobile-api">7. Mobile API</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="troubleshooting.html"><i class="ti ti-tool"></i> Решение проблем <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="troubleshooting.html#general">1. Общие вопросы</a></li>
+          <li><a href="troubleshooting.html#auth">2. Клиенты и авторизация</a></li>
+          <li><a href="troubleshooting.html#billing-payments">3. Биллинг и платежи</a></li>
+          <li><a href="troubleshooting.html#server-perf">4. Сервер и производительность</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="licensing.html"><i class="ti ti-file-description"></i> Лицензирование <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="licensing.html#delivery">1. Порядок поставки ПО</a></li>
+          <li><a href="licensing.html#payment-issues">2. Не проходит оплата</a></li>
+        </ul>
+      </li>
+      <li><a href="contacts.html"><i class="ti ti-phone"></i> Контакты</a></li>
+      <li><a href="changelog.html"><i class="ti ti-history"></i> Журнал изменений</a></li>
+    </ul>
+
+      <div class="nav-section">Разработчикам</div>
+      <ul>
+        <li class="has-children">
+          <a href="../graphify/graph.html"><i class="ti ti-topology-star-3"></i> Архитектура кода <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+          <ul class="submenu">
+            <li><a href="../graphify/graph.html">Граф сообществ</a></li>
+            <li><a href="../graphify/wiki/index.html">Wiki модулей</a></li>
+            <li><a href="dev/index.html">Портал разработчика</a></li>
+            <li><a href="../graphify/help.html">graphify CLI</a></li>
+          </ul>
+        </li>
+      </ul>
+  <button class="sidebar-theme-toggle" aria-label="Тема"><span class="icon-sun"><i class="ti ti-sun"></i></span><span class="icon-moon"><i class="ti ti-moon"></i></span><span class="sidebar-theme-label">Сменить тему</span></button>
+</nav>
+</aside>
+
+<main class="content">
+  <div class="breadcrumb">
+    <a href="../index.html">Документация</a> <span class="sep">/</span> Карточка абонента
+  </div>
+
+  <h1>Карточка абонента</h1>
+  <p>Всё, что открывается в карточке клиента: вкладки, действия оператора, история изменений.</p>
+
+<div class="page-toc">
+<details open>
+  <summary><strong><i class="ti ti-book"></i> Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#abonent-card">9. Карточка клиента</a></li>
+    <li class="sub-item"><a href="#abonent-avatar-socials">Аватарка и соцсети клиента</a></li>
+    <li class="sub-item"><a href="#abonent-card-header">Шапка карточки</a></li>
+    <li class="sub-item"><a href="#abonent-save-indicator">Индикатор несохранённых изменений</a></li>
+    <li class="sub-item"><a href="#abonent-card-quick">Быстрый доступ (под шапкой)</a></li>
+    <li class="sub-item"><a href="#abonent-diagnose">Диагностика связи — плашка-светофор</a></li>
+    <li class="sub-item"><a href="#abonent-card-tabs">Вкладки</a></li>
+    <li class="sub-item"><a href="#abonent-card-actions">Дополнительные действия</a></li>
+  </ul>
+</details>
+</div>
+
+<h2 id="abonent-card">9. Карточка клиента</h2>
+<p>URL: <code>/admin/Abonents/&lt;id&gt;/</code>. Открывается кликом по строке клиента в любом списке (папка, глобальный поиск, модалка счёта). Это центральная рабочая страница оператора — здесь видны все аспекты клиента и доступны все действия.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/07_abonent_card_main.png" alt="Карточка клиента"></p>
+
+<h3 id="abonent-avatar-socials">Аватарка и соцсети клиента</h3>
+<p>Карточка показывает <strong>аватарку клиента</strong> (в шапке профиля, в
+сайдбаре-drawer, в виджете «Биллинг» тикета Поддержки, в тултипах карты CRM) и
+<strong>иконки-ссылки на профили</strong> в VK / Telegram / MAX — цветные брендовые
+иконки без круга, открываются в новом окне. Данные хранятся в реквизитах клиента
+(атрибуты «Аватарка VK», «Аватарка TG», «VK ID», «Telegram ID», «MAX ID»),
+файлы аватарок — в GCS.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_v1403/15_abonent_avatar_socials.png" alt="Карточка клиента — аватарка и соцсети"></p>
+
+<pre class="mermaid">
+flowchart LR
+    FS["Внешний источник<br/>(фото, VK/TG id)"] -->|"импорт аватарок<br/>матчинг: договор/email/телефон/<br/>соцсети/тикеты/ФИО (транслит+fuzzy)"| ATTR
+    VKAPI["VK / Telegram<br/>(id из каналов Поддержки)"] --> ATTR
+    ATTR["UserAttributes<br/>Аватарка VK/TG · VK/TG/MAX ID"] --> GCS["Аватарки в GCS<br/>(постоянные URL)"]
+    ATTR --> UI1["Профиль клиента"]
+    ATTR --> UI2["Сайдбар (drawer)"]
+    ATTR --> UI3["Тикет Поддержки<br/>виджет Биллинг + панель"]
+    ATTR --> UI4["Карта CRM (тултип)"]
+</pre>
+
+<p class="note"><i class="ti ti-info-circle"></i> По VK/TG/MAX ID биллинг узнаёт
+клиента, когда тот пишет в соцсетях/мессенджерах — тикет сразу связывается с
+карточкой.</p>
+
+<h3 id="abonent-card-header">Шапка карточки</h3>
+<p>Сверху страницы — фиксированная панель с:</p>
+<ul>
+  <li><strong>ФИО + №&nbsp;договора</strong> — заголовок страницы.</li>
+  <li><strong>Баланс</strong> в рублях с цветовым кодированием (зелёный ≥0, красный &lt;0).</li>
+  <li><strong>Тариф</strong> и его стоимость в месяц.</li>
+  <li><strong>Статус подключения</strong> (Активен / Заблокирован / Выкл / Удалён) — цветной бейдж.</li>
+  <li><strong>Кнопки быстрых действий</strong>: Заблокировать / Разблокировать (с превью последствий), Удалить (soft-delete + CoA Disconnect), Сменить тариф, Создать заявку (HelpDesk), Отправить сообщение (SMS/Email/Push), Печать договора.</li>
+  <li><strong>Установить статус</strong> — открывает диалог выбора <code>Status</code>, автоматически отправляет соответствующий шаблон сообщения (<code>AdminMsg</code>).</li>
+</ul>
+<p>Все destructive-действия (Заблокировать / Удалить) защищены Bootstrap-confirm с превью последствий (паттерн).</p>
+
+<h3 id="abonent-save-indicator">Индикатор несохранённых изменений</h3>
+<p>Кнопка «Сохранить» (иконка-дискета в шапке карточки) показывает, есть ли в форме несохранённые правки, а изменённые поля подсвечиваются — оператор сразу видит, что нужно сохранить.</p>
+
+<p><strong>Состояния кнопки «Сохранить»:</strong></p>
+<ul>
+  <li><strong>Серая, приглушённая</strong> — несохранённых изменений нет, сохранять нечего.
+    <p><img class="screenshot" src="../img/v830/title_bar_idle.png" alt="Шапка карточки клиента — кнопка Сохранить серая, изменений нет"></p>
+  </li>
+  <li><strong>Зелёная с мягкой пульсацией</strong> — в форме есть несохранённые правки. Пульсация привлекает внимание, но не раздражает; уважает системную настройку <code>prefers-reduced-motion</code> (при ней анимация отключается).
+    <p><img class="screenshot" src="../img/v830/title_bar_active.png" alt="Шапка карточки клиента — кнопка Сохранить зелёная, есть несохранённые изменения"></p>
+  </li>
+</ul>
+<p>Кнопка <strong>всегда физически кликабельна</strong> — серый вид это лишь подсказка «нечего сохранять», а не блокировка. Если клиент в этот момент обрабатывается биллингом (фоновая операция), кнопка не пульсирует, а tooltip объясняет, почему сохранение временно недоступно.</p>
+
+<p><strong>Подсветка изменённых полей.</strong> Любое поле формы, значение которого отличается от исходного, подсвечивается жёлтой рамкой и фоном (класс <code>.ab-field-changed</code>). Работает и для обычных полей, и для Select2-виджетов; есть отдельный вариант для тёмной темы.</p>
+<p><img class="screenshot" src="../img/v830/field_changed.png" alt="Изменённое поле формы подсвечено жёлтой рамкой и фоном"></p>
+
+<p><strong>Как это работает.</strong> При загрузке страницы JavaScript снимает «снимок» исходных значений всех полей формы <code>#changelist-form</code> (часть полей догружается через AJAX — снимок повторяется через короткие интервалы, чтобы захватить и их). На событиях <code>change</code>/<code>input</code> текущее значение сравнивается со снимком: поле получает/теряет подсветку, кнопка «Сохранить» — зелёный вид. Технические поля (CSRF-токен, management-формы formset'ов) из отслеживания исключены.</p>
+<p class="note">Индикатор — это только визуальная подсказка поверх формы. Он не участвует в самом сохранении: клик по кнопке отправляет форму всегда, независимо от состояния индикатора.</p>
+
+<h3 id="abonent-card-quick">Быстрый доступ (под шапкой)</h3>
+<p>Шесть карточек-сниппетов над аккордеоном на вкладке «Информация» — самые востребованные данные по клиенту без переключения вкладок. Каждая карточка имеет ссылку «→» на соответствующую вкладку для полного просмотра.</p>
+
+<table>
+<thead><tr><th>Карточка</th><th>Что показывает</th><th>Действие «+»</th></tr></thead>
+<tbody>
+  <tr><td>📋 <strong>Аудит</strong></td><td>Последние 8 действий по клиенту (блокировки, смены тарифа, корректировки, входящие SMS) с датой и описанием</td><td>—</td></tr>
+  <tr><td>🎁 <strong>Услуги</strong></td><td>Назначенные услуги (трафик, скидки) + подсекция «Бонусы» со счётчиком баллов. Эффективная сумма с цветным dot-индикатором enabled/disabled</td><td>Добавить услугу / бонус</td></tr>
+  <tr><td>💰 <strong>Операции</strong></td><td>Последние финансовые операции с цветным бейджем направления (↓ приход / ↑ расход) и зачёркиванием для сторно</td><td>Добавить финоперацию</td></tr>
+  <tr><td>🎧 <strong>HelpDesk</strong></td><td>Активные и закрытые тикеты HelpDesk с бейджем статуса и временем последнего обновления</td><td>—</td></tr>
+  <tr><td>✉ <strong>Сообщения</strong></td><td>Последние SMS/Email/Push/Telegram/VK со статусом доставки (✓ или ⏳)</td><td>Отправить сообщение</td></tr>
+  <tr><td>📡 <strong>Сессии</strong></td><td>До 5 учётных записей клиента с признаком онлайн/офлайн, IP, временем последнего обновления и трафиком ↓/↑</td><td>—</td></tr>
+</tbody>
+</table>
+
+<p>Данные загружаются одним AJAX-запросом <code>/admin/Abonents/&lt;id&gt;/quick_cards/</code> сразу после открытия карточки. Шапка автообновляется раз в 60 секунд (статус Онлайн/Офлайн, баланс) — карточки операторов открыты часами, но всегда актуальны.</p>
+
+<h4 id="system-abonent-profile">Настройки профиля клиента (layout 2-col)</h4>
+
+<p>Раздел <code>/admin/settings/system/?tab=abonent_profile</code> (вкладка <strong>«Профиль»</strong>) — <strong>33 глобальные настройки</strong> в 9 секциях, управляющие тем, что и как видит оператор на карточке клиента и в списках. Все настройки глобальные (действуют на всех операторов), хранятся в <code>SystemSettings</code> с категорией <code>abonent_profile</code>. Кеш Redis 60 секунд (<code>ctxproc:abonent_profile_v2</code>), сбрасывается при сохранении формы.</p>
+
+<p><strong>С версии 2.1.0</strong> страница в 2-колоночном layout (на экранах ≥1280px). 9 секций укладываются masonry-style через CSS <code>column-count:2</code> + <code>break-inside:avoid</code> — без выравнивания по высоте, плотно. На узких экранах автоматически 1 колонка.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/abonent_profile_v885/abonent_profile_v2.1.0.png" alt="Обзор вкладки «Профиль» — 2-колоночный layout, 9 свёрнутых секций"></p>
+
+<p><strong>Также переименованы две соседние вкладки</strong> для краткости:</p>
+<ul>
+<li>«Производительность» → <strong>«Скорость»</strong> (Gunicorn / Celery / БД / Throttling)</li>
+<li>«Сессии и RADIUS» → <strong>«RADIUS»</strong> (таймауты, retention, NAS auto-assign)</li>
+</ul>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/abonent_profile_v885/system_tabs_renamed.png" alt="Вкладки «Скорость» и «RADIUS» в /admin/settings/system/ (переименованы)"></p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/abonent_profile_v885/abonent_profile_v2.1.0_expanded.png" alt="Вкладка «Профиль» с раскрытыми секциями — 2-колоночный layout"></p>
+
+<h5 id="system-abonent-profile-quick">Секция 0 — Быстрый доступ (Quick Cards)</h5>
+
+<p>Master-toggle + 6 индивидуальных тогглов по карточкам (Аудит / Услуги / Операции / HelpDesk / Сообщения / Сессии). При выключении master блок не загружается — карточка клиента грузится быстрее (нет AJAX-запроса <code>/quick_cards/</code>).</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/profile_v883/profile_section_quick.png" alt="Секция «Быстрый доступ» — master + 6 индивидуальных тогглов"></p>
+
+<h5 id="system-abonent-profile-sections">Секция 1 — Видимость секций карточки</h5>
+
+<p>Управление крупными элементами карточки клиента:</p>
+<ul>
+  <li>🚦 <strong>Плашка диагностики связи</strong> — светофор (по умолчанию вкл.)</li>
+  <li>📊 <strong>Sparkline 24h</strong> — мини-график активности в развёрнутой плашке (по умолчанию вкл.)</li>
+  <li>⚡ <strong>Кнопки авто-действий</strong> (Сброс сессии / Перевыдать IP / Тикет монтажнику) (по умолчанию вкл.)</li>
+  <li>🕑 <strong>Recent pages</strong> в шапке — дропдаун последних посещённых страниц (по умолчанию вкл.)</li>
+</ul>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/profile_v883/profile_section_sections.png" alt="Секция «Видимость секций карточки»"></p>
+
+<h5 id="system-abonent-profile-list">Секция 2 — Колонки списка клиентов</h5>
+
+<p>4 тоггла-«дефолта» для колонок в <code>/admin/Abonents/&lt;folder&gt;/</code> и глобальном поиске. Действует через <code>def</code>-флаги в COLS-массиве — каждый оператор может переопределить в своей user-config через модалку «Колонки».</p>
+
+<ul>
+  <li>🏠 <strong>Точка подключения</strong> — колонка с именем ConnectionPoints</li>
+  <li>📡 <strong>Онлайн</strong> — иконка-индикатор RADIUS-сессии (доп. JOIN, отключение ускоряет рендер)</li>
+  <li>🤝 <strong>Иконка обещанного платежа</strong> у баланса</li>
+  <li>📞 <strong>Tooltip с контактами</strong> на иконках ✉/📞</li>
+</ul>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/profile_v883/profile_section_list.png" alt="Секция «Колонки списка»"></p>
+
+<h5 id="system-abonent-profile-ajax">Секция 3 — AJAX и автообновление</h5>
+
+<ul>
+  <li><strong>Интервал автообновления Quick Cards</strong>: 0 (выкл) / 30 / 60 (default) / 120 / 300 сек</li>
+  <li><strong>Автообновлять вкладки «Услуги»/«Финопы»</strong> — для длинных сессий оператора</li>
+  <li><strong>TTL Redis-кеша Quick Cards</strong>: 0..300 сек (0 = выкл, кеш в БД на каждый запрос). При высокой нагрузке поставить 30-60</li>
+  <li><strong>Показывать «Загрузка...» placeholder</strong> — spinner до AJAX-ответа</li>
+</ul>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/profile_v883/profile_section_ajax.png" alt="Секция «AJAX и автообновление»"></p>
+
+<h5 id="system-abonent-profile-defaults">Секция 4 — Дефолты карточки</h5>
+
+<ul>
+  <li><strong>Вкладка карточки по умолчанию</strong>: Информация / Финансы / Услуги / Точки подключения / Сессии / HelpDesk</li>
+  <li><strong>Раскрытая секция accordion</strong>: Финансовая информация / Контакты / СОРМ / Доп. настройки</li>
+  <li><strong>Сортировка операций</strong>: новые сверху / старые сверху</li>
+  <li><strong>Период «Операции» по умолчанию</strong>: Месяц / Квартал / Год / Все. <em>Применяется через JS+sessionStorage, не нарушая контракт «всё видно по умолчанию».</em></li>
+  <li><strong>Период «Сообщения» по умолчанию</strong>: Неделя / Месяц / Квартал / Все</li>
+</ul>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/profile_v883/profile_section_defaults.png" alt="Секция «Дефолты карточки»"></p>
+
+<h5 id="system-abonent-profile-tabs">Секция 4А — Управление вкладками карточки</h5>
+
+<p>Управление полным набором из <strong>13 вкладок</strong> карточки клиента: видимость (показать/скрыть), порядок (drag&amp;drop) и стиль отображения.</p>
+
+<p><strong>Возврат скрытых вкладок</strong>: «Задачи» (CRM_TASK, скрыта) и «Оборудование и подключения» — теперь можно вернуть в навбар одним кликом.</p>
+
+<p><strong>4 стиля отображения</strong> навигации вкладок (превью видно прямо в форме):</p>
+<ul>
+  <li><strong>Классический</strong> (default) — AdminLTE nav-tabs, как сейчас</li>
+  <li><strong>Pills (таблетки)</strong> — скруглённые кнопки</li>
+  <li><strong>Подчёркивание</strong> — Material-style underline</li>
+  <li><strong>Компактный</strong> — узкие табы, на mobile только иконки</li>
+</ul>
+
+<p><strong>Drag&amp;drop</strong>: каждую вкладку можно перетащить за иконку «☰» в любую позицию. Изменения сохраняются в <code>ABONENT_PROFILE_TABS_CONFIG</code> как JSON. Кнопка «Сбросить к дефолту» возвращает порядок и видимость из <code>build_abonent_card_tabs</code> в коде.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/profile_v883/profile_section_tabs.png" alt="Секция «Управление вкладками карточки» — drag&drop + 4 стиля"></p>
+
+<h5 id="system-abonent-profile-style">Секция 5 — Стиль и плотность</h5>
+
+<ul>
+  <li>📏 <strong>Compact mode карточки</strong> — уменьшает padding/font-size в табах и аккордеоне</li>
+  <li>👤 <strong>Показывать аватары/инициалы клиента</strong></li>
+  <li>🎨 <strong>Цвет бейджа «Активен»</strong>: Зелёный / Бирюзовый / Серый</li>
+</ul>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/profile_v883/profile_section_style.png" alt="Секция «Стиль и плотность»"></p>
+
+<h5 id="system-abonent-profile-banners">Секция 7 — Баннеры уведомлений оператору</h5>
+
+<p>5 баннеров-подсказок в шапке карточки клиента, каждый показывается только при выполнении условия:</p>
+<ul>
+  <li>🤝 <strong>Активный обещанный платёж</strong> — есть <code>promise_date_end</code> (по умолчанию вкл.)</li>
+  <li>⚠ <strong>Низкий баланс</strong> — баланс &lt; <code>LOW_BALANCE_NOTIFY_THRESHOLD_RUB</code> (по умолчанию вкл.)</li>
+  <li>📅 <strong>Скоро автосписание</strong> — за 1-3 дня до <code>BILLING_CHARGES_HOUR</code> (по умолчанию выкл.)</li>
+  <li>🔇 <strong>Сейчас тихий час</strong> — текущее время в окне <code>NOTIFY_QUIET_HOURS_*</code> (по умолчанию выкл.)</li>
+  <li>📞 <strong>Свежее обращение в HelpDesk</strong> — есть тикет &lt; 24ч (по умолчанию вкл.)</li>
+</ul>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/profile_v883/profile_section_banners.png" alt="Секция «Баннеры уведомлений»"></p>
+
+<h5 id="system-abonent-profile-misc">Секция 8 — Прочее</h5>
+
+<ul>
+  <li>#ID <strong>Показывать ID клиента в шапке</strong> — добавляет «(ID:1234)» рядом с номером договора. Полезно при работе с API/SQL.</li>
+  <li>🛡 <strong>Маскировать паспорт от не-superuser</strong> — серия/номер в СОРМ-блоке показываются как «••••»/«••••••» для обычных операторов (PCI/152-ФЗ).</li>
+  <li>📱 <strong>Скрывать пароль RADIUS на mobile</strong> — чип с паролем не показывается на экранах ≤768px (риск утечки выше).</li>
+</ul>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/profile_v883/profile_section_misc.png" alt="Секция «Прочее»"></p>
+
+<h5 id="system-abonent-profile-tech">Технические детали</h5>
+
+<ul>
+  <li><strong>Хранение</strong>: <code>SystemSettings</code> с категорией <code>abonent_profile</code>. 32 boolean/choice ключа + 1 JSON-ключ (<code>ABONENT_PROFILE_TABS_CONFIG</code>) + <code>ABONENT_PROFILE_TABS_STYLE</code> (choice).</li>
+  <li><strong>Передача в шаблоны</strong>: context_processor <code>billing.context_processors.smit_version</code> отдаёт <code>SMIT_PROFILE_PREFS</code> dict. Кешируется через Redis 60с в ключе <code>ctxproc:abonent_profile_v2</code>.</li>
+  <li><strong>Сброс кеша</strong>: автоматически при сохранении формы (<code>cache.delete()</code> в POST handler).</li>
+  <li><strong>Без миграций БД</strong> — используется готовая инфраструктура <code>settings_service.set_setting()/get_setting()</code>.</li>
+  <li><strong>Backward compat</strong>: все дефолты подобраны так, что поведение до фичи сохраняется при пустой БД настроек.</li>
+</ul>
+
+<p class="note"><i class="ti ti-info-circle"></i> i-иконка рядом с заголовком «Быстрый доступ» на карточке клиента ведёт прямо в этот раздел документации.</p>
+
+<h3 id="abonent-diagnose">Диагностика связи — плашка-светофор</h3>
+
+<p>В шапке карточки клиента — автоматический <strong>экспресс-диагноз</strong> состояния связи. Светофор из 3 цветов (🟢 норма / 🟡 возможны проблемы / 🔴 проблема) с раскрывающимися деталями и готовым ответом для клиента. Все данные читаются из БД <em>read-only</em> (никаких записей, ≤6 SQL-запросов).</p>
+
+<p>Цель функционала — <strong>сократить время разбора жалобы «не работает интернет»</strong> с 5 минут до 10 секунд.</p>
+
+<h4 id="abonent-diagnose-overview">Что показывает плашка</h4>
+
+<p>Свёрнутая плашка — компактный светофор + 5 чипов проверок. Каждый чип имеет свой цвет (зелёный/жёлтый/красный/серый) и tooltip с детальным summary.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/diagnose_v782/diag_yellow_yudina_3083.png" alt="Жёлтая плашка диагностики — Lost-Carrier ×3 за сутки"></p>
+
+<h4 id="abonent-diagnose-checks">5 проверок диагностики</h4>
+
+<table>
+<thead><tr><th>Чип</th><th>Что проверяет</th><th>Когда красный</th></tr></thead>
+<tbody>
+  <tr><td>💰 <strong>Биллинг</strong></td><td>enabled, deleted, баланс, активные блоки, тариф, ОП</td><td>удалён / отключён / нет тарифа / b_admin / b_negbal</td></tr>
+  <tr><td>📶 <strong>Сессия</strong></td><td>Users.enabled/logged, активная RADIUS-сессия, свежесть UPDATE_TIME</td><td>LOGGED=true без сессии (зависшая)</td></tr>
+  <tr><td>📜 <strong>Разрывы</strong></td><td>END_REASON последних 10 сессий, Lost-Carrier за час/сутки</td><td>2+ Lost-Carrier за час → выезд монтажника</td></tr>
+  <tr><td>📊 <strong>Трафик</strong></td><td>IN_OCT/OUT_OCT текущей активной сессии</td><td>(всегда green/yellow/grey)</td></tr>
+  <tr><td>📍 <strong>Адрес</strong></td><td>Abonents.HOME_ID/FLAT == CONNECTION_POINTS.HOME_ID/FLAT</td><td>адрес и точка подключения не совпадают</td></tr>
+</tbody>
+</table>
+
+<p><strong>Общий уровень (overall)</strong> = худший из всех (red > yellow > green > grey).</p>
+
+<h4 id="abonent-diagnose-expanded">Развёрнутый вид и готовый ответ</h4>
+
+<p>Клик на кнопку «Подробнее» раскрывает 5 карточек с полным summary каждой проверки + блок «<strong>Готовый ответ для клиента</strong>» с кнопкой «Скопировать». Текст ответа автоматически подбирается по decision tree из 12 веток (нет тарифа → инструкция назначить тариф, 2+ Lost-Carrier → инструкция про кабель и роутер, активный трафик → «перезагрузите Wi-Fi», блок за неуплату → «внесите оплату», и т.д.).</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/diagnose_v782/diag_red_no_tarif_9318_expanded.png" alt="Развёрнутая плашка с 5 карточками + advice + кнопка Скопировать"></p>
+
+<h4 id="abonent-diagnose-sprint3">Sparkline 24ч и auto-actions</h4>
+
+<p><strong>Sparkline «Сессии за 24 часа»</strong> — мини-график из 24 столбиков, каждый = 1 час. Зелёный = час с активной сессией, серый = тишина, красный = час с Lost-Carrier. Tooltip на каждом столбике показывает состояние.</p>
+
+<p>Под графиком — <strong>3 кнопки-действия</strong>:</p>
+<ul>
+  <li><strong>⚡ Сброс сессии</strong> — закрывает зависшие сессии в RADIUS_SESSIONS, сбрасывает <code>Users.LOGGED</code>+<code>USERS_RADIUSAUTH.LOGGED</code>, шлёт CoA Disconnect broadcast на все enabled NAS. Через 1 секунду диагноз автоматически обновляется.</li>
+  <li><strong>🔄 Перевыдать IP</strong> — освобождает текущий IP и выделяет новый из пула NAS (main → nat → white → hotspot) через <code>allocate_ip_from_pools</code> с защитой от race condition. Сразу же шлёт CoA, чтобы клиент переавторизовался.</li>
+  <li><strong>🔧 Тикет монтажнику</strong> — создаёт тикет в HelpDesk с автозаполнением: ФИО / договор / телефон / адрес + результат диагноза + 🚨 подсветка Lost-Carrier как обоснование выезда. Тикет создаётся под аккаунтом оператора, видится в карточке вкладкой «Поддержка».</li>
+</ul>
+
+<p>Каждое действие защищено JS-confirm, показывает spinner во время выполнения, выводит toast «успех/ошибка», пишет запись в аудит.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/sprint3_v789/sprint3_sparkline_and_actions.png" alt="Sprint 3: sparkline 24ч + 3 action-кнопки в развёрнутой плашке"></p>
+
+<h4 id="abonent-diagnose-ux">UX-особенности</h4>
+
+<ul>
+  <li><strong>Точечный refresh</strong> кнопкой «Проверить сейчас» — fetch <code>/admin/Abonents/&lt;id&gt;/diagnose/</code> + обновление DOM без перезагрузки страницы. Прокрутка и открытые вкладки не теряются.</li>
+  <li><strong>Skeleton-loader</strong> — пока ждём ответ, чипы становятся полупрозрачными и по ним идёт shimmer-анимация, иконка светофора крутится. Анимация GPU-композитная (через <code>transform: translateX</code>), уважает <code>prefers-reduced-motion</code>.</li>
+  <li><strong>Toast-уведомления</strong> — copy / refresh / результаты действий показывают всплывающее уведомление 2.2с в правом нижнем углу с цветной иконкой success/error/info.</li>
+  <li><strong>Защита от падения</strong> — каждая из 5 проверок обёрнута в <code>_safe_check()</code>. Если одна из них падает (например, повреждена запись в БД) — она возвращает grey-результат «Ошибка проверки», остальные продолжают работать.</li>
+  <li><strong>Toggle</strong> через <code>VpnConst CONNECTIVITY_DIAG_ENABLED</code> (default <code>True</code>). При отключении плашка не рендерится, остальная карточка не затронута.</li>
+</ul>
+
+<h4 id="abonent-diagnose-api">REST API и CLI</h4>
+
+<p>Для интеграции с внешними системами:</p>
+
+<ul>
+  <li><strong>REST API</strong>: <code>GET /rest_api/v2/diagnose/&lt;login&gt;/</code> → JSON DiagnoseReport. Session-auth Django. Используется в HelpDesk-модуле, Telegram-боте, custom-скриптах.</li>
+  <li><strong>CLI команда</strong>: <code>python manage.py diag &lt;login&gt;</code> (или <code>--contract</code>, <code>--abonent-id</code>) — текстовый отчёт с цветовой подсветкой. Опция <code>--json</code> для скриптов, <code>--telegram</code> отправляет компактную сводку в админ-чат алертов.</li>
+</ul>
+
+<p>Пример CLI:</p>
+
+<pre><code>$ docker exec app-web-1 python manage.py diag 5927
+
+═══ Диагноз: 🟡 YELLOW — #5927 Кельн Валерий Валерьевич ═══
+
+  [GREEN] billing      — Активен, баланс 6.01 ₽, 2025_Для Тебя: 749.0 руб./мес.
+  [GREEN] session      — Сессия не активна (клиент офлайн)
+  [YELLOW] end_reasons — Lost-Carrier ×3 за сутки — нестабильная линия
+  [GREY] traffic       — Активной сессии нет
+  [GREEN] address      — Адрес клиента совпадает с точкой подключения
+
+📋 Готовый ответ для клиента:
+Здравствуйте! Проверим вашу линию и свяжемся с вами в течение 30 минут.
+</code></pre>
+
+<h4 id="abonent-diagnose-impl">Реализация (для разработчиков)</h4>
+
+<ul>
+  <li><strong>Service-layer</strong>: <code>billing/services/connectivity.py</code> — 5 функций <code>check_*()</code> + <code>connectivity_diagnose()</code> + <code>build_advice()</code>. Read-only, ≤6 SQL. Покрыто 37 unit-тестами в <code>billing/tests/test_connectivity.py</code>.</li>
+  <li><strong>Endpoint</strong>: <code>billing/views/diagnose.py</code> — <code>diagnose_view</code> (GET), <code>diag_action_view</code> (POST для 3 actions), <code>diagnose_rest_api</code> (REST API).</li>
+  <li><strong>UI</strong>: <code>billing/templates/abonents_form/abonent_post_status.html</code> — плашка-баннер + раскрывающиеся детали + sparkline + auto-actions + JS-обработчики + ~400 строк CSS.</li>
+  <li><strong>Интеграция с карточкой</strong>: <code>BlockStatusView</code> в <code>billing/views/abonents.py</code> — передаёт <code>diag</code> через try/except в контекст шаблона.</li>
+</ul>
+
+<h3 id="abonent-card-tabs">Вкладки</h3>
+<p>13 вкладок с подробной информацией. Часть из них объединена в группы: «Учётные записи + RADIUS», «Точки подключения + Оборудование» — соседние вкладки навигируются стрелками.</p>
+
+<h4 id="abonent-card-tab-info">Информация</h4>
+<p>Основные поля клиента в двух колонках. После рестайлинга карточки вкладка перестроена под единый визуальный язык: hero-блоки с фирменной зелёной полосой слева, единый размер бейджей, общие классы для модалок и инпутов.</p>
+
+<p><strong>Слева — основной блок</strong>:</p>
+<ul>
+  <li><strong>Тариф</strong> — отдельный hero-блок <code>.ab-hero-tarif</code> с крупной иконкой-плиткой, названием тарифа, ценой/мес и кнопкой «Изменить тариф». При клике открывается модалка <a href="tariffs.html#tarif-overview">смены тарифа</a> с поиском, фильтрами «Физлица / Юр.лица», подсветкой текущего и тарифов с нулевой ценой.</li>
+  <li><strong>Лояльность</strong> — поле <code>loyalty</code> показывается только если у клиента действительно есть программа лояльности.</li>
+  <li><strong>Комментарии операторов</strong> — hero-секция с зелёной полосой, счётчиком, кнопкой «+ Добавить». Каждый комментарий идёт строкой с <code>#id · DD.MM.YYYY</code> и кнопкой удаления; список прокручивается до 180px.</li>
+</ul>
+
+<p><strong>Справа — блок «Договор и контакты»</strong> (объединение бывших «Контактная информация» и «Договор»). Содержит:</p>
+<ul>
+  <li><strong>Номер договора</strong>, <strong>Дата договора</strong>, <strong>Адрес</strong> (Select2 с автокомплитом DaData), <strong>Подъезд / квартира</strong>, <strong>Email</strong>, <strong>Телефон</strong>, чекбокс <strong>«Юр. лицо»</strong>.</li>
+  <li>Юр-поля <strong>«Отправлять счёт»</strong>, <strong>«Формировать акт автоматически»</strong>, <strong>«Дата выставления акта»</strong> — показываются только при включённом чекбоксе «Юр. лицо» (динамически JS, без перезагрузки).</li>
+  <li>Незаполненные обязательные поля подсвечиваются красной рамкой (<code>.smit-empty</code>) — оператор сразу видит, что нужно дозаполнить. Подъезд и квартира не подсвечиваются (необязательные для частных домов).</li>
+</ul>
+
+<h5 id="abonent-card-company-toggle">Чекбокс «Юр. лицо» и валидация тарифа</h5>
+<p>При включении чекбокса «Юр. лицо» на физлице с физическим тарифом (<code>Tarif.is_business=false</code>) JavaScript показывает confirm-диалог и при подтверждении открывает модалку смены тарифа с автоматическим переключением на фильтр «Юр.лица». Серверная валидация (<code>Abonents.clean()</code>) дополнительно проверяет: если <code>company=true</code> и текущий тариф не Business — <code>ValidationError</code> на поле <code>tarif</code> с понятным текстом.</p>
+
+<h5 id="abonent-card-email-phone-validation">Маски и валидация email/телефон</h5>
+<p>Оба контактных поля имеют клиентскую и серверную валидацию:</p>
+<ul>
+  <li><strong>Телефон</strong> (<code>sms</code>): jQuery MaskedInput с маской <code>+7 (999) 999-99-99</code>. Авто-нормализация существующего значения при загрузке (<code>79175551234</code>/<code>89175551234</code>/<code>+7..</code> → <code>+7 (917) 555-12-34</code>). На сервере: извлечение цифр, автоприведение <code>8XXX→7XXX</code> и 10-значного→<code>7+10</code>, проверка длины 11 + префикс 7, сохранение в каноне <code>+7XXXXXXXXXX</code>.</li>
+  <li><strong>Email</strong>: <code>type=email</code> + <code>inputmode=email</code> + EMAIL-regex проверка на blur (<code>.is-invalid</code>/<code>.is-valid</code> подсветка). Поддержка нескольких через <code>,</code>/<code>;</code> (legacy). Серверная валидация — <code>django.core.validators.EmailValidator</code> по каждому адресу.</li>
+</ul>
+<p>Все ошибки серверной валидации собираются в один <code>ValidationError(dict)</code>, чтобы оператор видел все проблемы сразу.</p>
+
+<h5 id="abonent-card-tariff-blocks">Блок «Смена тарифа / Блокировки»</h5>
+<p>Внутри блока JavaScript добавляет три визуальных подзаголовка-разделителя, чтобы поля даты не шли плоской простынёй:</p>
+<ul>
+  <li><strong>🔄 Запланированная смена тарифа</strong> — <code>tarif_next</code>, <code>tarif_next_date</code>, <code>tarif_next_date_prev</code> (янтарь).</li>
+  <li><strong>⏸ Добровольная блокировка</strong> — <code>own_disabled_start</code>, <code>own_disabled_end</code> (бирюза).</li>
+  <li><strong>🚫 Административная блокировка</strong> — <code>disabled_date</code>, <code>disabled_date_end</code> (красный).</li>
+</ul>
+
+<h5 id="abonent-card-hidden-blocks">Что убрано/скрыто на вкладке</h5>
+<p>По запросу администрации со вкладки «Информация» убраны:</p>
+<ul>
+  <li><strong>ФИО-заголовок</strong> в самой форме — дублировал шапку карточки. Скрытый input остался для валидации/сохранения.</li>
+  <li><strong>Поле «Точка подключения»</strong> — было JS-вставкой, дублировало отдельную вкладку «Точки подключения».</li>
+  <li><strong>Поле «Группа»</strong> (parent) — техническое, дублировало папку-родителя.</li>
+  <li><strong>Поле «Скидка %»</strong> — рекомендуется использовать программы лояльности.</li>
+  <li><strong>Блок «Особые настройки»</strong> (subgroup 60) — 17 технических полей (CATEGORY, OPERATOR, ACCOUNT, USLUGA_RANGE_TYPE, SYNC1C, ALERT_*, AGENT_SCHEME и др.), которые операторам не нужны. Перенесены в отдельные подразделы при необходимости.</li>
+  <li><strong>Пустой блок «Договор»</strong> — все поля собраны в «Договор и контакты», субгруппа 26 содержит только <code>CONTRACT_PREFIX</code> (только для папок).</li>
+  <li><strong>Блок «Аккаунты / Скорость»</strong> с вкладки «Информация» — дублировал отдельную вкладку «Аккаунты», карточка теперь чище.</li>
+</ul>
+
+<h5 id="abonent-card-summary-chips">Ревизия бейджей шапки</h5>
+<p>В нижнем ряду бейджей (<code>.abon-summary-chips</code>) убраны дубли:</p>
+<ul>
+  <li>Тариф — теперь только в шапке и в hero-блоке, в чипах не повторяется.</li>
+  <li>Баланс — только в шапке справа (красный/зелёный), в чипах не повторяется.</li>
+  <li>Логин учётки — показывается только если он отличается от номера договора (типичный случай — совпадает, тогда чип скрыт).</li>
+  <li>«Учётка вкл/выкл» и «Онлайн/Офлайн» — показываются только для НЕ-заблокированных клиентов (для заблокированного эти статусы избыточны).</li>
+</ul>
+<p>Все чипы приведены к единому языку: единая высота 24px, полный pill (radius 999px), solid пастельный фон без градиентов, тонкая граница того же оттенка. Hover — лёгкое затемнение через <code>filter: brightness(.96)</code>.</p>
+
+<h5 id="abonent-diagnose-skip-blocked">Плашка диагностики связи и заблокированные</h5>
+<p>Для заблокированных и отключённых клиентов плашка-светофор «Проблема со связью» не показывается — у них нет «проблем», есть ожидаемое состояние блокировки. Плашка появляется только для активных без записей в <code>AbonentsBlock</code>.</p>
+
+<p>Mini-блок СОРМ под контактами показывает паспорт + ИНН с кнопкой быстрого редактирования (без перехода на отдельную вкладку). Для юр.лиц — ИНН/КПП/ОГРН + В лице/Директор.</p>
+
+<h5 id="abonent-finance">Блок «Финансовая информация»</h5>
+<p>Под основной информацией клиента отдельная карточка с расчётами по балансу. Состоит из двух частей: таблица балансов и параметры порогов/прогнозов.</p>
+
+<h6>Таблица балансов</h6>
+<p>Три варианта расчёта с разделением списаний на предоплату и постоплату:</p>
+<table class="docs-table">
+  <thead><tr><th>Строка</th><th>Формула</th><th>Что значит</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Бух.</strong></td><td><code>admin_accounts.ostatok / 10¹⁰</code></td><td>Бухгалтерский баланс — фактическое значение лицевого счёта.</td></tr>
+    <tr><td><strong>Текущий</strong></td><td>Бух − Расход предоплата + Приход</td><td>С учётом обещанных платежей и предстоящих списаний за уже оказанные услуги.</td></tr>
+    <tr><td><strong>На конец месяца</strong></td><td>Текущий − Расход постоплата</td><td>Прогноз остатка после всех списаний до конца расчётного периода.</td></tr>
+  </tbody>
+</table>
+<p>Колонки:</p>
+<ul>
+  <li><strong>Приход</strong> — сумма активного обещанного платежа (<code>Usluga 30353</code>).</li>
+  <li><strong>Расход предоплата</strong> — будущие списания услуг с <code>payment_type=prepaid</code> в этом месяце.</li>
+  <li><strong>Расход постоплата</strong> — услуги по факту использования (трафик, услуги-пакеты).</li>
+</ul>
+
+<h6>Параметры и прогнозы</h6>
+<table class="docs-table">
+  <thead><tr><th>Поле</th><th>Назначение</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Порог предупр.</strong></td><td>Если <code>ostatok &lt; threshold</code> — отправляется уведомление через MsgStack (Email/SMS/Push).</td></tr>
+    <tr><td><strong>Порог откл.</strong></td><td>Если <code>ostatok &lt; threshold</code> — <code>billing_worker</code> ставит блок <code>b_negbal</code> и шлёт CoA Disconnect.</td></tr>
+    <tr><td><strong>Бонусы</strong></td><td>Текущий счёт бонусных баллов (программа лояльности, <code>AbonentsLoyalty</code>).</td></tr>
+    <tr><td><strong>Рек. платёж</strong></td><td>Минимальная сумма для непрерывного обслуживания до конца следующего месяца.</td></tr>
+    <tr><td><strong>Мин. для разблок.</strong></td><td>При активном <code>b_negbal</code> — сколько нужно внести сейчас чтобы блок снялся.</td></tr>
+    <tr><td><strong>Хватит до</strong></td><td>Прогнозная дата выхода в минус: <code>today + (ostatok / monthly_burn_rate)</code>.</td></tr>
+  </tbody>
+</table>
+
+<h6>Калькулятор «Рассчитать платёж»</h6>
+<p>Поле «Рассчитать до даты» + кнопка → возвращает требуемую сумму пополнения чтобы баланса хватило до указанной даты. Использует тот же алгоритм что <code>billing_simulate</code> — учитывает тариф, активные <code>UsersUsluga</code>, будущие <code>sched_date</code>, бонусы и скидки.</p>
+
+<h6>Где смотреть в коде</h6>
+<ul>
+  <li><strong>View</strong>: <code>billing/views/abonents.py::add_finance_tab</code> + контекст для <code>show_fields.html</code></li>
+  <li><strong>Шаблон</strong>: <code>billing/templates/abonents_form/balanse_table.html</code></li>
+  <li><strong>Расчёт «Хватит до»</strong>: <code>billing/services/balance_forecast.py::days_until_negative</code></li>
+</ul>
+
+<h4 id="abonent-card-tab-history">История</h4>
+<p>Лента всех изменений по клиенту, синхронизирована с разделом <a href="reports.html#audit">Аудит</a>. Каждая запись содержит:</p>
+<ul>
+  <li>Дату и время.</li>
+  <li>Тип изменения (создание / редактирование / удаление / блокировка / финопер).</li>
+  <li>Оператора (кто внёс изменение).</li>
+  <li>Описание + diff (какие поля изменились, было → стало).</li>
+</ul>
+<p>Drill-down ссылки ведут на конкретный объект изменения (FinOp, UsersUsluga, ABONENTS_BLOCK).</p>
+
+<h4 id="abonent-card-tab-tariff">Тариф и услуги</h4>
+<p>Текущий тариф клиента + список индивидуальных услуг (<code>UsersUsluga</code>):</p>
+<ul>
+  <li><strong>Изменение тарифа</strong> — Select2 с предпросмотром стоимости. Можно задать «Тариф следующий» (<code>tarif_next</code>) для отложенной смены с начала следующего расчётного периода.</li>
+  <li><strong>Список услуг</strong> с фильтрами enabled / disabled / deleted. Каскад отображения суммы: <code>UU.summ → Usluga.summa → Usluga.price</code>; источник указывается явно в плейсхолдере.</li>
+  <li><strong>Модалка редактирования</strong>: Услуга (Select2 AJAX), Индивидуальная сумма, Скидка, Кол-во, Дата начала, Дата следующего списания, Примечание, Включена.</li>
+  <li>Опция «Очистить сумму» возвращает каскадное вычисление (<code>summ=NULL</code>).</li>
+</ul>
+
+<h4 id="abonent-card-tab-bonus">Бонусы</h4>
+<p>Подвид «Услуг», но с фильтром по знаку: компенсации и скидки (<code>summa &lt; 0</code>) или начисления типа «бонус» по имени:</p>
+<ul>
+  <li>Серый бейдж «с DD.MM.YYYY» для отложенных бонусов (<code>enable_date &gt; now</code>).</li>
+  <li>Редактирование <code>enable_date</code> в модалке — datetime-local с кнопкой очистки.</li>
+  <li>Пример: «Ежемесячный бонус» (Usluga #30049) с индивидуальной суммой −500 ₽ — компенсация за акцию.</li>
+</ul>
+
+<h4 id="abonent-card-tab-finance">Финансовые операции (вкладка)</h4>
+
+<p>Журнал приходов, расходов и сторно по счёту клиента — компактная таблица
+с быстрыми фильтрами и формами создания операций. Открывается в карточке клиента
+по табу <strong>«Операции»</strong>: <code>/admin/Abonents/&lt;id&gt;/operations/</code>.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/operations_v767/operations_v767_01_desktop.png" alt="Вкладка Операции — общий вид"></p>
+
+<details class="section-toc">
+  <summary><strong>Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#ops-kpi">KPI-блок (Всего / Приход / Расход / Нетто)</a></li>
+    <li><a href="#ops-toolbar">Toolbar в одну строку</a></li>
+    <li><a href="#ops-modal">Модалка «Приход / Расход»</a></li>
+    <li><a href="#ops-usluga">Привязка услуги к расходу</a></li>
+    <li><a href="#ops-mobile">Mobile</a></li>
+    <li><a href="#ops-dark">Тёмная тема</a></li>
+  </ul>
+</details>
+
+<h5 id="ops-kpi">KPI-блок</h5>
+<p>Сразу под навигацией — 4 цветные KPI-карточки:</p>
+<ul>
+  <li><strong>Всего</strong> — общее число операций за выбранный период. В подписи
+  сразу указан период: <em>«N операций · 13.05.2025 — 13.05.2026»</em>.</li>
+  <li><strong>Приход</strong> — сумма всех зачислений (зелёный, иконка <code>↓</code>).</li>
+  <li><strong>Расход</strong> — сумма всех списаний (красный, иконка <code>↑</code>).</li>
+  <li><strong>Нетто</strong> — приход минус расход. Цвет зависит от знака.</li>
+</ul>
+<p>Клик по KPI «Приход» / «Расход» / «Сторно» работает как chip-фильтр —
+быстрая фильтрация без открытия toolbar.</p>
+
+<h5 id="ops-toolbar">Toolbar в одну строку</h5>
+
+<p>Все элементы фильтра помещаются в одну линию (на mobile уезжают в bottom-sheet
+по кнопке «Фильтры»). Слева направо:</p>
+
+<ol>
+  <li><strong>Кнопки <span style="color:#198754">Приход</span> / <span style="color:#dc3545">Расход</span></strong> — открывают модалку создания.</li>
+  <li><strong>Chip-фильтры по знаку</strong>: «Все · ↓ · ↑ · ↻» (icon-only с tooltip).</li>
+  <li><strong>Диапазон дат</strong>: <code>[13.05.2025] — [13.05.2026]</code> в input-group, без подписей «с/по».</li>
+  <li><strong>Селектор типа</strong> операции (выпадающий список FinTypes).</li>
+  <li><strong>Поиск</strong> по описанию (растягивается на всё свободное место).</li>
+  <li><strong>Кнопка <i class="ti ti-search"></i></strong> — применить фильтры.</li>
+  <li><strong>Кнопка <i class="ti ti-file-spreadsheet"></i></strong> — экспорт CSV выборки.</li>
+</ol>
+
+<p><strong>Период по умолчанию</strong>: 12 месяцев — сразу видна вся годовая
+история, при необходимости диапазон сужается вручную.</p>
+
+<h5 id="ops-modal">Модалка «Приход / Расход»</h5>
+
+<p>Одна модалка <code>#addFinOpModal</code> для двух режимов. Открывается из
+toolbar или из шапки на mobile. Цветной header (<span style="color:#198754">зелёный</span>
+для прихода / <span style="color:#dc3545">красный</span> для расхода) с белым
+крестиком закрытия.</p>
+
+<p><strong>Поля</strong>:</p>
+<ul>
+  <li><strong>Тип операции</strong> — селект, по умолчанию выбрано:
+    <ul>
+      <li>«Ручная проводка» (sign=+1) для прихода</li>
+      <li>«Корректирующее списание» (sign=−1) для расхода</li>
+    </ul>
+    Оператор может сменить тип через выпадающий список — он не зафиксирован.
+  </li>
+  <li><strong>Сумма (руб.)</strong> — в рублях, обязательное.</li>
+  <li><strong>Баланс</strong> — текущий баланс клиента (read-only справа).</li>
+  <li><strong>Описание</strong> — произвольный текст (по умолчанию «Ручная проводка» / «Расход»).</li>
+  <li><strong>Услуга</strong> — опционально, см. ниже.</li>
+</ul>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/operations_v767/operations_v767_03_modal_income.png" alt="Модалка Приход (зелёный header)" style="max-width:540px"></p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/operations_v767/operations_v767_02_modal_expense.png" alt="Модалка Расход с раскрытой услугой" style="max-width:540px"></p>
+
+<h5 id="ops-usluga">Привязка услуги к расходу</h5>
+
+<p>Только в режиме «Расход» под основными полями есть ссылка
+<strong>«+ Добавить услугу»</strong>. Клик — раскрывается селект из 300 услуг
+каталога (<code>/rest_api/v2/Usluga/?per_page=300&deleted=false</code>). Услуги
+показаны с суффиксом-ценой для удобства выбора:</p>
+
+<pre><code>Подключение интернета · +1500.00 ₽
+Скидка за электроэнергию 50 · -50.00 ₽
+бонус 100 руб/мес · -100.00 ₽
+Бонус 650р/мес · -650.00 ₽
+…</code></pre>
+
+<p>Привязка услуги к финоперации сохраняется в <code>FinanceOperations.usluga_id</code>
+(FK → Usluga) — для отчётности по типам расходов.</p>
+
+<p>Услуга <strong>опциональна</strong> — оператор может оформить «голый» расход без привязки.</p>
+
+<h5 id="ops-mobile">Mobile (≤768px)</h5>
+
+<p>На мобильных:</p>
+<ul>
+  <li>Toolbar скрыт; вверху видны только 3 кнопки в шапке: <strong>Приход · Расход · Фильтры</strong>.</li>
+  <li>Кнопка «Фильтры» открывает <strong>bottom-sheet</strong> со всеми фильтрами (даты, тип, поиск, chip-знаки) как на других mobile-страницах.</li>
+  <li>Модалка операции — <code>modal-fullscreen-sm-down</code> (на весь экран).</li>
+  <li>Поля input <code>font-size: 16px</code> (iOS Safari не зумит при фокусе).</li>
+</ul>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/operations_v767/operations_v767_06_mobile.png" alt="Вкладка Операции на mobile" style="max-width:390px"></p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/operations_v767/operations_v767_07_mobile_modal.png" alt="Модалка Расход на mobile (fullscreen)" style="max-width:390px"></p>
+
+<h5 id="ops-dark">Тёмная тема</h5>
+
+<p>Полная адаптация для тёмной темы: KPI-карточки, toolbar, таблица операций,
+модалка (background <code>#1f2227</code>, поля <code>#2a2f37</code>, borders <code>#3a3f47</code>,
+labels <code>#c8d0d8</code>).</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/operations_v767/operations_v767_04_dark.png" alt="Вкладка Операции в тёмной теме"></p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/operations_v767/operations_v767_05_modal_dark.png" alt="Модалка Расход в тёмной теме" style="max-width:540px"></p>
+
+<h5>Действия со строкой операции</h5>
+
+<ul>
+  <li><strong>Цветовое кодирование</strong> строк: зелёный фон — приход, красный — расход, зачёркнутые — сторнированные.</li>
+  <li>Клик по строке — открывает <strong>модалку редактирования</strong> (<code>#editFinOpModal</code>) с расширенным набором полей: тип, сумма, описание, дата, период, владелец, услуга, кредит-тип, связанная операция.</li>
+  <li><strong>Удаление операции</strong> — иконка корзины. При удалении автоматически
+  откатывается баланс счёта (<code>ostatok -= op_summa</code>) — см.
+  <a href="abonents.html#finops-storno">DeleteObjectFormMixin._rollback_balance_on_delete</a>.</li>
+  <li><strong>Сторнирование</strong> — создаёт парную обратную операцию с пометкой
+  <code>storno=True</code>; обе строки отображаются зачёркнутыми.</li>
+  <li><strong>Печать чека</strong> — для операций оплат генерируется PDF (получение
+  через <code>get_pdf</code> view).</li>
+</ul>
+
+<h5 id="ops-permissions">Права доступа и ограничения политики</h5>
+
+<p>Поведение всех действий с финансовыми операциями (создание, редактирование,
+удаление) определяется 5 настройками в
+<a href="settings.html#system-security-finops">/admin/settings/system/?tab=security</a>.
+По умолчанию ничего не ограничено — стандартное поведение Django admin
+(любой <code>is_staff=True</code> может всё).</p>
+
+<table class="data-table">
+  <thead><tr><th>Настройка</th><th>Что меняет</th><th>Default</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><code>RESTRICT_MANUAL_FINOPS_TO_SUPERUSER</code></td>
+      <td>Кнопки «Приход»/«Расход», редактирование и удаление доступны только
+      <code>is_superuser=True</code> или членам группы <code>root</code></td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <td><code>ALLOW_USLUGA_IN_MANUAL_FINOPS</code></td>
+      <td>Показывать ссылку «+ Добавить услугу» в модалке Расхода</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <td><code>MANUAL_FINOP_MAX_AMOUNT</code></td>
+      <td>Запрет операций с суммой выше N ₽ (защита от опечаток). 0 = без ограничения</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td><code>MANUAL_FINOP_REQUIRE_DESCR</code></td>
+      <td>Запрещает пустое поле «Описание» при ручных операциях</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <td><code>ALLOW_FINOP_DELETE</code></td>
+      <td>Если выключено — кнопка удаления скрыта, доступно только сторнирование
+      (для бухгалтерской отчётности)</td>
+      <td>True</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Все ограничения проверяются <strong>и в backend</strong> (HTTP 403 на API
+endpoints <code>finops_ajax</code>, <code>finops_crud_ajax</code>,
+<code>FinOpChangeView</code>) <strong>и в frontend</strong> (кнопки и ссылки
+скрыты в HTML, чтобы не вводить пользователя в заблуждение).</p>
+
+<p>Helpers backend (<code>billing.services.settings_service</code>):</p>
+<ul>
+  <li><code>can_user_manage_finops(user)</code> — может ли пользователь создавать/редактировать/удалять</li>
+  <li><code>is_usluga_in_manual_finops_allowed()</code></li>
+  <li><code>get_manual_finop_max_amount()</code></li>
+  <li><code>is_manual_finop_descr_required()</code></li>
+  <li><code>is_finop_delete_allowed()</code></li>
+</ul>
+
+<p><strong>Важно</strong>: ограничения касаются <strong>только ручных операций
+через UI</strong>. Автоматические процессы (Celery worker «billing_worker»
+для абонплаты, webhook ЮKassa, обещанный платёж, autoblock и т.п.) работают
+как обычно — без проверок. Это нужно чтобы политика «только суперюзер»
+не сломала автоматическое начисление.</p>
+
+<h5 id="ops-balance-update">Обновление баланса</h5>
+
+<p>Создание / редактирование / удаление FinOp <strong>автоматически обновляет
+<code>account.ostatok</code></strong> ( hotfix — ранее create/edit
+писали запись в БД, но баланс не трогали; только delete делал rollback,
+что приводило к симметричному багу «удалил → баланс вырос»).</p>
+
+<p>Логика:</p>
+<ul>
+  <li><strong>Create</strong>: <code>ostatok += op_summa</code> (положительная — приход, отрицательная — расход).</li>
+  <li><strong>Edit</strong>: <code>ostatok += (новая_сумма − старая_сумма)</code> — дельта.</li>
+  <li><strong>Delete</strong>: <code>ostatok -= op_summa</code> — откат вклада операции.</li>
+</ul>
+
+<p>При уходе баланса в минус — Celery beat task <code>process_blocks</code>
+(каждые 5 минут) автоматически создаст <code>AbonentsBlock(b_negbal=True)</code>
++ CoA-disconnect через <code>_block_negative_balance()</code>.</p>
+
+<!-- ===== Connection Points: обзор ===== -->
+<h4 id="connection-points-overview">Точки подключения — назначение и роль</h4>
+<details class="section-toc">
+  <summary><strong>Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#cp-purpose">Зачем нужна точка подключения</a></li>
+    <li><a href="#cp-fields">Поля и связи</a></li>
+    <li><a href="#cp-when-needed">Когда нужно создавать точку</a></li>
+    <li><a href="#cp-cleanup">Что делать с точками без жителей</a></li>
+  </ul>
+</details>
+
+<p><strong>Точка подключения</strong> (<code>CONNECTION_POINTS</code>) — это запись о физическом подключении клиента к сети провайдера: квартира, розетка, порт коммутатора. Хранится в таблице <code>CONNECTION_POINTS</code>. Один клиент может иметь несколько точек (две квартиры, резервная линия, разные приставки).</p>
+
+<h5 id="cp-purpose">Зачем нужна точка подключения</h5>
+<p>Точка решает четыре задачи:</p>
+<ol>
+  <li><strong>Физическая привязка к инфраструктуре</strong> — какая розетка → какой порт свитча → какой VLAN → какой IP-пул. Используется техником для выезда на адрес;</li>
+  <li><strong>Предотвращение двойного подключения</strong> — порт <code>SWITCH_P_ID</code> резервируется. Биллинг не даст подключить двух клиентов к одному порту;</li>
+  <li><strong>OPT82-авторизация</strong> — сопоставление DHCP Option 82 (IP свитча + номер порта) с записью точки. Без точки OPT82 не работает;</li>
+  <li><strong>Резерв адресов</strong> — точку можно создать заранее (порт прокинут в подъезд), без привязки к клиенту. Когда клиент подпишется — она ему присваивается.</li>
+</ol>
+
+<h5 id="cp-fields">Поля и связи</h5>
+<table class="data-table">
+  <thead>
+    <tr><th>Поле</th><th>Связь</th><th>Описание</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>NAME</code></td><td>—</td><td>Произвольное имя («Кв. 12, розетка 1»)</td></tr>
+    <tr><td><code>HOME_ID</code></td><td>FK → homes</td><td>Дом</td></tr>
+    <tr><td><code>FLAT</code> + <code>SOCKET</code></td><td>—</td><td>Квартира + номер розетки</td></tr>
+    <tr><td><code>SWITCH_ID</code></td><td>FK → switch</td><td>Коммутатор уровня доступа</td></tr>
+    <tr><td><code>SWITCH_P_ID</code></td><td>FK → SWITCH_PORTS</td><td>Конкретный порт коммутатора</td></tr>
+    <tr><td><code>IP_PULL_ID</code></td><td>FK → ip_pull</td><td>Из какого пула выдаётся IP клиентам этой точки</td></tr>
+    <tr><td><code>ABONENT_ID</code></td><td>FK → abonents</td><td>Кому принадлежит (NULL = резерв)</td></tr>
+    <tr><td><code>USER_ID</code></td><td>FK → users</td><td>Какая учётка работает через эту точку (NULL = резерв)</td></tr>
+  </tbody>
+</table>
+
+<h5 id="cp-when-needed">Когда нужно создавать точку</h5>
+<ul>
+  <li><strong>Подключение нового клиента</strong> — точка создаётся вручную в карточке клиента или мастером <code>AbonentWizardCPView</code>;</li>
+  <li><strong>Заведение резерва на новый дом</strong> — техник прокинул кабель в подъезд → создаёт точки заранее без <code>ABONENT_ID</code>. Когда жилец подключится, точка цепляется к клиенту;</li>
+  <li><strong>Переезд клиента</strong> — старая точка отвязывается (<code>ABONENT_ID=NULL</code>), новая создаётся / привязывается. История подключений сохраняется через лог;</li>
+  <li><strong>Резервная линия</strong> — точка создаётся как вторая для того же клиента, обычно для отказоустойчивости в офисах.</li>
+</ul>
+
+<h5 id="cp-cleanup">Что делать с точками без жителей</h5>
+<p>На рабочий сервер 2026-05: 914 точек без <code>USER_ID</code> и <code>ABONENT_ID</code>. Это <strong>не мусор</strong>:</p>
+<ul>
+  <li>Если у точки заполнен <code>SWITCH_ID</code> или <code>SWITCH_P_ID</code> или <code>HOME_ID</code> — это <strong>резерв</strong>: оборудование готово к подключению. Не удалять;</li>
+  <li>Только полностью пустые точки (без свитча, без адреса, без сокета) — это рудимент от старых тестов. Их можно удалять через UI кнопкой 🗑;</li>
+  <li>FK защита: <code>SWITCH_PORTS</code> и <code>users</code> ссылаются на точку с <code>NO ACTION</code>. UI заблокирует удаление если порт реально занят учёткой.</li>
+</ul>
+
+<div class="info-box">
+  <strong>Важно:</strong> при перемещении клиента из одной квартиры в другую правильнее <em>не удалять</em> старую точку, а отвязать (<code>ABONENT_ID=NULL</code>). Тогда историю подключения видно через <code>USERS_USLUGA_HISTORY</code> и аудит, а сама розетка остаётся в каталоге как «резерв» для нового жильца.
+</div>
+
+<h4 id="abonent-card-tab-conn-points">Точки подключения и Оборудование</h4>
+<p>Объединённая вкладка. Содержит:</p>
+<ul>
+  <li><strong>Точка подключения</strong> (<code>ConnectionPoints</code>) — какой коммутатор / порт / VLAN, MAC-адрес.</li>
+  <li><strong>Оборудование клиента</strong> (роутер, ONT, модем) с MAC-адресом и SN.</li>
+  <li>Возможность переезда на другую точку через мастер (<code>AbonentWizardCPView</code>).</li>
+</ul>
+
+<!-- ===== Users (учётные записи): обзор ===== -->
+<h4 id="users-overview">Учётные записи (Users) — назначение и роль</h4>
+<details class="section-toc">
+  <summary><strong>Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#users-vs-abonents">Чем Users отличается от Abonents</a></li>
+    <li><a href="#users-fields">Поля и связи</a></li>
+    <li><a href="#users-auth-types">Типы авторизации</a></li>
+    <li><a href="#users-lifecycle">Жизненный цикл</a></li>
+  </ul>
+</details>
+
+<p><strong>Учётная запись (Users)</strong> — это запись для авторизации в RADIUS на конкретную услугу (Internet, IPTV, VoIP). Это <strong>не Django-юзер админки</strong>, а отдельная сущность, специфичная для биллинга.</p>
+
+<h5 id="users-vs-abonents">Чем Users отличается от Abonents</h5>
+<table class="data-table">
+  <thead>
+    <tr><th>Сущность</th><th>Что это</th><th>Кратность</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>Abonents</code></td><td>Договор / физ или юр лицо</td><td>1 на клиента</td></tr>
+    <tr><td><code>Users</code></td><td>Учётная запись для одной услуги</td><td>N на клиента</td></tr>
+  </tbody>
+</table>
+<p><strong>Пример</strong>: Иван Иванов (один клиент) подписан на:</p>
+<ul>
+  <li><code>ivan_pppoe</code> — PPPoE для домашнего интернета;</li>
+  <li><code>ivan_iptv</code> — IPTV-приставка;</li>
+  <li><code>ivan_office_pppoe</code> — резервный канал в офис.</li>
+</ul>
+<p>На каждую — отдельная Users-запись с уникальным <code>LOGIN</code>, паролем, MAC и привязкой к NAS. Все три записи через <code>ABONENT_ID</code> ведут на один Abonents-договор.</p>
+
+<h5 id="users-fields">Поля и связи</h5>
+<table class="data-table">
+  <thead>
+    <tr><th>Поле</th><th>Назначение</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>LOGIN</code> + <code>PSW</code></td><td>Логин/пароль для PPP/CHAP/PAP-аутентификации</td></tr>
+    <tr><td><code>IP</code> / <code>SNATIP</code></td><td>Назначенный IP (статика). При DHCP/PPPoE заполняется RADIUS-ом из пула</td></tr>
+    <tr><td><code>MAC</code></td><td>MAC-адрес устройства клиента (для DHCP/MAC-bind)</td></tr>
+    <tr><td><code>NAS_ID</code></td><td>Через какой NAS работает (заполняется при первой авторизации)</td></tr>
+    <tr><td><code>PULL_ID</code></td><td>Из какого IP-пула выдан адрес</td></tr>
+    <tr><td><code>SWITCH_ID</code> + <code>PORT</code></td><td>Через какой коммутатор и какой порт</td></tr>
+    <tr><td><code>AUTH_TYPE_ID</code></td><td>Тип авторизации (см. ниже)</td></tr>
+    <tr><td><code>TARIF_ID</code></td><td>Опционально — свой тариф для этой учётки (если NULL — наследует от <code>Abonents.tarif</code>)</td></tr>
+    <tr><td><code>ENABLED</code></td><td>Включена/выключена. RADIUS отказывает при <code>enabled=false</code></td></tr>
+    <tr><td><code>LOGGED</code></td><td>Сейчас в сессии (обновляется RADIUS Accounting)</td></tr>
+  </tbody>
+</table>
+
+<h5 id="users-auth-types">Типы авторизации</h5>
+<p>Справочник <code>auth_types</code> (FK <code>Users.AUTH_TYPE_ID</code>) определяет как RADIUS аутентифицирует клиента:</p>
+<ul>
+  <li><strong>PAP/CHAP/MS-CHAP</strong> — классический логин/пароль (PPPoE);</li>
+  <li><strong>OPT82</strong> — DHCP Option 82 (по физическому порту коммутатора, без логина). Требует заполненного <code>SWITCH_PORTS</code> и <code>SwitchType</code> с шаблонами парсинга;</li>
+  <li><strong>MAC</strong> — авторизация по MAC-адресу устройства (для устройств без UI ввода логина);</li>
+  <li><strong>NONE / Static</strong> — статически прописан IP, без авторизации (например, выделенные сервисы юр.лиц).</li>
+</ul>
+
+<h5 id="users-lifecycle">Жизненный цикл</h5>
+<ol>
+  <li><strong>Создание</strong> — вручную через карточку клиента (<code>users_inline.html</code> модалка) или автоматически через <code>Abonents.add_service()</code> при добавлении услуги с флагом <code>create_login=True</code>;</li>
+  <li><strong>Первая авторизация</strong> — RADIUS заполняет <code>NAS_ID</code>, <code>IP</code>, <code>LOGGED=true</code>, выдаёт IP из пула;</li>
+  <li><strong>Сессия</strong> — пишутся записи в <code>RADIUS_SESSIONS</code>; Acct-Interim каждые ~10 мин обновляет статус;</li>
+  <li><strong>Блокировка</strong> — при <code>Abonents.block()</code> все Users этого клиента получают <code>enabled=false</code> + CoA Disconnect (см. <a href="abonents.html#abonents-block-overview">Блокировки</a>);</li>
+  <li><strong>Удаление</strong> — мягкое (<code>enabled=false</code>) при удалении клиента, или жёсткое через UI после отсоединения от точек подключения и сессий.</li>
+</ol>
+
+<div class="info-box">
+  <strong>Распространённая ошибка:</strong> «<em>не могу установить тариф учётке</em>» — потому что обычно тариф у <strong>Abonents</strong>, не у Users. Поле <code>Users.TARIF_ID</code> используется только в редких сценариях (когда у разных учёток одного клиента нужны разные скорости). Если у вас стандартная схема — тариф ставится на клиента, и все его Users автоматически работают на этом тарифе.
+</div>
+
+<h4 id="abonent-card-tab-users">Учётные записи</h4>
+<p>Логины клиента (<code>Users</code> — один клиент может иметь несколько учёток для Internet/IPTV/VoIP). На каждую строку — 6 действий:</p>
+<ul>
+  <li>✏ <strong>Редактировать</strong> — модалка с 4 вкладками: Основные (логин, пароль с генератором, MAC, вкл./комментарий), Сеть (IP-пул, IPv4 с random из пула, NAS, Switch, PORT, VLAN), Адрес (Дом Select2 AJAX, кв.), RADIUS (последние 20 сессий read-only).</li>
+  <li>🔌 <strong>Отсоединить</strong> (CoA Disconnect) — параллельно на все enabled NAS.</li>
+  <li>🔄 <strong>Сбросить зависшую сессию</strong> — UPDATE LOGGED=0 + RADIUS_SESSIONS.END_TIME = now.</li>
+  <li>🧪 <strong>Тест авторизации</strong> — radtest через pyrad напрямую к freeradius:1812. Модалка с цветовым результатом (Accept/Reject/Timeout) + таблица атрибутов RADIUS.</li>
+  <li>📋 <strong>Подробнее</strong> — drawer-панель справа с шапкой, последними 5 сессиями, графиком трафика за 30 дней, историей паролей, сетевыми привязками.</li>
+  <li>🗑 <strong>Удалить</strong>.</li>
+</ul>
+<p>Inline-редактирование пароля: двойной клик на ячейке с паролем → input + кнопки 🎲 generate / ✓ save / ✕ cancel. Enter=save, Escape=cancel.</p>
+
+<!-- ===== RadiusSessions: обзор ===== -->
+<h4 id="radius-sessions-overview">RADIUS-сессии — назначение и роль</h4>
+<details class="section-toc">
+  <summary><strong>Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#rs-tables">Две таблицы: RADIUS_SESSIONS и USERS_RADIUSAUTH</a></li>
+    <li><a href="#rs-lifecycle">Жизненный цикл сессии</a></li>
+    <li><a href="#rs-end-reasons">Причины завершения (END_REASON)</a></li>
+    <li><a href="#rs-zombie">Зомби-сессии и их чистка</a></li>
+    <li><a href="#rs-async">Async accounting</a></li>
+    <li><a href="#rs-cleanup">Чистка истории</a></li>
+  </ul>
+</details>
+
+<p><strong>RADIUS-сессия</strong> — запись о факте подключения клиента к сети: с какого момента, через какой NAS, какой IP, сколько байт прошло, когда закончилась. Хранится в таблицах <code>RADIUS_SESSIONS</code> (история) и <code>USERS_RADIUSAUTH</code> (текущее состояние).</p>
+
+<h5 id="rs-tables">Две таблицы: RADIUS_SESSIONS и USERS_RADIUSAUTH</h5>
+<p>Дублирование данных сделано <strong>сознательно</strong> ради производительности:</p>
+<table class="data-table">
+  <thead><tr><th>Таблица</th><th>Что хранит</th><th>Размер</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><code>RADIUS_SESSIONS</code></td>
+      <td>История всех сессий за всю жизнь клиентов. Каждая сессия = одна запись с <code>START_TIME</code>, <code>END_TIME</code>, <code>OCTETS_IN/OUT</code>, <code>END_REASON</code></td>
+      <td>~400K-7M записей</td>
+    </tr>
+    <tr>
+      <td><code>USERS_RADIUSAUTH</code></td>
+      <td>Зеркало <em>текущего</em> состояния. Один user = одна запись с полями <code>LOGGED</code>, текущий <code>IP</code>, последние <code>OCTETS_IN/OUT</code>, <code>RADIUS_UPDATE</code></td>
+      <td>1 строка на клиента (~5800)</td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Зачем две таблицы</strong>: виджет «Онлайн сейчас» в дашборде должен мгновенно показать «1234 онлайн». В <code>RADIUS_SESSIONS</code> для этого надо найти строки <code>WHERE END_TIME IS NULL</code> среди миллионов записей. В <code>USERS_RADIUSAUTH</code> — простой <code>SUM(LOGGED)</code> на 5800 строк = 10мс. Аналитика и история — только в <code>RADIUS_SESSIONS</code>.</p>
+
+<h5 id="rs-lifecycle">Жизненный цикл сессии</h5>
+<ol>
+  <li><strong>Acct-Start</strong> — NAS отправляет RADIUS Accounting-Request с типом Start. Биллинг создаёт запись в <code>RADIUS_SESSIONS</code> с <code>END_TIME=NULL</code> + обновляет <code>USERS_RADIUSAUTH(LOGGED=1, IP=...)</code>;</li>
+  <li><strong>Acct-Interim-Update</strong> — NAS шлёт каждые ~10 минут (по <code>Acct-Interim-Interval</code>). Обновляются <code>OCTETS_IN/OUT</code>, <code>SESSION_TIME</code>, <code>RADIUS_UPDATE</code> — БЕЗ создания новой записи;</li>
+  <li><strong>Acct-Stop</strong> — при отключении клиента NAS шлёт Stop. Биллинг проставляет <code>END_TIME=now()</code>, <code>END_REASON=&lt;причина&gt;</code> + сбрасывает <code>USERS_RADIUSAUTH.LOGGED=0</code>.</li>
+</ol>
+
+<h5 id="rs-end-reasons">Причины завершения (END_REASON)</h5>
+<table class="data-table">
+  <thead><tr><th>Reason</th><th>Что значит</th></tr></thead>
+  <tbody>
+    <tr><td><code>User-Request</code></td><td>Клиент сам выключил роутер / отключил интернет</td></tr>
+    <tr><td><code>Idle-Timeout</code></td><td>NAS закрыл сессию по неактивности</td></tr>
+    <tr><td><code>Session-Timeout</code></td><td>Достигнут лимит сессии (если задан)</td></tr>
+    <tr><td><code>Lost-Carrier</code></td><td>Физический обрыв линии (нет сигнала на порту)</td></tr>
+    <tr><td><code>Disconnect-ACK</code></td><td>Биллинг отправил CoA Disconnect (блокировка) — NAS прервал сессию</td></tr>
+    <tr><td><code>NAS-Reboot</code></td><td>NAS перезагрузился, сессия закрыта системой</td></tr>
+    <tr><td><code>Manual-reset-by-operator</code></td><td>Оператор вручную сбросил зависшую сессию через UI</td></tr>
+  </tbody>
+</table>
+
+<h5 id="rs-zombie">Зомби-сессии и их чистка</h5>
+<p><strong>Зомби-сессия</strong> — это когда NAS перезагрузился без отправки Acct-Stop, и в БД осталась запись с <code>END_TIME=NULL</code>, хотя реально сессии нет.</p>
+<ul>
+  <li>Симптом: <code>Users.LOGGED=1</code> у клиента, который реально оффлайн. Виджет «Онлайн» показывает завышенное число;</li>
+  <li>Причина: NAS не успел отправить Stop при выключении / NAT crash / power loss;</li>
+  <li>Решение — Celery beat <code>cleanup_stale_sessions</code> (раз в час, + UTC fix):
+    <ul>
+      <li>Находит <code>USERS_RADIUSAUTH WHERE LOGGED=1 AND RADIUS_UPDATE &lt; now() - 60min</code> (нет Interim больше часа);</li>
+      <li>Закрывает соответствующие <code>RADIUS_SESSIONS</code> с <code>END_REASON='Stale'</code>;</li>
+      <li>Сбрасывает <code>USERS_RADIUSAUTH.LOGGED=0</code>.</li>
+    </ul>
+  </li>
+  <li><strong>session_audit_hourly</strong> — каждый час сравнивает live-сессии на NAS (через SSH/RPC) с биллингом, шлёт Telegram-алерт если расхождение &gt; 5%.</li>
+</ul>
+
+<h5 id="rs-async">Async accounting</h5>
+<p>Учёт сессий идёт асинхронно, чтобы поток пакетов не упирался в запись в БД:</p>
+<ol>
+  <li>FreeRADIUS принимает Acct-Update и сразу возвращает Accounting-Response;</li>
+  <li>Сам пакет кладётся в Celery-очередь (<code>radius_accounting_async</code>);</li>
+  <li>Воркеры разбирают очередь, дебаунсят множественные Interim в группу (раз в 10 секунд на user);</li>
+  <li>Записывают батчем в БД.</li>
+</ol>
+<p>Результат: 4M conflicting packets → 0, нагрузка на БД снизилась в 50 раз. Recovery «Stop без Start» — генерируется синтетический Start если пришёл Stop без записи (NAS reboot).</p>
+
+<h5 id="rs-cleanup">Чистка истории</h5>
+<p><code>RADIUS_SESSIONS</code> растёт быстро (10K-100K записей в день). Без чистки таблица за год становится огромной. Авто-чистка:</p>
+<ul>
+  <li>Celery beat <code>db_cleanup_daily</code> раз в сутки — удаляет закрытые сессии старше <code>DB_CLEANUP_SESSIONS_DAYS</code> (default 90 дней);</li>
+  <li>Удаление в чанках по 5000 записей с паузами — чтобы не блокировать БД;</li>
+  <li>VACUUM ANALYZE после удаления.</li>
+</ul>
+
+<div class="info-box">
+  <strong>Переполнение счётчика:</strong> NAS-Mikrotik после переполнения счётчика мог прислать <code>Acct-Session-Time=4_261_480_885</code> (~135 лет). Колонка <code>SESSION_TIME integer</code> переполнялась → SQL-ошибка → запись не создавалась → виджет «Онлайн» расходился с реальностью. Фикс: clamp до int4_max в <code>internet.py</code> + миграция <code>SESSION_TIME bigint</code>. Виджет: 989 онлайн → 1001, расхождение 0%.
+</div>
+
+<h4 id="abonent-card-tab-radius">RADIUS / Монитор сессий</h4>
+<p>URL: <code>/admin/Abonents/&lt;id&gt;/check/</code>. Полнофункциональный live-инструмент мониторинга RADIUS-сессий клиента. После UX-аудита (Sprint 1+2+3, builds 535–544) Health Score 64 → <strong>94+/100</strong>.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/01_overview.png" alt="Монитор сессий — общий вид: контекст тарифа, toolbar с KPI, таблица сессий, live-индикатор"></p>
+
+<h5 id="abonent-card-tab-radius-context">Карточка контекста тарифа</h5>
+<p>Сверху страницы — компактный градиентный блок с информацией о тарифе клиента: имя, цена, шейпер из <code>TarifRadiusParams</code> (Mikrotik-Rate-Limit), Acct-Interim-Interval, статистика 7 дней (всего сессий / обрывов / процент). При <code>drop_pct &gt; 20%</code> — иконка ⚠ предупреждения «выше нормы по тарифу».</p>
+
+<h5 id="abonent-card-tab-radius-toolbar">Toolbar с KPI и переключателем периода</h5>
+<p>Над таблицей — 5 KPI-чипов:</p>
+<ul>
+  <li><strong>Всего</strong> — количество сессий за выбранный период</li>
+  <li><strong>Online</strong> — сейчас активные (с пульсирующей зелёной точкой)</li>
+  <li><strong>Загрузка / Выгрузка</strong> — суммарный трафик ↓/↑</li>
+  <li><strong>Обрывов</strong> — % сессий с <code>END_REASON</code> = Lost-Carrier и подобными. При &gt;25% — красный цвет</li>
+  <li><strong>MAC</strong> — количество уникальных MAC-адресов (выявление смены устройства)</li>
+</ul>
+<p>Переключатель периода: <em>Сутки / Неделя / Месяц / Всё</em>. Клик → fetch <code>GET /admin/Abonents/&lt;ab_id&gt;/sessions/kpi/?period=...</code> → JSON → точечное обновление цифр.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/07_kpi_24h.png" alt="KPI обновляются при выборе периода «Сутки»"></p>
+
+<h5 id="abonent-card-tab-radius-live">Live-индикатор и auto-refresh</h5>
+<p>Справа в toolbar — индикатор «Авто • N с назад» с пульсирующей зелёной точкой. Каждые 30 секунд JS опрашивает <code>GET /admin/Abonents/&lt;ab_id&gt;/sessions/list/</code>, обновляет статус-бейджи и трафик в строках без перезагрузки страницы. При смене статуса (Online → Stale → Завершена или наоборот) — <strong>flash-анимация строки</strong> и toast-уведомление «🔌 Сессия 8142e97a завершена: User-Request».</p>
+
+<p>Клик на индикатор — пауза. При переключении на другую вкладку браузера (<code>document.hidden</code>) — авто-пауза, при возврате — мгновенный refresh.</p>
+
+<h5 id="abonent-card-tab-radius-columns">Колонки таблицы (12 на десктопе)</h5>
+<ul>
+  <li><strong>Логин</strong> — имя учётной записи. Скрывается автоматически если у клиента всего 1 учётка — экономия места.</li>
+  <li><strong>Период</strong> — объединены 3 бывшие колонки. Дата сверху, время начала → конца на одной строке, аптайм с иконкой ⏱. Для активных — пульсирующая зелёная точка «● идёт».</li>
+  <li><strong>Update</strong> — время последнего <code>Acct-Interim-Update</code>.</li>
+  <li><strong>Причина</strong> — <strong>цветной бейдж</strong> с иконкой:
+    <ul>
+      <li><span class="badge" style="background:#6c757d22;color:#495057;border:1px solid #6c757d44">⏻ Норма</span> — User-Request, Logout</li>
+      <li><span class="badge" style="background:#fd7e1422;color:#c25e0a;border:1px solid #fd7e1444">⚡ Обрыв линии</span> — Lost-Carrier, NAS-Reboot</li>
+      <li><span class="badge" style="background:#0d6efd22;color:#0a58ca;border:1px solid #0d6efd44">⏳ Таймаут</span> — Idle-Timeout</li>
+      <li><span class="badge" style="background:#7048e822;color:#5a36c0;border:1px solid #7048e844">✨ Восстановлена</span> — Synthetic, Recovered</li>
+      <li><span class="badge" style="background:#dc354522;color:#a72836;border:1px solid #dc354544">🛡 Админ</span> — Admin-Reset, NAS-Request</li>
+    </ul>
+    В тултипе — раскрытие категории и raw-значение <code>END_REASON</code>. Полную расшифровку всех кодов см. в разделе <a href="#abonent-card-tab-radius-reasons">Причины завершения сессии</a> ниже.
+  </li>
+  <li><strong>Session</strong> — короткий <code>Acct-Session-Id</code> (10 hex). Полный — в тултипе. Клик копирует в буфер с зелёной вспышкой и toast.</li>
+  <li><strong>MAC</strong> — <code>Calling-Station-Id</code> + <strong>OUI vendor</strong> рядом (TP-Link, MikroTik, D-Link, Asus, Netgear, Xiaomi и др., 50+ префиксов). Клик копирует.</li>
+  <li><strong>IP</strong> — <code>Framed-IP-Address</code> синим моноширинным. Клик копирует.</li>
+  <li><strong>NAS</strong> — имя NAS зелёным с иконкой 🖥, IP под именем. Клик открывает <strong>модалку редактирования NAS</strong> в новой вкладке (паттерн <code>?edit=&lt;id&gt;</code> + autoOpenFromQuery в nas_list.html).</li>
+  <li><strong>PPPoE / Порт</strong> — <code>NAS-Port-Id</code>.</li>
+  <li><strong>VLAN</strong> — <code>Tunnel-Private-Group-Id</code> бейджем.</li>
+  <li><strong>Трафик</strong> — две строки с цветовой кодировкой: <span class="text-success">↓ загрузка</span> зелёным, <span class="text-danger">↑ выгрузка</span> красным. В тултипе — точные байты.</li>
+  <li><strong>Статус</strong> — <span class="badge bg-success">● Online</span> / <span class="badge bg-warning text-dark">⚠ Stale</span> / <span class="badge bg-secondary">✓ Завершена</span>.</li>
+  <li><strong>Действия</strong> — кнопка <strong>«i» Подробности</strong> и <strong>«⏻» CoA Disconnect</strong> (только на активных). На Online-строке кнопка CoA — белая с красной обводкой для контраста.</li>
+</ul>
+
+<h5 id="abonent-card-tab-radius-reasons">Причины завершения сессии — полная расшифровка</h5>
+<p>Значение в колонке «Причина» — это RADIUS-атрибут <code>Acct-Terminate-Cause</code>, который NAS (как правило MikroTik) присылает биллингу в пакете <code>Accounting-Stop</code> при закрытии сессии. Записывается в <code>RADIUS_SESSIONS.END_REASON</code>. Биллинг группирует десятки возможных кодов в <strong>5 категорий</strong> (классификатор <code>_REASON_CATEGORIES</code> в <code>billing/templatetags/user_filters.py</code>, фильтр <code>reason_category</code>):</p>
+
+<table>
+  <thead>
+    <tr><th>Бейдж</th><th>Что значит</th><th>RADIUS-коды (<code>Acct-Terminate-Cause</code>)</th><th>Что делать оператору</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="badge" style="background:#6c757d22;color:#495057;border:1px solid #6c757d44">⏻ Норма</span></td>
+      <td>Сессия завершена штатно — клиент сам отключился по своей инициативе или переавторизовался заново.</td>
+      <td><code>User-Request</code>, <code>Logout</code>, <code>Admin-Rebooting</code></td>
+      <td>Ничего. Это нормальное поведение.</td>
+    </tr>
+    <tr>
+      <td><span class="badge" style="background:#fd7e1422;color:#c25e0a;border:1px solid #fd7e1444">⚡ Обрыв линии</span></td>
+      <td>Физический обрыв соединения: NAS перестал получать пакеты от клиента — выключение оборудования, проблема с кабелем, пропало питание, перезагрузка NAS.</td>
+      <td><code>Lost-Carrier</code>, <code>Lost-Service</code>, <code>Port-Error</code>, <code>NAS-Reboot</code>, <code>NAS-Error</code></td>
+      <td>Единичный — норма (клиент выключил роутер). <strong>Много подряд у одного клиента</strong> → проблема с линией/оборудованием клиента, стоит проверить. KPI «Обрывов &gt;25%» в toolbar — сигнал тревоги.</td>
+    </tr>
+    <tr>
+      <td><span class="badge" style="background:#0d6efd22;color:#0a58ca;border:1px solid #0d6efd44">⏳ Таймаут</span></td>
+      <td>Сессия завершена по таймауту — неактивность клиента или достигнута максимальная длительность сессии (настройки на NAS / в тарифе).</td>
+      <td><code>Idle-Timeout</code>, <code>Session-Timeout</code></td>
+      <td>Обычно норма. Если мешает клиенту — проверить <code>Idle-Timeout</code> в настройках NAS / профиля.</td>
+    </tr>
+    <tr>
+      <td><span class="badge" style="background:#7048e822;color:#5a36c0;border:1px solid #7048e844">✨ Восстановлена</span></td>
+      <td>Запись восстановлена биллингом синтетически: пришёл <code>Accounting-Stop</code> без соответствующего <code>Accounting-Start</code> (пакет Start был потерян). Чтобы трафик не пропал из отчётов, биллинг создаёт закрытую «синтетическую» запись.</td>
+      <td><code>Synthetic</code>, <code>Recovered</code> (внутренние пометки биллинга, не от NAS)</td>
+      <td>Единичные — норма (потеря UDP-пакета). <strong>Массово</strong> → возможны проблемы со связью NAS↔биллинг или перегрузка accounting-очереди.</td>
+    </tr>
+    <tr>
+      <td><span class="badge" style="background:#dc354522;color:#a72836;border:1px solid #dc354544">🛡 Админ</span></td>
+      <td>Сессия принудительно завершена со стороны провайдера, а не оборвалась сама. Это команда, а не сбой.</td>
+      <td><code>Admin-Reset</code>, <code>Admin-Reboot</code>, <code>NAS-Request</code>, <code>Callback-Reset</code>, <code>Manual-Reset</code></td>
+      <td>Норма, если действие было намеренным: оператор нажал «Отсоединить» (CoA Disconnect), сработал автоблок по балансу, сменили тариф/IP, кто-то вручную убил PPPoE-сессию на MikroTik. <strong>Массово и неожиданно</strong> → проверить, кто и что делает с NAS.</td>
+    </tr>
+    <tr>
+      <td><span class="badge" style="background:#adb5bd22;color:#6c757d;border:1px solid #adb5bd44">— не классифицирована</span></td>
+      <td>NAS не указал причину, либо прислал код, которого ещё нет в классификаторе. В бейдже показывается raw-значение как есть.</td>
+      <td>Любой код вне списков выше, либо пустое значение</td>
+      <td>Посмотреть raw-значение в тултипе. Если код встречается часто — стоит добавить его в <code>_REASON_CATEGORIES</code>.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="note">
+  <p><strong>Частые вопросы</strong></p>
+  <ul>
+    <li><strong><code>NAS-Request</code> ≠ обрыв.</strong> Это категория «Админ» — сессию закрыли командой (CoA Disconnect от биллинга, ручное завершение на NAS, переназначение IP). Линия клиента при этом в порядке.</li>
+    <li><strong><code>Lost-Carrier</code> = реальный физический обрыв.</strong> NAS просто перестал получать keepalive-пакеты от клиента. Это про оборудование/кабель/питание на стороне клиента.</li>
+    <li><strong><code>Admin reset</code> / <code>Manual-reset-by-operator</code></strong> — частные случаи категории «Админ»: сессию закрыл оператор кнопкой «Сбросить зависшую сессию» в карточке учётной записи.</li>
+    <li><strong>Пустая причина у активной сессии</strong> — норма: сессия ещё не завершена, <code>END_REASON</code> заполнится только при <code>Accounting-Stop</code>.</li>
+  </ul>
+</div>
+
+<h5 id="abonent-card-tab-radius-rows">Подсветка строк</h5>
+<ul>
+  <li><strong>Online</strong> — салатовый фон <code>#d4f5dd</code> с зелёной полосой 4px слева через <code>box-shadow inset</code>.</li>
+  <li><strong>Synthetic</strong> (восстановленные сессии) — фиолетовая полоса 3px слева + слабый фиолетовый фон <code>rgba(112,72,232,0.04)</code>.</li>
+  <li><strong>Related</strong> (имеют связанную Synthetic-сессию с тем же ACCT_SESSION_ID) — слабый фиолетовый фон <code>rgba(112,72,232,0.025)</code>.</li>
+</ul>
+
+<h5 id="abonent-card-tab-radius-drawer">Drawer-модалка деталей сессии</h5>
+<p>Клик на «i» в строке (или Enter на сфокусированной строке) открывает <strong>offcanvas-end</strong> справа шириной 540px с 4 вкладками:</p>
+
+<ol>
+  <li><strong>Обзор</strong> — 9 ключевых полей в <code>&lt;dl&gt;</code>: Начало / Завершение / Длительность / MAC / IP / NAS / Port / VLAN / Причина.
+    <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/02_drawer_overview.png" alt="Drawer — Обзор" style="max-width:540px"></p>
+  </li>
+  <li><strong>RADIUS</strong> — 20 raw-атрибутов: Acct-Session-Id, User-Name, NAS-IP-Address, Calling-Station-Id, Framed-IP-Address, NAS-Port-Id, Tunnel-Private-Group-Id, Acct-Session-Time, Acct-Input/Output-Octets, Acct-Terminate-Cause, raw timestamps в UTC, CEIL_IN/OUT, RATE_IN/OUT.
+    <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/03_drawer_radius.png" alt="Drawer — RADIUS-атрибуты" style="max-width:540px"></p>
+  </li>
+  <li><strong>Трафик</strong> — крупные цифры ↓ загрузка / ↑ выгрузка (в МБ/ГБ + точные байты), средний rate в Kbps, длительность.
+    <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/04_drawer_traffic.png" alt="Drawer — Трафик" style="max-width:540px"></p>
+  </li>
+  <li><strong>Действия</strong> — CoA Disconnect (disabled для закрытых) + 3 копировать-кнопки (MAC / IP / Session ID) + ссылка «Открыть NAS».
+    <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/05_drawer_actions.png" alt="Drawer — Действия" style="max-width:540px"></p>
+  </li>
+</ol>
+
+<h5 id="abonent-card-tab-radius-coa">CoA Disconnect — разрыв сессии оператором</h5>
+<p>Кнопка <code>⏻</code> в строке с активной сессией (или из drawer-модалки → вкладка «Действия»). Клик открывает <strong>confirm-модалку</strong> с превью последствий:</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/06_coa_confirm.png" alt="Confirm-модалка перед CoA Disconnect"></p>
+
+<p>Подтверждение → <code>POST /admin/Abonents/&lt;ab_id&gt;/sessions/coa_disconnect/</code> → backend запускает <code>disconnect_user.delay(broadcast=True)</code> в Celery (CoA на все NAS клиента) + audit-запись (table=<code>RADIUS_SESSIONS</code>) + toast «CoA Disconnect отправлен на все NAS». Через 8 секунд страница перезагружается чтобы обновить статус сессии на «Завершена».</p>
+
+<h5 id="abonent-card-tab-radius-mobile">Mobile-вид (ниже 992px)</h5>
+<p>Таблица из 12 колонок не помещается на телефоне — вместо неё отдельный layout <code>d-block d-lg-none</code> с карточками:</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/08_mobile.png" alt="Mobile card-stack" style="max-width:430px"></p>
+
+<p>Каждая сессия — карточка с зелёной полосой слева для Online, бейджем статуса/причины сверху, периодом + аптаймом, и 6 ключевыми полями (Логин / NAS / IP / MAC / Трафик / Порт+VLAN). Touch-targets ≥ 44px (a11y-touch-target-design).</p>
+
+<h5 id="abonent-card-tab-radius-backend">Backend-endpoints</h5>
+<table>
+  <thead>
+    <tr><th>URL</th><th>Метод</th><th>Назначение</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>/admin/Abonents/&lt;ab_id&gt;/sessions/detail/&lt;sid&gt;/</code></td><td>GET</td><td>Полная карточка сессии (24+ поля) для drawer-модалки</td></tr>
+    <tr><td><code>/admin/Abonents/&lt;ab_id&gt;/sessions/kpi/?period=...</code></td><td>GET</td><td>Агрегаты за период (24h / 7d / 30d / all)</td></tr>
+    <tr><td><code>/admin/Abonents/&lt;ab_id&gt;/sessions/list/</code></td><td>GET</td><td>Лёгкий JSON для auto-refresh каждые 30 сек</td></tr>
+    <tr><td><code>/admin/Abonents/&lt;ab_id&gt;/sessions/coa_disconnect/</code></td><td>POST</td><td>Разорвать активную сессию через CoA</td></tr>
+  </tbody>
+</table>
+
+<p>Все endpoint-ы реализованы в <code>billing/views/session_monitor_api.py</code>.</p>
+
+<h5 id="abonent-card-tab-radius-a11y">Доступность (a11y) и UX-фиксы</h5>
+<ul>
+  <li><strong>aria-label</strong> на каждой строке: «Сессия от 07.05.2026 13:53:08, активна».</li>
+  <li><strong>tabindex=0</strong> — таблица навигируется с клавиатуры. <strong>Enter</strong> на сфокусированной строке открывает drawer.</li>
+  <li><strong>:focus-visible</strong> — outline 2px brand-зелёный.</li>
+  <li><strong>prefers-reduced-motion: reduce</strong> отключает все анимации (пульсация, flash, sparkline transition).</li>
+  <li><strong>scope="col"</strong> на всех <code>&lt;th&gt;</code> + <code>role="grid"</code> + <code>&lt;caption class="visually-hidden"&gt;</code> для скрин-ридеров.</li>
+  <li><strong>Цвет НЕ единственный сигнал</strong> — везде есть иконки (fa-arrow-down/up для трафика, fa-circle для Online, fa-check для Завершена и т.д.).</li>
+  <li><strong>Фикс таймзоны</strong>: ранее времена показывались с лишним сдвигом +3 ч. Корень — <code>fmt_dt()</code> делал двойную конвертацию UTC → MSK, тогда как Django при <code>USE_TZ=False</code> и <code>TIME_ZONE='Europe/Moscow'</code> уже отдаёт naive datetime в локальной TZ. Теперь повторная конвертация только для aware-datetime, naive — как есть.</li>
+  <li><strong>Фикс контраста CoA-кнопки на Online</strong>: жёлтый <code>btn-outline-warning</code> сливался с салатовым фоном Online-строки. Заменён на <code>btn-outline-danger</code> (красный — семантически точнее «опасно») + явный override для активных строк (белый фон + красная обводка).</li>
+</ul>
+
+<h5 id="abonent-card-tab-radius-history">История внедрения по билдам</h5>
+<table>
+  <thead>
+    <tr><th>Билд</th><th>Что добавлено</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>519</td><td>Колонка MAC, фикс таймзоны MSK</td></tr>
+    <tr><td>525</td><td>Авто-скрытие колонки «Логин» если 1 учётка</td></tr>
+    <tr><td>526</td><td>Колонка IP (Framed-IP-Address)</td></tr>
+    <tr><td>527</td><td>Подсветка Online — салатовый фон + зелёная полоса</td></tr>
+    <tr><td>528</td><td>Цветной трафик — ↓ зелёный / ↑ красный</td></tr>
+    <tr><td>529–530</td><td>Колонка NAS + клик открывает модалку</td></tr>
+    <tr><td>535 (Sprint 1)</td><td>Бейджи причин 5 категорий, колонка «Период», тултипы + OUI vendor + copy-on-click, a11y, mobile card-stack</td></tr>
+    <tr><td>536 (Sprint 2)</td><td>Drawer 4 вкладки, toolbar с KPI, контекст тарифа, CoA Disconnect</td></tr>
+    <tr><td>537 (Sprint 3)</td><td>Группировка Synthetic↔Real, auto-refresh 30 сек, live-индикатор, flash при смене статуса, toast</td></tr>
+    <tr><td>540–544</td><td>Серия фиксов: убран sparkline из таблицы, убраны фиолетовые точки-индикаторы, контраст CoA-кнопки на Online</td></tr>
+  </tbody>
+</table>
+
+<h4 id="abonent-card-tab-sorm">СОРМ</h4>
+<p>Паспортные данные и реквизиты для выгрузки в РКН по СОРМ-3:</p>
+<ul>
+  <li><strong>Физлицо</strong>: серия и номер паспорта, дата выдачи, кем выдан, код подразделения, дата рождения, ИНН, адрес регистрации.</li>
+  <li><strong>Юрлицо</strong> — отдельная карточка с 12 атрибутами: ИНН, КПП, ОГРН, юридический/физический/почтовый адреса, р/с, Банк, БИК, к/с, В лице, Директор. Бейдж «Юр.лицо» в шапке СОРМ. Тип определяется флагом <code>Abonents.company</code>.</li>
+  <li><strong>Прогресс-бар заполненности</strong>: процент от обязательных полей (для юр.лица учитываются дополнительные 12 атрибутов).</li>
+</ul>
+
+<h4 id="abonent-card-tab-attributes">Реквизиты</h4>
+<p>Произвольные атрибуты клиента (<code>UserAttributes</code> + <code>AttributeValues</code>). Для юр.лиц при первом открытии вкладки авто-создаются 12 пустых атрибутов с <code>default_person=True</code>; для физлиц — с <code>default_individual=True</code>. Атрибуты можно использовать в шаблонах сообщений и печатных формах.</p>
+
+<h4 id="abonent-card-tab-helpdesk">HelpDesk</h4>
+<p>Заявки HelpDesk, связанные с клиентом. Запросы идут через внутренний REST-клиент биллинга к HelpDesk. Из карточки можно:</p>
+<ul>
+  <li>Просмотреть список тикетов: ID, статус, тема, дата, agent.</li>
+  <li>Создать новый тикет (через внутренний endpoint биллинга).</li>
+  <li>Перейти в HelpDesk по прямой ссылке.</li>
+</ul>
+<p>Webhook-события из HelpDesk приходят обратно: <code>conversation.agent_reply_created</code> → push, <code>conversation.assigned</code> → Telegram админу, <code>conversation.status_changed(closed)</code> → AuditOperations.</p>
+
+<h4 id="abonent-card-tab-loyalty">Лояльность</h4>
+<p>Программы лояльности клиента и их история. Управляется через справочник <a href="tariffs.html#loyalty">Программы лояльности</a>:</p>
+<ul>
+  <li>Назначение программы (<code>AbonentsLoyalty</code>) — задаёт скидку на тариф или дополнительные услуги.</li>
+  <li>Приоритет — если несколько активных, действует с большим <code>priority</code>.</li>
+  <li><code>end_date</code> — программа автоматически снимается после этой даты.</li>
+</ul>
+
+<h4 id="abonent-card-tab-messages">Сообщения</h4>
+<p>История уведомлений клиента (<code>MsgStack</code>) по всем каналам:</p>
+<ul>
+  <li>Email, SMS, Push, Telegram, VK, ЛК (winpopup).</li>
+  <li>Заголовок (<code>head_txt</code>), текст (<code>text</code>), время отправки (<code>sent_at</code>) или постановки в очередь (<code>send_date</code>).</li>
+  <li>Флаги done по каждому каналу (<code>email_done</code>, <code>sms_done</code> и т.д.).</li>
+  <li>Кнопка «Отправить новое сообщение» — выбор шаблона <code>AdminMsg</code> или свободный текст.</li>
+</ul>
+
+<h4 id="abonent-card-tab-audit">Аудит</h4>
+<p>Журнал действий пользователей и системных событий по конкретному клиенту. Подвыборка из <code>AuditOperations</code> с фильтром по <code>abonent_id</code> + связанным <code>USERS</code>-записям через <code>object_id</code>.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/audit_v777/audit_v777_01_desktop_overview.png" alt="Вкладка Аудит карточки клиента — KPI-карточки сверху, под ними toolbar с фильтрами (даты, поиск, тип, CSV), таблица событий"></p>
+
+<h5 id="abonent-card-tab-audit-layout">Композиция</h5>
+<p>Сверху вниз:</p>
+<ol>
+  <li><strong>KPI-карточки</strong> — кликабельные плитки <em>Всего</em>, <em>Финансовые операции</em>, <em>Услуги</em>, <em>Блокировки</em>, <em>Сообщения</em>, <em>Редактирование клиента</em>, <em>Другое</em> со счётчиками. Клик по плитке = фильтр по этой категории. Карточка <em>Всего</em> в правом верхнем углу содержит i-иконку → ссылка на этот раздел документации.</li>
+  <li><strong>Toolbar (одна строка)</strong> — диапазон дат (компактные поля 96px без подписей «с/по», разделитель «—»), поиск по описанию, селект «Все типы», кнопка «Применить», кнопка экспорта CSV.</li>
+  <li><strong>Таблица</strong> с колонками <em>Дата / ID</em>, <em>Событие</em>, <em>Описание</em>, <em>Исполнитель</em>. Vertical-align top — длинные описания читаются проще. Колонка «Событие» = цветной лейбл + drill-иконка в одну строку (`flex nowrap`).</li>
+</ol>
+
+<h5 id="abonent-card-tab-audit-period">Период по умолчанию</h5>
+<p>При первом открытии вкладки сервер ставит диапазон <strong>последние 12 месяцев</strong>. Для более длинной истории — расширить вручную через datepicker. localStorage сохраняет выбранный <em>текст-поиск</em> и <em>тип фильтра</em>, но <strong>НЕ даты</strong> (даты могут устареть и ввести в заблуждение). Ключ хранилища: <code>audit_filters_v2</code>.</p>
+
+<p>Дефолтный период (12 мес) <strong>настраивается</strong> в <a href="settings.html#system-settings-audit">Настройки системы → Аудит</a> — параметр <code>AUDIT_TAB_DEFAULT_PERIOD_MONTHS</code> (диапазон 1–60). Там же — лимит CSV-экспорта, записей на странице и опция «скрывать системные события».</p>
+
+<h5 id="abonent-card-tab-audit-csv">CSV-экспорт</h5>
+<p>Зелёная кнопка с иконкой <code>fa-file-csv</code> справа от «Применить» в toolbar. Качается выборка с теми же фильтрами что в UI (даты, поиск, клиент). Endpoint: <code>GET /admin/reports/audit_export/?abonent=&lt;id&gt;&amp;date_from=YYYY-MM-DD&amp;date_to=YYYY-MM-DD&amp;search=...</code>. Формат: UTF-8 BOM, разделитель <code>;</code>, колонки <em>Дата, Событие, Описание, Клиент ID, Клиент ФИО, Исполнитель</em>. Лимит 50 000 строк.</p>
+
+<h5 id="abonent-card-tab-audit-mobile">Mobile-вид</h5>
+<p>Под KPI-плитками — компактная строка <code>.ab-mobile-search-row</code>: поле поиска + кнопка «Фильтры» (38px высота) в одну строку. KPI и десктопный toolbar скрыты (<code>aa-hide-mobile</code>) — фильтры открываются через offcanvas снизу с категориями, диапазоном дат, кнопками Применить / Сбросить. «Сбросить» закрывает offcanvas и редиректит на <code>?tab=audit</code> с очисткой всех параметров.</p>
+
+<h5 id="abonent-card-tab-audit-drill">Drill-down к объекту</h5>
+<p>Если у записи аудита есть <code>table_name</code> + <code>object_id</code>, рядом с лейблом события появляется иконка <code>fa-external-link-alt</code>. Клик открывает в новой вкладке прямую ссылку на изменённый объект — например, при изменении <code>finance_operations</code> переход на конкретную финоперацию, при изменении <code>users_usluga</code> — на услугу.</p>
+
+<h5 id="abonent-card-tab-audit-categories">Категории событий</h5>
+<table class="lk-table">
+  <thead><tr><th>Категория</th><th>Цвет</th><th>Источник (table_name)</th></tr></thead>
+  <tbody>
+    <tr><td>Услуги</td><td>синий</td><td><code>USERS_USLUGA</code></td></tr>
+    <tr><td>Финоперации</td><td>зелёный</td><td><code>FINANCE_OPERATIONS</code>, <code>ARCH_ACCOUNT_STACK</code></td></tr>
+    <tr><td>Оплата</td><td>тёмно-зелёный</td><td><code>PAY_LOG</code>, <code>ADMIN_ACCOUNTS_LOG</code></td></tr>
+    <tr><td>Блокировка</td><td>оранжевый</td><td><code>ABONENTS_BLOCK</code></td></tr>
+    <tr><td>Статусы</td><td>жёлтый</td><td><code>STATUS</code>, <code>OBJECTS_STATUS</code></td></tr>
+    <tr><td>Клиент</td><td>фиолетовый</td><td><code>ABONENTS</code>, <code>ATTRIBUTE_VALUES</code>, <code>LOYALTY</code></td></tr>
+    <tr><td>Сообщения</td><td>тёмно-синий</td><td><code>MSG_STACK</code></td></tr>
+    <tr><td>СОРМ</td><td>серый</td><td><code>SORM*</code></td></tr>
+    <tr><td>Прочее</td><td>светло-серый</td><td>остальные таблицы</td></tr>
+  </tbody>
+</table>
+
+<h3 id="abonent-card-actions">Дополнительные действия</h3>
+<ul>
+  <li><strong>Quick Add</strong> (модалка добавления клиента в папку) — поля Тариф, Группа, Юр.лицо, опционально NAS+IP. Фильтрация тарифов по флагу <code>is_business</code> для юр.лиц.</li>
+  <li><strong>Переезд</strong> в другую папку — drag-and-drop в дереве клиентов или через bulk-операцию <em>Сменить папку</em>.</li>
+  <li><strong>Печать</strong>: договор, акт, счёт-фактура — через <code>PrintForms</code> (<a href="settings.html#print-forms">5.2</a>).</li>
+  <li><strong>Восстановление удалённого</strong> — после soft-delete клиент остаётся в БД с флагом <code>deleted=True</code>; кнопка «Восстановить» в карточке возвращает в активное состояние.</li>
+</ul>
+
+
+<!-- ===== Внутренний чат персонала ===== -->
+
+</main>
+
+<footer class="footer">
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">25.08.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;<span data-smit="updated">25.08.2026</span></span>
+</footer>
+
+<script src="../js/main.js?v=2189"></script>
+<script src="../js/search.js?v=2189"></script>
+<script src="../js/version.js"></script>
+<script src="../js/mermaid-init.js?v=2189"></script>
+<script src="../js/markmap-init.js?v=2189"></script>
+</body>
+</html>

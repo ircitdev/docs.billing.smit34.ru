@@ -3,37 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Решение проблем — СмИТ Биллинг</title>
+  <title>Дашборд — СмИТ Биллинг</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг — Документация">
-  <meta property="og:title" content="Решение проблем — СмИТ Биллинг">
-  <meta property="og:description" content="FAQ, диагностика авторизации, сети, платежей, мониторинг сервера и Docker-контейнеров.">
-  <meta property="og:url" content="https://docs.billing.smit34.ru/pages/troubleshooting.html">
+  <meta property="og:title" content="Дашборд — СмИТ Биллинг">
+  <meta property="og:description" content="Главный экран биллинга: показатели за день, тревоги, касса и финансовая динамика. С него начинается рабочий день оператора.">
+  <meta property="og:url" content="https://docs.billing.smit34.ru/pages/billing.html">
   <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Решение проблем — СмИТ Биллинг">
-  <meta name="twitter:description" content="FAQ, диагностика авторизации, сети, платежей, мониторинг сервера и Docker-контейнеров.">
+  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг">
+  <meta name="twitter:description" content="Управление клиентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
-  <meta name="description" content="FAQ, диагностика авторизации, сети, платежей, мониторинг сервера и Docker-контейнеров.">
+  <meta name="description" content="Главный экран биллинга: показатели за день, тревоги, касса и финансовая динамика. С него начинается рабочий день оператора.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../css/style.css?v=2189">
-  <link rel="stylesheet" href="../css/search.css?v=2189">
   <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css?v=2189">
+  <link rel="stylesheet" href="../css/search.css?v=2189">
 </head>
 <body>
 
 <header class="header">
   <div class="header-left">
-    <button class="menu-toggle" aria-label="Меню">&#9776;</button>
+    <button class="menu-toggle" aria-label="Меню"><i class="ti ti-menu-2"></i></button>
     <div class="logo">
       <div class="logo-icon">С</div>
-      <div class="logo-text"><span class="logo-main">СмИТ Биллинг</span><span>Документация</span></div>
+      <div class="logo-text"><span class="logo-main"><span data-smit="brand-short">СмИТ Биллинг</span></span><span>Документация</span></div>
     </div>
   </div>
-  <div class="header-search"><div class="docs-search-wrap"><input type="search" id="docsSearch" class="docs-search-input" placeholder="Поиск по документации..." autocomplete="off"><span class="docs-search-icon"><i class="ti ti-search"></i></span><div class="docs-search-results" id="docsSearchResults"></div></div></div>
+  <div class="header-search">
+    <div class="docs-search-wrap">
+      <input type="search" id="docsSearch" class="docs-search-input" placeholder="Поиск по документации..." autocomplete="off">
+      <span class="docs-search-icon"><i class="ti ti-search"></i></span>
+      <div class="docs-search-results" id="docsSearchResults"></div>
+    </div>
+  </div>
   <div class="header-right">
     <a href="../graphify/graph.html" class="header-nav-link" title="Граф зависимостей кода">
       <i class="ti ti-topology-star-3 hnl-ico"></i><span class="hnl-txt">Граф</span>
@@ -41,24 +47,26 @@
     <a href="../graphify/wiki/index.html" class="header-nav-link" title="Wiki архитектурных модулей">
       <i class="ti ti-book-2 hnl-ico"></i><span class="hnl-txt">Wiki</span>
     </a>
-    <button class="mobile-search-btn" aria-label="Поиск" title="Поиск"><i class="ti ti-search"></i></button>
+    <button class="mobile-search-btn" aria-label="Поиск" title="Поиск по документации">
+      <i class="ti ti-search"></i>
+    </button>
     <button class="theme-toggle" aria-label="Переключить тему" title="Светлая / тёмная тема">
-      <span class="icon-sun">&#9788;</span>
-      <span class="icon-moon">&#9790;</span>
+      <span class="icon-sun"><i class="ti ti-sun"></i></span>
+      <span class="icon-moon"><i class="ti ti-moon"></i></span>
     </button>
   </div>
 </header>
+
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
 <div class="search-overlay" id="searchOverlay" role="dialog" aria-label="Поиск по документации">
   <div class="search-overlay-inner">
     <i class="ti ti-search search-prefix-icon"></i>
     <input type="search" id="docsSearchMobile" placeholder="Поиск по документации..." autocomplete="off">
     <button class="search-overlay-close" aria-label="Закрыть" id="searchOverlayClose"><i class="ti ti-x"></i></button>
-    <div class="search-overlay-results" id="docsSearchResultsMobile"></div>
+    <div class="docs-search-results search-overlay-results" id="docsSearchResultsMobile"></div>
   </div>
 </div>
-
-<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
 <aside class="sidebar">
   <nav>
@@ -305,7 +313,7 @@
           <li><a href="lk.html#lk-overview">Обзор и возможности</a></li>
           <li><a href="lk.html#lk-admin">Раздел «ЛК и мобильные» в админке</a></li>
           <li class="sub-item"><a href="lk.html#lk-admin">— Брендинг</a></li>
-          <li class="sub-item"><a href="lk.html#lk-admin">— Функции (12 toggle)</a></li>
+          <li class="sub-item"><a href="lk.html#lk-admin">— Функции</a></li>
           <li class="sub-item"><a href="lk.html#lk-admin">— Безопасность</a></li>
           <li class="sub-item"><a href="lk.html#lk-mobile-app">— Мобильное (Android+iOS)</a></li>
           <li><a href="lk.html#lk-login">Авторизация</a></li>
@@ -313,15 +321,32 @@
           <li><a href="lk.html#lk-extra">Telegram-бот</a></li>
           <li><a href="lk.html#lk-finance">Оплата (ЮKassa)</a></li>
           <li><a href="lk.html#lk-mobile-app">Мобильное приложение</a></li>
-          <li class="sub-item"><a href="lk.html#lk-mobile-app">— Public Mobile API</a></li>
-          <li class="sub-item"><a href="lk.html#mobile-force-update">— Force-update</a></li>
-          <li class="sub-item"><a href="lk.html#lk-mobile-app">— iOS TestFlight ↔ AppStore</a></li>
-          <li><a href="lk.html#lk-support">Поддержка</a></li>
+          <li><a href="lk.html#lk-support">HelpDesk</a></li>
           <li><a href="lk.html#lk-ai-chat">AI-ассистент</a></li>
           <li><a href="lk.html#lk-profile">Профиль</a></li>
           <li><a href="lk.html#lk-firebase">Push (Firebase)</a></li>
           <li><a href="lk.html#lk-ai-chat">AI-чат</a></li>
           <li><a href="settings-services.html#messaging">TG бот оператора</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="crm.html"><i class="ti ti-briefcase"></i> CRM — продажи <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="crm.html#crm-overview">1. Как устроен модуль</a></li>
+          <li><a href="crm.html#crm-quickstart">2. Быстрый старт</a></li>
+          <li><a href="crm.html#crm-funnel">3. Воронка сделок</a></li>
+          <li><a href="crm.html#crm-constructor">4. Конструктор воронок</a></li>
+          <li><a href="crm.html#crm-sources">5. Источники сделок</a></li>
+          <li><a href="crm.html#crm-userfields">6. Доп. поля</a></li>
+          <li><a href="crm.html#crm-tasks">7. Задачи</a></li>
+          <li><a href="crm.html#crm-lists">8. Списки (контакты)</a></li>
+          <li><a href="crm.html#crm-salesbot">9. Salesbot</a></li>
+          <li><a href="crm.html#widgets">10. Виджеты-плагины</a></li>
+          <li><a href="crm.html#crm-setup">11. Мастер настройки</a></li>
+          <li><a href="crm.html#crm-montazh">12. Наряды монтажника</a></li>
+          <li><a href="crm.html#crm-dashboard">13. Дашборд и карта</a></li>
+          <li><a href="crm.html#crm-campaigns">14. Рекламные кампании</a></li>
+          <li><a href="crm.html#crm-drawer">15. Карточка сделки</a></li>
         </ul>
       </li>
       <li class="has-children">
@@ -382,9 +407,6 @@
         </ul>
       </li>
       <li class="has-children">
-        <a href="crm.html"><i class="ti ti-briefcase"></i> CRM — продажи <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
-      </li>
-      <li class="has-children">
         <a href="landing.html"><i class="ti ti-browser"></i> Лендинги <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
         <ul class="submenu">
           <li><a href="landing.html#landing-overview">1. Что это</a></li>
@@ -434,18 +456,10 @@
           <li><a href="sorm.html#reports">Отчёты и SQL</a></li>
           <li><a href="sorm.html#schedule">Расписание выгрузки</a></li>
           <li><a href="sorm.html#sorm-admin">Админ-UI: список и FTP</a></li>
-          <li class="sub-item"><a href="sorm.html#sorm-list">— Список конфигураций</a></li>
-          <li class="sub-item"><a href="sorm.html#sorm-readiness">— Проверка готовности</a></li>
-          <li class="sub-item"><a href="sorm.html#sorm-ftp">— FTP-сервер РКН</a></li>
-          <li class="sub-item"><a href="sorm.html#sorm-telegram">— Telegram-уведомления</a></li>
-          <li class="sub-item"><a href="sorm.html#sorm-history">— История выгрузок</a></li>
-          <li class="sub-item"><a href="sorm.html#sorm-schedule">— Авторасписание</a></li>
           <li><a href="sorm.html#manual-run">Управление отчётами</a></li>
           <li><a href="sorm.html#metadata">СОРМ-метаданные</a></li>
           <li><a href="sorm.html#preflight">Pre-flight валидация</a></li>
-          <li><a href="sorm.html#dedup">Дубликаты атрибутов</a></li>
           <li><a href="sorm.html#api">REST API готовности</a></li>
-          <li><a href="sorm.html#children">Схемы настройки</a></li>
         </ul>
       </li>
       <li class="has-children">
@@ -456,12 +470,6 @@
           <li><a href="api.html#rest-v2">3. REST API v2</a></li>
           <li><a href="api.html#promise-pay">4. Обещанный платёж</a></li>
           <li><a href="api.html#payments-api">5. Платёжные API (ЮKassa, W1)</a></li>
-          <li class="sub-item"><a href="api.html#payments-endpoints">5.0. Список endpoint</a></li>
-          <li class="sub-item"><a href="api.html#payments-flow">5.1. Схема платежа</a></li>
-          <li class="sub-item"><a href="api.html#yookassa-rest">5.2. ЮKassa REST v3</a></li>
-          <li class="sub-item"><a href="api.html#yookassa-http">5.3. ЮKassa HTTP</a></li>
-          <li class="sub-item"><a href="api.html#w1-api">5.4. Wallet One</a></li>
-          <li class="sub-item"><a href="api.html#payments-settings">5.5. Настройки</a></li>
           <li><a href="api.html#soap">6. SOAP API</a></li>
           <li><a href="api.html#mobile-api">7. Mobile API</a></li>
         </ul>
@@ -504,203 +512,419 @@
 
 <main class="content">
   <div class="breadcrumb">
-    <a href="../index.html">Документация</a> <span class="sep">/</span> Решение проблем
+    <a href="../index.html">Документация</a> <span class="sep">/</span> Дашборд
   </div>
 
-  <h1>Решение проблем СмИТ Биллинг</h1>
-  <p>Сборник статей по диагностике и решению типичных проблем при эксплуатации системы СмИТ Биллинг 1.6. Каждый раздел содержит описание симптомов, возможные причины и пошаговые инструкции по устранению.</p>
-
-  <div class="welcome-image">
-    <img src="../img/problems.jpg" alt="Решение проблем" loading="lazy">
-  </div>
-
-  
+  <h1>Дашборд</h1>
+  <p>Главный экран биллинга: показатели за день, тревоги, касса и финансовая динамика. С него начинается рабочий день оператора.</p>
 
 <div class="page-toc">
 <details open>
-  <summary><strong>Содержание страницы</strong></summary>
+  <summary><strong><i class="ti ti-book"></i> Содержание раздела</strong></summary>
   <ul>
-  <li><a href="#general">Общие вопросы</a></li>
-  <li><a href="#auth">Клиенты и авторизация</a></li>
-  <li><a href="#billing-payments">Биллинг и платежи</a></li>
-  <li><a href="#server-perf">Сервер и производительность</a></li>
-  <li><a href="#network">Сеть и доступ</a></li>
-  <li><a href="#security">Безопасность</a></li>
-  <li><a href="#other">Прочее</a></li>
+    <li><a href="#dashboard">1. Дашборд</a></li>
+    <li class="sub-item"><a href="#dashboard-period">Период и организация — общие для всей страницы</a></li>
+    <li class="sub-item"><a href="#dashboard-tiles">Сводки по модулям</a></li>
+    <li class="sub-item"><a href="#dashboard-themes">Тёмная тема и телефон</a></li>
+    <li class="sub-item"><a href="#dashboard-kpi">Шапка: 6 KPI-карточек</a></li>
+    <li class="sub-item"><a href="#dashboard-pools-ebs">IP-пулы + EBS Синхронизация</a></li>
+    <li class="sub-item"><a href="#dashboard-alerts">Свежие проблемы (alerts feed)</a></li>
+    <li class="sub-item"><a href="#dashboard-cash">Касса месяца</a></li>
+    <li class="sub-item"><a href="#dashboard-payments-today">Платежи сегодня vs вчера</a></li>
+    <li class="sub-item"><a href="#dashboard-hot">Горячие клиенты + CRM сегодня</a></li>
+    <li class="sub-item"><a href="#dashboard-extras">Heat-map + Цели + Что нового</a></li>
+    <li class="sub-item"><a href="#dashboard-finance">Итого за период + Финансовая динамика (старые блоки)</a></li>
+    <li class="sub-item"><a href="#dashboard-auto-refresh">Auto-refresh</a></li>
   </ul>
 </details>
 </div>
 
-<h2 id="general">Общие вопросы</h2>
-  <ul class="child-pages">
-    <li>
-      <a>Вопросы одной строкой</a>
-      <span class="desc">Краткие ответы на частые вопросы: как узнать версию биллинга, как перезапустить сервис, где находятся логи, как проверить статус лицензии, как очистить кэш. Формат «вопрос — ответ» для быстрого поиска решения.</span>
-    </li>
-    <li>
-      <a>FAQ по установке</a>
-      <span class="desc">Решение проблем при установке: ошибки Docker Compose, проблемы с подключением к БД, сбои при миграции данных. Рекомендации по подготовке сервера и проверке системных требований.</span>
-    </li>
-    <li>
-      <a>Проблемы с оборудованием</a>
-      <span class="desc">Диагностика аппаратных проблем сервера: перегрев процессора, ошибки оперативной памяти (memtest), деградация RAID-массива, выход из строя жёсткого диска (SMART-диагностика), проблемы с сетевыми адаптерами.</span>
-    </li>
-  </ul>
+<!-- ===== 1. ДАШБОРД ===== -->
+<h2 id="dashboard">1. Дашборд</h2>
 
-  <h2 id="auth">Клиенты и авторизация</h2>
-  <ul class="child-pages">
-    <li>
-      <a>Клиенты не могут авторизоваться</a>
-      <span class="desc">Диагностика проблем аутентификации через RADIUS. Проверка: корректность логина/пароля, статус аккаунта (не заблокирован ли), доступность RADIUS-сервера, shared secret на NAS, наличие IP-пулов. Анализ логов: <code>docker compose logs freeradius</code>.</span>
-    </li>
-    <li>
-      <a>Клиент не блокируется! Услуга доступна, но не должна быть!</a>
-      <span class="desc">Проблемы с блокировкой клиентов: NAS не отключает сессию (проверить CoA/PoD), клиент переподключается после блокировки, некорректная работа Celery-задачи блокировки. Проверка: <code>docker compose logs celery | grep abonent_block</code>, логи RADIUS Disconnect, настройки CoA на NAS.</span>
-    </li>
-    <li>
-      <a>У клиента не работает услуга</a>
-      <span class="desc">Диагностика неработающих услуг: проверка привязки услуги к клиенту, статус услуги (активна/приостановлена), баланс клиента, корректность тарифного плана, наличие необходимых RADIUS-атрибутов в ответе. Пошаговая проверка от биллинга до NAS.</span>
-    </li>
-    <li>
-      <a>У клиента теряется IP-адрес</a>
-      <span class="desc">Проблемы с выдачей IP-адресов: конфликты в IP-пулах, дублирование адресов, истечение lease-time, некорректная работа DHCP-relay. Проверка: настройки IP-пулов в биллинге, ARP-таблицы на NAS, логи DHCP-сервера.</span>
-    </li>
-  </ul>
+<figure class="doc-video">
+  <div class="dv-head">
+    <span class="dv-kind"><i class="ti ti-player-play-filled" aria-hidden="true"></i> Обучающее видео</span>
+    <span class="dv-time">2:35</span>
+  </div>
+  <div class="dv-media">
+    <video controls preload="none" playsinline
+             poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/dashboard-training-voice-poster.jpg">
+        <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/dashboard-training-voice.mp4" type="video/mp4">
+        Ваш браузер не проигрывает видео —
+        <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/dashboard-training-voice.mp4">скачайте файл</a>.
+      </video>
+  </div>
+  <figcaption>
+    <p class="dv-desc">Как читать главную страницу: период и организация, ключевые показатели, сводки по модулям, деньги, цели и работа с телефона.</p>
+    <div class="dv-foot">
+      <span class="dv-spec">1920×1080</span>
+      <span class="dv-spec">с озвучкой</span>
+      <a class="dv-download" href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/dashboard-training-voice.mp4" target="_blank" rel="noopener" aria-label="Скачать видеофайл"><i class="ti ti-download" aria-hidden="true"></i> Скачать</a>
+    </div>
+  </figcaption>
+</figure>
 
-  <h2 id="billing-payments">Биллинг и платежи</h2>
-  <ul class="child-pages">
-    <li>
-      <a>Абонентская плата не списывается!</a>
-      <span class="desc">Проблемы со списанием абонентской платы: не запущена Celery-задача <code>billing_worker</code>, ошибки в расписании тарификации, некорректная дата начала действия тарифа. Проверка: <code>docker compose logs celery | grep billing_worker</code>, <code>docker compose ps celery celery-beat</code>.</span>
-    </li>
-    <li>
-      <a>Платёжные системы. Не проходят платежи.</a>
-      <span class="desc">Диагностика проблем с приёмом платежей: проверка API-ключей платёжной системы, корректность callback-URL, SSL-сертификат, журнал входящих запросов. Поддерживаемые платёжные системы: Robokassa, ЮKassa, Сбербанк, QIWI и др.</span>
-    </li>
-    <li>
-      <a>Изменение значения НДС</a>
-      <span class="desc">Корректировка ставки НДС в системе: изменение в настройках биллинга, пересчёт тарифов, обновление шаблонов документов, настройка кассового аппарата. Необходимо обновить ставку до начала нового расчётного периода.</span>
-    </li>
-    <li>
-      <a>Постоянно перевыставляются акты</a>
-      <span class="desc">Проблемы с многократным формированием актов: некорректная дата закрытия периода, дублирование задач в расписании, ошибки в шаблоне документа. Решение: проверить настройки расчётного периода и расписание задач.</span>
-    </li>
-    <li>
-      <a>Не работает web-касса</a>
-      <span class="desc">Проблемы с онлайн-кассой: ошибки подключения к ОФД, истёк срок фискального накопителя, некорректные реквизиты организации в настройках. Проверка: <code>docker compose logs web | grep fiscal</code>.</span>
-    </li>
-  </ul>
+<p>Главная страница админки по адресу <code>/admin/welcome/</code>.
+Перестроена после <code>/critique</code>-аудита: иерархия KPI с hero-метрикой, единый
+визуальный язык компактных карточек (<code>.dash-tile</code>), все блоки скрываются автоматически
+при отсутствии данных.</p>
 
-  <h2 id="server-perf">Сервер и производительность</h2>
-  <ul class="child-pages">
-    <li>
-      <a>Биллинг медленно работает</a>
-      <span class="desc">Диагностика производительности: проверка нагрузки на CPU (<code>top</code>, <code>htop</code>), использование RAM (<code>free -m</code>), дисковые операции (<code>iostat</code>), медленные SQL-запросы (PostgreSQL <code>pg_stat_statements</code>). Оптимизация: увеличение shared_buffers, настройка work_mem, добавление индексов.</span>
-    </li>
-    <li>
-      <a>Медленно работает Биллинг и Биллинг+Софтроутер</a>
-      <span class="desc">Проблемы производительности при совмещённой установке (биллинг + софтроутер на одном сервере). Возможные причины: DDoS-атаки на клиентов, высокая нагрузка от WordPress-сайтов, conntrack table overflow. Решение: разделение сервисов, настройка rate-limiting.</span>
-    </li>
-    <li>
-      <a>Мало места на диске</a>
-      <span class="desc">Очистка дискового пространства: очистка Docker-логов (<code>docker system prune</code>), ротация логов контейнеров, удаление старых бэкапов PostgreSQL, очистка RADIUS-логов. Команда проверки: <code>df -h</code>, <code>docker system df</code>.</span>
-    </li>
-    <li>
-      <a>Мониторинг сервера с atop</a>
-      <span class="desc">Использование утилиты atop для детального мониторинга: CPU по ядрам, дисковая активность по устройствам, сетевой трафик по интерфейсам, потребление ресурсов по процессам. Установка и настройка автоматического сбора статистики.</span>
-    </li>
-    <li>
-      <a>Установка node_exporter для мониторинга с Prometheus</a>
-      <span class="desc">Настройка экспорта метрик в Prometheus: установка node_exporter, конфигурация scrape-интервала, настройка Grafana-дашбордов для визуализации метрик биллинга. Рекомендуемые дашборды: Node Exporter Full, PostgreSQL Overview.</span>
-    </li>
-    <li>
-      <a>Система мониторинга. Сервер недоступен</a>
-      <span class="desc">Проблемы с системой мониторинга: ложные срабатывания, сервер не отвечает на проверки. Проверка: сетевая доступность (ping, traceroute), статус агента мониторинга, настройки firewall (порт 10050 для Zabbix, 9100 для node_exporter).</span>
-    </li>
-    <li>
-      <a>Сетёвка от Intel зависает</a>
-      <span class="desc">Проблемы с сетевыми картами Intel (e1000e, igb, ixgbe): зависание интерфейса под нагрузкой, сброс линка. Решение: обновление драйвера, отключение offload-функций (<code>ethtool -K eth0 tso off gso off</code>), настройка кольцевых буферов.</span>
-    </li>
-  </ul>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v966/dashboard_v966_whats_new_comments.png" alt="Дашборд v966: «Что нового» с бейджами комментариев"></p>
 
-  <h2 id="network">Сеть и доступ</h2>
-  <ul class="child-pages">
-    <li>
-      <a>Не работает интернет</a>
-      <span class="desc">Диагностика отсутствия интернета на сервере биллинга: проверка маршрутов (<code>ip route</code>), DNS (<code>nslookup</code>), firewall, NAT-правил. Если интернет не работает у клиентов — проверить RADIUS, NAS, демоны авторизации.</span>
-    </li>
-    <li>
-      <a>Не доступен сайт, личный кабинет</a>
-      <span class="desc">Проблемы с веб-интерфейсом и личным кабинетом: не запущен контейнер web/nginx, ошибки SSL-сертификата, проблемы с DNS. Проверка: <code>docker compose ps</code>, <code>docker compose exec nginx nginx -t</code>, <code>docker compose logs nginx</code>.</span>
-    </li>
-    <li>
-      <a>Решение проблем DHCP</a>
-      <span class="desc">Диагностика DHCP: клиенты не получают IP-адрес, конфликты адресов, неправильный lease-time. Проверка: <code>tcpdump -i eth0 port 67 or port 68</code>, настройки DHCP-пулов, relay-агента на коммутаторах, option 82.</span>
-    </li>
-    <li>
-      <a>Проверка доступа в сеть</a>
-      <span class="desc">Тестирование сетевого доступа: ping, traceroute, MTR, проверка портов (<code>telnet</code>, <code>nc</code>), анализ трафика (<code>tcpdump</code>). Пошаговая методика диагностики от клиента до сервера биллинга.</span>
-    </li>
-    <li>
-      <a>Проброс портов до биллинга на KVM</a>
-      <span class="desc">Настройка проброса портов при виртуализации KVM: iptables DNAT/SNAT правила, настройка bridge-интерфейсов, проброс портов для RADIUS (1812/1813), веб-интерфейса (80/443), SSH (22). Пример правил iptables.</span>
-    </li>
-    <li>
-      <a>Циклическая переадресация в личном кабинете</a>
-      <span class="desc">Бесконечный редирект (ERR_TOO_MANY_REDIRECTS) в личном кабинете клиента. Причины: некорректная настройка SSL/HTTP редиректа, проблемы с cookies, reverse-proxy передаёт неправильный X-Forwarded-Proto. Решение: проверить конфигурацию nginx и настройки SECURE_PROXY_SSL_HEADER.</span>
-    </li>
-    <li>
-      <a>Не работает поиск</a>
-      <span class="desc">Диагностика функции поиска клиентов: не построен поисковый индекс, повреждён индекс, недостаточно дискового пространства. Перестроение индекса: <code>docker compose exec web python manage.py rebuild_index --noinput</code>.</span>
-    </li>
-    <li>
-      <a>Перенос индекса поиска на другой диск</a>
-      <span class="desc">Миграция поискового индекса на отдельный диск (SSD) для повышения скорости поиска: остановка сервиса, копирование каталога индекса, создание символьной ссылки, перезапуск сервиса. Рекомендуется использовать SSD для хранения индекса.</span>
-    </li>
-  </ul>
 
-  <h2 id="security">Безопасность</h2>
-  <ul class="child-pages">
-    <li>
-      <a>Сброс пароля root</a>
-      <span class="desc">Восстановление пароля root при утере: загрузка в однопользовательский режим (single-user mode), редактирование параметров GRUB, выполнение <code>passwd root</code>. Требуется физический или консольный доступ к серверу (KVM/IPMI).</span>
-    </li>
-    <li>
-      <a>Не удаётся восстановить учётную запись администратора</a>
-      <span class="desc">Восстановление доступа администратора в веб-интерфейсе биллинга: сброс пароля: <code>docker compose exec web python manage.py changepassword admin</code>, создание суперпользователя: <code>docker compose exec web python manage.py createsuperuser</code>.</span>
-    </li>
-    <li>
-      <a>Необходимо повысить защиту сервера</a>
-      <span class="desc">Усиление безопасности: смена стандартных портов (SSH, веб), настройка fail2ban, ограничение доступа по IP через firewall, отключение неиспользуемых сервисов, настройка SSL с сильными шифрами, регулярное обновление системы.</span>
-    </li>
-    <li>
-      <a>Пытаются взломать заявку на подключение, но она отключена</a>
-      <span class="desc">Защита от атак на форму заявки: блокировка IP-адресов атакующих через firewall, настройка rate-limiting в nginx, проверка логов на предмет сканирования уязвимостей. Рекомендуется добавить captcha на публичные формы.</span>
-    </li>
-  </ul>
+<p><strong>Виджет SORM</strong> в правой колонке показывает статус выгрузок:</p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v966/dashboard_v966_sorm_widget.png" alt="Виджет SORM на дашборде"></p>
+<ul>
+  <li>Имя конфига → ссылка на <code>/admin/equipment/sorm_list/&lt;id&gt;/</code></li>
+  <li>Vendor (СпецТехПитон / СигналТек / ...)</li>
+  <li>FTP-хост и путь</li>
+  <li>Время выгрузки</li>
+  <li>Бейдж с числом отчётов</li>
+  <li>Статус последней выгрузки: ✓ зелёный N/M файлов / ⚠ оранжевый partial / ✗ красный provаl / ⏳ синий running</li>
+  <li>Дата + кол-во строк + значок облака (✅ если ftp_uploaded)</li>
+  <li>Сводка за 7 дней (счётчики success/partial/failed)</li>
+</ul>
 
-  <h2 id="other">Прочее</h2>
-  <ul class="child-pages">
-    <li>
-      <a>Настройка СМС-шлюза Robokassa</a>
-      <span class="desc">Конфигурация СМС-шлюза через сервис Robokassa: настройка API-ключей, MD5-подписи, шаблонов сообщений. Используется для отправки уведомлений клиентам о списаниях, платежах и блокировках.</span>
-    </li>
-    <li>
-      <a>История внесения изменений в биллинге</a>
-      <span class="desc">Аудит изменений в системе: просмотр журнала действий пользователей (кто, когда, какие данные изменил), фильтрация по дате/пользователю/объекту, экспорт журнала аудита. Раздел <em>Система &rarr; Аудит</em> в веб-интерфейсе.</span>
-    </li>
+<p><strong>«Горячие клиенты» + «Платежи: день × час»</strong> теперь в одном ряду:</p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v966/dashboard_v966_hot_heatmap.png" alt="Горячие клиенты + Heatmap в одном ряду"></p>
+
+<p><strong>Карта клиентов</strong> (была пустой до v966):</p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v966/dashboard_v966_map_fixed.png" alt="Карта клиентов на дашборде (fix)"></p>
+
+<div class="page-toc">
+<details open>
+  <summary><strong><i class="ti ti-book"></i> Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#dashboard-kpi">Шапка: 6 KPI-карточек</a></li>
+    <li><a href="#dashboard-pools-ebs">IP-пулы + EBS Синхронизация</a></li>
+    <li><a href="#dashboard-alerts">Свежие проблемы</a></li>
+    <li><a href="#dashboard-cash">Касса месяца</a></li>
+    <li><a href="#dashboard-payments-today">Платежи сегодня vs вчера</a></li>
+    <li><a href="#dashboard-hot">Горячие клиенты + CRM</a></li>
+    <li><a href="#dashboard-extras">Heat-map + Цели + Что нового</a></li>
+    <li><a href="#dashboard-finance">Итого за период + Финансовая динамика</a></li>
+    <li><a href="#dashboard-auto-refresh">Auto-refresh</a></li>
   </ul>
+</details>
+</div>
+
+<h3 id="dashboard-period">Период и организация — общие для всей страницы</h3>
+
+<p>Дашборд отвечает на два вопроса сразу: <strong>по какой компании</strong> смотрим и
+<strong>за какой срок</strong>. Оба ответа задаются один раз и действуют на все блоки
+«за период».</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v2166/dash_top_light.jpg" alt="Дашборд: переключатель периода, KPI и сводки модулей" loading="lazy"></p>
+<p class="img-caption"><em>Наверху — период, ниже ключевые показатели, под ними сводки по модулям.</em></p>
+
+<h4 id="dashboard-org">Показатели по выбранной организации</h4>
+<p>Селектор компаний в шапке админки управляет и дашбордом: клиенты, должники,
+заявки, деньги, график, карта платежей и топ тарифов считаются в границах выбранной
+организации. «Все организации» показывает то, к чему у сотрудника есть доступ.</p>
+
+<pre class="mermaid">
+flowchart LR
+  SEL["Селектор компании<br/>в шапке"] --> F{"Фильтр организации"}
+  F --> KPI["Клиенты · должники · заявки"]
+  F --> FIN["Поступления · списания · ARPU"]
+  F --> CH["График · карта платежей"]
+  F --> TILES["Сводки модулей"]
+  INFRA["Сеть: NAS · IP-пулы · СОРМ"] -.->|общие для установки| PAGE["Дашборд"]
+  KPI --> PAGE
+  FIN --> PAGE
+  CH --> PAGE
+  TILES --> PAGE
+</pre>
+
+<div class="note">
+  <strong>Что не фильтруется.</strong> Инфраструктура одна на установку: серверы доступа,
+  IP-пулы, состояние СОРМ и нагрузка сервера показываются целиком независимо от выбранной
+  компании — делить их между организациями нечего.
+</div>
+
+<h4 id="dashboard-period-switch">Единый период</h4>
+<p>Кнопки <strong>7 дней · 30 дней · Квартал · Год</strong> в правой части шапки задают срок
+для всех блоков «за период»: поступления и списания, ARPU, новые клиенты, заявки, график и
+карта платежей. Выбор запоминается за сотрудником, поэтому при возврате на главную период
+остаётся прежним. Заголовки блоков называют выбранный срок — «Итого за период · 30 дней»,
+«ARPU (квартал)», «Новых за год».</p>
+
+<div class="note">
+  <strong>Блоки со своим смыслом.</strong> «Платежи сегодня» и «Касса месяца» остаются
+  календарными: первый сравнивает сегодняшний день со вчерашним, второй показывает выполнение
+  плана текущего месяца. Их период переключателю не подчиняется и подписан отдельно.
+</div>
+
+<h3 id="dashboard-tiles">Сводки по модулям</h3>
+
+<p>Под ключевыми показателями — строка компактных плиток: две-три цифры и ссылка в свой
+раздел. Плитка появляется только если модуль включён, поэтому на тарифе без модуля строка
+просто короче.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v2166/dash_tiles.jpg" alt="Строка сводок по модулям" loading="lazy"></p>
+
+<table style="font-size:.92em">
+<tr><th>Плитка</th><th>Что показывает</th><th>Куда ведёт</th></tr>
+<tr><td>Сделки в работе</td><td>Открытые сделки всех воронок и число просроченных задач</td><td>Воронка CRM</td></tr>
+<tr><td>На складе</td><td>Серийные единицы на складе и на руках у монтажников</td><td>Склад</td></tr>
+<tr><td>Заявки с сайтов</td><td>Обращения с лендингов за неделю и за сегодня</td><td>Лендинги</td></tr>
+<tr><td>Звонки за сутки</td><td>Все звонки и те, у которых не определился абонент</td><td>Журнал звонков</td></tr>
+<tr><td>Разбор выписок</td><td>Строки выписок в очереди и проведённые за месяц</td><td>Очередь выписок</td></tr>
+<tr><td>Камеры</td><td>Включённые камеры из общего числа</td><td>Объекты видеонаблюдения</td></tr>
+</table>
+
+<pre class="mermaid">
+flowchart TB
+  MOD{"Модуль включён?"} -->|нет| SKIP["Плитки нет"]
+  MOD -->|да| DATA["Считаем по выбранной организации"]
+  DATA --> OK{"Есть что показать?"}
+  OK -->|нет| SKIP2["Плитку пропускаем"]
+  OK -->|да| TILE["Плитка: цифра · пояснение · ссылка"]
+  TILE --> ATT{"Требует внимания?"}
+  ATT -->|просрочки, очередь| WARN["Оранжевый значок"]
+  ATT -->|всё ровно| CALM["Спокойный значок"]
+</pre>
+
+<div class="note">
+  <strong>Ошибка в одной плитке не роняет главную.</strong> Каждая считается отдельно: если
+  у модуля ещё нет таблиц или сервис недоступен, пропадает только его плитка.
+</div>
+
+<h3 id="dashboard-themes">Тёмная тема и телефон</h3>
+
+<div class="screenshot-pair">
+  <figure>
+    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v2166/dash_top_dark.jpg" alt="Дашборд в тёмной теме" loading="lazy">
+    <figcaption>Тёмная тема: та же раскладка, контраст бейджей доведён до нормы.</figcaption>
+  </figure>
+  <figure>
+    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v2166/dash_mobile.jpg" alt="Дашборд на телефоне" loading="lazy">
+    <figcaption>Телефон: плитки по две в ряд, в шапке — значки и короткие подписи периодов.</figcaption>
+  </figure>
+</div>
+
+<p>На узком экране слова, которые не несут смысла без контекста («Просмотрено»,
+«Обновление выкл.», «собираемость»), уступают место цифрам, а периоды сокращаются до
+«7 д · 30 д · 3 м · Год». Сумма дня показывается коротким числом — «154К ₽» вместо
+«153 957,80 ₽», точное значение остаётся в подсказке.</p>
+
+<h3 id="dashboard-kpi">Шапка: 6 KPI-карточек</h3>
+<p>Верхний ряд — финансовый/операционный обзор. Hero-карточка <strong>«Должников»</strong> в 2×
+ширину с явным CTA <em>«Все должники →»</em> (единственный <code>btn-primary</code>
+на странице — даёт глазу первую точку фиксации). Остальные 5 KPI равноценные:</p>
+<ul>
+  <li>🔵 <strong>Всего</strong> — все клиенты + топ-3 подкатегории (SMIT / Все / EBS-импорт)</li>
+  <li>🟢 <strong>Активных</strong> + бейдж «Заблокированных»</li>
+  <li>🟢 <strong>Серверов доступа (NAS)</strong> с подзаголовком «Онлайн сейчас»</li>
+  <li>🟠 <strong>Должников</strong> (hero) — с CTA</li>
+  <li>🟡 <strong>Открытых заявок</strong> + «за 30 дней / всего»</li>
+  <li>🔵 <strong>Новых за месяц</strong> + «за 7 дней»</li>
+</ul>
+<p>Все 6 градиентов унифицированы на <code>linear-gradient(135deg, A, B)</code> в одной палитре
+в одной палитре.</p>
+
+<h3 id="dashboard-pools-ebs">IP-пулы + EBS Синхронизация</h3>
+<p>Две компактные карточки в одну строку (~110px высоты вместо 200+):</p>
+<ul>
+  <li><strong>IP-пулы</strong> — сводка <code>used / total (%, N пулов)</code> + статус-pill
+  (<em>✓ В норме</em> / <em>⚠ ≥90%: N</em> / <em>🚨 Опасно</em> при наличии пула ≥99%) +
+  топ-3 «опасных» с горизонтальными mini-bar (красный/оранжевый/жёлтый).</li>
+  <li><strong>EBS Синхронизация</strong> — 3 строки cron-расписаний:
+    <ul>
+      <li><em>Импорт:</em> каждые 10 мин, последний запуск + длительность + last tx_id</li>
+      <li><em>Сверка:</em> раз в час, скорректировано N балансов</li>
+      <li><em>Клиенты:</em> ежедневно 04:00 МСК, последний запуск + ETA до следующего</li>
+    </ul>
+  </li>
+</ul>
+<p>Унифицированные бейджи <code>.dash-pill</code> с цветовым кодированием
+(<code>is-ok</code>/<code>is-warn</code>/<code>is-danger</code>/<code>is-info</code>).
+JS-обновление каждые 60 сек через <code>/admin/dictionary/ip_pull_stats/</code> и
+<code>/admin/ebs_sync_status/</code>.</p>
+
+<h3 id="dashboard-alerts">Свежие проблемы (alerts feed)</h3>
+<p>. Отображается <strong>только при наличии алертов</strong>. Источники:</p>
+<ul>
+  <li>🔴 <strong>NAS DOWN сейчас</strong> — последний event=down per NAS из <code>NasStatusLog</code>, с возрастом события</li>
+  <li>🔴/🟡 <strong>IP-пул ≥99% / 100%</strong> через <code>get_pool_stats(pool)</code></li>
+  <li>🟡 <strong>EBS sync failed</strong> за 24ч (status=failed в EBS_SYNC_STATE)</li>
+  <li>🟡 <strong>Backup failed</strong> за 24ч</li>
+</ul>
+<p>Каждая строка кликабельна → ведёт в соответствующий раздел. Левый красный бордер 3px,
+максимум 6 алертов. Видна всем, не только cash-группе.</p>
+
+<h3 id="dashboard-cash">Касса месяца</h3>
+<p>. Расчёт по <strong>календарному месяцу</strong> (с 1-го числа) из
+<code>FinanceOperations</code>:</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v558/dashboard_v558_02_cash_payments.png" alt="Касса месяца + Платежи сегодня vs вчера"></p>
+<ul>
+  <li><strong>Начислено</strong> — сумма всех <code>op_summa &lt; 0</code></li>
+  <li><strong>Оплачено</strong> — сумма всех <code>op_summa &gt; 0</code> (зелёный) +
+  Δ-pill «темп vs тот же день прошлого месяца» (<em>«+17,4% к апрелю»</em>) +
+  hint «прошлый месяц к N-му: X ₽»</li>
+  <li><strong>Прогноз закрытия</strong> — линейная экстраполяция <code>paid × days_in_month / day_of_month</code>
+  (синий) + Δ-pill «к плану» + hint «прошлый месяц закрыли: X ₽»</li>
+  <li><strong>Прогресс месяца</strong> — цветной progress-bar (зелёный ≥100% / синий 70–99% / оранжевый &lt;70%)
+  + «N/M дн.»</li>
+</ul>
+<p>Сверху справа бейдж <em>«✓ Сбор N%»</em> (зелёный/синий/оранжевый по тем же порогам).
+Видна только для группы <code>cash</code>.</p>
+
+<h3 id="dashboard-payments-today">Платежи сегодня vs вчера</h3>
+<p>. 4 ячейки + sparkline по часам:</p>
+<ul>
+  <li><strong>Платежей</strong> (count, шт) + hint «вчера к HH:00 — N»</li>
+  <li><strong>Сумма</strong> ₽ (зелёный) + hint «вчера — X ₽»</li>
+  <li><strong>Средний чек</strong> ₽ (бирюзовый) + hint «вчера всего: M / X ₽»</li>
+  <li><strong>По часам</strong> — 24 столбика sparkline за сегодня. Текущий час
+  голубой с glow, будущие часы серые, оси 0/6/12/18/24.</li>
+</ul>
+<p>В шапке — Δ-pill «к вчера» (≥+5% зелёный, ≤−5% оранжевый, иначе ≈ синий).</p>
+
+<h3 id="dashboard-hot">Горячие клиенты + CRM сегодня</h3>
+<p>. Две карточки в одной строке: «Горячие клиенты» (col-lg-8) +
+«CRM сегодня» (col-lg-4).</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v558/dashboard_v558_03_hot_crm.png" alt="Горячие клиенты + CRM с 3 последними тикетами"></p>
+
+<h4 id="hot-abonents">Горячие клиенты 24ч — скоринг и интерпретация</h4>
+<p>Топ-5 клиентов, кому стоит уделить внимание прямо сейчас. Алгоритм в
+<code>billing/views/auth.py::welcome</code>.</p>
+
+<p><strong>Скоринг (суммируется):</strong></p>
+<ul>
+  <li><strong>Разрывы сессий</strong> за 24 часа (≥3 завершённых сессий):
+    3–9 → 30 pts, 10–29 → 40 pts, ≥30 → 60 pts</li>
+  <li><strong>Открытые тикеты</strong> (status 1=Открыта, 2=В работе) с обращением
+    за 24 часа: 1 шт → 10 pts, ≥2 → 25 pts</li>
+  <li><strong>«Оплатил, но заблокирован»</strong> (b_negbal=true + положительный
+    платёж сегодня) → <strong>50 pts</strong> — критично, клиент заплатил, но
+    биллинг не разблокировал</li>
+</ul>
+<p>В блок попадают клиенты со <code>score ≥ 15</code>, отсортированные по убыванию.
+Цвет строки: ≥50 — красный, ≥25 — оранжевый, &lt;25 — синий.</p>
+
+<p><strong>Что значат коды разрыва (END_REASON в RADIUS_SESSIONS):</strong></p>
+<ul>
+  <li><code>Lost-Carrier</code> — NAS перестал видеть клиента: PPP-keepalive не пришёл,
+    физический линк упал, или MikroTik сам разорвал по idle-timeout. <strong>Самый
+    частый код у проблемных клиентов</strong>.</li>
+  <li><code>User-Request</code> — клиент сам инициировал отключение (PPPoE-disconnect
+    от устройства клиента). Часто маршрутизатор «дёргает» PPP при потере WAN или
+    по таймеру.</li>
+  <li><code>NAS-Request</code> — NAS принял решение отключить (CoA Disconnect,
+    смена тарифа, остановка сервиса биллингом).</li>
+  <li><code>Synthetic (no Start): User-Request</code> — искусственный Stop-пакет,
+    созданный <code>radius_accounting.py</code>, потому что NAS прислал Stop без
+    предшествующего Accounting-Start. Бывает после рестарта FreeRADIUS или потери
+    Start-пакета.</li>
+  <li><code>Stale: no Interim-Update</code> — наш cleanup-таск убил «зомби»-сессию:
+    Interim-Update не приходил &gt;10 минут.</li>
+</ul>
+
+<p><strong>Корневые причины (паттерны):</strong></p>
+<ol>
+  <li><strong>Массовые Lost-Carrier каждые 4–10 минут (100+ разрывов за сутки)</strong>
+    — обрыв физики: гнилой коннектор RJ-45, плохая обжимка, попадание воды в муфту,
+    проблема PoE-инжектора, MAC-конфликт на порту коммутатора. Это не баг биллинга
+    и не пароль (тот дал бы Access-Reject). Действие: выезд монтажника на точку.</li>
+  <li><strong>Десятки User-Request с короткими сессиями (~2 минуты)</strong>
+    — клиентский роутер сам разрывает PPP. Возможно: двойной PPPoE-клиент в прошивке,
+    жёсткий <code>idle-timeout</code> в настройках, скрипт автоматического
+    переподключения. Действие: связаться с клиентом, проверить настройки роутера.</li>
+  <li><strong>Lost-Carrier раз в 30–60 минут</strong> — нестабильный канал,
+    наводки, перегрев SFP/коммутатора. Менее острый сигнал, но повод заявить
+    в техобслуживание.</li>
+  <li><strong>«Оплатил, но заблокирован» (50 pts)</strong> — смотрим в карточке
+    последние FinanceOperations и AbonentsBlock. Обычно это сбой автоматики
+    разблокировки после платежа. Жмём «Разблокировать» вручную, проверяем что
+    в Celery-beat работает task <code>recheck_blocks</code>.</li>
+</ol>
+
+<p><strong>Что смотреть в карточке клиента:</strong></p>
+<ul>
+  <li>Вкладка «RADIUS» — последние 50 сессий с <code>END_REASON</code>,
+    длительностью, IP, NAS. Главный диагностический инструмент.</li>
+  <li>Вкладка «История» — кто и когда менял состояние блокировок.</li>
+  <li>Вкладка «HelpDesk» — все тикеты клиента + быстрая ссылка в HelpDesk.</li>
+</ul>
+
+<p><strong>Состав строки в блоке:</strong> цветной score-badge → имя клиента
+(ссылка на карточку) → список причин («N разрывов», «тикет», «оплатил, но
+заблокирован») → баланс (красный если долг) → стрелка перехода в карточку.</p>
+
+<p><strong>CRM сегодня</strong> — сводка из HelpDesk (mailbox=1) за календарный день:</p>
+<ul>
+  <li><strong>Открыто</strong> — count <code>createdAt &gt;= 00:00</code></li>
+  <li><strong>Закрыто</strong> — count status=closed с <code>updatedAt &gt;= 00:00</code></li>
+  <li><strong>Среднее закрытие</strong> — <code>avg(updatedAt − createdAt)</code> для
+  закрытых сегодня (мин/ч/д)</li>
+  <li>Бейдж <em>⚠ Висят: N</em> — активные старше 30 мин без assignee</li>
+</ul>
+<p>Под цифрами — <strong>3 последних тикета</strong> с цветной точкой статуса
+(active/pending/closed/spam), темой <code>#N · subject</code> (truncate 60 симв,
+кликабельно → адрес поддержки/conversation/&lt;id&gt;), клиент + исполнитель + возраст.
+Кеш 5 мин по ключу <code>dashboard_crm_24h</code>.</p>
+
+<h3 id="dashboard-extras">Heat-map + Цели + Что нового</h3>
+<p>. Три узких карточки в одной строке.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v558/dashboard_v558_04_heatmap_kpi_news.png" alt="Heat-map платежей 7×24 + KPI цели + Что нового"></p>
+
+<p><strong>Heat-map платежей 7×24</strong> (фиолетовая палитра) — день недели × час, цветовая
+интенсивность <code>rgba(#6f42c1, alpha)</code> от количества платежей. SQL:</p>
+<pre><code>SELECT EXTRACT(ISODOW FROM "OP_DATE"), EXTRACT(HOUR FROM "OP_DATE"), COUNT(*)
+FROM finance_operations WHERE "OP_DATE" &gt;= now() - 7 days AND "OP_SUMMA" &gt; 0
+GROUP BY 1, 2;</code></pre>
+<p>Hover увеличивает ячейку 1.4× с tooltip «N пл.». Помогает увидеть паттерн —
+например, пик платежей в Пн ~17:00.</p>
+
+<p><strong>KPI с целями</strong> — читает <code>SystemSettings</code>:</p>
+<ul>
+  <li><code>DASH_MONTHLY_REVENUE_TARGET</code> — план кассы за месяц (₽)</li>
+  <li><code>DASH_ACTIVE_ABONENTS_TARGET</code> — план активных клиентов</li>
+  <li><code>DASH_NEW_MONTH_TARGET</code> — план подключений за календарный месяц</li>
+</ul>
+<p>Без таргетов карточка скрыта. Цветной progress-bar (зелёный ≥100% / синий ≥70–80% / оранжевый ниже).
+Меняются через <code>/admin/settings/system/?tab=params</code>
+(категория <em>dashboard</em>) без релиза.</p>
+
+<p><strong>Что нового</strong> — 2 секции из <code>dev_reports/</code>:</p>
+<ul>
+  <li><strong>Отчёты</strong> — 4 свежих <code>.md</code> файла из подкаталога «Отчёты»
+  (по mtime DESC). Заголовок = первая Markdown H1 строка.</li>
+  <li><strong>Планы</strong> — 4 свежих из подкаталога «Планы».</li>
+</ul>
+<p>Каждая запись с нумерацией 1–4, кликабельна → <code>/admin/reports/dev/?file=&lt;path&gt;</code>.
+Подкаталог <em>Документация</em> исключён.</p>
+
+<h3 id="dashboard-finance">Итого за период + Финансовая динамика (старые блоки)</h3>
+<p>Сохранены: 3-row «Итого за период» (Поступления/Списания/Баланс с дельтами)
+и линейный график «Финансовая динамика» с переключателями типа (Область/Линия/Столбцы)
+и периода (7д/14д/30д/90д/180д/1г). Кнопки в чистом стиле ( — фикс «серой губой»
+заливки <code>.btn-outline-secondary</code>).</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v558/dashboard_v558_05_finance_chart.png" alt="Итого за период + Финансовая динамика — линейный график"></p>
+
+<h3 id="dashboard-auto-refresh">Auto-refresh</h3>
+<p>Переключатель в шапке: <em>Выкл / 30с / 1м / 2м / 5м / 10м</em>.
+Состояние сохраняется в <code>localStorage.dashboard_refresh_sec</code>. Дефолт — <em>выкл</em>.
+Кнопка <em>«Обновить сейчас»</em> и таймер <em>«Просмотрено: N сек/мин назад»</em> рядом.</p>
+
+
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full"></span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">25.08.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full"></span>&nbsp;|&nbsp;<span data-smit="updated">25.08.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">25.08.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;<span data-smit="updated">25.08.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2189"></script>
+<script src="../js/search.js?v=2189"></script>
 <script src="../js/version.js"></script>
 <script src="../js/mermaid-init.js?v=2189"></script>
 <script src="../js/markmap-init.js?v=2189"></script>
-<script src="../js/search.js?v=2189"></script>
 </body>
 </html>

@@ -1,0 +1,1874 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Отчёты — СмИТ Биллинг</title>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="СмИТ Биллинг — Документация">
+  <meta property="og:title" content="Отчёты — СмИТ Биллинг">
+  <meta property="og:description" content="Готовые и произвольные отчёты, аудит операций, журналы платежей и сообщений, должники. Здесь же — раздел геймификации.">
+  <meta property="og:url" content="https://docs.billing.smit34.ru/pages/billing.html">
+  <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="ru_RU">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг">
+  <meta name="twitter:description" content="Управление клиентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
+  <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
+  <meta name="description" content="Готовые и произвольные отчёты, аудит операций, журналы платежей и сообщений, должники. Здесь же — раздел геймификации.">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css?v=2189">
+  <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css?v=2189">
+  <link rel="stylesheet" href="../css/search.css?v=2189">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <button class="menu-toggle" aria-label="Меню"><i class="ti ti-menu-2"></i></button>
+    <div class="logo">
+      <div class="logo-icon">С</div>
+      <div class="logo-text"><span class="logo-main"><span data-smit="brand-short">СмИТ Биллинг</span></span><span>Документация</span></div>
+    </div>
+  </div>
+  <div class="header-search">
+    <div class="docs-search-wrap">
+      <input type="search" id="docsSearch" class="docs-search-input" placeholder="Поиск по документации..." autocomplete="off">
+      <span class="docs-search-icon"><i class="ti ti-search"></i></span>
+      <div class="docs-search-results" id="docsSearchResults"></div>
+    </div>
+  </div>
+  <div class="header-right">
+    <a href="../graphify/graph.html" class="header-nav-link" title="Граф зависимостей кода">
+      <i class="ti ti-topology-star-3 hnl-ico"></i><span class="hnl-txt">Граф</span>
+    </a>
+    <a href="../graphify/wiki/index.html" class="header-nav-link" title="Wiki архитектурных модулей">
+      <i class="ti ti-book-2 hnl-ico"></i><span class="hnl-txt">Wiki</span>
+    </a>
+    <button class="mobile-search-btn" aria-label="Поиск" title="Поиск по документации">
+      <i class="ti ti-search"></i>
+    </button>
+    <button class="theme-toggle" aria-label="Переключить тему" title="Светлая / тёмная тема">
+      <span class="icon-sun"><i class="ti ti-sun"></i></span>
+      <span class="icon-moon"><i class="ti ti-moon"></i></span>
+    </button>
+  </div>
+</header>
+
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+<div class="search-overlay" id="searchOverlay" role="dialog" aria-label="Поиск по документации">
+  <div class="search-overlay-inner">
+    <i class="ti ti-search search-prefix-icon"></i>
+    <input type="search" id="docsSearchMobile" placeholder="Поиск по документации..." autocomplete="off">
+    <button class="search-overlay-close" aria-label="Закрыть" id="searchOverlayClose"><i class="ti ti-x"></i></button>
+    <div class="docs-search-results search-overlay-results" id="docsSearchResultsMobile"></div>
+  </div>
+</div>
+
+<aside class="sidebar">
+  <nav>
+    <div class="nav-section">Разделы</div>
+    <ul>
+      <li><a href="../index.html"><i class="ti ti-home"></i> Главная</a></li>
+      <li class="has-children">
+        <a href="installation.html"><i class="ti ti-box"></i> Установка и интеграция <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="installation.html#requirements">1. Системные требования</a></li>
+          <li><a href="installation.html#docker-install">2. Установка Docker Compose</a></li>
+          <li><a href="installation.html#demo-cleanup">3. Удаление демо-данных</a></li>
+          <li><a href="installation.html#equip-integration">4. Интеграция с оборудованием</a></li>
+          <li><a href="installation.html#tariff-setup">5. Настройка тарифов</a></li>
+          <li><a href="installation.html#add-subscribers">6. Добавление клиентов</a></li>
+          <li><a href="installation.html#final-test">7. Финальное тестирование</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="dashboard.html"><i class="ti ti-layout-dashboard"></i> Дашборд <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="dashboard.html#dashboard">1. Дашборд</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-kpi">1.1. Шапка: 6 KPI</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-pools-ebs">1.2. IP-пулы + EBS</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-alerts">1.3. Свежие проблемы</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-cash">1.4. Касса месяца</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-payments-today">1.5. Платежи сегодня</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-hot">1.6. Горячие клиенты + CRM</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-extras">1.7. Heat-map + Цели + Что нового</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-finance">1.8. Финансовая динамика</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="tariffs.html"><i class="ti ti-receipt"></i> Тарифы и услуги <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="tariffs.html#tarifs">2. Тарификация</a></li>
+          <li class="sub-item"><a href="tariffs.html#tarif-list">2.1. Тарифы</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="tariffs.html#tarif-folder">— Директория тарифа</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="tariffs.html#tarif-org">— Тарифы и организация</a></li>
+          <li class="sub-item"><a href="tariffs.html#usluga-list">2.2. Услуги и Бонусы</a></li>
+          <li class="sub-item"><a href="tariffs.html#tarif-ruleset">2.3. Правила и сети</a></li>
+          <li class="sub-item"><a href="tariffs.html#ruleset-conditions">2.3.1. Условия правила</a></li>
+          <li class="sub-item"><a href="tariffs.html#tarif-bulk">2.3.2. Массовые действия</a></li>
+          <li class="sub-item"><a href="tariffs.html#card-series">2.4. Карты оплаты</a></li>
+          <li class="sub-item"><a href="tariffs.html#loyalty">2.5. Программы лояльности</a></li>
+          <li class="sub-item"><a href="tariffs.html#usluga-range">2.6. Линейки услуг</a></li>
+          <li class="sub-item"><a href="tariffs.html#tarif-overview">— Тарифы: обзор</a></li>
+          <li class="sub-item"><a href="tariffs.html#usluga-overview">— Услуги: обзор</a></li>
+          <li class="sub-item"><a href="tariffs.html#service-policies">— Политики начислений</a></li>
+          <li class="sub-item"><a href="tariffs.html#loyalty-overview">— Лояльность: обзор</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="nas-equipment.html"><i class="ti ti-server"></i> Оборудование <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="nas-equipment.html#equipment">3. Оборудование</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#equip-nas">3.1. NAS</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#nas-map">— Что такое NAS</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#nas-multiorg">— Мультиорганизация и доступ</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#nas-modal">— Карточка устройства</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#nas-status">3.2. Состояние NAS</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#nas-danger">— Опасные операции</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#equip-monitoring">3.2А. Мониторинг оборудования</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#equip-iptv">3.3. IPTV</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#switch">3.4. Коммутаторы</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#switch-type">3.5. Типы коммутаторов</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#sorm-list">3.6. Настройки СОРМ</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="reports.html"><i class="ti ti-chart-bar"></i> Отчёты <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="reports.html#reports">4. Отчёты</a></li>
+          <li class="sub-item"><a href="reports.html#director-dashboard">4.0. Панель директора</a></li>
+          <li class="sub-item"><a href="reports.html#custom-reports">4.1. Библиотека отчётов</a></li>
+          <li class="sub-item"><a href="reports.html#audit">4.2. Аудит</a></li>
+          <li class="sub-item"><a href="reports.html#paylog">4.3. Журнал платежей</a></li>
+          <li class="sub-item"><a href="reports.html#messages-journal">4.4. Журнал сообщений</a></li>
+          <li class="sub-item"><a href="reports.html#dev-reports">4.5. Разработка и логи</a></li>
+          <li class="sub-item"><a href="reports.html#debtors">4.6. Должники</a></li>
+          <li class="sub-item"><a href="reports.html#migration">4.7. Миграция с других биллингов</a></li>
+          <li><a href="reports.html#games">5. Игры (Маркетинг)</a></li>
+          <li class="sub-item"><a href="reports.html#framework-fields-overview">— FrameworkFormGroupFields: обзор</a></li>
+          <li class="sub-item"><a href="reports.html#custom-reports-overview">— SQL-отчёты: обзор</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="settings.html"><i class="ti ti-settings"></i> Настройки: система и платежи <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="settings.html#settings">6. Настройки</a></li>
+          <li class="sub-item"><a href="settings.html#system-settings">6.1. Настройки системы</a></li>
+          <li class="sub-item"><a href="settings.html#print-forms">6.2. Шаблоны печати</a></li>
+          <li class="sub-item"><a href="settings.html#atol-config">6.3. Фискализация</a></li>
+          <li class="sub-item"><a href="settings.html#fiscal">6.3.1. Модуль фискализации 54-ФЗ</a></li>
+          <li class="sub-item"><a href="settings.html#payment-systems">6.4. Платёжные системы</a></li>
+          <li class="sub-item"><a href="settings.html#bank-statements">6.4.1. Банковские выписки</a></li>
+          <li class="sub-item"><a href="settings.html#bank-parsers">6.4.2. Банки и парсеры</a></li>
+          <li class="sub-item"><a href="settings.html#bank-queue">6.4.3. Очередь модерации</a></li>
+          <li class="sub-item"><a href="settings.html#bank-imports">6.4.4. Журнал импортов</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#bank-flow">— Путь платежа (схема)</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#bank-registry">— Сводные реестры</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#bank-queue-link-2171">— Привязка платежа и данные ФНС</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#bank-org-2171">— Организация платежа</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#bank-client-tab">— Вкладка «Банк» в карточке</a></li>
+          <li class="sub-item"><a href="settings.html#mailserver">6.4.5. Почтовый сервер</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#mailserver-webmail">— Веб-почта и календарь</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#mailserver-identity">— Имя, подпись, фото</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#mailserver-addressbook">— Адресная книга</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#mailserver-mail-tab">— Вкладка «Почта»</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#mailserver-server-settings">— Настройки сервера</a></li>
+          <li class="sub-item"><a href="settings.html#dns">6.4.5А. Домены и DNS</a></li>
+          <li class="sub-item"><a href="settings.html#mail-provisioning">6.4.6. Автонастройка почты</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="settings-services.html"><i class="ti ti-plug"></i> Настройки: связь и сервисы <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li class="sub-item"><a href="settings-services.html#integrations">6.5. Интеграции</a></li>
+          <li class="sub-item"><a href="settings-services.html#voice">6.5А. Голосовая связь</a></li>
+          <li class="sub-item"><a href="settings-services.html#iptv-mappings">6.6. IPTV-пакеты</a></li>
+          <li class="sub-item"><a href="settings-services.html#iptv-watch">6.6.1. Просмотр ТВ в ЛК</a></li>
+          <li class="sub-item"><a href="settings-services.html#lk-mobile">6.7. ЛК и мобильные</a></li>
+          <li class="sub-item"><a href="settings-services.html#messaging">6.8. Сообщения</a></li>
+          <li class="sub-item"><a href="settings-services.html#staff">6.9. Персонал и доступ</a></li>
+          <li class="sub-item"><a href="settings-services.html#license">6.10. Лицензия</a></li>
+          <li class="sub-item"><a href="settings-services.html#modules">6.10А. Модули и расширения</a></li>
+          <li class="sub-item"><a href="settings-services.html#backup">6.11. Резервные копии</a></li>
+          <li class="sub-item"><a href="settings-services.html#db-cleanup">6.12. Очистка БД и сессий</a></li>
+          <li class="sub-item"><a href="settings-services.html#diagnostics">6.13. Диагностика</a></li>
+          <li class="sub-item"><a href="settings-services.html#mass-actions">6.14. Массовые действия</a></li>
+          <li class="sub-item"><a href="settings-services.html#performance">6.15. Производительность и оптимизация</a></li>
+          <li class="sub-item"><a href="settings-services.html#captive-portal">6.16. Captive Portal (финблокировка)</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-readiness">— Готовность и проверка</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-emergency">— Аварийный режим</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-access">— Организации и права</a></li>
+          <li class="sub-item"><a href="settings-services.html#guest-wifi-portal">6.16.1. Гостевой Wi-Fi портал</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-payments">— Платежи</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-acl">— Белые списки (ACL)</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-sorm">— Гости в СОРМ и хранение</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-mobile">— С телефона</a></li>
+          <li class="sub-item"><a href="settings-services.html#support">— Поддержка: единое окно</a></li>
+          <li class="sub-item"><a href="settings-services.html#support-ticket">— Поддержка: карточка тикета</a></li>
+          <li class="sub-item"><a href="settings-services.html#support-panel">— Поддержка: выезжающая панель</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="dictionaries.html"><i class="ti ti-book"></i> Справочники <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="dictionaries.html#dictionary">7. Справочники</a></li>
+          <li class="sub-item"><a href="dictionaries.html#pools">7.1. Пулы IP и VLAN</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="dictionaries.html#ip-pull-overview">— IP-пул: обзор</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="dictionaries.html#vlan-pull-overview">— VLAN-пул: обзор</a></li>
+          <li class="sub-item"><a href="dictionaries.html#acl">7.2. Контроль доступа</a></li>
+          <li class="sub-item"><a href="dictionaries.html#addresses">7.3. Все адреса</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="dictionaries.html#addresses-overview">— Адреса: обзор</a></li>
+          <li class="sub-item"><a href="dictionaries.html#statuses-overview">— Статусы: обзор</a></li>
+          <li class="sub-item"><a href="dictionaries.html#requisites">7.4. Реквизиты</a></li>
+          <li class="sub-item"><a href="dictionaries.html#currency">7.5. Валюты</a></li>
+          <li class="sub-item"><a href="dictionaries.html#weekends">7.6. Выходные дни</a></li>
+          <li class="sub-item"><a href="dictionaries.html#statuses">7.7. Управление статусами</a></li>
+          <li class="sub-item"><a href="dictionaries.html#report-types">7.8. Типы отчётов</a></li>
+          <li class="sub-item"><a href="dictionaries.html#units">7.9. Единицы измерения</a></li>
+          <li class="sub-item"><a href="dictionaries.html#periods">7.10. Периоды</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="abonents.html"><i class="ti ti-users"></i> Абоненты <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li class="sub-item"><a href="abonents.html#admin-accounts-overview">— Счета: обзор</a></li>
+          <li class="sub-item"><a href="abonents.html#finops-overview">— Финоперации: обзор</a></li>
+          <li class="sub-item"><a href="abonents.html#promise-pay-overview">— Обещанный платёж: обзор</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-block-overview">— Блокировки: обзор</a></li>
+          <li class="sub-item"><a href="abonents.html#abonent-folders-overview">— Папки клиентов: обзор</a></li>
+          <li><a href="abonents.html#abonents">8. Клиенты</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-list">8.1. Клиенты</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-folder-view">— Папка клиентов</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-multiorg">— Мультиорганизация</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-quick-add">— Новый клиент и раскладка</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-search">— Глобальный поиск</a></li>
+          <li class="sub-item"><a href="abonents.html#abonent-map">8.2. На карте</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#abonent-map-data">— Откуда берутся точки</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#abonent-map-multiorg">— Мультиорганизация</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#abonent-map-performance">— Вес карты и скорость</a></li>
+          <li class="sub-item"><a href="abonents.html#admin-accounts">8.3. Счета</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#admin-accounts-map">— Что такое счёт</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#admin-accounts-multiorg">— Мультиорганизация и доступ</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#admin-accounts-modal">— Карточка счёта</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#admin-accounts-mobile">— Мобильная версия</a></li>
+          <li class="sub-item"><a href="abonents.html#finance-operations">8.4. Финансовые операции</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#finops-lifecycle">— Откуда берутся операции</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#finops-multiorg">— Мультиорганизация</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#modal-finops">— Карточка операции</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#finops-mobile">— Мобильная версия</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#finance-operations-types">— Типы операций (FinTypes)</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="abonent-card.html"><i class="ti ti-id"></i> Карточка абонента <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li class="sub-item"><a href="abonent-card.html#users-overview">— Учётные записи: обзор</a></li>
+          <li class="sub-item"><a href="abonent-card.html#connection-points-overview">— Точки подключения: обзор</a></li>
+          <li class="sub-item"><a href="abonent-card.html#radius-sessions-overview">— RADIUS-сессии: обзор</a></li>
+          <li><a href="abonent-card.html#abonent-card">9. Карточка клиента</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="extras.html"><i class="ti ti-apps"></i> Дополнительные разделы <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="extras.html#video-surveillance">10. Видеонаблюдение</a></li>
+          <li class="sub-item"><a href="extras.html#video-revenue">10.1. 3 слоя дохода + цены</a></li>
+          <li class="sub-item"><a href="extras.html#video-admin">10.2. Раздел /admin/video/</a></li>
+          <li class="sub-item"><a href="extras.html#video-abonent">10.3. Вкладка клиента + ЛК</a></li>
+          <li class="sub-item"><a href="extras.html#video-billing-flow">10.3.1. Как списываются подписки</a></li>
+          <li class="sub-item"><a href="extras.html#video-archive-lk">10.3.2. Архив: календарь + выделение</a></li>
+          <li class="sub-item"><a href="extras.html#video-notify">10.3.3. Уведомления о сбоях</a></li>
+          <li class="sub-item"><a href="extras.html#video-docs">10.4. Документы (КП/договор/акт)</a></li>
+          <li class="sub-item"><a href="extras.html#video-block">10.5. Блокировка камер по балансу</a></li>
+          <li class="sub-item"><a href="extras.html#video-vsaas">10.6. Облако VSaaS</a></li>
+          <li><a href="extras.html#domofon-demo">11. Домофонный домен</a></li>
+          <li class="sub-item"><a href="extras.html#domofon-model">11.1. Доменная модель</a></li>
+          <li class="sub-item"><a href="extras.html#domofon-demo-data">11.2. Что заведено в демо</a></li>
+          <li><a href="extras.html#ai-agent">12. AI-агент</a></li>
+          <li class="sub-item"><a href="extras.html#ai-hub">12.1. Обзор модуля (хаб)</a></li>
+          <li class="sub-item"><a href="extras.html#ai-kb">12.2. База знаний</a></li>
+          <li class="sub-item"><a href="extras.html#ai-voice">12.3. Голос (Mango → анализ)</a></li>
+          <li class="sub-item"><a href="extras.html#ai-widget">12.4. Виджет + воронка</a></li>
+          <li class="sub-item"><a href="extras.html#ai-order-forms">12.4.1. Формы заказа → лиды</a></li>
+          <li class="sub-item"><a href="extras.html#ai-test-chat">12.4.2. Тестовый AI-чат</a></li>
+          <li class="sub-item"><a href="extras.html#ai-eval">12.5. Тест-кейсы AI</a></li>
+          <li class="sub-item"><a href="extras.html#ai-dashboard">12.6. Дашборд AI-сессий</a></li>
+          <li class="sub-item"><a href="extras.html#ai-dashboard-costs">12.6.1. Расходы на модели и бюджет</a></li>
+          <li class="sub-item"><a href="extras.html#ai-org-routing">12.6.2. Определение организации</a></li>
+          <li class="sub-item"><a href="extras.html#ai-dashboard-sessions">12.5.1. Сессии и транскрипт</a></li>
+          <li><a href="extras.html#autodial-telephony">13. Автообзвон и телефония</a></li>
+          <li class="sub-item"><a href="extras.html#autodial-providers">13.1. Мультипровайдер</a></li>
+          <li class="sub-item"><a href="extras.html#autodial-asterisk">13.2. Своя телефония (Asterisk)</a></li>
+          <li class="sub-item"><a href="extras.html#autodial-consent">13.3. Согласие и ограничения</a></li>
+          <li class="sub-item"><a href="extras.html#autodial-card-tab">13.4. Вкладка «Звонки» в карточке</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="lk.html"><i class="ti ti-device-mobile"></i> ЛК и мобильные <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="lk.html#lk-overview">Обзор и возможности</a></li>
+          <li><a href="lk.html#lk-admin">Раздел «ЛК и мобильные» в админке</a></li>
+          <li class="sub-item"><a href="lk.html#lk-admin">— Брендинг</a></li>
+          <li class="sub-item"><a href="lk.html#lk-admin">— Функции</a></li>
+          <li class="sub-item"><a href="lk.html#lk-admin">— Безопасность</a></li>
+          <li class="sub-item"><a href="lk.html#lk-mobile-app">— Мобильное (Android+iOS)</a></li>
+          <li><a href="lk.html#lk-login">Авторизация</a></li>
+          <li><a href="lk.html#lk-admin">Настройки интеграций</a></li>
+          <li><a href="lk.html#lk-extra">Telegram-бот</a></li>
+          <li><a href="lk.html#lk-finance">Оплата (ЮKassa)</a></li>
+          <li><a href="lk.html#lk-mobile-app">Мобильное приложение</a></li>
+          <li><a href="lk.html#lk-support">HelpDesk</a></li>
+          <li><a href="lk.html#lk-ai-chat">AI-ассистент</a></li>
+          <li><a href="lk.html#lk-profile">Профиль</a></li>
+          <li><a href="lk.html#lk-firebase">Push (Firebase)</a></li>
+          <li><a href="lk.html#lk-ai-chat">AI-чат</a></li>
+          <li><a href="settings-services.html#messaging">TG бот оператора</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="crm.html"><i class="ti ti-briefcase"></i> CRM — продажи <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="crm.html#crm-overview">1. Как устроен модуль</a></li>
+          <li><a href="crm.html#crm-quickstart">2. Быстрый старт</a></li>
+          <li><a href="crm.html#crm-funnel">3. Воронка сделок</a></li>
+          <li><a href="crm.html#crm-constructor">4. Конструктор воронок</a></li>
+          <li><a href="crm.html#crm-sources">5. Источники сделок</a></li>
+          <li><a href="crm.html#crm-userfields">6. Доп. поля</a></li>
+          <li><a href="crm.html#crm-tasks">7. Задачи</a></li>
+          <li><a href="crm.html#crm-lists">8. Списки (контакты)</a></li>
+          <li><a href="crm.html#crm-salesbot">9. Salesbot</a></li>
+          <li><a href="crm.html#widgets">10. Виджеты-плагины</a></li>
+          <li><a href="crm.html#crm-setup">11. Мастер настройки</a></li>
+          <li><a href="crm.html#crm-montazh">12. Наряды монтажника</a></li>
+          <li><a href="crm.html#crm-dashboard">13. Дашборд и карта</a></li>
+          <li><a href="crm.html#crm-campaigns">14. Рекламные кампании</a></li>
+          <li><a href="crm.html#crm-drawer">15. Карточка сделки</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="stock.html"><i class="ti ti-packages"></i> Склад <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="stock.html#stock-overview">1. Как устроен модуль</a></li>
+          <li><a href="stock.html#stock-quickstart">2. Быстрый старт</a></li>
+          <li><a href="stock.html#stock-flow">3. Движения и статусы</a></li>
+          <li><a href="stock.html#stock-items">4. Номенклатура и остатки</a></li>
+          <li><a href="stock.html#stock-receipt">5. Приход и этикетки</a></li>
+          <li><a href="stock.html#stock-issue">6. Подотчёт сотрудника</a></li>
+          <li><a href="stock.html#stock-inventory">6б. Инвентаризация</a></li>
+          <li><a href="stock.html#stock-reserve">6в. Резерв под наряд</a></li>
+          <li><a href="stock.html#stock-move">6г. Перемещение</a></li>
+          <li><a href="stock.html#stock-suppliers">6д. Поставщики</a></li>
+          <li><a href="stock.html#stock-montazh">7. Материалы в наряде</a></li>
+          <li><a href="stock.html#stock-abonent">8. Оборудование клиента</a></li>
+          <li><a href="stock.html#stock-money">9. Деньги: продажа и аренда</a></li>
+          <li><a href="stock.html#stock-analytics">9а. Аналитика</a></li>
+          <li><a href="stock.html#stock-settings">10. Настройки и роли</a></li>
+          <li><a href="stock.html#stock-launch">11. Чек-лист запуска</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="video.html"><i class="ti ti-device-cctv"></i> Видеонаблюдение <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="video.html#video-overview">1. Как устроен модуль</a></li>
+          <li><a href="video.html#video-objects">2. Объекты и камеры</a></li>
+          <li><a href="video.html#video-projects">3. Проекты и документы</a></li>
+          <li><a href="video.html#video-plans">4. Планы и подписки</a></li>
+          <li><a href="video.html#video-catalog">5. Каталог и склад</a></li>
+          <li><a href="video.html#video-media">6. Медиа-сервер</a></li>
+          <li><a href="video.html#video-archive">7. Архив записей</a></li>
+          <li><a href="video.html#video-dispatch">8. Пульт ЧОПа</a></li>
+          <li><a href="video.html#video-reports">9. Отчётность по SLA</a></li>
+          <li><a href="video.html#video-access">10. Права и организации</a></li>
+          <li><a href="video.html#video-settings">11. Настройки модуля</a></li>
+          <li><a href="video.html#video-launch">12. Чек-лист запуска</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="helpdesk.html"><i class="ti ti-headset"></i> Поддержка (HelpDesk) <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="helpdesk.html#overview">1. Обзор модуля</a></li>
+          <li><a href="helpdesk.html#channels">2. Каналы приёма</a></li>
+          <li><a href="helpdesk.html#mailbox">3. Входящие</a></li>
+          <li><a href="helpdesk.html#conversation">4. Карточка тикета</a></li>
+          <li><a href="helpdesk.html#sidebar">5. Сайдбар тикета</a></li>
+          <li><a href="helpdesk.html#panel">6. Выезжающая панель</a></li>
+          <li><a href="helpdesk.html#attention">7. Тикеты внимания</a></li>
+          <li><a href="helpdesk.html#ai-assistant">8. AI-бот</a></li>
+          <li><a href="helpdesk.html#voicemail">9. Голосовая почта</a></li>
+          <li><a href="helpdesk.html#knowledgebase">10. База знаний</a></li>
+          <li><a href="helpdesk.html#analytics">11. Аналитика и время</a></li>
+          <li><a href="helpdesk.html#settings">12. Настройки</a></li>
+          <li><a href="helpdesk.html#messengers">13. Мессенджеры</a></li>
+          <li><a href="helpdesk.html#integration">14. Связь с биллингом</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="landing.html"><i class="ti ti-browser"></i> Лендинги <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="landing.html#landing-overview">1. Что это</a></li>
+          <li><a href="landing.html#landing-blocks">2. Блоки-секции</a></li>
+          <li><a href="landing.html#landing-media">3. Слайдер, медиа-фон и эффекты</a></li>
+          <li><a href="landing.html#landing-editor">4. Редактор</a></li>
+          <li><a href="landing.html#landing-ai">5. AI-генерация</a></li>
+          <li><a href="landing.html#landing-forms">6. Формы и заявки</a></li>
+          <li><a href="landing.html#landing-publish">7. Публикация на поддомене</a></li>
+          <li><a href="landing.html#landing-pd">8. Согласие ПД (152-ФЗ)</a></li>
+          <li><a href="landing.html#landing-analytics">9. Аналитика</a></li>
+          <li><a href="landing.html#landing-multiorg">10. Мульти-орг</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="server.html"><i class="ti ti-server"></i> Управление сервером <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="server.html#server-setup">1. Настройка сервера</a></li>
+          <li><a href="server.html#maintenance">2. Сервисное обслуживание</a></li>
+          <li class="sub-item"><a href="server.html#backup">2.1. Резервное копирование</a></li>
+          <li class="sub-item"><a href="server.html#backup-ui">2.2. Бекапы (веб-интерфейс)</a></li>
+          <li><a href="server.html#modules">3. Управление модулями</a></li>
+          <li><a href="server.html#remote">4. Удалённое управление</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="equipment.html"><i class="ti ti-broadcast"></i> Интеграция с оборудованием <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="equipment.html#internet">1. Интернет (NAS/BRAS)</a></li>
+          <li class="sub-item"><a href="equipment.html#switch-types">1.1. Типы коммутаторов</a></li>
+          <li><a href="equipment.html#voip">2. Телефония (VoIP)</a></li>
+          <li><a href="equipment.html#iptv">3. IPTV</a></li>
+          <li class="sub-item"><a href="equipment.html#iptv-tvip">3.1. TVIP Media</a></li>
+          <li class="sub-item"><a href="equipment.html#iptv-lfstream">3.2. LFStream</a></li>
+          <li class="sub-item"><a href="equipment.html#iptv-mappings">3.3. Маппинг пакетов</a></li>
+          <li><a href="equipment.html#cpe">4. Абонентское оборудование</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="sorm.html"><i class="ti ti-shield-lock"></i> Интеграция с СОРМ3 <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="sorm.html#principle">Принцип работы</a></li>
+          <li><a href="sorm.html#integrated">Интегрированные решения</a></li>
+          <li><a href="sorm.html#pending">Ожидающие интеграции</a></li>
+          <li><a href="sorm.html#setup">Настройка подключения</a></li>
+          <li class="sub-item"><a href="sorm.html#sorm-add-modal">— Модальное окно «Добавить»</a></li>
+          <li><a href="sorm.html#reports">Отчёты и SQL</a></li>
+          <li><a href="sorm.html#schedule">Расписание выгрузки</a></li>
+          <li><a href="sorm.html#sorm-admin">Админ-UI: список и FTP</a></li>
+          <li><a href="sorm.html#manual-run">Управление отчётами</a></li>
+          <li><a href="sorm.html#metadata">СОРМ-метаданные</a></li>
+          <li><a href="sorm.html#preflight">Pre-flight валидация</a></li>
+          <li><a href="sorm.html#api">REST API готовности</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="api.html"><i class="ti ti-link"></i> API <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="api.html#overview">1. Обзор API</a></li>
+          <li><a href="api.html#auth">2. Аутентификация</a></li>
+          <li><a href="api.html#rest-v2">3. REST API v2</a></li>
+          <li><a href="api.html#promise-pay">4. Обещанный платёж</a></li>
+          <li><a href="api.html#payments-api">5. Платёжные API (ЮKassa, W1)</a></li>
+          <li><a href="api.html#soap">6. SOAP API</a></li>
+          <li><a href="api.html#mobile-api">7. Mobile API</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="troubleshooting.html"><i class="ti ti-tool"></i> Решение проблем <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="troubleshooting.html#general">1. Общие вопросы</a></li>
+          <li><a href="troubleshooting.html#auth">2. Клиенты и авторизация</a></li>
+          <li><a href="troubleshooting.html#billing-payments">3. Биллинг и платежи</a></li>
+          <li><a href="troubleshooting.html#server-perf">4. Сервер и производительность</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="licensing.html"><i class="ti ti-file-description"></i> Лицензирование <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="licensing.html#delivery">1. Порядок поставки ПО</a></li>
+          <li><a href="licensing.html#payment-issues">2. Не проходит оплата</a></li>
+        </ul>
+      </li>
+      <li><a href="contacts.html"><i class="ti ti-phone"></i> Контакты</a></li>
+      <li><a href="changelog.html"><i class="ti ti-history"></i> Журнал изменений</a></li>
+    </ul>
+
+      <div class="nav-section">Разработчикам</div>
+      <ul>
+        <li class="has-children">
+          <a href="../graphify/graph.html"><i class="ti ti-topology-star-3"></i> Архитектура кода <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+          <ul class="submenu">
+            <li><a href="../graphify/graph.html">Граф сообществ</a></li>
+            <li><a href="../graphify/wiki/index.html">Wiki модулей</a></li>
+            <li><a href="dev/index.html">Портал разработчика</a></li>
+            <li><a href="../graphify/help.html">graphify CLI</a></li>
+          </ul>
+        </li>
+      </ul>
+  <button class="sidebar-theme-toggle" aria-label="Тема"><span class="icon-sun"><i class="ti ti-sun"></i></span><span class="icon-moon"><i class="ti ti-moon"></i></span><span class="sidebar-theme-label">Сменить тему</span></button>
+</nav>
+</aside>
+
+<main class="content">
+  <div class="breadcrumb">
+    <a href="../index.html">Документация</a> <span class="sep">/</span> Отчёты
+  </div>
+
+  <h1>Отчёты</h1>
+  <p>Готовые и произвольные отчёты, аудит операций, журналы платежей и сообщений, должники. Здесь же — раздел геймификации.</p>
+
+<div class="page-toc">
+<details open>
+  <summary><strong><i class="ti ti-book"></i> Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#reports">4. Отчёты</a></li>
+    <li class="sub-item"><a href="#director-dashboard">4.0. Панель директора</a></li>
+    <li class="sub-item"><a href="#custom-reports-overview">Пользовательские SQL-отчёты — назначение и роль</a></li>
+    <li class="sub-item"><a href="#custom-reports">4.1. Библиотека отчётов</a></li>
+    <li class="sub-item"><a href="#audit">4.2. Аудит</a></li>
+    <li class="sub-item"><a href="#paylog">4.3. Журнал платежей</a></li>
+    <li class="sub-item"><a href="#messages-journal">4.4. Журнал сообщений</a></li>
+    <li class="sub-item"><a href="#dev-reports">4.5. Разработка и логи</a></li>
+    <li class="sub-item"><a href="#debtors">4.6. Должники</a></li>
+    <li class="sub-item"><a href="#migration">4.7. Миграция с других биллингов</a></li>
+    <li class="sub-item"><a href="#framework-fields-overview">FrameworkFormGroupFields — назначение и роль</a></li>
+    <li class="sub-item"><a href="#interface-settings">4.8. Настройки интерфейса (формы)</a></li>
+    <li><a href="#games">5. Игры (Маркетинг)</a></li>
+    <li class="sub-item"><a href="#marketing-architecture">5.1. Архитектура модуля</a></li>
+    <li class="sub-item"><a href="#marketing-games">5.2. Настройки модуля «Маркетинг»</a></li>
+    <li class="sub-item"><a href="#marketing-game-of-month">5.3. «Игра месяца» — бесплатный интернет</a></li>
+    <li class="sub-item"><a href="#marketing-conditions">5.4. Условия участия в турнире</a></li>
+    <li class="sub-item"><a href="#marketing-abonent-tab">5.5. Вкладка «Маркетинг» в карточке клиента</a></li>
+    <li class="sub-item"><a href="#marketing-profile-menu">5.6. Профиль-меню и мобильное приложение</a></li>
+  </ul>
+</details>
+</div>
+
+<!-- ===== 4. ОТЧЁТЫ ===== -->
+<h2 id="reports">4. Отчёты</h2>
+<p>Раздел меню <strong>«Отчёты»</strong> объединяет аналитику для руководителя,
+библиотеку SQL-отчётов, аудит действий персонала и журналы.</p>
+
+<div class="page-toc">
+<details open>
+  <summary><strong><i class="ti ti-book"></i> Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#director-dashboard">4.0. Панель директора</a></li>
+    <li><a href="#director-dashboard">4.0. Панель директора</a></li>
+    <li><a href="#custom-reports">4.1. Библиотека отчётов</a></li>
+    <li style="margin-left:1em"><a href="#custom-reports-1764">— Переработка</a></li>
+    <li><a href="#audit">4.2. Аудит</a></li>
+    <li><a href="#paylog">4.3. Журнал платежей</a></li>
+    <li style="margin-left:1em"><a href="#audit-paylog-1769">— Переработка</a></li>
+    <li><a href="#messages-journal">4.4. Журнал сообщений</a></li>
+    <li style="margin-left:1em"><a href="#messages-journal-multiorg">— Мульти-орг + SmitUI</a></li>
+    <li><a href="#dev-reports">4.5. Разработка и логи</a></li>
+    <li><a href="#debtors">4.6. Должники</a></li>
+    <li><a href="#migration">4.7. Миграция с других биллингов</a></li>
+  </ul>
+</details>
+</div>
+
+<!-- ===== Панель директора ===== -->
+<h3 id="director-dashboard">4.0. Панель директора</h3>
+<details class="section-toc">
+  <summary><strong>Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#director-map">Карта раздела</a></li>
+    <li><a href="#director-kpi">Четыре показателя и как они считаются</a></li>
+    <li><a href="#director-charts">Шесть графиков</a></li>
+    <li><a href="#director-filters">Период и фильтры</a></li>
+    <li><a href="#director-flow">Откуда берутся цифры</a></li>
+    <li><a href="#director-org">Мульти-организации</a></li>
+    <li><a href="#director-drill">Переход к деталям</a></li>
+    <li><a href="#director-theme">Тёмная тема и телефон</a></li>
+  </ul>
+</details>
+
+<p><strong>Панель директора</strong> (<code>/admin/reports/dashboard/</code>, сайдбар «Отчёты → Панель директора») отвечает на четыре вопроса о бизнесе за выбранный период: сколько денег пришло, сколько в среднем приносит клиент, сколько людей подключилось и сколько заблокировано. Ниже — шесть графиков по тем же данным в динамике.</p>
+
+<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/director_v1761/director_overview.png" alt="Панель директора — общий вид" class="screenshot">
+
+<h4 id="director-map">Карта раздела</h4>
+
+<pre class="markmap">
+- Панель директора
+  - Показатели
+    - Выручка за период
+    - ARPU
+    - Новые клиенты
+    - Заблокировано за период
+  - Графики
+    - Популярность тарифов
+    - Новые клиенты
+    - Поступающие средства
+    - Платящие клиенты
+    - ARPU по месяцам
+    - ARPPU по месяцам
+  - Срезы
+    - Период и пресеты
+    - Сегмент физ-юр
+    - Канал оплаты
+    - Тариф
+    - Точка подключения
+    - Шаг день-неделя-месяц
+    - Сравнение с прошлым или годом назад
+  - Правила
+    - Данные своей организации
+    - Клик по показателю ведёт в список
+    - Ошибка отличается от пустоты
+</pre>
+
+<h4 id="director-kpi">Четыре показателя и как они считаются</h4>
+
+<p>Формулы важнее оформления: по этим цифрам принимают решения, поэтому каждая должна читаться однозначно.</p>
+
+<table class="data-table">
+  <thead>
+    <tr><th>Показатель</th><th>Что именно считается</th><th>Сравнение</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Выручка за период</strong></td>
+      <td>Сумма приходных финансовых операций (<code>OP_SUMMA &gt; 0</code>) с датой внутри периода. Верхняя граница берётся включительно, до 23:59:59 последнего дня.</td>
+      <td>к предыдущему периоду такой же длины</td>
+    </tr>
+    <tr>
+      <td><strong>ARPU</strong></td>
+      <td>Выручка периода ÷ база клиентов на конец периода (не удалённые, заведённые до этой даты). У прошлого периода — свой знаменатель, поэтому дельта ARPU не повторяет дельту выручки.</td>
+      <td>к тому же показателю прошлого периода</td>
+    </tr>
+    <tr>
+      <td><strong>Новых клиентов</strong></td>
+      <td>Клиенты с датой создания внутри периода.</td>
+      <td>к предыдущему периоду</td>
+    </tr>
+    <tr>
+      <td><strong>Заблокировано за период</strong></td>
+      <td>Клиенты, у которых блокировка началась внутри периода (<code>ABONENTS_BLOCK.B_DATE</code>). В подписи — сколько из них за неоплату и сколько клиентов активно сейчас. Рост показан красным: блокировок больше — это плохая новость.</td>
+      <td>к предыдущему периоду</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="info-box">
+  <strong>Почему «Заблокировано», а не «Отток».</strong> До июля 2026 карточка называлась «Отток» и показывала 2 099 на любом периоде: расчёт обращался к несуществующим полям журнала аудита, ошибка гасилась молча, и вместо оттока выводилось общее число отключённых за всю историю. Теперь метрика привязана к дате блокировки и меняется вместе с периодом.
+</div>
+
+<h4 id="director-charts">Шесть графиков</h4>
+
+<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/director_v1761/director_dark.png" alt="Панель директора в тёмной теме" class="screenshot">
+
+<table class="data-table">
+  <thead>
+    <tr><th>График</th><th>Что показывает</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Популярность тарифов</td><td>Распределение клиентов по тарифам (без заблокированных). Хвост сворачивается в «Прочие».</td></tr>
+    <tr><td>Новые клиенты</td><td>Сколько подключилось в каждом периоде.</td></tr>
+    <tr><td>Поступающие средства</td><td>Приход по периодам — та же выручка в динамике.</td></tr>
+    <tr><td>Платящие клиенты</td><td>Сколько разных клиентов платили в периоде.</td></tr>
+    <tr><td>ARPU</td><td>Выручка периода ÷ база клиентов на его конец.</td></tr>
+    <tr><td>ARPPU</td><td>Выручка периода ÷ число заплативших — средний чек платящего.</td></tr>
+  </tbody>
+</table>
+
+<p>Если данных за период нет, карточка так и говорит: «За выбранный период данных нет». Если запрос не выполнился — это отдельное сообщение «Не удалось загрузить» с кнопкой «Повторить», чтобы сбой сервера не выглядел как «в этом месяце ничего не было».</p>
+
+<h4 id="director-filters">Период и фильтры</h4>
+
+<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/director_v1761/director_filters.png" alt="Панель фильтров" class="screenshot">
+
+<p>Слева — выбор периода с пресетами (текущий месяц, прошлый месяц, квартал, год, всё время). Рядом кнопка <strong>«Фильтры»</strong> со счётчиком активных срезов:</p>
+
+<table class="data-table">
+  <thead>
+    <tr><th>Фильтр</th><th>Значения</th><th>Зачем</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Сегмент</td><td>Все · Физлица · Юрлица</td><td>У юрлиц другой чек и другая сезонность — смешивать их с частниками бессмысленно</td></tr>
+    <tr><td>Канал оплаты</td><td>типы приходных операций</td><td>Видно, через что реально идут деньги</td></tr>
+    <tr><td>Тариф</td><td>мультивыбор, рядом число клиентов</td><td>Как живёт конкретный тариф или линейка</td></tr>
+    <tr><td>Точка подключения</td><td>мультивыбор по населённым пунктам</td><td>Срез по географии: посёлок, СНТ, город</td></tr>
+    <tr><td>Шаг графиков</td><td>Месяц · Неделя · День</td><td>Дневной шаг показывает всплески внутри месяца</td></tr>
+    <tr><td>Сравнивать с</td><td>предыдущим периодом · тем же периодом год назад</td><td>Годовое сравнение снимает сезонность</td></tr>
+  </tbody>
+</table>
+
+<p>Выбранный набор сохраняется между заходами, сбрасывается ссылкой «Сбросить фильтры». Списки тарифов и точек показывают количество клиентов — выбирать можно осознанно.</p>
+
+<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/director_v1761/director_segment_company.png" alt="Срез по юрлицам" class="screenshot">
+
+<div class="info-box">
+  <strong>Про точку подключения.</strong> Срез строится по записям <code>CONNECTION_POINTS</code>, названным по населённому пункту. Клиенты без точки в такой срез не попадают, поэтому под фильтром показано, скольких это касается. Массово назначить точки по адресу помогает команда <code>manage.py assign_connection_points</code> (с предпросмотром и откатом).
+</div>
+
+<h4 id="director-flow">Откуда берутся цифры</h4>
+
+<pre class="mermaid">
+flowchart LR
+    FO["Финансовые операции<br/>finance_operations"] --> REV["Выручка<br/>Поступающие средства"]
+    FO --> PAY["Платящие клиенты<br/>ARPPU"]
+    AB["Клиенты<br/>abonents"] --> BASE["База клиентов"]
+    BASE --> ARPU["ARPU"]
+    REV --> ARPU
+    AB --> NEW["Новые клиенты"]
+    AB --> TAR["Популярность тарифов"]
+    BL["Блокировки<br/>ABONENTS_BLOCK"] --> BLK["Заблокировано<br/>за период"]
+    ORG["Организация"] -.->|"фильтр"| FO
+    ORG -.->|"фильтр"| AB
+    ORG -.->|"фильтр"| BL
+</pre>
+
+<p> Теперь все шесть считаются из финансовых операций и карточек клиентов, то есть из тех же данных, что и KPI.</p>
+
+<h4 id="director-org">Мульти-организации</h4>
+
+<p>Панель показывает данные <strong>той организации, которая выбрана в шапке</strong>. Если выбрана конкретная компания, её название выводится бейджем справа в строке фильтров — чтобы не спутать, чьи цифры на экране. В режиме «Все организации» сотрудник видит только те компании, к которым у него есть доступ.</p>
+
+<p>Фильтрация применяется ко всем шести графикам и ко всем четырём показателям, а также к спискам тарифов и точек в самих фильтрах: под чужую организацию не попадут ни её тарифы, ни её посёлки.</p>
+
+<h4 id="director-drill">Переход к деталям</h4>
+
+<p>Под показателями есть ссылки в соответствующие разделы: «Платежи за период» открывает <a href="#paylog">журнал платежей</a> с теми же датами, «Кто подключился» — список клиентов по дате создания, «Список заблокированных» — глобальный поиск с чипом «Заблокированные». Увидев просадку, можно сразу посмотреть, из чего она сложилась.</p>
+
+<h4 id="director-theme">Тёмная тема и телефон</h4>
+
+<p>Графики перерисовываются вместе со сменой темы, перезагрузка не нужна. На телефоне показатели встают в две колонки, фильтры — в одну, горизонтальной прокрутки нет.</p>
+
+<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/director_v1761/director_mobile.png" alt="Панель директора на телефоне" class="screenshot">
+<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/director_v1761/director_mobile_filters.png" alt="Фильтры на телефоне" class="screenshot">
+
+<!-- ===== AdminCustomReports: обзор ===== -->
+<h3 id="custom-reports-overview">Пользовательские SQL-отчёты — назначение и роль</h3>
+<details class="section-toc">
+  <summary><strong>Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#cr-purpose">Зачем нужны кастомные отчёты</a></li>
+    <li><a href="#cr-fields">Поля и связанные таблицы</a></li>
+    <li><a href="#cr-params">Параметры в SQL — синтаксис</a></li>
+    <li><a href="#cr-types">Типы отчётов</a></li>
+    <li><a href="#cr-tools">CodeMirror + AI Builder</a></li>
+    <li><a href="#cr-cabinet">Отчёты в ЛК клиента</a></li>
+  </ul>
+</details>
+
+<p><strong>AdminCustomReports</strong> — таблица сохранённых SQL-запросов, доступных оператору через UI. Каждая запись = один отчёт с именем, описанием и SQL-кодом. Хранится в таблице <code>ADMIN_CUSTOM_REPORTS</code>, редактируется на <code>/admin/reports/AdminCustomReports/</code>.</p>
+
+<h5 id="cr-purpose">Зачем нужны кастомные отчёты</h5>
+<p>Биллинг — это система с ~150 таблицами и 600+ полей. Готовых отчётов в админке всегда не хватает: бухгалтер хочет один формат, директор — другой, техподдержка — третий. Решение:</p>
+<ol>
+  <li><strong>Гибкость без релизов</strong> — оператор-аналитик пишет SQL прямо через UI, без ожидания deployment'а;</li>
+  <li><strong>Параметризация</strong> — встроенный синтаксис <code>:Имя|тип$</code> позволяет добавлять параметры (даты, клиент, сумма) без знания Python;</li>
+  <li><strong>Экспорт</strong> — результат отчёта сразу в Excel/CSV/DBF без программирования;</li>
+  <li><strong>Историческая часть</strong> — каждый запуск сохраняется в <code>AdminCustomReportsHistory</code>, можно вернуться к старому результату.</li>
+</ol>
+
+<h5 id="cr-fields">Поля и связанные таблицы</h5>
+<table class="data-table">
+  <thead><tr><th>Поле <code>ADMIN_CUSTOM_REPORTS</code></th><th>Назначение</th></tr></thead>
+  <tbody>
+    <tr><td><code>NAME</code></td><td>Название отчёта (видно в UI)</td></tr>
+    <tr><td><code>DESCRIPTION</code></td><td>Описание для оператора (что отчёт показывает)</td></tr>
+    <tr><td><code>REPORT_TEMPLATE</code></td><td>SQL-код запроса (text)</td></tr>
+    <tr><td><code>REPORT_TYPE</code></td><td>FK на <code>AdminCustomReportsType</code> — категория</td></tr>
+    <tr><td><code>ALLOW_IN_CABINET</code></td><td>Видим ли клиенту в ЛК (раздел «Мои отчёты»)</td></tr>
+    <tr><td><code>TECH_ADMIN</code> / <code>FIN_ADMIN</code> / <code>FULL_ADMIN</code> / <code>CARD_ADMIN</code> / <code>READ_ADMIN</code></td><td>Матрица прав по ролям оператора (1 = доступно)</td></tr>
+  </tbody>
+</table>
+<p>Связанные таблицы:</p>
+<ul>
+  <li><strong><code>AdminCustomReportsType</code></strong> — справочник типов (см. ниже);</li>
+  <li><strong><code>AdminCustomReportsHistory</code></strong> — история запусков (user_id, params JSON, row_count, execution_time, sql_hash);</li>
+  <li><strong><code>report_executions</code></strong> — текущие выполнения (для предотвращения двойного запуска);</li>
+  <li><strong><code>report_favorites</code></strong> — закладки оператора (звёздочки).</li>
+</ul>
+
+<h5 id="cr-params">Параметры в SQL — синтаксис</h5>
+<p>Внутри SQL можно использовать спец-плейсхолдеры в формате <code>:Имя|тип$</code> или <code>:Имя|тип[аргументы]$</code>. Когда оператор запускает отчёт — UI генерирует форму с этими параметрами, подставляет значения и выполняет SQL.</p>
+<table class="data-table">
+  <thead><tr><th>Тип</th><th>Пример SQL</th><th>UI</th></tr></thead>
+  <tbody>
+    <tr><td><code>date</code></td><td><code>WHERE op_date &gt;= :Начало|date$</code></td><td>Date-picker</td></tr>
+    <tr><td><code>sum</code></td><td><code>WHERE op_summa &gt; :Минимум|sum$</code></td><td>Поле для рублей с конвертацией ×10^10</td></tr>
+    <tr><td><code>select[Model]</code></td><td><code>WHERE abonent_id = :Клиент|select[Abonents]$</code></td><td>Select2-AJAX по модели</td></tr>
+    <tr><td><code>choices[1^Янв|2^Фев|3^Мар]</code></td><td><code>WHERE month = :Месяц|choices[1^Январь|2^Февраль]$</code></td><td>Dropdown с фиксированными значениями</td></tr>
+  </tbody>
+</table>
+<p>Парсинг — regex в <code>AdminCustomReports._get_sql_fields()</code>, подстановка в <code>_execute_sql()</code> с защитой от SQL-injection.</p>
+
+<h5 id="cr-types">Типы отчётов</h5>
+<p>Справочник <code>ADMIN_CUSTOM_REPORTS_TYPE</code> — 7 категорий с цветными бейджами:</p>
+<ul>
+  <li>🛠 <strong>Техсервис</strong> — для техников (NAS, RADIUS, оборудование)</li>
+  <li>📈 <strong>Руководство</strong> — KPI, статистика, тренды</li>
+  <li>⛑ <strong>Техподдержка</strong> — заявки, тикеты, проблемы клиентов</li>
+  <li>🎧 <strong>ЦОК</strong> (call-центр) — обращения, ответственные</li>
+  <li>💰 <strong>Бухгалтерия</strong> — финансы, оплаты, счета</li>
+  <li>📞 <strong>Телефония</strong> — VoIP, звонки</li>
+  <li>🛡 <strong>ЦУС</strong> — централизованное управление сетью</li>
+</ul>
+<p>Один отчёт может быть без типа (NULL) или привязан к одной категории. На странице есть фильтр-вкладки по типам.</p>
+
+<h5 id="cr-tools">CodeMirror + AI Builder</h5>
+<p><strong>CodeMirror 5.65.16</strong> — встроенный SQL-редактор в модалке:</p>
+<ul>
+  <li>Подсветка синтаксиса PostgreSQL (тема material-darker, чёрный фон);</li>
+  <li>Live-counter параметров — автоматически считает <code>:Имя|тип$</code> в коде;</li>
+  <li>Подсветка плейсхолдеров жёлтым overlay'ем;</li>
+  <li>Hot-keys: Ctrl+/ comment, Ctrl+F find, Tab indent;</li>
+  <li>Auto-fix SQL — <code>_fix_sql_column_case()</code> для миграций Carbon4 → PostgreSQL (uppercase ID → lowercase id).</li>
+</ul>
+<p><strong>AI Builder</strong>: кнопка «✨ AI» в toolbar. Открывает чат с AI-ассистентом:</p>
+<ol>
+  <li>Оператор описывает что нужно: «Топ-10 должников за месяц с балансом и телефоном»;</li>
+  <li>Ассистент задаёт уточняющие вопросы (период, фильтры);</li>
+  <li>Возвращает готовый SQL с правильными именами таблиц/полей и параметрами;</li>
+  <li>Оператор проверяет, при необходимости правит, сохраняет.</li>
+</ol>
+<p>Контекст БД для ассистента — schema из <code>information_schema.columns</code> для 15 ключевых таблиц + критические правила биллинга (DB_MONEY_KOEF, MPTT-фильтры, регистр имён).</p>
+
+<h5 id="cr-cabinet">Отчёты в ЛК клиента</h5>
+<p>Если у отчёта <code>ALLOW_IN_CABINET=true</code> — он показывается клиенту в ЛК (раздел «Мои отчёты»). При запуске:</p>
+<ul>
+  <li>Параметры <code>:Клиент|select[Abonents]$</code> автоматически фиксируются текущим клиентом (нельзя посмотреть чужие данные);</li>
+  <li>Параметры дат/сумм клиент задаёт сам;</li>
+  <li>Результат отображается с пагинацией, экспорт в CSV.</li>
+</ul>
+
+<div class="info-box">
+  <strong>Защита удаления отчёта:</strong> <code>report_executions</code> и <code>AdminCustomReportsHistory</code> ссылаются на отчёт с FK NO ACTION. Если есть история запусков — удаление падает с ошибкой. Сначала очистите историю или используйте архивирование (поле <code>archive=true</code>).
+</div>
+
+<h3 id="custom-reports">4.1. Библиотека отчётов</h3>
+<p>URL: <code>/admin/reports/AdminCustomReports/</code></p>
+<p>Каталог пользовательских SQL-отчётов. <strong>Отчёт</strong> — это сохранённый SQL-запрос с настраиваемыми параметрами, сгруппированный по типам (Техсервис, Бухгалтерия, Руководство, Поддержка и т.д.), который оператор запускает кликом и получает таблицу с возможностью экспорта в Excel, CSV или DBF.</p>
+
+<figure class="doc-video">
+  <div class="dv-head">
+    <span class="dv-kind"><i class="ti ti-player-play-filled" aria-hidden="true"></i> Обучающее видео</span>
+    <span class="dv-time">2:33</span>
+  </div>
+  <div class="dv-media">
+    <video controls preload="none" playsinline
+             poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/reports-training-poster.jpg">
+        <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/reports-training.mp4" type="video/mp4">
+        Ваш браузер не проигрывает видео —
+        <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/reports-training.mp4">скачайте файл</a>.
+      </video>
+  </div>
+  <figcaption>
+    <p class="dv-desc">Как найти готовый отчёт, запустить его с параметрами, выгрузить результат и завести свой — включая AI-помощника по SQL.</p>
+    <div class="dv-foot">
+      <span class="dv-spec">1920×1080</span>
+      <span class="dv-spec">с озвучкой</span>
+      <a class="dv-download" href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/reports-training.mp4" target="_blank" rel="noopener" aria-label="Скачать видеофайл"><i class="ti ti-download" aria-hidden="true"></i> Скачать</a>
+    </div>
+  </figcaption>
+</figure>
+
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/custom_reports_v511/v511_reports_library.png" alt="Библиотека отчётов — список с типами и поиском"></p>
+
+<h4 id="custom-reports-list">Список отчётов</h4>
+<ul>
+  <li><strong>Вкладки по типам</strong> с цветными бейджами: 🛠 Техсервис, 📈 Руководство, ⛑ Техподдержка, 🎧 ЦОК, 💰 Бухгалтерия, 📞 Телефония, 🛡 ЦУС. Тип хранится в <code>AdminCustomReportsType</code>, редактируется через кнопку <em>«+»</em> в правой части toolbar.</li>
+  <li><strong>Поиск</strong> по имени и SQL-коду с шорткатом <kbd>Ctrl</kbd>+<kbd>K</kbd>.</li>
+  <li><strong>Звёздочка избранного</strong> — отмеченные отчёты попадают в виджет «Избранные отчёты» на дашборде директора и в профиле сотрудника.</li>
+  <li>Бейдж <strong>«🤳 ЛК»</strong> у отчётов с <code>allow_in_cabinet=True</code> — они доступны клиенту в его ЛК (например, «История платежей»).</li>
+  <li><strong>Sticky toolbar</strong> при скролле — поиск, фильтр избранного, кнопки <em>«+ Типы»</em>, <em>«+ Добавить отчёт»</em>, <em>«✨ AI»</em> остаются видны.</li>
+  <li>Кнопки в строке: <em>▶ Запустить</em>, <em>✏ Редактировать</em>, <em>🗑 Удалить</em> с подтверждением через Bootstrap-confirm.</li>
+  <li><strong>Bulk-операции</strong>: чекбокс-колонка с master-чекбоксом, sticky-toolbar при выборе — Удалить / Сменить тип / Экспорт CSV выбранных.</li>
+  <li>На <strong>мобильном</strong> (≤575px) — read-only режим: только имя + кнопка <em>▶ Запустить</em>, CRUD скрыт.</li>
+</ul>
+
+<h4 id="custom-reports-execute">Запуск отчёта</h4>
+<p>URL: <code>/admin/reports/AdminCustomReports/&lt;id&gt;/executesql/</code></p>
+<p>Кнопка <em>▶ Запустить</em> в строке списка ведёт на форму с параметрами отчёта. Параметры извлекаются из SQL-кода по синтаксису <code>:Имя|тип$</code> и рендерятся в форму автоматически.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/custom_reports_v511/v511_report_136_form.png" alt="Форма параметров отчёта (executesql)"></p>
+
+<p>На скриншоте — форма отчёта <strong>«Действия сотрудника»</strong> (#136): три параметра — <em>Дата с</em>, <em>Дата по</em>, <em>Сотрудник</em>. По умолчанию период — последний месяц (07.04 → 07.05), сотрудник = «Все сотрудники».</p>
+
+<p>Внизу формы — четыре кнопки действий:</p>
+<ul>
+  <li><strong>Выполнить</strong> — открывает результат в HTML-таблице (на этой же странице).</li>
+  <li><strong>Excel (.xlsx)</strong> — скачивает результат как Excel-файл.</li>
+  <li><strong>CSV</strong> — скачивает CSV (UTF-8 BOM, разделитель <code>;</code> для Excel RU).</li>
+  <li><strong>DBF</strong> — экспорт в DBF (legacy формат для интеграции с 1С).</li>
+</ul>
+
+<h4 id="custom-reports-form-filled">Пример: запуск с фильтром по конкретному сотруднику</h4>
+<p>Выбор конкретного сотрудника из выпадающего списка <code>choices</code>:</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/custom_reports_v511/v511_report_136_form_filled.png" alt="Форма с заполненными параметрами"></p>
+
+<p>На скриншоте — выбран сотрудник <strong>uspeshnyy (Aleksandr Uspeshnyy)</strong>, период <strong>01.05.2026 → 07.05.2026</strong>. Список доступных значений для параметра <code>:Sotrudnik|choices[...]$</code> формируется на лету: SQL-генератор выбирает уникальных <code>owner</code> из <code>AuditOperations</code> и подставляет их в опции.</p>
+
+<h4 id="custom-reports-result">Пример: результат выполнения</h4>
+<p>После клика <em>«Выполнить»</em> срабатывает редирект на <code>/admin/reports/AdminCustomReports/&lt;id&gt;/history/&lt;run_id&gt;/</code> — каждое выполнение получает свой <code>run_id</code> (хранится 30 дней для повторного открытия результата без перезапуска SQL):</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/custom_reports_v511/v511_report_136_result_top.png" alt="Результат выполнения отчёта — HTML-таблица"></p>
+
+<p>На скриншоте — результат отчёта «Действия сотрудника» за месяц: <strong>604 строки</strong>, колонки <em>#, Дата/время, Сотрудник, ФИО, Событие, IP-адрес, Подробности</em>. Каждая строка — один аудит-event с детализацией («FIN_TYPES: Тип фин. операции #28 «Перевод средств…»», «ABONENTS: создан клиент…», «USERS_USLUGA: услуга подключена…»).</p>
+
+<p><strong>Возможности страницы результата</strong>:</p>
+<ul>
+  <li><strong>Sticky-заголовок</strong> таблицы при прокрутке — колонки видны всегда.</li>
+  <li><strong>Поиск по таблице</strong> (Ctrl+K) — клиентский фильтр без перезапуска SQL.</li>
+  <li><strong>Кнопки экспорта</strong> в шапке — Excel / CSV / DBF (тот же набор что на форме параметров, но без перезапуска).</li>
+  <li><strong>Кнопка «← Назад к форме»</strong> — возврат к форме параметров для перезапуска с другими значениями.</li>
+  <li><strong>История запусков</strong> — каждый запуск сохраняется в <code>AdminCustomReportsHistory</code> с user_id, params, row_count, execution_time.</li>
+</ul>
+
+<h4 id="custom-reports-modal">Модалка редактирования отчёта</h4>
+<p>Открывается кликом по имени отчёта или по карандашу. Делится на две колонки:</p>
+<ul>
+  <li><strong>Слева</strong>: название, описание, тип (select), Bootstrap-switch <em>«🤳 Доступен в ЛК»</em>, развёрнутая справка по 4 типам параметров (<code>:Имя|date$</code>, <code>:Имя|sum$</code>, <code>:Имя|select[Model]$</code>, <code>:Имя|choices[v1^Лейбл1|v2^Лейбл2]$</code>) с примером SQL-сниппета.</li>
+  <li><strong>Справа</strong>: SQL-редактор <strong>CodeMirror 5</strong> с подсветкой синтаксиса PostgreSQL, тёмная тема <code>material-darker</code>, номера строк, перенос длинных строк, soft-wrap. Hot keys: <kbd>Ctrl</kbd>+<kbd>/</kbd> toggle comment, <kbd>Ctrl</kbd>+<kbd>F</kbd> find. Параметры <code>:Имя|тип$</code> подсвечиваются жёлтым фоном через CodeMirror-overlay.</li>
+</ul>
+<p><strong>Live-counter</strong> под редактором обновляется на каждом change-event: «N строк · M парам.», справа от него — список найденных параметров с типами.</p>
+
+<h4 id="custom-reports-params-syntax">Синтаксис параметров</h4>
+<p>Параметры записываются в SQL как <code>:Имя|тип$</code> и автоматически становятся полями формы запуска:</p>
+
+<table>
+  <thead>
+    <tr><th>Тип</th><th>Синтаксис</th><th>UI-элемент</th><th>Передаётся в SQL как</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>date</strong></td>
+      <td><code>:Дата с|date$</code></td>
+      <td>Календарь (jQuery datepicker)</td>
+      <td>String '2026-05-07' (ISO)</td>
+    </tr>
+    <tr>
+      <td><strong>sum</strong></td>
+      <td><code>:Сумма|sum$</code></td>
+      <td>Числовое поле (₽)</td>
+      <td>Float (умножается на 10^10 при необходимости)</td>
+    </tr>
+    <tr>
+      <td><strong>select[Model]</strong></td>
+      <td><code>:Клиент|select[Abonents]$</code></td>
+      <td>Select2 с AJAX-поиском</td>
+      <td>Integer (pk выбранной записи)</td>
+    </tr>
+    <tr>
+      <td><strong>choices[v^L|v^L]</strong></td>
+      <td><code>:Месяц|choices[1^Янв|2^Фев]$</code></td>
+      <td>Выпадающий список фикс. значений</td>
+      <td>String (значение выбранной опции)</td>
+    </tr>
+    <tr>
+      <td><strong>choices[[code^]Label]</strong></td>
+      <td><code>:Sotrudnik|choices[[uspeshnyy^]Aleksandr]</code></td>
+      <td>Расширенный выпадающий с экранированными значениями</td>
+      <td>String (code)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Пример SQL с параметрами</strong>:</p>
+<pre><code>SELECT a.id, a.name, a.contract_number,
+       aa.ostatok / 10000000000.0 AS balance_rub
+FROM abonents a
+LEFT JOIN admin_accounts aa ON aa.id = a.account_id
+WHERE a.is_folder = false
+  AND a.deleted = false
+  AND aa.ostatok &lt; -:Долг|sum$ * 10000000000
+  AND a.create_date BETWEEN :Дата с|date$ AND :Дата по|date$
+ORDER BY aa.ostatok ASC
+LIMIT :Лимит|sum$;</code></pre>
+
+<h4 id="custom-reports-ai-helper">AI-помощник написания SQL</h4>
+<p>Кнопка <em>«✨ AI»</em> в шапке открывает чат с ИИ-ассистентом. Ассистент знает структуру 15 ключевых таблиц биллинга (abonents, admin_accounts, tarif, finance_operations, users_usluga, pay_log, users, homes, nas, connection_points и др.) и формат параметров, умеет писать SQL по словесному описанию задачи.</p>
+
+<p><strong>Типичный сценарий</strong>:</p>
+<ol>
+  <li>Оператор пишет: «топ-10 должников за месяц с балансом и телефоном»</li>
+  <li>AI задаёт уточняющие вопросы: какой период (последний месяц / произвольный), какой минимальный долг, нужен ли фильтр по тарифу</li>
+  <li>Оператор отвечает свободным текстом</li>
+  <li>AI возвращает готовый SQL с блоком JSON <code>{"name": "...", "description": "...", "sql": "..."}</code></li>
+  <li>Зелёный draft-banner с кнопкой <em>«➡ Создать отчёт»</em> передаёт черновик в основную модалку с предзаполненными name/description/sql</li>
+  <li>Оператор проверяет SQL в CodeMirror, при необходимости правит, нажимает «Сохранить»</li>
+</ol>
+<p>Каждый AI-запрос пишется в <code>AuditOperations</code> (table_name='ADMIN_CUSTOM_REPORTS', descr='AI-консультация: …'). Запросы идут через прокси (внешний API провайдера недоступен для RU).</p>
+
+<h4 id="custom-reports-permissions">Права и audit</h4>
+<ul>
+  <li><strong>SQL выполняется с правами Django БД-юзера</strong> (с полным доступом к БД). Это значит, что любой оператор с правом «Запуск отчётов» может прочитать любую таблицу. Опасные SQL (UPDATE, DELETE, DROP) не блокируются на уровне приложения — защита только через PostgreSQL-роль (рекомендуется отдельный read-only role для отчётов).</li>
+  <li><strong>Каждое выполнение пишется в AdminCustomReportsHistory</strong>: user_id, params (JSON), row_count, execution_time, sql_hash. Доступно через <em>«История запусков»</em> в правом меню отчёта.</li>
+  <li><strong>allow_in_cabinet=True</strong>: отчёт доступен клиенту в ЛК через <code>/lk/reports/&lt;id&gt;/</code>. Для безопасности параметры могут содержать только тип <code>date</code> и <code>sum</code> (запрещены <code>select[Model]</code> и <code>choices</code>, иначе клиент мог бы перебирать ID).</li>
+</ul>
+
+<h4 id="custom-reports-1764">Переработка раздела</h4>
+
+<p>UX-аудит по методике IxDF поднял оценку раздела с 60 до ~90 из 100. Закрыты три
+критические проблемы, вычищены нерабочие отчёты, редактор приведён к виду как в СОРМ,
+добавлены обложки и разделение по организациям.</p>
+
+<img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/library_v1764/library_list_covers.png" alt="Библиотека — список с обложками и колонкой «Орг.»">
+
+<pre class="markmap">
+- Библиотека отчётов
+  - Список
+    - Вкладки по отделам
+    - Колонка Орг при мульти-орг
+    - Обложки-миниатюры
+    - Чипы и поиск Ctrl+K
+  - Модалка отчёта
+    - Редактор на всю высоту
+    - Кнопки AI и Формат
+    - Справка в popover
+    - Квадратная обложка
+    - Чекбоксы организаций
+  - Запуск
+    - Единый выбор периода
+    - Выбор сотрудника с аватаром
+    - История выполнения
+  - Безопасность
+    - Параметры связанные
+    - Нормализация дат
+    - Привязка к организации
+</pre>
+
+<h5>Три критические находки</h5>
+
+<table class="data-table">
+  <thead><tr><th>Было</th><th>Стало</th></tr></thead>
+  <tbody>
+    <tr><td>Редактор открывался пустым (чёрный прямоугольник)</td><td>Пересчёт размеров после показа окна — SQL виден сразу</td></tr>
+    <tr><td>Значение параметра вставлялось в запрос текстом (риск подмены, апостроф ломал фильтр молча)</td><td>Значения передаются связанными параметрами; даты нормализуются — подмена невозможна</td></tr>
+    <tr><td>Поля периода шли «Дата конца → Дата начала» (по алфавиту)</td><td>Порядок по появлению в запросе — начало перед концом</td></tr>
+  </tbody>
+</table>
+
+<h5>Как выполняется отчёт с параметрами</h5>
+
+<pre class="mermaid">
+flowchart LR
+    FORM["Форма запуска"] --> P["Параметры формы"]
+    P --> SUB["Подстановка плейсхолдеров %s"]
+    SUB --> NORM["Нормализация дат<br/>дд.мм.гггг в дату"]
+    NORM --> EXEC["Выполнение со связанными<br/>значениями"]
+    EXEC --> HIST["Запись в историю"]
+    EXEC --> RES["Результат или ошибка"]
+</pre>
+
+<p>Значение больше не встраивается в текст запроса, поэтому апостроф или «;» внутри него
+не могут изменить смысл SQL. База работает в режиме, где строку «23.06.2026» она читала как
+«месяц 23» и падала — теперь дата передаётся отдельным типом и понимается однозначно.</p>
+
+<h5>Чистка: 75 → 62 отчёта</h5>
+
+<table class="data-table">
+  <thead><tr><th>Действие</th><th>Отчётов</th><th>Причина</th></tr></thead>
+  <tbody>
+    <tr><td>Удалено</td><td>18</td><td>Отчёты на пустых устаревших таблицах (старая телефония, старый лог RADIUS) и дубли</td></tr>
+    <tr><td>Починено</td><td>3</td><td>Выручка по организациям (был пустой запрос), расходы за период</td></tr>
+    <tr><td>Добавлено</td><td>5</td><td>Сводка по организациям, выручка по дням и по месяцам, обещанные платежи, отток</td></tr>
+  </tbody>
+</table>
+
+<h5>Редактор как в СОРМ + обложка</h5>
+
+<img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/library_v1764/library_modal_editor.png" alt="Модалка отчёта: редактор на всю высоту, кнопки AI и Формат, обложка, чекбоксы организаций">
+
+<ul>
+  <li>Поле кода на всю высоту окна, компактный шрифт, кнопки <strong>AI</strong> (помощник по SQL) и <strong>Формат</strong> (автоформатирование) над редактором.</li>
+  <li>Справка по параметрам вынесена из левой колонки в ссылку-подсказку <em>«Параметры в SQL»</em> под редактором.</li>
+  <li><strong>Квадратная обложка</strong>: любую картинку модуль обрезает по центру до 512×512 и кладёт в облачное хранилище; в списке она показывается миниатюрой.</li>
+</ul>
+
+<h5>Разделение по организациям</h5>
+
+<pre class="mermaid">
+flowchart TB
+    R["Отчёт"] --> Q{"Привязан к организациям?"}
+    Q -- "Нет" --> ALL["Общий — виден всем"]
+    Q -- "Да" --> ORG["Виден отмеченным организациям"]
+    ORG --> COL["Колонка «Орг.» в списке<br/>в режиме «Все организации»"]
+    ORG --> CHK["Чекбоксы в шапке модалки"]
+</pre>
+
+<p>Организации отмечаются чекбоксами по центру шапки модалки; пустой список означает «общий
+отчёт». В режиме «Все организации» в списке между «№» и названием появляется колонка «Орг.»
+с бейджами — как в тарифах.</p>
+
+<h5>Единые компоненты</h5>
+
+<img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/library_v1764/library_run_daterange.png" alt="Форма запуска: единый выбор периода вместо двух полей дат">
+
+<table class="data-table">
+  <thead><tr><th>Где</th><th>Что было</th><th>Стало</th></tr></thead>
+  <tbody>
+    <tr><td>Форма запуска — даты</td><td>Два отдельных поля с календарём</td><td>Единый выбор периода с пресетами (работает в любом отчёте с парой дат)</td></tr>
+    <tr><td>Форма запуска — сотрудник</td><td>Обычный выпадающий список</td><td>Селектор сотрудника с аватаром</td></tr>
+    <tr><td>Редактор кода</td><td>Свой код в каждом разделе</td><td>Единый компонент (каталог компонентов интерфейса)</td></tr>
+  </tbody>
+</table>
+
+<h5>Тёмная тема и телефон</h5>
+
+<img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/library_v1764/library_dark.png" alt="Библиотека в тёмной теме">
+<img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/library_v1764/library_mobile.png" alt="Библиотека на телефоне">
+
+<p>Тёмная тема выдержана целиком; на телефоне список сжимается до имени и кнопки запуска,
+а модалки раскрываются на весь экран выдвижной панелью.</p>
+
+<h3 id="audit">4.2. Аудит</h3>
+<p>Журнал всех значимых действий в биллинге: создание, изменение, удаление клиентов,
+подключение услуг, платежи, блокировки, изменения настроек, действия СОРМ.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/03_audit.png" alt="Аудит"></p>
+
+<p>Каждая запись содержит дату/время, оператора, тип события, клиента и описание.
+Для большинства событий есть <strong>drill-down</strong>: клик по записи открывает
+изменённый объект в нужной вкладке.</p>
+
+<p><strong>Возможности списка</strong>:</p>
+<ul>
+  <li>Фильтр периода с кнопками <em>Сегодня / Неделя / Месяц / Год</em>.</li>
+  <li>Фильтр по типу события и текстовый поиск.</li>
+  <li>Цветные бейджи категорий (status / block / payment / SORM).</li>
+  <li>Sticky-заголовок таблицы при прокрутке.</li>
+</ul>
+
+<h3 id="paylog">4.3. Журнал платежей</h3>
+<p>Сводный журнал финансовых операций по всем клиентам — приходы, списания,
+сторно, обещанные платежи. Это представление таблицы <em>FinanceOperations</em>
+с серверной пагинацией (поддерживает сотни тысяч записей).</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/03_paylog.png" alt="Журнал платежей"></p>
+
+<p><strong>Возможности</strong>:</p>
+<ul>
+  <li>Быстрые периоды: <em>Сегодня / Неделя / Месяц / Квартал / Год</em>.</li>
+  <li>Селектор количества строк: 50 / 100 / 200 / 500.</li>
+  <li>Цветовое кодирование сумм: приход — зелёный, расход — красный.</li>
+  <li>Клик по клиенту открывает его карточку в новой вкладке.</li>
+  <li>Серверный фильтр по типу операции и текстовый поиск.</li>
+  <li>По умолчанию показан текущий месяц.</li>
+</ul>
+
+<h4 id="audit-paylog-1769">Переработка журналов</h4>
+
+<p>UX-аудит по методике IxDF (оценка ~79 из 100) показал: оба журнала уже крепкие
+(единый выбор периода, показатели, цветные категории, поиск, экспорт), но им не хватало
+разделения по организациям, адаптации под телефон и единого визуального языка. Всё это
+закрыто.</p>
+
+<img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/audit_paylog_v1769/paylog_smitui.png" alt="Журнал платежей в едином виде SmitUI">
+
+<pre class="markmap">
+- Журналы: Аудит и Платежи
+  - Единый вид SmitUI
+    - Чистая таблица без серой шапки
+    - Бейджи-таблетки с точкой
+    - Тёмная тема из общего источника
+    - Токены отступов и границ
+  - Разделение по организациям
+    - Колонка Орг в режиме Все
+    - Фильтр по доступным компаниям
+    - Записи без организации видны всем
+  - Работа с клиентом
+    - Клик открывает боковую панель
+    - Панель всегда поверх меню
+  - Телефон
+    - Строки становятся карточками
+    - Подписи полей у значений
+    - Полоса прихода или расхода слева
+</pre>
+
+<h5>Разделение по организациям</h5>
+
+<p> Теперь
+данные разделены. У платежа организация берётся из самой операции; у аудит-записи —
+из связанного объекта.</p>
+
+<pre class="mermaid">
+flowchart TB
+    A["Аудит-запись"] --> Q{"Есть клиент?"}
+    Q -- "Да" --> AB["Организация клиента"]
+    Q -- "Нет" --> OBJ{"Известен объект?"}
+    OBJ -- "Платёж / видеопроект /<br/>тикет / NAS" --> OO["Организация объекта"]
+    OBJ -- "Нет" --> ALL["Без организации —<br/>общесистемное, видно всем"]
+    AB --> COL["Колонка «Орг.» + фильтр<br/>по доступным компаниям"]
+    OO --> COL
+</pre>
+
+<table class="data-table">
+  <thead><tr><th>Раздел</th><th>Как определяется организация</th><th>Покрытие</th></tr></thead>
+  <tbody>
+    <tr><td>Журнал платежей</td><td>Поле организации у самой финоперации</td><td>Практически все записи</td></tr>
+    <tr><td>Аудит</td><td>Организация клиента; для системных — по объекту (платёж, видеопроект, тикет, NAS)</td><td>≈ 74% записей; остальное — общесистемные события «—», видны всем</td></tr>
+  </tbody>
+</table>
+
+<h5>Единый вид SmitUI и работа с клиентом</h5>
+
+<img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/audit_paylog_v1769/audit_smitui.png" alt="Аудит в едином виде SmitUI">
+
+<ul>
+  <li>Обе таблицы переведены на общий компонент: чистая шапка без заливки, воздушные строки,
+      бейджи-таблетки с точкой-индикатором, тёмная тема из единого источника.</li>
+  <li>В Журнале платежей знак операции показывает тонкая цветная полоса слева и цвет суммы
+      (вместо заливки всей строки); суммы выровнены по правому краю.</li>
+  <li><strong>Клик по клиенту</strong> открывает боковую панель с его данными (баланс,
+      контакты, последняя сессия) прямо поверх журнала — не уводя со страницы. Панель всегда
+      поверх бокового меню.</li>
+</ul>
+
+<img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/audit_paylog_v1769/paylog_drawer.png" alt="Боковая панель клиента поверх журнала">
+
+<h5>Телефон</h5>
+
+<p>На телефоне строки обоих журналов становятся карточками: у каждого значения — подпись поля,
+ничего не обрезается. В Журнале платежей слева остаётся цветная полоса прихода/расхода.</p>
+
+<img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/audit_paylog_v1769/paylog_mobile.png" alt="Журнал платежей на телефоне — карточки">
+<img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/audit_paylog_v1769/audit_mobile.png" alt="Аудит на телефоне — карточки">
+
+<h3 id="messages-journal">4.4. Журнал сообщений</h3>
+<p>Единый сводный журнал всех сообщений (<em>MsgStack</em>) по всем клиентам — SMS,
+Email, Telegram, Push, VK, ЛК. И точечные отправки из карточки клиента, и массовые
+рассылки попадают в один список. Доступен по адресу <code>/admin/reports/messages/</code>
+(пункт меню «Отчёты → Журнал сообщений»,, единый вид SmitUI и
+мульти-орг).</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v1770/01_journal_overview.png" alt="Журнал сообщений: KPI, фильтры, чипы каналов, таблица SmitUI с колонкой Орг."></p>
+
+<h4 id="messages-journal-map">Карта раздела</h4>
+<pre class="markmap">
+- Журнал сообщений
+  - Показатели
+    - Всего за период
+    - Доставлено SMS
+    - В очереди
+    - Ошибки SMS
+  - Фильтры
+    - Поиск текст договор
+    - Диапазон дат
+    - Чипы каналов
+    - SMS-статус
+    - Отправитель
+    - Организация
+  - Таблица SmitUI
+    - Колонка Орг
+    - Бейджи каналов
+    - Полоса ошибок SMS
+    - Карточки на телефоне
+  - Рассылка
+    - Категории
+    - Тарифы
+    - Папки MPTT
+    - NAS
+    - Поиск
+    - Скоуп по орг
+  - Мульти-орг
+    - Фильтр по клиенту
+    - Записи без орг видны всем
+    - Рассылка своим клиентам
+</pre>
+
+<h4 id="messages-journal-overview">Что внутри</h4>
+<ul>
+  <li><strong>4 KPI-карточки</strong> сверху: <em>Всего</em>, <em>Доставлено SMS</em>
+    (с процентом доставляемости), <em>В очереди</em>, <em>Ошибки SMS</em>. Период
+    переключается кнопками <em>Сегодня / Неделя / Месяц / Все</em>.</li>
+  <li><strong>Фильтры</strong>: текстовый поиск по сообщению/заголовку/клиенту/договору,
+    диапазон дат, кнопки быстрых периодов.</li>
+  <li><strong>Чипы каналов</strong>: <em>Все каналы / SMS / Email / Telegram / Push / VK / Только ЛК</em>.</li>
+  <li><strong>Фильтр SMS-статуса</strong> справа: только delivered / sent / pending / failed.</li>
+  <li><strong>Колонка «Отправитель»</strong> показывает кто отправил каждое
+    сообщение. <code>Aleksandr Uspeshnyy</code> для ручных отправок, <em>Система</em> —
+    для автоматических (биллинг, Celery, webhook). Рядом — фильтр <em>Отправитель — любой /
+    Мои / Системные</em> + список всех операторов с рассылками.</li>
+  <li><strong>Цветные бейджи каналов</strong> с tooltip'ами: ✓✓ delivered, ✓ sent,
+    ⏱ pending, ✕ failed (для SMS — на основе webhook-статуса <a href="settings-services.html#messaging-sms-webhook">sms-gate.app</a>).</li>
+  <li>Клик по строке открывает <strong>модалку с полным текстом</strong> и деталями
+    (на телефоне — полноэкранная слайд-панель, выезжает справа).</li>
+  <li><strong>Колонка «Орг.»</strong> — при включённых мульти-организациях
+    и режиме «Все организации» показывает организацию клиента цветным
+    бейджом <strong>OrgBadge</strong>. Записи без клиента (системные) — «—».</li>
+  <li><strong>Pagination</strong> 25/50/100/200, server-side.</li>
+  <li><strong>Экспорт CSV</strong> текущей выборки (UTF-8 BOM, разделитель <code>;</code>,
+    лимит 50 000 строк; в режиме «Все организации» — с колонкой «Орг.»).</li>
+</ul>
+
+<h4 id="messages-journal-multiorg">Разделение по организациям</h4>
+<p>Раздел учитывает <a href="extras.html#multi-org-model">мульти-организации</a>. Сообщение
+связано с клиентом (<code>MsgStack.abonent</code>), у клиента есть организация — журнал
+фильтруется по ней, а рассылка не может уйти клиентам чужой компании.</p>
+
+<pre class="mermaid">
+flowchart TD
+    REQ["Запрос журнала<br/>или рассылки"] --> MO{"Мульти-орг<br/>включён?"}
+    MO -->|"нет"| ALL["Без фильтра —<br/>все записи"]
+    MO -->|"да"| CUR{"Выбрана орг<br/>в шапке?"}
+    CUR -->|"да"| ONE["Только клиенты<br/>этой организации"]
+    CUR -->|"нет"| ISO{"Изоляция<br/>персонала?"}
+    ISO -->|"выключена"| ALLORG["Все организации<br/>+ колонка «Орг.»"]
+    ISO -->|"включена"| PERM["Только доступные<br/>оператору орг"]
+    ONE --> NULL["+ записи без клиента<br/>видны всем (NULL)"]
+    ALLORG --> NULL
+    PERM --> NULL
+</pre>
+
+<p><strong>Журнал, KPI и CSV</strong> заскоуплены через <code>_apply_msg_org()</code> по
+<code>abonent__organization_id</code>. Контракт: <em>записи без определимой организации
+(системные, без клиента) видны всем</em> — иначе «ничьи» уведомления пропали бы у всех.</p>
+
+<p><strong>Рассылка — критично (P0).</strong> Набор получателей строится из единого
+<code>base</code>-queryset, который <em>заранее</em> ограничен доступными организациями
+оператора. Поэтому <strong>все</strong> режимы выбора (категории / тарифы / папки / NAS /
+поиск / выбор по ID) не могут захватить клиентов чужой компании — ни в предпросмотре,
+ни при отправке.</p>
+
+<h4 id="messages-journal-broadcast">Массовая рассылка</h4>
+<p>Кнопка <em>«Рассылка»</em> в правом верхнем углу открывает модальное окно для
+отправки одинакового текста группе клиентов через выбранные каналы (SMS / Email /
+Telegram / Push). Hard-limit — <strong>500 получателей</strong> на одну рассылку
+(защита от случайного спама).</p>
+
+<p>5 способов выбора получателей:</p>
+
+<ol>
+  <li><strong>Категории</strong> — 8 готовых chip-фильтров: <em>Должники, Сейчас онлайн,
+    Заблокированные, Об. платёж, Юр. лица, Без email, Без телефона, Не платил 30 дн.</em></li>
+  <li><strong>Тарифы</strong> — multi-select из ~78 тарифов. Отправит всем клиентам
+    на выбранных тарифах.</li>
+  <li><strong>Папки</strong> — древовидный picker с MPTT-обходом всех вложенных
+    подпапок автоматически. Поиск по имени, expand/collapse, кнопка очистки выбора.</li>
+  <li><strong>NAS</strong> — multi-select NAS-серверов. Отправит всем клиентам с
+    учётками на выбранных NAS (через <code>Users.nas_id</code>).</li>
+  <li><strong>Поиск</strong> — Select2 AJAX по имени/договору для точечного выбора.</li>
+</ol>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v1770/02_broadcast_modal.png" alt="Рассылка: 5 вкладок, категория Должники, предпросмотр 1620 получателей с разбивкой по каналам SMS/Email/TG/Push"></p>
+
+<p><strong>Live-preview</strong> снизу всегда показывает: фактическое количество
+получателей, первые 10 имён + «…и ещё N», статистику доступности каналов
+(«SMS: 267 · Email: 13 · TG: 0 · Push: 1»). Кнопка «Отправить» дизаблится при
+count = 0 или count &gt; 500 (бейдж становится красным «макс 500!»).</p>
+
+<p><strong>Счётчик символов и SMS-сегментов</strong> справа от лейбла «Текст»
+обновляется на каждый ввод. Кириллица (UCS-2) → 70 символов на сегмент, латиница
+(GSM 7-bit) → 160. Цвет меняется на оранжевый при ≥2 сегментов и красный при ≥3.</p>
+
+<h4 id="messages-journal-folders">Дерево папок</h4>
+<p>Вкладка <em>«Папки»</em> отрисована как полноценное tree-list с иконками и
+счётчиками клиентов в каждой папке (включая подпапки). Поддерживается keyboard-навигация
+(Tab → Enter/Space), live-фильтр по имени с автоматическим раскрытием родителей,
+кнопки <em>Раскрыть всё / Свернуть всё / Очистить выбор</em>.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v594/docs_v594_broadcast_folders_tree.png" alt="Tree папок: SMIT (5554), ртк-червленое (49), Дубовый (27, выбран)"></p>
+
+<h4 id="messages-journal-nas">Рассылка по NAS-серверам</h4>
+<p>Полезно когда нужно предупредить клиентов конкретного NAS (профилактические
+работы, замена оборудования, миграция). Каждый NAS показывается с IP, статусом
+(включён / выкл) и количеством клиентов.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v594/docs_v594_broadcast_nas_tab.png" alt="Рассылка по NAS: 2 выбранных NAS, preview 408 клиентов"></p>
+
+<h4 id="messages-journal-audit">Аудит рассылок</h4>
+<p>Каждая отправка пишется в <em>AuditOperations</em> (категория «Сообщения», см.
+<a href="#audit">раздел 4.2 Аудит</a>):</p>
+<ul>
+  <li><strong>Точечная отправка</strong> (карточка клиента → «Отправить»):
+    <code>«Сообщение #N → Иванов И.И. (SMS, Email): «текст…»»</code>
+    с указанием <code>owner</code> = текущий оператор.</li>
+  <li><strong>Массовая рассылка</strong> — одна summary-запись на всю операцию:
+    <code>«Рассылка: uspeshnyy → категория «business» (SMS, EMAIL), получателей: 270/270: «текст…»»</code>.</li>
+</ul>
+<p>Поле <code>MsgStack.owner_id</code> хранит pk оператора, поэтому в журнале можно
+отфильтровать «все мои отправки» или «всё что отправлял Петров».</p>
+
+<h4 id="messages-journal-detail">Модалка деталей</h4>
+<p>Клик по строке открывает полный текст сообщения, дату, клиента и статусы всех
+каналов доставки. Из неё — переход в карточку клиента.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v1770/03_detail_modal.png" alt="Модалка деталей сообщения: дата, клиент, заголовок, полный текст, каналы доставки"></p>
+
+<h4 id="messages-journal-mobile">Адаптивность и единый вид SmitUI</h4>
+<p>Раздел приведён к единому виду <a href="extras.html#ui-patterns">SmitUI</a>: чистая
+шапка таблицы без серого фона и sticky, бейджи-таблетки, единый источник тёмной темы.
+Красная полоса у строк с ошибкой SMS сохранена.</p>
+<ul>
+  <li><strong>Таблица → карточки на телефоне</strong> (≤767px): вместо скрытия колонок
+    каждая строка превращается в карточку с подписями полей (<code>data-label</code>) —
+    видна вся информация, а не урезанная. KPI перестраивается в 2×2 grid.</li>
+  <li><strong>Модалки → полноэкранные слайд-панели</strong>: на телефоне
+    и детальная модалка, и модалка рассылки разворачиваются на весь экран (100dvh) и
+    выезжают справа; шапка и футер прилипают (заголовок и кнопки действий всегда видны),
+    тело скроллится. <code>prefers-reduced-motion</code> отключает анимацию слайда.</li>
+</ul>
+
+<h4 id="messages-journal-endpoints">Endpoint'ы</h4>
+<table class="docs-table">
+  <thead><tr><th>URL</th><th>Назначение</th></tr></thead>
+  <tbody>
+    <tr><td><code>GET /admin/reports/messages/</code></td><td>Главная страница</td></tr>
+    <tr><td><code>GET /admin/reports/messages_json/</code></td><td>Server-side список (фильтры + pagination)</td></tr>
+    <tr><td><code>GET /admin/reports/messages_kpi/</code></td><td>JSON для KPI-карточек</td></tr>
+    <tr><td><code>GET /admin/reports/messages/export/</code></td><td>CSV экспорт текущей выборки</td></tr>
+    <tr><td><code>POST /admin/reports/messages/broadcast/</code></td><td>Массовая отправка</td></tr>
+    <tr><td><code>GET /admin/reports/messages/recipients_preview/</code></td><td>Preview получателей перед рассылкой</td></tr>
+    <tr><td><code>GET /admin/reports/messages/tariffs_list/</code></td><td>Список тарифов (для multi-select)</td></tr>
+    <tr><td><code>GET /admin/reports/messages/folders_list/</code></td><td>Дерево папок (для tree-picker)</td></tr>
+    <tr><td><code>GET /admin/reports/messages/nas_list/</code></td><td>Список NAS-серверов</td></tr>
+    <tr><td><code>GET /admin/reports/messages/senders_list/</code></td><td>Список операторов с рассылками (для select-фильтра)</td></tr>
+  </tbody>
+</table>
+
+<h3 id="dev-reports">4.5. Разработка и логи</h3>
+<p>Раздел для администратора-разработчика. Доступен только пользователям с правами
+<em>root</em>. Делится на две вкладки.</p>
+
+<p><strong>Отчёты</strong> — встроенный markdown-просмотрщик внутренних документов
+проекта (отчёты по разработке, планы, документация).</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/03_dev_reports.png" alt="Отчёты разработки"></p>
+
+<p>Поддерживается сортировка по дате/имени или ручной drag-and-drop, inline-переименование,
+создание папок, загрузка новых .md-файлов через интерфейс.</p>
+
+<h4 id="dev-reports-viewer">Возможности просмотрщика .md</h4>
+
+<p>Markdown-просмотрщик поддерживает удобную навигацию и работу с документами:</p>
+
+<ul>
+<li><strong>Поиск по документам</strong> — поле над списком файлов. Ввод фильтрует
+список по имени мгновенно; нажатие <strong>Enter</strong> запускает полнотекстовый поиск
+по содержимому всех документов — с подсветкой числа совпадений и сниппетом. Горячая
+клавиша <code>Ctrl+F</code> ставит фокус в поиск.</li>
+<li><strong>Кликабельные ссылки на разделы биллинга</strong> — пути вида
+<code>/admin/...</code>, <code>/lk/...</code> и полные <code>http(s)</code> прямо в тексте
+документа становятся ссылками (с иконкой) и открываются в новой вкладке.</li>
+<li><strong>Переходы между документами</strong> — ссылки на другие .md-файлы (отчёт →
+план → ТЗ) открываются <em>в том же просмотрщике</em>, превращая документы в связанную
+базу знаний.</li>
+<li><strong>Чек-листы</strong> — пункты <code>- [ ]</code> / <code>- [x]</code>
+отображаются как ☐ / ☑ (выполненные зачёркнуты).</li>
+<li><strong>Вложенные списки</strong> — многоуровневые перечни сохраняют отступы.</li>
+<li><strong>Копирование кода</strong> — кнопка «копировать» при наведении на блок кода
+(команды деплоя, SQL).</li>
+<li><strong>Диаграммы Mermaid</strong> и <strong>комментарии к заголовкам</strong>
+(командное обсуждение прямо в документе).</li>
+</ul>
+
+<p><strong>Логи</strong> — просмотр серверных логов прямо из админки.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/03_dev_logs.png" alt="Серверные логи"></p>
+
+<p>Доступны каналы:</p>
+<ul>
+  <li><code>error.log</code> — общие ошибки приложения;</li>
+  <li><code>payment.log</code> — платежи (ЮKassa, W1, webhook);</li>
+  <li><code>radius.log</code> — авторизация и accounting;</li>
+  <li><code>sorm.log</code> — выгрузка СОРМ;</li>
+  <li><code>staff.log</code> — действия сотрудников;</li>
+  <li><code>celery_worker.log</code>, <code>celery_beat.log</code> — фоновые задачи;</li>
+  <li><code>nginx_access.log</code>, <code>nginx_error.log</code> — веб-сервер;</li>
+  <li><code>freeradius.log</code> — нативные логи FreeRADIUS.</li>
+</ul>
+<p>Показываются последние 500 строк, есть кнопка обновления. Файлы автоматически
+ротируются (10 МБ × 5 копий).</p>
+
+<h3 id="debtors">4.6. Должники</h3>
+<details class="section-toc">
+  <summary><strong>Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#debtors-kpi">KPI и статистика по периодам</a></li>
+    <li><a href="#debtors-filters">Фильтры и чипы</a></li>
+    <li><a href="#debtors-table">Таблица и сортировка</a></li>
+    <li><a href="#debtors-drawer">Drawer-панель клиента</a></li>
+    <li><a href="#debtors-actions">Массовые действия и экспорт</a></li>
+  </ul>
+</details>
+
+<p>Отдельная страница <code>/admin/debtors/</code> — список клиентов с отрицательным балансом
+или активной блокировкой <code>b_negbal</code>. Раздел рассчитан на ежедневную работу
+бухгалтерии и операторов поддержки: KPI-блок сверху помогает быстро оценить
+ситуацию по компании, а drawer-панель — разобраться с конкретным клиентом без
+ухода на полную карточку.</p>
+
+<h5 id="debtors-kpi">KPI и статистика по периодам</h5>
+<p>Над таблицей — четыре карточки-показателя: общее количество должников,
+суммарный долг (в рублях), средний долг и доля должников с активным
+<a href="abonents.html#promise-pay-overview">обещанным платежом</a>. Карточки реагируют на выбранный
+<strong>период</strong>: переключатель chips сверху позволяет видеть динамику
+за <em>сегодня / неделю / месяц / квартал / год</em>. Цифры пересчитываются
+прямо в браузере без перезагрузки — у каждой карточки есть мини-индикатор
+изменения относительно предыдущего периода.</p>
+
+<h5 id="debtors-filters">Фильтры и чипы</h5>
+<ul>
+  <li><strong>Период</strong> — chip-фильтр (сегодня, неделя, месяц, квартал, год, всё время). Активный чип подсвечивается.</li>
+  <li><strong>Категория</strong> — отдельные чипы: <em>с обещанным платежом</em>, <em>с контактом и небольшим долгом</em> (кому имеет смысл звонить), <em>заблокированные</em>, <em>без оплат за 60 дней</em>.</li>
+  <li><strong>Поиск</strong> — по ФИО, договору, телефону, email — мгновенный фильтр без перезагрузки.</li>
+  <li><strong>Состояние сохраняется</strong> — выбранный период и чип запоминаются в URL, ссылку можно отправить коллеге.</li>
+</ul>
+
+<h5 id="debtors-table">Таблица и сортировка</h5>
+<p>Колонки: ФИО, договор, тариф, точка подключения, баланс, дней без оплаты,
+телефон, email, статус. По умолчанию сортировка — по убыванию суммы долга.
+Клик на заголовок любой колонки переключает порядок (▲▼). Цветовое
+кодирование: красные строки — заблокированные за неуплату, жёлтые — на грани
+блокировки, серые — с активным обещанным платежом. В каждой строке справа —
+кнопка <em>ℹ Подробнее</em>, которая открывает drawer.</p>
+
+<h5 id="debtors-drawer">Drawer-панель клиента</h5>
+<p>Клик на ℹ открывает <strong>боковую панель справа</strong> (overlay поверх
+таблицы) с краткой сводкой по клиенту — без перехода на полную карточку и
+потери контекста списка. Внутри панели:</p>
+<ul>
+  <li><strong>Шапка</strong>: ФИО, договор, тариф, тек. баланс, дата последней оплаты, статус блокировки.</li>
+  <li><strong>График</strong>: динамика баланса за последние 3 месяца — наглядно видно, когда «ушёл в минус».</li>
+  <li><strong>Последние финансовые операции</strong> (топ-10): дата, тип (приход/расход), сумма, описание.</li>
+  <li><strong>Сообщения</strong>: история отправленных SMS/Email/Push с галочками доставки.</li>
+  <li><strong>Комментарии операторов</strong>: можно добавить новый комментарий прямо из drawer (хранится в <code>AbonentsComments</code>), история подписана автором и временем.</li>
+  <li><strong>Лицевые счета</strong>: связанные счета с остатками (если у клиента несколько).</li>
+  <li><strong>Действия</strong>: отправить SMS-напоминание о долге, активировать обещанный платёж, открыть полную карточку.</li>
+</ul>
+
+<h5 id="debtors-actions">Массовые действия и экспорт</h5>
+<ul>
+  <li><strong>Чекбоксы</strong> в каждой строке + <em>выбрать все на странице</em> — для bulk-операций над отмеченными должниками.</li>
+  <li><strong>Действия</strong> над выбранными: массовая отправка SMS/Email, блокировка, прощение долга (создаёт компенсирующий <a href="abonents.html#finance-operations">FinOp</a>).</li>
+  <li><strong>Экспорт CSV</strong> (UTF-8 BOM, разделитель <code>;</code>) — выгружает текущую выборку с учётом фильтров для сверки с бухгалтерией или загрузки в 1С.</li>
+</ul>
+
+<h3 id="migration">4.7. Миграция с других биллингов</h3>
+<p>Раздел <code>/admin/settings/migration/</code> — мастер импорта данных клиентов из других
+биллинговых систем. Пошаговый wizard с предпросмотром и dry-run.</p>
+
+<h4 id="migration-cb4">Импорт из предыдущей версии (Firebird)</h4>
+<p><code>/admin/settings/migration/cb4/</code> — специализированный импорт данных
+из предыдущей версии биллинга (Firebird). Учитывает специфику:</p>
+<ul>
+  <li>Денежные поля × 10⁷ → нормализуются в × 10¹⁰ (новый <code>DB_MONEY_KOEF</code>).</li>
+  <li>PGP-зашифрованные пароли NAS → расшифровываются через ключ из EBS audit log.</li>
+  <li>MPTT-дерево клиентов с папками сохраняется через <code>parent_id</code>.</li>
+  <li>Услуги маппятся через таблицу соответствий (legacy <code>USLUGA.ID</code> → новый pk).</li>
+  <li>RADIUS-сессии и <code>USERS_RADIUSAUTH</code> мигрируются последним этапом.</li>
+</ul>
+
+<h4 id="csv-loading">Загрузка из CSV</h4>
+<p><code>/admin/settings/migration/csv_loading/</code> — общий импорт клиентов/услуг/платежей
+через CSV файлы. Поддерживается:</p>
+<ul>
+  <li>Загрузка через UI (drag-and-drop) или путь к файлу на сервере.</li>
+  <li>Маппинг колонок CSV ↔ поля модели через интерактивную форму.</li>
+  <li>Dry-run перед применением — показывает что будет создано/обновлено/пропущено.</li>
+  <li>Отчёт по результатам с подсветкой ошибок построчно.</li>
+</ul>
+
+<h4 id="autocsv">Авто-импорт CSV (схемы)</h4>
+<p><code>/admin/settings/autocsv/</code> — настройка <strong>повторяющихся</strong> импортов:
+оператор сохраняет «схему» (маппинг колонок + способ обработки дубликатов), и потом
+загрузка одной кнопкой берёт CSV и применяет схему без повторной настройки. Полезно для
+ежемесячных выгрузок из бухгалтерии или экспорта из биллинга мобильного оператора (массовое
+зачисление платежей).</p>
+
+<!-- ===== FrameworkFormGroupFields: обзор ===== -->
+<h3 id="framework-fields-overview">FrameworkFormGroupFields — назначение и роль</h3>
+<details class="section-toc">
+  <summary><strong>Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#ffg-purpose">Что это и зачем</a></li>
+    <li><a href="#ffg-fields">Ключевые поля</a></li>
+    <li><a href="#ffg-how-works">Как работает</a></li>
+    <li><a href="#ffg-pitfalls">Опасные моменты (interface_id, дубликаты)</a></li>
+    <li><a href="#ffg-examples">Реальные примеры скрытия полей</a></li>
+  </ul>
+</details>
+
+<p><strong>FrameworkFormGroupFields (FFG)</strong> — таблица настроек UI для всех админских форм биллинга. Управляет тем, какие поля видны на форме редактирования, как они сгруппированы в вкладки и в каком порядке. По сути это «генеральный настройщик» админки без правки кода.</p>
+
+<h5 id="ffg-purpose">Что это и зачем</h5>
+<p>Биллинг — это унаследованный движок с десятками моделей, у каждой по 30-100 полей. Большая часть из них — технический шум для оператора. Решения:</p>
+<ul>
+  <li><strong>Без FFG</strong> — generic-форма со всеми 100 полями. Оператор не знает что важно;</li>
+  <li><strong>С FFG</strong> — оператор видит только нужные 10 полей, разбитые по 3 вкладкам с понятными русскими названиями. Скрытые поля остаются в БД и работают.</li>
+</ul>
+<p>Это <strong>безопасный</strong> способ упростить UI без боязни сломать логику.</p>
+
+<h5 id="ffg-fields">Ключевые поля</h5>
+<table class="data-table">
+  <thead><tr><th>Поле</th><th>Назначение</th></tr></thead>
+  <tbody>
+    <tr><td><code>TABLE_NAME</code></td><td>Имя модели (USERS, ABONENTS, USLUGA — UPPERCASE)</td></tr>
+    <tr><td><code>FIELD_NAME</code></td><td>Имя поля Django-модели (то же что в <code>Model._meta.fields</code>)</td></tr>
+    <tr><td><code>INTERFACE_ID</code></td><td>FK на интерфейс (NULL = дефолт для всех ролей)</td></tr>
+    <tr><td><code>GROUP_ID</code></td><td>Номер вкладки/группы в форме (1 = основные, 2 = доп., и т.д.)</td></tr>
+    <tr><td><code>SHOW_ON_FORM</code></td><td>0 = скрыто, 1 = видно (главное поле управления)</td></tr>
+    <tr><td><code>VERBOSE_NAME</code></td><td>Русское имя поля для UI (заменяет автоматическое из модели)</td></tr>
+    <tr><td><code>ORDER</code></td><td>Порядок в группе (для drag-and-drop)</td></tr>
+  </tbody>
+</table>
+
+<h5 id="ffg-how-works">Как работает</h5>
+<ol>
+  <li>При открытии формы редактирования модели (например <code>/admin/Abonents/&lt;id&gt;/</code>) view вызывает <code>safe_globals.get_groups_from_model('ABONENTS')</code>;</li>
+  <li>Функция читает все записи FFG где <code>TABLE_NAME='ABONENTS'</code> и <code>INTERFACE_ID IS NULL</code>;</li>
+  <li>Записи группируются по <code>GROUP_ID</code> → каждая группа = одна вкладка формы;</li>
+  <li>Внутри группы поля сортируются по <code>ORDER</code>, скрытые (<code>SHOW_ON_FORM=0</code>) исключаются;</li>
+  <li>Применяются <code>VERBOSE_NAME</code> для русификации лейблов;</li>
+  <li>Кеш Django сохраняет результат — после изменения FFG нужен <code>cache.clear()</code>.</li>
+</ol>
+
+<h5 id="ffg-pitfalls">Опасные моменты</h5>
+<ol>
+  <li><strong><code>INTERFACE_ID=NULL</code> — это дефолт, не «отсутствие настройки»</strong>. Если поле <code>SHOW_ON_FORM=0</code> для <code>INTERFACE_ID=NULL</code>, оно скрыто во всех интерфейсах. Чтобы показать только в одном — нужны 2 записи: <code>NULL</code> с 0 и <code>INTERFACE_ID=1</code> с 1;</li>
+  <li><strong>Дубликаты Python dict</strong> — баг был с <code>'Users'</code> ключом, появлявшимся дважды в <code>_EXCLUDE_FORMS</code>. Второе значение тихо перезаписывало первое. Перед добавлением нового ключа всегда <code>grep</code>;</li>
+  <li><strong>UPPERCASE имя таблицы</strong> — критично для PostgreSQL. <code>'abonents' != 'ABONENTS'</code>. Используйте <code>Model._meta.db_table.upper()</code> чтобы не ошибиться;</li>
+  <li><strong>FIELD_NAME — Django-имя</strong>, не SQL-имя. Поле <code>create_date</code> в FFG, не <code>"CREATE_DATE"</code>.</li>
+</ol>
+
+<h5 id="ffg-examples">Реальные примеры скрытия полей</h5>
+<table class="data-table">
+  <thead><tr><th>Build</th><th>Модель</th><th>Скрыто</th></tr></thead>
+  <tbody>
+    <tr><td></td><td>Users (учётные записи)</td><td>17 полей: IPV6, MASK, PHONE, EXT_ID, NAS_IP_LOCK, OPT82, IS_TEMPLATE, SNAT_PULL, SNATIP, SERVER, ALWAYS_LOGGED, HOST_IP, HOST_PULL, CREATE_DATE, OPT82_PARAM, IS_ALLOW_SEARCH, GPON_MODEM_PORT, HW_SERIAL, EQUIPMENT, SERVICE_TYPE</td></tr>
+    <tr><td></td><td>Usluga</td><td>SERVICE_TYPE (87% услуг имели его NULL)</td></tr>
+    <tr><td></td><td>Users группа 32</td><td>5 «дополнительных»: DHCP_MASK, DHCP_ROUTE_IP, ASK_PASSWORD_LK, DEACTIVATE_STRING, ACTIVATE_STRING</td></tr>
+  </tbody>
+</table>
+
+<div class="info-box">
+  <strong>Где править:</strong> UI <code>/admin/settings/interface_settings/</code> (FrameworkFormGroupFieldsForm в <code>billing/forms/framework_forms.py</code>). После сохранения обязательно очистите кеш — иначе изменения не подхватятся: <code>docker exec app-web-1 python manage.py shell -c "from django.core.cache import cache; cache.clear()"</code>
+</div>
+
+<h3 id="interface-settings">4.8. Настройки интерфейса (формы)</h3>
+<p><code>/admin/settings/interface_settings/</code> — конфигурация полей форм для каждой
+модели. Через <code>FrameworkFormGroupFields</code> можно:</p>
+<ul>
+  <li>Скрывать/показывать поля без правки кода (флаг <code>show_on_form</code>).</li>
+  <li>Менять порядок полей (drag-and-drop).</li>
+  <li>Группировать поля по вкладкам (<code>FrameworkFormGroup</code>).</li>
+  <li>Делать поля required / readonly через UI.</li>
+</ul>
+<p>Пример использования: на форме <em>Users</em> скрыты 17 технических полей (IPV6, MASK,
+EXT_ID, IS_TEMPLATE, и т.д.) — оставлены только реально используемые. Изменения применяются
+для всех операторов одновременно после <code>cache.clear()</code>.</p>
+
+<h2 id="games">5. Игры (Маркетинг)</h2>
+<p>Модуль <strong>«Игры»</strong> — часть раздела <strong>«Маркетинг»</strong> — геймификация
+для удержания и вовлечения клиентов: 8 встроенных аркад, турнирная таблица и розыгрыш
+<strong>«Игра месяца»</strong> с бесплатным месяцем интернета победителю.</p>
+
+<p>Список игр: <em>Pacman, Tetris, Snake, Minesweeper, 2048, Breakout,
+Flappy Bird, Helicopter</em>. Доступны в админке, мобильном приложении и ЛК.</p>
+
+<div class="page-toc">
+<details open>
+  <summary><strong><i class="ti ti-book"></i> Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#marketing-architecture">5.1. Архитектура модуля</a></li>
+    <li><a href="#marketing-games">5.2. Настройки модуля «Маркетинг»</a></li>
+    <li><a href="#marketing-game-of-month">5.3. «Игра месяца» — бесплатный интернет</a></li>
+    <li><a href="#marketing-conditions">5.4. Условия участия в турнире</a></li>
+    <li><a href="#marketing-abonent-tab">5.5. Вкладка «Маркетинг» в карточке клиента</a></li>
+    <li><a href="#marketing-profile-menu">5.6. Профиль-меню и мобильное приложение</a></li>
+  </ul>
+</details>
+</div>
+
+<h3 id="marketing-architecture">5.1. Архитектура модуля</h3>
+<p>Единый источник настроек (<code>GAMES_*</code> в <code>SystemSettings</code>)
+питает три точки потребления: профиль-меню админки, карточку клиента,
+мобильное приложение. Данные результатов хранятся в <code>GameScore</code>,
+история победителей — в <code>GameMonthWinner</code>.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/marketing_games_v980/scheme_01_architecture.png" alt="Архитектура модуля Маркетинг → Игры"></p>
+
+<table class="data-table">
+  <thead><tr><th>Компонент</th><th>Назначение</th></tr></thead>
+  <tbody>
+    <tr><td><code>billing/services/games_registry.py</code></td><td>Единый реестр 8 игр (admin + mobile)</td></tr>
+    <tr><td><code>billing/models/game_score.py</code></td><td><code>GameScore</code> (результаты) + <code>GameMonthWinner</code> (победители)</td></tr>
+    <tr><td><code>billing/services/game_rewards.py</code></td><td>Определение лидера + безопасное начисление бонуса</td></tr>
+    <tr><td><code>billing/tasks/game_rewards.py</code></td><td>Celery-подведение итогов 1-го числа</td></tr>
+    <tr><td><code>settings/_marketing_tab.html</code></td><td>UI настроек (вкладка «Маркетинг»)</td></tr>
+    <tr><td><code>abonents_form/marketing_games.html</code></td><td>Вкладка результатов в карточке клиента</td></tr>
+  </tbody>
+</table>
+
+<h3 id="marketing-games">5.2. Настройки модуля «Маркетинг»</h3>
+<p>Настройки находятся в <code>/admin/settings/system/</code> → вкладка
+<strong>«Маркетинг»</strong> (рядом с Брендинг / Безопасность / … / Профиль).
+Сейчас Маркетинг = Игры; в будущем туда добавятся другие маркетинговые механики
+(акции, реферальные программы, бонусы за активность).</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/marketing_games_v992/01_marketing_settings_full.png" alt="Вкладка Маркетинг — полная страница настроек"></p>
+
+<p>Страница содержит 5 секций:</p>
+<ul>
+  <li><strong>Общее</strong> — <em>Включить игры</em> (глобальный выключатель)
+  + <em>Пункт «Игры» в меню профиля</em>.</li>
+  <li><strong>Мобильное приложение</strong> — <em>Разрешить игры клиентам</em>
+  + чекбоксы 8 доступных игр.</li>
+  <li><strong>Игра месяца</strong> — розыгрыш, игра, дни бесплатного интернета,
+  минимальный счёт, режим начисления (авто/ручной).</li>
+  <li><strong>Условия участия</strong> — оценки в сторах / на картах (см. §5.4).</li>
+  <li><strong>Текущий лидер и история</strong> — live-превью лидера + список победителей.</li>
+</ul>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/marketing_games_v980/02_marketing_tabs_top.png" alt="Шапка вкладки Маркетинг — Общее + Мобильное"></p>
+
+<div class="note">
+<strong>🌓 Тёмная тема и адаптивность.</strong> Все секции — карточки, тумблеры,
+таблица победителей — поддерживают тёмную тему. На мобильном вкладки раздела
+«Настройки системы» сворачиваются в компактный горизонтальный ряд с иконками
+(активная подсвечивается), а переключатели и поля увеличены под удобное касание.
+</div>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/marketing_games_v992/08_mobile_tabs.png" alt="Мобильный вид вкладки Маркетинг" style="max-width:320px"></p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/marketing_games_v992/07_settings_dark.png" alt="Вкладка Маркетинг в тёмной теме"></p>
+
+<h3 id="marketing-game-of-month">5.3. «Игра месяца» — бесплатный интернет</h3>
+<p>Главная механика. Клиент с максимальным счётом за календарный месяц получает
+<strong>бесплатный месяц интернета</strong> — кредит-финоперацию на сумму
+месячной стоимости его тарифа.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/marketing_games_v980/scheme_02_flow.png" alt="Поток Игра месяца"></p>
+
+<p><strong>Настройки розыгрыша:</strong></p>
+<ul>
+  <li><strong>Игра розыгрыша</strong> — какая из 8 игр участвует в текущем месяце.</li>
+  <li><strong>Дней бесплатного интернета</strong> — 30 по умолчанию.</li>
+  <li><strong>Мин. счёт для участия</strong> — отсекает «нулевые» результаты.</li>
+  <li><strong>Авто-начисление / ручное</strong> — по умолчанию оператор подтверждает
+  победителя кнопкой (защита от ошибок).</li>
+  <li><strong>Исключать сотрудников</strong> — результаты из админки в розыгрыше не участвуют.</li>
+  <li><strong>Уведомлять победителя</strong> — MsgStack + Push.</li>
+</ul>
+
+<p><strong>Подведение итогов</strong> — Celery-задача <code>game_of_month_finalize</code>
+запускается 1-го числа в 02:00, определяет лидера прошлого месяца и
+(в авто-режиме) начисляет приз; в ручном — ставит «ожидает подтверждения»
++ Telegram-алерт оператору.</p>
+
+<p><strong>Ручное начисление.</strong> В блоке «Текущий лидер» кнопка
+<em>«Начислить победителю вручную»</em> открывает окно подтверждения с данными
+победителя — игра, ФИО, договор, набранные очки и сумма приза. Если для турнира
+заданы условия участия (см. §5.4), оператор отмечает их выполнение прямо в окне;
+кнопка «Начислить» становится доступной только после подтверждения всех условий.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/marketing_games_v992/06_award_modal.png" alt="Окно подтверждения начисления приза победителю"></p>
+
+<div class="note">
+<strong>🔒 Безопасное начисление:</strong> бонус начисляется только через
+<code>FinanceOperations</code> (как онлайн-платёж), не правит баланс напрямую —
+EBS-синхронизация его не затирает. Сотрудники в розыгрыше не участвуют.
+Заблокированный/удалённый победитель пропускается + алерт оператору.
+При равном максимуме побеждает достигший раньше (tie-break).
+</div>
+
+<h3 id="marketing-conditions">5.4. Условия участия в турнире</h3>
+<p>Для участия в турнире можно требовать действия, повышающие рейтинг компании:</p>
+
+<table class="data-table">
+  <thead><tr><th>Условие</th><th>Настройка</th></tr></thead>
+  <tbody>
+    <tr><td>⭐ Оценка приложения (Google Play / App Store)</td><td><code>GAMES_OF_MONTH_REQUIRE_APP_RATING</code></td></tr>
+    <tr><td>🗺 Оценка на Яндекс Картах</td><td><code>GAMES_OF_MONTH_REQUIRE_YANDEX_MAPS</code></td></tr>
+    <tr><td>📍 Оценка на 2ГИС</td><td><code>GAMES_OF_MONTH_REQUIRE_2GIS</code></td></tr>
+  </tbody>
+</table>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/marketing_games_v980/03_game_of_month_conditions.png" alt="Игра месяца + условия участия"></p>
+
+<p>Включённые условия показываются клиенту в мобильном приложении
+как требования перед участием в розыгрыше. По умолчанию все выключены.</p>
+
+<h4 id="marketing-condition-links">Ссылки на оценку</h4>
+<p>Под переключателями условий задаются ссылки, по которым клиент оставляет оценку.
+Источники ссылок разделены:</p>
+
+<ul>
+  <li><strong>Ссылка на приложение</strong> — берётся из раздела
+  <a href="lk.html#lk-admin">ЛК → Мобильное</a> (<code>Google Play</code> и
+  <code>App Store</code>), чтобы не дублировать. В настройках Маркетинга она
+  показана только для справки; если ссылки в ЛК не заполнены — выводится подсказка
+  с переходом в нужный раздел.</li>
+  <li><strong>Яндекс Карты</strong> и <strong>2ГИС</strong> — задаются прямо
+  в настройках Маркетинга (<code>GAMES_OF_MONTH_YANDEX_URL</code>,
+  <code>GAMES_OF_MONTH_2GIS_URL</code>).</li>
+</ul>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/marketing_games_v992/scheme_03_sources.svg" alt="Источники ссылок условий участия"></p>
+
+<div class="note">
+<strong>Проверка оценки.</strong> Мобильное приложение получает ссылки через
+<code>/mobile-api/v1/game/config</code> и показывает их клиенту. Факт того, что
+клиент действительно оставил оценку, подтверждает оператор вручную в окне
+начисления приза — автоматической проверки отзыва на стороне магазинов и карт нет.
+</div>
+
+<h3 id="marketing-abonent-tab">5.5. Вкладка «Маркетинг» в карточке клиента</h3>
+<p>В карточке клиента появляется вкладка <strong>«Маркетинг»</strong> —
+только если модуль игр включён <strong>и</strong> у клиента есть лицевой счёт.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/marketing_games_v980/04_abonent_marketing_tab.png" alt="Вкладка Маркетинг в карточке клиента"></p>
+
+<p>Содержимое вкладки:</p>
+<ul>
+  <li><strong>Карточка «Игра месяца»</strong> — результат клиента vs лидер,
+  прогресс-бар, бейдж «Лидер!» если он первый.</li>
+  <li><strong>Лучшие результаты по играм</strong> — по каждой игре, в которую
+  играл клиент: лучший счёт + глобальный ранг (🏆 за 1 место, 🥈🥉 за 2–3).</li>
+  <li><strong>Empty-state</strong> — если клиент ещё не играл.</li>
+</ul>
+
+<p>Оператор видит игровую активность клиента прямо в его профиле,
+не переходя в раздел игр.</p>
+
+<h3 id="marketing-profile-menu">5.6. Профиль-меню и мобильное приложение</h3>
+
+<p><strong>Профиль-меню</strong> (справа у аватара) — пункт <strong>«Игры»</strong>
+появляется, когда включены <code>GAMES_ENABLED</code> + <code>GAMES_ADMIN_ENABLED</code>.
+Управляется через context-processor — без жёсткой проверки прав, видимость
+определяется единым тогглом.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/marketing_games_v980/05_profile_menu_games.png" alt="Пункт Игры в профиль-меню"></p>
+
+<p><strong>Мобильное приложение</strong> (<code>/mobile-api/v1/game/config</code>)
+отдаёт список доступных игр (из <code>GAMES_MOBILE_ALLOWED</code>) и данные
+текущего розыгрыша (мой счёт, счёт лидера, дни приза). Фильтрация
+<code>submit_score</code> / <code>leaderboard</code> по <code>GAMES_MOBILE_ENABLED</code>.</p>
+
+<h4 id="marketing-settings-keys">Ключи настроек (<code>SystemSettings</code>, категория <code>games</code>)</h4>
+
+<pre><code>GAMES_ENABLED / GAMES_ADMIN_ENABLED / GAMES_MOBILE_ENABLED / GAMES_MOBILE_ALLOWED
+GAMES_OF_MONTH_ENABLED / GAMES_OF_MONTH_KEY / GAMES_OF_MONTH_REWARD_DAYS
+GAMES_OF_MONTH_MIN_SCORE / GAMES_OF_MONTH_AUTO_AWARD / GAMES_OF_MONTH_EXCLUDE_STAFF
+GAMES_OF_MONTH_NOTIFY / GAMES_OF_MONTH_OPTYPE
+GAMES_OF_MONTH_REQUIRE_APP_RATING / _YANDEX_MAPS / _2GIS
+GAMES_OF_MONTH_YANDEX_URL / GAMES_OF_MONTH_2GIS_URL</code></pre>
+
+<p class="text-muted"><small>Ссылка на приложение для условий участия берётся из
+<code>MOBILE_FORCE_UPDATE_URL_ANDROID</code> / <code>_IOS</code> (раздел ЛК → Мобильное).</small></p>
+
+
+<!-- ===== 6. НАСТРОЙКИ ===== -->
+
+</main>
+
+<footer class="footer">
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">25.08.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;<span data-smit="updated">25.08.2026</span></span>
+</footer>
+
+<script src="../js/main.js?v=2189"></script>
+<script src="../js/search.js?v=2189"></script>
+<script src="../js/version.js"></script>
+<script src="../js/mermaid-init.js?v=2189"></script>
+<script src="../js/markmap-init.js?v=2189"></script>
+</body>
+</html>

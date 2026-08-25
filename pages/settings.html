@@ -1,0 +1,2051 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Настройки: система и платежи — СмИТ Биллинг</title>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="СмИТ Биллинг — Документация">
+  <meta property="og:title" content="Настройки: система и платежи — СмИТ Биллинг">
+  <meta property="og:description" content="Общие настройки, печатные формы, фискализация, платёжные системы, банковские выписки и почтовый сервер.">
+  <meta property="og:url" content="https://docs.billing.smit34.ru/pages/billing.html">
+  <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="ru_RU">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг">
+  <meta name="twitter:description" content="Управление клиентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
+  <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
+  <meta name="description" content="Общие настройки, печатные формы, фискализация, платёжные системы, банковские выписки и почтовый сервер.">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css?v=2189">
+  <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css?v=2189">
+  <link rel="stylesheet" href="../css/search.css?v=2189">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <button class="menu-toggle" aria-label="Меню"><i class="ti ti-menu-2"></i></button>
+    <div class="logo">
+      <div class="logo-icon">С</div>
+      <div class="logo-text"><span class="logo-main"><span data-smit="brand-short">СмИТ Биллинг</span></span><span>Документация</span></div>
+    </div>
+  </div>
+  <div class="header-search">
+    <div class="docs-search-wrap">
+      <input type="search" id="docsSearch" class="docs-search-input" placeholder="Поиск по документации..." autocomplete="off">
+      <span class="docs-search-icon"><i class="ti ti-search"></i></span>
+      <div class="docs-search-results" id="docsSearchResults"></div>
+    </div>
+  </div>
+  <div class="header-right">
+    <a href="../graphify/graph.html" class="header-nav-link" title="Граф зависимостей кода">
+      <i class="ti ti-topology-star-3 hnl-ico"></i><span class="hnl-txt">Граф</span>
+    </a>
+    <a href="../graphify/wiki/index.html" class="header-nav-link" title="Wiki архитектурных модулей">
+      <i class="ti ti-book-2 hnl-ico"></i><span class="hnl-txt">Wiki</span>
+    </a>
+    <button class="mobile-search-btn" aria-label="Поиск" title="Поиск по документации">
+      <i class="ti ti-search"></i>
+    </button>
+    <button class="theme-toggle" aria-label="Переключить тему" title="Светлая / тёмная тема">
+      <span class="icon-sun"><i class="ti ti-sun"></i></span>
+      <span class="icon-moon"><i class="ti ti-moon"></i></span>
+    </button>
+  </div>
+</header>
+
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+<div class="search-overlay" id="searchOverlay" role="dialog" aria-label="Поиск по документации">
+  <div class="search-overlay-inner">
+    <i class="ti ti-search search-prefix-icon"></i>
+    <input type="search" id="docsSearchMobile" placeholder="Поиск по документации..." autocomplete="off">
+    <button class="search-overlay-close" aria-label="Закрыть" id="searchOverlayClose"><i class="ti ti-x"></i></button>
+    <div class="docs-search-results search-overlay-results" id="docsSearchResultsMobile"></div>
+  </div>
+</div>
+
+<aside class="sidebar">
+  <nav>
+    <div class="nav-section">Разделы</div>
+    <ul>
+      <li><a href="../index.html"><i class="ti ti-home"></i> Главная</a></li>
+      <li class="has-children">
+        <a href="installation.html"><i class="ti ti-box"></i> Установка и интеграция <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="installation.html#requirements">1. Системные требования</a></li>
+          <li><a href="installation.html#docker-install">2. Установка Docker Compose</a></li>
+          <li><a href="installation.html#demo-cleanup">3. Удаление демо-данных</a></li>
+          <li><a href="installation.html#equip-integration">4. Интеграция с оборудованием</a></li>
+          <li><a href="installation.html#tariff-setup">5. Настройка тарифов</a></li>
+          <li><a href="installation.html#add-subscribers">6. Добавление клиентов</a></li>
+          <li><a href="installation.html#final-test">7. Финальное тестирование</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="dashboard.html"><i class="ti ti-layout-dashboard"></i> Дашборд <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="dashboard.html#dashboard">1. Дашборд</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-kpi">1.1. Шапка: 6 KPI</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-pools-ebs">1.2. IP-пулы + EBS</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-alerts">1.3. Свежие проблемы</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-cash">1.4. Касса месяца</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-payments-today">1.5. Платежи сегодня</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-hot">1.6. Горячие клиенты + CRM</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-extras">1.7. Heat-map + Цели + Что нового</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-finance">1.8. Финансовая динамика</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="tariffs.html"><i class="ti ti-receipt"></i> Тарифы и услуги <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="tariffs.html#tarifs">2. Тарификация</a></li>
+          <li class="sub-item"><a href="tariffs.html#tarif-list">2.1. Тарифы</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="tariffs.html#tarif-folder">— Директория тарифа</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="tariffs.html#tarif-org">— Тарифы и организация</a></li>
+          <li class="sub-item"><a href="tariffs.html#usluga-list">2.2. Услуги и Бонусы</a></li>
+          <li class="sub-item"><a href="tariffs.html#tarif-ruleset">2.3. Правила и сети</a></li>
+          <li class="sub-item"><a href="tariffs.html#ruleset-conditions">2.3.1. Условия правила</a></li>
+          <li class="sub-item"><a href="tariffs.html#tarif-bulk">2.3.2. Массовые действия</a></li>
+          <li class="sub-item"><a href="tariffs.html#card-series">2.4. Карты оплаты</a></li>
+          <li class="sub-item"><a href="tariffs.html#loyalty">2.5. Программы лояльности</a></li>
+          <li class="sub-item"><a href="tariffs.html#usluga-range">2.6. Линейки услуг</a></li>
+          <li class="sub-item"><a href="tariffs.html#tarif-overview">— Тарифы: обзор</a></li>
+          <li class="sub-item"><a href="tariffs.html#usluga-overview">— Услуги: обзор</a></li>
+          <li class="sub-item"><a href="tariffs.html#service-policies">— Политики начислений</a></li>
+          <li class="sub-item"><a href="tariffs.html#loyalty-overview">— Лояльность: обзор</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="nas-equipment.html"><i class="ti ti-server"></i> Оборудование <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="nas-equipment.html#equipment">3. Оборудование</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#equip-nas">3.1. NAS</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#nas-map">— Что такое NAS</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#nas-multiorg">— Мультиорганизация и доступ</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#nas-modal">— Карточка устройства</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#nas-status">3.2. Состояние NAS</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#nas-danger">— Опасные операции</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#equip-monitoring">3.2А. Мониторинг оборудования</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#equip-iptv">3.3. IPTV</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#switch">3.4. Коммутаторы</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#switch-type">3.5. Типы коммутаторов</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#sorm-list">3.6. Настройки СОРМ</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="reports.html"><i class="ti ti-chart-bar"></i> Отчёты <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="reports.html#reports">4. Отчёты</a></li>
+          <li class="sub-item"><a href="reports.html#director-dashboard">4.0. Панель директора</a></li>
+          <li class="sub-item"><a href="reports.html#custom-reports">4.1. Библиотека отчётов</a></li>
+          <li class="sub-item"><a href="reports.html#audit">4.2. Аудит</a></li>
+          <li class="sub-item"><a href="reports.html#paylog">4.3. Журнал платежей</a></li>
+          <li class="sub-item"><a href="reports.html#messages-journal">4.4. Журнал сообщений</a></li>
+          <li class="sub-item"><a href="reports.html#dev-reports">4.5. Разработка и логи</a></li>
+          <li class="sub-item"><a href="reports.html#debtors">4.6. Должники</a></li>
+          <li class="sub-item"><a href="reports.html#migration">4.7. Миграция с других биллингов</a></li>
+          <li><a href="reports.html#games">5. Игры (Маркетинг)</a></li>
+          <li class="sub-item"><a href="reports.html#framework-fields-overview">— FrameworkFormGroupFields: обзор</a></li>
+          <li class="sub-item"><a href="reports.html#custom-reports-overview">— SQL-отчёты: обзор</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="settings.html"><i class="ti ti-settings"></i> Настройки: система и платежи <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="settings.html#settings">6. Настройки</a></li>
+          <li class="sub-item"><a href="settings.html#system-settings">6.1. Настройки системы</a></li>
+          <li class="sub-item"><a href="settings.html#print-forms">6.2. Шаблоны печати</a></li>
+          <li class="sub-item"><a href="settings.html#atol-config">6.3. Фискализация</a></li>
+          <li class="sub-item"><a href="settings.html#fiscal">6.3.1. Модуль фискализации 54-ФЗ</a></li>
+          <li class="sub-item"><a href="settings.html#payment-systems">6.4. Платёжные системы</a></li>
+          <li class="sub-item"><a href="settings.html#bank-statements">6.4.1. Банковские выписки</a></li>
+          <li class="sub-item"><a href="settings.html#bank-parsers">6.4.2. Банки и парсеры</a></li>
+          <li class="sub-item"><a href="settings.html#bank-queue">6.4.3. Очередь модерации</a></li>
+          <li class="sub-item"><a href="settings.html#bank-imports">6.4.4. Журнал импортов</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#bank-flow">— Путь платежа (схема)</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#bank-registry">— Сводные реестры</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#bank-queue-link-2171">— Привязка платежа и данные ФНС</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#bank-org-2171">— Организация платежа</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#bank-client-tab">— Вкладка «Банк» в карточке</a></li>
+          <li class="sub-item"><a href="settings.html#mailserver">6.4.5. Почтовый сервер</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#mailserver-webmail">— Веб-почта и календарь</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#mailserver-identity">— Имя, подпись, фото</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#mailserver-addressbook">— Адресная книга</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#mailserver-mail-tab">— Вкладка «Почта»</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#mailserver-server-settings">— Настройки сервера</a></li>
+          <li class="sub-item"><a href="settings.html#dns">6.4.5А. Домены и DNS</a></li>
+          <li class="sub-item"><a href="settings.html#mail-provisioning">6.4.6. Автонастройка почты</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="settings-services.html"><i class="ti ti-plug"></i> Настройки: связь и сервисы <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li class="sub-item"><a href="settings-services.html#integrations">6.5. Интеграции</a></li>
+          <li class="sub-item"><a href="settings-services.html#voice">6.5А. Голосовая связь</a></li>
+          <li class="sub-item"><a href="settings-services.html#iptv-mappings">6.6. IPTV-пакеты</a></li>
+          <li class="sub-item"><a href="settings-services.html#iptv-watch">6.6.1. Просмотр ТВ в ЛК</a></li>
+          <li class="sub-item"><a href="settings-services.html#lk-mobile">6.7. ЛК и мобильные</a></li>
+          <li class="sub-item"><a href="settings-services.html#messaging">6.8. Сообщения</a></li>
+          <li class="sub-item"><a href="settings-services.html#staff">6.9. Персонал и доступ</a></li>
+          <li class="sub-item"><a href="settings-services.html#license">6.10. Лицензия</a></li>
+          <li class="sub-item"><a href="settings-services.html#modules">6.10А. Модули и расширения</a></li>
+          <li class="sub-item"><a href="settings-services.html#backup">6.11. Резервные копии</a></li>
+          <li class="sub-item"><a href="settings-services.html#db-cleanup">6.12. Очистка БД и сессий</a></li>
+          <li class="sub-item"><a href="settings-services.html#diagnostics">6.13. Диагностика</a></li>
+          <li class="sub-item"><a href="settings-services.html#mass-actions">6.14. Массовые действия</a></li>
+          <li class="sub-item"><a href="settings-services.html#performance">6.15. Производительность и оптимизация</a></li>
+          <li class="sub-item"><a href="settings-services.html#captive-portal">6.16. Captive Portal (финблокировка)</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-readiness">— Готовность и проверка</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-emergency">— Аварийный режим</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-access">— Организации и права</a></li>
+          <li class="sub-item"><a href="settings-services.html#guest-wifi-portal">6.16.1. Гостевой Wi-Fi портал</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-payments">— Платежи</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-acl">— Белые списки (ACL)</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-sorm">— Гости в СОРМ и хранение</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-mobile">— С телефона</a></li>
+          <li class="sub-item"><a href="settings-services.html#support">— Поддержка: единое окно</a></li>
+          <li class="sub-item"><a href="settings-services.html#support-ticket">— Поддержка: карточка тикета</a></li>
+          <li class="sub-item"><a href="settings-services.html#support-panel">— Поддержка: выезжающая панель</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="dictionaries.html"><i class="ti ti-book"></i> Справочники <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="dictionaries.html#dictionary">7. Справочники</a></li>
+          <li class="sub-item"><a href="dictionaries.html#pools">7.1. Пулы IP и VLAN</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="dictionaries.html#ip-pull-overview">— IP-пул: обзор</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="dictionaries.html#vlan-pull-overview">— VLAN-пул: обзор</a></li>
+          <li class="sub-item"><a href="dictionaries.html#acl">7.2. Контроль доступа</a></li>
+          <li class="sub-item"><a href="dictionaries.html#addresses">7.3. Все адреса</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="dictionaries.html#addresses-overview">— Адреса: обзор</a></li>
+          <li class="sub-item"><a href="dictionaries.html#statuses-overview">— Статусы: обзор</a></li>
+          <li class="sub-item"><a href="dictionaries.html#requisites">7.4. Реквизиты</a></li>
+          <li class="sub-item"><a href="dictionaries.html#currency">7.5. Валюты</a></li>
+          <li class="sub-item"><a href="dictionaries.html#weekends">7.6. Выходные дни</a></li>
+          <li class="sub-item"><a href="dictionaries.html#statuses">7.7. Управление статусами</a></li>
+          <li class="sub-item"><a href="dictionaries.html#report-types">7.8. Типы отчётов</a></li>
+          <li class="sub-item"><a href="dictionaries.html#units">7.9. Единицы измерения</a></li>
+          <li class="sub-item"><a href="dictionaries.html#periods">7.10. Периоды</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="abonents.html"><i class="ti ti-users"></i> Абоненты <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li class="sub-item"><a href="abonents.html#admin-accounts-overview">— Счета: обзор</a></li>
+          <li class="sub-item"><a href="abonents.html#finops-overview">— Финоперации: обзор</a></li>
+          <li class="sub-item"><a href="abonents.html#promise-pay-overview">— Обещанный платёж: обзор</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-block-overview">— Блокировки: обзор</a></li>
+          <li class="sub-item"><a href="abonents.html#abonent-folders-overview">— Папки клиентов: обзор</a></li>
+          <li><a href="abonents.html#abonents">8. Клиенты</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-list">8.1. Клиенты</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-folder-view">— Папка клиентов</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-multiorg">— Мультиорганизация</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-quick-add">— Новый клиент и раскладка</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-search">— Глобальный поиск</a></li>
+          <li class="sub-item"><a href="abonents.html#abonent-map">8.2. На карте</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#abonent-map-data">— Откуда берутся точки</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#abonent-map-multiorg">— Мультиорганизация</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#abonent-map-performance">— Вес карты и скорость</a></li>
+          <li class="sub-item"><a href="abonents.html#admin-accounts">8.3. Счета</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#admin-accounts-map">— Что такое счёт</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#admin-accounts-multiorg">— Мультиорганизация и доступ</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#admin-accounts-modal">— Карточка счёта</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#admin-accounts-mobile">— Мобильная версия</a></li>
+          <li class="sub-item"><a href="abonents.html#finance-operations">8.4. Финансовые операции</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#finops-lifecycle">— Откуда берутся операции</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#finops-multiorg">— Мультиорганизация</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#modal-finops">— Карточка операции</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#finops-mobile">— Мобильная версия</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#finance-operations-types">— Типы операций (FinTypes)</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="abonent-card.html"><i class="ti ti-id"></i> Карточка абонента <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li class="sub-item"><a href="abonent-card.html#users-overview">— Учётные записи: обзор</a></li>
+          <li class="sub-item"><a href="abonent-card.html#connection-points-overview">— Точки подключения: обзор</a></li>
+          <li class="sub-item"><a href="abonent-card.html#radius-sessions-overview">— RADIUS-сессии: обзор</a></li>
+          <li><a href="abonent-card.html#abonent-card">9. Карточка клиента</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="extras.html"><i class="ti ti-apps"></i> Дополнительные разделы <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="extras.html#video-surveillance">10. Видеонаблюдение</a></li>
+          <li class="sub-item"><a href="extras.html#video-revenue">10.1. 3 слоя дохода + цены</a></li>
+          <li class="sub-item"><a href="extras.html#video-admin">10.2. Раздел /admin/video/</a></li>
+          <li class="sub-item"><a href="extras.html#video-abonent">10.3. Вкладка клиента + ЛК</a></li>
+          <li class="sub-item"><a href="extras.html#video-billing-flow">10.3.1. Как списываются подписки</a></li>
+          <li class="sub-item"><a href="extras.html#video-archive-lk">10.3.2. Архив: календарь + выделение</a></li>
+          <li class="sub-item"><a href="extras.html#video-notify">10.3.3. Уведомления о сбоях</a></li>
+          <li class="sub-item"><a href="extras.html#video-docs">10.4. Документы (КП/договор/акт)</a></li>
+          <li class="sub-item"><a href="extras.html#video-block">10.5. Блокировка камер по балансу</a></li>
+          <li class="sub-item"><a href="extras.html#video-vsaas">10.6. Облако VSaaS</a></li>
+          <li><a href="extras.html#domofon-demo">11. Домофонный домен</a></li>
+          <li class="sub-item"><a href="extras.html#domofon-model">11.1. Доменная модель</a></li>
+          <li class="sub-item"><a href="extras.html#domofon-demo-data">11.2. Что заведено в демо</a></li>
+          <li><a href="extras.html#ai-agent">12. AI-агент</a></li>
+          <li class="sub-item"><a href="extras.html#ai-hub">12.1. Обзор модуля (хаб)</a></li>
+          <li class="sub-item"><a href="extras.html#ai-kb">12.2. База знаний</a></li>
+          <li class="sub-item"><a href="extras.html#ai-voice">12.3. Голос (Mango → анализ)</a></li>
+          <li class="sub-item"><a href="extras.html#ai-widget">12.4. Виджет + воронка</a></li>
+          <li class="sub-item"><a href="extras.html#ai-order-forms">12.4.1. Формы заказа → лиды</a></li>
+          <li class="sub-item"><a href="extras.html#ai-test-chat">12.4.2. Тестовый AI-чат</a></li>
+          <li class="sub-item"><a href="extras.html#ai-eval">12.5. Тест-кейсы AI</a></li>
+          <li class="sub-item"><a href="extras.html#ai-dashboard">12.6. Дашборд AI-сессий</a></li>
+          <li class="sub-item"><a href="extras.html#ai-dashboard-costs">12.6.1. Расходы на модели и бюджет</a></li>
+          <li class="sub-item"><a href="extras.html#ai-org-routing">12.6.2. Определение организации</a></li>
+          <li class="sub-item"><a href="extras.html#ai-dashboard-sessions">12.5.1. Сессии и транскрипт</a></li>
+          <li><a href="extras.html#autodial-telephony">13. Автообзвон и телефония</a></li>
+          <li class="sub-item"><a href="extras.html#autodial-providers">13.1. Мультипровайдер</a></li>
+          <li class="sub-item"><a href="extras.html#autodial-asterisk">13.2. Своя телефония (Asterisk)</a></li>
+          <li class="sub-item"><a href="extras.html#autodial-consent">13.3. Согласие и ограничения</a></li>
+          <li class="sub-item"><a href="extras.html#autodial-card-tab">13.4. Вкладка «Звонки» в карточке</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="lk.html"><i class="ti ti-device-mobile"></i> ЛК и мобильные <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="lk.html#lk-overview">Обзор и возможности</a></li>
+          <li><a href="lk.html#lk-admin">Раздел «ЛК и мобильные» в админке</a></li>
+          <li class="sub-item"><a href="lk.html#lk-admin">— Брендинг</a></li>
+          <li class="sub-item"><a href="lk.html#lk-admin">— Функции</a></li>
+          <li class="sub-item"><a href="lk.html#lk-admin">— Безопасность</a></li>
+          <li class="sub-item"><a href="lk.html#lk-mobile-app">— Мобильное (Android+iOS)</a></li>
+          <li><a href="lk.html#lk-login">Авторизация</a></li>
+          <li><a href="lk.html#lk-admin">Настройки интеграций</a></li>
+          <li><a href="lk.html#lk-extra">Telegram-бот</a></li>
+          <li><a href="lk.html#lk-finance">Оплата (ЮKassa)</a></li>
+          <li><a href="lk.html#lk-mobile-app">Мобильное приложение</a></li>
+          <li><a href="lk.html#lk-support">HelpDesk</a></li>
+          <li><a href="lk.html#lk-ai-chat">AI-ассистент</a></li>
+          <li><a href="lk.html#lk-profile">Профиль</a></li>
+          <li><a href="lk.html#lk-firebase">Push (Firebase)</a></li>
+          <li><a href="lk.html#lk-ai-chat">AI-чат</a></li>
+          <li><a href="settings-services.html#messaging">TG бот оператора</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="crm.html"><i class="ti ti-briefcase"></i> CRM — продажи <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="crm.html#crm-overview">1. Как устроен модуль</a></li>
+          <li><a href="crm.html#crm-quickstart">2. Быстрый старт</a></li>
+          <li><a href="crm.html#crm-funnel">3. Воронка сделок</a></li>
+          <li><a href="crm.html#crm-constructor">4. Конструктор воронок</a></li>
+          <li><a href="crm.html#crm-sources">5. Источники сделок</a></li>
+          <li><a href="crm.html#crm-userfields">6. Доп. поля</a></li>
+          <li><a href="crm.html#crm-tasks">7. Задачи</a></li>
+          <li><a href="crm.html#crm-lists">8. Списки (контакты)</a></li>
+          <li><a href="crm.html#crm-salesbot">9. Salesbot</a></li>
+          <li><a href="crm.html#widgets">10. Виджеты-плагины</a></li>
+          <li><a href="crm.html#crm-setup">11. Мастер настройки</a></li>
+          <li><a href="crm.html#crm-montazh">12. Наряды монтажника</a></li>
+          <li><a href="crm.html#crm-dashboard">13. Дашборд и карта</a></li>
+          <li><a href="crm.html#crm-campaigns">14. Рекламные кампании</a></li>
+          <li><a href="crm.html#crm-drawer">15. Карточка сделки</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="stock.html"><i class="ti ti-packages"></i> Склад <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="stock.html#stock-overview">1. Как устроен модуль</a></li>
+          <li><a href="stock.html#stock-quickstart">2. Быстрый старт</a></li>
+          <li><a href="stock.html#stock-flow">3. Движения и статусы</a></li>
+          <li><a href="stock.html#stock-items">4. Номенклатура и остатки</a></li>
+          <li><a href="stock.html#stock-receipt">5. Приход и этикетки</a></li>
+          <li><a href="stock.html#stock-issue">6. Подотчёт сотрудника</a></li>
+          <li><a href="stock.html#stock-inventory">6б. Инвентаризация</a></li>
+          <li><a href="stock.html#stock-reserve">6в. Резерв под наряд</a></li>
+          <li><a href="stock.html#stock-move">6г. Перемещение</a></li>
+          <li><a href="stock.html#stock-suppliers">6д. Поставщики</a></li>
+          <li><a href="stock.html#stock-montazh">7. Материалы в наряде</a></li>
+          <li><a href="stock.html#stock-abonent">8. Оборудование клиента</a></li>
+          <li><a href="stock.html#stock-money">9. Деньги: продажа и аренда</a></li>
+          <li><a href="stock.html#stock-analytics">9а. Аналитика</a></li>
+          <li><a href="stock.html#stock-settings">10. Настройки и роли</a></li>
+          <li><a href="stock.html#stock-launch">11. Чек-лист запуска</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="video.html"><i class="ti ti-device-cctv"></i> Видеонаблюдение <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="video.html#video-overview">1. Как устроен модуль</a></li>
+          <li><a href="video.html#video-objects">2. Объекты и камеры</a></li>
+          <li><a href="video.html#video-projects">3. Проекты и документы</a></li>
+          <li><a href="video.html#video-plans">4. Планы и подписки</a></li>
+          <li><a href="video.html#video-catalog">5. Каталог и склад</a></li>
+          <li><a href="video.html#video-media">6. Медиа-сервер</a></li>
+          <li><a href="video.html#video-archive">7. Архив записей</a></li>
+          <li><a href="video.html#video-dispatch">8. Пульт ЧОПа</a></li>
+          <li><a href="video.html#video-reports">9. Отчётность по SLA</a></li>
+          <li><a href="video.html#video-access">10. Права и организации</a></li>
+          <li><a href="video.html#video-settings">11. Настройки модуля</a></li>
+          <li><a href="video.html#video-launch">12. Чек-лист запуска</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="helpdesk.html"><i class="ti ti-headset"></i> Поддержка (HelpDesk) <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="helpdesk.html#overview">1. Обзор модуля</a></li>
+          <li><a href="helpdesk.html#channels">2. Каналы приёма</a></li>
+          <li><a href="helpdesk.html#mailbox">3. Входящие</a></li>
+          <li><a href="helpdesk.html#conversation">4. Карточка тикета</a></li>
+          <li><a href="helpdesk.html#sidebar">5. Сайдбар тикета</a></li>
+          <li><a href="helpdesk.html#panel">6. Выезжающая панель</a></li>
+          <li><a href="helpdesk.html#attention">7. Тикеты внимания</a></li>
+          <li><a href="helpdesk.html#ai-assistant">8. AI-бот</a></li>
+          <li><a href="helpdesk.html#voicemail">9. Голосовая почта</a></li>
+          <li><a href="helpdesk.html#knowledgebase">10. База знаний</a></li>
+          <li><a href="helpdesk.html#analytics">11. Аналитика и время</a></li>
+          <li><a href="helpdesk.html#settings">12. Настройки</a></li>
+          <li><a href="helpdesk.html#messengers">13. Мессенджеры</a></li>
+          <li><a href="helpdesk.html#integration">14. Связь с биллингом</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="landing.html"><i class="ti ti-browser"></i> Лендинги <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="landing.html#landing-overview">1. Что это</a></li>
+          <li><a href="landing.html#landing-blocks">2. Блоки-секции</a></li>
+          <li><a href="landing.html#landing-media">3. Слайдер, медиа-фон и эффекты</a></li>
+          <li><a href="landing.html#landing-editor">4. Редактор</a></li>
+          <li><a href="landing.html#landing-ai">5. AI-генерация</a></li>
+          <li><a href="landing.html#landing-forms">6. Формы и заявки</a></li>
+          <li><a href="landing.html#landing-publish">7. Публикация на поддомене</a></li>
+          <li><a href="landing.html#landing-pd">8. Согласие ПД (152-ФЗ)</a></li>
+          <li><a href="landing.html#landing-analytics">9. Аналитика</a></li>
+          <li><a href="landing.html#landing-multiorg">10. Мульти-орг</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="server.html"><i class="ti ti-server"></i> Управление сервером <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="server.html#server-setup">1. Настройка сервера</a></li>
+          <li><a href="server.html#maintenance">2. Сервисное обслуживание</a></li>
+          <li class="sub-item"><a href="server.html#backup">2.1. Резервное копирование</a></li>
+          <li class="sub-item"><a href="server.html#backup-ui">2.2. Бекапы (веб-интерфейс)</a></li>
+          <li><a href="server.html#modules">3. Управление модулями</a></li>
+          <li><a href="server.html#remote">4. Удалённое управление</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="equipment.html"><i class="ti ti-broadcast"></i> Интеграция с оборудованием <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="equipment.html#internet">1. Интернет (NAS/BRAS)</a></li>
+          <li class="sub-item"><a href="equipment.html#switch-types">1.1. Типы коммутаторов</a></li>
+          <li><a href="equipment.html#voip">2. Телефония (VoIP)</a></li>
+          <li><a href="equipment.html#iptv">3. IPTV</a></li>
+          <li class="sub-item"><a href="equipment.html#iptv-tvip">3.1. TVIP Media</a></li>
+          <li class="sub-item"><a href="equipment.html#iptv-lfstream">3.2. LFStream</a></li>
+          <li class="sub-item"><a href="equipment.html#iptv-mappings">3.3. Маппинг пакетов</a></li>
+          <li><a href="equipment.html#cpe">4. Абонентское оборудование</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="sorm.html"><i class="ti ti-shield-lock"></i> Интеграция с СОРМ3 <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="sorm.html#principle">Принцип работы</a></li>
+          <li><a href="sorm.html#integrated">Интегрированные решения</a></li>
+          <li><a href="sorm.html#pending">Ожидающие интеграции</a></li>
+          <li><a href="sorm.html#setup">Настройка подключения</a></li>
+          <li class="sub-item"><a href="sorm.html#sorm-add-modal">— Модальное окно «Добавить»</a></li>
+          <li><a href="sorm.html#reports">Отчёты и SQL</a></li>
+          <li><a href="sorm.html#schedule">Расписание выгрузки</a></li>
+          <li><a href="sorm.html#sorm-admin">Админ-UI: список и FTP</a></li>
+          <li><a href="sorm.html#manual-run">Управление отчётами</a></li>
+          <li><a href="sorm.html#metadata">СОРМ-метаданные</a></li>
+          <li><a href="sorm.html#preflight">Pre-flight валидация</a></li>
+          <li><a href="sorm.html#api">REST API готовности</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="api.html"><i class="ti ti-link"></i> API <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="api.html#overview">1. Обзор API</a></li>
+          <li><a href="api.html#auth">2. Аутентификация</a></li>
+          <li><a href="api.html#rest-v2">3. REST API v2</a></li>
+          <li><a href="api.html#promise-pay">4. Обещанный платёж</a></li>
+          <li><a href="api.html#payments-api">5. Платёжные API (ЮKassa, W1)</a></li>
+          <li><a href="api.html#soap">6. SOAP API</a></li>
+          <li><a href="api.html#mobile-api">7. Mobile API</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="troubleshooting.html"><i class="ti ti-tool"></i> Решение проблем <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="troubleshooting.html#general">1. Общие вопросы</a></li>
+          <li><a href="troubleshooting.html#auth">2. Клиенты и авторизация</a></li>
+          <li><a href="troubleshooting.html#billing-payments">3. Биллинг и платежи</a></li>
+          <li><a href="troubleshooting.html#server-perf">4. Сервер и производительность</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="licensing.html"><i class="ti ti-file-description"></i> Лицензирование <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="licensing.html#delivery">1. Порядок поставки ПО</a></li>
+          <li><a href="licensing.html#payment-issues">2. Не проходит оплата</a></li>
+        </ul>
+      </li>
+      <li><a href="contacts.html"><i class="ti ti-phone"></i> Контакты</a></li>
+      <li><a href="changelog.html"><i class="ti ti-history"></i> Журнал изменений</a></li>
+    </ul>
+
+      <div class="nav-section">Разработчикам</div>
+      <ul>
+        <li class="has-children">
+          <a href="../graphify/graph.html"><i class="ti ti-topology-star-3"></i> Архитектура кода <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+          <ul class="submenu">
+            <li><a href="../graphify/graph.html">Граф сообществ</a></li>
+            <li><a href="../graphify/wiki/index.html">Wiki модулей</a></li>
+            <li><a href="dev/index.html">Портал разработчика</a></li>
+            <li><a href="../graphify/help.html">graphify CLI</a></li>
+          </ul>
+        </li>
+      </ul>
+  <button class="sidebar-theme-toggle" aria-label="Тема"><span class="icon-sun"><i class="ti ti-sun"></i></span><span class="icon-moon"><i class="ti ti-moon"></i></span><span class="sidebar-theme-label">Сменить тему</span></button>
+</nav>
+</aside>
+
+<main class="content">
+  <div class="breadcrumb">
+    <a href="../index.html">Документация</a> <span class="sep">/</span> Настройки: система и платежи
+  </div>
+
+  <h1>Настройки: система и платежи</h1>
+  <p>Общие настройки, печатные формы, фискализация, платёжные системы, банковские выписки и почтовый сервер.</p>
+
+<div class="page-toc">
+<details open>
+  <summary><strong><i class="ti ti-book"></i> Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#settings">6. Настройки</a></li>
+    <li class="sub-item"><a href="#system-settings">6.1. Настройки системы</a></li>
+    <li class="sub-item"><a href="#print-forms">6.2. Шаблоны печати</a></li>
+    <li class="sub-item"><a href="#atol-config">6.3. Фискализация (54-ФЗ)</a></li>
+    <li class="sub-item"><a href="#payment-systems">6.4. Платёжные системы</a></li>
+    <li class="sub-item"><a href="#bank-statements">6.4.1. Банковские выписки (автообработка)</a></li>
+    <li class="sub-item"><a href="#bank-parsers">6.4.2. Банки и парсеры</a></li>
+    <li class="sub-item"><a href="#bank-queue">6.4.3. Очередь модерации</a></li>
+    <li class="sub-item"><a href="#bank-imports">6.4.4. Журнал импортов</a></li>
+    <li class="sub-item"><a href="#mailserver">6.4.5. Почтовый сервер (SmitMailServ)</a></li>
+    <li class="sub-item"><a href="#dns">6.4.5А. Домены и DNS (Cloudflare)</a></li>
+    <li class="sub-item"><a href="#mail-provisioning">6.4.6. Автонастройка почтовых ящиков и DNS</a></li>
+  </ul>
+</details>
+</div>
+
+<!-- ===== 6. НАСТРОЙКИ ===== -->
+<h2 id="settings">6. Настройки</h2>
+<p>Раздел меню <strong>«Настройки»</strong> объединяет все параметры биллинга,
+интеграции, шаблоны печати, управление персоналом и обслуживание базы данных.</p>
+
+<div class="page-toc">
+<details open>
+  <summary><strong><i class="ti ti-book"></i> Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#system-settings">5.1. Настройки системы</a></li>
+    <li><a href="#system-security-auth-1171">— Безопасность: FIDO2 / reCAPTCHA / блокировка / сессии</a></li>
+    <li><a href="#admin-header-adaptive-1180">— Адаптивная шапка админки</a></li>
+    <li><a href="#print-forms">5.2. Шаблоны печати</a></li>
+    <li><a href="#atol-config">5.3. Фискализация (54-ФЗ)</a></li>
+    <li><a href="#fiscal">5.3.1. Модуль фискализации 54-ФЗ</a></li>
+    <li><a href="#payment-systems">5.4. Платёжные системы</a></li>
+    <li><a href="settings-services.html#integrations">5.5. Интеграции</a></li>
+    <li><a href="settings-services.html#iptv-mappings">5.6. IPTV-пакеты</a></li>
+    <li><a href="settings-services.html#iptv-module">5.6А. Модуль IPTV</a></li>
+    <li><a href="settings-services.html#lk-mobile">5.7. ЛК и мобильные</a></li>
+    <li><a href="settings-services.html#messaging">5.8. Сообщения</a></li>
+    <li><a href="settings-services.html#staff">5.9. Персонал и доступ</a></li>
+    <li><a href="settings-services.html#license">5.10. Лицензия</a></li>
+    <li><a href="settings-services.html#backup">5.11. Резервные копии</a></li>
+    <li><a href="settings-services.html#db-cleanup">5.12. Очистка БД и сессий</a></li>
+    <li><a href="settings-services.html#diagnostics">5.13. Диагностика</a></li>
+    <li><a href="settings-services.html#mass-actions">5.14. Массовые действия</a></li>
+    <li><a href="settings-services.html#performance">5.15. Производительность и оптимизация</a></li>
+    <li><a href="settings-services.html#captive-portal">6.16. Captive Portal (финблокировка)</a>
+      <ul>
+        <li><a href="settings-services.html#captive-portal-readiness">Готовность профиля и проверка конфигурации</a></li>
+        <li><a href="settings-services.html#captive-portal-emergency">Аварийный режим</a></li>
+        <li><a href="settings-services.html#captive-portal-access">Организации и права доступа</a></li>
+        <li><a href="settings-services.html#captive-portal-payments">Платежи</a></li>
+        <li><a href="settings-services.html#captive-portal-acl">Белые списки (ACL)</a></li>
+        <li><a href="settings-services.html#captive-portal-sorm">Гости в СОРМ и срок хранения</a></li>
+        <li><a href="settings-services.html#captive-portal-mobile">С телефона</a></li>
+      </ul>
+    </li>
+  </ul>
+</details>
+</div>
+
+<h3 id="system-settings">6.1. Настройки системы</h3>
+<p>Единая страница системных параметров с тремя вкладками: <em>Параметры</em>,
+<em>Брендинг</em>, <em>Безопасность</em>.</p>
+
+<p><strong>Вкладка «Параметры»</strong> — общие настройки биллинга, сгруппированные
+по типам: RADIUS, валюта, ЛК, общие, сообщения, учёт, интерфейс. Каждая настройка
+имеет имя, значение и описание.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_system_settings.png" alt="Настройки системы — параметры"></p>
+
+<p>Примеры параметров: лимит обещанного платежа в днях, частота auto-assign NAS,
+SLA-цели для NAS-мониторинга, частота автоматической очистки БД.</p>
+
+<p><strong>Вкладка «Брендинг»</strong> — фирменное оформление: название компании,
+логотип, цвет акцента, контактные данные. Эти данные показываются в админке,
+в личном кабинете и в шаблонах печати.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_branding.png" alt="Настройки системы — брендинг"></p>
+
+<h4 id="system-security-finops">Вкладка «Безопасность» — политика финансовых операций</h4>
+
+<p>На <strong>Безопасности</strong> — глобальные ограничения для ручных
+финансовых операций (создание/редактирование/удаление через UI). Доступна
+только пользователям группы <code>root</code> или <code>is_superuser=True</code>.</p>
+
+<p>5 настроек (все по умолчанию выключены — стандартное поведение Django admin):</p>
+
+<table class="data-table">
+  <thead><tr><th>Toggle</th><th>Что меняет</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Только суперпользователь может проводить ручные операции</strong></td>
+      <td>Скрывает кнопки «Приход»/«Расход», иконки редактирования и удаления
+      для всех кроме <code>is_superuser</code> или членов группы <code>root</code>.
+      Backend возвращает HTTP 403 при попытке POST. Просмотр истории операций
+      остаётся доступен всем.</td>
+    </tr>
+    <tr>
+      <td><strong>Разрешить выбор услуги при ручной операции «Расход»</strong></td>
+      <td>Показывает ссылку «+ Добавить услугу» в модалке Расхода. По умолчанию
+      выключено — большинству провайдеров привязка не нужна, операция остаётся
+      без <code>FinanceOperations.usluga_id</code>.</td>
+    </tr>
+    <tr>
+      <td><strong>Максимальная сумма ручной операции (₽)</strong></td>
+      <td>Защита от опечаток («9000» вместо «900») и фрода. Если задана —
+      backend отклоняет операции выше указанной суммы. <code>0</code> = без
+      ограничения. Не действует на автоматические процессы (Celery worker,
+      ЮKassa webhook, ОП).</td>
+    </tr>
+    <tr>
+      <td><strong>Обязательное описание операции</strong></td>
+      <td>Запрещает пустое поле «Описание». Полезно для аудита — при разборе
+      спорных операций ясно за что списали. Backend возвращает HTTP 400 если
+      описание пусто.</td>
+    </tr>
+    <tr>
+      <td><strong>Разрешить удаление финопераций</strong></td>
+      <td>Если <strong>выключено</strong> — иконка корзины скрыта в UI,
+      backend возвращает 403 на DELETE-запросы. Для отмены неправильной
+      операции остаётся только <strong>сторнирование</strong> (создание
+      парной обратной операции с пометкой <code>storno=True</code>) —
+      обе строки видны зачёркнутыми, что даёт полный аудит-trail для
+      бухгалтерии.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Все ограничения проверяются <strong>и в backend</strong> (HTTP 403/400 на
+endpoints <code>finops_ajax</code>, <code>finops_crud_ajax</code>,
+<code>FinOpChangeView</code>) <strong>и в frontend</strong> (кнопки/ссылки/поля
+скрыты в HTML).</p>
+
+<p><strong>Важно</strong>: ограничения касаются <strong>только ручных операций
+через UI</strong>. Автоматические процессы — Celery worker
+<code>billing_worker</code> для абонплаты, webhook ЮKassa, обещанный платёж,
+auto-block по отрицательному балансу — работают как обычно, без проверок.
+Это нужно чтобы политика «только суперюзер» не сломала автоматическое начисление.</p>
+
+<h4 id="system-security-auth-1171">Вкладка «Безопасность» — авторизация: FIDO2, reCAPTCHA, блокировка, сессии</h4>
+
+<p>Ниже блока «Финансовые операции» на странице <code>/admin/settings/system/security/</code> расположены 4 блока управления безопасностью входа.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/auth_overhaul_v1183/02_security_blocks.png" alt="Блоки безопасности: FIDO2, reCAPTCHA, блокировка, сессия"></p>
+
+<table class="data-table">
+  <thead><tr><th>Блок</th><th>Что делает</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Авторизация через FIDO2/WebAuthn</strong><br><code>SECURITY_WEBAUTHN_ENABLED</code></td>
+      <td>Вход по passkey (YubiKey, Touch ID/Face ID, Windows Hello). После включения сотрудники привязывают ключ в Профиле (любой сотрудник, не только su; модель <code>StaffWebAuthnCredential</code>), клиенты — в ЛК. На странице входа в биллинг появляется кнопка «Войти по ключу (passkey)».</td>
+    </tr>
+    <tr>
+      <td><strong>Google reCAPTCHA v3</strong><br><code>RECAPTCHA_SITE_KEY</code> / <code>RECAPTCHA_SECRET_KEY</code></td>
+      <td>После ввода обоих ключей появляются тумблеры «Авторизация в биллинге» (<code>RECAPTCHA_ON_ADMIN_LOGIN</code>) и «Авторизация в ЛК» (<code>RECAPTCHA_ON_LK_LOGIN</code>).</td>
+    </tr>
+    <tr>
+      <td><strong>Блокировка аккаунта</strong><br><code>LOCKOUT_ENABLED</code></td>
+      <td>Блокировка после неудачных попыток входа: число попыток (3/5/10), событие — «блокировать попытки на 1 час» или «блокировать аккаунт» (с настраиваемым сообщением).</td>
+    </tr>
+    <tr>
+      <td><strong>Сохранение сессии</strong><br><code>SESSION_PERSIST_ENABLED</code></td>
+      <td>Срок хранения сессии (1ч … бессрочно) + чекбоксы «Для клиентов» / «Для персонала (кроме su)». При активации в формах входа появляется чекбокс «Запомнить меня».</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Все настройки в категории <code>security</code>, по умолчанию выключены. Миграция <code>0230</code> добавляет модель <code>StaffWebAuthnCredential</code> (passkey сотрудников).</p>
+
+<h4 id="admin-header-adaptive-1180">Адаптивная шапка админки (builds 1180–1182)</h4>
+
+<p>Верхнее меню сжимается ступенями при нехватке ширины (только десктоп ≥768px), освобождая место без потери пунктов.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/auth_overhaul_v1183/09_header_compact.png" alt="Адаптивная шапка в сжатом виде"></p>
+
+<ul>
+  <li>Пункт «Продажи» переименован в <strong>«CRM»</strong>.</li>
+  <li><strong>Ступень 0</strong> — сворачивается левый сайдбар (ручной выбор пользователя не трогается).</li>
+  <li><strong>Ступень 1</strong> — имя пользователя → фамилия, «Тарификация» → «Тарифы», «Справочники» → «Справ.».</li>
+  <li><strong>Ступень 2</strong> — пункты Видео / IPTV / IP-телефония группируются в выпадающее меню <strong>«Услуги»</strong> (сразу после «Тарифы»).</li>
+  <li>При расширении окна всё откатывается обратно.</li>
+</ul>
+
+<h4 id="system-settings-audit">Вкладка «Аудит» — настройки журнала действий по клиентам</h4>
+
+<p>Управление параметрами вкладки <a href="abonent-card.html#abonent-card-tab-audit">Аудит</a> в карточке клиента и общим поведением логирования. Доступна по адресу <code>/admin/settings/system/?tab=audit</code> только пользователям группы <code>root</code> или с <code>is_superuser=True</code>.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/audit_settings_v778/audit_settings_v778_01_form.png" alt="Настройки аудита — форма с 4 параметрами"></p>
+
+<table class="data-table">
+  <thead><tr><th>Параметр</th><th>Диапазон</th><th>Default</th><th>Что меняет</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Период по умолчанию (месяцев)</strong><br><code>AUDIT_TAB_DEFAULT_PERIOD_MONTHS</code></td>
+      <td>1–60</td>
+      <td>12</td>
+      <td>При первом открытии вкладки «Аудит» в карточке клиента сервер ставит диапазон <em>[now − N мес .. now]</em>. Пользователь может расширить вручную через datepicker.</td>
+    </tr>
+    <tr>
+      <td><strong>Записей на странице</strong><br><code>AUDIT_TAB_PER_PAGE</code></td>
+      <td>10–500</td>
+      <td>50</td>
+      <td>Количество строк в таблице вкладки. Больше = меньше переключений страниц, но дольше первая загрузка.</td>
+    </tr>
+    <tr>
+      <td><strong>Максимум строк в CSV-экспорте</strong><br><code>AUDIT_CSV_EXPORT_LIMIT</code></td>
+      <td>1 000 – 500 000</td>
+      <td>50 000</td>
+      <td>Защита от перегрузки сервера при выгрузке. При превышении выгружаются <em>последние N записей</em> по дате (хвост обрезается).</td>
+    </tr>
+    <tr>
+      <td><strong>Скрывать системные события</strong><br><code>AUDIT_TAB_HIDE_SYSTEM_EVENTS</code></td>
+      <td>bool</td>
+      <td>off</td>
+      <td>Не показывать строки без оператора (Celery, billing_worker, авто-блокировки) во вкладке Аудит и в KPI-плитках. Полезно для операторов 1-й линии — меньше шума, легче найти действия людей.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Все 4 настройки хранятся в таблице <code>system_settings</code> (category = <code>audit</code>), читаются через хелперы в <code>billing/services/settings_service.py</code> (<code>get_audit_default_period_months()</code>, <code>get_audit_per_page()</code>, <code>get_audit_csv_export_limit()</code>, <code>is_audit_hide_system_events()</code>) с clamp в коде на случай некорректного значения в БД.</p>
+
+<p><strong>Срок хранения записей аудита</strong> (по умолчанию 365 дней) настраивается отдельно в разделе <a href="settings-services.html#db-cleanup">Очистка БД</a> — параметр <code>DB_CLEANUP_AUDIT_DAYS</code>. Это сделано чтобы retention-политика управлялась рядом с другими параметрами очистки (MSG_STACK, RADIUS_SESSIONS), а не дублировалась.</p>
+
+<p><strong>Быстрый переход в настройки</strong>: для пользователей с <code>is_superuser=True</code> в toolbar вкладки «Аудит» карточки клиента появляется иконка-шестерёнка справа от кнопки CSV-экспорта — клик ведёт прямо в <code>/admin/settings/system/?tab=audit</code>.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/audit_settings_v778/audit_settings_v778_02_toolbar_with_cog.png" alt="Toolbar вкладки Аудит клиента с шестерёнкой настроек"></p>
+
+<h4 id="system-settings-logs">Вкладка «Логи» — хранение и уровень логирования</h4>
+
+<p>Управление файлами журналов в <code>/var/log/django/</code>: ротация, сжатие, уровень логирования Django и FreeRADIUS. Без ограничения по сроку хранения журнал FreeRADIUS на уровне <code>trace</code> вырастает до десятков гигабайт за месяц.</p>
+
+<p>Параметры:</p>
+
+<table class="data-table">
+  <thead><tr><th>Параметр</th><th>Диапазон</th><th>Default</th><th>Что меняет</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Срок хранения логов (дней)</strong><br><code>LOG_RETENTION_DAYS</code></td>
+      <td>1–90</td>
+      <td>14</td>
+      <td>Сколько дней logrotate хранит файлы. Применяется к <code>error.log</code>, <code>freeradius.log</code>, <code>celery_*.log</code>, <code>gunicorn_*.log</code> и др. Ротация раз в сутки в 00:00 на хосте.</td>
+    </tr>
+    <tr>
+      <td><strong>Уровень логирования Django</strong><br><code>LOG_LEVEL</code></td>
+      <td>DEBUG / INFO / WARNING / ERROR</td>
+      <td>INFO</td>
+      <td>Влияет на <code>error.log</code> и <code>celery_*.log</code>. Применяется после перезапуска контейнеров.</td>
+    </tr>
+    <tr>
+      <td><strong>Verbosity FreeRADIUS</strong><br><code>FREERADIUS_DEBUG_LEVEL</code></td>
+      <td>info / debug / trace</td>
+      <td>info</td>
+      <td><code>info</code> — только Accept/Reject (~10 MB/сутки). <code>debug</code> (флаг <code>-X</code>) — детально (~100 MB/сутки). <code>trace</code> (флаг <code>-xx</code>) — полная трассировка (~800 MB/сутки, не использовать в проде).</td>
+    </tr>
+    <tr>
+      <td><strong>Сжимать ротированные файлы gzip</strong><br><code>LOG_COMPRESS</code></td>
+      <td>bool</td>
+      <td>true</td>
+      <td>Архивы прошлых дней сжимаются (≈ ×10 экономия места). Чтение через <code>zcat имя.gz</code>.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Справа на вкладке — таблица текущего размера всех файлов в <code>/var/log/django/</code> с подсветкой больших (≥100 МБ оранжевый, ≥1 ГБ красный). Клик по имени файла → переход в просмотр содержимого (<code>/admin/reports/dev/logs/</code>).</p>
+
+<h4 id="logs-viewer">Просмотр логов с подсветкой</h4>
+
+<p>Страница <code>/admin/reports/dev/logs/</code> (раздел «Отчёты → Разработка и логи», только root-доступ) показывает 12 каналов журналов слева с текущим размером, справа — содержимое выбранного файла.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/backup_logs_v967/logs_colorized.png" alt="Просмотр логов с подсветкой по уровням"></p>
+
+<ul>
+  <li><strong>Чтение с конца файла</strong> — функция <code>_tail_log()</code> читает последние
+  500 строк, двигаясь от конца файла чанками, не загружая его целиком в память. Поэтому даже
+  лог на десятки гигабайт открывается мгновенно (в шапке показано «Показано: 500 / N строк»).
+  Это защищает от переполнения памяти при открытии многогигабайтного
+  <code>freeradius.log</code>.</li>
+  <li><strong>Подсветка по уровням</strong> (<code>colorizeLog</code>) — каждая строка
+  раскрашивается по содержимому: <span style="color:#dc3545">красный</span> для
+  <code>error</code> / <code>traceback</code> / <code>exception</code>,
+  <span style="color:#e67e22">оранжевый</span> для <code>warning</code>,
+  серый для <code>debug</code>, обычный для <code>info</code>. Цвета адаптируются под тёмную тему.</li>
+  <li><strong>Кнопки</strong>: обновить, скачать файл, поделиться ссылкой (<code>?log=имя</code>),
+  очистить лог / очистить все логи (только суперадмин).</li>
+</ul>
+
+<h4 id="logs-rotation-host">Ротация логов на сервере</h4>
+
+<p>Часть логов пишет Django через <code>RotatingFileHandler</code> (<code>error.log</code>,
+<code>radius.log</code>, <code>payment.log</code>, <code>sorm.log</code>, <code>staff.log</code> —
+maxBytes 10 МБ, backupCount 5, в просмотрщике видны как <code>radius.log.1</code>…<code>.5</code>).
+Но <strong>нативный <code>freeradius.log</code></strong> пишет сам FreeRADIUS (C-side), и Django его
+не ротирует. Если FreeRADIUS запущен в trace-режиме (<code>-xx</code>), этот файл растёт на
+~5 ГБ/сутки — он однажды вырос до <strong>43 ГБ</strong>.</p>
+
+<p>Лечение:</p>
+<ul>
+  <li><strong>Уровень детализации FreeRADIUS</strong> задаётся переменной
+  <code>RADIUS_DEBUG_LEVEL</code> в <code>.env</code> (читается <code>docker/freeradius/entrypoint.sh</code>):
+  <code>info</code> (без флага, ~1 ГБ/сутки, только Accept/Reject и блокировки), <code>debug</code>
+  (<code>-x</code>), <code>trace</code> (<code>-xx</code>, не использовать в проде). Если переменная не задана вовсе, контейнер стартует именно с <code>trace</code> — на новой установке задайте <code>info</code> явно. После правки —
+  <code>docker compose up -d --force-recreate freeradius</code>.</li>
+  <li><strong><code>/etc/logrotate.d/smit-freeradius</code></strong> — ротация нативного лога
+  (daily, rotate 5, maxsize 100M, compress, <code>copytruncate</code> — обязателен, т.к. FreeRADIUS
+  держит файл открытым, <code>su root root</code> — т.к. каталог volume world-writable).
+  Файл больше не превышает ~600 МБ.</li>
+  <li><strong><code>/etc/cron.daily/smit-radacct-cleanup</code></strong> — удаляет accounting
+  detail-файлы <code>radacct/&lt;NAS&gt;/detail-YYYYMMDD</code> старше 14 дней (эти данные уже
+  продублированы в таблице <code>RADIUS_SESSIONS</code>).</li>
+</ul>
+
+<p>Текущий размер каждого файла виден в просмотрщике — после фикса <code>freeradius.log</code>
+держится в районе десятков мегабайт:</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/backup_logs_v967/logs_list.png" alt="Список лог-каналов с размерами"></p>
+
+<h4 id="system-settings-performance">Вкладка «Скорость» — Gunicorn / Celery / БД / Throttling (переименована)</h4>
+
+<p>Параметры процессов и ресурсов. Изменения требуют перезапуска контейнеров (<code>web</code>, <code>celery</code>). 4 группы настроек 2×2 + статус-блок снизу.</p>
+
+<table class="data-table">
+  <thead><tr><th>Группа</th><th>Параметры</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Веб-сервер (Gunicorn)</strong></td>
+      <td><code>GUNICORN_WORKERS</code> (1–16, default 1), <code>GUNICORN_THREADS</code> (1–32, default 8), <code>GUNICORN_TIMEOUT</code> (30–600 сек, default 120).</td>
+    </tr>
+    <tr>
+      <td><strong>Фоновые задачи (Celery)</strong></td>
+      <td><code>CELERY_WORKER_CONCURRENCY</code> (1–16, default 8 — не ставьте 16), <code>CELERY_TASK_TIME_LIMIT</code> (30–3600 сек, default 600).</td>
+    </tr>
+    <tr>
+      <td><strong>База данных и кеш</strong></td>
+      <td><code>DB_CONN_MAX_AGE</code> (0–3600, default 0 — закрывать после каждого запроса; — фикс утечки соединений), <code>REDIS_CACHE_TTL_DEFAULT</code> (10–86400 сек, default 300), <code>IP_POOL_STATS_CACHE_SECONDS</code> (5–600, default 60).</td>
+    </tr>
+    <tr>
+      <td><strong>Лимиты Mobile API</strong></td>
+      <td><code>MOBILE_API_THROTTLE_RATE_USER</code> (5–300 запросов/мин, default 30), <code>MOBILE_API_THROTTLE_RATE_ANON</code> (1–60 логинов/мин, default 5).</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Статус-блок снизу (read-only метрики, обновляется при загрузке страницы): CPU, RAM, Load average, PostgreSQL соединений (с алертом если &gt;80%), размер БД, Celery очередь, Redis память.</p>
+
+<h4 id="system-settings-radius">Вкладка «RADIUS» — таймауты, retention, NAS auto-assign (переименована)</h4>
+
+<p>Параметры RADIUS-сессий, NAS-мониторинга и хранения истории. Применяются при следующей авторизации или ближайшем прогоне Celery beat (<code>cleanup-stale-sessions</code> каждые 5 минут, <code>db-cleanup-daily</code> в 03:00 UTC).</p>
+
+<table class="data-table">
+  <thead><tr><th>Группа</th><th>Параметры</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Активные сессии</strong></td>
+      <td><code>SESSION_STALE_MINUTES</code> (10–360, default 60) — после скольких минут без Update сессия считается зомби и <code>LOGGED</code> сбрасывается. <code>ACCT_INTERIM_INTERVAL</code> (60–3600 сек, default 600) — раз в сколько секунд NAS должен слать Accounting-Update.</td>
+    </tr>
+    <tr>
+      <td><strong>Хранение истории</strong></td>
+      <td><code>SESSIONS_RETENTION_DAYS</code> (7–365, default 90), <code>MSG_STACK_RETENTION_DAYS</code> (7–365, default 30), <code>AUDIT_RETENTION_DAYS</code> (30–1825, default 365). Целевая task — <code>db-cleanup-daily</code>, чистка батчами по 5000 с паузой 100мс.</td>
+    </tr>
+    <tr>
+      <td><strong>Авто-замена NAS</strong></td>
+      <td><code>DEFAULT_NAS_ID</code> (dropdown enabled NAS) — приёмник для новых клиентов. <code>AUTO_ASSIGN_NAS_MINUTES</code> (1–1440, default 3) — через сколько минут после первой авторизации перевешивать на реальный NAS. <code>NAS_RESYNC_MINUTES</code> (5–120, default 15) — окно для beat-задачи <code>nas-resync-recent</code> которая реагирует на ручную правку оператора.</td>
+    </tr>
+    <tr>
+      <td><strong>CoA / Disconnect</strong></td>
+      <td><code>COA_TIMEOUT_SECONDS</code> (1–60, default 10) — timeout для <code>radclient</code> при CoA Disconnect.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Статус-блок снизу: NAS всего / UP / DOWN (если есть), Сейчас онлайн (LOGGED), Активных RADIUS-сессий, Расхождение, размер таблиц <code>RADIUS_SESSIONS</code> / <code>AUDIT_OPERATIONS</code> / <code>MSG_STACK</code>.</p>
+
+<h4 id="system-settings-messages">Вкладка «Сообщения клиентам» — политика уведомлений</h4>
+
+<p>Единая страница для управления всеми каналами доставки сообщений: Email, SMS, Push, Telegram, VK. Объединяет настройки из 4 разных мест в одну ментальную модель оператора («Сообщения»). 4 группы 2×2 + статистика снизу.</p>
+
+<table class="data-table">
+  <thead><tr><th>Группа</th><th>Параметры и эффект</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Тихий час</strong></td>
+      <td><code>NOTIFY_QUIET_HOURS_START</code> / <code>NOTIFY_QUIET_HOURS_END</code> (HH:MM). В заданное окно SMS и push не отправляются (Email и Telegram приходят молча). Окно может пересекать полночь (например 22:00–08:00). Fallback на старые <code>MOBILE_PUSH_QUIET_HOURS_*</code> для совместимости.</td>
+    </tr>
+    <tr>
+      <td><strong>Низкий баланс</strong></td>
+      <td><code>LOW_BALANCE_NOTIFY_DAYS_BEFORE</code> (1–14, default 3) — за сколько дней до окончания баланса предупреждать. <code>LOW_BALANCE_NOTIFY_THRESHOLD_RUB</code> (0–10000 руб, default 100) — дополнительный триггер по сумме.</td>
+    </tr>
+    <tr>
+      <td><strong>Каналы</strong> (kill-switch'и)</td>
+      <td>5 toggle: <code>NOTIFY_EMAIL_ENABLED</code>, <code>NOTIFY_SMS_ENABLED</code>, <code>NOTIFY_PUSH_ENABLED</code>, <code>NOTIFY_TELEGRAM_ENABLED</code>, <code>NOTIFY_VK_ENABLED</code>. <strong>Внимание</strong>: выключение канала останавливает ВСЕ сообщения через него, включая восстановление пароля и OAuth.</td>
+    </tr>
+    <tr>
+      <td><strong>Антидубль / шаблоны</strong></td>
+      <td><code>NOTIFY_DUPLICATE_WINDOW_MIN</code> (0–1440, default 60) — не слать одинаковое сообщение чаще раза в N минут (дедуп через Redis по md5 head_txt). <code>EMAIL_DEFAULT_SUBJECT</code> (строка до 200 симв.) — подставляется в письма без явного subject. <code>MSG_RETRY_COUNT</code> (1–10, default 4) — попыток отправки при ошибках шлюза.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Подключение: <code>billing/services/notification_policy.py::should_send(channel, abonent_id, head_txt)</code> вызывается в <code>billing/tasks/messaging.py:_dispatch_message</code> для каждого канала. Пропущенные сообщения логируются в <code>MsgStack.sms_status='skipped'</code> с <code>sms_error=причина</code> — оператор видит почему сообщение не доставлено.</p>
+
+<p>Шлюзы каждого канала настраиваются в отдельных разделах: Email <code>/admin/settings/email/</code>, SMS <code>/admin/settings/sms/</code>, Push <code>/admin/settings/firebase/</code>. Здесь — общая политика на уровне всей системы.</p>
+
+<p>Статистика снизу: отправлено сегодня по каналам, в очереди, SMS-ошибки, SMS-пропуски (тихий час / дубль), бейдж «Тихий час сейчас».</p>
+
+<h4 id="su-security">Доступ суперпользователя — 2FA, IP-ограничение, политики паролей</h4>
+
+<p>В правой колонке вкладки <strong>Безопасность</strong> — карточка
+<strong>«Доступ суперпользователя»</strong>. Все политики применяются
+<strong>только к <code>is_superuser</code></strong> и по умолчанию выключены
+(поведение входа не меняется, пока администратор не включит их осознанно).
+Управление доступно только суперпользователю.</p>
+
+<table class="data-table">
+  <thead><tr><th>Политика</th><th>Настройка</th><th>Что делает</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Доступ su только с разрешённых IP</strong></td>
+      <td><code>SU_RESTRICT_BY_IP</code> + <code>SU_ALLOWED_IPS</code></td>
+      <td>Вход su разрешён только с IP из списка (через запятую, CIDR). Кнопка
+      «мой IP» подставляет текущий адрес. С недоверенного IP — HTTP 403.
+      <em>Fail-open</em> при пустом списке (защита от self-lockout).</td>
+    </tr>
+    <tr>
+      <td><strong>Обязательная 2FA для su</strong></td>
+      <td><code>SU_REQUIRE_2FA</code></td>
+      <td>TOTP (Google Authenticator / Authy). Подключается в профиле
+      (<code>/admin/settings/profile/</code>) — QR-код + 10 одноразовых
+      backup-кодов. Без 2FA вход блокируется до её настройки.</td>
+    </tr>
+    <tr>
+      <td><strong>Спрашивать 2FA, если IP вне списка</strong></td>
+      <td><code>SU_2FA_IF_IP_OUTSIDE</code></td>
+      <td>С доверенного IP — вход без кода; с прочих — запрос TOTP. Удобно для
+      быстрого входа из офиса и защищённого — извне.</td>
+    </tr>
+    <tr>
+      <td><strong>Требовать сложный пароль</strong></td>
+      <td><code>SU_REQUIRE_STRONG_PASSWORD</code></td>
+      <td>При смене пароля su: 8+ символов, буква + цифра + спецсимвол.
+      Слабый пароль отклоняется с пояснением.</td>
+    </tr>
+    <tr>
+      <td><strong>Смена пароля при первом входе</strong></td>
+      <td><code>SU_FORCE_PASSWORD_CHANGE_FIRST</code></td>
+      <td>Если у su стоит флаг «требуется смена» — при входе принудительный
+      редирект в профиль на смену пароля.</td>
+    </tr>
+    <tr>
+      <td><strong>Смена пароля каждые X дней</strong></td>
+      <td><code>SU_PASSWORD_MAX_AGE_DAYS</code></td>
+      <td>Отслеживается дата последней смены. Если пароль старше X дней — при
+      входе принудительная смена. <code>0</code> = без ограничения.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Двухфакторная аутентификация (TOTP).</strong> Подключение в профиле:
+сканируете QR-код приложением-аутентификатором, подтверждаете кодом — 2FA
+активна. При активации выдаются <strong>10 резервных кодов</strong> (формат
+<code>XXXX-XXXX</code>, показываются один раз) — на случай потери телефона.
+При входе после логина/пароля запрашивается 6-значный код (можно ввести
+backup-код). Отключить 2FA нельзя, пока включена политика «Обязательная 2FA».</p>
+
+<p><strong>Защита от self-lockout:</strong> все политики выключены по умолчанию;
+backup-коды 2FA; IP-список fail-open при пустоте; аварийный сброс через консоль
+сервера (<code>set_setting('SU_REQUIRE_2FA', False)</code>). Каждое изменение
+политик пишется в <code>AuditOperations</code>.</p>
+
+<p>Подключение: <code>billing/services/su_security.py</code> (логика IP/2FA/паролей),
+<code>billing/views/auth.py</code> (вход), <code>billing/views/profile.py</code>
+(2FA + смена пароля).</p>
+
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/su_security/security_tab_full.png"
+     alt="Вкладка Безопасность: финансовые операции + доступ суперпользователя + Web-консоль"
+     style="max-width:100%;border:1px solid #ddd;border-radius:6px"></p>
+
+<h4 id="system-settings-blocks">Вкладка «Блокировки и финансы» — captive-portal + бизнес-правила</h4>
+
+<p>Управление блокировкой клиентов за долг и базовыми правилами биллинга. 4 группы 2×2 + статус блокировок. Закрывает давнюю боль «Не авторизовать по RADIUS при отрицательном балансе» и задачу №4 Марии (captive-portal).</p>
+
+<table class="data-table">
+  <thead><tr><th>Группа</th><th>Параметры и эффект</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Captive Portal (мягкая блокировка)</strong></td>
+      <td><code>BLOCK_POOL_ID</code> (dropdown пулов) — IP-пул для walled-garden (обычно отдельный private-диапазон типа 10.88.0.0/24). <code>BLOCK_FILTER_ID</code> (default <code>walled_garden</code>) — атрибут Filter-Id в RADIUS-ответе, привязан к firewall-правилу на NAS. <code>BLOCK_PORTAL_URL</code> — справочный URL nginx-заглушки (для копирования в nginx config).</td>
+    </tr>
+    <tr>
+      <td><strong>Правила блокировок</strong></td>
+      <td><strong>🚨 Аварийный kill-switch</strong> «Разрешить интернет всем клиентам» — игнорирует ВСЕ блокировки в RADIUS (даже <code>b_admin</code>). «Разрывать сессию при переходе в <code>b_negbal</code>» (default ON) — сразу CoA Disconnect, иначе текущая сессия доживает до Acct-Interim. «Не авторизовать по RADIUS при отрицательном балансе» — hard REJECT vs soft walled-garden.</td>
+    </tr>
+    <tr>
+      <td><strong>Биллинг</strong></td>
+      <td><code>BILLING_CHARGES_HOUR</code> (0–23, default 9) — час суток для ежедневных списаний <code>billing_worker</code>. Рекомендация: 3 (ночь) — клиенты не будут видеть «минус» во время пользования. «Списывать у отключённых» (default ON) — копит долг даже у <code>enabled=False</code>; OFF — не списываем. <strong>«Отсрочка блокировки юр.лиц»</strong> <code>LEGAL_BLOCK_DELAY_DAYS</code> (0–365, default 0) — через сколько дней блокировать <em>юридическое лицо</em> при отрицательном балансе. <code>0</code> = блокировать сразу (как физлиц). При значении &gt;0 клиент с признаком «Юр. лицо» блокируется только если баланс держится в минусе указанное число дней подряд; физлица отсрочкой не затронуты. Дата ухода в минус хранится в <code>AdminAccounts.NEGATIVE_SINCE</code>, сбрасывается при пополнении до неотрицательного баланса.</td>
+    </tr>
+    <tr>
+      <td><strong>Отображение FinanceOperations</strong></td>
+      <td>«Скрыть операции с нулевой суммой» — фильтрует <code>op_summa=0</code> в <code>/admin/Abonents/FinanceOperations/</code> и карточке клиента. Не влияет на хранение в БД.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Подключение: <code>billing/services/block_policy.py</code> в 4 точках кода — <code>radius_python/internet.py:authorize()</code> (kill-switch ДО soft-block), <code>billing/models/abonents.py:block()</code> (пропуск CoA), <code>billing/tasks/billing_worker.py:_process_service()</code> (skip списания), <code>billing/views/finops_list.py</code> (queryset filter).</p>
+
+<p>Статус-блок снизу: Активных / Заблокированных клиентов, по b_negbal / b_admin / b_own, активных Обещанных Платежей, заблокировано/разблокировано сегодня. Большой красный alert над формой если включён аварийный kill-switch.</p>
+
+<h4 id="system-settings-proxy">Вкладка «Прокси» — пул прокси для Telegram и Нейросети</h4>
+
+<p>Из России <code>api.telegram.org</code> и внешние API AI-провайдеров недоступны — биллинг ходит к ним через прокси. Раздел <a href="#">Настройки системы → Прокси</a> (<code>/admin/settings/system/proxy/</code>) — единый пул прокси с ролями, авто-проверкой и журналом. Заменил прежний блок «Прокси для Telegram» из Интеграций (старые плоские ключи остаются как fallback).</p>
+
+<div class="note" id="system-settings-proxy-managed">
+  <p><strong>Управление прокси — на сервере лицензий.</strong> Пул прокси теперь ведётся централизованно на сервере лицензий (один пул на все инсталляции — прокси меняются в одном месте, все биллинги подхватывают). Биллинг получает пул по лицензионному ключу (<code>GET /api/gw/proxies/</code>) и зеркалит его в свою таблицу. На странице «Прокси» такие прокси помечены значком <strong>облака</strong> ☁ и редактируются только на сервере лицензий; кнопка <strong>«Синхронизировать»</strong> подтягивает изменения сразу. При недоступности сервера лицензий биллинг продолжает работать с последним полученным пулом (offline-safety). Локально добавленные прокси (без облака) остаются как аварийный fallback.</p>
+</div>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/proxy_v1064/proxy_overview.png" alt="Вкладка Прокси — общий вид: переключатель, форма добавления, таблица прокси, журнал событий"></p>
+
+<p><strong>Как работает выбор прокси (fallback):</strong></p>
+<div class="flow-diagram" style="display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin:1rem 0;font-size:.9rem">
+  <span class="badge" style="background:#e9ecef;color:#333;padding:.4rem .7rem;border-radius:6px">Запрос к Telegram / Нейросети</span>
+  <span>→</span>
+  <span class="badge" style="background:#43b77a;color:#fff;padding:.4rem .7rem;border-radius:6px"><code style="color:#fff">get_api_proxies(role)</code></span>
+  <span>→</span>
+  <span class="badge" style="background:#cfe8d8;color:#1a5c38;padding:.4rem .7rem;border-radius:6px">Первый живой прокси пула с нужной ролью (по приоритету)</span>
+  <span>→ если пул пуст →</span>
+  <span class="badge" style="background:#fff3cd;color:#664d03;padding:.4rem .7rem;border-radius:6px">старые ключи <code>TELEGRAM_PROXY_*</code></span>
+  <span>→ если выкл →</span>
+  <span class="badge" style="background:#f8d7da;color:#842029;padding:.4rem .7rem;border-radius:6px">прямое подключение (None)</span>
+</div>
+
+<h5 id="system-settings-proxy-toggle">Переключатель «Использовать прокси»</h5>
+<p>Глобальный тоггл сверху. Выключен → <code>get_api_proxies()</code> возвращает <code>None</code>, Telegram/Нейросеть подключаются напрямую (настройка <code>PROXY_ENABLED</code> в БД). При выключении форма/таблица/журнал скрываются.</p>
+
+<h5 id="system-settings-proxy-add">Добавление прокси</h5>
+<p>Список прокси по одному на строку. Поддерживаемые форматы: <code>ip:port:login:password</code>, <code>login:password@ip:port</code>, <code>ip:port</code> (без авторизации). Тип — <strong>Авто-определение</strong> (по умолчанию; живая проба HTTP→SOCKS5), HTTP или SOCKS5. Роли — «для Telegram» / «для Нейросети» (можно обе). При добавлении параллельно определяется тип и геолокация по IP (<code>ip-api.com</code>). Прокси добавляется <strong>всегда</strong>, даже если автопроверка не достучалась — со статусом 🔴 и подсказкой (например провайдер отвечает 407 при неверных кредах / IP-binding).</p>
+
+<h5 id="system-settings-proxy-table">Таблица «Прокси-серверы»</h5>
+<p>Колонки: Тип (бейдж HTTP/SOCKS5), Адрес (<code>ip:port</code>, иконка-ключ + тултип логин/пароль), Гео (флаг страны + город), Роли (TG / Нейросеть), Статус (🟢 доступен · 🔴 недоступен · ⚪ не проверялся, с латентностью в тултипе), Приоритет, Ред (kebab-меню действий). Действия в kebab: Проверить, Включить/Выключить, Назначить роль (Только Telegram / Только Нейросеть / Обе), Удалить.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/proxy_v1064/proxy_kebab.png" alt="Таблица прокси с открытым kebab-меню действий"></p>
+
+<p><strong>«Проверить все»</strong> — проверяет все прокси и расставляет приоритеты: живые по возрастанию задержки (быстрый = приоритет 1), мёртвые в конец. Если есть нерабочие — кнопка превращается в «Удалить нерабочие (N)».</p>
+
+<h5 id="system-settings-proxy-autocheck">Автопроверка и уведомления</h5>
+<p>Celery beat <code>proxy-pool-check</code> проверяет пул каждые <code>PROXY_CHECK_INTERVAL_MIN</code> минут (default 60). При переходе прокси в недоступное состояние и при <strong>полном отсутствии живых прокси</strong> для роли — Telegram-алерт (тоггл <code>PROXY_ALERTS_ENABLED</code>). События пишутся в <a href="reports.html#audit">Аудит</a> (добавление/удаление — с указанием кто, системное «нет доступных прокси»).</p>
+
+<h5 id="system-settings-proxy-log">Журнал событий</h5>
+<p>Правая колонка — последние 50 событий (проверки, переходы up/down, добавление/удаление) с авто-обновлением каждые 30с. Кнопка «Скачать» выгружает журнал в CSV (до 1000 записей).</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/proxy_v1064/proxy_dark_table.png" alt="Вкладка Прокси в тёмной теме"></p>
+
+<p class="note">Тёмная тема и мобильная вёрстка поддержаны (UX-аудит). Потребители прокси (Telegram-рассылки, AI-чаты ЛК/мобильного, геокодер и др., ~18 точек) используют пул автоматически через <code>get_api_proxies()</code>.</p>
+
+<h3 id="print-forms">6.2. Шаблоны печати</h3>
+<p>Шаблоны документов — договоры, акты, квитанции. Шаблон — это HTML или Word-файл
+с подстановочными переменными вида <code>{{ contract_number }}</code>,
+<code>{{ abonent.name }}</code>, <code>{{ tariff }}</code>. Готовый документ
+генерируется при печати из карточки клиента.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_print_forms.png" alt="Шаблоны печати"></p>
+
+<h3 id="atol-config">6.3. Фискализация (54-ФЗ)</h3>
+<p>Полное описание модуля автоматической отправки кассовых чеков в ОФД — в разделе
+<a href="#fiscal">6.3.1. Модуль фискализации</a> ниже.</p>
+
+<h4 id="fiscal">6.3.1. Модуль фискализации 54-ФЗ</h4>
+
+<p>Модуль автоматически формирует кассовый чек и передаёт его в ОФД при каждом приёме
+реальной оплаты — согласно Федеральному закону № 54-ФЗ. Чеки бьются <strong>собственной
+кассой ООО «СмИТ»</strong> (а не делегируются платёжному агрегатору) по всем каналам:
+ЮKassa, Wallet One, банковские выписки и ручные пополнения. Реквизиты продавца (ИНН, СНО,
+НДС) берутся из брендинга компании — единый источник, без дублирования.</p>
+
+<div class="info-box" style="border-left:4px solid #fd7e14; background:rgba(253,126,20,.07); padding:12px 16px; margin:16px 0">
+  <p class="mb-1"><strong><i class="ti ti-alert-triangle"></i> Главный выключатель (kill-switch)</strong></p>
+  <p>Фискализация управляется флагом <code>FISCAL_ENABLED</code> (по умолчанию <strong>выключен</strong>).
+  Пока он выключен — чеки в ОФД <strong>не уходят</strong>, движок только логирует. Включать боевой режим
+  следует лишь после ввода реквизитов кассы и успешной проверки связи с ОФД на тестовом сервере.
+  При включении система запрашивает явное подтверждение (чеки уходят в ФНС необратимо).</p>
+</div>
+
+<h5>Как работает (поток чека)</h5>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/fiscal_module_v2026_06_06/fiscal_flow.svg" alt="Поток кассового чека: оплата → FiscalManager → Celery → ОФД → ФНС → чек клиенту" width="1100"></p>
+
+<ol>
+  <li><strong>Приём оплаты</strong> — webhook ЮKassa/W1, зачисление банковской выписки или ручное
+  пополнение создаёт финоперацию (<code>FinanceOperations</code>).</li>
+  <li><strong>Движок</strong> <code>FiscalManager.enqueue()</code> проверяет, подлежит ли операция
+  фискализации (приход реальных денег; обещанный платёж, ежемесячные списания и бонусы —
+  не фискализируются), собирает состав чека по 54-ФЗ и ставит задачу в очередь.</li>
+  <li><strong>Очередь Celery</strong> отправляет чек в ОФД (АТОЛ Онлайн: <code>sell</code> /
+  <code>sell_refund</code>), опрашивает статус, повторяет при сбоях и шлёт Telegram-алерт на
+  «застрявшие» чеки.</li>
+  <li><strong>Чек клиенту</strong> — электронный чек на e-mail/телефон клиента, ссылка в личном
+  кабинете и мобильном приложении, статус и фискальные реквизиты — в карточке операции.</li>
+</ol>
+
+<h5>Статусы чека</h5>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/fiscal_module_v2026_06_06/fiscal_lifecycle.svg" alt="Жизненный цикл чека: pending → sent → wait → done; ветка fail с повтором и алертом" width="1100"></p>
+<ul>
+  <li><strong>В очереди</strong> (pending) — операция помечена к фискализации.</li>
+  <li><strong>Отправлен</strong> (sent) — чек ушёл в ОФД, получен UUID запроса.</li>
+  <li><strong>Ожидает ОФД</strong> (wait) — ОФД обрабатывает, статус опрашивается периодически.</li>
+  <li><strong>Принят ОФД</strong> (done) — чек зарегистрирован, сохранены № ФД, ФП и ссылка на чек.</li>
+  <li><strong>Ошибка</strong> (fail) — ОФД отклонил или недоступен; авто-повтор до N попыток, затем Telegram-алерт.</li>
+</ul>
+
+<h5>Страница настроек <code>/admin/settings/AtolConfig/</code></h5>
+<p>В шапке — главный выключатель «Фискализация включена» с бейджем режима, реквизиты ООО «СмИТ»
+(ИНН, без НДС / УСН) и индикатор связи с ОФД с кнопкой «Проверить связь».</p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/fiscal_module_v2026_06_06/fiscal_settings_light.png" alt="Страница настроек фискализации (светлая тема)" width="1100"></p>
+
+<p><strong>Параметры чека:</strong></p>
+<ul>
+  <li><strong>Провайдер ОФД</strong> — АТОЛ Онлайн (основной) или OrangeData.</li>
+  <li><strong>Контакт в чек</strong> — e-mail или телефон клиента по умолчанию.</li>
+  <li><strong>Наименование позиции</strong> — текст в чеке (по умолчанию «Услуги связи / доступ к сети Интернет»),
+  либо брать из услуги клиента.</li>
+  <li><strong>Типы операций для чека</strong> — мультивыбор типов финопераций, по которым бить чек.
+  Пусто = все приходы реальных денег, кроме обещанного платежа и ежемесячных списаний.</li>
+  <li><strong>Попыток отправки</strong>, <strong>опрос ОФД (мин)</strong>, <strong>алерт застрявших (ч)</strong> —
+  параметры очереди и мониторинга.</li>
+</ul>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/fiscal_module_v2026_06_06/fiscal_optypes_dropdown.png" alt="Мультивыбор типов операций для чека" width="1100"></p>
+
+<p>Внизу — статус-блок с реальной сводкой за день (пробито / ожидают ОФД / в очереди / с ошибкой)
+и ссылкой на журнал <code>fiscal.log</code>. Страница полностью поддерживает тёмную тему.</p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/fiscal_module_v2026_06_06/fiscal_settings_dark.png" alt="Страница настроек фискализации (тёмная тема)" width="1100"></p>
+
+<h5>Касса (доступ к ОФД)</h5>
+<p>Кассовые параметры доступа суперпользователь вводит в модалке кассы: тип кассы, URL сервера ОФД,
+группа ККТ, логин и пароль, СНО, адрес размещения ККТ, e-mail продавца, флаг тестового сервера.</p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/fiscal_module_v2026_06_06/fiscal_kassa_modal.png" alt="Модалка настройки кассы" width="1100"></p>
+
+<h5>Чек в карточке операции</h5>
+<p>На странице <a href="abonents.html#modal-finops">Финансовые операции</a> в карточке появляется секция «Чек»
+со статусом ОФД, номером ФД/ФП, ссылкой на электронный чек и кнопкой «Пробить чек» (для
+суперпользователя, приходные операции). Клиент видит ссылку на чек в личном кабинете и в
+мобильном приложении (поле <code>receipt_url</code> в истории операций).</p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/fiscal_module_v2026_06_06/fiscal_finops_modal.png" alt="Карточка финансовой операции" width="1100"></p>
+
+<h5>Налогообложение</h5>
+<p>ООО «СмИТ» работает на УСН без НДС — в чек ОФД передаётся признак «НДС не облагается».
+Ставка НДС и система налогообложения берутся из реквизитов компании
+(<a href="extras.html#multi-org-brand">Брендинг</a>); при переходе на ОСН переключатель ставки уже готов.</p>
+
+<h3 id="payment-systems">6.4. Платёжные системы</h3>
+<p>Настройка приёма онлайн-платежей. Поддерживается несколько провайдеров.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_payment.png" alt="Платёжные системы"></p>
+
+<ul>
+  <li><strong>ЮKassa (REST API v3)</strong> — современный API, рекомендован.
+  Параметры: shopId, secret key (формат <code>live_XXX</code> или <code>test_XXX</code>),
+  webhook URL (привязывается в личном кабинете ЮKassa).</li>
+  <li><strong>ЮKassa HTTP</strong> — старый протокол на форме POST. Параметры:
+  shopId, scid, shopPassword. Используется только для legacy-договоров.</li>
+  <li><strong>Wallet One (W1)</strong> — альтернативный провайдер. Параметры:
+  merchant ID, secret key, валюта (643 = RUB), URL успеха и ошибки.</li>
+  <li><strong>Универсальный webhook</strong> — единый endpoint <code>/lk/payments/webhook/</code>,
+  который принимает все форматы (W1, ЮKassa HTTP, ЮKassa REST v3, Generic) и зачисляет на счёт.</li>
+</ul>
+
+<p>Справа на странице — карточка с описанием комиссии каждого провайдера и краткой инструкцией.</p>
+
+<div class="info-box" style="border-left:4px solid #43b77a; background:rgba(67,183,122,.06); padding:12px 16px; margin:16px 0">
+  <p class="mb-1"><strong><i class="ti ti-arrow-right"></i> Подробное описание API — на отдельной странице</strong></p>
+  <p>Endpoints, схемы платежей, REST API v3 / HTTP, Wallet One, Mobile API —
+  в разделе <a href="api.html">API</a>, секция <a href="api.html#payments-api">Платёжные API</a>.</p>
+</div>
+
+<h4 id="payment-systems-optype-map">Маппа платёжных систем → FinTypes</h4>
+<p>При успешном платеже webhook (<code>lk/services/payment.py::_credit_abonent</code>) создаёт <code>FinanceOperations</code> с типом операции, выбираемым по <code>pay_system</code>. Маппа настраивается через <code>/admin/dictionary/FinTypes/</code> + ключи <code>SystemSettings</code>:</p>
+<table>
+  <thead><tr><th>pay_system</th><th>SystemSettings ключ</th><th>FinTypes по умолчанию</th></tr></thead>
+  <tbody>
+    <tr><td><code>YooKassa</code></td><td><code>LK_PAYMENT_OPTYPE_YOOKASSA</code></td><td>«ЮKassa» (приход +1)</td></tr>
+    <tr><td><code>W1</code></td><td><code>LK_PAYMENT_OPTYPE_W1</code></td><td>«Wallet One (W1)» (приход +1)</td></tr>
+    <tr><td><code>card</code></td><td><code>LK_PAYMENT_OPTYPE_CARD</code></td><td>type_id=40 «Платёж с карты»</td></tr>
+    <tr><td><code>generic</code> / fallback</td><td><code>LK_PAYMENT_OPTYPE_GENERIC</code></td><td>type_id=23 «Оплата через платежные системы»</td></tr>
+  </tbody>
+</table>
+<p><strong>Зачем это нужно</strong>: у каждой платёжной системы свой <code>FinTypes</code>, и бухгалтерия разделяет источники — отчёты «итого через ЮKassa за месяц» работают через простой фильтр по <code>op_type_id</code> без парсинга поля <code>descr</code>.</p>
+<p><strong>Как изменить</strong>:</p>
+<ol>
+  <li>Создать новый тип в <a href="abonents.html#fin-types-modal">Справочники → Типы фин. операций</a> (например, «СБП» или «T-Bank»).</li>
+  <li>Установить <code>SystemSettings.value</code> для соответствующего ключа = <code>type_id</code> нового типа. Через <code>/admin/settings/system/</code> или management-команду <code>set_system_setting LK_PAYMENT_OPTYPE_YOOKASSA 51</code>.</li>
+  <li>Webhook автоматически подхватит новое значение при следующем платеже (без рестарта).</li>
+</ol>
+<p><strong>Старые операции (под type_id=23) не переразмечаются</strong> — они остаются в истории под прежним типом. Только платежи, начисленные после миграции 0115, получают новые типы. Это безопасно: отчёты с интервалом «после 2026-05-08» получат правильную разбивку, ранние периоды останутся как есть.</p>
+
+<h3 id="bank-statements">6.4.1. Банковские выписки (автообработка)</h3>
+
+<figure class="doc-video">
+  <div class="dv-head">
+    <span class="dv-kind"><i class="ti ti-player-play-filled" aria-hidden="true"></i> Обучающее видео</span>
+    <span class="dv-time">2:43</span>
+  </div>
+  <div class="dv-media">
+    <video controls preload="none" playsinline
+             poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/bank-statements-training-poster.jpg">
+        <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/bank-statements-training.mp4" type="video/mp4">
+        Ваш браузер не проигрывает видео —
+        <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/bank-statements-training.mp4">скачайте файл</a>.
+      </video>
+  </div>
+  <figcaption>
+    <p class="dv-desc">Как разбирать поступления по безналу: очередь платежей, привязка платежа к клиенту, сводные реестры приёмщиков платежей, вкладка «Банк» в карточке клиента и работа с телефона.</p>
+    <div class="dv-foot">
+      <span class="dv-spec">1920×1080</span>
+      <span class="dv-spec">с озвучкой</span>
+      <a class="dv-download" href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/bank-statements-training.mp4" target="_blank" rel="noopener" aria-label="Скачать видеофайл"><i class="ti ti-download" aria-hidden="true"></i> Скачать</a>
+    </div>
+  </figcaption>
+</figure>
+
+<p>Модуль автоматического приёма и зачисления платежей из банковских выписок. Письма с CSV/TXT-вложениями приходят на собственный почтовый ящик <code>bank@вашдомен.ru</code> (на почтовом сервере компании), парсер раскладывает операции в очередь модерации, matching сопоставляет с клиентами по 4 стратегиям (ИНН/лицевой счёт/назначение/fuzzy), оператор подтверждает или система автоматически зачисляет high-confidence матчи. Для юр.лиц генерируются PDF счёт-фактуры и акты (WeasyPrint), опционально загружаются в GCS и отправляются клиенту на email через <code>noreply@вашдомен.ru</code>.</p>
+
+<p><strong>Полная карта URL:</strong></p>
+<ul>
+  <li><code>/admin/settings/bank_statements/</code> — настройки модуля</li>
+  <li><code>/admin/settings/bank_statements/parsers/</code> — «Банки и парсеры»</li>
+  <li><code>/admin/finance/bank_queue/</code> — очередь модерации</li>
+  <li><code>/admin/finance/bank_imports/</code> — журнал импортов</li>
+</ul>
+
+<h4 id="bank-statements-architecture">Архитектура (8 фаз)</h4>
+<ol>
+  <li><strong>SmitMailServ</strong> на demo-сервере сервер приложения — 4 ящика (bank/noreply/info/support) на почтовом поддомене, MX/SPF/DKIM/DMARC в cloudns.net</li>
+  <li><strong>IMAP-приёмник</strong> (<code>billing/services/imap_client.py</code>) — Celery beat <code>bank-statements-pull</code> ежечасно, реально работает в час/минуту из <code>BANK_PULL_SCHEDULE_HOUR/MINUTE</code> (default 6:00)</li>
+  <li><strong>Парсеры</strong> (<code>billing/services/bank_parsers/</code>) — <code>sber.py</code> (TXT, cp1251, разделитель <code>;</code>), <code>alfa.py</code> (CSV, cp1251, разделитель <code>\t</code>), <code>dispatcher.py</code> определяет формат по filename + первым байтам</li>
+  <li><strong>Matching</strong> (<code>bank_matching.py</code>) — 4 стратегии в порядке приоритета: <code>inn</code> → <code>account</code> → <code>purpose</code> → <code>fuzzy</code> (отключаем для prod). AmbiguousMatch исключение если несколько кандидатов — операция уходит в очередь модерации</li>
+  <li><strong>Credit</strong> (<code>bank_credit.py</code>) — <code>transaction.atomic</code> + <code>select_for_update</code> на AdminAccounts, kill-switch <code>BANK_AUTO_CREDIT_ENABLED</code> (default OFF), auto-unblock <code>b_negbal</code> при ostatok ≥ 0</li>
+  <li><strong>PDF счёт+акт</strong> (<code>bank_documents.py</code>, WeasyPrint) — атомарная нумерация СЧ-2026-NNNN/АКТ-2026-NNNN через BankDocumentCounter, опциональная GCS-загрузка, учёт per-abonent настроек (<code>send_act</code>, <code>auto_account</code>, <code>next_auto_acount</code>)</li>
+  <li><strong>Уведомления</strong> (<code>bank_notifications.py</code>) — Telegram-сводка по unmatched с anti-spam (cache 24h) + email клиенту с PDF-attached (до 8MB)</li>
+  <li><strong>Admin UI</strong> — 4 страницы с UX-доводкой Sprint 1-4 (Health Score 58→88)</li>
+</ol>
+
+<h4 id="bank-statements-settings">Главная страница настроек</h4>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v961/bank_v961_settings.png" alt="Настройки модуля автообработки выписок" loading="lazy"></p>
+<p>Структура страницы:</p>
+<ul>
+  <li><strong>Tab-навигация:</strong> «Общие настройки» ↔ «Банки и парсеры»</li>
+  <li><strong>Статистика:</strong> hero-карточка «В модерации» — кликабельная (ведёт на <code>?status=manual_review</code>), красный фон если >50; остальные 4 KPI (Импортов/За сегодня/Операций/Зачислено) — компактные</li>
+  <li><strong>Главный выключатель</strong> <code>BANK_AUTO_CREDIT_ENABLED</code> — отдельной карточкой full-width. По умолчанию ВЫКЛ — модуль обрабатывает выписки и наполняет очередь модерации, но НЕ создаёт FinanceOperations</li>
+  <li><strong>Дополнительные тогглы</strong> с цветовой меткой: 🟢 safe (auto_generate_docs, send_email_to_abonent), 🔴 danger (fuzzy_match с явным предупреждением «может ошибочно сопоставить»)</li>
+  <li><strong>Расписание</strong> (час+минута), <strong>день месяца отправки акта</strong>, <strong>GCS toggle</strong>, кнопки <strong>«Счёт»/«Акт» предпросмотра</strong> (модалка с iframe PDF)</li>
+  <li><strong>IMAP-приёмник</strong> (host/port/user/password/folder/SSL + whitelist) — кнопка «Проверить» с inline-результатом</li>
+  <li><strong>Telegram-алерты</strong> — поле «Ссылка на чат» парсит <code>https://t.me/c/&lt;chat_id&gt;/&lt;thread_id&gt;</code> или <code>@username</code> и заполняет chat_id + thread_id + название</li>
+</ul>
+
+<h4 id="bank-statements-toggles">Все тогглы (детальное описание)</h4>
+<table class="settings-table">
+  <thead><tr><th>Ключ</th><th>Default</th><th>Назначение</th></tr></thead>
+  <tbody>
+    <tr><td><code>BANK_AUTO_CREDIT_ENABLED</code></td><td>false</td><td>Главный kill-switch автозачисления. Без него модуль работает в режиме «модерация-только»</td></tr>
+    <tr><td><code>BANK_AUTO_GENERATE_DOCS</code></td><td>false</td><td>Авто-генерация PDF счёт+акт после credit (только для юр.лиц)</td></tr>
+    <tr><td><code>BANK_EMAIL_TO_ABONENT</code></td><td>false</td><td>Отправлять email клиенту со ссылкой/PDF attached</td></tr>
+    <tr><td><code>BANK_NOREPLY_FROM</code></td><td>noreply@вашдомен.ru</td><td>FROM-адрес для писем клиентам</td></tr>
+    <tr><td><code>BANK_TG_ALERT_ENABLED</code></td><td>true</td><td>Telegram-сводка по unmatched-платежам</td></tr>
+    <tr><td><code>BANK_TG_ALERT_CHAT_ID</code> / <code>BANK_TELEGRAM_ALERT_CHAT_ID</code></td><td>—</td><td>Chat ID (priority: TG_ → TELEGRAM_); thread_id опционально</td></tr>
+    <tr><td><code>BANK_TG_ALERT_MIN</code></td><td>1</td><td>Минимум pending для алерта</td></tr>
+    <tr><td><code>BANK_PULL_SCHEDULE_HOUR/MINUTE</code></td><td>6/0</td><td>Час+минута ежедневного забора писем (Celery beat ежечасно с фильтром ±10мин)</td></tr>
+    <tr><td><code>BANK_DOC_DEFAULT_SEND_DAY</code></td><td>0</td><td>День месяца отправки акта если у клиента не задан <code>next_auto_acount</code>. 0 = выпускать сразу</td></tr>
+    <tr><td><code>BANK_DOC_UPLOAD_GCS</code></td><td>true</td><td>Kill-switch GCS-загрузки PDF</td></tr>
+    <tr><td><code>BANK_CREDIT_WARN_AMOUNT</code></td><td>50000</td><td>Сумма ₽ выше которой credit-модалка показывает warning</td></tr>
+  </tbody>
+</table>
+
+<h4 id="bank-statements-imap">IMAP-приёмник и whitelist</h4>
+<p>IMAP-настройки подключаются к SmitMailServ на <code>mail.вашдомен.ru:993</code> (SSL). Ящик <code>bank@вашдомен.ru</code> читает все UNSEEN-письма, сохраняет вложения <code>.csv</code>/<code>.txt</code> в таблицу <code>BankStatementImport</code>. Whitelist отправителей в виде запятой-разделённой строки доменов: <code>@alfabank.ru,@sberbank.ru,@sbrf.ru</code>. Письма от других отправителей игнорируются (статус <code>skipped</code>).</p>
+
+<h4 id="bank-statements-telegram">Telegram-алерты по unmatched</h4>
+<p>Celery beat <code>bank-statements-unmatched-alert</code> запускается ежечасно. Если есть pending платежи ≥ <code>BANK_TG_ALERT_MIN</code>, отправляет сводку в чат: список последних 10 платежей (сумма, плательщик, банк, дата) + итоговая сумма + кнопка-ссылка на очередь модерации. Anti-spam: при стабильном количестве pending повторный алерт не отправляется (cache <code>bank_unmatched_alert:last_count</code> TTL 24h).</p>
+
+<p>В UI кнопка «Добавить» парсит ссылку <code>https://t.me/c/2910452601/18140</code> → автоматически заполняет <code>chat_id=-1002910452601</code> и <code>thread_id=18140</code>. Поддерживаются 3 формата: <code>/c/&lt;chat&gt;/&lt;thread&gt;</code>, <code>https://t.me/&lt;username&gt;</code>, числовой <code>-100...</code>.</p>
+
+<h3 id="bank-parsers">6.4.2. Банки и парсеры</h3>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v961/bank_v961_parsers.png" alt="Раздел Банки и парсеры" loading="lazy"></p>
+
+<p>Регистр банков с привязкой к парсерам и email-доменам отправителей. По умолчанию загружены Сбербанк и АльфаБанк через миграцию 0144 (data-seed). Без активных записей здесь IMAP-приёмник игнорирует все входящие письма.</p>
+
+<p><strong>Колонки таблицы:</strong> # | Банк (название + slug) | Email-домен | Парсер (цветной чип) | Импортов (async-счётчик) | Статус (активен/выключен) | Заметки | Действия (редактировать/удалить).</p>
+
+<p><strong>Модалка «Добавить банк»:</strong></p>
+<ul>
+  <li>Название банка (например, «Тинькофф Банк»)</li>
+  <li>Slug — латинский идентификатор. Автогенерация через транслитерацию ГОСТ 7.79: «Сбербанк» → <code>sberbank</code></li>
+  <li>Email-домен отправителя (валидация: должен начинаться с <code>@</code> и содержать точку)</li>
+  <li>Парсер: <code>sber</code> / <code>alfa</code> / <code>generic</code> (custom mapping для нестандартных CSV)</li>
+  <li>Toggle «Включён»</li>
+  <li>Заметки (textarea)</li>
+</ul>
+
+<p><strong>Добавление нового банка</strong> (например, Тинькофф):</p>
+<ol>
+  <li>Создать парсер в <code>billing/services/bank_parsers/&lt;slug&gt;.py</code> — наследовать от <code>BankParser</code>, реализовать <code>parse(content: bytes) → List[ParsedOperation]</code></li>
+  <li>Зарегистрировать в <code>billing/services/bank_parsers/__init__.py::detect_and_parse()</code> — добавить ветку определения формата</li>
+  <li>Через UI «Добавить банк» создать <code>BankParserBinding</code> с новым <code>parser_slug</code></li>
+  <li>Whitelist в настройках обновится автоматически (читает из BankParserBinding)</li>
+</ol>
+
+<p><strong>Защита от потери данных:</strong> при удалении банк-парсера <code>BankStatementImport</code> с этим email_domain в БД сохраняются (FK не настроен). Новые письма с домена будут игнорироваться. Восстановить — повторное добавление с тем же доменом.</p>
+
+<h3 id="bank-queue">6.4.3. Очередь модерации</h3>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v961/bank_v961_queue.png" alt="Очередь модерации платежей" loading="lazy"></p>
+
+<p><strong>Ключевая страница</strong> для финансиста-оператора. Обрабатывает 50-100 платежей в день. После 4 спринтов UX-аудита время обработки одного платежа сокращено с 5-7 кликов до 1 клика через bulk или 2 клика через one-shot модалку.</p>
+
+<h4 id="bank-queue-features">Возможности (Sprint 1-4)</h4>
+<ul>
+  <li><strong>Chip-фильтры по статусу:</strong> На модерации / Сопоставлены / Зачислены / Отклонены / Все — со счётчиками, auto-refresh 30 сек (pulse-анимация при изменении), Page Visibility API (пауза при скрытой вкладке)</li>
+  <li><strong>Bulk-actions:</strong> чекбоксы + master-checkbox + sticky-toolbar gradient — «Зачислить выбранные» / «Отклонить» (с dropdown типовых причин)</li>
+  <li><strong>BS-модалки вместо confirm/prompt/alert:</strong>
+    <ul>
+      <li><strong>Credit</strong> — preview через <code>credit_preview/</code> endpoint: баланс «До → После», risk-флаги (большая сумма / fuzzy / расхождение ФИО)</li>
+      <li><strong>Adaptive confirm-button:</strong> зелёная без рисков, жёлтая warning, красная danger. Auto-focus только если нет danger (защита от случайного Enter)</li>
+      <li><strong>Reject</strong> — dropdown типовых причин (Не наш / Дубль / Возврат / Ошибка плательщика / Другая) + textarea</li>
+    </ul>
+  </li>
+  <li><strong>AJAX-update без reload:</strong> Toast + зелёная вспышка строки (1.7 сек), scroll и фильтр НЕ теряются</li>
+  <li><strong>Undo-banner:</strong> 8 сек countdown после Credit/Reject/Bulk — кнопка «Откатить» создаёт storno FinOp + откат баланса + status → manual_review</li>
+  <li><strong>Keyboard shortcuts (vim-style):</strong> <kbd>j</kbd>/<kbd>k</kbd> навигация, <kbd>x</kbd> чекбокс, <kbd>c</kbd>/<kbd>r</kbd>/<kbd>l</kbd> Credit/Reject/Link, <kbd>a</kbd> выбрать всё, <kbd>g m/c/a/r</kbd> навигация по фильтрам, <kbd>?</kbd> help-модалка со всеми shortcut'ами</li>
+  <li><strong>Sticky-колонки:</strong> чекбокс слева, «Действия» справа — на 1366px laptop скроллится середина, ключевые колонки всегда видны</li>
+  <li><strong>Иконки в статусах</strong> для colour-independence: <code>fa-hourglass-half</code>/<code>fa-link</code>/<code>fa-check-circle</code>/<code>fa-times-circle</code></li>
+  <li><strong>Onboarding-tooltip 4 шага</strong> при первом визите (localStorage <code>bq_onboarding_seen=v4</code>). Shift+Click на help-иконку для перезапуска</li>
+  <li><strong>Empty-state с CTA:</strong> контекстный текст по фильтру + кнопки «Забрать сейчас / Журнал импортов / Показать все»</li>
+</ul>
+
+<h4 id="bank-queue-modal">Credit-модалка (детально)</h4>
+<p>При клике «Зачислить» fetch'ит <code>/admin/finance/bank_queue/&lt;id&gt;/credit_preview/</code> и собирает модалку с:</p>
+<ul>
+  <li><strong>2 колонки</strong> (Платёж / Клиент) — детальные таблицы</li>
+  <li><strong>Balance-flow box</strong> «До → После» с цветной типографикой (красный для отрицательных, зелёный для положительных)</li>
+  <li><strong>Risk-флаги</strong> (warning/danger alerts) — большая сумма ≥ <code>BANK_CREDIT_WARN_AMOUNT</code>, fuzzy-стратегия, расхождение ФИО плательщика и клиента</li>
+  <li><strong>Adaptive button</strong> — цвет и текст меняются по уровню риска</li>
+</ul>
+
+<h4 id="bank-queue-onboarding">Onboarding-tooltip</h4>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v914/bank_v914_queue_onboarding.png" alt="Onboarding-tooltip 4 шага" loading="lazy"></p>
+<p>При первом визите показывает 4-step tour: Bulk-операции → Keyboard shortcuts → Undo → Risk-проверка. Bump версии (v4 → v5 в JS) — снова покажется после новых фич. Shift+Click на help-иконку (клавиатура в toolbar) — перезапуск.</p>
+
+<h4 id="bank-flow">Путь платежа: от письма банка до баланса клиента</h4>
+
+<pre class="mermaid">
+flowchart TD
+  MAIL["Письмо банка<br/>с выпиской"] --> PARSE["Разбор вложения"]
+  PARSE --> ORG["Определение юрлица<br/>по счёту получателя"]
+  ORG --> CHK{"Сводное перечисление<br/>приёмщика платежей?"}
+  CHK -->|"да"| REG["Статус «Сводный реестр»<br/>по клиентам не разносится"]
+  CHK -->|"нет"| MATCH{"Сопоставление<br/>с клиентом"}
+  MATCH -->|"нашли одного"| MTD["Сопоставлена"]
+  MATCH -->|"несколько или никого"| MAN["На модерации<br/>оператор привязывает вручную"]
+  MAN --> MTD
+  MTD --> RISK{"Есть признаки<br/>расхождения?"}
+  RISK -->|"да"| ONE["Разбирается поштучно<br/>в массовое зачисление не попадает"]
+  RISK -->|"нет"| CRED["Зачисление на баланс"]
+  ONE --> CRED
+  CRED --> DOC["Счёт и акт для юрлица<br/>от нужной организации"]
+</pre>
+
+<h4 id="bank-registry">Сводные перечисления приёмщиков платежей</h4>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v2171/registry.png" alt="Вкладка «Реестры»: сводные перечисления Сбербанка и «Единой кассы»" loading="lazy"></p>
+
+<p>Абонент платит через кассу Сбербанка или терминал «Единой кассы», приёмщик копит оплаты за период и перечисляет провайдеру одной строкой. В назначении так и написано:</p>
+
+<p><code>ЗА ИНТЕРНЕТ,ТВ,СВЯЗЬ; ПО ПЛАТЕЖАМ С 01/06/2026 ПО 01/06/2026, СУММА 136398.00, КОЛ-ВО 138, ЭЛ.РЕЕСТР EPS…</code></p>
+
+<p>За такой строкой стоят 138 разных абонентов, и их оплаты уже зачислены другим каналом. Привязать перечисление к одному клиенту нельзя, а разнести повторно — задвоить деньги. Поэтому оно получает статус <strong>«Сводный реестр»</strong>, уходит из очереди ручного разбора и остаётся в журнале как поступление на расчётный счёт.</p>
+
+<p>Такие платежи были самыми крупными в очереди, и оператор упирался в них первыми. После разделения очередь ручного разбора стала посильной:</p>
+
+<table>
+  <thead><tr><th>Очередь ручного разбора</th><th>Платежей</th><th>Сумма</th></tr></thead>
+  <tbody>
+    <tr><td>До разделения</td><td>69</td><td>2 439 244,60 ₽</td></tr>
+    <tr><td><strong>После</strong></td><td><strong>51</strong></td><td><strong>136 836,00 ₽</strong></td></tr>
+    <tr><td>Вынесено в «Реестры»</td><td>18</td><td>2 302 408,60 ₽</td></tr>
+  </tbody>
+</table>
+
+<h4 id="bank-registry-detect">Как отличается реестр от обычного платежа</h4>
+
+<pre class="mermaid">
+flowchart LR
+  P["Платёж из выписки"] --> A{"ИНН плательщика<br/>в списке приёмщиков?"}
+  A -->|"нет"| ORD["Обычный платёж<br/>идёт на сопоставление"]
+  A -->|"да"| B{"В назначении есть<br/>признак реестра?"}
+  B -->|"нет"| ORD
+  B -->|"да"| REG["Сводный реестр"]
+</pre>
+
+<p>Признаков должно быть <strong>два сразу</strong>. Одного ИНН мало: со счёта того же банка приходят и обычные платежи юрлиц-клиентов — их распознавание пропускает дальше, на сопоставление. Признаки реестра в назначении: «ЭЛ.РЕЕСТР», «ПО ПЛАТЕЖАМ С …», «за приём платежей».</p>
+
+<p>Список ИНН приёмщиков — настройка <code>BANK_AGGREGATOR_INNS</code> в модуле, а не константа в коде: появится третий приёмщик — оператор добавит его сам. По умолчанию там ПАО Сбербанк и РНКО «Единая касса».</p>
+
+<div class="note">
+  <strong>Что даёт разбор назначения.</strong> Из строки вытаскивается количество оплат и период, и в списке видно содержание перечисления — «138 платежей за 01.06.2026». Это основа для сверки: приёмщик перечислил столько-то оплат за такой-то день, и это сравнимо с тем, что разнесено по абонентам в биллинге. Расхождение здесь означает либо потерянные деньги, либо двойное зачисление.
+</div>
+
+<h4 id="bank-queue-2171">Разбор очереди, организации и аудит</h4>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v2171/queue2.png" alt="Очередь модерации: чипы статусов со счётчиками, поиск, период, суммовой итог, колонка организации" loading="lazy"></p>
+
+<p>Аудит модуля 24.08.2026 показал, что очередь стояла не из-за неудобств интерфейса, а из-за трёх дефектов.</p>
+
+<ul>
+  <li><strong>Ручная привязка платежа была невозможна.</strong> Поиск клиента уходил на <code>/rest_api/v2/Abonents/?search=…</code>, а этот API не знает параметра <code>search</code> — возвращались первые абоненты подряд. Плюс в разметке результатов стояло <code>a.pk</code>, тогда как ключ называется <code>id</code>: строки рисовались как <code>#undefined</code>, а клик отправлял <code>abonent_id=undefined</code>. Отсюда платежи, висевшие на модерации с мая.</li>
+  <li><strong>Баннер отката висел постоянно.</strong> Класс <code>.bq-hidden</code> объявлен выше по файлу, чем <code>.bq-undo-banner{display:flex}</code> — при равной специфичности побеждает нижнее правило. Жёлтая плашка «операция выполнена» показывалась на каждой загрузке, а панель массовых операций была развёрнута всегда.</li>
+  <li><strong>Счётчик импортов на странице парсеров</strong> запрашивал JSON у страницы, которая отдаёт HTML — спиннеры крутились вечно.</li>
+</ul>
+
+<h4 id="bank-queue-link-2171">Привязка платежа: контекст и данные ФНС</h4>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v2171/inline.png" alt="Привязка платежа: форма раскрывается прямо под строкой, видны соседние платежи" loading="lazy"></p>
+
+<p>Поиск клиента идёт по ФИО или названию, номеру договора, телефону, e-mail, ИНН и номеру клиента. Клиенты с совпавшим ИНН поднимаются в начало списка.</p>
+
+<p>Форма раскрывается прямо под платежом — соседние строки остаются на виду, а именно по ним видно, что тот же плательщик заплатил дважды или что рядом лежит платёж того же юрлица. На телефоне вместо раскрытия выезжает панель. Форма существует в одном экземпляре и переносится между строкой и панелью, поэтому поиск и подсказки работают одинаково.</p>
+
+<p>Видно сам платёж — сумму, дату, банк, плательщика с ИНН и назначение — и кнопки-подсказки с номерами из назначения: клиент часто пишет туда номер договора. Если ИНН плательщика в базе не найден, реквизиты подтягиваются из ФНС через DaData: название, адрес, руководитель и кнопка «Искать по названию из ФНС».</p>
+
+<h4 id="bank-org-2171">Организация платежа</h4>
+<p>Импорт и операция запоминают юрлицо-получателя — оно определяется по расчётному счёту из выписки. В очереди и журнале появилась колонка «Орг.», списки скоупятся переключателем организации в шапке и правами сотрудника.</p>
+
+<p><strong>Счёт и акт теперь выписываются от того юрлица, на чей счёт пришли деньги.</strong> У каждого юрлица своя серия номеров документов: сквозная нумерация оставляла бы в нумерации одной компании дыры на местах документов другой.</p>
+
+<h4 id="bank-risks-2171">Флаги расхождений в сопоставлении</h4>
+<p>Три случая помечаются значком и подсветкой строки: совпадение по похожести ФИО, один ИНН у разных клиентов, расхождение ФИО плательщика и клиента. Такие строки <strong>не попадают в массовое выделение</strong> — их разбирают по одному. При установке галочки «выбрать все» оператор видит, сколько платежей пропущено и почему.</p>
+
+<h4 id="bank-queue-tools-2171">Поиск, период, постраничный вывод и итоги</h4>
+<ul>
+  <li>Поиск по плательщику, ИНН, лицевому счёту, назначению, имени и договору клиента, номеру операции</li>
+  <li>Диапазон дат через общий компонент выбора периода</li>
+  <li>20 / 50 / 100 / 200 строк на странице, постраничная навигация</li>
+  <li>Итог по отфильтрованному: сколько платежей и на какую сумму</li>
+  <li>Фильтр по клиенту <code>?abonent=&lt;id&gt;</code> — переход из карточки клиента</li>
+</ul>
+
+<h4 id="bank-audit-2171">Журнал аудита</h4>
+<p>Запись создаётся на каждое изменение: сохранение настроек с перечнем правок (включая выключатель автозачисления), ручной забор писем, повторный разбор импорта, автонастройка почтового ящика, массовые действия, ручная привязка с суммой и плательщиком, генерация документов с указанием организации, приём письма и определение организации.</p>
+
+<h4 id="bank-client-tab">Вкладка «Банк» в карточке клиента</h4>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v2171/client_tab.png" alt="Вкладка «Банк» в карточке клиента" loading="lazy"></p>
+
+<p>Вкладка показывает платежи клиента из выписок — дата, банк, сумма, плательщик, назначение, статус и ссылка на финоперацию — и выписанные счета с актами с кнопкой открытия PDF. В шапке сумма зачисленного и переход в очередь, отфильтрованную по этому клиенту.</p>
+
+<h4 id="bank-mobile-2171">На телефоне</h4>
+<p><img class="screenshot welcome-image" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v2171/mobile.png" alt="Очередь модерации на телефоне: карточки вместо таблицы" loading="lazy"></p>
+
+<p>На телефоне строка разворачивается карточкой «поле — значение», сумма показана крупно, кнопки во всю ширину. Чекбоксы массового выбора на телефоне скрыты: платежи здесь разбирают по одному.</p>
+
+<h3 id="bank-imports">6.4.4. Журнал импортов</h3>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v961/bank_v961_imports.png" alt="Журнал импортов выписок" loading="lazy"></p>
+
+<p>Полный лог писем от банков с возможностью отладки. <strong>По умолчанию показывает последние 30 дней</strong> (защита от бесконечной выдачи при N тысячах импортов).</p>
+
+<p><strong>Фильтры в одну строку:</strong> Банк (Альфа/Сбер/Неизвестно/Все) | Статус (Новые/Разобранные/Ошибки/Без вложений) | Период (7д/30д/90д/Все) | кастомный date-range. Meta-bar над таблицей показывает текущий период + количество найденных записей.</p>
+
+<p><strong>Колонки:</strong> # | Получено (datetime) | От (email) | Тема | Банк (chip) | Файл (filename) | Статус (с иконкой) | Операций (всего / сматч. / зачисл.) | Действия.</p>
+
+<p><strong>Действия:</strong></p>
+<ul>
+  <li><strong>«Операции»</strong> (<code>fa-eye</code>) → переход в очередь модерации с фильтром <code>?import_id=&lt;pk&gt;</code> (отображает только операции этого письма)</li>
+  <li><strong>«Перепарсить»</strong> (<code>fa-redo-alt</code>) — для status=error: сбрасывает <code>parser_error</code> + ставит <code>status=new</code> + запускает <code>process_pending_imports.apply()</code></li>
+  <li>Для status=parsed — кнопка <code>fa-sync-alt</code> для повторного парсинга (создаст дубликаты только если UNIQUE(bank, external_id) не сработает)</li>
+</ul>
+
+<h4 id="bank-imports-statuses">Статусы письма-импорта</h4>
+<p>Колонка «Статус» в журнале — это статус <strong>письма с выпиской</strong> (модель <code>BankStatementImport</code>, набор <code>IMPORT_STATUS_CHOICES</code>). Всего 5 значений:</p>
+<table class="settings-table">
+  <thead><tr><th>Статус (UI)</th><th>Код</th><th>Когда выставляется</th></tr></thead>
+  <tbody>
+    <tr><td>🟡 Новый</td><td><code>new</code></td><td>Дефолт. Письмо получено по IMAP, вложение сохранено, но ещё не разобрано парсером</td></tr>
+    <tr><td>🟢 Разобран</td><td><code>parsed</code></td><td>Парсер успешно прочёл вложение и создал записи <code>BankStatementOperation</code></td></tr>
+    <tr><td>🔴 Ошибка парсинга</td><td><code>error</code></td><td>Парсер упал на файле — текст ошибки сохраняется в поле <code>parser_error</code>, виден при наведении</td></tr>
+    <tr><td>⚪ Без вложений</td><td><code>empty</code></td><td>В письме нет файла выписки (<code>.csv</code>/<code>.txt</code>)</td></tr>
+    <tr><td>⚪ Пропущен</td><td><code>skipped</code></td><td>Письмо не от банка — домен отправителя не входит в whitelist «Банки и парсеры»</td></tr>
+  </tbody>
+</table>
+
+<h4 id="bank-imports-status-flow">Как меняется статус: «Новый» → «Разобран»</h4>
+<p>Переход <strong>выполняет фоновая задача Celery</strong>, оператор в нём не участвует. Цепочка:</p>
+<ol>
+  <li><strong><code>bank-statements-pull</code></strong> (Celery beat, ежечасно) — приёмник <code>billing/services/imap_client.py</code> читает UNSEEN-письма из ящика <code>bank@вашдомен.ru</code> и создаёт <code>BankStatementImport</code> со статусом <code>new</code>.</li>
+  <li><strong><code>bank-statements-process</code></strong> (Celery beat, <strong>каждые 5 минут</strong>) — функция <code>process_pending_imports()</code> в <code>billing/tasks/bank_statements.py</code>:
+    <ul>
+      <li>берёт <code>BankStatementImport.objects.filter(status='new')[:20]</code>;</li>
+      <li>вызывает парсер по <code>parser_slug</code> банка (<code>sber</code>/<code>alfa</code>/<code>generic</code>);</li>
+      <li>на каждую строку выписки создаёт <code>BankStatementOperation</code> + запускает matching;</li>
+      <li>при успехе — <code>imp.status = 'parsed'</code>; при сбое парсера — <code>status = 'error'</code> + текст в <code>parser_error</code>.</li>
+    </ul>
+  </li>
+</ol>
+<p>То есть письмо в статусе <code>Новый</code> автоматически становится <code>Разобран</code> <strong>в течение ~5 минут</strong> после получения — на следующем тике <code>bank-statements-process</code>. Если статус не меняется дольше — см. блок «Диагностика» ниже.</p>
+
+<div class="note note-warning">
+  <strong>«Разобран» ≠ «Зачислено».</strong> Статус письма (<code>parsed</code>) означает только, что вложение прочитано и операции созданы. Сами деньги имеют <strong>отдельный статус</strong> — это набор <code>OPERATION_STATUS_CHOICES</code> модели <code>BankStatementOperation</code>, видимый в <code>/admin/finance/bank_queue/</code>:
+  <code>Новая (не сопоставлена)</code> → <code>Сопоставлена</code> / <code>На модерации</code> → <code>Зачислена</code> / <code>Отклонена</code> / <code>Дубликат</code>.
+  Зачисление контролируется kill-switch <code>BANK_AUTO_CREDIT_ENABLED</code> (по умолчанию ВЫКЛ — операции ждут ручного подтверждения оператором).
+</div>
+
+<h4 id="bank-imports-status-diagnostics">Диагностика: статус долго не меняется</h4>
+<p>Если письма зависают в статусе <code>Новый</code> и не переходят в <code>Разобран</code> — задача <code>bank-statements-process</code> не выполняется. Что проверить:</p>
+<ul>
+  <li><strong>Жив ли планировщик</strong> — контейнер <code>celery-beat</code> должен быть в статусе <code>running</code> (<code>docker ps</code>).</li>
+  <li><strong>Видит ли beat банковские задачи</strong> — после деплоя новых beat-задач контейнер <code>celery-beat</code> <strong>обязательно пересоздаётся</strong>. Если он запущен на устаревшем образе, задачи из <code>CELERY_BEAT_SCHEDULE</code> в его расписание не попадают, и <code>bank-statements-process</code> молча не запускается (контейнер при этом «running», ошибок нет).</li>
+  <li><strong>Ручной запуск как обходной путь</strong> — задачу можно выполнить немедленно: <code>process_pending_imports()</code> разберёт все письма со статусом <code>new</code>.</li>
+  <li><strong>Кнопка «Перепарсить»</strong> в журнале — для писем со статусом <code>error</code> сбрасывает ошибку, ставит <code>new</code> и сразу запускает разбор.</li>
+</ul>
+
+<h4 id="bank-statements-fonts">Шрифтовая пара для PDF</h4>
+<p>В <a href="/admin/settings/system/branding/" target="_blank">Брендинге</a> → карточка «Документы» → селект «Шрифтовая пара для PDF». 5 кириллических вариантов:</p>
+<ul>
+  <li><code>pt_serif</code> — PT Serif + PT Sans (классика, ParaType, default)</li>
+  <li><code>roboto</code> — Roboto Slab + Roboto (современный, Google)</li>
+  <li><code>inter</code> — Inter (UI-friendly, наиболее читаемый)</li>
+  <li><code>merriweather</code> — Merriweather + Open Sans (газетный)</li>
+  <li><code>golos</code> — Golos Text (российский, Geometric grotesque)</li>
+</ul>
+
+<p><strong>⚠ Ограничение WeasyPrint:</strong> в Docker-контейнере нет доступа к <code>fonts.googleapis.com</code>, поэтому в PDF — fallback на DejaVu Sans. Шрифты применятся только при печати через браузер либо при переходе на Playwright/Chrome headless для PDF-генерации. Поле <code>font_pair</code> сохраняется корректно.</p>
+
+<h4 id="bank-statements-per-abonent">Per-abonent настройки документов</h4>
+<p>Учитываются существующие поля клиента (вкладка «Настройки» в карточке):</p>
+<ul>
+  <li><code>send_act</code> «Отправлять счёт» — выпускать счёт-фактуру</li>
+  <li><code>auto_account</code> «Формировать акт автоматически» — выпускать акт</li>
+  <li><code>next_auto_acount</code> «Дата выставления акта» — откладывает акт до даты</li>
+</ul>
+<p>Если у юр.лица оба флага OFF — документы не генерируются даже при <code>BANK_AUTO_GENERATE_DOCS=true</code>. Если <code>next_auto_acount</code> не задан, используется fallback на <code>BANK_DOC_DEFAULT_SEND_DAY</code> (день месяца).</p>
+
+<h3 id="mailserver">6.4.5. Почтовый сервер (SmitMailServ)</h3>
+<p><strong>URL:</strong> <code>/admin/settings/mailserver/</code> — управление собственным почтовым сервером <strong>SmitMailServ</strong>, развёрнутым на хосте <code>mail.вашдомен.ru</code>. Операции с ящиками и доменами доступны из биллинга через API <code>https://mail.вашдомен.ru/api/v1/</code>.</p>
+
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v960/mailserver_overview.png" alt="Почтовый сервер — Обзор" loading="lazy"></p>
+
+<figure class="doc-video">
+  <div class="dv-head">
+    <span class="dv-kind"><i class="ti ti-player-play-filled" aria-hidden="true"></i> Обучающее видео</span>
+    <span class="dv-time">3:00</span>
+  </div>
+  <div class="dv-media">
+    <video controls preload="none" playsinline
+             poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/mailserver-training-poster.jpg">
+        <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/mailserver-training.mp4" type="video/mp4">
+        Ваш браузер не проигрывает видео —
+        <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/mailserver-training.mp4">скачайте файл</a>.
+      </video>
+  </div>
+  <figcaption>
+    <p class="dv-desc">Где заводить ящики, зачем домену организация, что делает роль ящика и куда смотреть, когда «почта не работает».</p>
+    <div class="dv-foot">
+      <span class="dv-spec">1920×1080</span>
+      <span class="dv-spec">с озвучкой</span>
+      <a class="dv-download" href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/mailserver-training.mp4" target="_blank" rel="noopener" aria-label="Скачать видеофайл"><i class="ti ti-download" aria-hidden="true"></i> Скачать</a>
+    </div>
+  </figcaption>
+</figure>
+
+<h4 id="mailserver-overview">Вкладка «Обзор»</h4>
+<p>Состояние сервера, настройки API, защищённые ящики, DKIM/SPF/DMARC.</p>
+<ul>
+  <li><strong>Состояние сервера</strong> — Статус (Online/Offline) · Версия SmitMailServ · Ящиков (всего/лимит) · Использовано места. Кнопка «Проверить подключение» делает test-request к API.</li>
+  <li><strong>Настройки API</strong> — Endpoint API, API-ключ (rw) с переключателем видимости, <strong>Основной домен</strong> (<code>&lt;select&gt;</code>, подгружается через <code>GET /admin/settings/mailserver/api/domains/</code>), toggle «Проверять SSL-сертификат».</li>
+  <li><strong>Защищённые ящики</strong> — <code>bank@вашдомен.ru</code>, <code>noreply@вашдомен.ru</code>, <code>ask@вашдомен.ru</code> и др. Нельзя удалить через UI (server-side защита в <code>get_protected_mailboxes()</code>), чтобы не сломать банковские выписки/рассылку.</li>
+  <li><strong>DKIM / SPF / DMARC</strong> — статус DNS-записей по нажатию «Обновить».</li>
+</ul>
+
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v960/mailserver_domain_select.png" alt="Селект «Основной домен»" loading="lazy" style="max-width:760px"></p>
+
+<h4 id="mailserver-mailboxes">Вкладка «Ящики»</h4>
+
+<p>Список всех ящиков сервера: кто владелец, сколько занято, что ящик обслуживает.
+Строки подгружаются AJAX-ом, поиск идёт по адресу и имени.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2130/mailboxes_desktop.jpg" alt="Список ящиков: тулбар, организации, роли" loading="lazy"></p>
+<p class="img-caption"><em>Одна строка тулбара: домен, тип ящика, поиск, колонки, добавление. Ниже — таблица с организацией, счётчиком писем и ролями.</em></p>
+
+<h5 id="mailserver-mailboxes-list">Что показывает таблица</h5>
+<table style="font-size:.92em">
+<tr><th>Колонка</th><th>Что в ней</th></tr>
+<tr><td>Активность</td><td>Точка: зелёная — ящик принимает и отправляет письма, серая — выключен. Колонка без подписи, самая узкая, скрыть её нельзя.</td></tr>
+<tr><td>Орг.</td><td>Организация домена — тот же бейдж, что в остальных списках биллинга (мультиорг).</td></tr>
+<tr><td>Email</td><td>Адрес. У системных ящиков — щит: их нельзя удалить, на них держатся выписки, рассылка и приём обращений. Скрыть колонку нельзя.</td></tr>
+<tr><td>Имя</td><td>Отображаемое имя — оно же уходит в подпись и в адресную книгу почты.</td></tr>
+<tr><td>Квота</td><td>Занято из выделенного. По умолчанию колонка скрыта, значение видно в подсказке к счётчику писем.</td></tr>
+<tr><td>Писем</td><td>Непрочитанных из всех. Клик открывает ящик в почте без ввода пароля.</td></tr>
+<tr><td>Создан</td><td>Дата создания, полностью, без сокращения.</td></tr>
+<tr><td>Чей</td><td>Сотрудник-владелец с аватаркой. У системного ящика владельца нет — прочерк.</td></tr>
+<tr><td>Роли</td><td>Что ящик обслуживает: приём обращений, голосовая почта, рассылки, банковские выписки. Нажатие переключает роль.</td></tr>
+<tr><td>Ред.</td><td>Меню строки: войти в ящик, редактировать, сменить пароль, включить или выключить, удалить.</td></tr>
+</table>
+
+<div class="note">
+  <strong>Набор колонок настраивается под себя.</strong> Кнопка «Колонки» прячет ненужные,
+  заголовки можно перетаскивать и тянуть за правый край — выбор сохраняется в профиле. По
+  умолчанию скрыты «Квота» и «Кем создан»: без них таблица целиком влезает в экран. Служебные
+  колонки (отметка выбора, активность, счётчик писем, дата, меню) заданной ширины — их не
+  тянут и не прячут, чтобы значения не обрезались.
+</div>
+
+<div class="screenshot-pair">
+  <figure>
+    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2130/columns_picker.jpg" alt="Выбор колонок списка ящиков" loading="lazy">
+    <figcaption>Выбор колонок: служебные — без флажка, их не отключить.</figcaption>
+  </figure>
+  <figure>
+    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2130/row_actions.jpg" alt="Меню действий над ящиком" loading="lazy">
+    <figcaption>Меню строки: вход в ящик, пароль, включение и выключение, удаление.</figcaption>
+  </figure>
+</div>
+
+<h5 id="mailserver-mailboxes-roles">Роли ящика</h5>
+<p>Роль — это ответ на вопрос «что этот ящик делает для биллинга». Назначенная роль показана
+подписью, остальные остаются значком с подсказкой: в списке на сотню строк важно видеть
+включённое, а не перечень возможного.</p>
+
+<pre class="mermaid">
+flowchart LR
+  BOX["Ящик<br/>ask@вашдомен.ru"]
+  BOX -->|Поддержка| TICKETS["Обращения<br/>письмо → тикет"]
+  BOX -->|Голосовая| VOICE["Голосовая почта<br/>запись → заявка"]
+  BOX -->|Рассылка| SEND["Уведомления и рассылки<br/>отправитель писем"]
+  BOX -->|Выписки| BANK["Банковские выписки<br/>разбор вложений"]
+  classDef on fill:#e8f7ef,stroke:#43b77a,color:#1b5e3f
+  classDef box fill:#f4f6f8,stroke:#adb5bd,color:#212529
+  class BOX box
+  class TICKETS,VOICE,SEND,BANK on
+</pre>
+
+<div class="note">
+  <strong>Роль настраивает ящик сама.</strong> При включении роли параметры IMAP и SMTP, защита
+  и расписание разбора прописываются автоматически — вручную ничего дописывать не нужно.
+  Роль занята одним ящиком в организации: назначили другому — с прежнего она снимается.
+</div>
+
+<h5 id="mailserver-mailboxes-mobile">На телефоне</h5>
+<p>Сверху остаётся то, за чем в раздел заходят: выбор домена и «Добавить». Ниже — поиск,
+«Фильтры» и обновление в одну строку; фильтр по типу ящика открывается шторкой снизу.
+Таблица превращается в карточки — по строке на ящик, без горизонтальной прокрутки.</p>
+
+<div class="screenshot-pair">
+  <figure>
+    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2130/mailboxes_mobile.jpg" alt="Список ящиков на телефоне" loading="lazy">
+    <figcaption>Телефон: домен и «Добавить», под ними поиск с «Фильтрами».</figcaption>
+  </figure>
+  <figure>
+    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2130/filters_sheet_mobile.jpg" alt="Шторка фильтров списка ящиков" loading="lazy">
+    <figcaption>Шторка «Фильтры»: персонал и системные ящики.</figcaption>
+  </figure>
+</div>
+
+<pre class="mermaid">
+flowchart TB
+  subgraph D["Десктоп"]
+    T["Одна строка тулбара:<br/>домен · тип ящика · поиск · колонки · добавить"]
+    TB["Таблица:<br/>настраиваемые колонки, роли в строке"]
+    T --> TB
+  end
+  subgraph M["Телефон"]
+    P["Домен + Добавить"]
+    S["Поиск + Фильтры + Обновить"]
+    SH["Шторка: тип ящика"]
+    C["Карточки ящиков"]
+    P --> S --> C
+    S -.-> SH
+  end
+  D -.->|те же элементы, другая раскладка| M
+</pre>
+
+
+<p><strong>Добавление ящика</strong> (кнопка «Добавить ящик»):</p>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v960/mailserver_mailbox_add_modal.png" alt="Модалка «Добавить ящик»" loading="lazy" style="max-width:820px"></p>
+<ul>
+  <li><strong>Домен</strong> — <code>&lt;select&gt;</code> с подгрузкой реального списка из SmitMailServ: опечататься нельзя.</li>
+  <li><strong>Логин (до @)</strong> — локальная часть адреса.</li>
+  <li><strong>Пароль</strong> + <strong>Подтверждение</strong> — обязательны. Генератор пароля рядом (фиолетовая иконка <code>fa-magic</code>).</li>
+  <li><strong>Квота (МБ)</strong> — default 1024. <strong>Активен</strong> — toggle.</li>
+  <li>При создании <strong>системных ящиков</strong> (bank@/noreply@/ask@…) пароль автоматически синхронизируется в SystemSettings (<code>_sync_password_to_settings()</code>), чтобы IMAP-парсер банковских выписок и SMTP-рассылка биллинга получили актуальный пароль одним нажатием.</li>
+</ul>
+
+<h4 id="mailserver-admins">Вкладка «Админы доменов»</h4>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v960/mailserver_admins.png" alt="Админы доменов" loading="lazy"></p>
+<p>Управление доменными админами SmitMailServ. У админа можно назначить набор доменов, которыми он управляет (<code>&lt;select multiple&gt;</code> с тем же AJAX-источником). Полезно если на сервере несколько обслуживаемых доменов — каждому даём отдельного админа.</p>
+
+<h4 id="mailserver-api">REST API внутри биллинга</h4>
+<table style="font-size:.92em">
+<tr><th>Endpoint</th><th>Назначение</th></tr>
+<tr><td><code>GET /admin/settings/mailserver/api/status/</code></td><td>Состояние API (status/version/quota/mailbox-counts)</td></tr>
+<tr><td><code>GET /admin/settings/mailserver/api/test-connection/</code></td><td>Проверка соединения (с возвратом версии)</td></tr>
+<tr><td><code>GET /admin/settings/mailserver/api/dkim/</code></td><td>DKIM/SPF/DMARC статусы по доменам</td></tr>
+<tr><td><code>GET /admin/settings/mailserver/api/domains/</code></td><td>Список доменов с метаданными (mailboxes, max_mailboxes, aliases, active, is_default) — питает все <code>&lt;select&gt;</code> доменов</td></tr>
+<tr><td><code>GET /admin/settings/mailserver/api/mailbox/?domain=…</code></td><td>Список ящиков домена</td></tr>
+<tr><td><code>POST /admin/settings/mailserver/api/mailbox/create/</code></td><td>Создание ящика</td></tr>
+<tr><td><code>POST /admin/settings/mailserver/api/mailbox/&lt;email&gt;/edit/</code></td><td>Редактирование (имя/квота/active)</td></tr>
+<tr><td><code>POST /admin/settings/mailserver/api/mailbox/&lt;email&gt;/password/</code></td><td>Смена пароля (с авто-sync в SystemSettings для системных)</td></tr>
+<tr><td><code>DELETE /admin/settings/mailserver/api/mailbox/&lt;email&gt;/</code></td><td>Удаление (server-side защита системных)</td></tr>
+<tr><td><code>GET/POST/DELETE …/api/domain-admin/…</code></td><td>CRUD доменных админов</td></tr>
+</table>
+
+<p>Все endpoint'ы за <code>@user_passes_test(_is_superadmin)</code> — только суперадмин. Каждая CRUD-операция пишет в <code>AuditOperations</code> с <code>table_name='MAILSERVER'</code>.</p>
+
+<p><strong>Как это работает:</strong> биллинг обращается к почтовому серверу по API — адрес сервера и ключ доступа задаются в этом же разделе настроек. Запросы повторяются при сетевых сбоях, ошибки API видны в журнале.</p>
+
+
+<h4 id="mailserver-webmail">Веб-почта: календарь, контакты, брендинг</h4>
+
+<p>Сотрудники работают с почтой в браузере по адресу <code>https://mail.&lt;домен&gt;/</code>
+(например <code>mail.вашдомен.ru</code>).
+Кроме писем там есть календарь, задачи и адресная книга. Интерфейс подхватывает данные из
+биллинга: имя сотрудника, его фото, подпись, контакты коллег и фирменные цвета организации,
+которой принадлежит домен.</p>
+
+<p>Войти можно двумя способами: обычным логином и паролем от биллинга либо из админки —
+раздел «Почтовый сервер» → вкладка «Ящики» → меню строки → <strong>«Войти в ящик»</strong>
+(вход без ввода пароля, каждый такой вход пишется в аудит; возможность отключается
+настройкой, см. <a href="#mailserver-server-settings">«Настройки сервера»</a>).</p>
+
+<pre class="mermaid">
+flowchart LR
+    U["Сотрудник<br/>браузер"] --> HN["nginx хоста<br/>mail.домен"]
+    HN --> MN["nginx почты<br/>статика + брендинг"]
+    MN --> SG["SOGo<br/>веб-интерфейс"]
+    SG --> DV["Dovecot<br/>письма IMAP"]
+    SG --> PF["Postfix<br/>отправка SMTP"]
+    SG --> PG[("Настройки SOGo<br/>база sogo")]
+    SG --> BV[("Биллинг<br/>ящики и контакты")]
+    MN -. "цвета, логотип" .-> API["API брендинга<br/>биллинга"]
+    API --> ORG[("Карточка<br/>организации")]
+</pre>
+
+<h5 id="mailserver-webmail-brand">Брендинг по организации</h5>
+
+<p>Почта каждой организации выглядит по-своему: цвет интерфейса и логотип берутся из карточки
+организации, к которой привязан почтовый домен (раздел «Организации» → «Брендинг»). Ничего
+настраивать отдельно для почты не нужно — поменяли фирменный цвет в карточке, он появился
+и в почте.</p>
+
+<p>Что окрашивается: верхняя панель и шапка списка, кнопка создания, ссылки, выделение
+выбранной папки, а в календаре — сегодняшний день, колонка текущего дня и события личного
+календаря. Логотип организации встаёт в левый край верхней панели.</p>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant B as Браузер
+    participant N as nginx почты
+    participant A as API биллинга
+    participant O as Карточка организации
+    B->>N: открыть почту
+    N-->>B: страница SOGo + скрипт брендинга
+    B->>A: какой брендинг у почтового домена
+    A->>O: домен → организация
+    O-->>A: цвет, логотип, название
+    A-->>B: настройки брендинга
+    B->>B: перекрасить интерфейс, вставить логотип
+</pre>
+
+<div class="screenshot-pair">
+  <figure>
+    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2100/calendar_smit.jpg" alt="Календарь почты СмИТ" loading="lazy">
+    <figcaption>Домен СмИТ: сегодняшний день отмечен плашкой фирменного цвета, выходные приглушены.</figcaption>
+  </figure>
+  <figure>
+    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2100/calendar_itc.jpg" alt="Календарь почты ИТ Консалтинга" loading="lazy">
+    <figcaption>Тот же календарь на домене ИТ Консалтинга — свой цвет и логотип, настройка отдельно не нужна.</figcaption>
+  </figure>
+</div>
+
+<h5 id="mailserver-webmail-help">Справка внутри почты</h5>
+
+<p>В правом верхнем углу, слева от кнопки выхода, есть значок <strong>«?»</strong> — он открывает
+этот раздел документации.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2100/help_btn.jpg" alt="Кнопка справки слева от кнопки выхода" loading="lazy"></p>
+<p class="img-caption"><em>Кнопка справки соседствует с выходом — там, где её ищут.</em></p>
+
+<h4 id="mailserver-identity">Имя, подпись и фото из профиля</h4>
+
+<p>Ящик сотрудника берёт данные из его профиля в биллинге: не нужно отдельно заполнять имя
+отправителя и вручную набирать подпись.</p>
+
+<ul>
+  <li><strong>Имя отправителя</strong> — ФИО из профиля. У ящиков со своим названием
+      («Банковские выписки», «Поддержка СмИТ») название сохраняется: такие письма должны
+      уходить от службы, а не от закреплённого за ящиком человека.</li>
+  <li><strong>Подпись</strong> — собирается автоматически: ФИО, роль, телефон, адрес ящика,
+      сайт и реквизиты организации домена, плюс фото сотрудника.</li>
+  <li><strong>Фото</strong> — то же, что в профиле; видно и в интерфейсе почты, и в подписи
+      у получателя письма.</li>
+</ul>
+
+<p>Данные обновляются сами: при сохранении профиля, смене фото, создании ящика и смене
+владельца. Разовый прогон по всем ящикам — команда
+<code>manage.py sync_mail_identities</code> (ключ <code>--dry-run</code> покажет, что получится,
+без записи).</p>
+
+<pre class="mermaid">
+flowchart TD
+    P["Профиль сотрудника<br/>ФИО, телефон, фото"] --> S{"Синхронизация"}
+    O["Организация домена<br/>название, сайт, телефон"] --> S
+    S --> N["Имя отправителя"]
+    S --> G["Подпись письма"]
+    S --> F["Фото в интерфейсе<br/>и в подписи"]
+    S --> C["Личная книга и календарь<br/>названы по организации"]
+</pre>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2100/profile_mail.jpg" alt="Блок «Почта» в профиле сотрудника" loading="lazy"></p>
+<p class="img-caption"><em>Блок «Почта» в профиле: ящики сотрудника, переключатели уведомлений, адрес пересылки и подсказка про пароль.</em></p>
+
+<div class="note">
+  <strong>Пароль от ящика совпадает с паролем входа в биллинг</strong> и меняется вместе с ним —
+  отдельно его помнить не нужно. Поэтому в открытом виде он нигде не хранится.
+</div>
+
+<h4 id="mailserver-addressbook">Адресная книга из биллинга</h4>
+
+<p>В почте есть общая книга <strong>«Контакты»</strong>. Она только читается — данные ведутся
+в биллинге:</p>
+
+<ul>
+  <li><strong>Сотрудники</strong> — ФИО, рабочий адрес и телефон из профиля. Показываются всегда.</li>
+  <li><strong>Абоненты</strong> — имя, адрес и договор. По умолчанию скрыты: это персональные
+      данные, а книга видна всем владельцам ящиков. Включается переключателем в
+      <a href="#mailserver-server-settings">«Настройках сервера»</a>.</li>
+</ul>
+
+<p>Поиск работает и по имени, и по адресу — достаточно начать набирать фамилию в поле получателя,
+и адрес подставится сам. Личная книга и календарь названы по организации домена
+(например «Контакты СмИТ Поддержка») вместо стандартного «Personal Address Book».</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2100/addressbook.jpg" alt="Адресная книга почты с контактами из биллинга" loading="lazy"></p>
+<p class="img-caption"><em>Общая книга «Контакты» рядом с личной книгой сотрудника.</em></p>
+
+<h4 id="mailserver-mail-tab">Вкладка «Почта» в панели уведомлений</h4>
+
+<p>Чтобы прочитать письмо, не обязательно открывать веб-почту: в панели уведомлений биллинга
+(колокольчик в правом верхнем углу) есть вкладка <strong>«Почта»</strong>. Там лента писем из
+всех ящиков сотрудника — с отправителем, адресом, папкой и временем («15 минут назад», «вчера»).
+Избранные письма закреплены сверху.</p>
+
+<p>Письмо открывается в правой колонке. Оттуда же можно:</p>
+
+<ul>
+  <li>ответить — поле с форматированием и вложениями, как в переписке чата;</li>
+  <li>переслать письмо другому адресату;</li>
+  <li>отметить избранным или непрочитанным, убрать в спам или корзину;</li>
+  <li>скачать вложение и открыть письмо в самой почте.</li>
+</ul>
+
+<p>Ответ уходит <em>от ящика сотрудника</em>, поэтому получатель отвечает ему, а не на общий
+адрес; ящик-отправитель выбирается списком, если ящиков несколько. Какие ящики показывать
+в ленте, каждый выбирает у себя в профиле; вкладку целиком можно выключить в
+<a href="#mailserver-server-settings">«Настройках сервера»</a>.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2100/mail_panel.jpg" alt="Вкладка «Почта» в панели уведомлений с открытым письмом" loading="lazy"></p>
+<p class="img-caption"><em>Лента писем и открытое письмо с полем ответа.</em></p>
+
+<h4 id="mailserver-server-settings">Настройки сервера</h4>
+
+<p>Раздел «Почтовый сервер» → вкладка <strong>«Настройки сервера»</strong>. Кроме технических
+параметров (имя сервера, размер письма, лимит отправки, relay, DKIM) там есть переключатели,
+которые влияют на повседневную работу:</p>
+
+<table>
+  <thead><tr><th>Настройка</th><th>Что делает</th></tr></thead>
+  <tbody>
+    <tr><td>Сбор почтовых метрик, мин</td>
+        <td>Как часто пересчитывать занятое место и число писем для колонок «Квота» и «Писем».
+            Обход идёт по файлам ящиков, поэтому чаще, чем раз в 10–15 минут, смысла нет;
+            0 — не собирать.</td></tr>
+    <tr><td>Разрешить персоналу создавать email</td>
+        <td>В профиле сотрудника появляется блок создания ящика в доступных ему доменах.</td></tr>
+    <tr><td>Показывать вкладку «Почта» в уведомлениях</td>
+        <td>Общий выключатель ленты писем в панели уведомлений.</td></tr>
+    <tr><td>Брать имя и подпись из профиля</td>
+        <td>Ящик подписывается ФИО владельца, в письма подставляется подпись с должностью,
+            телефоном, фото и реквизитами организации.</td></tr>
+    <tr><td>Показывать абонентов в адресной книге</td>
+        <td>Добавляет абонентов в книгу «Контакты». Это персональные данные — по умолчанию
+            выключено.</td></tr>
+    <tr><td>Разрешить вход в ящик без ввода пароля</td>
+        <td>Кнопка «Войти в ящик» открывает чужую почту от имени владельца. Каждый вход
+            пишется в аудит; если такой доступ не нужен — выключите.</td></tr>
+  </tbody>
+</table>
+
+<h4 id="mailserver-health">Здоровье сервера и доставляемость</h4>
+
+<p>Вкладка «Сервер» отвечает на два вопроса: работает ли почта прямо сейчас и дойдут ли письма
+до получателя, а не в спам.</p>
+
+<p><strong>Здоровье сервера</strong> — по строке на каждую часть почты. Все строки зелёные —
+почта принимается и отправляется. Очередь показывает, сколько писем ждёт отправки; норма — ноль.
+Кнопка с круговой стрелкой перезапускает одну упавшую часть, не трогая остальные.</p>
+
+<pre class="mermaid">
+flowchart LR
+  NET["Интернет"] -->|SMTP| PF["Приём и отправка<br/>postfix"]
+  PF --> RS["Антиспам<br/>rspamd"]
+  RS --> DC["Хранение и чтение<br/>dovecot"]
+  DC --> SG["Веб-почта<br/>sogo"]
+  SG --> NG["Веб-почта, сайт<br/>sogo-nginx"]
+  NG -->|браузер| USER["Сотрудник"]
+  RD["Кэш<br/>redis"] --- RS
+  RD --- SG
+  BIL["Биллинг"] -->|IMAP: обращения, выписки| DC
+  BIL -->|SMTP: уведомления| PF
+</pre>
+
+<div class="note">
+  <strong>Как читать схему.</strong> Письмо снаружи проходит приём, антиспам и попадает в
+  хранилище; сотрудник видит его через веб-почту. Биллинг подключается к тем же частям: читает
+  обращения и выписки по IMAP, отправляет уведомления через SMTP. Поэтому красная строка
+  «Приём и отправка» означает и молчащие уведомления, а красное «Хранение и чтение» —
+  необработанные обращения.
+</div>
+
+<p><strong>Письма доходят, а не в спам</strong> — четыре проверки на каждый домен: подпись
+писем, разрешение на отправку, защита от подделки и запись приёма почты. Все зелёные означают,
+что письма с этого домена принимают Gmail, Mail.ru и Яндекс; красная — письма могут уходить в
+спам, и настраивать её нужно в разделе «Домены и DNS».</p>
+
+<div class="screenshot-pair">
+  <figure>
+    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2130/server_health_mobile.jpg" alt="Здоровье почтового сервера" loading="lazy">
+    <figcaption>Состояние частей почты и очередь отправки.</figcaption>
+  </figure>
+  <figure>
+    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2130/server_deliv_mobile.jpg" alt="Проверки доставляемости по домену" loading="lazy">
+    <figcaption>Четыре проверки на домен: подпись, разрешение, защита, приём.</figcaption>
+  </figure>
+</div>
+
+<h4 id="mailserver-mailbox-counters">Колонка «Писем» в списке ящиков</h4>
+
+<p>В списке ящиков рядом с квотой показывается «непрочитанных / всего». Клик по счётчику
+открывает ящик в почте. Пока сбор не отработал, вместо чисел стоит прочерк — это не то же
+самое, что «писем нет».</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2100/mailboxes_list.jpg" alt="Список ящиков с колонками «Квота» и «Писем»" loading="lazy"></p>
+<p class="img-caption"><em>Список ящиков: роли, владелец, занятое место и счётчик писем.</em></p>
+
+<div class="note">
+  <strong>Как это устроено внутри.</strong> Количество писем и занятое место считаются обходом
+  почтовых каталогов по расписанию, а не запросом при каждом открытии страницы: у сотни ящиков
+  это заняло бы секунды на каждый рендер. Поэтому значения обновляются с задержкой, равной
+  выбранному интервалу сбора.
+</div>
+
+<h3 id="dns">6.4.5А. Домены и DNS (Cloudflare)</h3>
+<p><strong>URL:</strong> <code>/admin/settings/dns/</code> — управление DNS-зонами через Cloudflare API прямо из биллинга: зоны и записи (CRUD), сценарии в один клик и диагностика.</p>
+<ul>
+  <li><strong>Доступ</strong> — Global API Key или Scoped Token; ключи задаются глобально либо <em>для каждой организации отдельно</em> (мультиорг: у каждой компании свой аккаунт Cloudflare).</li>
+  <li><strong>1-клик «Почта»</strong> — создаёт полный набор записей домена: <code>A</code> (mail.домен), <code>MX</code>, <code>SPF</code>, <code>DKIM</code>, <code>DMARC</code>.</li>
+  <li><strong>1-клик «Поддомен»</strong> — добавляет <code>A</code>/<code>CNAME</code> на сервер (например <code>lk.домен</code>).</li>
+  <li><strong>Диагностика</strong> — проверка почтовых записей домена и резолва хоста.</li>
+</ul>
+<div class="note">
+<strong>Cloudflare API из России.</strong> Запросы к Cloudflare идут через прокси — прямой доступ с российских IP блокируется.
+</div>
+
+<h3 id="mail-provisioning">6.4.6. Автонастройка почтовых ящиков и DNS</h3>
+<p>Единый сервис провижинга (<code>billing/services/mailbox_provisioning.py</code>) создаёт почтовый ящик, прописывает DNS-записи и заполняет настройки подключения — одной кнопкой. Работает везде, где системе нужен ящик.</p>
+
+<div class="note">
+<strong>Требования.</strong> Кнопка «Автонастроить ящик» появляется, если включён модуль <strong>«Почтовый сервер»</strong> и настроен <strong>Cloudflare API</strong> для домена организации (раздел <a href="#dns">«Домены и DNS»</a>). Иначе поля SMTP/IMAP заполняются вручную.
+</div>
+
+<h4 id="mail-provisioning-what">Что делает автонастройка</h4>
+<ol>
+  <li>Регистрирует домен в почтовом сервере (идемпотентно — повторный запуск безопасен).</li>
+  <li>Создаёт ящик <code>&lt;имя&gt;@&lt;домен&gt;</code> с сгенерированным паролем. Если ящик уже существует — <strong>переиспользует его пароль</strong>, ничего не сбрасывая.</li>
+  <li>Прописывает DNS-записи почты в Cloudflare: <code>A</code> (mail.домен), <code>MX</code>, <code>SPF</code>, <code>DKIM</code>, <code>DMARC</code>.</li>
+  <li>Заполняет параметры подключения (SMTP и/или IMAP) в том модуле, откуда запущена.</li>
+</ol>
+
+<h4 id="mail-provisioning-where">Где доступна</h4>
+<table>
+  <thead><tr><th>Раздел</th><th>Что настраивает</th><th>Проверка</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><a href="extras.html#org-mail">Организации</a> → вкладка «Почта (SMTP)»</td>
+      <td>ящик <code>noreply@</code> + SMTP организации</td>
+      <td>«Проверить» (коннект + авторизация), «Отправить тест-письмо» (HTML на ваш e-mail)</td>
+    </tr>
+    <tr>
+      <td>Поддержка → карточка ящика → вкладка «Почта»</td>
+      <td>ящик приёма обращений + IMAP и SMTP</td>
+      <td>«Проверить IMAP», «Отправить тест»</td>
+    </tr>
+    <tr>
+      <td><a href="#bank-statements">Банковские выписки</a></td>
+      <td>ящик <code>bank@</code> + IMAP приёма выписок</td>
+      <td>«Проверить» IMAP-подключение</td>
+    </tr>
+    <tr>
+      <td>Профиль сотрудника</td>
+      <td>личный ящик сотрудника</td>
+      <td>вход в веб-почту одной кнопкой</td>
+    </tr>
+    <tr>
+      <td><a href="#dns">Домены и DNS</a></td>
+      <td>поддомен (A/CNAME)</td>
+      <td>проверка DNS-резолва хоста</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="mail-provisioning-staff">Ящик сотрудника и пересылка</h4>
+<p>В профиле (<code>/admin/settings/profile/</code>) сотрудник создаёт себе ящик, если включена настройка «Разрешить персоналу создавать email». Логин подставляется из имени пользователя, пароль генерируется автоматически — достаточно нажать «Создать». Опционально указывается <strong>адрес пересылки</strong>: копии входящих уходят на внешний адрес, оригинал остаётся в ящике.</p>
+
+<div class="info-box">
+<strong>Служебные имена защищены.</strong> Сотруднику нельзя занять <code>admin</code>, <code>info</code>, <code>postmaster</code> и другие зарезервированные логины; лимит — один ящик на домен.
+</div>
+
+
+</main>
+
+<footer class="footer">
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">25.08.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;<span data-smit="updated">25.08.2026</span></span>
+</footer>
+
+<script src="../js/main.js?v=2189"></script>
+<script src="../js/search.js?v=2189"></script>
+<script src="../js/version.js"></script>
+<script src="../js/mermaid-init.js?v=2189"></script>
+<script src="../js/markmap-init.js?v=2189"></script>
+</body>
+</html>

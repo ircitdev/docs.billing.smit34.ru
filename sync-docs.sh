@@ -189,17 +189,23 @@ echo "=== 0b. Sync sidebar block from billing.html ==="
 (cd "$HERE" && $PY - <<'PYEOF'
 import io, re, glob, os
 
-MASTER = 'pages/billing.html'
-MARK = '<a href="billing.html"><i class="ti ti-settings"></i>'
+MASTER = 'pages/dashboard.html'
+FIRST = '<a href="dashboard.html"><i class="ti ti-layout-dashboard"></i>'
+LAST = '<a href="extras.html"><i class="ti ti-apps"></i>'
 TAIL = '</ul>' + chr(10) + '      </li>'
 
 def block_of(text):
-    """Границы блока меню «Настройки биллинга» или None."""
-    i = text.find(MARK)
-    if i < 0:
+    """Границы блока из десяти групп раздела биллинга или None.
+
+    Раздел живёт на десяти страницах, поэтому блок задаётся первой группой
+    («Дашборд») и концом последней («Дополнительные разделы»).
+    """
+    i = text.find(FIRST)
+    j = text.find(LAST)
+    if i < 0 or j < 0:
         return None
     start = text.rfind('<li class="has-children">', 0, i)
-    end = text.find(TAIL, i)
+    end = text.find(TAIL, j)
     if start < 0 or end < 0:
         return None
     return start, end + len(TAIL)
@@ -212,7 +218,7 @@ block = master[span[0]:span[1]]
 
 changed = []
 for f in sorted(glob.glob('pages/*.html')):
-    if os.path.basename(f) == 'billing.html':
+    if os.path.basename(f) == 'dashboard.html':
         continue
     text = io.open(f, encoding='utf-8').read()
     sp = block_of(text)

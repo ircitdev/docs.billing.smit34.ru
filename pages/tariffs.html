@@ -1,0 +1,1985 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Тарифы и услуги — СмИТ Биллинг</title>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="СмИТ Биллинг — Документация">
+  <meta property="og:title" content="Тарифы и услуги — СмИТ Биллинг">
+  <meta property="og:description" content="Тарифные планы и услуги, правила и наборы, серии карт оплаты, программа лояльности и диапазоны услуг.">
+  <meta property="og:url" content="https://docs.billing.smit34.ru/pages/billing.html">
+  <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="ru_RU">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг">
+  <meta name="twitter:description" content="Управление клиентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
+  <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
+  <meta name="description" content="Тарифные планы и услуги, правила и наборы, серии карт оплаты, программа лояльности и диапазоны услуг.">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css?v=2189">
+  <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css?v=2189">
+  <link rel="stylesheet" href="../css/search.css?v=2189">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <button class="menu-toggle" aria-label="Меню"><i class="ti ti-menu-2"></i></button>
+    <div class="logo">
+      <div class="logo-icon">С</div>
+      <div class="logo-text"><span class="logo-main"><span data-smit="brand-short">СмИТ Биллинг</span></span><span>Документация</span></div>
+    </div>
+  </div>
+  <div class="header-search">
+    <div class="docs-search-wrap">
+      <input type="search" id="docsSearch" class="docs-search-input" placeholder="Поиск по документации..." autocomplete="off">
+      <span class="docs-search-icon"><i class="ti ti-search"></i></span>
+      <div class="docs-search-results" id="docsSearchResults"></div>
+    </div>
+  </div>
+  <div class="header-right">
+    <a href="../graphify/graph.html" class="header-nav-link" title="Граф зависимостей кода">
+      <i class="ti ti-topology-star-3 hnl-ico"></i><span class="hnl-txt">Граф</span>
+    </a>
+    <a href="../graphify/wiki/index.html" class="header-nav-link" title="Wiki архитектурных модулей">
+      <i class="ti ti-book-2 hnl-ico"></i><span class="hnl-txt">Wiki</span>
+    </a>
+    <button class="mobile-search-btn" aria-label="Поиск" title="Поиск по документации">
+      <i class="ti ti-search"></i>
+    </button>
+    <button class="theme-toggle" aria-label="Переключить тему" title="Светлая / тёмная тема">
+      <span class="icon-sun"><i class="ti ti-sun"></i></span>
+      <span class="icon-moon"><i class="ti ti-moon"></i></span>
+    </button>
+  </div>
+</header>
+
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+<div class="search-overlay" id="searchOverlay" role="dialog" aria-label="Поиск по документации">
+  <div class="search-overlay-inner">
+    <i class="ti ti-search search-prefix-icon"></i>
+    <input type="search" id="docsSearchMobile" placeholder="Поиск по документации..." autocomplete="off">
+    <button class="search-overlay-close" aria-label="Закрыть" id="searchOverlayClose"><i class="ti ti-x"></i></button>
+    <div class="docs-search-results search-overlay-results" id="docsSearchResultsMobile"></div>
+  </div>
+</div>
+
+<aside class="sidebar">
+  <nav>
+    <div class="nav-section">Разделы</div>
+    <ul>
+      <li><a href="../index.html"><i class="ti ti-home"></i> Главная</a></li>
+      <li class="has-children">
+        <a href="installation.html"><i class="ti ti-box"></i> Установка и интеграция <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="installation.html#requirements">1. Системные требования</a></li>
+          <li><a href="installation.html#docker-install">2. Установка Docker Compose</a></li>
+          <li><a href="installation.html#demo-cleanup">3. Удаление демо-данных</a></li>
+          <li><a href="installation.html#equip-integration">4. Интеграция с оборудованием</a></li>
+          <li><a href="installation.html#tariff-setup">5. Настройка тарифов</a></li>
+          <li><a href="installation.html#add-subscribers">6. Добавление клиентов</a></li>
+          <li><a href="installation.html#final-test">7. Финальное тестирование</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="dashboard.html"><i class="ti ti-layout-dashboard"></i> Дашборд <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="dashboard.html#dashboard">1. Дашборд</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-kpi">1.1. Шапка: 6 KPI</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-pools-ebs">1.2. IP-пулы + EBS</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-alerts">1.3. Свежие проблемы</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-cash">1.4. Касса месяца</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-payments-today">1.5. Платежи сегодня</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-hot">1.6. Горячие клиенты + CRM</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-extras">1.7. Heat-map + Цели + Что нового</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-finance">1.8. Финансовая динамика</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="tariffs.html"><i class="ti ti-receipt"></i> Тарифы и услуги <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="tariffs.html#tarifs">2. Тарификация</a></li>
+          <li class="sub-item"><a href="tariffs.html#tarif-list">2.1. Тарифы</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="tariffs.html#tarif-folder">— Директория тарифа</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="tariffs.html#tarif-org">— Тарифы и организация</a></li>
+          <li class="sub-item"><a href="tariffs.html#usluga-list">2.2. Услуги и Бонусы</a></li>
+          <li class="sub-item"><a href="tariffs.html#tarif-ruleset">2.3. Правила и сети</a></li>
+          <li class="sub-item"><a href="tariffs.html#ruleset-conditions">2.3.1. Условия правила</a></li>
+          <li class="sub-item"><a href="tariffs.html#tarif-bulk">2.3.2. Массовые действия</a></li>
+          <li class="sub-item"><a href="tariffs.html#card-series">2.4. Карты оплаты</a></li>
+          <li class="sub-item"><a href="tariffs.html#loyalty">2.5. Программы лояльности</a></li>
+          <li class="sub-item"><a href="tariffs.html#usluga-range">2.6. Линейки услуг</a></li>
+          <li class="sub-item"><a href="tariffs.html#tarif-overview">— Тарифы: обзор</a></li>
+          <li class="sub-item"><a href="tariffs.html#usluga-overview">— Услуги: обзор</a></li>
+          <li class="sub-item"><a href="tariffs.html#service-policies">— Политики начислений</a></li>
+          <li class="sub-item"><a href="tariffs.html#loyalty-overview">— Лояльность: обзор</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="nas-equipment.html"><i class="ti ti-server"></i> Оборудование <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="nas-equipment.html#equipment">3. Оборудование</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#equip-nas">3.1. NAS</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#nas-map">— Что такое NAS</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#nas-multiorg">— Мультиорганизация и доступ</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#nas-modal">— Карточка устройства</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#nas-status">3.2. Состояние NAS</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#nas-danger">— Опасные операции</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#equip-monitoring">3.2А. Мониторинг оборудования</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#equip-iptv">3.3. IPTV</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#switch">3.4. Коммутаторы</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#switch-type">3.5. Типы коммутаторов</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#sorm-list">3.6. Настройки СОРМ</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="reports.html"><i class="ti ti-chart-bar"></i> Отчёты <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="reports.html#reports">4. Отчёты</a></li>
+          <li class="sub-item"><a href="reports.html#director-dashboard">4.0. Панель директора</a></li>
+          <li class="sub-item"><a href="reports.html#custom-reports">4.1. Библиотека отчётов</a></li>
+          <li class="sub-item"><a href="reports.html#audit">4.2. Аудит</a></li>
+          <li class="sub-item"><a href="reports.html#paylog">4.3. Журнал платежей</a></li>
+          <li class="sub-item"><a href="reports.html#messages-journal">4.4. Журнал сообщений</a></li>
+          <li class="sub-item"><a href="reports.html#dev-reports">4.5. Разработка и логи</a></li>
+          <li class="sub-item"><a href="reports.html#debtors">4.6. Должники</a></li>
+          <li class="sub-item"><a href="reports.html#migration">4.7. Миграция с других биллингов</a></li>
+          <li><a href="reports.html#games">5. Игры (Маркетинг)</a></li>
+          <li class="sub-item"><a href="reports.html#framework-fields-overview">— FrameworkFormGroupFields: обзор</a></li>
+          <li class="sub-item"><a href="reports.html#custom-reports-overview">— SQL-отчёты: обзор</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="settings.html"><i class="ti ti-settings"></i> Настройки: система и платежи <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="settings.html#settings">6. Настройки</a></li>
+          <li class="sub-item"><a href="settings.html#system-settings">6.1. Настройки системы</a></li>
+          <li class="sub-item"><a href="settings.html#print-forms">6.2. Шаблоны печати</a></li>
+          <li class="sub-item"><a href="settings.html#atol-config">6.3. Фискализация</a></li>
+          <li class="sub-item"><a href="settings.html#fiscal">6.3.1. Модуль фискализации 54-ФЗ</a></li>
+          <li class="sub-item"><a href="settings.html#payment-systems">6.4. Платёжные системы</a></li>
+          <li class="sub-item"><a href="settings.html#bank-statements">6.4.1. Банковские выписки</a></li>
+          <li class="sub-item"><a href="settings.html#bank-parsers">6.4.2. Банки и парсеры</a></li>
+          <li class="sub-item"><a href="settings.html#bank-queue">6.4.3. Очередь модерации</a></li>
+          <li class="sub-item"><a href="settings.html#bank-imports">6.4.4. Журнал импортов</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#bank-flow">— Путь платежа (схема)</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#bank-registry">— Сводные реестры</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#bank-queue-link-2171">— Привязка платежа и данные ФНС</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#bank-org-2171">— Организация платежа</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#bank-client-tab">— Вкладка «Банк» в карточке</a></li>
+          <li class="sub-item"><a href="settings.html#mailserver">6.4.5. Почтовый сервер</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#mailserver-webmail">— Веб-почта и календарь</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#mailserver-identity">— Имя, подпись, фото</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#mailserver-addressbook">— Адресная книга</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#mailserver-mail-tab">— Вкладка «Почта»</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#mailserver-server-settings">— Настройки сервера</a></li>
+          <li class="sub-item"><a href="settings.html#dns">6.4.5А. Домены и DNS</a></li>
+          <li class="sub-item"><a href="settings.html#mail-provisioning">6.4.6. Автонастройка почты</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="settings-services.html"><i class="ti ti-plug"></i> Настройки: связь и сервисы <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li class="sub-item"><a href="settings-services.html#integrations">6.5. Интеграции</a></li>
+          <li class="sub-item"><a href="settings-services.html#voice">6.5А. Голосовая связь</a></li>
+          <li class="sub-item"><a href="settings-services.html#iptv-mappings">6.6. IPTV-пакеты</a></li>
+          <li class="sub-item"><a href="settings-services.html#iptv-watch">6.6.1. Просмотр ТВ в ЛК</a></li>
+          <li class="sub-item"><a href="settings-services.html#lk-mobile">6.7. ЛК и мобильные</a></li>
+          <li class="sub-item"><a href="settings-services.html#messaging">6.8. Сообщения</a></li>
+          <li class="sub-item"><a href="settings-services.html#staff">6.9. Персонал и доступ</a></li>
+          <li class="sub-item"><a href="settings-services.html#license">6.10. Лицензия</a></li>
+          <li class="sub-item"><a href="settings-services.html#modules">6.10А. Модули и расширения</a></li>
+          <li class="sub-item"><a href="settings-services.html#backup">6.11. Резервные копии</a></li>
+          <li class="sub-item"><a href="settings-services.html#db-cleanup">6.12. Очистка БД и сессий</a></li>
+          <li class="sub-item"><a href="settings-services.html#diagnostics">6.13. Диагностика</a></li>
+          <li class="sub-item"><a href="settings-services.html#mass-actions">6.14. Массовые действия</a></li>
+          <li class="sub-item"><a href="settings-services.html#performance">6.15. Производительность и оптимизация</a></li>
+          <li class="sub-item"><a href="settings-services.html#captive-portal">6.16. Captive Portal (финблокировка)</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-readiness">— Готовность и проверка</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-emergency">— Аварийный режим</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-access">— Организации и права</a></li>
+          <li class="sub-item"><a href="settings-services.html#guest-wifi-portal">6.16.1. Гостевой Wi-Fi портал</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-payments">— Платежи</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-acl">— Белые списки (ACL)</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-sorm">— Гости в СОРМ и хранение</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-mobile">— С телефона</a></li>
+          <li class="sub-item"><a href="settings-services.html#support">— Поддержка: единое окно</a></li>
+          <li class="sub-item"><a href="settings-services.html#support-ticket">— Поддержка: карточка тикета</a></li>
+          <li class="sub-item"><a href="settings-services.html#support-panel">— Поддержка: выезжающая панель</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="dictionaries.html"><i class="ti ti-book"></i> Справочники <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="dictionaries.html#dictionary">7. Справочники</a></li>
+          <li class="sub-item"><a href="dictionaries.html#pools">7.1. Пулы IP и VLAN</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="dictionaries.html#ip-pull-overview">— IP-пул: обзор</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="dictionaries.html#vlan-pull-overview">— VLAN-пул: обзор</a></li>
+          <li class="sub-item"><a href="dictionaries.html#acl">7.2. Контроль доступа</a></li>
+          <li class="sub-item"><a href="dictionaries.html#addresses">7.3. Все адреса</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="dictionaries.html#addresses-overview">— Адреса: обзор</a></li>
+          <li class="sub-item"><a href="dictionaries.html#statuses-overview">— Статусы: обзор</a></li>
+          <li class="sub-item"><a href="dictionaries.html#requisites">7.4. Реквизиты</a></li>
+          <li class="sub-item"><a href="dictionaries.html#currency">7.5. Валюты</a></li>
+          <li class="sub-item"><a href="dictionaries.html#weekends">7.6. Выходные дни</a></li>
+          <li class="sub-item"><a href="dictionaries.html#statuses">7.7. Управление статусами</a></li>
+          <li class="sub-item"><a href="dictionaries.html#report-types">7.8. Типы отчётов</a></li>
+          <li class="sub-item"><a href="dictionaries.html#units">7.9. Единицы измерения</a></li>
+          <li class="sub-item"><a href="dictionaries.html#periods">7.10. Периоды</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="abonents.html"><i class="ti ti-users"></i> Абоненты <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li class="sub-item"><a href="abonents.html#admin-accounts-overview">— Счета: обзор</a></li>
+          <li class="sub-item"><a href="abonents.html#finops-overview">— Финоперации: обзор</a></li>
+          <li class="sub-item"><a href="abonents.html#promise-pay-overview">— Обещанный платёж: обзор</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-block-overview">— Блокировки: обзор</a></li>
+          <li class="sub-item"><a href="abonents.html#abonent-folders-overview">— Папки клиентов: обзор</a></li>
+          <li><a href="abonents.html#abonents">8. Клиенты</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-list">8.1. Клиенты</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-folder-view">— Папка клиентов</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-multiorg">— Мультиорганизация</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-quick-add">— Новый клиент и раскладка</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-search">— Глобальный поиск</a></li>
+          <li class="sub-item"><a href="abonents.html#abonent-map">8.2. На карте</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#abonent-map-data">— Откуда берутся точки</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#abonent-map-multiorg">— Мультиорганизация</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#abonent-map-performance">— Вес карты и скорость</a></li>
+          <li class="sub-item"><a href="abonents.html#admin-accounts">8.3. Счета</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#admin-accounts-map">— Что такое счёт</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#admin-accounts-multiorg">— Мультиорганизация и доступ</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#admin-accounts-modal">— Карточка счёта</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#admin-accounts-mobile">— Мобильная версия</a></li>
+          <li class="sub-item"><a href="abonents.html#finance-operations">8.4. Финансовые операции</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#finops-lifecycle">— Откуда берутся операции</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#finops-multiorg">— Мультиорганизация</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#modal-finops">— Карточка операции</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#finops-mobile">— Мобильная версия</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#finance-operations-types">— Типы операций (FinTypes)</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="abonent-card.html"><i class="ti ti-id"></i> Карточка абонента <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li class="sub-item"><a href="abonent-card.html#users-overview">— Учётные записи: обзор</a></li>
+          <li class="sub-item"><a href="abonent-card.html#connection-points-overview">— Точки подключения: обзор</a></li>
+          <li class="sub-item"><a href="abonent-card.html#radius-sessions-overview">— RADIUS-сессии: обзор</a></li>
+          <li><a href="abonent-card.html#abonent-card">9. Карточка клиента</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="extras.html"><i class="ti ti-apps"></i> Дополнительные разделы <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="extras.html#video-surveillance">10. Видеонаблюдение</a></li>
+          <li class="sub-item"><a href="extras.html#video-revenue">10.1. 3 слоя дохода + цены</a></li>
+          <li class="sub-item"><a href="extras.html#video-admin">10.2. Раздел /admin/video/</a></li>
+          <li class="sub-item"><a href="extras.html#video-abonent">10.3. Вкладка клиента + ЛК</a></li>
+          <li class="sub-item"><a href="extras.html#video-billing-flow">10.3.1. Как списываются подписки</a></li>
+          <li class="sub-item"><a href="extras.html#video-archive-lk">10.3.2. Архив: календарь + выделение</a></li>
+          <li class="sub-item"><a href="extras.html#video-notify">10.3.3. Уведомления о сбоях</a></li>
+          <li class="sub-item"><a href="extras.html#video-docs">10.4. Документы (КП/договор/акт)</a></li>
+          <li class="sub-item"><a href="extras.html#video-block">10.5. Блокировка камер по балансу</a></li>
+          <li class="sub-item"><a href="extras.html#video-vsaas">10.6. Облако VSaaS</a></li>
+          <li><a href="extras.html#domofon-demo">11. Домофонный домен</a></li>
+          <li class="sub-item"><a href="extras.html#domofon-model">11.1. Доменная модель</a></li>
+          <li class="sub-item"><a href="extras.html#domofon-demo-data">11.2. Что заведено в демо</a></li>
+          <li><a href="extras.html#ai-agent">12. AI-агент</a></li>
+          <li class="sub-item"><a href="extras.html#ai-hub">12.1. Обзор модуля (хаб)</a></li>
+          <li class="sub-item"><a href="extras.html#ai-kb">12.2. База знаний</a></li>
+          <li class="sub-item"><a href="extras.html#ai-voice">12.3. Голос (Mango → анализ)</a></li>
+          <li class="sub-item"><a href="extras.html#ai-widget">12.4. Виджет + воронка</a></li>
+          <li class="sub-item"><a href="extras.html#ai-order-forms">12.4.1. Формы заказа → лиды</a></li>
+          <li class="sub-item"><a href="extras.html#ai-test-chat">12.4.2. Тестовый AI-чат</a></li>
+          <li class="sub-item"><a href="extras.html#ai-eval">12.5. Тест-кейсы AI</a></li>
+          <li class="sub-item"><a href="extras.html#ai-dashboard">12.6. Дашборд AI-сессий</a></li>
+          <li class="sub-item"><a href="extras.html#ai-dashboard-costs">12.6.1. Расходы на модели и бюджет</a></li>
+          <li class="sub-item"><a href="extras.html#ai-org-routing">12.6.2. Определение организации</a></li>
+          <li class="sub-item"><a href="extras.html#ai-dashboard-sessions">12.5.1. Сессии и транскрипт</a></li>
+          <li><a href="extras.html#autodial-telephony">13. Автообзвон и телефония</a></li>
+          <li class="sub-item"><a href="extras.html#autodial-providers">13.1. Мультипровайдер</a></li>
+          <li class="sub-item"><a href="extras.html#autodial-asterisk">13.2. Своя телефония (Asterisk)</a></li>
+          <li class="sub-item"><a href="extras.html#autodial-consent">13.3. Согласие и ограничения</a></li>
+          <li class="sub-item"><a href="extras.html#autodial-card-tab">13.4. Вкладка «Звонки» в карточке</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="lk.html"><i class="ti ti-device-mobile"></i> ЛК и мобильные <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="lk.html#lk-overview">Обзор и возможности</a></li>
+          <li><a href="lk.html#lk-admin">Раздел «ЛК и мобильные» в админке</a></li>
+          <li class="sub-item"><a href="lk.html#lk-admin">— Брендинг</a></li>
+          <li class="sub-item"><a href="lk.html#lk-admin">— Функции</a></li>
+          <li class="sub-item"><a href="lk.html#lk-admin">— Безопасность</a></li>
+          <li class="sub-item"><a href="lk.html#lk-mobile-app">— Мобильное (Android+iOS)</a></li>
+          <li><a href="lk.html#lk-login">Авторизация</a></li>
+          <li><a href="lk.html#lk-admin">Настройки интеграций</a></li>
+          <li><a href="lk.html#lk-extra">Telegram-бот</a></li>
+          <li><a href="lk.html#lk-finance">Оплата (ЮKassa)</a></li>
+          <li><a href="lk.html#lk-mobile-app">Мобильное приложение</a></li>
+          <li><a href="lk.html#lk-support">HelpDesk</a></li>
+          <li><a href="lk.html#lk-ai-chat">AI-ассистент</a></li>
+          <li><a href="lk.html#lk-profile">Профиль</a></li>
+          <li><a href="lk.html#lk-firebase">Push (Firebase)</a></li>
+          <li><a href="lk.html#lk-ai-chat">AI-чат</a></li>
+          <li><a href="settings-services.html#messaging">TG бот оператора</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="crm.html"><i class="ti ti-briefcase"></i> CRM — продажи <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="crm.html#crm-overview">1. Как устроен модуль</a></li>
+          <li><a href="crm.html#crm-quickstart">2. Быстрый старт</a></li>
+          <li><a href="crm.html#crm-funnel">3. Воронка сделок</a></li>
+          <li><a href="crm.html#crm-constructor">4. Конструктор воронок</a></li>
+          <li><a href="crm.html#crm-sources">5. Источники сделок</a></li>
+          <li><a href="crm.html#crm-userfields">6. Доп. поля</a></li>
+          <li><a href="crm.html#crm-tasks">7. Задачи</a></li>
+          <li><a href="crm.html#crm-lists">8. Списки (контакты)</a></li>
+          <li><a href="crm.html#crm-salesbot">9. Salesbot</a></li>
+          <li><a href="crm.html#widgets">10. Виджеты-плагины</a></li>
+          <li><a href="crm.html#crm-setup">11. Мастер настройки</a></li>
+          <li><a href="crm.html#crm-montazh">12. Наряды монтажника</a></li>
+          <li><a href="crm.html#crm-dashboard">13. Дашборд и карта</a></li>
+          <li><a href="crm.html#crm-campaigns">14. Рекламные кампании</a></li>
+          <li><a href="crm.html#crm-drawer">15. Карточка сделки</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="stock.html"><i class="ti ti-packages"></i> Склад <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="stock.html#stock-overview">1. Как устроен модуль</a></li>
+          <li><a href="stock.html#stock-quickstart">2. Быстрый старт</a></li>
+          <li><a href="stock.html#stock-flow">3. Движения и статусы</a></li>
+          <li><a href="stock.html#stock-items">4. Номенклатура и остатки</a></li>
+          <li><a href="stock.html#stock-receipt">5. Приход и этикетки</a></li>
+          <li><a href="stock.html#stock-issue">6. Подотчёт сотрудника</a></li>
+          <li><a href="stock.html#stock-inventory">6б. Инвентаризация</a></li>
+          <li><a href="stock.html#stock-reserve">6в. Резерв под наряд</a></li>
+          <li><a href="stock.html#stock-move">6г. Перемещение</a></li>
+          <li><a href="stock.html#stock-suppliers">6д. Поставщики</a></li>
+          <li><a href="stock.html#stock-montazh">7. Материалы в наряде</a></li>
+          <li><a href="stock.html#stock-abonent">8. Оборудование клиента</a></li>
+          <li><a href="stock.html#stock-money">9. Деньги: продажа и аренда</a></li>
+          <li><a href="stock.html#stock-analytics">9а. Аналитика</a></li>
+          <li><a href="stock.html#stock-settings">10. Настройки и роли</a></li>
+          <li><a href="stock.html#stock-launch">11. Чек-лист запуска</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="video.html"><i class="ti ti-device-cctv"></i> Видеонаблюдение <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="video.html#video-overview">1. Как устроен модуль</a></li>
+          <li><a href="video.html#video-objects">2. Объекты и камеры</a></li>
+          <li><a href="video.html#video-projects">3. Проекты и документы</a></li>
+          <li><a href="video.html#video-plans">4. Планы и подписки</a></li>
+          <li><a href="video.html#video-catalog">5. Каталог и склад</a></li>
+          <li><a href="video.html#video-media">6. Медиа-сервер</a></li>
+          <li><a href="video.html#video-archive">7. Архив записей</a></li>
+          <li><a href="video.html#video-dispatch">8. Пульт ЧОПа</a></li>
+          <li><a href="video.html#video-reports">9. Отчётность по SLA</a></li>
+          <li><a href="video.html#video-access">10. Права и организации</a></li>
+          <li><a href="video.html#video-settings">11. Настройки модуля</a></li>
+          <li><a href="video.html#video-launch">12. Чек-лист запуска</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="helpdesk.html"><i class="ti ti-headset"></i> Поддержка (HelpDesk) <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="helpdesk.html#overview">1. Обзор модуля</a></li>
+          <li><a href="helpdesk.html#channels">2. Каналы приёма</a></li>
+          <li><a href="helpdesk.html#mailbox">3. Входящие</a></li>
+          <li><a href="helpdesk.html#conversation">4. Карточка тикета</a></li>
+          <li><a href="helpdesk.html#sidebar">5. Сайдбар тикета</a></li>
+          <li><a href="helpdesk.html#panel">6. Выезжающая панель</a></li>
+          <li><a href="helpdesk.html#attention">7. Тикеты внимания</a></li>
+          <li><a href="helpdesk.html#ai-assistant">8. AI-бот</a></li>
+          <li><a href="helpdesk.html#voicemail">9. Голосовая почта</a></li>
+          <li><a href="helpdesk.html#knowledgebase">10. База знаний</a></li>
+          <li><a href="helpdesk.html#analytics">11. Аналитика и время</a></li>
+          <li><a href="helpdesk.html#settings">12. Настройки</a></li>
+          <li><a href="helpdesk.html#messengers">13. Мессенджеры</a></li>
+          <li><a href="helpdesk.html#integration">14. Связь с биллингом</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="landing.html"><i class="ti ti-browser"></i> Лендинги <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="landing.html#landing-overview">1. Что это</a></li>
+          <li><a href="landing.html#landing-blocks">2. Блоки-секции</a></li>
+          <li><a href="landing.html#landing-media">3. Слайдер, медиа-фон и эффекты</a></li>
+          <li><a href="landing.html#landing-editor">4. Редактор</a></li>
+          <li><a href="landing.html#landing-ai">5. AI-генерация</a></li>
+          <li><a href="landing.html#landing-forms">6. Формы и заявки</a></li>
+          <li><a href="landing.html#landing-publish">7. Публикация на поддомене</a></li>
+          <li><a href="landing.html#landing-pd">8. Согласие ПД (152-ФЗ)</a></li>
+          <li><a href="landing.html#landing-analytics">9. Аналитика</a></li>
+          <li><a href="landing.html#landing-multiorg">10. Мульти-орг</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="server.html"><i class="ti ti-server"></i> Управление сервером <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="server.html#server-setup">1. Настройка сервера</a></li>
+          <li><a href="server.html#maintenance">2. Сервисное обслуживание</a></li>
+          <li class="sub-item"><a href="server.html#backup">2.1. Резервное копирование</a></li>
+          <li class="sub-item"><a href="server.html#backup-ui">2.2. Бекапы (веб-интерфейс)</a></li>
+          <li><a href="server.html#modules">3. Управление модулями</a></li>
+          <li><a href="server.html#remote">4. Удалённое управление</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="equipment.html"><i class="ti ti-broadcast"></i> Интеграция с оборудованием <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="equipment.html#internet">1. Интернет (NAS/BRAS)</a></li>
+          <li class="sub-item"><a href="equipment.html#switch-types">1.1. Типы коммутаторов</a></li>
+          <li><a href="equipment.html#voip">2. Телефония (VoIP)</a></li>
+          <li><a href="equipment.html#iptv">3. IPTV</a></li>
+          <li class="sub-item"><a href="equipment.html#iptv-tvip">3.1. TVIP Media</a></li>
+          <li class="sub-item"><a href="equipment.html#iptv-lfstream">3.2. LFStream</a></li>
+          <li class="sub-item"><a href="equipment.html#iptv-mappings">3.3. Маппинг пакетов</a></li>
+          <li><a href="equipment.html#cpe">4. Абонентское оборудование</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="sorm.html"><i class="ti ti-shield-lock"></i> Интеграция с СОРМ3 <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="sorm.html#principle">Принцип работы</a></li>
+          <li><a href="sorm.html#integrated">Интегрированные решения</a></li>
+          <li><a href="sorm.html#pending">Ожидающие интеграции</a></li>
+          <li><a href="sorm.html#setup">Настройка подключения</a></li>
+          <li class="sub-item"><a href="sorm.html#sorm-add-modal">— Модальное окно «Добавить»</a></li>
+          <li><a href="sorm.html#reports">Отчёты и SQL</a></li>
+          <li><a href="sorm.html#schedule">Расписание выгрузки</a></li>
+          <li><a href="sorm.html#sorm-admin">Админ-UI: список и FTP</a></li>
+          <li><a href="sorm.html#manual-run">Управление отчётами</a></li>
+          <li><a href="sorm.html#metadata">СОРМ-метаданные</a></li>
+          <li><a href="sorm.html#preflight">Pre-flight валидация</a></li>
+          <li><a href="sorm.html#api">REST API готовности</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="api.html"><i class="ti ti-link"></i> API <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="api.html#overview">1. Обзор API</a></li>
+          <li><a href="api.html#auth">2. Аутентификация</a></li>
+          <li><a href="api.html#rest-v2">3. REST API v2</a></li>
+          <li><a href="api.html#promise-pay">4. Обещанный платёж</a></li>
+          <li><a href="api.html#payments-api">5. Платёжные API (ЮKassa, W1)</a></li>
+          <li><a href="api.html#soap">6. SOAP API</a></li>
+          <li><a href="api.html#mobile-api">7. Mobile API</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="troubleshooting.html"><i class="ti ti-tool"></i> Решение проблем <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="troubleshooting.html#general">1. Общие вопросы</a></li>
+          <li><a href="troubleshooting.html#auth">2. Клиенты и авторизация</a></li>
+          <li><a href="troubleshooting.html#billing-payments">3. Биллинг и платежи</a></li>
+          <li><a href="troubleshooting.html#server-perf">4. Сервер и производительность</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="licensing.html"><i class="ti ti-file-description"></i> Лицензирование <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="licensing.html#delivery">1. Порядок поставки ПО</a></li>
+          <li><a href="licensing.html#payment-issues">2. Не проходит оплата</a></li>
+        </ul>
+      </li>
+      <li><a href="contacts.html"><i class="ti ti-phone"></i> Контакты</a></li>
+      <li><a href="changelog.html"><i class="ti ti-history"></i> Журнал изменений</a></li>
+    </ul>
+
+      <div class="nav-section">Разработчикам</div>
+      <ul>
+        <li class="has-children">
+          <a href="../graphify/graph.html"><i class="ti ti-topology-star-3"></i> Архитектура кода <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+          <ul class="submenu">
+            <li><a href="../graphify/graph.html">Граф сообществ</a></li>
+            <li><a href="../graphify/wiki/index.html">Wiki модулей</a></li>
+            <li><a href="dev/index.html">Портал разработчика</a></li>
+            <li><a href="../graphify/help.html">graphify CLI</a></li>
+          </ul>
+        </li>
+      </ul>
+  <button class="sidebar-theme-toggle" aria-label="Тема"><span class="icon-sun"><i class="ti ti-sun"></i></span><span class="icon-moon"><i class="ti ti-moon"></i></span><span class="sidebar-theme-label">Сменить тему</span></button>
+</nav>
+</aside>
+
+<main class="content">
+  <div class="breadcrumb">
+    <a href="../index.html">Документация</a> <span class="sep">/</span> Тарифы и услуги
+  </div>
+
+  <h1>Тарифы и услуги</h1>
+  <p>Тарифные планы и услуги, правила и наборы, серии карт оплаты, программа лояльности и диапазоны услуг.</p>
+
+<div class="page-toc">
+<details open>
+  <summary><strong><i class="ti ti-book"></i> Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#tarifs">2. Тарификация</a></li>
+    <li class="sub-item"><a href="#tarif-overview">Тарифы — назначение и роль</a></li>
+    <li class="sub-item"><a href="#tarif-list">2.1. Тарифы</a></li>
+    <li class="sub-item"><a href="#usluga-overview">Услуги (Usluga) — назначение и роль</a></li>
+    <li class="sub-item"><a href="#service-policies">Политики абонентских начислений</a></li>
+    <li class="sub-item"><a href="#tarif-media">2.1.1. Медиа тарифа</a></li>
+    <li class="sub-item"><a href="#table-columns">2.1.2. Настройка колонок таблицы</a></li>
+    <li class="sub-item"><a href="#tarif-mobile">2.1.3. На телефоне</a></li>
+    <li class="sub-item"><a href="#tarif-wizard">2.1.4. Мастер создания тарифа</a></li>
+    <li class="sub-item"><a href="#usluga-list">2.2. Услуги и Бонусы</a></li>
+    <li class="sub-item"><a href="#tarif-ruleset">2.3. Правила и сети</a></li>
+    <li class="sub-item"><a href="#card-series">2.4. Карты оплаты</a></li>
+    <li class="sub-item"><a href="#loyalty-overview">Программы лояльности — назначение и роль</a></li>
+    <li class="sub-item"><a href="#loyalty">2.5. Программы лояльности</a></li>
+    <li class="sub-item"><a href="#usluga-range">2.6. Линейки услуг</a></li>
+    <li class="sub-item"><a href="#section-common">2.7. Общие приёмы раздела</a></li>
+  </ul>
+</details>
+</div>
+
+<h2 id="tarifs">2. Тарификация</h2>
+<p>Раздел меню <strong>«Тарификация»</strong> содержит всё, что связано с услугами,
+которые получают клиенты, и правилами их тарификации.</p>
+
+<figure class="doc-video">
+  <div class="dv-head">
+    <span class="dv-kind"><i class="ti ti-player-play-filled" aria-hidden="true"></i> Обучающее видео</span>
+    <span class="dv-time">2:56</span>
+  </div>
+  <div class="dv-media">
+    <video controls preload="none" playsinline
+             poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/tarifs-training-poster.jpg">
+        <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/tarifs-training.mp4" type="video/mp4">
+        Ваш браузер не проигрывает видео —
+        <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/tarifs-training.mp4">скачайте файл</a>.
+      </video>
+  </div>
+  <figcaption>
+    <p class="dv-desc">Чем тариф отличается от услуги, откуда берётся цена в счёте, зачем нужны линейки и почему правило сети не работает без выгрузки в ACL.</p>
+    <div class="dv-foot">
+      <span class="dv-spec">1920×1080</span>
+      <span class="dv-spec">с озвучкой</span>
+      <a class="dv-download" href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/tarifs-training.mp4" target="_blank" rel="noopener" aria-label="Скачать видеофайл"><i class="ti ti-download" aria-hidden="true"></i> Скачать</a>
+    </div>
+  </figcaption>
+</figure>
+
+<div class="page-toc">
+<details open>
+  <summary><strong><i class="ti ti-book"></i> Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#tarif-list">2.1. Тарифы</a>
+      <ul>
+        <li><a href="#tarif-media">2.1.1. Медиа тарифа</a></li>
+        <li><a href="#table-columns">2.1.2. Настройка колонок</a></li>
+        <li><a href="#tarif-mobile">2.1.3. На телефоне</a></li>
+        <li><a href="#tarif-wizard">2.1.4. Мастер создания тарифа</a></li>
+      </ul>
+    </li>
+    <li><a href="#usluga-list">2.2. Услуги и Бонусы</a></li>
+    <li><a href="#tarif-ruleset">2.3. Правила и сети</a>
+      <ul>
+        <li><a href="#ruleset-flow">Путь от правила до клиента</a></li>
+        <li><a href="#ruleset-conditions">Условия правила</a></li>
+        <li><a href="#ruleset-apply">Применение и ACL-группа</a></li>
+        <li><a href="#tarif-bulk">Массовые действия</a></li>
+      </ul>
+    </li>
+    <li><a href="#card-series">2.4. Карты оплаты</a></li>
+    <li><a href="#loyalty">2.5. Программы лояльности</a></li>
+    <li><a href="#usluga-range">2.6. Линейки услуг</a></li>
+    <li><a href="#section-common">2.7. Общие приёмы раздела</a>
+      <ul>
+        <li><a href="#common-toolbar">2.7.1. Срез: чипы, KPI, поиск, выгрузка</a></li>
+        <li><a href="#saved-views">2.7.2. Сохранённые виды</a></li>
+        <li><a href="#org-is-permission">2.7.3. Организация — это право</a></li>
+        <li><a href="#row-actions">2.7.4. Меню действий строки</a></li>
+        <li><a href="#common-columns">2.7.5. Колонки и закреплённые поля</a></li>
+      </ul>
+    </li>
+  </ul>
+</details>
+</div>
+
+<!-- ===== Тарифы: обзор ===== -->
+<h3 id="tarif-overview">Тарифы — назначение и роль</h3>
+<details class="section-toc">
+  <summary><strong>Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#tarif-purpose">Зачем нужен тариф</a></li>
+    <li><a href="#tarif-structure">Структура: Tarif + TarifUsersUsluga (TUU)</a></li>
+    <li><a href="#tarif-billing-flow">Как биллинг использует тариф</a></li>
+    <li><a href="#tarif-archive">Архивирование vs удаление</a></li>
+    <li><a href="#tarif-special">Специальные сценарии — промо, резерв, авто-смена</a></li>
+  </ul>
+</details>
+
+<p><strong>Тариф (Tarif)</strong> — это шаблон услуг и цен, которые получает клиент после подключения. Хранится в таблице <code>tarif</code>, редактируется на <code>/admin/tarifs/Tarif/</code>.</p>
+
+<h5 id="tarif-purpose">Зачем нужен тариф</h5>
+<p>Тариф решает три задачи:</p>
+<ol>
+  <li><strong>Группировка услуг</strong> — один тариф = пакет из 1-N услуг (интернет 100 Мбит + IPTV + статический IP) с заданными ценами;</li>
+  <li><strong>Автоматическое списание</strong> — Celery-задача <code>billing_worker</code> раз в день обходит активных клиентов, выбирает их тариф, проходит по списку услуг и списывает с лицевого счёта;</li>
+  <li><strong>Применение шейпера</strong> — через <code>TarifRadiusParams</code> FreeRADIUS получает атрибут <code>Mikrotik-Rate-Limit</code> или аналог. На NAS включается ограничение скорости.</li>
+</ol>
+
+<h5 id="tarif-structure">Структура: Tarif + TarifUsersUsluga</h5>
+<table class="data-table">
+  <thead>
+    <tr><th>Сущность</th><th>Что хранит</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>tarif</code></td><td>Имя тарифа, флаги (<code>IS_BUSINESS</code>, <code>IS_ARCHIVE</code>), ссылки на лояльности, промо-настройки, резервный тариф</td></tr>
+    <tr><td><code>TARIF_USERS_USLUGA</code> (TUU)</td><td>M2M-связка <code>тариф ↔ услуга</code>. Один тариф содержит несколько TUU (по одной на каждую услугу пакета)</td></tr>
+    <tr><td><code>TARIF_RADIUS_PARAMS</code></td><td>Кастомные RADIUS-атрибуты для тарифа (Mikrotik-Rate-Limit, Pool-Name, Idle-Timeout)</td></tr>
+    <tr><td><code>TARIF_USERS_USLUGA_FOLLOW</code></td><td>«Сопутствующие» услуги — авто-подключаются при смене тарифа (например, IPTV приставка прилипает к тарифу)</td></tr>
+  </tbody>
+</table>
+
+<h5 id="tarif-billing-flow">Как биллинг использует тариф</h5>
+<ol>
+  <li><strong>Привязка к клиенту</strong>: <code>Abonents.TARIF_ID</code> (главное поле), опционально <code>Users.TARIF_ID</code> для специальных учёток;</li>
+  <li><strong>Ежемесячное списание</strong> (<code>billing_worker.py</code>):
+    <ul>
+      <li>Берёт <code>abonent.tarif.tarif_tuu.all()</code> — все услуги тарифа;</li>
+      <li>Для каждой услуги ищет соответствующую <code>UsersUsluga</code> у клиента (или создаёт новую);</li>
+      <li>Списывает <strong>каскадно</strong>: <code>UsersUsluga.summ → usluga.summa → usluga.price</code> (берётся первое заполненное);</li>
+      <li>Создаёт <code>FINANCE_OPERATIONS</code> с <code>op_type=32</code> (тарифное списание);</li>
+    </ul>
+  </li>
+  <li><strong>RADIUS</strong>: при авторизации FreeRADIUS подгружает <code>TarifRadiusParams</code> и отдаёт NAS-у соответствующий шейпер.</li>
+</ol>
+
+<h5 id="tarif-archive">Архивирование vs удаление</h5>
+<ul>
+  <li><strong><code>IS_ARCHIVE=true</code></strong> — тариф недоступен для назначения новым клиентам, но текущие подписчики продолжают на нём работать. <strong>Это правильный путь</strong> для устаревших тарифов;</li>
+  <li><strong>Удаление</strong> — почти невозможно, FK <code>PROTECT</code> блокирует если есть хоть один клиент или один TUU. Можно удалять только если 0 ссылок;</li>
+  <li><strong>Перевод клиентов на новый тариф</strong> — массовое действие в глобальном поиске <code>/admin/Abonents/search/</code> (chip «Тариф» + bulk action <code>change_tarif</code>).</li>
+</ul>
+
+<h5 id="tarif-special">Специальные сценарии</h5>
+<table class="data-table">
+  <thead>
+    <tr><th>Поле</th><th>Сценарий</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>PROMO_NEXT_ID</code> + <code>PROMO_DAYS</code> или <code>PROMO_MONTH</code></td><td>Через N дней/месяцев тариф автоматически переключится на <code>PROMO_NEXT</code> (например, после льготного периода)</td></tr>
+    <tr><td><code>RESERVE_PLAN</code></td><td>Резервный тариф если основной недоступен. Используется в сценарии «отключение услуги, но сохранение базовой связи»</td></tr>
+    <tr><td><code>INACTIVE_TARIF</code></td><td>На какой тариф переводить клиента, если он не пользуется услугами (по дате <code>ACT_DATE</code>)</td></tr>
+    <tr><td><code>OWN_DISABLED_*</code></td><td>Параметры добровольной блокировки: на сколько дней/месяцев минимум, какая стоимость в дни паузы</td></tr>
+  </tbody>
+</table>
+
+<div class="info-box">
+  <strong>Не путайте Tarif и Usluga.</strong> Тариф — это <em>пакет</em> (Интернет 100 Мбит). Usluga — <em>отдельная услуга</em> (Интернет 100 Мбит, ОП, статический IP). Тариф состоит из услуг через TUU. У одной услуги может быть много тарифов, у одного тарифа — много услуг.
+</div>
+
+<h3 id="tarif-list">2.1. Тарифы</h3>
+<p>Список всех тарифных планов оператора. Открывается из меню
+<em>Тарификация → Тарифы</em>. Над таблицей — два фильтра по типу клиента:
+<strong>«Бизнес»</strong> и <strong>«Физ.лица»</strong> (по признаку
+<em>«Для юр.лиц»</em> у тарифа). Рядом — счётчик количества тарифов в
+текущем фильтре.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v1999/tarif_list.png" alt="Список тарифов: KPI, фильтры, значки медиа"></p>
+
+<p>Над таблицей — KPI по текущему срезу: тарифов в выборке, клиентов на них,
+средняя абонплата, сколько показывается на сайте и сколько осталось без услуг.
+Цифры считаются по тому, что видно, поэтому всегда согласованы с фильтрами.</p>
+
+<p><strong>Toolbar над таблицей</strong>:</p>
+<ul>
+  <li>Поиск по имени, описанию или ID тарифа. Шорткат <kbd>Ctrl</kbd>+<kbd>K</kbd> ставит фокус в поле.</li>
+  <li>Кнопка <em>«Компактный вид»</em> уменьшает плотность строк и скрывает столбец «Описание».</li>
+  <li>Кнопка <em>«CSV»</em> экспортирует видимый срез (с учётом фильтра Бизнес/Физ.лица, поиска и линейки).</li>
+  <li>Кнопка <em>«Добавить тариф»</em> открывает модальное окно нового тарифа.</li>
+</ul>
+
+<p><strong>Колонки таблицы</strong>:</p>
+<ul>
+  <li><strong>Название</strong> с подсказкой ID при наведении.</li>
+  <li><strong>Цена</strong> в рублях.</li>
+  <li><strong>Линейка</strong> услуг (см. <a href="#usluga-range">1.6</a>).</li>
+  <li><strong>Юр.лиц</strong> — иконка ✓ если тариф предназначен только организациям.</li>
+  <li><strong>Клиенты</strong>: основное число + красный <em>▼N</em> (заблокированные).
+  Tooltip разворачивает разбивку <em>Активных / Заблокированных / Всего</em>.</li>
+  <li><strong>Привязок</strong> — сколько услуг привязано к тарифу.</li>
+  <li><strong>Действия</strong>: ✏ редактировать, 🗑 удалить (заблокировано если есть активные клиенты).</li>
+</ul>
+
+<p>Сортировка работает по любому столбцу — клик по заголовку. Активная сортировка
+выделяется синим цветом и стрелкой ▲/▼.</p>
+
+<h5 id="tarif-org">Тарифы и организация</h5>
+<p>В мультиорганизационном режиме тариф принадлежит компании. Список показывает
+ровно те тарифы, которые относятся к <strong>выбранной в шапке организации</strong>:
+переключили компанию — список пересобрался. Столбец «Орг.» при этом не нужен и
+скрывается: все строки и так одной компании. Он появляется только когда выбрано
+«Все организации» — там принадлежность действительно важно видеть.</p>
+
+<p>Организация тарифа задаётся в карточке (вкладка <em>«Основное»</em> → секция
+<em>«Общее»</em>) и определяет, из какой папки-«дома» строится список директорий
+и куда попадут новые клиенты этого тарифа.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v2018/tarif_org_filter.png" alt="Список тарифов отфильтрован по выбранной организации, столбец «Орг.» скрыт" loading="lazy"></p>
+
+<p><strong>Bulk-операции</strong> — выберите тарифы галочками, появится плавающий тулбар
+со следующими действиями: <em>В архив</em>, <em>Из архива</em>, привязка к
+<em>Линейке</em>, <em>CSV-экспорт выбранных</em>, <em>Удалить</em>. Удаление
+блокируется на сервере, если у тарифа есть активные клиенты — выводится
+список ID, которые надо сначала перевести на другой тариф.</p>
+
+<p><strong>Модальное окно тарифа</strong> делится на четыре верхних вкладки
+(<em>Основное / Услуги / RADIUS / Клиенты</em>) и пять секций левой side-nav
+во вкладке <em>«Основное»</em>. В шапке модалки бейдж <strong>«Назначено клиентам: N»</strong>.
+На мобильном side-nav становится горизонтальным скроллбаром.</p>
+
+<h4>Вкладка «Основное» → секция «Общее»</h4>
+<p>Идентификация тарифа: название, описание, организация, <a href="#tarif-folder">директория</a>,
+привязка к линейке услуг и оператору связи, флаг «Введён в эксплуатацию»,
+«Архивный», «Отображать на сайте», период действия. Цена считается автоматически
+по сумме привязанных услуг.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/01_tarif_modal_main.png" alt="Тариф — Основное"></p>
+
+<h5 id="tarif-folder">Директория тарифа</h5>
+<p><strong>Директория</strong> — папка, в которую попадают новые клиенты этого
+тарифа. Поле заняло место «Валюты»: валюта в интерфейсе не использовалась,
+в базе колонка сохранена.</p>
+
+<ul>
+  <li>Список папок строится от <strong>папки-«дома» организации тарифа</strong>:
+  корень и всё, что внутри него, с отступами по уровню вложенности.
+  Так видно, что «Подъезд №1» лежит внутри ЖК, а не сам по себе;</li>
+  <li>Если у тарифа своей директории нет, поле показывает папку его организации —
+  это и есть значение по умолчанию, пока в карточке ничего не сохраняли;</li>
+  <li>Смена организации в карточке очищает выбор и подтягивает папку новой
+  компании: прежняя директория к ней не относится;</li>
+  <li>Тариф без директории раскладку не меняет — клиент уходит в папку
+  организации.</li>
+</ul>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/folders_v1739/02_tarif_folder.png" alt="Карточка тарифа — поле «Директория» на месте валюты"></p>
+
+<div class="info-box">
+  <strong>Когда поле не работает:</strong> раскладка управляется настройкой
+  <a href="abonents.html#abonents-folder-routing">«Раскладка новых клиентов»</a>. В режимах
+  «Только по папке организации» и «Не раскладывать» директория тарифа
+  игнорируется, и карточка помечает поле предупреждением — чтобы оно не
+  выглядело рабочим вхолостую.
+</div>
+
+<h4>Секция «Лимиты»</h4>
+<p>Объёмы и пороги: лимит трафика (ГБ/мес), число подключений, число VPN-сессий,
+размер скидки за неиспользование. Используется в комплекте с услугами типа «Трафик».</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/01_tarif_modal_limits.png" alt="Тариф — Лимиты"></p>
+
+<h4>Секция «Смена тарифа»</h4>
+<p>Параметры авто-смены тарифа. Промо-тариф: после N дней или N месяцев клиент
+переходит на другой тариф автоматически. Сюда же — резервный тариф, на который
+система переводит клиента при долгой блокировке.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/01_tarif_modal_change.png" alt="Тариф — Смена тарифа"></p>
+
+<h4>Секция «ОП и Доб. блок»</h4>
+<p>Параметры обещанного платежа (срок в днях, стоимость дня) и добровольной
+блокировки (минимум и максимум дней). Если поля пустые — функции отключены
+для этого тарифа.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/01_tarif_modal_op_block.png" alt="Тариф — ОП и Доб. блок"></p>
+
+<h4>Секция «NAT и прочее»</h4>
+<p>NAT-пулы (для трансляции серых IP в публичные), параметры RADIUS-атрибутов,
+дополнительные сетевые настройки. На большинстве тарифов остаётся пустой —
+заполняется только если используется специфическая сетевая логика.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/01_tarif_modal_nat.png" alt="Тариф — NAT и прочее"></p>
+
+<h4>Вкладка «Услуги»</h4>
+<p>Список услуг, привязанных к этому тарифу. Сюда добавляются абонплата, бонусы
+по умолчанию, шейпер. Цена тарифа = сумма цен этих услуг (с учётом методов и периодичности).</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/01_tarif_tab_uslugi.png" alt="Тариф — вкладка Услуги"></p>
+
+<h4>Вкладка «RADIUS»</h4>
+<p>RADIUS-атрибуты, которые попадают в Access-Accept клиентов на этом тарифе:
+ограничение скорости (Mikrotik-Rate-Limit), ACL (Filter-Id), pool name и т.д.
+Эти значения уходят на NAS и определяют поведение сети для клиента.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/01_tarif_tab_radius.png" alt="Тариф — вкладка RADIUS"></p>
+
+<h4>Вкладка «Клиенты»</h4>
+<p>Список клиентов, которые сейчас на этом тарифе. Можно перейти в карточку
+кликом по имени, либо массово перевести группу на другой тариф.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/01_tarif_tab_abonenty.png" alt="Тариф — вкладка Клиенты"></p>
+
+<!-- ===== Услуги: обзор ===== -->
+<h3 id="usluga-overview">Услуги (Usluga) — назначение и роль</h3>
+<details class="section-toc">
+  <summary><strong>Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#usluga-purpose">Зачем нужна услуга</a></li>
+    <li><a href="#usluga-tuu-vs-uu">TUU (шаблон) vs UsersUsluga (экземпляр)</a></li>
+    <li><a href="#usluga-price-cascade">Каскад цены</a></li>
+    <li><a href="#usluga-system">Системные услуги</a></li>
+    <li><a href="#usluga-cleanup">Что делать со старыми услугами</a></li>
+  </ul>
+</details>
+
+<p><strong>Услуга (Usluga)</strong> — атомарная единица биллинга: то, что списывается со счёта (абонплата, статический IP, IPTV-пакет) или начисляется (бонус, компенсация). Хранится в таблице <code>usluga</code>.</p>
+
+<h5 id="usluga-purpose">Зачем нужна услуга</h5>
+<p>Услуга решает три задачи:</p>
+<ol>
+  <li><strong>Списание с баланса</strong> — раз в месяц <code>billing_worker</code> создаёт <code>FinanceOperations</code> на сумму услуги и уменьшает <code>OSTATOK</code>;</li>
+  <li><strong>Применение скорости через шейпер</strong> — поля <code>RATE_IN</code>, <code>RATE_OUT</code> попадают в RADIUS-ответ как <code>Mikrotik-Rate-Limit</code>;</li>
+  <li><strong>Бонусирование</strong> — услуги с отрицательной ценой или системные (<code>system_type</code>) выполняют разные роли: ОП, акции, компенсации.</li>
+</ol>
+
+<h5 id="usluga-tuu-vs-uu">TUU (шаблон) vs UsersUsluga (экземпляр)</h5>
+<table class="data-table">
+  <thead>
+    <tr><th>Сущность</th><th>Что это</th><th>Кто создаёт</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>TARIF_USERS_USLUGA</code> (TUU)</td><td>Шаблон: «эта услуга входит в этот тариф». Цена в TUU.summ может переопределять <code>usluga.summa</code></td><td>Админ при настройке тарифа</td></tr>
+    <tr><td><code>USERS_USLUGA</code> (UU)</td><td>Экземпляр: «эта услуга подключена этому клиенту с такой даты». Хранит индивидуальные настройки</td><td>Автоматически <code>billing_worker</code> при назначении тарифа, или вручную через карточку клиента</td></tr>
+  </tbody>
+</table>
+<p>Один <code>usluga</code> может фигурировать в нескольких TUU (для разных тарифов) и иметь много UU (по одной на каждого подписчика). Удаление <code>usluga</code> заблокировано FK PROTECT, если есть хоть один TUU или UU.</p>
+
+<h5 id="usluga-price-cascade">Каскад цены</h5>
+<p>Когда <code>billing_worker</code> списывает абонплату, он берёт цену из первого заполненного источника:</p>
+<ol>
+  <li><strong><code>UsersUsluga.summ</code></strong> — индивидуальная скидка/цена для конкретного клиента;</li>
+  <li><strong><code>Usluga.summa</code></strong> — стандартная сумма услуги;</li>
+  <li><strong><code>Usluga.price</code></strong> — fallback цена (часто за единицу, например за Мбайт трафика).</li>
+</ol>
+<p>В UI это видно в списке услуг: если используется <em>fallback</em>, цена подсвечена оранжевым с tooltip «эффективная цена: X ₽ / источник: Usluga.price».</p>
+
+<h5 id="usluga-system">Системные услуги</h5>
+<p>Несколько услуг имеют особое поведение, защищены от удаления и не показываются в обычных списках:</p>
+<table class="data-table">
+  <thead>
+    <tr><th>Usluga ID</th><th>Назначение</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>30353</code></td><td>«Обещанный платёж (5 дней, 30 руб/день)» — <code>system_type=11</code>. Управляется через ОП-flow в LK / Mobile / SMS</td></tr>
+    <tr><td><code>30280</code></td><td>Системная служебная услуга — не удаляется</td></tr>
+    <tr><td><code>-3</code>, <code>-4</code></td><td>Legacy-записи для старого формата ОП — оставлены для совместимости</td></tr>
+  </tbody>
+</table>
+<p>Поле <code>system=true</code> у услуги — флаг «не показывать клиенту в счётах», даже если списывается.</p>
+
+<h5 id="usluga-cleanup">Что делать со старыми услугами</h5>
+<ul>
+  <li><strong>Не используется ни в TUU, ни в UU</strong> — кандидат на удаление. Можно удалять через UI;</li>
+  <li><strong>Используется в TUU</strong> — сначала уберите её из тарифов (или архивируйте тарифы);</li>
+  <li><strong>Используется в UU</strong> — отвяжите от клиентов или дождитесь пока услуга выключится по сроку;</li>
+  <li><strong>Системные</strong> (id 30353/30280) — <strong>не удалять никогда</strong>, потеря этих записей сломает ОП и системные функции.</li>
+</ul>
+
+<div class="info-box">
+  <strong>Найти orphan-услуги</strong> (не привязанные ни к одному тарифу и ни к одному клиенту) можно через SQL:
+  <pre><code>SELECT u.* FROM usluga u
+WHERE NOT EXISTS (SELECT 1 FROM "USERS_USLUGA" WHERE "USLUGA_ID"=u."ID" AND "DELETED"=false)
+  AND NOT EXISTS (SELECT 1 FROM "TARIF_USERS_USLUGA" WHERE "USLUGA_ID"=u."ID")
+  AND u."ID" NOT IN (30353, 30280) AND u."ID" >= 0;</code></pre>
+  Эти услуги — кандидаты на удаление при чистке БД.
+</div>
+
+<h3 id="service-policies">Политики абонентских начислений</h3>
+
+<details class="section-toc">
+  <summary><strong>Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#policy-what">Зачем это нужно</a></li>
+    <li><a href="#policy-modes">Два режима: наблюдение и боевой</a></li>
+    <li><a href="#policy-fields">Из чего состоит политика</a></li>
+    <li><a href="#policy-line">Пресет «Содержание линии»</a></li>
+    <li><a href="#policy-run">Как запускается и что проверять</a></li>
+  </ul>
+</details>
+
+<p><strong>Политика</strong> — правило, по которому услуга сама назначается клиенту при
+попадании в заданное состояние и снимается при выходе из него. Настраивается на
+странице <code>/admin/settings/service_policies/</code>, работает ежедневной задачей.</p>
+
+<h5 id="policy-what">Зачем это нужно</h5>
+
+<p>Обычная услуга назначается вручную или при подключении тарифа. Политика закрывает
+другой случай: <em>«всем, кто попал в такую-то ситуацию, начислять вот это, пока
+ситуация держится»</em>. Классический пример — клиент перестал платить и пользоваться
+интернетом, но линия и порт на оборудовании продолжают быть закреплёнными за ним.</p>
+
+<p>Механизм универсальный: новая политика настраивается записью в интерфейсе, без
+изменения кода. Пресеты в галерее задают типовые наборы условий.</p>
+
+<h5 id="policy-modes">Два режима: наблюдение и боевой</h5>
+
+<table class="data-table">
+  <thead><tr><th>Режим</th><th>Что делает</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Наблюдение</strong> (<code>log</code>)</td>
+      <td>Только считает, кто попал бы под политику. Ничего не назначает и не
+          списывает. Список кандидатов кладётся в кэш для сверки, счётчик за каждый
+          день копится в настройке <code>SERVICE_POLICY_LOG_HISTORY</code> (120 дней).</td>
+    </tr>
+    <tr>
+      <td><strong>Боевой</strong> (<code>active</code>)</td>
+      <td>Назначает услугу при входе в состояние, снимает при выходе, ведёт эскалацию
+          по числу месяцев. Начисление идёт через обычный ежемесячный расчёт.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="info-box">
+  <strong>Перед боевым режимом — месяц наблюдения.</strong> Политика затрагивает сразу
+  тысячи клиентов, и ошибка в условиях обходится дорого. Месяц в режиме наблюдения
+  показывает и состав кандидатов, и динамику: сколько людей уходит из состояния само по
+  себе, когда возвращается к оплате.
+</div>
+
+<h5 id="policy-fields">Из чего состоит политика</h5>
+
+<table class="data-table">
+  <thead><tr><th>Параметр</th><th>Смысл</th></tr></thead>
+  <tbody>
+    <tr><td>Услуга</td><td>Что назначается при входе в состояние.</td></tr>
+    <tr><td>Условия входа</td><td>Сколько месяцев без платежей и без интернет-сессий, учитывать ли добровольную приостановку, минимальный «возраст» договора.</td></tr>
+    <tr><td>Эскалация</td><td>Через сколько месяцев в состоянии клиент помечается «к расторжению».</td></tr>
+    <tr><td>Организация</td><td>Ограничить политику одной организацией или применять ко всем.</td></tr>
+    <tr><td>Режим</td><td>Наблюдение или боевой.</td></tr>
+  </tbody>
+</table>
+
+<p>Два поля услуги меняют поведение ежемесячного расчёта:</p>
+
+<ul>
+  <li><strong>Начислять независимо от баланса</strong> — услуга списывается даже при
+      отрицательном балансе и блокировке. Обычные услуги в этой ситуации пропускаются.</li>
+  <li><strong>Приостанавливать абонплату тарифа</strong> — пока политика активна,
+      месячная плата по тарифу не начисляется, остаётся только услуга политики.</li>
+</ul>
+
+<h5 id="policy-line">Пресет «Содержание линии»</h5>
+
+<p>Услуга <em>«Содержание линии связи и аренда порта при приостановке пользования»</em> —
+150 ₽/мес для клиентов, у которых больше двух календарных месяцев нет ни платежей, ни
+интернет-сессий. Начисляется независимо от баланса; прекращается автоматически, как
+только клиент возвращается к пользованию. Через шесть месяцев в состоянии — пометка
+«к расторжению».</p>
+
+<p>Смысл для клиента: линия и порт остаются закреплёнными за ним, номер договора и
+настройки сохраняются, возобновить услугу можно без повторного подключения.</p>
+
+<h5 id="policy-run">Как запускается и что проверять</h5>
+
+<ol>
+  <li>Ежедневная задача в 8:00 (до часа ежемесячных начислений) прогоняет все включённые
+      политики.</li>
+  <li>Общий выключатель <code>SERVICE_POLICY_ENABLED</code> глушит механизм целиком —
+      задача выходит, не проверяя политики.</li>
+  <li>Включение боевого режима — два переключателя на странице политик: сам механизм и
+      режим политики.</li>
+</ol>
+
+<p>Что смотреть в режиме наблюдения: число кандидатов и его динамику по дням. Резкий
+скачок означает, что условия входа задевают не тех, кого задумывали — например, слишком
+короткий порог по месяцам или неучтённая добровольная приостановка.</p>
+
+<div class="warning-box">
+  <strong>Оповещение клиентов — обязательный шаг.</strong> Введение платной услуги
+  требует заблаговременного уведомления: сайт, e-mail, личный кабинет, SMS. Пока
+  оповещение не разослано и документы на сайте не обновлены, боевой режим включать
+  нельзя, каким бы готовым ни был механизм.
+</div>
+
+<h3 id="tarif-media">2.1.1. Медиа тарифа</h3>
+<p>В карточке тарифа на вкладке <em>«Общее»</em> есть блок <strong>«Медиа»</strong> — четыре слота:
+обложка и видео, отдельно для светлой и тёмной темы сайта. Файлы уезжают в GCS, в тарифе
+хранится только ссылка.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v1999/tarif_modal_media.png" alt="Блок Медиа в карточке тарифа"></p>
+
+<ul>
+  <li>Картинки — JPG/PNG/WebP до 5 МБ, видео — MP4/WebM до 16 МБ (без звука).</li>
+  <li>Превью видео проигрывается при наведении, двойной клик по грипу сбрасывает ширину колонки.</li>
+  <li>В списке тарифов рядом с названием видно, что залито: иконка-картинка или иконка-плёнка,
+      солнце — светлая тема, луна — тёмная. Наведение показывает превью.</li>
+  <li>Обложки сайтовых тарифов переносятся командой
+      <code>manage.py import_tarif_covers_from_site --apply</code>: она читает
+      <code>tariffs.json</code> с сайта, сопоставляет тарифы по названию и заливает файлы в GCS.
+      Спорные пары задаются через <code>--map "Смит=131"</code>.</li>
+</ul>
+
+<h3 id="table-columns">2.1.2. Настройка колонок таблицы</h3>
+<p>Кнопка <strong>«Колонки»</strong> в тулбаре открывает список колонок: галочками выбирается состав,
+перетаскиванием строк — порядок. Заголовки в самой таблице тоже перетаскиваются, а правый край
+заголовка тянется мышью — так меняется ширина.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v1999/tarif_columns_modal.png" alt="Модалка настройки колонок"></p>
+
+<p>Рядом — переключатель <strong>плотности строк</strong>. Компактный режим срезает вертикальные
+отступы почти вдвое (строка 53 → 38&nbsp;px) и даёт на экран на 5-6 записей больше; шрифт при этом
+не мельче 13&nbsp;px. Режим тоже запоминается за сотрудником.</p>
+
+<p>Настройка сохраняется <strong>в аккаунте сотрудника</strong>, а не в браузере — на другом
+компьютере таблица откроется так же. Колонка с чекбоксом выбора строк и колонка действий
+не переставляются и не скрываются. Механизм общий: то же поведение получает любая таблица,
+размеченная как <code>smit-tbl</code>.</p>
+
+<h3 id="tarif-mobile">2.1.3. На телефоне</h3>
+<p>На узком экране тулбар сворачивается в строку <em>[поиск] [Фильтры]</em>, фильтры уезжают
+в нижнюю панель, KPI превращаются в горизонтальную ленту, а строки таблицы — в карточки
+«поле — значение». Кнопка «плюс» внизу справа добавляет тариф.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v1999/tarif_mobile.png" alt="Список тарифов на телефоне" style="max-width:390px">
+<img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v1999/tarif_mobile_filters.png" alt="Панель фильтров на телефоне" style="max-width:390px"></p>
+
+<h4 id="tarif-mobile-cover">Обложка в карточке</h4>
+
+<p>Если у тарифа залита <a href="#tarif-media">обложка</a>, карточка показывает её
+сверху: картинку или зацикленный ролик без звука. Ролик включается, только когда
+карточка попала на экран, — иначе телефон тянул бы десяток видео разом. В тёмной
+теме подставляется тёмный вариант, если он загружен.</p>
+
+<p>Значок <span aria-hidden="true">⛶</span> в углу обложки означает, что её можно
+открыть целиком. <strong>Тап открывает обложку отдельным слоем</strong> поверх
+списка: картинка во весь экран, ролик — со звуком и полосой перемотки. Закрывается
+клавишей <kbd>Esc</kbd>, крестиком или тапом мимо. На компьютере обложки в карточках
+нет: там работает превью при наведении на название.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v2169/mobile_card_cover.png" alt="Карточка тарифа с обложкой" style="max-width:340px">
+<img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v2169/mobile_cover_layer.png" alt="Обложка открыта отдельным слоем" style="max-width:340px"></p>
+<p class="img-caption"><em>Слева — обложка в карточке со значком «развернуть».
+Справа — она же, открытая слоем: ролик проигрывается с управлением, под ним название тарифа.</em></p>
+
+<div class="info-box">
+<strong>Круглая кнопка «плюс»</strong> внизу справа запускает не пустую форму,
+а <a href="#tarif-wizard">мастер создания тарифа</a> — тот же, что на компьютере.
+</div>
+
+
+<h3 id="tarif-wizard">2.1.4. Мастер создания тарифа</h3>
+
+<p>Кнопка <strong>«Мастер»</strong> слева в тулбаре списка (на телефоне — круглая
+кнопка «плюс»). Полная карточка тарифа — это несколько десятков полей: лимиты,
+смена тарифа, обещанный платёж, NAT. Заполнять их при заведении нового тарифа
+не нужно — мастер спрашивает только то, без чего тариф не заработает, остальное
+берёт по умолчанию и остаётся доступным в карточке потом.</p>
+
+<div class="flow-diagram" style="display:flex;flex-wrap:wrap;gap:.6rem;align-items:stretch;margin:1rem 0">
+  <div class="vf-step">
+    <div class="vf-ico">💬</div>
+    <div class="vf-body"><b>Фраза оператора</b><span>«безлимит 300 Мбит/с,<br>850 ₽»</span></div>
+  </div>
+  <div class="vf-arrow">→</div>
+  <div class="vf-step vf-step-charge">
+    <div class="vf-ico">🤖</div>
+    <div class="vf-body"><b>Помощник</b><span>читает действующий<br>прайс линейки</span></div>
+  </div>
+  <div class="vf-arrow">→</div>
+  <div class="vf-step">
+    <div class="vf-ico">📝</div>
+    <div class="vf-body"><b>Шаг 1</b><span>название, описание,<br>линейка, организация</span></div>
+  </div>
+  <div class="vf-arrow">→</div>
+  <div class="vf-step">
+    <div class="vf-ico">💰</div>
+    <div class="vf-body"><b>Шаг 2</b><span>интернет-услуга<br>и цена в месяц</span></div>
+  </div>
+  <div class="vf-arrow">→</div>
+  <div class="vf-step">
+    <div class="vf-ico">✅</div>
+    <div class="vf-body"><b>Шаг 3</b><span>сводка перед<br>записью в базу</span></div>
+  </div>
+</div>
+
+<h4 id="tarif-wizard-ai">Помощник заполняет черновик</h4>
+
+<p>Поле <em>«Опишите тариф словами»</em> и кнопка <strong>«Заполнить»</strong>.
+Помощник не придумывает цифры из воздуха: перед ответом он получает действующие
+тарифы <strong>выбранной линейки и организации</strong> — их названия, описания
+и цены. Поэтому черновик попадает в принятый у оператора формат имени, а не
+выдаёт «Тариф 300 Мбит».</p>
+
+<p>Подсказка под полем меняется вслед за выбором и всегда говорит, на что именно
+смотрит помощник: <em>«Помощник смотрит на действующий прайс: линейка „Интернет“,
+„СмИТ“. Проверьте, что получилось.»</em></p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v2169/wizard_ai_filled.png" alt="Мастер: помощник заполнил название, описание и цену"></p>
+<p class="img-caption"><em>Шаг 1 после нажатия «Заполнить». Название и описание пришли от помощника,
+линейка и организация были выбраны заранее.</em></p>
+
+<pre class="mermaid">
+flowchart LR
+    OP["Оператор"] -->|"фраза"| AI["Помощник"]
+    PRICE[("Прайс линейки<br/>и организации")] --> AI
+    AI --> DRAFT["Черновик"]
+    DRAFT --> CHECK["Оператор<br/>проверяет"]
+    CHECK --> T[("Тариф")]
+    style PRICE fill:#e8f6ef,stroke:#43b77a
+    style CHECK fill:#fff3cd,stroke:#f0ad4e
+</pre>
+
+<div class="warning-box">
+<strong>Черновик — не решение.</strong> Помощник опирается на живой прайс, но
+цену и название всё равно перечитывайте: за то, по чему будут списывать деньги,
+отвечает оператор, а не подсказка. Линейку, которую вы выбрали, помощник не меняет.
+</div>
+
+<h4 id="tarif-wizard-org">Организация и линейка</h4>
+
+<ul>
+  <li><strong>Организация</strong> обязательна и подставляется заранее: та, что
+      выбрана в шапке, а в режиме «Все организации» — организация по умолчанию.
+      Выбирается тем же <a href="extras.html#ui-components">единым компонентом организаций</a>, что
+      и в списках, — с фавиконкой и фирменным цветом компании.</li>
+  <li><strong>Смена организации перебирает линейки</strong>: в списке остаются
+      только её линейки плюс общие. Если прежняя линейка чужая, мастер ставит
+      «Интернет», а если его у этой организации нет — первую доступную.</li>
+  <li>Список линеек раскрывается <strong>вверх</strong>, если внизу не хватает
+      места: иначе на ноутбуке он растягивал окно и кнопка «Далее» уезжала
+      за нижний край.</li>
+</ul>
+
+<h4 id="tarif-wizard-example">Пример: тариф за минуту</h4>
+
+<ol>
+  <li>Тулбар → <strong>«Мастер»</strong>. В полях уже стоят линейка «Интернет»
+      и организация «СмИТ».</li>
+  <li>В поле описания — <code>безлимит 300 Мбит/с для частного сектора, 850 ₽</code>,
+      кнопка <strong>«Заполнить»</strong>.</li>
+  <li>Помощник возвращает черновик — на живых данных это было:
+<pre><code>{
+  "name": "2025_SmIT300",
+  "comment": "Безлимитный интернет со скоростью до 300 Мбит/с для частного сектора.",
+  "range_id": 1,
+  "inet_price": 850
+}</code></pre>
+      Имя собрано по образцу соседних тарифов линейки (<em>2025_SmIT10</em>,
+      <em>2025_SmIT20</em>), цена взята из фразы.</li>
+  <li><strong>«Далее»</strong> — шаг 2 подставил интернет-услугу и цену
+      850&nbsp;₽/мес.</li>
+  <li><strong>«Далее»</strong> — шаг 3 показывает всё, что уйдёт в базу.
+      Кнопка <strong>«Создать тариф»</strong>.</li>
+</ol>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v2169/wizard_step2.png" alt="Мастер, шаг 2: услуги и цена" style="max-width:47%">
+<img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v2169/wizard_step3.png" alt="Мастер, шаг 3: проверка перед созданием" style="max-width:47%"></p>
+<p class="img-caption"><em>Шаг 2 — что тариф даёт клиенту и почём. Шаг 3 — сводка;
+до нажатия «Создать тариф» в базе ничего не появляется.</em></p>
+
+<p>Дальше тариф открывается обычной карточкой: лимиты, правила смены, обещанный
+платёж и остальное правится там.</p>
+
+<h3 id="usluga-list">2.2. Услуги и Бонусы</h3>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v1999/usluga_list.png" alt="Список услуг: KPI и колонка организации"></p>
+
+<p>У услуги есть <strong>организация</strong>. Пустое значение означает «общая услуга» — её видят
+все организации. Сотрудник видит свои услуги плюс общие: при включённой изоляции персонала
+чужой прайс в списке не показывается. Колонка «Орг.» появляется только при мультиорге.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v1999/usluga_modal_org.png" alt="Организация в карточке услуги"></p>
+
+<p>При смене организации у тарифа его услуги переезжают вместе с ним — кроме тех, что
+используются тарифами других организаций. Перенос показывается в подтверждении и попадает
+в журнал.</p>
+
+<p>Услуги — то, что списывается с лицевого счёта (абонплата, доп. услуги, разовые работы).
+Бонусы — то, что начисляется на счёт (компенсации, скидки, акции). Для оператора это
+один справочник, разделённый по знаку суммы и типу.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/01_usluga_list.png" alt="Список услуг"></p>
+
+<p><strong>Toolbar</strong>:</p>
+<ul>
+  <li>Вкладки по типам (абонплата, разовая, бонус, обещанный платёж и т.д.); вкладка <em>«Все»</em> показывает полное имя.</li>
+  <li>Чип <em>«Не привязанные»</em> с счётчиком — показывает услуги-сироты,
+  которые не используются ни в одном тарифе и ни одним клиентом. Полезно для уборки справочника.</li>
+  <li>Поиск по имени, тарифу или точному ID.</li>
+</ul>
+
+<p><strong>Колонки таблицы</strong>:</p>
+<ul>
+  <li><strong>Услуга</strong> — название с тултипом ID.</li>
+  <li><strong>Эфф. цена</strong> — итоговая цена, рассчитанная по каскаду:
+  индивидуальная сумма клиента → шаблон <em>summa</em> у услуги → шаблон <em>price</em> у услуги.
+  Если используется fallback — цена показана оранжевым с подчёркиванием, а в tooltip написан источник.
+  Пустое значение «—» означает что услуга бесплатна или цена назначается индивидуально.</li>
+  <li><strong>Метод</strong> — иконка <em>fa-sync</em> (Ежемесячно) или <em>fa-bolt</em> (Разово).</li>
+  <li><strong>В ЛК</strong> — отмечены услуги, которые клиент видит в личном кабинете.</li>
+</ul>
+
+<p><strong>Системные услуги</strong> с фиксированными ID удалить нельзя — они используются
+ядром биллинга для обещанных платежей, бонусов и блокировок трафика.</p>
+
+<p><strong>Модальное окно услуги</strong> делится на 6 секций (вертикальная навигация слева).
+Открывается кликом по карандашу в строке списка.</p>
+
+<h4>Секция «Основные»</h4>
+<p>Название, тип услуги (трафик / IP-телевидение / стандартный / бонус / обещанный платёж / системный),
+цена, валюта, тип абонплаты (помесячно / разово / детализированно).
+Также — флаг «Включена», описание для оператора.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/01_usluga_modal_main.png" alt="Услуга — Основные"></p>
+
+<h4 id="usluga-periodicity">Секция «Периодичность»</h4>
+<p>Когда и какими долями списывается услуга. Правило собирается из галок этой
+секции и «Метода списания» со вкладки «Основные»; итог показан словами в зелёной
+плашке над галками — там же видно, что именно посчитает биллинг.</p>
+
+<p><strong>Периодику включают галки.</strong> «Метод списания» сам по себе её не
+включает: он лишь уточняет шаг там, где периодика уже включена. Так сделано
+намеренно — в базе метод и галки исторически разошлись (например, услуги с
+методом «Разово» фактически списываются ежемесячно), и если бы главным стал
+метод, часть начислений просто прекратилась бы.</p>
+
+<table>
+<thead><tr><th>Настройка</th><th>Что делает</th></tr></thead>
+<tbody>
+<tr><td>Периодическая (1 раз в месяц)</td>
+    <td>Регулярное списание. Шаг берётся из «Метода списания»: <em>Ежемесячно</em> —
+    раз в месяц, <em>Ежечасно</em> / <em>Ежедневно</em> / <em>Ежегодно</em> — соответственно,
+    <em>Ежемесячно равными долями в день</em> — месячная цена делится на дни.</td></tr>
+<tr><td>Списывать ежедневно</td>
+    <td>Каждый день списывается указанная сумма (не делится). Чтобы делить
+    месячную цену на дни, выберите метод «Ежемесячно равными долями в день».</td></tr>
+<tr><td>Авансовое списание (начало месяца)</td>
+    <td>1-го числа за наступающий месяц. Период дописывается в описание операции
+    («Абонплата: Интернет (за сентябрь 2026)»).</td></tr>
+<tr><td>Постоплатное (конец месяца)</td>
+    <td>В последний день месяца за прожитый период. Если выбраны обе галки —
+    работает аванс, форма об этом предупреждает.</td></tr>
+<tr><td>Деактивировать при недостатке средств</td>
+    <td>Списание, уводящее счёт ниже порога отключения, не выполняется: услуга
+    выключается, клиенту уходит сообщение, событие пишется в аудит. Порог берётся
+    из лицевого счёта («Порог отключения», «Не отключать при превышении порога»);
+    если порог не задан — правило «не уходить в минус».</td></tr>
+<tr><td>Не списывать абон.плату пока услуга активна</td>
+    <td>Тарифная абонплата приостанавливается, пока услуга активна — так работает
+    «Содержание линии связи».</td></tr>
+<tr><td>Сдвигать дату следующего списания</td>
+    <td>Списание привязано ко дню подключения, а не к 1-му числу: подключили
+    17-го — следующее 17-го числа следующего месяца. Короткие месяцы
+    учитываются: 31-е превращается в 30-е или 28-е.</td></tr>
+</tbody>
+</table>
+
+<p><strong>Равными долями.</strong> Месячная цена делится на число дней текущего
+месяца, поэтому за февраль и за март клиент платит одинаково, а при подключении
+в середине месяца — только за прожитые дни. Остаток от деления раздаётся первым
+дням месяца, чтобы за месяц вышла ровно месячная сумма.</p>
+
+<p>Правило целиком описано в <code>billing/services/charge_schedule.py</code> —
+им пользуются и ежедневный прогон биллинга, и смена тарифа, и ручное подключение
+услуги в карточке клиента, поэтому дата первого списания везде одна и та же.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/01_usluga_modal_period.png" alt="Услуга — Периодичность"></p>
+
+<h4>Секция «ЛК клиента»</h4>
+<p>Отображение услуги в личном кабинете клиента: видимое имя, иконка, описание,
+флаг «Доступна для подключения через ЛК» (клиент может сам её включить),
+флаг «Видна» (только показывать без возможности изменения).</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/01_usluga_modal_lk.png" alt="Услуга — ЛК"></p>
+
+<h4>Секция «Скидки»</h4>
+<p>Условия скидок при подключении услуги: фиксированная сумма / процент,
+условия применения (для определённых тарифов или типов клиентов), даты действия скидки.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/01_usluga_modal_discount.png" alt="Услуга — Скидки"></p>
+
+<h4>Секция «Шейпер»</h4>
+<p>Параметры ограничения скорости (только для услуг типа «Трафик»). RX/TX скорости,
+burst-параметры, размер очереди. Эти значения попадают в RADIUS-атрибут <code>Mikrotik-Rate-Limit</code>
+или аналогичный для других вендоров.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/01_usluga_modal_shaper.png" alt="Услуга — Шейпер"></p>
+
+<h4>Секция «Связи»</h4>
+<p>Привязка к подсети (Tariff Ruleset — для специальной тарификации в локальной сети)
+и к типу услуги (используется в RADIUS-фильтре и СОРМ-выгрузке).</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/01_usluga_modal_links.png" alt="Услуга — Связи"></p>
+
+<h3 id="tarif-ruleset">2.3. Правила и сети</h3>
+<p>URL: <code>/admin/tarifs/TarifRuleset/</code></p>
+
+<p><strong>Правило сети</strong> отвечает на вопрос «что клиенту доступно и на каких
+условиях, когда обычный интернет ему уже не положен». Самый частый случай —
+нулевой баланс: интернет закрыт, но личный кабинет, сайт банка и госуслуги
+должны открываться, иначе клиент не сможет заплатить и вернуть связь.</p>
+
+<div class="info-box">
+<strong>Что в правиле работает, а что осталось от старого биллинга.</strong>
+Поля «Цена входящего», «Цена исходящего» и «Лимит» достались от повременной
+тарификации Carbon&nbsp;4 — сейчас трафик по подсетям никто не считает, и эти
+поля стоят пустыми у всех правил. Рабочая часть правила — <strong>условия</strong>:
+список адресов и действие для каждого. Их и выгружают в белый список портала.
+</div>
+
+<h4 id="ruleset-flow">Путь от правила до клиента</h4>
+
+<div class="flow-diagram" style="display:flex;flex-wrap:wrap;gap:.6rem;align-items:stretch;margin:1rem 0">
+  <div class="vf-step">
+    <div class="vf-ico">📋</div>
+    <div class="vf-body"><b>Правило</b><span>«Льготные сайты»<br>приоритет 100</span></div>
+  </div>
+  <div class="vf-arrow">→</div>
+  <div class="vf-step">
+    <div class="vf-ico">🔢</div>
+    <div class="vf-body"><b>Условия</b><span>адрес + действие,<br>сверху вниз</span></div>
+  </div>
+  <div class="vf-arrow">→</div>
+  <div class="vf-step vf-step-charge">
+    <div class="vf-ico">📤</div>
+    <div class="vf-body"><b>Выгрузка в ACL</b><span>кнопка на вкладке<br>«Применение»</span></div>
+  </div>
+  <div class="vf-arrow">→</div>
+  <div class="vf-step">
+    <div class="vf-ico">🛡</div>
+    <div class="vf-body"><b>ACL-группа</b><span>«Отрицат. баланс»<br>24 адреса</span></div>
+  </div>
+  <div class="vf-arrow">→</div>
+  <div class="vf-step vf-step-block">
+    <div class="vf-ico">🙋</div>
+    <div class="vf-body"><b>Клиент в минусе</b><span>видит только<br>эти адреса</span></div>
+  </div>
+</div>
+
+<p>Ключевой шаг здесь — <strong>выгрузка</strong>. Пока разрешающие условия не
+уехали в ACL-группу, правило остаётся описанием на бумаге: страница-заглушка
+читает именно группу, а не таблицу правил.</p>
+
+<pre class="mermaid">
+flowchart LR
+    OP["Оператор"] --> C[("Условия<br/>правила")]
+    C -->|"«Выгрузить в ACL»<br/>только «открыть»"| ACL[("ACL-группа")]
+    ACL --> PP["Captive Portal"] --> USER["Клиент в минусе"]
+    C -.->|"без выгрузки"| NONE["Не применяется"]
+    style NONE fill:#fff3cd,stroke:#f0ad4e
+    style ACL fill:#e8f6ef,stroke:#43b77a
+</pre>
+
+<div class="warning-box">
+<strong>Выгрузка не затирает ручные адреса.</strong> Записи, созданные правилом,
+помечены в комментарии меткой <code>[rule:N]</code>. При повторной выгрузке
+удаляются и создаются заново только они — адреса, которые оператор добавил
+в группу руками, остаются на месте.
+</div>
+
+<h4 id="ruleset-list">Список правил</h4>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v2138/01_ruleset_list.png" alt="Список правил сети"></p>
+<p class="img-caption"><em>Статус — кружок (зелёный работает, серый выключено), дальше название,
+организации и описание. Справа — счётчики условий и услуг.</em></p>
+
+<table class="data-table">
+  <thead>
+    <tr><th>Колонка</th><th>Что показывает</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>Статус</strong></td><td>Кружок: зелёный — правило применяется, серый — выключено.
+    Подпись доступна в подсказке и голосом скринридера. Скрыть колонку нельзя</td></tr>
+    <tr><td><strong>Орг.</strong></td><td>Организации, за которыми закреплено правило (единый бейдж).
+    Прочерк — правило общее, его видят все. Скрыть колонку нельзя</td></tr>
+    <tr><td><strong>Условий</strong></td><td>Сколько адресов описано в правиле; в подсказке — сколько из них разрешающих</td></tr>
+    <tr><td><strong>Услуг</strong></td><td>Сколько услуг ссылается на правило. Пока счётчик не нулевой, удалить правило нельзя</td></tr>
+    <tr><td><strong>Вх. ₽ · Исх. ₽ · Лимит</strong></td><td>Наследие повременной тарификации, у всех правил пусто. Колонки можно скрыть</td></tr>
+  </tbody>
+</table>
+
+<p>Колонки, плотность строк и их порядок настраиваются кнопками справа от поиска
+и сохраняются <strong>в профиле сотрудника</strong>, а не в браузере — на другом
+компьютере список выглядит так же.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v2138/07_ruleset_columns.png" alt="Менеджер колонок"></p>
+<p class="img-caption"><em>Колонки «Статус», «Название», «Орг.» и «Действ» помечены как обязательные:
+без них строка перестаёт что-либо значить.</em></p>
+
+<h4 id="ruleset-conditions">Условия правила</h4>
+
+<p>Условие — это одна строка списка доступа: <em>тип адреса</em>, <em>сам адрес</em>
+и <em>что с ним делать</em>. Порядок важен так же, как на сетевом железе: проверка
+идёт сверху вниз, и решает первое подошедшее условие. Поэтому частные адреса
+держат выше общих, а строки можно двигать стрелками, не пересоздавая правило.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v2138/04_ruleset_conditions.png" alt="Конструктор условий правила"></p>
+<p class="img-caption"><em>Вкладка «Условия»: адрес, действие, комментарий «зачем открыт».
+Каждое условие сохраняется сразу, отдельной кнопкой «Сохранить» пользоваться не нужно.</em></p>
+
+<table class="data-table">
+  <thead>
+    <tr><th>Тип адреса</th><th>Что принимает</th><th>Пример</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>Подсеть / IP</strong></td><td>Адрес или сеть в формате CIDR</td><td><code>10.0.0.0/24</code>, <code>93.158.134.3</code></td></tr>
+    <tr><td><strong>Домен</strong></td><td>Имя хоста; протокол и путь отбрасываются при сохранении</td><td><code>lk.вашдомен.ru</code></td></tr>
+    <tr><td><strong>Адрес страницы</strong></td><td>Полный URL, обязательно с <code>http://</code> или <code>https://</code></td><td><code>https://вашдомен.ru/pay</code></td></tr>
+  </tbody>
+</table>
+
+<table class="data-table">
+  <thead>
+    <tr><th>Действие</th><th>Что означает</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>Открыть бесплатно</strong></td><td>Адрес доступен даже при закрытом интернете. Только такие условия уезжают в ACL-группу</td></tr>
+    <tr><td><strong>Тарифицировать по ценам правила</strong></td><td>Трафик считается по ценам из вкладки «Правило». Работает только там, где включён повременной учёт</td></tr>
+    <tr><td><strong>Отправить на страницу-заглушку</strong></td><td>Запрос к адресу перенаправляется на портал (HTTP-адрес правила)</td></tr>
+    <tr><td><strong>Запретить</strong></td><td>Адрес закрыт независимо от остальных правил</td></tr>
+  </tbody>
+</table>
+
+<p>Адрес проверяется при сохранении: <code>10.0.0.300</code> и «сайт банка»
+не пройдут — оператор увидит подсказку с примером вместо молчаливо
+испорченного списка доступа.</p>
+
+<h4 id="ruleset-apply">Вкладка «Применение»</h4>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v2138/05_ruleset_apply.png" alt="Вкладка «Применение» — ACL-группа и приоритет"></p>
+
+<ul>
+  <li><strong>ACL-группа портала</strong> — куда выгружать разрешающие условия. Группу читает
+  страница-заглушка Captive&nbsp;Portal; без выбранной группы кнопка выгрузки объяснит, что
+  выгружать некуда.</li>
+  <li><strong>Приоритет</strong> — чем больше число, тем раньше правило применяется среди прочих.</li>
+  <li><strong>Правило включено</strong> — выключенное правило перестаёт применяться, но условия,
+  привязки услуг и уже выгруженные адреса остаются на месте.</li>
+  <li>Строка под селектором показывает состояние группы: сколько всего адресов, сколько из них
+  от этого правила и сколько разрешающих условий готово к выгрузке.</li>
+</ul>
+
+<h4 id="ruleset-actions">Действия со строкой</h4>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v2138/02_ruleset_row_menu.png" alt="Меню действий строки"></p>
+
+<ul>
+  <li><strong>Редактировать</strong> — карточка правила (три вкладки: Правило · Условия · Применение).</li>
+  <li><strong>Копировать</strong> — открывается карточка с заполненными полями и именем «… (копия)».
+  Условия исходного правила переносятся сервером при сохранении, поэтому копировать
+  «Льготные сайты» под другую организацию — одно действие, а не пятнадцать.</li>
+  <li><strong>Включить / Выключить</strong> — переключение прямо из списка.</li>
+  <li><strong>Удалить</strong> — заблокировано, пока на правило ссылаются услуги; подсказка объясняет причину.</li>
+</ul>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v2138/06_ruleset_copy.png" alt="Копия правила"></p>
+<p class="img-caption"><em>Копия — это новая запись: исходное правило не меняется, а на вкладке
+«Условия» видно, что они приедут вместе с ним после сохранения.</em></p>
+
+<h4 id="tarif-bulk">Массовые действия и общая таблица</h4>
+
+<p>Списки «Правила и сети» и «Программы лояльности» работают на одном
+табличном компоненте: одинаковые чекбоксы, одинаковая панель действий,
+одинаковый менеджер колонок и одинаковое поведение на телефоне.</p>
+
+<pre class="mermaid">
+flowchart LR
+    SEL["Отметили<br/>строки"] --> BAR["Панель<br/>действий"] --> ACT{"Вкл · Выкл<br/>Удалить"}
+    ACT --> CONF["Подтверждение:<br/>что будет + 5 имён"]
+    CONF -->|"Отмена"| BACK["Без изменений"]
+    CONF -->|"Да"| SRV["Сервер применяет"]
+    SRV --> SKIP["Занятые<br/>пропущены"] --> TOAST["Сделано N,<br/>пропущено M"]
+    SRV --> LOG[("Аудит")]
+    style CONF fill:#e8f6ef,stroke:#43b77a
+    style SKIP fill:#fff3cd,stroke:#f0ad4e
+</pre>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v2138/03_ruleset_bulk.png" alt="Панель массовых действий"></p>
+<p class="img-caption"><em>Панель появляется, когда выбрана хотя бы одна строка,
+и показывает, сколько записей отмечено.</em></p>
+
+<p>Подтверждение всегда объясняет <strong>что произойдёт</strong> и перечисляет
+первые пять выбранных записей — оператор видит, что именно он отметил, а не
+только количество.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v2138/08_ruleset_confirm.png" alt="Подтверждение массового действия"></p>
+
+<div class="warning-box">
+<strong>Занятые записи сервер не трогает.</strong> Правило, на которое ссылаются
+услуги, и программа с действующими подключениями клиентов не удаляются даже в
+массовом действии: они возвращаются списком пропущенных, и оператор видит,
+сколько записей осталось нетронутыми и почему.
+</div>
+
+<h4 id="tarif-mobile-lists">На телефоне</h4>
+
+<p>Таблица разбирается на карточки: подписи полей берутся из шапки, служебные
+колонки и чекбоксы скрываются (массовые операции — работа за компьютером),
+поиск и кнопка добавления делят одну строку.</p>
+
+<div class="screenshot-pair">
+  <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v2138/09_ruleset_mobile.png" alt="Правила и сети на телефоне">
+  <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v2138/14_loyalty_mobile.png" alt="Программы лояльности на телефоне">
+</div>
+<p class="img-caption"><em>Слева правила, справа программы лояльности: одинаковые карточки,
+кнопка действий в конце карточки.</em></p>
+
+<h3 id="card-series">2.4. Карты оплаты</h3>
+<div class="note">Пункт «Карты оплаты» убран из меню раздела (решение от 24.08.2026):
+картами никто не пополняет, в базе остались шесть серий и три карты из старого
+биллинга. Страница и данные на месте — она открывается по прямой ссылке
+<code>/admin/tarifs/CardSeries/</code>,
+и пункт меню возвращается одной строкой в <code>MENU_LIST</code>.</div>
+<p>Серии бумажных карт оплаты с PIN-кодами. Каждая серия — это пакет карт
+номинала N₽ с уникальными PIN. Клиент пополняет счёт, введя PIN
+в личном кабинете или через кассу.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/01_card_series.png" alt="Карты оплаты"></p>
+
+<p>Серия определяется: имя серии, номинал, количество карт, дата выпуска,
+дата окончания действия. PIN-коды генерируются автоматически и
+выгружаются в PDF/CSV для печати.</p>
+
+<!-- ===== Лояльность: обзор ===== -->
+<h3 id="loyalty-overview">Программы лояльности — назначение и роль</h3>
+<details class="section-toc">
+  <summary><strong>Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#loyalty-purpose">Зачем нужна лояльность</a></li>
+    <li><a href="#loyalty-models">Модели Loyaltys и AbonentsLoyalty</a></li>
+    <li><a href="#loyalty-priority">Приоритет и применение</a></li>
+    <li><a href="#loyalty-usluga-range">Связь с линейками услуг</a></li>
+    <li><a href="#loyalty-cleanup">Что делать со старыми программами</a></li>
+  </ul>
+</details>
+
+<p><strong>Программа лояльности</strong> — механизм скидок, акций и спец-условий для группы клиентов. Реализуется двумя моделями: <code>Loyaltys</code> (сама программа = шаблон) и <code>AbonentsLoyalty</code> (привязка клиента к программе = экземпляр).</p>
+
+<h5 id="loyalty-purpose">Зачем нужна лояльность</h5>
+<p>Программы решают четыре задачи:</p>
+<ol>
+  <li><strong>Скидки</strong> — социальные тарифы (пенсионеры, многодетные), корпоративные скидки, акции «приведи друга»;</li>
+  <li><strong>Спец-условия для группы</strong> — например, «жильцы дома №15 платят на 100 ₽ меньше за интернет» (распределённая по адресу программа);</li>
+  <li><strong>Бонусы за продление</strong> — «оплатил год вперёд → 10% скидка»;</li>
+  <li><strong>Учёт в финансовых отчётах</strong> — отдельная строка «Скидки по программам лояльности».</li>
+</ol>
+
+<h5 id="loyalty-models">Модели</h5>
+<table class="data-table">
+  <thead><tr><th>Модель</th><th>Что хранит</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><code>Loyaltys</code><br><em>(шаблон)</em></td>
+      <td>Список самих программ. Поля: <code>name</code>, <code>comment</code>, <code>priority</code>, <code>operator</code> (FK на Abonents-папку с операторами), <code>usluga_range</code> (FK на UslugaRangeTypes), <code>discount_percent</code>, <code>bonus_amount</code>, <code>recurring</code> (ежемесячно), <code>enabled</code></td>
+    </tr>
+    <tr>
+      <td><code>AbonentsLoyalty</code><br><em>(экземпляр)</em></td>
+      <td>Привязки «клиент ↔ программа». Поля: <code>abonent</code> (FK CASCADE), <code>loyalty</code> (FK CASCADE), <code>start_date</code>, <code>end_date</code> (NULL = активна), <code>processed_date</code>, <code>next_date</code> (для beat-задач списания)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h5 id="loyalty-priority">Приоритет и применение</h5>
+<p>Один клиент может попасть в несколько программ одновременно (например: пенсионер + жилец акционного дома). При начислении скидки выбирается одна:</p>
+<ul>
+  <li><strong>Поле <code>priority</code></strong> у <code>Loyaltys</code> — целое число. Выше = раньше применяется;</li>
+  <li><strong>Цветовое кодирование</strong> в UI:
+    <ul>
+      <li>≥ 100 — красный бейдж «критично» (типа «соцтариф для всех»);</li>
+      <li>≥ 50 — оранжевый «важно» (корпоративные);</li>
+      <li>&lt; 50 — серый (обычные акции).</li>
+    </ul>
+  </li>
+  <li><strong>Применение</strong> в <code>billing_worker</code>: при начислении тарифа проверяются все активные <code>AbonentsLoyalty</code> клиента, выбирается с максимальным <code>priority</code>, скидка применяется к <code>op_summa</code>.</li>
+</ul>
+
+<h5 id="loyalty-usluga-range">Связь с линейками услуг</h5>
+<p>Поле <code>Loyaltys.usluga_range</code> (FK на <code>UslugaRangeTypes</code>) ограничивает применимость:</p>
+<ul>
+  <li>Если <code>usluga_range = NULL</code> — программа применяется ко всем услугам тарифа;</li>
+  <li>Если <code>usluga_range = X</code> — только к услугам в линейке X (например, скидка только на интернет, не на IPTV);</li>
+  <li>Это требует, чтобы <code>Tarif.usluga_range_type_id</code> у тарифа клиента совпадал с <code>Loyalty.usluga_range_id</code>;</li>
+  <li>См. подробнее в <a href="#usluga-range">2.6 Линейки услуг</a>.</li>
+</ul>
+
+<h5 id="loyalty-cleanup">Что делать со старыми программами</h5>
+<ul>
+  <li><strong>Программа закончилась</strong> (срок акции прошёл) — выключить через <code>enabled=false</code> вместо удаления. Нельзя удалить, если есть активные <code>AbonentsLoyalty</code>;</li>
+  <li><strong>Завершить программу для всех</strong> — перед удалением программы проставить <code>end_date</code> у всех <code>AbonentsLoyalty</code>. Тогда программа становится «архивной» и удаляется;</li>
+  <li><strong>Удалить отдельную привязку</strong> — кнопка в карточке клиента, вкладка «Лояльность». Это не удаляет программу, только конкретную привязку.</li>
+</ul>
+
+<div class="info-box">
+  <strong>Где видеть программы клиента:</strong> в карточке клиента → вкладка «Лояльность». Там список с цветными бейджами по приоритету, дата начала/окончания, остатки бонусов. В UI <code>/admin/tarifs/Loyaltys/</code> — список всех программ с количеством активных привязок.
+</div>
+
+<h3 id="loyalty">2.5. Программы лояльности</h3>
+<p>URL: <code>/admin/tarifs/Loyaltys/</code></p>
+
+<p>Программа лояльности — это скидка или бонус для определённой группы клиентов:
+скидка за стаж, социальный тариф, многоквартирный дом, «приведи друга».
+Скидка применяется автоматически при ежемесячном списании.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v2138/10_loyalty_list.png" alt="Список программ лояльности"></p>
+<p class="img-caption"><em>Статус кружком, организации бейджем, дальше вознаграждение,
+линейка услуг, приоритет и число клиентов на программе.</em></p>
+
+<pre class="mermaid">
+flowchart LR
+    L["Программа<br/>скидка % / бонус ₽"] --> R{"Линейка<br/>услуг"}
+    R -->|"задана"| ONLY["Только её услуги"] --> AB
+    R -->|"пусто"| ALL["Все услуги"] --> AB["Клиент<br/>на программе"]
+    AB --> BW["Списание<br/>1-го числа"] --> SUM["Сумма<br/>со скидкой"]
+    ST(["Выключена"]) -.->|"скидка не применяется,<br/>клиенты остаются"| BW
+    style SUM fill:#e8f6ef,stroke:#43b77a
+    style ST fill:#f1f3f5,stroke:#adb5bd
+</pre>
+
+<table class="data-table">
+  <thead>
+    <tr><th>Колонка</th><th>Что показывает</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>Статус</strong></td><td>Кружок: зелёный — программа действует, серый — выключена.
+    Выключение не снимает клиентов с программы, скидка просто перестаёт применяться. Скрыть колонку нельзя</td></tr>
+    <tr><td><strong>Орг.</strong></td><td>Организации, в которых действует программа; прочерк — во всех. Скрыть колонку нельзя</td></tr>
+    <tr><td><strong>Скидка / Бонус</strong></td><td>Процент или фиксированная сумма; иконка повтора — скидка применяется ежемесячно</td></tr>
+    <tr><td><strong>Линейка</strong></td><td>Каким услугам достаётся скидка (см. <a href="#usluga-range">2.6. Линейки услуг</a>)</td></tr>
+    <tr><td><strong>Приор.</strong></td><td>Чем выше число, тем раньше применяется программа: ≥100 — красный, ≥50 — оранжевый</td></tr>
+    <tr><td><strong>Клиенты</strong></td><td>Действующих подключений. Клик открывает вкладку «Клиенты» карточки программы</td></tr>
+  </tbody>
+</table>
+
+<h4 id="loyalty-actions">Действия со строкой</h4>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v2138/11_loyalty_row_menu.png" alt="Меню действий программы"></p>
+
+<ul>
+  <li><strong>Редактировать</strong> — карточка программы: параметры и список клиентов.</li>
+  <li><strong>Копировать</strong> — карточка с заполненными полями и именем «… (копия)»;
+  клиенты исходной программы к копии не относятся, вкладка «Клиенты» не показывается.</li>
+  <li><strong>Клиенты программы</strong> — сразу на список участников с массовым назначением и снятием.</li>
+  <li><strong>Включить / Выключить</strong> — переключение прямо из списка.</li>
+  <li><strong>Удалить</strong> — заблокировано, пока есть действующие подключения.</li>
+</ul>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v2138/12_loyalty_copy.png" alt="Копия программы лояльности"></p>
+<p class="img-caption"><em>Копия удобна, когда нужна та же скидка для другой организации
+или линейки: параметры переносятся, остаётся поправить название и одно-два поля.</em></p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v2138/13_loyalty_bulk.png" alt="Массовые действия в лояльности"></p>
+<p class="img-caption"><em>Массовые действия те же, что в правилах сети: включить, выключить, удалить.</em></p>
+
+<div class="info-box">
+<strong>Карточка программы.</strong> Вкладка «Параметры» — сама программа
+(название, организации, линейка, тип вознаграждения, периодичность, статус).
+Вкладка «Клиенты» — участники: поиск, массовое назначение по фильтру
+(тариф, папка, стаж, даты) и снятие. Назначить программу конкретному клиенту
+можно и из его карточки, вкладка «Лояльность».
+</div>
+
+<h3 id="usluga-range">2.6. Линейки услуг</h3>
+<p><strong>Линейка услуг</strong> (модель <code>UslugaRangeTypes</code>) — это
+группа тарифов и услуг одного оператора связи или одной целевой аудитории.
+Линейка решает две задачи: <em>логически</em> разграничить тарифные планы между
+юр.лицами-операторами на одной инсталляции биллинга и <em>технически</em>
+ограничить, какие тарифы попадают в выпадающие списки в личном кабинете
+клиента и в программах лояльности.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/01_usluga_range.png" alt="Линейки услуг"></p>
+
+<h4 id="usluga-range-examples">Примеры использования</h4>
+<ul>
+  <li><strong>Разделение по аудиториям</strong>: «Физические лица», «Юридические лица»,
+  «Социальные тарифы» — каждой линейке привязаны свои тарифы. В Quick&nbsp;Add
+  клиента линейки переключаются автоматически вместе с флагом «Юр.лицо»
+  (<a href="abonents.html#abonents-list">см. раздел 7.1</a>).</li>
+  <li><strong>Несколько операторов на одной инсталляции</strong>: «СмИТ Волгоград»,
+  «СмИТ Камышин», «Малдер-связь». Оператор-инсталлятор обслуживает несколько
+  юр.лиц с одним биллингом, у каждого свой набор тарифов. В отчётах СОРМ выгрузка
+  идёт по оператору-владельцу линейки.</li>
+  <li><strong>Промо-кампании</strong>: «Акция «Лето&nbsp;2026»», «Тарифы для пенсионеров» —
+  отдельная линейка содержит только промо-тарифы; в программах лояльности
+  (<em>Loyaltys</em>) включается через поле <code>usluga_range</code>, и клиентам
+  с этой лояльностью становится доступен льготный тариф.</li>
+  <li><strong>Технические/служебные тарифы</strong>: линейка «Внутренние» —
+  для сотрудников, тестовых учёток, оборудования. Не показывается в ЛК
+  обычных клиентов через настройку <code>LK_TARIFF_REQUIRE_RANGE</code>.</li>
+</ul>
+
+<h4 id="usluga-range-modal">Модальное окно «Добавить / Редактировать линейку»</h4>
+
+<p>Открывается кнопкой <em>«Линейка»</em> в правом верхнем углу списка
+или иконкой карандаша в строке таблицы (<code>urtModal</code> в шаблоне
+<code>usluga_range_types_list.html</code>). Поля:</p>
+
+<ul>
+  <li><strong>Название</strong> <span class="text-danger">*</span> — текст, как
+  будет отображаться в селектах при создании тарифа и программы лояльности.
+  Примеры: <em>«Бизнес-линейка»</em>, <em>«Эконом физ.лица»</em>,
+  <em>«Промо Лето&nbsp;2026»</em>.</li>
+  <li><strong>Оператор</strong> — выпадающий список клиентов из служебной папки
+  «Операторы» (id&nbsp;=&nbsp;9002). Это юр.лицо, владеющее линейкой:
+  именно ему уходит выручка по тарифам этой линейки в финансовой отчётности
+  и СОРМ-выгрузках. Можно оставить пустым (<em>«не указан»</em>) — тогда
+  линейка считается общей.</li>
+</ul>
+
+<p>Сохранение через <code>POST /admin/tarifs/range_types_crud/</code>
+(или <code>/&lt;id&gt;/</code> для редактирования). Удаление —
+<code>DELETE /admin/tarifs/range_types_crud/&lt;id&gt;/</code>; защищено:
+если на линейку ссылается хотя бы один тариф или программа лояльности,
+сервер вернёт ошибку с понятным текстом.</p>
+
+<h4 id="usluga-range-list">Список линеек</h4>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v2169/range_types_list.png" alt="Список линеек услуг: KPI, чипы, колонки"></p>
+
+<p>Над таблицей — KPI по текущему срезу: линеек в срезе, включено, тарифов
+в линейках, программ лояльности и линеек без тарифов. Ниже — чипы
+<em>Все · Включённые · Выключенные · С тарифами · Пустые · С лояльностью</em>
+со счётчиками.</p>
+
+<table class="data-table">
+  <thead>
+    <tr><th>Колонка</th><th>Что показывает</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Статус</td><td>кружок: зелёный — линейка включена, серый — выключена.
+        Выключенную линейку не предлагают при создании тарифа</td></tr>
+    <tr><td>Название</td><td>иконка направления и заголовок линейки</td></tr>
+    <tr><td>Орг.</td><td>бейдж организации; пусто — линейка общая, её видят все
+        (см. <a href="#org-is-permission">2.7.3</a>)</td></tr>
+    <tr><td>Тарифов</td><td>счётчик <code>Tarif.usluga_range_type_id</code>.
+        Зелёный, если есть привязки; серый — линейка пустая</td></tr>
+    <tr><td>Лояльности</td><td>счётчик <code>Loyaltys.usluga_range_id</code>,
+        жёлтый бейдж при наличии программ</td></tr>
+    <tr><td>Действ.</td><td>меню строки: правка, включить/выключить, удаление
+        с проверкой ссылок</td></tr>
+  </tbody>
+</table>
+
+<p>Поиск — <kbd>Ctrl</kbd>+<kbd>K</kbd>, кнопка <strong>CSV</strong> выгружает
+видимый срез. Набор колонок и сохранённые виды — как во всех списках раздела
+(<a href="#section-common">2.7</a>). На телефоне строки превращаются в карточки.</p>
+
+<h4>Связи и где используется</h4>
+<ul>
+  <li><strong>Тариф</strong> (<code>Tarif.usluga_range_type</code>) — поле
+  <em>«Линейка»</em> на форме редактирования тарифа. Один тариф может принадлежать
+  одной линейке.</li>
+  <li><strong>Программа лояльности</strong> (<code>Loyaltys.usluga_range</code>) —
+  определяет, какой набор тарифов доступен участнику программы.</li>
+  <li><strong>Личный кабинет</strong> — настройка
+  <code>LK_TARIFF_REQUIRE_RANGE</code> (<a href="lk.html#lk-admin">ЛК → Возможности</a>)
+  включает фильтрацию: клиенту в ЛК показываются только тарифы из той же линейки,
+  что и его текущий тариф. Полезно когда у одной инсталляции несколько
+  операторов и нельзя смешивать тарифы.</li>
+  <li><strong>Quick Add клиента</strong> (<a href="abonents.html#abonents-list">7.1</a>) —
+  при включении чекбокса <em>«Юр.лицо»</em> автоматически отбираются тарифы
+  с признаком <code>is_business=True</code>; линейка же определяет, какому
+  оператору такой тариф принадлежит.</li>
+</ul>
+
+
+<h3 id="section-common">2.7. Общие приёмы раздела</h3>
+
+<p>Пять списков раздела — тарифы, услуги, правила, программы лояльности
+и линейки — собраны на одних и тех же деталях. Разобравшись с ними один раз,
+вы работаете одинаково во всех пяти.</p>
+
+<h4 id="common-toolbar">2.7.1. Срез: чипы, KPI, поиск, выгрузка</h4>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v2169/toolbar_loyalty.png" alt="Единый тулбар списка: KPI, виды, чипы"></p>
+<p class="img-caption"><em>Программы лояльности. Сверху KPI по срезу, под ними полоса
+сохранённых видов, ниже — чипы со счётчиками и шестерёнка настройки набора.</em></p>
+
+<ul>
+  <li><strong>Чипы</strong> отбирают срез и показывают, сколько записей в каждом.
+      Шестерёнка справа открывает панель, где можно спрятать ненужные чипы —
+      набор запоминается за сотрудником.</li>
+  <li><strong>KPI сверху считаются по видимому срезу</strong>, а не по всей базе.
+      Поэтому цифры всегда сходятся с тем, что в таблице, и не спорят с фильтрами.</li>
+  <li><strong>Поиск</strong> — <kbd>Ctrl</kbd>+<kbd>K</kbd> или <kbd>/</kbd>
+      ставит фокус в поле из любого места страницы.</li>
+  <li><strong>CSV</strong> выгружает <em>видимый срез</em>: с учётом чипов,
+      поиска и выбранной линейки. Файл в UTF-8 с разделителем «;» — Excel
+      открывает его без плясок с кодировкой.</li>
+</ul>
+
+<h4 id="saved-views">2.7.2. Сохранённые виды</h4>
+
+<p>Оператор изо дня в день возвращается к одним и тем же выборкам: «скидочные
+программы», «правила без условий», «тарифы партнёрской компании на сайте». Чипы и поиск
+сбрасываются при уходе со страницы, и срез приходится собирать заново.
+<strong>Вид</strong> — это имя плюс состояние страницы: какие чипы нажаты,
+что в поиске, какая линейка выбрана.</p>
+
+<div class="flow-diagram" style="display:flex;flex-wrap:wrap;gap:.6rem;align-items:stretch;margin:1rem 0">
+  <div class="vf-step">
+    <div class="vf-ico">🔎</div>
+    <div class="vf-body"><b>Собрали срез</b><span>чипы + поиск<br>+ линейка</span></div>
+  </div>
+  <div class="vf-arrow">→</div>
+  <div class="vf-step vf-step-charge">
+    <div class="vf-ico">➕</div>
+    <div class="vf-body"><b>«Вид»</b><span>дали имя<br>срезу</span></div>
+  </div>
+  <div class="vf-arrow">→</div>
+  <div class="vf-step">
+    <div class="vf-ico">👤</div>
+    <div class="vf-body"><b>Профиль</b><span>вид хранится<br>за сотрудником</span></div>
+  </div>
+  <div class="vf-arrow">→</div>
+  <div class="vf-step">
+    <div class="vf-ico">📌</div>
+    <div class="vf-body"><b>Открывается</b><span>кликом или сразу<br>при заходе</span></div>
+  </div>
+</div>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v2169/saved_views_bar.png" alt="Полоса сохранённых видов над чипами"></p>
+<p class="img-caption"><em>Виды стоят над чипами и выглядят иначе: чип — разовый фильтр,
+вид — сохранённый набор. Кнопка «+ Вид» сохраняет текущий срез.</em></p>
+
+<p>У активного вида справа появляется меню:</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v2169/saved_view_menu.png" alt="Меню действий с видом" style="max-width:620px"></p>
+
+<table class="data-table">
+  <thead><tr><th>Пункт</th><th>Что делает</th></tr></thead>
+  <tbody>
+    <tr><td>Обновить текущим срезом</td><td>перезаписывает вид тем, что сейчас на экране</td></tr>
+    <tr><td>Переименовать</td><td>меняет имя, срез остаётся прежним</td></tr>
+    <tr><td>Открывать по умолчанию</td><td>вид применяется сразу при заходе на страницу.
+        Такой вид один: у остальных признак снимается</td></tr>
+    <tr><td>Удалить вид</td><td>убирает только сохранённый срез — записи списка не трогает</td></tr>
+  </tbody>
+</table>
+
+<p>Повторный клик по активному виду снимает его и возвращает полный список.</p>
+
+<h5>Пример: срез «Скидочные программы»</h5>
+<ol>
+  <li>Программы лояльности → чип <strong>«Скидка %»</strong>.</li>
+  <li><strong>«+ Вид»</strong> → имя <code>Скидочные программы</code> →
+      <strong>«Сохранить»</strong>.</li>
+  <li>Назавтра открываете раздел и жмёте чип с этим именем — срез на месте.
+      Если это ваш основной срез, отметьте в меню вида
+      <em>«Открывать по умолчанию»</em>: страница будет открываться сразу с ним.</li>
+</ol>
+
+<div class="info-box">
+<strong>Где это живёт.</strong> Виды хранятся в профиле сотрудника
+(<code>UserProfile.ui_prefs</code>), а не в браузере: на другом компьютере
+они те же. На страницу — до 20 видов. Endpoint — <code>/admin/ui/views/</code>
+(<code>GET</code> список, <code>POST</code> сохранить, <code>DELETE</code> удалить).
+</div>
+
+<div class="warning-box">
+<strong>Вид не расширяет доступ.</strong> Это личная настройка отображения:
+какие записи попадут в срез, решает вьюха списка со своим ограничением
+по организации. Сохранённый вид не покажет чужие данные.
+</div>
+
+<h4 id="org-is-permission">2.7.3. Организация — это право, а не фильтр</h4>
+
+<p>У каждой записи справочников раздела — тарифа, услуги, правила, программы,
+линейки — может быть организация. Пустое поле означает <strong>общая запись</strong>:
+её видят все. Заполненное — запись принадлежит компании, и чужой сотрудник
+её не получит.</p>
+
+<pre class="mermaid">
+flowchart LR
+    U["Сотрудник<br/>организации"] --> Q{"Чья запись?"}
+    Q -->|"своя"| OK["Видит и правит"]
+    Q -->|"пусто"| OK
+    Q -->|"чужая"| NO["404"]
+    style OK fill:#e8f6ef,stroke:#43b77a
+    style NO fill:#f8d7da,stroke:#dc3545
+</pre>
+
+<table class="data-table">
+  <thead><tr><th>Что делает сотрудник</th><th>Своя запись</th><th>Общая</th><th>Чужая</th></tr></thead>
+  <tbody>
+    <tr><td>Видит в списке</td><td>да</td><td>да</td><td>нет</td></tr>
+    <tr><td>Открывает по прямой ссылке</td><td>да</td><td>да</td><td><strong>404</strong></td></tr>
+    <tr><td>Правит, включает, удаляет</td><td>да</td><td>да</td><td><strong>404</strong></td></tr>
+    <tr><td>Попадает в массовое действие</td><td>да</td><td>да</td><td>нет</td></tr>
+  </tbody>
+</table>
+
+<div class="warning-box">
+<strong>Почему 404, а не «нет прав».</strong> Ответ «403» подсказал бы, что
+запись с таким номером существует. По коду ответа не должно быть видно, есть
+ли у соседней компании такой тариф, — поэтому чужая и несуществующая запись
+отвечают одинаково.
+</div>
+
+<p>Ограничение действует и на массовые действия: в набор берутся только
+доступные записи, чужие идентификаторы отсекаются на сервере, даже если их
+подставить в запрос руками.</p>
+
+<h5>Пример</h5>
+<p>Программа «Скидка за стаж 5 лет» принадлежит первой организации,
+«Многоквартирный дом» — второй. Сотрудник второй видит в списке свою программу
+и все общие; ссылка на чужую отдаёт 404. Если он выделит обе строки и нажмёт
+«Выключить», сервер выключит только свою.</p>
+
+<h4 id="row-actions">2.7.4. Меню действий строки</h4>
+
+<p>Иконки действий в конце строки собраны в одно меню — на компьютере это
+экономит место, на телефоне иначе просто не помещается. Меню рисуется поверх
+таблицы, поэтому его не режет горизонтальный скролл.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v2169/row_menu.png" alt="Меню действий строки тарифа"></p>
+
+<table class="data-table">
+  <thead><tr><th>Пункт</th><th>Что делает</th></tr></thead>
+  <tbody>
+    <tr><td>Редактировать</td><td>открывает модалку — то же, что клик по названию.
+        Правка одной цены не требует перезагрузки страницы</td></tr>
+    <tr><td>Полная форма</td><td>уводит на карточку со всеми полями: лимиты, NAT,
+        правила смены тарифа. Нужна редко</td></tr>
+    <tr><td>Дублировать / Копировать</td><td>создаёт копию. У правил сети копируются
+        и условия, у программ — параметры скидки</td></tr>
+    <tr><td>Включить / Выключить</td><td>переводит запись в рабочее состояние и обратно,
+        не удаляя её</td></tr>
+    <tr><td>В архив</td><td>тариф пропадает из выбора при подключении, клиенты и история
+        остаются</td></tr>
+    <tr><td>Удалить</td><td>заблокировано, пока на записи висят клиенты или ссылки;
+        подсказка объясняет, что мешает</td></tr>
+  </tbody>
+</table>
+
+<h4 id="common-columns">2.7.5. Колонки и закреплённые поля</h4>
+
+<p>Состав, порядок и ширина колонок настраиваются кнопкой <strong>«Колонки»</strong>
+и сохраняются в профиле — подробно в <a href="#table-columns">2.1.2</a>.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v2169/columns_locked.png" alt="Окно выбора колонок с закреплёнными" style="max-width:520px"></p>
+
+<p>Часть колонок помечена <em>«(обязательная)»</em> и не скрывается: колонка
+<strong>«Выбор строк»</strong> с чекбоксами, <strong>статус</strong>,
+<strong>организация</strong> и <strong>действия</strong>. Без них список
+перестаёт быть рабочим: пропадает возможность выделить строки, понять, работает
+запись или нет, и чья она.</p>
+
+
+<!-- ===== 3. ОБОРУДОВАНИЕ ===== -->
+
+</main>
+
+<footer class="footer">
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">25.08.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;<span data-smit="updated">25.08.2026</span></span>
+</footer>
+
+<script src="../js/main.js?v=2189"></script>
+<script src="../js/search.js?v=2189"></script>
+<script src="../js/version.js"></script>
+<script src="../js/mermaid-init.js?v=2189"></script>
+<script src="../js/markmap-init.js?v=2189"></script>
+</body>
+</html>

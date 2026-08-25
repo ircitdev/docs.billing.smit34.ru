@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Справочники — СмИТ Биллинг</title>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="СмИТ Биллинг — Документация">
+  <meta property="og:title" content="Справочники — СмИТ Биллинг">
+  <meta property="og:description" content="Пулы адресов и VLAN, списки доступа, адресная база, реквизиты, валюта, статусы, единицы измерения и периоды — плюс краткие обзоры ключевых сущностей биллинга.">
+  <meta property="og:url" content="https://docs.billing.smit34.ru/pages/billing.html">
+  <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="ru_RU">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Основные настройки биллинга — СмИТ Биллинг">
+  <meta name="twitter:description" content="Управление клиентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
+  <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
+  <meta name="description" content="Пулы адресов и VLAN, списки доступа, адресная база, реквизиты, валюта, статусы, единицы измерения и периоды — плюс краткие обзоры ключевых сущностей биллинга.">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css?v=2189">
+  <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css?v=2189">
+  <link rel="stylesheet" href="../css/search.css?v=2189">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <button class="menu-toggle" aria-label="Меню"><i class="ti ti-menu-2"></i></button>
+    <div class="logo">
+      <div class="logo-icon">С</div>
+      <div class="logo-text"><span class="logo-main"><span data-smit="brand-short">СмИТ Биллинг</span></span><span>Документация</span></div>
+    </div>
+  </div>
+  <div class="header-search">
+    <div class="docs-search-wrap">
+      <input type="search" id="docsSearch" class="docs-search-input" placeholder="Поиск по документации..." autocomplete="off">
+      <span class="docs-search-icon"><i class="ti ti-search"></i></span>
+      <div class="docs-search-results" id="docsSearchResults"></div>
+    </div>
+  </div>
+  <div class="header-right">
+    <a href="../graphify/graph.html" class="header-nav-link" title="Граф зависимостей кода">
+      <i class="ti ti-topology-star-3 hnl-ico"></i><span class="hnl-txt">Граф</span>
+    </a>
+    <a href="../graphify/wiki/index.html" class="header-nav-link" title="Wiki архитектурных модулей">
+      <i class="ti ti-book-2 hnl-ico"></i><span class="hnl-txt">Wiki</span>
+    </a>
+    <button class="mobile-search-btn" aria-label="Поиск" title="Поиск по документации">
+      <i class="ti ti-search"></i>
+    </button>
+    <button class="theme-toggle" aria-label="Переключить тему" title="Светлая / тёмная тема">
+      <span class="icon-sun"><i class="ti ti-sun"></i></span>
+      <span class="icon-moon"><i class="ti ti-moon"></i></span>
+    </button>
+  </div>
+</header>
+
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+<div class="search-overlay" id="searchOverlay" role="dialog" aria-label="Поиск по документации">
+  <div class="search-overlay-inner">
+    <i class="ti ti-search search-prefix-icon"></i>
+    <input type="search" id="docsSearchMobile" placeholder="Поиск по документации..." autocomplete="off">
+    <button class="search-overlay-close" aria-label="Закрыть" id="searchOverlayClose"><i class="ti ti-x"></i></button>
+    <div class="docs-search-results search-overlay-results" id="docsSearchResultsMobile"></div>
+  </div>
+</div>
+
+<aside class="sidebar">
+  <nav>
+    <div class="nav-section">Разделы</div>
+    <ul>
+      <li><a href="../index.html"><i class="ti ti-home"></i> Главная</a></li>
+      <li class="has-children">
+        <a href="installation.html"><i class="ti ti-box"></i> Установка и интеграция <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="installation.html#requirements">1. Системные требования</a></li>
+          <li><a href="installation.html#docker-install">2. Установка Docker Compose</a></li>
+          <li><a href="installation.html#demo-cleanup">3. Удаление демо-данных</a></li>
+          <li><a href="installation.html#equip-integration">4. Интеграция с оборудованием</a></li>
+          <li><a href="installation.html#tariff-setup">5. Настройка тарифов</a></li>
+          <li><a href="installation.html#add-subscribers">6. Добавление клиентов</a></li>
+          <li><a href="installation.html#final-test">7. Финальное тестирование</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="dashboard.html"><i class="ti ti-layout-dashboard"></i> Дашборд <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="dashboard.html#dashboard">1. Дашборд</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-kpi">1.1. Шапка: 6 KPI</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-pools-ebs">1.2. IP-пулы + EBS</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-alerts">1.3. Свежие проблемы</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-cash">1.4. Касса месяца</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-payments-today">1.5. Платежи сегодня</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-hot">1.6. Горячие клиенты + CRM</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-extras">1.7. Heat-map + Цели + Что нового</a></li>
+          <li class="sub-item"><a href="dashboard.html#dashboard-finance">1.8. Финансовая динамика</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="tariffs.html"><i class="ti ti-receipt"></i> Тарифы и услуги <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="tariffs.html#tarifs">2. Тарификация</a></li>
+          <li class="sub-item"><a href="tariffs.html#tarif-list">2.1. Тарифы</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="tariffs.html#tarif-folder">— Директория тарифа</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="tariffs.html#tarif-org">— Тарифы и организация</a></li>
+          <li class="sub-item"><a href="tariffs.html#usluga-list">2.2. Услуги и Бонусы</a></li>
+          <li class="sub-item"><a href="tariffs.html#tarif-ruleset">2.3. Правила и сети</a></li>
+          <li class="sub-item"><a href="tariffs.html#ruleset-conditions">2.3.1. Условия правила</a></li>
+          <li class="sub-item"><a href="tariffs.html#tarif-bulk">2.3.2. Массовые действия</a></li>
+          <li class="sub-item"><a href="tariffs.html#card-series">2.4. Карты оплаты</a></li>
+          <li class="sub-item"><a href="tariffs.html#loyalty">2.5. Программы лояльности</a></li>
+          <li class="sub-item"><a href="tariffs.html#usluga-range">2.6. Линейки услуг</a></li>
+          <li class="sub-item"><a href="tariffs.html#tarif-overview">— Тарифы: обзор</a></li>
+          <li class="sub-item"><a href="tariffs.html#usluga-overview">— Услуги: обзор</a></li>
+          <li class="sub-item"><a href="tariffs.html#service-policies">— Политики начислений</a></li>
+          <li class="sub-item"><a href="tariffs.html#loyalty-overview">— Лояльность: обзор</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="nas-equipment.html"><i class="ti ti-server"></i> Оборудование <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="nas-equipment.html#equipment">3. Оборудование</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#equip-nas">3.1. NAS</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#nas-map">— Что такое NAS</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#nas-multiorg">— Мультиорганизация и доступ</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#nas-modal">— Карточка устройства</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#nas-status">3.2. Состояние NAS</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#nas-danger">— Опасные операции</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#equip-monitoring">3.2А. Мониторинг оборудования</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#equip-iptv">3.3. IPTV</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#switch">3.4. Коммутаторы</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#switch-type">3.5. Типы коммутаторов</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#sorm-list">3.6. Настройки СОРМ</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="reports.html"><i class="ti ti-chart-bar"></i> Отчёты <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="reports.html#reports">4. Отчёты</a></li>
+          <li class="sub-item"><a href="reports.html#director-dashboard">4.0. Панель директора</a></li>
+          <li class="sub-item"><a href="reports.html#custom-reports">4.1. Библиотека отчётов</a></li>
+          <li class="sub-item"><a href="reports.html#audit">4.2. Аудит</a></li>
+          <li class="sub-item"><a href="reports.html#paylog">4.3. Журнал платежей</a></li>
+          <li class="sub-item"><a href="reports.html#messages-journal">4.4. Журнал сообщений</a></li>
+          <li class="sub-item"><a href="reports.html#dev-reports">4.5. Разработка и логи</a></li>
+          <li class="sub-item"><a href="reports.html#debtors">4.6. Должники</a></li>
+          <li class="sub-item"><a href="reports.html#migration">4.7. Миграция с других биллингов</a></li>
+          <li><a href="reports.html#games">5. Игры (Маркетинг)</a></li>
+          <li class="sub-item"><a href="reports.html#framework-fields-overview">— FrameworkFormGroupFields: обзор</a></li>
+          <li class="sub-item"><a href="reports.html#custom-reports-overview">— SQL-отчёты: обзор</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="settings.html"><i class="ti ti-settings"></i> Настройки: система и платежи <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="settings.html#settings">6. Настройки</a></li>
+          <li class="sub-item"><a href="settings.html#system-settings">6.1. Настройки системы</a></li>
+          <li class="sub-item"><a href="settings.html#print-forms">6.2. Шаблоны печати</a></li>
+          <li class="sub-item"><a href="settings.html#atol-config">6.3. Фискализация</a></li>
+          <li class="sub-item"><a href="settings.html#fiscal">6.3.1. Модуль фискализации 54-ФЗ</a></li>
+          <li class="sub-item"><a href="settings.html#payment-systems">6.4. Платёжные системы</a></li>
+          <li class="sub-item"><a href="settings.html#bank-statements">6.4.1. Банковские выписки</a></li>
+          <li class="sub-item"><a href="settings.html#bank-parsers">6.4.2. Банки и парсеры</a></li>
+          <li class="sub-item"><a href="settings.html#bank-queue">6.4.3. Очередь модерации</a></li>
+          <li class="sub-item"><a href="settings.html#bank-imports">6.4.4. Журнал импортов</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#bank-flow">— Путь платежа (схема)</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#bank-registry">— Сводные реестры</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#bank-queue-link-2171">— Привязка платежа и данные ФНС</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#bank-org-2171">— Организация платежа</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#bank-client-tab">— Вкладка «Банк» в карточке</a></li>
+          <li class="sub-item"><a href="settings.html#mailserver">6.4.5. Почтовый сервер</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#mailserver-webmail">— Веб-почта и календарь</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#mailserver-identity">— Имя, подпись, фото</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#mailserver-addressbook">— Адресная книга</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#mailserver-mail-tab">— Вкладка «Почта»</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#mailserver-server-settings">— Настройки сервера</a></li>
+          <li class="sub-item"><a href="settings.html#dns">6.4.5А. Домены и DNS</a></li>
+          <li class="sub-item"><a href="settings.html#mail-provisioning">6.4.6. Автонастройка почты</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="settings-services.html"><i class="ti ti-plug"></i> Настройки: связь и сервисы <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li class="sub-item"><a href="settings-services.html#integrations">6.5. Интеграции</a></li>
+          <li class="sub-item"><a href="settings-services.html#voice">6.5А. Голосовая связь</a></li>
+          <li class="sub-item"><a href="settings-services.html#iptv-mappings">6.6. IPTV-пакеты</a></li>
+          <li class="sub-item"><a href="settings-services.html#iptv-watch">6.6.1. Просмотр ТВ в ЛК</a></li>
+          <li class="sub-item"><a href="settings-services.html#lk-mobile">6.7. ЛК и мобильные</a></li>
+          <li class="sub-item"><a href="settings-services.html#messaging">6.8. Сообщения</a></li>
+          <li class="sub-item"><a href="settings-services.html#staff">6.9. Персонал и доступ</a></li>
+          <li class="sub-item"><a href="settings-services.html#license">6.10. Лицензия</a></li>
+          <li class="sub-item"><a href="settings-services.html#modules">6.10А. Модули и расширения</a></li>
+          <li class="sub-item"><a href="settings-services.html#backup">6.11. Резервные копии</a></li>
+          <li class="sub-item"><a href="settings-services.html#db-cleanup">6.12. Очистка БД и сессий</a></li>
+          <li class="sub-item"><a href="settings-services.html#diagnostics">6.13. Диагностика</a></li>
+          <li class="sub-item"><a href="settings-services.html#mass-actions">6.14. Массовые действия</a></li>
+          <li class="sub-item"><a href="settings-services.html#performance">6.15. Производительность и оптимизация</a></li>
+          <li class="sub-item"><a href="settings-services.html#captive-portal">6.16. Captive Portal (финблокировка)</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-readiness">— Готовность и проверка</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-emergency">— Аварийный режим</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-access">— Организации и права</a></li>
+          <li class="sub-item"><a href="settings-services.html#guest-wifi-portal">6.16.1. Гостевой Wi-Fi портал</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-payments">— Платежи</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-acl">— Белые списки (ACL)</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-sorm">— Гости в СОРМ и хранение</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-mobile">— С телефона</a></li>
+          <li class="sub-item"><a href="settings-services.html#support">— Поддержка: единое окно</a></li>
+          <li class="sub-item"><a href="settings-services.html#support-ticket">— Поддержка: карточка тикета</a></li>
+          <li class="sub-item"><a href="settings-services.html#support-panel">— Поддержка: выезжающая панель</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="dictionaries.html"><i class="ti ti-book"></i> Справочники <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="dictionaries.html#dictionary">7. Справочники</a></li>
+          <li class="sub-item"><a href="dictionaries.html#pools">7.1. Пулы IP и VLAN</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="dictionaries.html#ip-pull-overview">— IP-пул: обзор</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="dictionaries.html#vlan-pull-overview">— VLAN-пул: обзор</a></li>
+          <li class="sub-item"><a href="dictionaries.html#acl">7.2. Контроль доступа</a></li>
+          <li class="sub-item"><a href="dictionaries.html#addresses">7.3. Все адреса</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="dictionaries.html#addresses-overview">— Адреса: обзор</a></li>
+          <li class="sub-item"><a href="dictionaries.html#statuses-overview">— Статусы: обзор</a></li>
+          <li class="sub-item"><a href="dictionaries.html#requisites">7.4. Реквизиты</a></li>
+          <li class="sub-item"><a href="dictionaries.html#currency">7.5. Валюты</a></li>
+          <li class="sub-item"><a href="dictionaries.html#weekends">7.6. Выходные дни</a></li>
+          <li class="sub-item"><a href="dictionaries.html#statuses">7.7. Управление статусами</a></li>
+          <li class="sub-item"><a href="dictionaries.html#report-types">7.8. Типы отчётов</a></li>
+          <li class="sub-item"><a href="dictionaries.html#units">7.9. Единицы измерения</a></li>
+          <li class="sub-item"><a href="dictionaries.html#periods">7.10. Периоды</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="abonents.html"><i class="ti ti-users"></i> Абоненты <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li class="sub-item"><a href="abonents.html#admin-accounts-overview">— Счета: обзор</a></li>
+          <li class="sub-item"><a href="abonents.html#finops-overview">— Финоперации: обзор</a></li>
+          <li class="sub-item"><a href="abonents.html#promise-pay-overview">— Обещанный платёж: обзор</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-block-overview">— Блокировки: обзор</a></li>
+          <li class="sub-item"><a href="abonents.html#abonent-folders-overview">— Папки клиентов: обзор</a></li>
+          <li><a href="abonents.html#abonents">8. Клиенты</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-list">8.1. Клиенты</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-folder-view">— Папка клиентов</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-multiorg">— Мультиорганизация</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-quick-add">— Новый клиент и раскладка</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-search">— Глобальный поиск</a></li>
+          <li class="sub-item"><a href="abonents.html#abonent-map">8.2. На карте</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#abonent-map-data">— Откуда берутся точки</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#abonent-map-multiorg">— Мультиорганизация</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#abonent-map-performance">— Вес карты и скорость</a></li>
+          <li class="sub-item"><a href="abonents.html#admin-accounts">8.3. Счета</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#admin-accounts-map">— Что такое счёт</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#admin-accounts-multiorg">— Мультиорганизация и доступ</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#admin-accounts-modal">— Карточка счёта</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#admin-accounts-mobile">— Мобильная версия</a></li>
+          <li class="sub-item"><a href="abonents.html#finance-operations">8.4. Финансовые операции</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#finops-lifecycle">— Откуда берутся операции</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#finops-multiorg">— Мультиорганизация</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#modal-finops">— Карточка операции</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#finops-mobile">— Мобильная версия</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#finance-operations-types">— Типы операций (FinTypes)</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="abonent-card.html"><i class="ti ti-id"></i> Карточка абонента <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li class="sub-item"><a href="abonent-card.html#users-overview">— Учётные записи: обзор</a></li>
+          <li class="sub-item"><a href="abonent-card.html#connection-points-overview">— Точки подключения: обзор</a></li>
+          <li class="sub-item"><a href="abonent-card.html#radius-sessions-overview">— RADIUS-сессии: обзор</a></li>
+          <li><a href="abonent-card.html#abonent-card">9. Карточка клиента</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="extras.html"><i class="ti ti-apps"></i> Дополнительные разделы <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="extras.html#video-surveillance">10. Видеонаблюдение</a></li>
+          <li class="sub-item"><a href="extras.html#video-revenue">10.1. 3 слоя дохода + цены</a></li>
+          <li class="sub-item"><a href="extras.html#video-admin">10.2. Раздел /admin/video/</a></li>
+          <li class="sub-item"><a href="extras.html#video-abonent">10.3. Вкладка клиента + ЛК</a></li>
+          <li class="sub-item"><a href="extras.html#video-billing-flow">10.3.1. Как списываются подписки</a></li>
+          <li class="sub-item"><a href="extras.html#video-archive-lk">10.3.2. Архив: календарь + выделение</a></li>
+          <li class="sub-item"><a href="extras.html#video-notify">10.3.3. Уведомления о сбоях</a></li>
+          <li class="sub-item"><a href="extras.html#video-docs">10.4. Документы (КП/договор/акт)</a></li>
+          <li class="sub-item"><a href="extras.html#video-block">10.5. Блокировка камер по балансу</a></li>
+          <li class="sub-item"><a href="extras.html#video-vsaas">10.6. Облако VSaaS</a></li>
+          <li><a href="extras.html#domofon-demo">11. Домофонный домен</a></li>
+          <li class="sub-item"><a href="extras.html#domofon-model">11.1. Доменная модель</a></li>
+          <li class="sub-item"><a href="extras.html#domofon-demo-data">11.2. Что заведено в демо</a></li>
+          <li><a href="extras.html#ai-agent">12. AI-агент</a></li>
+          <li class="sub-item"><a href="extras.html#ai-hub">12.1. Обзор модуля (хаб)</a></li>
+          <li class="sub-item"><a href="extras.html#ai-kb">12.2. База знаний</a></li>
+          <li class="sub-item"><a href="extras.html#ai-voice">12.3. Голос (Mango → анализ)</a></li>
+          <li class="sub-item"><a href="extras.html#ai-widget">12.4. Виджет + воронка</a></li>
+          <li class="sub-item"><a href="extras.html#ai-order-forms">12.4.1. Формы заказа → лиды</a></li>
+          <li class="sub-item"><a href="extras.html#ai-test-chat">12.4.2. Тестовый AI-чат</a></li>
+          <li class="sub-item"><a href="extras.html#ai-eval">12.5. Тест-кейсы AI</a></li>
+          <li class="sub-item"><a href="extras.html#ai-dashboard">12.6. Дашборд AI-сессий</a></li>
+          <li class="sub-item"><a href="extras.html#ai-dashboard-costs">12.6.1. Расходы на модели и бюджет</a></li>
+          <li class="sub-item"><a href="extras.html#ai-org-routing">12.6.2. Определение организации</a></li>
+          <li class="sub-item"><a href="extras.html#ai-dashboard-sessions">12.5.1. Сессии и транскрипт</a></li>
+          <li><a href="extras.html#autodial-telephony">13. Автообзвон и телефония</a></li>
+          <li class="sub-item"><a href="extras.html#autodial-providers">13.1. Мультипровайдер</a></li>
+          <li class="sub-item"><a href="extras.html#autodial-asterisk">13.2. Своя телефония (Asterisk)</a></li>
+          <li class="sub-item"><a href="extras.html#autodial-consent">13.3. Согласие и ограничения</a></li>
+          <li class="sub-item"><a href="extras.html#autodial-card-tab">13.4. Вкладка «Звонки» в карточке</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="lk.html"><i class="ti ti-device-mobile"></i> ЛК и мобильные <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="lk.html#lk-overview">Обзор и возможности</a></li>
+          <li><a href="lk.html#lk-admin">Раздел «ЛК и мобильные» в админке</a></li>
+          <li class="sub-item"><a href="lk.html#lk-admin">— Брендинг</a></li>
+          <li class="sub-item"><a href="lk.html#lk-admin">— Функции</a></li>
+          <li class="sub-item"><a href="lk.html#lk-admin">— Безопасность</a></li>
+          <li class="sub-item"><a href="lk.html#lk-mobile-app">— Мобильное (Android+iOS)</a></li>
+          <li><a href="lk.html#lk-login">Авторизация</a></li>
+          <li><a href="lk.html#lk-admin">Настройки интеграций</a></li>
+          <li><a href="lk.html#lk-extra">Telegram-бот</a></li>
+          <li><a href="lk.html#lk-finance">Оплата (ЮKassa)</a></li>
+          <li><a href="lk.html#lk-mobile-app">Мобильное приложение</a></li>
+          <li><a href="lk.html#lk-support">HelpDesk</a></li>
+          <li><a href="lk.html#lk-ai-chat">AI-ассистент</a></li>
+          <li><a href="lk.html#lk-profile">Профиль</a></li>
+          <li><a href="lk.html#lk-firebase">Push (Firebase)</a></li>
+          <li><a href="lk.html#lk-ai-chat">AI-чат</a></li>
+          <li><a href="settings-services.html#messaging">TG бот оператора</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="crm.html"><i class="ti ti-briefcase"></i> CRM — продажи <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="crm.html#crm-overview">1. Как устроен модуль</a></li>
+          <li><a href="crm.html#crm-quickstart">2. Быстрый старт</a></li>
+          <li><a href="crm.html#crm-funnel">3. Воронка сделок</a></li>
+          <li><a href="crm.html#crm-constructor">4. Конструктор воронок</a></li>
+          <li><a href="crm.html#crm-sources">5. Источники сделок</a></li>
+          <li><a href="crm.html#crm-userfields">6. Доп. поля</a></li>
+          <li><a href="crm.html#crm-tasks">7. Задачи</a></li>
+          <li><a href="crm.html#crm-lists">8. Списки (контакты)</a></li>
+          <li><a href="crm.html#crm-salesbot">9. Salesbot</a></li>
+          <li><a href="crm.html#widgets">10. Виджеты-плагины</a></li>
+          <li><a href="crm.html#crm-setup">11. Мастер настройки</a></li>
+          <li><a href="crm.html#crm-montazh">12. Наряды монтажника</a></li>
+          <li><a href="crm.html#crm-dashboard">13. Дашборд и карта</a></li>
+          <li><a href="crm.html#crm-campaigns">14. Рекламные кампании</a></li>
+          <li><a href="crm.html#crm-drawer">15. Карточка сделки</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="stock.html"><i class="ti ti-packages"></i> Склад <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="stock.html#stock-overview">1. Как устроен модуль</a></li>
+          <li><a href="stock.html#stock-quickstart">2. Быстрый старт</a></li>
+          <li><a href="stock.html#stock-flow">3. Движения и статусы</a></li>
+          <li><a href="stock.html#stock-items">4. Номенклатура и остатки</a></li>
+          <li><a href="stock.html#stock-receipt">5. Приход и этикетки</a></li>
+          <li><a href="stock.html#stock-issue">6. Подотчёт сотрудника</a></li>
+          <li><a href="stock.html#stock-inventory">6б. Инвентаризация</a></li>
+          <li><a href="stock.html#stock-reserve">6в. Резерв под наряд</a></li>
+          <li><a href="stock.html#stock-move">6г. Перемещение</a></li>
+          <li><a href="stock.html#stock-suppliers">6д. Поставщики</a></li>
+          <li><a href="stock.html#stock-montazh">7. Материалы в наряде</a></li>
+          <li><a href="stock.html#stock-abonent">8. Оборудование клиента</a></li>
+          <li><a href="stock.html#stock-money">9. Деньги: продажа и аренда</a></li>
+          <li><a href="stock.html#stock-analytics">9а. Аналитика</a></li>
+          <li><a href="stock.html#stock-settings">10. Настройки и роли</a></li>
+          <li><a href="stock.html#stock-launch">11. Чек-лист запуска</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="video.html"><i class="ti ti-device-cctv"></i> Видеонаблюдение <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="video.html#video-overview">1. Как устроен модуль</a></li>
+          <li><a href="video.html#video-objects">2. Объекты и камеры</a></li>
+          <li><a href="video.html#video-projects">3. Проекты и документы</a></li>
+          <li><a href="video.html#video-plans">4. Планы и подписки</a></li>
+          <li><a href="video.html#video-catalog">5. Каталог и склад</a></li>
+          <li><a href="video.html#video-media">6. Медиа-сервер</a></li>
+          <li><a href="video.html#video-archive">7. Архив записей</a></li>
+          <li><a href="video.html#video-dispatch">8. Пульт ЧОПа</a></li>
+          <li><a href="video.html#video-reports">9. Отчётность по SLA</a></li>
+          <li><a href="video.html#video-access">10. Права и организации</a></li>
+          <li><a href="video.html#video-settings">11. Настройки модуля</a></li>
+          <li><a href="video.html#video-launch">12. Чек-лист запуска</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="helpdesk.html"><i class="ti ti-headset"></i> Поддержка (HelpDesk) <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="helpdesk.html#overview">1. Обзор модуля</a></li>
+          <li><a href="helpdesk.html#channels">2. Каналы приёма</a></li>
+          <li><a href="helpdesk.html#mailbox">3. Входящие</a></li>
+          <li><a href="helpdesk.html#conversation">4. Карточка тикета</a></li>
+          <li><a href="helpdesk.html#sidebar">5. Сайдбар тикета</a></li>
+          <li><a href="helpdesk.html#panel">6. Выезжающая панель</a></li>
+          <li><a href="helpdesk.html#attention">7. Тикеты внимания</a></li>
+          <li><a href="helpdesk.html#ai-assistant">8. AI-бот</a></li>
+          <li><a href="helpdesk.html#voicemail">9. Голосовая почта</a></li>
+          <li><a href="helpdesk.html#knowledgebase">10. База знаний</a></li>
+          <li><a href="helpdesk.html#analytics">11. Аналитика и время</a></li>
+          <li><a href="helpdesk.html#settings">12. Настройки</a></li>
+          <li><a href="helpdesk.html#messengers">13. Мессенджеры</a></li>
+          <li><a href="helpdesk.html#integration">14. Связь с биллингом</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="landing.html"><i class="ti ti-browser"></i> Лендинги <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="landing.html#landing-overview">1. Что это</a></li>
+          <li><a href="landing.html#landing-blocks">2. Блоки-секции</a></li>
+          <li><a href="landing.html#landing-media">3. Слайдер, медиа-фон и эффекты</a></li>
+          <li><a href="landing.html#landing-editor">4. Редактор</a></li>
+          <li><a href="landing.html#landing-ai">5. AI-генерация</a></li>
+          <li><a href="landing.html#landing-forms">6. Формы и заявки</a></li>
+          <li><a href="landing.html#landing-publish">7. Публикация на поддомене</a></li>
+          <li><a href="landing.html#landing-pd">8. Согласие ПД (152-ФЗ)</a></li>
+          <li><a href="landing.html#landing-analytics">9. Аналитика</a></li>
+          <li><a href="landing.html#landing-multiorg">10. Мульти-орг</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="server.html"><i class="ti ti-server"></i> Управление сервером <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="server.html#server-setup">1. Настройка сервера</a></li>
+          <li><a href="server.html#maintenance">2. Сервисное обслуживание</a></li>
+          <li class="sub-item"><a href="server.html#backup">2.1. Резервное копирование</a></li>
+          <li class="sub-item"><a href="server.html#backup-ui">2.2. Бекапы (веб-интерфейс)</a></li>
+          <li><a href="server.html#modules">3. Управление модулями</a></li>
+          <li><a href="server.html#remote">4. Удалённое управление</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="equipment.html"><i class="ti ti-broadcast"></i> Интеграция с оборудованием <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="equipment.html#internet">1. Интернет (NAS/BRAS)</a></li>
+          <li class="sub-item"><a href="equipment.html#switch-types">1.1. Типы коммутаторов</a></li>
+          <li><a href="equipment.html#voip">2. Телефония (VoIP)</a></li>
+          <li><a href="equipment.html#iptv">3. IPTV</a></li>
+          <li class="sub-item"><a href="equipment.html#iptv-tvip">3.1. TVIP Media</a></li>
+          <li class="sub-item"><a href="equipment.html#iptv-lfstream">3.2. LFStream</a></li>
+          <li class="sub-item"><a href="equipment.html#iptv-mappings">3.3. Маппинг пакетов</a></li>
+          <li><a href="equipment.html#cpe">4. Абонентское оборудование</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="sorm.html"><i class="ti ti-shield-lock"></i> Интеграция с СОРМ3 <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="sorm.html#principle">Принцип работы</a></li>
+          <li><a href="sorm.html#integrated">Интегрированные решения</a></li>
+          <li><a href="sorm.html#pending">Ожидающие интеграции</a></li>
+          <li><a href="sorm.html#setup">Настройка подключения</a></li>
+          <li class="sub-item"><a href="sorm.html#sorm-add-modal">— Модальное окно «Добавить»</a></li>
+          <li><a href="sorm.html#reports">Отчёты и SQL</a></li>
+          <li><a href="sorm.html#schedule">Расписание выгрузки</a></li>
+          <li><a href="sorm.html#sorm-admin">Админ-UI: список и FTP</a></li>
+          <li><a href="sorm.html#manual-run">Управление отчётами</a></li>
+          <li><a href="sorm.html#metadata">СОРМ-метаданные</a></li>
+          <li><a href="sorm.html#preflight">Pre-flight валидация</a></li>
+          <li><a href="sorm.html#api">REST API готовности</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="api.html"><i class="ti ti-link"></i> API <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="api.html#overview">1. Обзор API</a></li>
+          <li><a href="api.html#auth">2. Аутентификация</a></li>
+          <li><a href="api.html#rest-v2">3. REST API v2</a></li>
+          <li><a href="api.html#promise-pay">4. Обещанный платёж</a></li>
+          <li><a href="api.html#payments-api">5. Платёжные API (ЮKassa, W1)</a></li>
+          <li><a href="api.html#soap">6. SOAP API</a></li>
+          <li><a href="api.html#mobile-api">7. Mobile API</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="troubleshooting.html"><i class="ti ti-tool"></i> Решение проблем <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="troubleshooting.html#general">1. Общие вопросы</a></li>
+          <li><a href="troubleshooting.html#auth">2. Клиенты и авторизация</a></li>
+          <li><a href="troubleshooting.html#billing-payments">3. Биллинг и платежи</a></li>
+          <li><a href="troubleshooting.html#server-perf">4. Сервер и производительность</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="licensing.html"><i class="ti ti-file-description"></i> Лицензирование <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="licensing.html#delivery">1. Порядок поставки ПО</a></li>
+          <li><a href="licensing.html#payment-issues">2. Не проходит оплата</a></li>
+        </ul>
+      </li>
+      <li><a href="contacts.html"><i class="ti ti-phone"></i> Контакты</a></li>
+      <li><a href="changelog.html"><i class="ti ti-history"></i> Журнал изменений</a></li>
+    </ul>
+
+      <div class="nav-section">Разработчикам</div>
+      <ul>
+        <li class="has-children">
+          <a href="../graphify/graph.html"><i class="ti ti-topology-star-3"></i> Архитектура кода <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+          <ul class="submenu">
+            <li><a href="../graphify/graph.html">Граф сообществ</a></li>
+            <li><a href="../graphify/wiki/index.html">Wiki модулей</a></li>
+            <li><a href="dev/index.html">Портал разработчика</a></li>
+            <li><a href="../graphify/help.html">graphify CLI</a></li>
+          </ul>
+        </li>
+      </ul>
+  <button class="sidebar-theme-toggle" aria-label="Тема"><span class="icon-sun"><i class="ti ti-sun"></i></span><span class="icon-moon"><i class="ti ti-moon"></i></span><span class="sidebar-theme-label">Сменить тему</span></button>
+</nav>
+</aside>
+
+<main class="content">
+  <div class="breadcrumb">
+    <a href="../index.html">Документация</a> <span class="sep">/</span> Справочники
+  </div>
+
+  <h1>Справочники</h1>
+  <p>Пулы адресов и VLAN, списки доступа, адресная база, реквизиты, валюта, статусы, единицы измерения и периоды — плюс краткие обзоры ключевых сущностей биллинга.</p>
+
+<div class="page-toc">
+<details open>
+  <summary><strong><i class="ti ti-book"></i> Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#dictionary">7. Справочники</a></li>
+    <li class="sub-item"><a href="#pools">7.1. Пулы IP и VLAN</a></li>
+    <li class="sub-item"><a href="#acl">7.2. Контроль доступа (ACL)</a></li>
+    <li class="sub-item"><a href="#addresses">7.3. Все адреса</a></li>
+    <li class="sub-item"><a href="#requisites">7.4. Реквизиты</a></li>
+    <li class="sub-item"><a href="#currency">7.5. Валюты</a></li>
+    <li class="sub-item"><a href="#weekends">7.6. Выходные дни</a></li>
+    <li class="sub-item"><a href="#statuses-overview">Статусы клиентов — назначение и роль</a></li>
+    <li class="sub-item"><a href="#statuses">7.7. Управление статусами</a></li>
+    <li class="sub-item"><a href="#report-types">7.8. Типы отчётов</a></li>
+    <li class="sub-item"><a href="#units">7.9. Единицы измерения</a></li>
+    <li class="sub-item"><a href="#periods">7.10. Периоды</a></li>
+  </ul>
+</details>
+</div>
+
+<!-- ===== 7. СПРАВОЧНИКИ ===== -->
+<h2 id="dictionary">7. Справочники</h2>
+<p>Раздел меню <strong>«Справочники»</strong> — все нормативно-справочные данные системы:
+пулы IP, ACL, адреса, валюты, статусы и т.д.</p>
+
+<div class="page-toc">
+<details open>
+  <summary><strong><i class="ti ti-book"></i> Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#pools">6.1. Пулы IP и VLAN</a></li>
+    <li><a href="#acl">6.2. Контроль доступа (ACL)</a></li>
+    <li><a href="#addresses">6.3. Все адреса</a></li>
+    <li><a href="#requisites">6.4. Реквизиты</a></li>
+    <li><a href="#currency">6.5. Валюты</a></li>
+    <li><a href="#weekends">6.6. Выходные дни</a></li>
+    <li><a href="#statuses">6.7. Управление статусами</a></li>
+    <li><a href="#report-types">6.8. Типы отчётов</a></li>
+    <li><a href="#units">6.9. Единицы измерения</a></li>
+    <li><a href="#periods">6.10. Периоды</a></li>
+  </ul>
+</details>
+</div>
+
+<h3 id="pools">7.1. Пулы IP и VLAN</h3>
+<p>Подменю с двумя справочниками: <a href="#ip-pull">пулы IP-адресов</a> для выдачи через RADIUS и <a href="#vlan-pull">пулы VLAN</a> для разметки портов на коммутаторах.</p>
+
+<!-- ===== IP-пул: обзор ===== -->
+<h4 id="ip-pull-overview">Пулы IP — назначение и роль</h4>
+<details class="section-toc">
+  <summary><strong>Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#ip-pull-purpose">Зачем нужен IP-пул</a></li>
+    <li><a href="#ip-pull-nas-roles">4 роли пула на NAS</a></li>
+    <li><a href="#ip-pull-chains">Chain-цепочки (NEXT_PULL_ID)</a></li>
+    <li><a href="#ip-pull-when-needed">Когда нужно создавать пул</a></li>
+    <li><a href="#ip-pull-cleanup">Что делать со старыми пулами</a></li>
+  </ul>
+</details>
+
+<p><strong>IP-пул</strong> — это диапазон IP-адресов <code>[start_ip…end_ip]</code>, из которого FreeRADIUS выдаёт клиенту <code>Framed-IP-Address</code> при PPPoE/IPoE-авторизации. Хранится в таблице <code>ip_pull</code>, редактируется на <code>/admin/dictionary/IpPull/</code>.</p>
+
+<h5 id="ip-pull-purpose">Зачем нужен IP-пул</h5>
+<p>Пул решает две задачи:</p>
+<ol>
+  <li><strong>Автоматическая выдача IP клиенту</strong>. При авторизации FreeRADIUS вызывает <code>allocate_ip_from_pool()</code> (см. <code>billing/services/ip_allocation.py</code>), который находит первый свободный IP в диапазоне пула, помечает его в <code>Users.IP</code> и возвращает в RADIUS-ответе как <code>Framed-IP-Address</code>. Без пула — пришлось бы вручную проставлять IP каждому клиенту в карточке.</li>
+  <li><strong>Сегментация сети</strong>. Разным NAS можно привязать разные пулы → разные подсети для разных регионов / типов услуг (PPPoE-клиенты vs Hotspot, белые IP vs NAT).</li>
+</ol>
+
+<h5 id="ip-pull-nas-roles">4 роли пула на NAS</h5>
+<p>Один и тот же NAS может ссылаться на 4 разных пула, каждый со своим назначением:</p>
+<table class="data-table">
+  <thead>
+    <tr><th>Поле NAS</th><th>Тег в UI</th><th>Когда выдаётся</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>PULL_ID</code></td><td>🟢 main</td><td>Основной — для обычной авторизации клиентов</td></tr>
+    <tr><td><code>NAT_PULL_ID</code></td><td>🟠 nat</td><td>Для клиентов с серым IP (NAT за роутером провайдера)</td></tr>
+    <tr><td><code>WHITE_PULL_ID</code></td><td>🔵 white</td><td>Для клиентов с белым IP — отдельный платный сервис</td></tr>
+    <tr><td><code>HOTSPOT_PULL_ID</code></td><td>🟣 hotspot</td><td>Для гостевых Wi-Fi-сетей (бесплатный интернет с ограничениями)</td></tr>
+  </tbody>
+</table>
+<p>Какой пул использует FreeRADIUS — определяется по статусу клиента (<code>tarif</code>, <code>has_white_ip</code>, hotspot-флаг). На странице <code>/admin/dictionary/IpPull/</code> в колонке «Привязка к NAS» видно, какие роли выполняет пул на каждом NAS.</p>
+
+<h5 id="ip-pull-chains">Chain-цепочки (NEXT_PULL_ID)</h5>
+<p>Поле <code>ip_pull.NEXT_PULL_ID</code> позволяет связать пулы в <strong>цепочку резервирования</strong>: когда основной пул исчерпан, аллокатор автоматически переходит к следующему. Пример (рабочий сервер, 2026-05):</p>
+<table class="data-table">
+  <thead>
+    <tr><th>Цепочка</th><th>Объём</th><th>Статус</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>JOY-1 → JOY-2 → JOY-3</td><td>510 + 510 + 510 = 1530 IP</td><td>34.2% занято (chain Σ)</td></tr>
+    <tr><td>TOY-1 → TOY-2 → TOY-3</td><td>510 + 510 + 510 = 1530 IP</td><td>39.6% занято (chain Σ)</td></tr>
+  </tbody>
+</table>
+<p>Защита от циклов: <code>_expand_next_pull_chain()</code> ограничивает глубину 10 шагами и держит set уже посещённых ID. UI отображает chain-цепочку бейджем 🔗 с tooltip-разбивкой <em>JOY-1 (510/510) → JOY-2 (14/510) → JOY-3 (0/510)</em>.</p>
+
+<h5 id="ip-pull-when-needed">Когда нужно создавать новый пул</h5>
+<ul>
+  <li><strong>Новый NAS в новом регионе</strong> — отдельный пул для отделения трафика;</li>
+  <li><strong>Новый платный сервис «белый IP»</strong> — отдельный <code>WHITE_PULL_ID</code>;</li>
+  <li><strong>Расширение исчерпанной подсети</strong> — добавить пул и связать через <code>NEXT_PULL_ID</code> (без перенастройки NAS);</li>
+  <li><strong>Гостевой Wi-Fi</strong> — отдельный <code>HOTSPOT_PULL_ID</code> с ограниченной скоростью.</li>
+</ul>
+
+<h5 id="ip-pull-cleanup">Что делать со старыми пулами</h5>
+<ol>
+  <li><strong>Тестовые пулы</strong> (имя содержит «test», «tmp», «proba») — удаляются через UI кнопкой 🗑, если у пула 0 пользователей и 0 NAS-привязок;</li>
+  <li><strong>Декомиссированные пулы</strong> — поставить <code>enabled=false</code> вместо удаления, если есть исторические <code>Users</code> с IP из этого пула. Это сохранит историческую целостность;</li>
+  <li><strong>Не трогать</strong> пулы, упомянутые в любом из 4 полей <code>nas.*_PULL_ID</code> или в <code>NEXT_PULL_ID</code> другого пула — это сразу разрушит chain-цепочку.</li>
+</ol>
+
+<div class="info-box">
+  <strong>Важно:</strong> при ручной правке <code>Users.IP</code> через карточку клиента, биллинг автоматически проверяет уникальность IP во всех источниках (<code>users.IP</code>, <code>users.SNATIP</code>, <code>RADIUS_SESSIONS.IP</code>) — это защита от race condition при выдаче дубля. См. <code>billing/services/ip_allocation.py::collect_used_ips()</code>.
+</div>
+
+<h4 id="ip-pull">Пулы IP-адресов</h4>
+<p>URL: <code>/admin/dictionary/IpPull/</code></p>
+<p><strong>Пул IP-адресов</strong> — это диапазон от <em>start_ip</em> до <em>end_ip</em>, из которого FreeRADIUS выдаёт <code>Framed-IP-Address</code> при авторизации клиента. Один пул привязан к одному или нескольким NAS-устройствам через 4 разных поля (см. <a href="#ip-pull-nas-roles-detail">роли</a>). Список загружается AJAX, статистика занятости считается раз в минуту с кешем.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v510/v510_ip_pool_list.png" alt="Список IP-пулов"></p>
+
+<h5 id="ip-pull-list-features">Возможности списка</h5>
+<ul>
+  <li><strong>KPI-сводка</strong> сверху: общее количество пулов, активных, опасных (≥75 %), исчерпанных, суммарное использование.</li>
+  <li><strong>Сегменты</strong> Все / Активные / Опасные / Исчерпанные — фильтр по состоянию.</li>
+  <li><strong>Чипы-фильтры</strong> по ролям NAS: main / nat / white / hotspot — показывает пулы, используемые соответствующим способом.</li>
+  <li><strong>Колонки «Свободно» / «% занято»</strong> с прогресс-баром: зелёный &lt;75 %, оранжевый 75–90 %, красный ≥90 %, бейдж «ИСЧЕРПАН» при 0 свободных.</li>
+  <li><strong>Σ-блок «🔗 Σ N/M ×K»</strong> для пулов в цепочке — суммарная занятость всех пулов цепочки <code>JOY-1 → JOY-2 → JOY-3</code> с разбивкой в tooltip. Без этого блока админ видит «JOY-1 = 100 % занято» и думает «всё пропало», на самом деле есть запас в JOY-2/3.</li>
+  <li><strong>Привязка к NAS</strong> — цветные бейджи ролей (main / nat / white / hotspot), tooltip раскрывает все привязки одного NAS.</li>
+  <li><strong>Бейдж «🔗 → #N»</strong> в колонке «Название» — ссылка на следующий пул в цепочке (клик открывает его модалку).</li>
+  <li><strong>Сортировка</strong> сохраняется в localStorage — после CRUD страница перерисовывается с тем же sort и фильтрами.</li>
+  <li><strong>«Авто-шлюз»</strong> — кнопка-помощник: для пулов без шлюза подставляет первый IP диапазона (по конвенции <code>start_ip - 1</code> или <code>start_ip</code>).</li>
+</ul>
+
+<h5 id="ip-pull-add">Добавление пула</h5>
+<p>Кнопка <strong>«+ Новый IP-пул»</strong> в правом верхнем углу открывает модалку:</p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v510/v510_ip_pool_modal_add.png" alt="Модалка добавления IP-пула"></p>
+
+<p><strong>Обязательные поля</strong>:</p>
+<ul>
+  <li><strong>Название</strong> (<code>name</code>, до 256 символов) — отображается в селектах и в колонке списка. Пример: <code>SmIT-main</code>, <code>JOY-1</code>, <code>HOTSPOT-FAG</code>. Рекомендуется префикс по NAS или роли.</li>
+  <li><strong>Начальный IP</strong> (<code>start_ip</code>) — первый адрес диапазона.</li>
+  <li><strong>Конечный IP</strong> (<code>end_ip</code>) — последний адрес. Сервер проверяет что <code>start ≤ end</code>, иначе вернёт 400.</li>
+</ul>
+
+<p><strong>Опциональные поля</strong>:</p>
+<ul>
+  <li><strong>Маска</strong> (<code>netmask</code>) — справочное значение, клиенту через RADIUS не назначается. Используется только для cfg-генерации NAS (<code>rtsh cfg make</code>) и SORM-отчётов. По умолчанию — <code>255.255.255.0</code> (/24).</li>
+  <li><strong>Шлюз</strong> (<code>gateway</code>) — справочное, отображается в cfg-шаблонах. По умолчанию — пусто (можно автозаполнить кнопкой «Авто-шлюз» в toolbar).</li>
+  <li><strong>Следующий пул</strong> (<code>next_pull_id</code>) — Select из активных пулов того же оператора. Когда основной исчерпан, <code>allocate_ip_from_pools</code> переходит в этот пул автоматически (<a href="#ip-pull-chain">см. цепочки</a>). Защита от циклов: <code>max_depth=10</code>.</li>
+  <li><strong>Активность</strong> (<code>enabled</code>, default = true) — выключенный пул не выдаёт IP, но остаётся в БД. Используется при выводе пула из эксплуатации без удаления.</li>
+  <li><strong>Комментарий</strong> (<code>comment</code>) — свободный текст. Удобно фиксировать VLAN-номер, оператора или причину создания.</li>
+</ul>
+
+<p><strong>Что происходит после сохранения</strong>:</p>
+<ol>
+  <li>Запись в БД (<code>ip_pull</code>): новый <code>pull_id</code> генерируется автоинкрементом.</li>
+  <li>Audit-запись в <code>AuditOperations</code> (<code>table_name='IP_PULL'</code>, <code>object_id=pull_id</code>).</li>
+  <li>Кеш статистики (<code>ip_pool_stats_v3</code>) инвалидируется — следующая загрузка списка пересчитывает использование.</li>
+  <li>Пул автоматически становится доступным в Select-полях NAS (Pull / NAT-pull / White-pull / Hotspot-pull) и в <code>RADIUS_USERAUTH</code> при авторизации.</li>
+</ol>
+
+<h5 id="ip-pull-edit">Редактирование пула</h5>
+<p>Клик по строке (или иконке карандаша справа) открывает ту же модалку с предзаполненными полями:</p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v510/v510_ip_pool_modal_edit.png" alt="Модалка редактирования IP-пула"></p>
+
+<p>Все поля редактируются. Изменение <code>start_ip</code> / <code>end_ip</code> у используемого пула — <strong>опасная операция</strong>: если новый диапазон не покрывает уже выданные адреса, клиенты со «старыми» IP не попадут в пул при следующей авторизации (<code>allocate_ip_from_pools</code> не считает их занятыми, может выдать дубль). Прежде чем сужать диапазон — проверьте через <code>find_ip_duplicates --pool_id=N</code>.</p>
+
+<p><strong>Удаление</strong> через кнопку <em>«Удалить»</em> внутри модалки. Защита: пул нельзя удалить, если на него ссылается хоть один <code>NAS</code> (через любое из 4 полей <code>pull_id / nat_pull_id / white_pull_id / hotspot_pull_id</code>) или другой пул через <code>next_pull_id</code>. Сервер вернёт ошибку «Пул используется в N NAS / M пулах. Сначала уберите ссылки.»</p>
+
+<h5 id="ip-pull-nas-roles-detail">Роли пула на NAS (4 поля)</h5>
+<p>Один NAS может ссылаться на пул через 4 разных поля, что определяет <em>как</em> IP из этого пула используется:</p>
+<table>
+  <thead><tr><th>Поле NAS</th><th>Роль (бейдж)</th><th>Назначение</th></tr></thead>
+  <tbody>
+    <tr><td><code>pull_id</code></td><td>🟢 main</td><td>Основной пул для выдачи серых IP клиентам через DHCP/PPPoE.</td></tr>
+    <tr><td><code>nat_pull_id</code></td><td>🟠 nat</td><td>NAT-пул: серые IP, скрытые за внешним NAT. Через RADIUS уходит как Framed-IP-Address, на NAS настраивается NAT в сторону интернета.</td></tr>
+    <tr><td><code>white_pull_id</code></td><td>🔵 white</td><td>Белые (публичные) IP. Выдаются за дополнительную плату, маршрутизируются напрямую без NAT.</td></tr>
+    <tr><td><code>hotspot_pull_id</code></td><td>🟣 hotspot</td><td>Пул для гостевого Wi-Fi (hotspot). Часто короткие диапазоны с walled-garden ACL.</td></tr>
+  </tbody>
+</table>
+<p>В списке пулов рядом с именем NAS показываются бейджи ролей для каждого NAS, использующего этот пул. Это помогает быстро понять «куда подключён пул» без перехода на страницу NAS.</p>
+
+<h5 id="ip-pull-chain">Цепочки пулов (next_pull)</h5>
+<p>Когда клиентов больше, чем размер одного /24-пула (254 адреса), используется <strong>цепочка</strong>: основной пул ссылается на резервный через <code>next_pull_id</code>. Алгоритм <code>allocate_ip_from_pools()</code> в <code>billing/services/ip_allocation.py</code>:</p>
+<ol>
+  <li>Проверяет основной пул (NAS.pull_id).</li>
+  <li>Если он исчерпан — переходит в <code>next_pull</code>.</li>
+  <li>Из <code>next_pull</code> снова в его <code>next_pull</code>, и т.д.</li>
+  <li>Защита от циклов: <code>max_depth=10</code> + <code>seen</code>-set по <code>pull_id</code>.</li>
+  <li>Если все пулы цепочки исчерпаны — fallback на глобальный <code>FALLBACK_IP_POOL_ID</code> (если задан в VpnConst), затем reclaim из offline-клиентов, затем Telegram-алерт.</li>
+</ol>
+<p><strong>Пример</strong> (рабочий сервер, 2026-05): JOY-1 → JOY-2 → JOY-3, каждый по 510 адресов. Σ-блок в UI показывает «🔗 Σ 1006 / 1530 ×3» — итого занято 1006 из 1530, цепочка из 3 пулов.</p>
+<p><strong>Visual</strong>: на пуле, у которого задан <code>next_pull_id</code>, в колонке «Название» появляется бейдж <strong>«🔗 → #N»</strong>. Клик открывает модалку следующего пула.</p>
+
+<!-- ===== VLAN-пул: обзор ===== -->
+<h4 id="vlan-pull-overview">Пулы VLAN — назначение и роль</h4>
+<details class="section-toc">
+  <summary><strong>Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#vlan-pull-purpose">Зачем нужен пул VLAN</a></li>
+    <li><a href="#vlan-pull-fields-usage">Где это поле используется</a></li>
+    <li><a href="#vlan-pull-when-needed">Когда нужно создавать пул VLAN</a></li>
+    <li><a href="#vlan-pull-cleanup">Что делать со старыми пулами</a></li>
+  </ul>
+</details>
+
+<p><strong>Пул VLAN</strong> — это диапазон номеров VLAN <code>[start_vlan…end_vlan]</code>, закреплённых за конкретным оператором связи или сегментом сети. Хранится в <code>vlan_pull</code>, редактируется на <code>/admin/dictionary/VlanPull/</code>.</p>
+
+<h5 id="vlan-pull-purpose">Зачем нужен пул VLAN</h5>
+<p>Пул VLAN решает две задачи:</p>
+<ol>
+  <li><strong>Сегментация L2-сети</strong>. Каждой точке подключения (<code>CONNECTION_POINTS</code>) можно присвоить отдельный VLAN из пула — изолировать трафик клиентов друг от друга на коммутаторах. Биллинг подсказывает свободный VLAN из пула при создании точки.</li>
+  <li><strong>Учёт использования номеров VLAN</strong>. На корпоративных сетях (или нескольких операторов в одной инфраструктуре) выделение VLAN строгое: например, оператор А получил 100–200, оператор Б — 201–300. Пул не даёт случайно занять чужой номер.</li>
+</ol>
+
+<h5 id="vlan-pull-fields-usage">Где это поле используется</h5>
+<table class="data-table">
+  <thead>
+    <tr><th>Где</th><th>Поле / связь</th><th>Что происходит</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>vlan_pull</code></td><td><code>start_vlan</code>, <code>end_vlan</code></td><td>Диапазон номеров (1–4094 в стандарте 802.1Q)</td></tr>
+    <tr><td><code>vlan_pull</code></td><td><code>operator</code> (FK на Abonents)</td><td>За каким провайдером закреплён пул (если несколько ISP в одной инфре)</td></tr>
+    <tr><td><code>CONNECTION_POINTS</code></td><td>VLAN-номер (через UI выбора)</td><td>Присвоенный точке VLAN. Из пула выбирается свободный номер при создании точки</td></tr>
+  </tbody>
+</table>
+
+<h5 id="vlan-pull-when-needed">Когда нужно создавать пул VLAN</h5>
+<ul>
+  <li><strong>Если вы единственный оператор в сети</strong> — обычно достаточно одного пула на 1–4094 (или часто на 100–4000, чтобы оставить системные номера). Технически можно вообще обойтись без VLAN-пулов и выставлять номера руками.</li>
+  <li><strong>Если делите инфраструктуру с другими операторами</strong> — отдельный пул для каждого, чтобы UI не давал случайно занять чужой VLAN.</li>
+  <li><strong>Сегментация по типам услуг</strong> — например, 100–199 для PPPoE, 200–299 для IPoE, 300–399 для гостевого Wi-Fi.</li>
+</ul>
+
+<h5 id="vlan-pull-cleanup">Что делать со старыми пулами</h5>
+<ul>
+  <li><strong>Тестовые пулы</strong> с 0 точек подключения — удаляются через UI кнопкой 🗑.</li>
+  <li><strong>Декомиссированные пулы</strong> — лучше выключить (<code>enabled=false</code>), а не удалять, если есть точки подключения с VLAN из этого пула. После миграции точек на новый пул — удалить.</li>
+  <li><strong>Защита удаления</strong>: UI блокирует удаление пула, у которого counter «Использовано» &gt; 0. Чтобы удалить — сначала переведите все точки подключения на другие пулы.</li>
+</ul>
+
+<div class="info-box">
+  <strong>Single-operator hide-fix:</strong> если в системе только один оператор связи, в модалке создания пула колонка «Оператор» автоматически скрывается через CSS-класс <code>.vp-op-col-hidden</code> (бьёт Bootstrap-сетку с <code>!important</code>). Это упрощает UI для маленьких ISP.
+</div>
+
+<h4 id="vlan-pull">Пулы VLAN</h4>
+<p>URL: <code>/admin/dictionary/VlanPull/</code></p>
+<p><strong>Пул VLAN</strong> — диапазон номеров VLAN, выделенных оператору связи. Используется при настройке точек подключения (одна точка = одна VLAN из пула) и в шаблонах конфигурации коммутаторов.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v510/v510_vlan_pool_list.png" alt="Список VLAN-пулов"></p>
+
+<h5 id="vlan-pull-features">Возможности списка</h5>
+<ul>
+  <li>Список с поиском по названию и оператору.</li>
+  <li>Колонка <em>«Использовано»</em> — счётчик точек подключения, занявших VLAN из пула.</li>
+  <li>Бейдж активности (<code>enabled</code>) — Bootstrap-switch прямо в строке.</li>
+  <li>Скрытие «оператора», если у системы единственный оператор: колонка убирается через <code>.vp-op-col-hidden</code>, чтобы не путать админа.</li>
+</ul>
+
+<h5 id="vlan-pull-add">Добавление и редактирование</h5>
+<p>Кнопка <strong>«+ Новый VLAN-пул»</strong> открывает модалку:</p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v510/v510_vlan_pool_modal_add.png" alt="Модалка добавления VLAN-пула"></p>
+
+<p><strong>Поля</strong>:</p>
+<ul>
+  <li><strong>Название</strong> (<code>name</code>) — отображается в селектах и списке.</li>
+  <li><strong>Начальный VLAN</strong> (<code>start_vlan</code>, 1–4094) — первый номер диапазона.</li>
+  <li><strong>Конечный VLAN</strong> (<code>end_vlan</code>, 1–4094) — последний номер. Сервер проверяет <code>start ≤ end</code> и непересечение с другими активными пулами того же оператора.</li>
+  <li><strong>Оператор</strong> (<code>operator_id</code>) — Select из клиентов в папке Операторы (9002). Для одно-операторских систем поле скрыто.</li>
+  <li><strong>Активность</strong> (<code>enabled</code>) — выключенный пул не назначается на новые точки подключения.</li>
+  <li><strong>Комментарий</strong> — свободный текст.</li>
+</ul>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v510/v510_vlan_pool_modal_edit.png" alt="Модалка редактирования VLAN-пула"></p>
+
+<p>На скриншоте edit-режим: модалка идентична add, но с заполненными значениями + кнопкой «Удалить» снизу слева.</p>
+
+<p><strong>Защита удаления</strong>: VLAN-пул нельзя удалить, если он использован хотя бы в одной точке подключения. Сервер вернёт ошибку «Пул используется в N точках. Удаление запрещено для сохранения связей.»</p>
+
+<h5 id="pools-monitoring">Мониторинг и алерты</h5>
+<p>Beat-задача <code>ip-pool-monitor</code> (раз в час) обходит все enabled IP-пулы:</p>
+<ul>
+  <li>Считает использование через <code>get_pool_stats(pool)</code> — для пулов в цепочке возвращает chain-aware Σ.</li>
+  <li>Если % занятости ≥ <code>IP_POOL_DANGER_THRESHOLD_PCT</code> (90 % default) → пул помечается как опасный.</li>
+  <li>Если ≥1 пул в опасной зоне ИЛИ исчерпан → отправка одной нотификации в Telegram-чат админов (дедуп <code>ip_pool_monitor:alert:{date}</code>).</li>
+</ul>
+<p>На дашборде <code>/admin/welcome/</code> — компактный виджет «IP-пулы» с топ-3 опасными и сводкой использования.</p>
+
+<h3 id="acl">7.2. Контроль доступа (ACL)</h3>
+<p>Подменю с двумя справочниками для управления сетевыми правилами доступа.</p>
+
+<h4>Подраздел «ACL группы»</h4>
+<p>Именованные списки правил для firewall: «Домашние пользователи», «Корпоративные»,
+«VIP», «Социальный тариф» и т.п. Каждой группе соответствует набор правил —
+разрешения и запреты по портам, протоколам и адресам. Группа назначается клиенту
+в его карточке (на вкладке «Точки подключения») и попадает в RADIUS-ответ
+как Filter-Id.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_acl_groups.png" alt="ACL группы"></p>
+
+<h4>Подраздел «Списки разрешённых сайтов»</h4>
+<p>Белые списки доменов для клиентов в финансовой блокировке (captive portal):
+сайт оператора, страница оплаты, личный кабинет. Когда клиент в долге, NAS
+ограничивает его трафик до этих доменов — чтобы он мог пополнить счёт, но не мог
+пользоваться интернетом для развлечений.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_acl_whitelist.png" alt="ACL — белые списки"></p>
+
+<h3 id="addresses">7.3. Все адреса</h3>
+<p>Подменю с тремя справочниками для адресной системы оператора.</p>
+
+<!-- ===== Адреса: обзор ===== -->
+<h4 id="addresses-overview">Адреса (Homes) — назначение и роль</h4>
+<details class="section-toc">
+  <summary><strong>Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#addresses-purpose">Зачем нужен справочник адресов</a></li>
+    <li><a href="#addresses-fields-usage">Где используется адрес</a></li>
+    <li><a href="#addresses-tree">Дерево и геокодинг</a></li>
+    <li><a href="#addresses-cleanup">Что делать с адресами без жителей</a></li>
+  </ul>
+</details>
+
+<p><strong>Адрес (Homes)</strong> — запись в иерархическом справочнике Россия → регион → город → район → улица → дом. Хранится в таблице <code>homes</code> как самоссылочное дерево (через <code>parent_id</code>), редактируется на <code>/admin/dictionary/Homes/</code>.</p>
+
+<h5 id="addresses-purpose">Зачем нужен справочник адресов</h5>
+<p>Справочник <code>homes</code> решает четыре задачи:</p>
+<ol>
+  <li><strong>Привязка клиента к физическому адресу</strong>. Поле <code>Abonents.HOME_ID</code> → конкретный дом. Используется для печатных форм договоров, счетов, СОРМ-выгрузок (поле <code>ABONENT_ADDR</code>).</li>
+  <li><strong>Привязка оборудования к месту установки</strong>. Поле <code>switch.HOME_ID</code> и <code>nas.HOME_ID</code> — где установлена железка. Это техдокументация для выезжающих инженеров.</li>
+  <li><strong>Точки подключения</strong>. <code>CONNECTION_POINTS.HOME_ID</code> — на каком доме точка подключения находится. Один дом может иметь много точек (квартиры, офисы).</li>
+  <li><strong>Геокодинг и карта</strong>. Поля <code>lat</code>/<code>lon</code> хранят координаты дома (геокодируются через DaData). Используются на карте клиентов <code>/admin/abonents/map/</code> — кружки с цветом по статусу клиента.</li>
+</ol>
+
+<h5 id="addresses-fields-usage">Где используется адрес</h5>
+<table class="data-table">
+  <thead>
+    <tr><th>Где</th><th>Поле</th><th>Что происходит</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>Abonents</code></td><td><code>HOME_ID</code></td><td>Адрес клиента — печатные формы, СОРМ, карта</td></tr>
+    <tr><td><code>users</code></td><td><code>HOME_ID</code></td><td>Адрес учётной записи (если несколько услуг по одному клиенту в разных точках)</td></tr>
+    <tr><td><code>switch</code></td><td><code>HOME_ID</code></td><td>Где стоит коммутатор (для техника)</td></tr>
+    <tr><td><code>nas</code></td><td><code>HOME_ID</code></td><td>Где стоит NAS (обычно центральный узел)</td></tr>
+    <tr><td><code>CONNECTION_POINTS</code></td><td><code>HOME_ID</code></td><td>Точка подключения в подъезде/щитке этого дома</td></tr>
+  </tbody>
+</table>
+
+<h5 id="addresses-tree">Дерево и геокодинг</h5>
+<p>Адреса организованы как самоссылочное дерево:</p>
+<ul>
+  <li><strong>Корень</strong> — обычно «Россия» (одна запись с <code>parent_id=NULL</code>);</li>
+  <li><strong>Уровни</strong>: регион (Волгоградская обл.) → город (Волгоград) → район (Кировский) → улица (Ленина) → дом (15);</li>
+  <li><strong>Геокоординаты</strong> заполняются для домов через команду <code>manage.py geocode_homes_dadata</code>. На рабочий сервер 2026-05: 4045/4261 (94.93%) адресов имеют lat/lon;</li>
+  <li><strong>Использование на карте</strong>: для отображения клиента на карте нужен заполненный <code>lat</code>/<code>lon</code> у его дома. Если координат нет — клиент в маркер не попадёт.</li>
+</ul>
+<p>Подробнее про карту см. <a href="abonents.html#abonent-map">«Карта клиентов»</a>.</p>
+
+<h5 id="addresses-cleanup">Что делать с адресами без жителей</h5>
+<p>В аудите БД часто видны адреса <strong>без привязанных клиентов и Users</strong> (на рабочем сервере 2026-05: 992 шт). Это <strong>не мусор</strong>, а <em>адресная база региона</em> — список потенциальных адресов для подключения.</p>
+<ul>
+  <li><strong>Не удалять автоматически</strong>. Адресная база заполнялась заранее (DaData импорт), пустые адреса ждут подключения новых клиентов;</li>
+  <li><strong>Удалять только конкретные ошибки</strong> — дубли, неверные индексы, переименованные улицы. Удаление через UI кнопкой 🗑;</li>
+  <li><strong>Защита FK</strong>: на <code>homes</code> ссылаются <code>NO ACTION</code> поля из <code>abonents</code>, <code>users</code>, <code>switch</code>, <code>nas</code>, <code>CONNECTION_POINTS</code>, <code>EQUIPMENT</code>, <code>netmap_node</code>, <code>video_object</code>, <code>video_project</code>, а также сам <code>homes</code> через <code>PARENT_ID</code>. UI заблокирует удаление, если есть хоть одна привязка — в том числе когда у адреса есть вложенные адреса.</li>
+</ul>
+
+<div class="info-box">
+  <strong>Важно:</strong> при создании нового клиента UI подсказывает существующие адреса через Select2-AJAX (<code>billing/static/js/address_widget.js</code>). Если адреса нет в справочнике — лучше сначала добавить его, а уже потом привязать клиента. Это сохраняет адресное дерево чистым.
+</div>
+
+<h4>Подраздел «Адреса»</h4>
+<p>Иерархия Россия → регион → город → район → улица → дом. Хранится как дерево
+с unicode-сравнением, дома содержат геокоординаты (lat/lon), индекс, дату начала
+обслуживания.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_homes.png" alt="Адреса"></p>
+
+<p>Возможности списка:</p>
+<ul>
+  <li>Все 4000+ адресов загружаются одним AJAX-запросом, фильтрация и сортировка — на клиенте.</li>
+  <li>Фильтры: Город, Район (выпадающий список), дата подключения дома.</li>
+  <li>Сортировка по любому столбцу.</li>
+  <li>CSV-экспорт отфильтрованных строк.</li>
+  <li>Геокодирование через DaData (поле <em>«Адрес»</em> с автокомплитом, лат/лон сохраняются автоматически).</li>
+</ul>
+
+<h4>Подраздел «Точки подключения»</h4>
+<p>Физическое место подключения клиента: коммутатор + порт + VLAN. Один дом
+может содержать несколько точек (если в подъезде несколько коммутаторов или
+несколько провайдерских узлов). Используется для DHCP Option 82, RADIUS-фильтра
+и СОРМ-выгрузки.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_conn_points.png" alt="Точки подключения"></p>
+
+<h4>Подраздел «Типы адресных единиц»</h4>
+<p>Словарь сокращений: <em>ул, пер, наб, пр, пл, бульв, проезд, тупик, шоссе, поселение, мкрн</em>
+и т.д. Используется для нормализации и парсинга полных адресов, передачи в DaData
+и в форматирование адреса для печатных документов.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_home_types.png" alt="Типы адресных единиц"></p>
+
+<h3 id="requisites">7.4. Реквизиты</h3>
+<p>Шаблоны атрибутов для физлиц и юрлиц. <strong>Физлицо</strong>: паспорт серия/номер,
+дата выдачи, кем выдан, адрес регистрации, СНИЛС. <strong>Юрлицо</strong>: ИНН, КПП,
+ОГРН, юридический/физический/почтовый адрес, расчётный счёт, банк, БИК,
+корреспондентский счёт, в лице, директор.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_requisites.png" alt="Реквизиты"></p>
+
+<p>Атрибуты автоматически создаются у клиента при создании в зависимости от типа
+(физлицо / юрлицо). Заполняются во вкладке <em>«Реквизиты»</em> карточки клиента.
+Для юрлиц также собираются на вкладке СОРМ.</p>
+
+<h3 id="currency">7.5. Валюты</h3>
+<p>Список валют биллинга. По умолчанию — рубль (₽). Для мультивалютных схем можно
+добавить USD/EUR с курсами.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_currency.png" alt="Валюты"></p>
+
+<h3 id="weekends">7.6. Выходные дни</h3>
+<p>Календарь нерабочих дней. Используется в расчётах, которые должны учитывать рабочие дни:
+например, обещанный платёж сдвигает срок на ближайший рабочий день, если выпадает на выходной.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_weekends.png" alt="Выходные дни"></p>
+
+<!-- ===== Statuses: обзор ===== -->
+<h3 id="statuses-overview">Статусы клиентов — назначение и роль</h3>
+<details class="section-toc">
+  <summary><strong>Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#statuses-purpose">Зачем нужны статусы</a></li>
+    <li><a href="#statuses-fields">Поля и связанные модели</a></li>
+    <li><a href="#statuses-categories">4 категории событий аудита</a></li>
+    <li><a href="#statuses-msg-templates">Связь с шаблонами сообщений</a></li>
+    <li><a href="#statuses-radius">Связь с RADIUS</a></li>
+  </ul>
+</details>
+
+<p><strong>Статус клиента</strong> — состояние его подключения: «Активный», «Заблокирован», «На паузе», «Тестовый период», «Должник», «Корпоративный VIP». Хранится через FK <code>Abonents.status_id</code> → таблицу <code>STATUS</code>. Управляется в <code>/admin/dictionary/Status/</code>.</p>
+
+<h5 id="statuses-purpose">Зачем нужны статусы</h5>
+<p>Статусы решают четыре задачи:</p>
+<ol>
+  <li><strong>Визуальная индикация</strong> — цветной бейдж рядом с именем клиента в списке. Оператор видит «должник», «новый», «активный» одним взглядом;</li>
+  <li><strong>Автоматизация смены</strong> — при определённых событиях (баланс ушёл в минус, истёк тестовый период) Целери-задача меняет статус автоматически;</li>
+  <li><strong>Триггер для сообщений</strong> — при смене статуса автоматически шлётся email/SMS/push/Telegram-сообщение из <code>StatusMsgTemplate</code>;</li>
+  <li><strong>Изменение поведения сети</strong> — каждому статусу можно привязать <code>StatusRadiusParam</code> — RADIUS-атрибуты для NAS (например <code>Filter-Id := block</code> у статуса «Заблокирован»).</li>
+</ol>
+
+<h5 id="statuses-fields">Поля и связанные модели</h5>
+<table class="data-table">
+  <thead><tr><th>Поле <code>STATUS</code></th><th>Назначение</th></tr></thead>
+  <tbody>
+    <tr><td><code>name</code></td><td>Имя статуса (видно оператору)</td></tr>
+    <tr><td><code>default_status</code></td><td>Автоматически присваивается новым клиентам</td></tr>
+    <tr><td><code>set_on_activate</code></td><td>Устанавливается при активации подключения</td></tr>
+    <tr><td><code>block_on_set</code></td><td>Сразу блокировать клиента (создаётся <code>AbonentsBlock</code>)</td></tr>
+    <tr><td><code>move_to</code></td><td>FK на папку (Abonents с <code>is_folder=true</code>) — куда перемещать клиента при смене статуса</td></tr>
+    <tr><td><code>move_to_group_from_tarif</code></td><td>Папка берётся из тарифа (для агентских схем)</td></tr>
+  </tbody>
+</table>
+<p>Дополнительные модели:</p>
+<ul>
+  <li><strong><code>StatusFollow</code></strong> — иерархия переходов (parent → child). Например: после статуса «Заблокирован за долг» через 30 дней автоматически переход в «Удалённый»;</li>
+  <li><strong><code>StatusMsgTemplate</code></strong> — шаблоны email/SMS/push для смены на этот статус;</li>
+  <li><strong><code>StatusRadiusParam</code></strong> — RADIUS-атрибуты, которые отдаются NAS при этом статусе.</li>
+</ul>
+
+<h5 id="statuses-categories">4 категории событий аудита</h5>
+<p>В <code>AUDIT_OPERATIONS</code> поле <code>op_type_category</code> разделяет события на 4 группы:</p>
+<table class="data-table">
+  <thead><tr><th>Категория</th><th>Что попадает</th></tr></thead>
+  <tbody>
+    <tr><td><code>status</code></td><td>Смены статуса клиента (ручные и автоматические)</td></tr>
+    <tr><td><code>block</code></td><td>Создание/снятие <code>AbonentsBlock</code></td></tr>
+    <tr><td><code>payment</code></td><td>Финоперации, изменения баланса</td></tr>
+    <tr><td><code>SORM</code></td><td>Изменения СОРМ-полей клиента (паспорт, ИНН, ОГРН)</td></tr>
+  </tbody>
+</table>
+<p>В UI вкладки «Аудит» карточки клиента можно фильтровать по категории — получаешь только статусные смены или только финансовые операции.</p>
+
+<h5 id="statuses-msg-templates">Связь с шаблонами сообщений</h5>
+<p>Когда статус меняется, через post-save сигнал биллинг проходит по <code>StatusMsgTemplate</code> для нового статуса и отправляет:</p>
+<ul>
+  <li><strong>Email</strong> с шаблоном-текстом (плейсхолдеры: <code>{{ abonent.name }}</code>, <code>{{ balance }}</code>);</li>
+  <li><strong>SMS</strong> через настроенный шлюз (SmitSMSGateway / SMSAero);</li>
+  <li><strong>Push</strong> на мобильное приложение (через FCM, если устройство зарегистрировано);</li>
+  <li><strong>Telegram</strong> через <code>SMITSupport_bot</code>, если у клиента привязан Telegram ID;</li>
+  <li><strong>Уведомление в ЛК</strong> — через <code>MsgStack</code>, клиент видит при следующем входе.</li>
+</ul>
+<p>Управление шаблонами — в модалке статуса (вкладка «Шаблоны»). Каждый канал включается / выключается отдельно.</p>
+
+<h5 id="statuses-radius">Связь с RADIUS</h5>
+<p>При авторизации клиента FreeRADIUS читает его текущий статус и применяет связанные с ним атрибуты:</p>
+<ul>
+  <li><strong>Статус «Активный»</strong> — отдаются нормальные параметры из тарифа (Mikrotik-Rate-Limit и т.д.);</li>
+  <li><strong>Статус «Заблокирован»</strong> — может вернуться <code>Filter-Id := block</code> (фильтр на NAS, ограничивающий трафик до captive-portal);</li>
+  <li><strong>Статус «Перерыв на лето»</strong> — отдельный <code>Pool-Name</code> с медленной скоростью.</li>
+</ul>
+<p>Это альтернатива полной блокировке — клиент остаётся подключён, но с ограничениями. Гибче чем boolean <code>enabled=false</code>.</p>
+
+<div class="info-box">
+  <strong>Редактирование статусов</strong> — AJAX CRUD с модальными окнами на 2 вкладки (Шаблоны сообщений + RADIUS-параметры). Шаблоны сообщений и RADIUS-параметры редактируются в одной модалке статуса.
+</div>
+
+<h3 id="statuses">7.7. Управление статусами</h3>
+<p>Подменю с двумя справочниками для управления пользовательскими статусами клиентов.</p>
+
+<h4>Подраздел «Статусы»</h4>
+<p>Пользовательские статусы клиента: «Тестовый период», «Должник», «Перерыв на лето»,
+«Корпоративный», «VIP» и т.п. Каждый статус имеет цвет (показывается как бейдж
+рядом с именем клиента в списке) и шаблон сообщения, которое отправляется
+автоматически при назначении статуса.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_statuses.png" alt="Статусы"></p>
+
+<p>В модалке статуса есть вкладки для шаблонов сообщений по каналам (Email / SMS /
+Push / Telegram) и RADIUS-параметров (если статус должен влиять на скорость
+или ACL клиента в авторизации).</p>
+
+<h4>Подраздел «Настройка статусов»</h4>
+<p>Правила автоматической смены статуса по событиям: платёж выше N руб →
+статус «Активный»; задержка платежа &gt; N дней → статус «Должник»; истечение договора
+→ статус «Архив». Правила применяются Celery-задачей раз в час.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_status_follow.png" alt="Настройка статусов"></p>
+
+<h3 id="report-types">7.8. Типы отчётов</h3>
+<p>Категории SQL-отчётов для разделения по ролям сотрудников: Техсервис, Руководство,
+Бухгалтерия, ЦОК, Телефония, Техподдержка, ЦУС. Каждый тип имеет цвет и иконку.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_report_types.png" alt="Типы отчётов"></p>
+
+<p>Управляется из этого справочника или прямо из <a href="reports.html#custom-reports">Библиотеки отчётов</a>
+кнопкой <em>«Типы»</em>.</p>
+
+<h3 id="units">7.9. Единицы измерения</h3>
+<p>Словарь единиц измерения для услуг: МБ, ГБ, минуты, штуки. Используется
+в названиях услуг и в детализации расхода.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_units.png" alt="Единицы измерения"></p>
+
+<h3 id="periods">7.10. Периоды</h3>
+<p>Биллинговые периоды (обычно «месяц с 1-го по последний день»). Период определяет
+дату списания абонплаты, формирование отчётов, закрытие периода.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_periods.png" alt="Периоды"></p>
+
+
+<!-- ===== 8. АБОНЕНТЫ ===== -->
+
+</main>
+
+<footer class="footer">
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">25.08.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;<span data-smit="updated">25.08.2026</span></span>
+</footer>
+
+<script src="../js/main.js?v=2189"></script>
+<script src="../js/search.js?v=2189"></script>
+<script src="../js/version.js"></script>
+<script src="../js/mermaid-init.js?v=2189"></script>
+<script src="../js/markmap-init.js?v=2189"></script>
+</body>
+</html>
