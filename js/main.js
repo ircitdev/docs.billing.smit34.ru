@@ -636,7 +636,10 @@ document.addEventListener('DOMContentLoaded', function () {
     var items = [];
     for (var i = 0; i < heads.length; i++) {
       var h = heads[i];
-      var txt = (h.textContent || '').replace(/\s+/g, ' ').trim();
+      // значки из заголовка в навигацию не переносим
+      var txt = (h.textContent || '')
+        .replace(/[\u{1F000}-\u{1FAFF}\u2600-\u27BF\uFE0F]/gu, '')
+        .replace(/\s+/g, ' ').trim();
       if (!txt) continue;
       var lvl = h.tagName === 'H2' ? 2 : 3;
       html += '<li class="pr-i pr-l' + lvl + '" data-for="' + h.id + '">' +

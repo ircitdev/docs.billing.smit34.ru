@@ -19,10 +19,10 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Управление клиентами, тарификация, платёжные системы, личный кабинет, FreeRADIUS, резервное копирование, отчёты, справочники и технологический стек.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=2182">
+  <link rel="stylesheet" href="../css/style.css?v=2183">
   <link rel="stylesheet" href="../css/vendor/bootstrap-icons.min.css">
   <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css">
-  <link rel="stylesheet" href="../css/search.css?v=2182">
+  <link rel="stylesheet" href="../css/search.css?v=2183">
 </head>
 <body>
 
@@ -11197,7 +11197,7 @@ endpoints <code>finops_ajax</code>, <code>finops_crud_ajax</code>,
 
 
 <!-- ===== Внутренний чат персонала ===== -->
-<h2 id="chat-messenger">💬 Внутренний чат персонала</h2>
+<h2 id="chat-messenger">Внутренний чат персонала</h2>
 
 <p>Встроенный мессенджер для сотрудников — выдвижная панель «Чаты» доступна с любой
 страницы админки (иконка-колокольчик в навбаре). Личные диалоги, групповые чаты,
@@ -11245,7 +11245,7 @@ flowchart LR
 <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_v1403/13_chat_toast.png" alt="Toast новых сообщений чата"></p>
 
 <!-- ===== Интерфейс: темы и единые паттерны ===== -->
-<h2 id="ui-ux">🎨 Интерфейс: темы и единые паттерны</h2>
+<h2 id="ui-ux">Интерфейс: темы и единые паттерны</h2>
 
 <h3 id="ui-theme">Переключатель темы (Система / Светлая / Тёмная)</h3>
 <p>В выпадающем меню профиля (аватар в навбаре) — трёхпозиционный переключатель
@@ -11271,7 +11271,7 @@ flowchart LR
   всем разделам с вкладками: карточка клиента, Поддержка, настройки.</li>
 </ul>
 
-<h2 id="video-surveillance">📹 Видеонаблюдение — доп.услуга «под ключ»</h2>
+<h2 id="video-surveillance">Видеонаблюдение — доп.услуга «под ключ»</h2>
 <p>Модуль продажи видеонаблюдения через биллинг: от заявки и обследования до монтажа, recurring-подписок и документов. Реализован как собственный сервисно-инсталляционный домен (объект → проект → камеры/оборудование → подписки), а не плоская интеграция. Использует существующее ядро биллинга: тарификацию <code>Usluga</code>/<code>UsersUsluga</code>, ежемесячное списание <code>billing_worker</code>, <code>FinanceOperations</code>, генерацию PDF (WeasyPrint), фискализацию.</p>
 
 <h3 id="video-revenue">3 слоя дохода — как продавать правильно</h3>
@@ -11560,7 +11560,7 @@ flowchart LR
   <p><strong>Перед запуском:</strong> модуль выключен по умолчанию (<code>VIDEO_ENABLED=false</code>). Включается после заведения услуг-пакетов, реквизитов компании и юридического контура 152-ФЗ (согласия + уведомление РКН). Охранный мониторинг с реагированием оказывает партнёр-ЧОО (лицензия), оператор связи — технический сервис.</p>
 </div>
 
-<h2 id="domofon-demo">🚪 Домофонный домен</h2>
+<h2 id="domofon-demo">Домофонный домен</h2>
 <p>Домофония для новостроек реализована как <strong>рескин</strong> существующего биллинга, а не отдельный модуль: иерархия «оператор → ЖК → подъезд → квартира» укладывается на MPTT-дерево клиентов один-в-один, пакеты домофона — это тарифы, абонентская плата — recurring-услуги (списываются <code>billing_worker</code>). Все клиенты домофонных/видео-услуг привязаны к оператору домофонии (отдельная папка-юр.лицо).</p>
 <p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/demo_domofon_v1029/demo_domain_model.svg" alt="Доменная модель домофонного проекта" class="screenshot" style="max-width:720px"></p>
 <h3 id="domofon-model">Доменная модель</h3>
@@ -11579,7 +11579,7 @@ flowchart LR
   <p>Демо-данные — для показа полного flow, не боевые клиенты.</p>
 </div>
 
-<h2 id="multi-org">🏢 Мульти-организации и SLA-сервис</h2>
+<h2 id="multi-org">Мульти-организации и SLA-сервис</h2>
 <p>Один экземпляр СмИТ Биллинг может обслуживать несколько компаний-операторов как самостоятельные юрлица. В контуре может быть несколько организаций: основная — провайдер связи (она же по умолчанию), рядом с ней дочерние или партнёрские компании со своими доменами — например, ИТ-услуги или охранное абонентское обслуживание. У каждой компании — свои реквизиты, платёжные кассы, счёт приёма оплат, документы, брендинг, домен ЛК и маршрутизация поддержки. Сотрудники видят данные только своих компаний.</p>
 <p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/multiorg_ayti_v2026_06_08/multiorg.svg" alt="Multi-org: один биллинг — несколько компаний" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
 
@@ -11717,7 +11717,7 @@ flowchart LR
 </div>
 
 
-<h2 id="ai-agent">🤖 AI-агент — единый универсальный AI-модуль</h2>
+<h2 id="ai-agent">AI-агент — единый универсальный AI-модуль</h2>
 <p>Всё, что касается искусственного интеллекта, собрано в одном нативном модуле <code>/admin/ai/</code>: мультипровайдерный чат с инструментами на прямом ORM, база знаний для бота и операторов, голосовой разбор звонков, <strong>собственный виджет для сайтов с настройками из админки</strong> и запись лидов в нашу CRM. Все ключи, промпты, история, дашборд и внешний вид виджета живут в биллинге (или на сервере лицензий), без зависимости от сторонних серверов.</p>
 <figure class="doc-video">
   <div class="dv-head">
@@ -12128,7 +12128,7 @@ flowchart LR
 </div>
 
 
-<h2 id="ui-components">🧩 Единые компоненты интерфейса</h2>
+<h2 id="ui-components">Единые компоненты интерфейса</h2>
 <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v1999/components_catalog.png" alt="Каталог единых компонентов"></p>
 
 <p>Каталог живёт в <em>Настройки → Лицензия и расширения → Единые компоненты</em>
@@ -12225,7 +12225,7 @@ flowchart LR
 </div>
 
 
-<h2 id="autodial-telephony">📞 Автообзвон и своя телефония</h2>
+<h2 id="autodial-telephony">Автообзвон и своя телефония</h2>
 <p>Модуль «Автообзвон» — исходящий обзвон роботом: система сама звонит клиенту и проигрывает голосовое сообщение (низкий баланс, обещанный платёж, опрос NPS). Робот <strong>только доносит информацию</strong> — без запроса нажатий и распознавания голоса. Раздел управления — <code>/admin/ai/dialer/</code> (сценарии, журнал, тест-звонок, чёрный список, настройки).</p>
 
 <h3 id="autodial-providers">Мультипровайдер</h3>
@@ -12271,10 +12271,10 @@ flowchart LR
   <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v1.6.0</span>&nbsp;|&nbsp;<span data-smit="updated">25.08.2026</span></span>
 </footer>
 
-<script src="../js/main.js?v=2182"></script>
-<script src="../js/search.js?v=2182"></script>
+<script src="../js/main.js?v=2183"></script>
+<script src="../js/search.js?v=2183"></script>
 <script src="../js/version.js"></script>
-<script src="../js/mermaid-init.js?v=2182"></script>
-<script src="../js/markmap-init.js?v=2182"></script>
+<script src="../js/mermaid-init.js?v=2183"></script>
+<script src="../js/markmap-init.js?v=2183"></script>
 </body>
 </html>
