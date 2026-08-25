@@ -3,20 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Установка и интеграция — СмИТ Биллинг v3.5.0 (build 2174)</title>
+  <title>Установка и интеграция — СмИТ Биллинг v3.5.0</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 3.5 — Документация">
-  <meta property="og:title" content="Установка и интеграция — СмИТ Биллинг v3.5.0 (build 2174)">
+  <meta property="og:title" content="Установка и интеграция — СмИТ Биллинг v3.5.0">
   <meta property="og:description" content="Системные требования, установка через Docker Compose, интеграция с оборудованием, настройка тарифов и видеоинструкции.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/installation.html">
-  <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
+  <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Установка и интеграция — СмИТ Биллинг v3.5.0 (build 2174)">
+  <meta name="twitter:title" content="Установка и интеграция — СмИТ Биллинг v3.5.0">
   <meta name="twitter:description" content="Системные требования, установка через Docker Compose, интеграция с оборудованием, настройка тарифов и видеоинструкции.">
-  <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
+  <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Системные требования, установка через Docker Compose, интеграция с оборудованием, настройка тарифов и видеоинструкции.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../css/style.css?v=2169">
@@ -197,7 +197,6 @@
           <li class="sub-item"><a href="billing.html#support">— Поддержка: единое окно</a></li>
           <li class="sub-item"><a href="billing.html#support-ticket">— Поддержка: карточка тикета</a></li>
           <li class="sub-item"><a href="billing.html#support-panel">— Поддержка: выезжающая панель</a></li>
-          <li class="sub-item"><a href="billing.html#freescout-overview">— HelpDesk (FreeScout, устар.)</a></li>
           <li class="sub-item"><a href="billing.html#radius-sessions-overview">— RADIUS-сессии: обзор</a></li>
           <li class="sub-item"><a href="billing.html#requisites">7.4. Реквизиты</a></li>
           <li class="sub-item"><a href="billing.html#currency">7.5. Валюты</a></li>
@@ -241,7 +240,7 @@
           <li><a href="billing.html#domofon-demo">11. Домофонный домен (демо АЙТИ)</a></li>
           <li class="sub-item"><a href="billing.html#domofon-model">11.1. Доменная модель</a></li>
           <li class="sub-item"><a href="billing.html#domofon-demo-data">11.2. Что заведено в демо</a></li>
-          <li><a href="billing.html#ai-agent">12. AI-агент (AIDA)</a></li>
+          <li><a href="billing.html#ai-agent">12. AI-агент</a></li>
           <li class="sub-item"><a href="billing.html#ai-hub">12.1. Обзор модуля (хаб)</a></li>
           <li class="sub-item"><a href="billing.html#ai-kb">12.2. База знаний</a></li>
           <li class="sub-item"><a href="billing.html#ai-voice">12.3. Голос (Mango → анализ)</a></li>
@@ -277,11 +276,11 @@
           <li class="sub-item"><a href="lk.html#lk-mobile-app">— Public Mobile API</a></li>
           <li class="sub-item"><a href="lk.html#mobile-force-update">— Force-update</a></li>
           <li class="sub-item"><a href="lk.html#lk-mobile-app">— iOS TestFlight ↔ AppStore</a></li>
-          <li><a href="lk.html#lk-support">FreeScout</a></li>
+          <li><a href="lk.html#lk-support">Поддержка</a></li>
           <li><a href="lk.html#lk-ai-chat">AI-ассистент</a></li>
           <li><a href="lk.html#lk-profile">Профиль</a></li>
           <li><a href="lk.html#lk-firebase">Push (Firebase)</a></li>
-          <li><a href="lk.html#lk-ai-chat">Claude AI</a></li>
+          <li><a href="lk.html#lk-ai-chat">AI-чат</a></li>
           <li><a href="billing.html#messaging">TG бот оператора</a></li>
         </ul>
       </li>
@@ -586,12 +585,12 @@ docker compose exec web python manage.py loaddata initial_data</code></pre>
     <p class="mb-1"><strong><i class="ti ti-arrow-right"></i> Подробная документация по тарифам и услугам — в основном руководстве</strong></p>
     <p>Создайте тарифы для интернета, телефонии (местная/междугородняя/международная связь) и телевидения. Полное описание раздела «Тарификация» (создание тарифов, услуги, линейки, программы лояльности, RADIUS-параметры тарифа, шейпер):</p>
     <p style="margin:8px 0 0">
-      <a href="../pages/billing.html#tariffs" class="btn btn-success btn-sm">
+      <a href="../pages/billing.html#tarifs" class="btn btn-success btn-sm">
         <i class="ti ti-tags"></i> Открыть раздел «Тарификация»
       </a>
-      <a href="../pages/billing.html#tarif-create" class="btn btn-outline-success btn-sm">Создание тарифа</a>
-      <a href="../pages/billing.html#services" class="btn btn-outline-success btn-sm">Услуги</a>
-      <a href="../pages/billing.html#tarif-list-features" class="btn btn-outline-success btn-sm">Список тарифов (UX)</a>
+      <a href="../pages/billing.html#tarif-wizard" class="btn btn-outline-success btn-sm">Создание тарифа</a>
+      <a href="../pages/billing.html#usluga-list" class="btn btn-outline-success btn-sm">Услуги</a>
+      <a href="../pages/billing.html#tarif-list" class="btn btn-outline-success btn-sm">Список тарифов (UX)</a>
     </p>
   </div>
 
@@ -600,11 +599,11 @@ docker compose exec web python manage.py loaddata initial_data</code></pre>
     <p class="mb-1"><strong><i class="ti ti-arrow-right"></i> Подробная документация по клиентам — в основном руководстве</strong></p>
     <p>Создайте абонентские аккаунты, заполните персональные данные и внесите средства на баланс. Полное описание работы с клиентами (карточка, контакты, договор, баланс, точка подключения, СОРМ-данные, юр.лица, импорт CSV):</p>
     <p style="margin:8px 0 0">
-      <a href="../pages/billing.html#subscribers" class="btn btn-success btn-sm">
+      <a href="../pages/billing.html#abonents" class="btn btn-success btn-sm">
         <i class="ti ti-users"></i> Открыть раздел «Клиенты»
       </a>
-      <a href="../pages/billing.html#create-subscriber" class="btn btn-outline-success btn-sm">Создание клиента</a>
-      <a href="../pages/billing.html#edit-subscriber" class="btn btn-outline-success btn-sm">Карточка клиента</a>
+      <a href="../pages/billing.html#abonent-card-quick" class="btn btn-outline-success btn-sm">Создание клиента</a>
+      <a href="../pages/billing.html#abonent-card" class="btn btn-outline-success btn-sm">Карточка клиента</a>
     </p>
   </div>
 
@@ -622,14 +621,14 @@ docker compose exec web python manage.py loaddata initial_data</code></pre>
 
   <h3 id="final-test-checklist">Чек-лист приёмки</h3>
   <ol>
-    <li><strong>Тестовый клиент</strong> — создайте клиента (см. <a href="../pages/billing.html#create-subscriber">Создание клиента</a>), назначьте тариф, привяжите учётную запись (login/password) и точку подключения.</li>
-    <li><strong>RADIUS-авторизация</strong> — выполните <code>radtest &lt;login&gt; &lt;password&gt; 127.0.0.1 0 testing123</code> внутри контейнера <code>freeradius</code>. Ответ должен быть <code>Access-Accept</code> с корректным <code>Framed-IP-Address</code> и <code>Mikrotik-Rate-Limit</code>. Альтернатива — кнопка «Тест авторизации» (🧪) в карточке учётной записи (<a href="../pages/billing.html#tariffs">подробнее</a>).</li>
+    <li><strong>Тестовый клиент</strong> — создайте клиента (см. <a href="../pages/billing.html#abonent-card-quick">Создание клиента</a>), назначьте тариф, привяжите учётную запись (login/password) и точку подключения.</li>
+    <li><strong>RADIUS-авторизация</strong> — выполните <code>radtest &lt;login&gt; &lt;password&gt; 127.0.0.1 0 testing123</code> внутри контейнера <code>freeradius</code>. Ответ должен быть <code>Access-Accept</code> с корректным <code>Framed-IP-Address</code> и <code>Mikrotik-Rate-Limit</code>. Альтернатива — кнопка «Тест авторизации» (🧪) в карточке учётной записи (<a href="../pages/billing.html#tarifs">подробнее</a>).</li>
     <li><strong>Платёж</strong> — пополните баланс через тестовый шлюз (YooKassa тестовый магазин или ручной приход через <code>/admin/Abonents/finance/</code>). Убедитесь, что <code>FinanceOperations</code> создалась и баланс обновился.</li>
     <li><strong>Блокировка по балансу</strong> — выставьте клиенту отрицательный баланс или активируйте флаг <code>b_admin</code>. Проверьте, что в RADIUS приходит <code>Access-Reject</code> и сессия завершается через CoA-Disconnect.</li>
     <li><strong>Разблокировка</strong> — пополните баланс или снимите блок. Через 1–2 минуты RADIUS должен снова отвечать <code>Access-Accept</code>, клиент получит интернет.</li>
     <li><strong>Личный кабинет</strong> — войдите в ЛК (<code>/lk/</code>) под тестовым клиентом, убедитесь, что отображаются баланс, тариф, история операций. См. <a href="../pages/lk.html">документацию ЛК</a>.</li>
-    <li><strong>Отчёты</strong> — откройте <code>/admin/reports/dashboard/</code> и проверьте, что новый клиент попал в KPI «Активные», а его платёж — в «Финансовая динамика». Запустите SQL-отчёт «Активные клиенты» из <a href="../pages/billing.html#report-constructor">конструктора отчётов</a>.</li>
-    <li><strong>FreeScout / поддержка</strong> (если интегрирован) — создайте тестовый тикет от клиента, убедитесь, что HelpDesk-вкладка в карточке клиента подтянула тикет.</li>
+    <li><strong>Отчёты</strong> — откройте <code>/admin/reports/dashboard/</code> и проверьте, что новый клиент попал в KPI «Активные», а его платёж — в «Финансовая динамика». Запустите SQL-отчёт «Активные клиенты» из <a href="../pages/billing.html#custom-reports">конструктора отчётов</a>.</li>
+    <li><strong>Поддержка</strong> — создайте тестовый тикет от клиента, убедитесь, что HelpDesk-вкладка в карточке клиента подтянула тикет.</li>
   </ol>
   <p>После прохождения всех 8 пунктов биллинг готов к работе. Если на одном из шагов возникла ошибка — см. <a href="../pages/troubleshooting.html">Диагностика и решение проблем</a>.</p>
 
@@ -726,8 +725,8 @@ docker compose exec web python manage.py loaddata initial_data</code></pre>
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2174)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">25.08.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2174)</span>&nbsp;|&nbsp;<span data-smit="updated">25.08.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">25.08.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0</span>&nbsp;|&nbsp;<span data-smit="updated">25.08.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2033"></script>

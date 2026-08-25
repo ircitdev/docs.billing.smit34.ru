@@ -267,17 +267,36 @@ PYEOF
 echo "=== 1. Rebuild search index ==="
 (cd "$HERE" && $PY - <<'PYEOF'
 import re, json, os, glob, html
+
+
+def page_name(txt, fname):
+    """Человеческое имя страницы для выдачи поиска.
+
+    В результатах «billing» ничего не говорит читателю, а <title> у каждой
+    страницы уже написан по-русски — берём его, отрезая общий хвост с названием
+    продукта и версией.
+    """
+    m = re.search(r'<title>(.*?)</title>', txt, re.S)
+    if not m:
+        return os.path.basename(fname).replace('.html', '')
+    name = html.unescape(re.sub(r'<[^>]+>', '', m.group(1))).strip()
+    name = re.split(r'\s+[—–-]\s+', name)[0].strip()
+    return name or os.path.basename(fname).replace('.html', '')
+
+
 pages = []
 for f in sorted(glob.glob('index.html') + glob.glob('pages/*.html')):
     with open(f, 'r', encoding='utf-8') as fp:
         txt = fp.read()
+    pname = page_name(txt, f)
     for m in re.finditer(r'<(h[234])\s+id="([^"]+)"[^>]*>(.*?)</\1>', txt, re.DOTALL):
         tag, hid, inner = m.groups()
         title = html.unescape(re.sub(r'<[^>]+>', '', inner).strip())
         if not title: continue
         after = txt[m.end():m.end()+2000]
         plain = html.unescape(re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', ' ', after)).strip()[:240])
-        pages.append({'t': title, 'id': hid, 'f': f.replace('\\','/'), 'c': plain})
+        pages.append({'t': title, 'id': hid, 'f': f.replace('\\','/'),
+                      'p': pname, 'c': plain})
 with open('search-index.json', 'w', encoding='utf-8') as fp:
     json.dump(pages, fp, ensure_ascii=False, separators=(',',':'))
 print(f"  wrote search-index.json — {len(pages)} entries, {os.path.getsize('search-index.json')} bytes")

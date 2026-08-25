@@ -9,14 +9,14 @@
   <meta property="og:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v3.5.0">
   <meta property="og:description" content="Личный кабинет клиента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/lk.html">
-  <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
+  <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Личный кабинет и мобильные приложения — СмИТ Биллинг v3.5.0">
   <meta name="twitter:description" content="Личный кабинет клиента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
-  <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
+  <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Личный кабинет клиента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../css/style.css?v=2169">
@@ -193,7 +193,6 @@
           <li class="sub-item"><a href="billing.html#support">— Поддержка: единое окно</a></li>
           <li class="sub-item"><a href="billing.html#support-ticket">— Поддержка: карточка тикета</a></li>
           <li class="sub-item"><a href="billing.html#support-panel">— Поддержка: выезжающая панель</a></li>
-          <li class="sub-item"><a href="billing.html#freescout-overview">— HelpDesk (FreeScout, устар.)</a></li>
           <li class="sub-item"><a href="billing.html#radius-sessions-overview">— RADIUS-сессии: обзор</a></li>
           <li class="sub-item"><a href="billing.html#requisites">7.4. Реквизиты</a></li>
           <li class="sub-item"><a href="billing.html#currency">7.5. Валюты</a></li>
@@ -237,7 +236,7 @@
           <li><a href="billing.html#domofon-demo">11. Домофонный домен (демо АЙТИ)</a></li>
           <li class="sub-item"><a href="billing.html#domofon-model">11.1. Доменная модель</a></li>
           <li class="sub-item"><a href="billing.html#domofon-demo-data">11.2. Что заведено в демо</a></li>
-          <li><a href="billing.html#ai-agent">12. AI-агент (AIDA)</a></li>
+          <li><a href="billing.html#ai-agent">12. AI-агент</a></li>
           <li class="sub-item"><a href="billing.html#ai-hub">12.1. Обзор модуля (хаб)</a></li>
           <li class="sub-item"><a href="billing.html#ai-kb">12.2. База знаний</a></li>
           <li class="sub-item"><a href="billing.html#ai-voice">12.3. Голос (Mango → анализ)</a></li>
@@ -499,20 +498,27 @@
   <h2 id="lk-overview">1. Обзор</h2>
 
   <figure class="doc-video">
+  <div class="dv-head">
+    <span class="dv-kind"><i class="ti ti-player-play-filled" aria-hidden="true"></i> Обучающее видео</span>
+    <span class="dv-time">2:52</span>
+  </div>
+  <div class="dv-media">
     <video controls preload="none" playsinline
-           poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/lk-training-poster.jpg">
-      <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/lk-training.mp4" type="video/mp4">
-      Ваш браузер не проигрывает видео —
-      <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/lk-training.mp4">скачайте файл</a>.
-    </video>
-    <figcaption>
-      <b>Обучающий ролик для персонала.</b>
-      <span>Кабинет глазами клиента: вход, баланс и расчётный период, пополнение,
-      «за что списали», смена тарифа, заказ услуг и ТВ, AI-ассистент, мобильное приложение.</span>
-      <span class="dv-meta">2:52 · 1920×1080 · с озвучкой ·
-      <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/lk-training.mp4" target="_blank" rel="noopener">скачать</a></span>
-    </figcaption>
-  </figure>
+               poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/lk-training-poster.jpg">
+          <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/lk-training.mp4" type="video/mp4">
+          Ваш браузер не проигрывает видео —
+          <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/lk-training.mp4">скачайте файл</a>.
+        </video>
+  </div>
+  <figcaption>
+    <p class="dv-desc">Кабинет глазами клиента: вход, баланс и расчётный период, пополнение, «за что списали», смена тарифа, заказ услуг и ТВ, AI-ассистент, мобильное приложение.</p>
+    <div class="dv-foot">
+      <span class="dv-spec">1920×1080</span>
+      <span class="dv-spec">с озвучкой</span>
+      <a class="dv-download" href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/lk-training.mp4" target="_blank" rel="noopener" aria-label="Скачать видеофайл"><i class="ti ti-download" aria-hidden="true"></i> Скачать</a>
+    </div>
+  </figcaption>
+</figure>
 
   <p>ЛК закрывает весь цикл самообслуживания, разгружая поддержку:</p>
   <ul>
@@ -552,10 +558,10 @@
     <li><strong>Текущий тариф</strong> + быстрая кнопка «Сменить тариф».</li>
     <li><strong>Поддержка</strong> — индикатор активных заявок и быстрая ссылка «Написать».</li>
     <li><strong>Последний платёж</strong>.</li>
-    <li><strong>Расчётный период</strong> (build 1878) — списано с начала месяца,
+    <li><strong>Расчётный период</strong> — списано с начала месяца,
     сравнение с тем же окном прошлого месяца («на N ₽ больше/меньше»), прогресс
     дня месяца и «Следующее списание 1 числа — ≈сумма абонплаты».</li>
-    <li><strong>Состав тарифа</strong> (build 1878) — чеклист услуг тарифа
+    <li><strong>Состав тарифа</strong> — чеклист услуг тарифа
     (интернет со скоростью, ТВ и т.д.) прямо в карточке тарифа.</li>
     <li><strong>Баннер уведомлений</strong> — текст от оператора (техработы, акции) сверху.</li>
   </ul>
@@ -651,7 +657,7 @@
   <h2 id="lk-ai-chat">8. AI-ассистент</h2>
   <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/lk_v1206/08_chat.jpg" alt="AI-чат в ЛК"></p>
   <p>AI-ассистент (<code>/lk/chat/</code> + плавающий виджет) отвечает на вопросы 24/7
-  на базе AI (Claude / ChatGPT / Gemini через модуль AIDA), использует базу знаний
+  на базе AI-агента биллинга, использует базу знаний
   поддержки и видит контекст клиента (баланс, тариф). При сложном вопросе
   автоматически создаёт заявку и передаёт диалог живому оператору. Клиент может
   оценить ответы 👍/👎. Срок хранения истории чата настраивается оператором.</p>
@@ -713,7 +719,7 @@ flowchart TB
 
   <h2 id="lk-admin">13. Настройка ЛК в админке</h2>
   <p>Раздел <em>Настройки → ЛК и мобильные</em> (<code>/admin/settings/lk/</code>) —
-  7 вкладок. С build 1982 вкладки загружаются по одной: открытая приходит с сервера,
+  7 вкладок. вкладки загружаются по одной: открытая приходит с сервера,
   остальные — при переходе.</p>
   <ul>
     <li><strong>Обзор</strong> — сводка: подключения приложений, привязки соцсетей,
@@ -724,7 +730,7 @@ flowchart TB
     <li><strong>Функции</strong> (<code>#lk-admin-features</code>) — флаги видимости
     разделов (Услуги, Аудит, HelpDesk, смена MAC и др.) и поведения.</li>
     <li><strong>Способы входа</strong> — VK, Telegram, Apple, Google, Яндекс, passkey:
-    креды и переключатели. Вынесены из «Функций» в build 1982: у них своя область
+    креды и переключатели. Вынесены из «Функций»: у них своя область
     действия (переопределяются организацией) и правят их другие люди.</li>
     <li><strong>AI-чат</strong> — каналы (веб-ЛК / мобильное), сбор оценок, автоэскалация,
     срок хранения истории.</li>
@@ -736,7 +742,7 @@ flowchart TB
 
   <h3 id="lk-admin-scope">Область действия настроек и организации</h3>
   <p>На одной инсталляции живут несколько провайдеров (СмИТ, ИТЦ, Робор), у каждого
-  свой домен ЛК. С build 1982 настройка может быть <strong>общей</strong> — действует
+  свой домен ЛК. настройка может быть <strong>общей</strong> — действует
   на все организации, или <strong>своей</strong> — принадлежит одной.</p>
 
   <p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/lk_settings_v1983/lk_branding_scope.jpg"
@@ -811,7 +817,7 @@ flowchart TB
   </ul>
 
   <h3 id="lk-login-backgrounds">Фон страницы входа</h3>
-  <p>Фон настраивается в <em>Брендинг → Фон страницы логина</em> (build 1979–1981).</p>
+  <p>Фон настраивается в <em>Брендинг → Фон страницы логина</em>.</p>
   <ul>
     <li><strong>Галерея</strong> — картинки и зацикленные полноэкранные ролики. У каждого
     элемента своя тема (светлая / тёмная / любая), устройство (десктоп / мобильные / все)
@@ -855,7 +861,7 @@ flowchart TB
 
   <p style="margin-top:2rem; color:#6c757d; font-size:.9rem">
     Скриншоты и обложка: <code>gs://uspeshnyy-projects/smit/billing/lk_v1206/</code>.
-    Production: <a href="https://rbill.smit34.ru/lk/">rbill.smit34.ru/lk/</a>.
+    Production: <code>/lk/</code>.
   </p>
 
 </main>

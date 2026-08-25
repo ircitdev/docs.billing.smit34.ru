@@ -3,20 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Поддержка — СмИТ Биллинг 3.5 (build 1403)</title>
+  <title>Поддержка — СмИТ Биллинг 3.5</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 3.5 — Документация">
   <meta property="og:title" content="Поддержка — СмИТ Биллинг 3.5">
   <meta property="og:description" content="Нативный модуль техподдержки: единое окно всех каналов (email, VK, Telegram, MAX, звонки), карточка тикета с биллинг-контекстом, AI-бот, база знаний, аналитика.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/helpdesk.html">
-  <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
+  <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Поддержка — СмИТ Биллинг 3.5">
   <meta name="twitter:description" content="Нативный модуль техподдержки внутри биллинга: все каналы, AI-бот, SLA, база знаний, аналитика.">
-  <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
+  <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Нативный модуль техподдержки СмИТ Биллинга: единое окно всех каналов, карточка тикета с биллинг-контекстом, AI-бот, голосовая почта, база знаний, аналитика.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../css/style.css?v=2169">
@@ -193,7 +193,6 @@
           <li class="sub-item"><a href="billing.html#support">— Поддержка: единое окно</a></li>
           <li class="sub-item"><a href="billing.html#support-ticket">— Поддержка: карточка тикета</a></li>
           <li class="sub-item"><a href="billing.html#support-panel">— Поддержка: выезжающая панель</a></li>
-          <li class="sub-item"><a href="billing.html#freescout-overview">— HelpDesk (FreeScout, устар.)</a></li>
           <li class="sub-item"><a href="billing.html#radius-sessions-overview">— RADIUS-сессии: обзор</a></li>
           <li class="sub-item"><a href="billing.html#requisites">7.4. Реквизиты</a></li>
           <li class="sub-item"><a href="billing.html#currency">7.5. Валюты</a></li>
@@ -237,7 +236,7 @@
           <li><a href="billing.html#domofon-demo">11. Домофонный домен (демо АЙТИ)</a></li>
           <li class="sub-item"><a href="billing.html#domofon-model">11.1. Доменная модель</a></li>
           <li class="sub-item"><a href="billing.html#domofon-demo-data">11.2. Что заведено в демо</a></li>
-          <li><a href="billing.html#ai-agent">12. AI-агент (AIDA)</a></li>
+          <li><a href="billing.html#ai-agent">12. AI-агент</a></li>
           <li class="sub-item"><a href="billing.html#ai-hub">12.1. Обзор модуля (хаб)</a></li>
           <li class="sub-item"><a href="billing.html#ai-kb">12.2. База знаний</a></li>
           <li class="sub-item"><a href="billing.html#ai-voice">12.3. Голос (Mango → анализ)</a></li>
@@ -391,20 +390,27 @@
   <span id="workflow"></span><span id="native-module"></span>
 
   <figure class="doc-video">
+  <div class="dv-head">
+    <span class="dv-kind"><i class="ti ti-player-play-filled" aria-hidden="true"></i> Обучающее видео</span>
+    <span class="dv-time">2:42</span>
+  </div>
+  <div class="dv-media">
     <video controls preload="none" playsinline
-           poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/support-training-poster.jpg">
-      <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/support-training.mp4" type="video/mp4">
-      Ваш браузер не проигрывает видео —
-      <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/support-training.mp4">скачайте файл</a>.
-    </video>
-    <figcaption>
-      <b>Обучающий ролик для персонала.</b>
-      <span>В каком порядке разбирать очередь, как ответить из выезжающей панели,
-      где взять баланс и тариф клиента, что делает бот и из-за чего портится SLA.</span>
-      <span class="dv-meta">2:42 · 1920×1080 · с озвучкой ·
-      <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/support-training.mp4" target="_blank" rel="noopener">скачать</a></span>
-    </figcaption>
-  </figure>
+               poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/support-training-poster.jpg">
+          <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/support-training.mp4" type="video/mp4">
+          Ваш браузер не проигрывает видео —
+          <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/support-training.mp4">скачайте файл</a>.
+        </video>
+  </div>
+  <figcaption>
+    <p class="dv-desc">В каком порядке разбирать очередь, как ответить из выезжающей панели, где взять баланс и тариф клиента, что делает бот и из-за чего портится SLA.</p>
+    <div class="dv-foot">
+      <span class="dv-spec">1920×1080</span>
+      <span class="dv-spec">с озвучкой</span>
+      <a class="dv-download" href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/support-training.mp4" target="_blank" rel="noopener" aria-label="Скачать видеофайл"><i class="ti ti-download" aria-hidden="true"></i> Скачать</a>
+    </div>
+  </figcaption>
+</figure>
 
   <p>Модуль доступен в верхнем меню биллинга — пункт <strong>«Поддержка»</strong>.
   Левый сайдбар раздела: <em>Дашборд · Входящие · Мои тикеты · Не назначены ·
@@ -419,7 +425,7 @@ flowchart TD
     MAX["🟣 MAX-мессенджер"] --> IN
     VM["📞 Голосовая почта<br/>(пропущенные звонки)"] --> IN
     WG["💬 Веб-виджет / AI-виджет"] --> IN
-    IN["Единая точка приёма<br/>ingest_message()"] --> FLT{"Фильтры шума"}
+    IN["Единая точка приёма<br/>ingest_message"] --> FLT{"Фильтры шума"}
     FLT -- "bounce / автоответ<br/>уведомление провайдера" --> DROP["Отброшено —<br/>тикет НЕ создаётся"]
     FLT -- "обращение" --> CONV["Тикет<br/>+ привязка клиента"]
     CONV --> ORG["Маршрутизация по организации<br/>(СмИТ / РОБОР / …)"]
@@ -481,13 +487,6 @@ mindmap
     <a href="crm.html">CRM-воронку</a>, а не в очередь поддержки.</li>
   </ul>
 
-  <div class="info-box" id="freescout-diagnostics">
-    <strong>Историческая справка.</strong> До v3.0 поддержка работала на внешнем
-    FreeScout (<code>support.smit34.ru</code>). Он выведен из эксплуатации: тикеты,
-    клиенты, заметки и аватарки перенесены в биллинг ETL-командами
-    (<code>etl_freescout</code>, <code>import_freescout_avatars</code>), приём каналов
-    полностью нативный. Разделы про FreeScout в старых версиях документации устарели.
-  </div>
 
   <!-- ============================================ -->
   <h2 id="channels">2. Каналы приёма обращений</h2>
@@ -521,7 +520,7 @@ mindmap
 
   <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/support_v1402/01_inbox.png" alt="Поддержка — Входящие: KPI, папки, список тикетов" loading="lazy"></p>
 
-  <h3 id="todo-inbox">Todo-секции «Разобрать» и отложенные (build 1882)</h3>
+  <h3 id="todo-inbox">Todo-секции «Разобрать» и отложенные</h3>
   <p>Полоса секций по принципу «что делать», а не «какой статус»:
   <strong>Нужен первый ответ</strong> (нет ни одного ответа оператора — риск SLA) ·
   <strong>Ждёт нашего ответа</strong> (клиент написал после нас) ·
@@ -531,7 +530,7 @@ mindmap
   понедельник / своя дата. Отложенный тикет скрыт из «Входящих» до срока, затем
   «просыпается» автоматически: уведомление ответственному в ленту и личный Telegram.</p>
 
-  <h3 id="sla">SLA-чипы (build 1883)</h3>
+  <h3 id="sla">SLA-чипы</h3>
   <p>При настроенных <a href="#sla-policies">SLA-политиках</a> строка тикета получает
   чип: 🔴 просрочен · 🟠 под угрозой (прошло &gt;80% цели) · ⏱ выполнен с опозданием ·
   ⏸ пауза (статус «Ожидает»). Подробный статус целей — блоком в карточке тикета.</p>
@@ -564,7 +563,7 @@ mindmap
   </ul>
 
   <div class="info-box" id="inbox-2026-08">
-    <p><strong>Обновления инбокса (2026-08, build 1969–1971):</strong></p>
+    <p><strong>Обновления инбокса (2026-08):</strong></p>
     <ul>
       <li><strong>Пик-панель всегда по клику</strong> — тикет открывается в выезжающей
       справа панели (тема, клиент, запись звонка, приоритет, переписка, поле ответа),
@@ -594,7 +593,7 @@ mindmap
 
   <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/support_v1976/01_dashboard.png" alt="Дашборд Поддержки: селектор периода, KPI с дельтами, медианное время ответа/решения, SLA" loading="lazy"></p>
 
-  <h3 id="dashboard-period">Период и дельты (build 1965–1966)</h3>
+  <h3 id="dashboard-period">Период и дельты</h3>
   <ul>
     <li><strong>Единый компонент диапазона дат</strong> (SmitDateRange — пресеты +
     календарь), по умолчанию последние <strong>30 дней</strong>; выбранный диапазон
@@ -623,7 +622,7 @@ flowchart LR
   T --> RC["Последние<br/>открытые тикеты"]
   </pre>
 
-  <h3 id="dashboard-heatmap">Тепловая карта и топ операторов (build 1967, 1972)</h3>
+  <h3 id="dashboard-heatmap">Тепловая карта и топ операторов</h3>
   <ul>
     <li><strong>Тепловая карта «часы × дни недели»</strong> (7×24, 5 уровней
     интенсивности) по созданным тикетам — помогает планировать смены. Размещена под
@@ -635,15 +634,14 @@ flowchart LR
 
   <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/support_v1976/02_heatmap_operators.png" alt="Тепловая карта загрузки по часам и дням + Топ операторов с временем ответа и решения" loading="lazy"></p>
 
-  <h3 id="dashboard-recent">Последние тикеты и каналы (build 1968, 1973–1974)</h3>
+  <h3 id="dashboard-recent">Последние тикеты и каналы</h3>
   <ul>
     <li><strong>«Последние тикеты»</strong> оформлены как карточка настроек (серая
     шапка + table-hover). Только <strong>открытые</strong> (актив+ожид). В строке:
     статус-точка, тема (клик → тикет), под ней бейджи <em>канала</em> (цветной,
     иконка+имя), <em>статуса</em>, <em>приоритета</em>, <em>категории</em>, а также
     №&nbsp;тикета · клиент; справа — аватар ответственного и время.</li>
-    <li><strong>«Каналы обращений»</strong>: легаси-каналы импорта из FreeScout
-    свёрнуты в один бакет «Импорт (архив)», добавлен канал «AI-ассистент».</li>
+    <li><strong>«Каналы обращений»</strong>: каналы импорта свёрнуты в один бакет «Импорт (архив)», добавлен канал «AI-ассистент».</li>
   </ul>
 
   <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/support_v1976/03_inbox.png" alt="Входящие: аватары ответственных, тумблер плотности, бейджи, без горизонтального скролла" loading="lazy"></p>
@@ -673,7 +671,7 @@ flowchart LR
   <code>{%ticket.number%}</code>, <code>{%agent.name%}</code>. Видимость: глобальная /
   на ящик / личная; категории группируют шаблоны.</p>
 
-  <h3 id="ai-suggest-replies">AI-подбор шаблона (build 1884)</h3>
+  <h3 id="ai-suggest-replies">AI-подбор шаблона</h3>
   <p>Кнопка <strong>«✨ Подобрать»</strong> рядом с «Шаблоны»: AI читает последние
   сообщения клиента и предлагает до 3 подходящих шаблонов чипами — клик вставляет
   шаблон с раскрытием переменных. Работает на движке из «AI-агента», результат
@@ -762,9 +760,9 @@ flowchart TD
 
   <!-- ============================================ -->
   <h2 id="ai-assistant">8. AI-бот</h2>
-  <span id="ai-sessions"></span><span id="claude-settings"></span>
+  <span id="ai-sessions"></span><span id="ai-settings"></span>
 
-  <p>AI-бот (единый AI-модуль <a href="billing.html#ai-agent">AIDA</a>) работает на
+  <p>AI-бот (единый AI-модуль <a href="billing.html#ai-agent">AI-агент</a>) работает на
   всех внешних каналах: отвечает на типовые вопросы (баланс, тариф, «нет интернета» —
   с данными из биллинга), проводит SMS-идентификацию и эскалирует оператору по
   ключевым словам или запросу клиента (<code>ESCALATE_TO_HUMAN</code>).</p>
@@ -778,8 +776,7 @@ flowchart TD
     контекст AI-ответов.</li>
     <li><strong>Журнал AI-сессий</strong> — <code>/admin/reports/ai_chat_dashboard/</code>:
     все диалоги клиентов с AI (текст и голос), KPI, привязки к тикетам и лидам,
-    расход токенов. Настройки провайдеров (Claude / ChatGPT / Gemini, ключи,
-    промпты) — в разделе <code>/admin/ai/</code>.</li>
+    расход токенов. Настройки провайдеров (ключи, промпты) — в разделе <code>/admin/ai/</code>.</li>
   </ul>
 
   <h3 id="kb-in-prompt">База знаний в промпте + авто-обогащение</h3>
@@ -826,8 +823,8 @@ flowchart LR
     AST --> BR["Мост smit-phone-ai"]
     BR --> BILL["Биллинг: АОН → клиент,<br/>промпт, ключ, движок"]
     BR --> AI{"Realtime"}
-    AI --> GEM["Gemini Live"]
-    AI --> OAI["OpenAI Realtime<br/>(фолбэк)"]
+    AI --> GEM["Основной провайдер"]
+    AI --> OAI["Резервный провайдер<br/>(фолбэк)"]
     BR --> LOG["Журнал звонков<br/>ai_chat_dashboard"]
   </pre>
 
@@ -835,8 +832,9 @@ flowchart LR
     <li><strong>Опознание по номеру (АОН)</strong> — CallerID сопоставляется с клиентом;
     баланс/тариф выдаются сразу. Приветствие собирается автоматически: компания +
     Имя Отчество + статус («баланс положительный», «подключение активно» — если это так).</li>
-    <li><strong>Движок с фолбэком</strong> — Gemini Live; при недоступности ключа
-    автоматически переключается на OpenAI Realtime, с Telegram-алертом.</li>
+    <li><strong>Движок с фолбэком</strong> — основной голосовой провайдер; при
+     недоступности ключа автоматически переключается на резервный,
+     с Telegram-алертом.</li>
     <li><strong>Журнал звонков</strong> — все звонки попадают в
     <code>/admin/reports/ai_chat_dashboard/</code> (чип «Телефон»): транскрипт, токены,
     стоимость, «Кто» = номер, форма оценки «для обучения».</li>
@@ -869,7 +867,7 @@ flowchart LR
   <pre class="mermaid">
 flowchart LR
     ATC["АТС (Mango и др.)<br/>письмо: запись + расшифровка"] --> P1["1. Приём письма<br/>телефон + номер линии"]
-    P1 --> P2["2. Нормализация (ИИ)<br/>телефон → +7…, адрес прописью → цифры<br/>Claude/OpenAI + regex-резерв"]
+    P1 --> P2["2. Нормализация (ИИ)<br/>телефон → +7…, адрес прописью → цифры<br/>ИИ + regex-резерв"]
     P2 --> P3{"3. Классификация"}
     P3 -- "мусор (сброс/тишина)" --> G["ничего не создаётся"]
     P3 -- "поддержка" --> T["Тикет в ящик «Поддержка»<br/>+ тег «Звонок ‹линия›»"]
@@ -910,7 +908,7 @@ flowchart LR
   <p>В блоке: плеер записи, кнопка <strong>«Скачать»</strong>, ссылка
   <strong>«Расшифровка»</strong> (полный текст) и кнопка
   <strong>«Транскрибировать / Обновить суть»</strong>. По нажатию запись
-  расшифровывается (OpenAI Whisper) и прогоняется через AI-движок, который возвращает
+   расшифровывается и прогоняется через AI-движок, который возвращает
   структурную выжимку:</p>
 
   <ul>
@@ -935,8 +933,8 @@ flowchart LR
   (<code>/admin/support/settings/</code>) есть тумблер
   <strong>«Авто-транскрибация звонков»</strong>. Когда включён — расшифровка и
   выделение сути запускаются <strong>сами</strong> при поступлении тикета со звонком,
-  и оператор сразу видит готовую выжимку. Требуется ключ OpenAI (Whisper) и настроенный
-  AI-движок канала «voice» (Claude / OpenAI / Gemini).</p>
+  и оператор сразу видит готовую выжимку. Требуется ключ сервиса распознавания речи и настроенный
+   AI-движок канала «voice».</p>
 
   <!-- ============================================ -->
   <h2 id="knowledgebase">10. База знаний</h2>
@@ -979,7 +977,7 @@ flowchart LR
   категории. Кнопка «Сохранить» активируется только при изменениях (dirty-save),
   пояснения к опциям — в i-иконках.</p>
 
-  <h3 id="sla-policies">SLA-политики (build 1883)</h3>
+  <h3 id="sla-policies">SLA-политики</h3>
   <p><code>/admin/support/sla/</code> (ссылка — из вкладки «Общие»). Цели
   <strong>первого ответа (мин)</strong> и <strong>решения (ч)</strong> с привязкой
   к ящику / приоритету / организации; для тикета применяется самая специфичная
@@ -990,13 +988,13 @@ flowchart LR
   считается календарно). Статус — <a href="#sla">чипами в инбоксе</a> и блоком
   в карточке тикета.</p>
 
-  <h3 id="round-robin">Очереди операторов — round-robin (build 1884)</h3>
+  <h3 id="round-robin">Очереди операторов — round-robin</h3>
   <p>Во вкладках «Авто ответств.» / «Авто наблюдат.» в селекте оператора появилась
   группа <strong>«Очередь группы (round-robin)»</strong>: вместо конкретного
   сотрудника тикеты канала/ящика раздаются по кругу активным операторам выбранной
   Django-группы — нагрузка распределяется автоматически.</p>
 
-  <h3 id="csat-chain">Сбор оценок CSAT (build 1882)</h3>
+  <h3 id="csat-chain">Сбор оценок CSAT</h3>
   <p>При включённых «Отзывах» ящика блок оценки 😊/😐/😞 добавляется в email-ответы
   (положение и текст — из настроек ящика), в мессенджеры — строка со ссылкой.
   При закрытии тикета без оценки клиенту уходит опрос (выключатель

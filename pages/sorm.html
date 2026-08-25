@@ -3,20 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Интеграция с СОРМ3 — СмИТ Биллинг v3.5.0 (build 2174)</title>
+  <title>Интеграция с СОРМ3 — СмИТ Биллинг v3.5.0</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 3.5 — Документация">
-  <meta property="og:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v3.5.0 (build 2174)">
+  <meta property="og:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v3.5.0">
   <meta property="og:description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/sorm.html">
-  <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
+  <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v3.5.0 (build 2174)">
+  <meta name="twitter:title" content="Интеграция с СОРМ3 — СмИТ Биллинг v3.5.0">
   <meta name="twitter:description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
-  <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
+  <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../css/style.css?v=2169">
@@ -193,7 +193,6 @@
           <li class="sub-item"><a href="billing.html#support">— Поддержка: единое окно</a></li>
           <li class="sub-item"><a href="billing.html#support-ticket">— Поддержка: карточка тикета</a></li>
           <li class="sub-item"><a href="billing.html#support-panel">— Поддержка: выезжающая панель</a></li>
-          <li class="sub-item"><a href="billing.html#freescout-overview">— HelpDesk (FreeScout, устар.)</a></li>
           <li class="sub-item"><a href="billing.html#radius-sessions-overview">— RADIUS-сессии: обзор</a></li>
           <li class="sub-item"><a href="billing.html#requisites">7.4. Реквизиты</a></li>
           <li class="sub-item"><a href="billing.html#currency">7.5. Валюты</a></li>
@@ -237,7 +236,7 @@
           <li><a href="billing.html#domofon-demo">11. Домофонный домен (демо АЙТИ)</a></li>
           <li class="sub-item"><a href="billing.html#domofon-model">11.1. Доменная модель</a></li>
           <li class="sub-item"><a href="billing.html#domofon-demo-data">11.2. Что заведено в демо</a></li>
-          <li><a href="billing.html#ai-agent">12. AI-агент (AIDA)</a></li>
+          <li><a href="billing.html#ai-agent">12. AI-агент</a></li>
           <li class="sub-item"><a href="billing.html#ai-hub">12.1. Обзор модуля (хаб)</a></li>
           <li class="sub-item"><a href="billing.html#ai-kb">12.2. База знаний</a></li>
           <li class="sub-item"><a href="billing.html#ai-voice">12.3. Голос (Mango → анализ)</a></li>
@@ -273,11 +272,11 @@
           <li class="sub-item"><a href="lk.html#lk-mobile-app">— Public Mobile API</a></li>
           <li class="sub-item"><a href="lk.html#mobile-force-update">— Force-update</a></li>
           <li class="sub-item"><a href="lk.html#lk-mobile-app">— iOS TestFlight ↔ AppStore</a></li>
-          <li><a href="lk.html#lk-support">FreeScout</a></li>
+          <li><a href="lk.html#lk-support">Поддержка</a></li>
           <li><a href="lk.html#lk-ai-chat">AI-ассистент</a></li>
           <li><a href="lk.html#lk-profile">Профиль</a></li>
           <li><a href="lk.html#lk-firebase">Push (Firebase)</a></li>
-          <li><a href="lk.html#lk-ai-chat">Claude AI</a></li>
+          <li><a href="lk.html#lk-ai-chat">AI-чат</a></li>
           <li><a href="billing.html#messaging">TG бот оператора</a></li>
         </ul>
       </li>
@@ -500,18 +499,25 @@
 <img src="../img/p112754989_BillingSormFSB_scheme.png" alt="Схема интеграции СОРМ3 с биллингом" class="content-image">
 
 <figure class="doc-video">
-  <video controls preload="none" playsinline
-         poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/sorm-training-poster.jpg">
-    <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/sorm-training.mp4" type="video/mp4">
-    Ваш браузер не проигрывает видео —
-    <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/sorm-training.mp4">скачайте файл</a>.
-  </video>
+  <div class="dv-head">
+    <span class="dv-kind"><i class="ti ti-player-play-filled" aria-hidden="true"></i> Обучающее видео</span>
+    <span class="dv-time">2:55</span>
+  </div>
+  <div class="dv-media">
+    <video controls preload="none" playsinline
+             poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/sorm-training-poster.jpg">
+        <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/sorm-training.mp4" type="video/mp4">
+        Ваш браузер не проигрывает видео —
+        <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/sorm-training.mp4">скачайте файл</a>.
+      </video>
+  </div>
   <figcaption>
-    <b>Обучающий ролик для персонала.</b>
-    <span>Что проверить перед выгрузкой, где задаётся формат вендора, куда уезжают
-    файлы и как понять по истории, почему выгрузка не ушла.</span>
-    <span class="dv-meta">2:55 · 1920×1080 · с озвучкой ·
-    <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/sorm-training.mp4" target="_blank" rel="noopener">скачать</a></span>
+    <p class="dv-desc">Что проверить перед выгрузкой, где задаётся формат вендора, куда уезжают файлы и как понять по истории, почему выгрузка не ушла.</p>
+    <div class="dv-foot">
+      <span class="dv-spec">1920×1080</span>
+      <span class="dv-spec">с озвучкой</span>
+      <a class="dv-download" href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/sorm-training.mp4" target="_blank" rel="noopener" aria-label="Скачать видеофайл"><i class="ti ti-download" aria-hidden="true"></i> Скачать</a>
+    </div>
   </figcaption>
 </figure>
 
@@ -1123,8 +1129,7 @@ docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 3
 
   <h3 id="sorm-ai">AI-помощник по SQL</h3>
 
-  <p>Кнопка <strong>✨ AI</strong> в шапке SQL-редактора открывает чат с ассистентом
-  на базе Claude (через RU-bypass прокси). Ассистент знает схему БД и функции СОРМ
+  <p>Кнопка <strong>✨ AI</strong> в шапке SQL-редактора открывает чат с AI-ассистентом (через прокси). Ассистент знает схему БД и функции СОРМ
   (<code>uf_ip2hex</code>, <code>uf_mask2hex</code>, <code>uf_date2sorm</code>), видит
   текущий SQL отчёта и помогает его дорабатывать. Схема выходных колонок фиксирована
   приказом РКН — без явной просьбы ассистент её не меняет. Когда решение готово,
@@ -1332,7 +1337,7 @@ flowchart TB
         <li><em>CSV</em> — скачивает файл в браузер</li>
       </ul>
     </li>
-    <li><strong>✏ Редактировать</strong> — модальное окно с SQL-редактором, настройкой периодичности, префикса файла. Доступны функции: <code>uf_ip2hex()</code>, <code>uf_mask2hex()</code>, <code>uf_date2sorm()</code></li>
+    <li><strong>✏ Редактировать</strong> — модальное окно с SQL-редактором, настройкой периодичности, префикса файла. Доступны функции: <code>uf_ip2hex</code>, <code>uf_mask2hex</code>, <code>uf_date2sorm</code></li>
     <li><strong>🗑 В архив</strong> — мягкое удаление с возможностью восстановления из блока «Архив»</li>
   </ul>
 
@@ -1424,7 +1429,7 @@ flowchart TB
   </table>
 
   <div class="info-box">
-    <strong>Legacy-поля:</strong> миграция 0098 пометила 5 устаревших атрибутов (id 13-17 на testbill — «Паспорт №», «Паспорт серия», «Паспорт регистрация», «Паспорт кем выдан», «Паспорт когда выдан») для совместимости. Главное — поле «Паспорт кем выдан» (3417 заполненных значений на проде), его отсутствие означало бы потерю данных для РКН.
+    <strong>Legacy-поля:</strong> миграция 0098 пометила 5 устаревших атрибутов (id 13-17 на рабочем сервере — «Паспорт №», «Паспорт серия», «Паспорт регистрация», «Паспорт кем выдан», «Паспорт когда выдан») для совместимости. Главное — поле «Паспорт кем выдан» (3417 заполненных значений на проде), его отсутствие означало бы потерю данных для РКН.
   </div>
 
   <h2 id="preflight">Pre-flight валидация перед выгрузкой</h2>
@@ -1454,7 +1459,7 @@ flowchart TB
 
   <p>Для каждого <code>sorm_required=True</code> атрибута проверяется сколько активных абонентов <strong>без</strong> заполненного значения. Юр-поля (<code>ABONENT_LEGAL</code>) проверяются только у юр.лиц (<code>company=True</code>); физ-поля (<code>passport_series_number</code>, <code>birth_date</code>) — только у физических лиц.</p>
 
-  <p>Пример вывода на проде testbill:</p>
+  <p>Пример вывода на проде рабочий сервер:</p>
 
   <table>
     <thead><tr><th>report_type</th><th>field_code</th><th>attribute_name</th><th>missing</th></tr></thead>
@@ -1507,7 +1512,7 @@ python manage.py merge_sorm_attribute_dups --field-code director --apply
 # Группировка по name (для legacy без field_code):
 python manage.py merge_sorm_attribute_dups --by-name --apply</code></pre>
 
-  <p>Пример вывода (testbill):</p>
+  <p>Пример вывода (рабочий сервер):</p>
 
   <pre><code>Найдено 1 групп дубликатов:
 
@@ -1563,8 +1568,8 @@ python manage.py merge_sorm_attribute_dups --by-name --apply</code></pre>
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2174)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">25.08.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2174)</span>&nbsp;|&nbsp;<span data-smit="updated">25.08.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">25.08.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0</span>&nbsp;|&nbsp;<span data-smit="updated">25.08.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2033"></script>

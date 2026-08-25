@@ -3,20 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>API — СмИТ Биллинг v3.5.0 (build 2174)</title>
+  <title>API — СмИТ Биллинг v3.5.0</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="СмИТ Биллинг 3.5 — Документация">
-  <meta property="og:title" content="API — СмИТ Биллинг v3.5.0 (build 2174)">
+  <meta property="og:title" content="API — СмИТ Биллинг v3.5.0">
   <meta property="og:description" content="REST API v2, SOAP API, обещанный платёж, управление клиентами. Примеры запросов curl и JSON.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/pages/api.html">
-  <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
+  <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="API — СмИТ Биллинг v3.5.0 (build 2174)">
+  <meta name="twitter:title" content="API — СмИТ Биллинг v3.5.0">
   <meta name="twitter:description" content="REST API v2, SOAP API, обещанный платёж, управление клиентами. Примеры запросов curl и JSON.">
-  <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
+  <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="REST API v2, SOAP API, обещанный платёж, управление клиентами. Примеры запросов curl и JSON.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../css/style.css?v=2169">
@@ -193,7 +193,6 @@
           <li class="sub-item"><a href="billing.html#support">— Поддержка: единое окно</a></li>
           <li class="sub-item"><a href="billing.html#support-ticket">— Поддержка: карточка тикета</a></li>
           <li class="sub-item"><a href="billing.html#support-panel">— Поддержка: выезжающая панель</a></li>
-          <li class="sub-item"><a href="billing.html#freescout-overview">— HelpDesk (FreeScout, устар.)</a></li>
           <li class="sub-item"><a href="billing.html#radius-sessions-overview">— RADIUS-сессии: обзор</a></li>
           <li class="sub-item"><a href="billing.html#requisites">7.4. Реквизиты</a></li>
           <li class="sub-item"><a href="billing.html#currency">7.5. Валюты</a></li>
@@ -237,7 +236,7 @@
           <li><a href="billing.html#domofon-demo">11. Домофонный домен (демо АЙТИ)</a></li>
           <li class="sub-item"><a href="billing.html#domofon-model">11.1. Доменная модель</a></li>
           <li class="sub-item"><a href="billing.html#domofon-demo-data">11.2. Что заведено в демо</a></li>
-          <li><a href="billing.html#ai-agent">12. AI-агент (AIDA)</a></li>
+          <li><a href="billing.html#ai-agent">12. AI-агент</a></li>
           <li class="sub-item"><a href="billing.html#ai-hub">12.1. Обзор модуля (хаб)</a></li>
           <li class="sub-item"><a href="billing.html#ai-kb">12.2. База знаний</a></li>
           <li class="sub-item"><a href="billing.html#ai-voice">12.3. Голос (Mango → анализ)</a></li>
@@ -273,11 +272,11 @@
           <li class="sub-item"><a href="lk.html#lk-mobile-app">— Public Mobile API</a></li>
           <li class="sub-item"><a href="lk.html#mobile-force-update">— Force-update</a></li>
           <li class="sub-item"><a href="lk.html#lk-mobile-app">— iOS TestFlight ↔ AppStore</a></li>
-          <li><a href="lk.html#lk-support">FreeScout</a></li>
+          <li><a href="lk.html#lk-support">Поддержка</a></li>
           <li><a href="lk.html#lk-ai-chat">AI-ассистент</a></li>
           <li><a href="lk.html#lk-profile">Профиль</a></li>
           <li><a href="lk.html#lk-firebase">Push (Firebase)</a></li>
-          <li><a href="lk.html#lk-ai-chat">Claude AI</a></li>
+          <li><a href="lk.html#lk-ai-chat">AI-чат</a></li>
           <li><a href="billing.html#messaging">TG бот оператора</a></li>
         </ul>
       </li>
@@ -522,7 +521,7 @@ flowchart TB
         ADMIN["Админ-панель<br/>AdminLTE"]
         LKC["Личный кабинет"]
         MOB["Мобильное приложение<br/>Flutter"]
-        EXT["Платёжные системы /<br/>NAS / СОРМ / FreeScout"]
+        EXT["Платёжные системы /<br/>NAS / СОРМ"]
     end
 
     subgraph api["Точки входа API"]
@@ -534,7 +533,7 @@ flowchart TB
 
     subgraph core["Ядро биллинга (Django 4.2)"]
         VIEWS["Views<br/>ChangeView · AdminView · AuthView"]
-        SVC["Сервисы<br/>payment · ip_allocation ·<br/>freescout · radius_user_cache"]
+        SVC["Сервисы<br/>payment · ip_allocation ·<br/>support · radius_user_cache"]
         TASKS["Celery<br/>billing_worker · nas_sync ·<br/>push · sorm_export"]
     end
 
@@ -888,7 +887,7 @@ curl -s -b cookies.txt -X DELETE \
     <li>Сервис рассчитывает <em>сумму к оплате</em> = <code>amount × (1 + commission_rate)</code>. По умолчанию комиссия <code>0.045</code> (4.5 %), настраивается в <code>LK_PAYMENT_COMMISSION</code>.</li>
     <li>Для ЮKassa REST / W1 — редирект на форму оплаты; для ЮKassa HTTP — форма <code>POST</code> на <code>yoomoney.ru/eshop.xml</code>.</li>
     <li>После успешной оплаты платёжная система вызывает <code>/lk/payments/webhook/</code>.</li>
-    <li>Webhook проверяет подпись, извлекает <code>credit_amount</code> (из metadata / кэша / расчёта), вызывает <code>_credit_abonent()</code>: <code>account.ostatok += credit_amount × 10<sup>10</sup></code> и создаёт запись в <code>FinanceOperations</code>.</li>
+    <li>Webhook проверяет подпись, извлекает <code>credit_amount</code> (из metadata / кэша / расчёта), вызывает <code>_credit_abonent</code>: <code>account.ostatok += credit_amount × 10<sup>10</sup></code> и создаёт запись в <code>FinanceOperations</code>.</li>
   </ol>
 
   <pre class="mermaid">
@@ -909,7 +908,7 @@ sequenceDiagram
     Ab->>PS: оплата на форме провайдера
     PS->>WH: webhook (XML+MD5 или JSON)
     WH->>WH: проверка подписи + идемпотентность
-    WH->>DB: _credit_abonent()<br/>ostatok += amount × 10¹⁰<br/>+ FinanceOperations
+    WH->>DB: _credit_abonent<br/>ostatok += amount × 10¹⁰<br/>+ FinanceOperations
     WH->>DB: авто-разблок b_negbal если ostatok ≥ 0
     WH-->>PS: 200 OK / WMI_RESULT=OK
     Note over Ab,DB: зачисление идёт по credit_amount,<br/>НЕ по сумме с комиссией
@@ -1162,7 +1161,7 @@ WMI_MERCHANT_ID=123456
       <tr><td><code>op_summa</code></td><td><code>credit_amount × 10<sup>10</sup></code> (положительное число)</td></tr>
       <tr><td><code>abonent_id</code></td><td>ID клиента из <code>metadata</code> / <code>customerNumber</code> / <code>WMI_PAYMENT_NO</code></td></tr>
       <tr><td><code>descr</code></td><td>«Онлайн-оплата (YooKassa/W1). Оплачено: X.XX, комиссия: Y.YY»</td></tr>
-      <tr><td><code>op_date</code></td><td><code>timezone.now()</code></td></tr>
+      <tr><td><code>op_date</code></td><td><code>timezone.now</code></td></tr>
     </tbody>
   </table>
 
@@ -1480,18 +1479,18 @@ exit 0</code></pre>
 )
 
 # Сгенерировать SQL для отчёта ABONENT_LEGAL
-sql = SormReportBuilder('ABONENT_LEGAL').build_sql()
+sql = SormReportBuilder('ABONENT_LEGAL').build_sql
 
 # Получить порядок колонок CSV
-codes = SormReportBuilder('ABONENT_LEGAL').get_field_codes()
+codes = SormReportBuilder('ABONENT_LEGAL').get_field_codes
 # ['inn', 'kpp', 'ogrn', 'legal_address', ...]
 
 # Список поддерживаемых типов отчётов
-SormReportBuilder.supported_report_types()
+SormReportBuilder.supported_report_types
 # ['ABONENT_LEGAL']  # на только этот тип имеет builder-шаблон
 
 # Валидация метаданных (без обращения к БД клиентов)
-issues = SormReportBuilder.validate_meta()
+issues = SormReportBuilder.validate_meta
 # [{'kind': 'missing_field_code', 'attribute_id': 13, ...}, ...]
 
 # Валидация заполнения данных у активных клиентов
@@ -1557,7 +1556,7 @@ curl -s -b cookies.txt "https://billing.example.com/admin/ajax/ippull_get/1/"</c
     <li><a href="#autentifikatsiya">Аутентификация</a></li>
     <li><a href="#akkaunt">Аккаунт</a></li>
     <li><a href="#finansy">Финансы</a></li>
-    <li><a href="#podderzhka-freescout">Поддержка (FreeScout)</a></li>
+    <li><a href="#podderzhka">Поддержка</a></li>
     <li><a href="#uslugi">Услуги</a></li>
     <li><a href="#push-uvedomleniya">Push-уведомления</a></li>
     <li><a href="#svodnaya-tablitsa-endpointov">Сводная таблица эндпоинтов</a></li>
@@ -1702,7 +1701,7 @@ curl -s -X POST "https://billing.example.com/mobile-api/v1/finance/pay" \
 # Ответ (REST API v3): {"redirect_url": "https://yookassa.ru/checkout/..."}
 # Ответ (HTTP-протокол): {"form_post": true, "action": "https://yoomoney.ru/eshop.xml", "fields": {...}}</code></pre>
 
-  <h3 id="podderzhka-freescout">Поддержка (FreeScout)</h3>
+  <h3 id="podderzhka">Поддержка</h3>
 
   <pre><code># Список тикетов
 curl -s "https://billing.example.com/mobile-api/v1/support/tickets" \
@@ -1798,8 +1797,8 @@ curl -s -X POST "https://billing.example.com/mobile-api/v1/push/register" \
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2174)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">25.08.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2174)</span>&nbsp;|&nbsp;<span data-smit="updated">25.08.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">25.08.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0</span>&nbsp;|&nbsp;<span data-smit="updated">25.08.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2033"></script>

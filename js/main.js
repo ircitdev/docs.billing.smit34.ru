@@ -47,16 +47,27 @@ document.addEventListener('DOMContentLoaded', function () {
   function closeSidebar() {
     if (sidebar) sidebar.classList.remove('open');
     if (backdrop) backdrop.classList.remove('open');
+    document.body.classList.remove('sidebar-open');
   }
   function openSidebar() {
     if (sidebar) sidebar.classList.add('open');
     if (backdrop) backdrop.classList.add('open');
+    // меню перекрывает страницу целиком — фон под ним не прокручиваем
+    document.body.classList.add('sidebar-open');
   }
   if (toggle && sidebar) {
     toggle.addEventListener('click', function () {
       if (sidebar.classList.contains('open')) closeSidebar(); else openSidebar();
     });
     if (backdrop) backdrop.addEventListener('click', closeSidebar);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && sidebar.classList.contains('open')) closeSidebar();
+    });
+    // переход по ссылке-якорю страницу не перезагружает — закрываем меню сами
+    sidebar.addEventListener('click', function (e) {
+      var a = e.target.closest ? e.target.closest('a') : null;
+      if (a && a.getAttribute('href') && !a.querySelector('.arrow')) closeSidebar();
+    });
     var contentEl = document.querySelector('.content');
     if (contentEl) contentEl.addEventListener('click', closeSidebar);
   }

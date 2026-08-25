@@ -20,11 +20,26 @@
 }
 .docs-sr-item:hover { background: #f0faf5; }
 .docs-sr-item:last-child { border-bottom: none; }
-.docs-sr-section { font-size: .7rem; color: #6c757d; text-transform: uppercase; letter-spacing: .03em; }
+.docs-sr-section {
+  font-size: .7rem; color: #6c757d; text-transform: uppercase; letter-spacing: .03em;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
 .docs-sr-title { font-weight: 600; color: #1b5e20; }
 .docs-sr-ctx { font-size: .78rem; color: #888; margin-top: 2px; }
 .docs-sr-ctx mark { background: #fff3a3; padding: 0 1px; border-radius: 2px; }
 .docs-sr-empty { padding: 16px; text-align: center; color: #999; font-size: .85rem; }
+/* подсветка совпадения и в заголовке результата, не только в тексте */
+.docs-sr-title mark { background: #fff3a3; padding: 0 1px; border-radius: 2px; color: inherit; }
+/* выбранный стрелками результат — Enter открывает именно его */
+.docs-sr-item.sel { background: #e8f5ee; box-shadow: inset 3px 0 0 #43b77a; }
+.docs-sr-more {
+  padding: 7px 14px; font-size: .74rem; color: #6c757d;
+  background: #f8f9fa; border-top: 1px solid #e9ecef; text-align: center;
+}
+[data-theme="dark"] .docs-sr-title mark,
+[data-theme="dark"] .docs-sr-ctx mark { background: #6b5d1f; color: #f8fafc; }
+[data-theme="dark"] .docs-sr-item.sel { background: rgba(91,168,157,.18); box-shadow: inset 3px 0 0 #5BA89D; }
+[data-theme="dark"] .docs-sr-more { background: #172033; border-color: #334155; color: #94a3b8; }
 [data-theme="dark"] .docs-search-results { background: #1e293b; border-color: #334155; }
 [data-theme="dark"] .docs-sr-item { color: #e2e8f0; border-color: #334155; }
 [data-theme="dark"] .docs-sr-item:hover { background: rgba(91,168,157,.1); }

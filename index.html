@@ -9,14 +9,14 @@
   <meta property="og:title" content="СмИТ Биллинг 3.5 — Документация">
   <meta property="og:description" content="Документация биллинговой платформы СмИТ Биллинг 3.5 для операторов связи и сервис-провайдеров. Python 3.11, Django 4.2, PostgreSQL 16, Docker Compose.">
   <meta property="og:url" content="https://docs.billing.smit34.ru/">
-  <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
+  <meta property="og:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="СмИТ Биллинг 3.5 — Документация">
   <meta name="twitter:description" content="Документация биллинговой платформы СмИТ Биллинг 3.5 для операторов связи и сервис-провайдеров. Python 3.11, Django 4.2, PostgreSQL 16, Docker Compose.">
-  <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/docs.billing/ogimage.png">
+  <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Документация биллинговой платформы СмИТ Биллинг 3.5 для операторов связи и сервис-провайдеров. Python 3.11, Django 4.2, PostgreSQL 16, Docker Compose.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/style.css?v=2169">
@@ -81,77 +81,220 @@
       <li class="has-children">
         <a href="pages/billing.html"><i class="ti ti-settings"></i> Настройки биллинга <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
         <ul class="submenu">
-          <li><a href="pages/billing.html#general">1. Общие настройки</a></li>
-          <li class="sub-item"><a href="pages/billing.html#admin-ip">1.1. IP администратора</a></li>
-          <li class="sub-item"><a href="pages/billing.html#system-settings">1.2. Настройки системы</a></li>
-          <li class="sub-item"><a href="pages/billing.html#user-interfaces">1.4. Интерфейсы</a></li>
-          <li class="sub-item"><a href="pages/billing.html#access-control">1.7. Права доступа</a></li>
-          <li><a href="pages/billing.html#subscribers">2. Работа с клиентами</a></li>
-          <li class="sub-item"><a href="pages/billing.html#create-subscriber">2.1. Создание клиента</a></li>
-          <li class="sub-item"><a href="pages/billing.html#search">2.6. Поиск</a></li>
-          <li class="sub-item"><a href="pages/billing.html#finance-operations">2.7. Финансовые операции</a></li>
-          <li class="sub-item"><a href="pages/billing.html#block-unblock">2.13. Блокировка</a></li>
-          <li class="sub-item"><a href="pages/billing.html#accounts">2.14. Лицевые счета</a></li>
-          <li class="sub-item"><a href="pages/billing.html#debtors">2.15. Должники</a></li>
-          <li><a href="pages/billing.html#tariffs">3. Тарификация и услуги</a></li>
-          <li class="sub-item"><a href="pages/billing.html#tarif-create">3.1. Тарифы</a></li>
-          <li class="sub-item"><a href="pages/billing.html#services">3.6. Услуги</a></li>
-          <li class="sub-item"><a href="pages/billing.html#loyalty">3.16. Лояльность</a></li>
-          <li><a href="pages/billing.html#messaging">4. Отправка сообщений</a></li>
-          <li class="sub-item"><a href="pages/billing.html#email-smtp">4.2. Email (SMTP)</a></li>
-          <li class="sub-item"><a href="pages/billing.html#smsaero">4.3. SMS</a></li>
-          <li class="sub-item"><a href="pages/billing.html#telegram-messaging">4.5. Telegram</a></li>
-          <li class="sub-item"><a href="pages/billing.html#vk-messaging">4.6. VK</a></li>
-          <li><a href="pages/billing.html#payments">5. Платежи, API, 1С</a></li>
-          <li class="sub-item"><a href="pages/billing.html#payment-systems">5.2. Платёжные системы</a></li>
-          <li class="sub-item"><a href="pages/billing.html#yookassa-settings">5.10. ЮKassa</a></li>
-          <li><a href="pages/billing.html#oss-bss">6. OSS.BSS / NAS</a></li>
-          <li class="sub-item"><a href="pages/billing.html#nas-management-api">6.10. NAS API</a></li>
-          <li><a href="pages/billing.html#freeradius">7. FreeRADIUS</a></li>
-          <li class="sub-item"><a href="pages/billing.html#radius-arch">7.1. Архитектура</a></li>
-          <li class="sub-item"><a href="pages/billing.html#radius-auth">7.2. Авторизация</a></li>
-          <li class="sub-item"><a href="pages/billing.html#radius-accounting">7.3. Аккаунтинг</a></li>
-          <li class="sub-item"><a href="pages/billing.html#radius-vendors">7.5. Подключение по вендорам</a></li>
-          <li class="sub-item"><a href="pages/billing.html#radius-ip-allocation">7.6. IP-pool</a></li>
-          <li class="sub-item"><a href="pages/billing.html#radius-coa">7.7. CoA</a></li>
-          <li class="sub-item"><a href="pages/billing.html#radius-troubleshooting">7.9. Диагностика</a></li>
-          <li class="sub-item"><a href="pages/billing.html#radius-performance">7.10. Производительность</a></li>
-          <li><a href="pages/billing.html#backup-system">8. Резервное копирование</a></li>
-          <li><a href="pages/billing.html#reports">9. Отчёты</a></li>
-          <li class="sub-item"><a href="pages/billing.html#audit">9.1. Аудит</a></li>
-          <li class="sub-item"><a href="pages/billing.html#payment-log">9.2. Журнал платежей</a></li>
-          <li class="sub-item"><a href="pages/billing.html#dev-reports">9.6. Разработка и логи</a></li>
-          <li><a href="pages/billing.html#dictionaries">10. Справочники</a></li>
-          <li><a href="pages/billing.html#additional">11. Дополнительные настройки</a></li>
-          <li><a href="pages/billing.html#modal-dialogs">12. Модальные окна</a></li>
-          <li><a href="pages/billing.html#security">13. Обзор безопасности</a></li>
-          <li><a href="pages/billing.html#tech-stack">17. Технологический стек</a></li>
-          <li><a href="pages/billing.html#design-system">20. Дизайн-система</a></li>
+          <li><a href="pages/billing.html#dashboard">1. Дашборд</a></li>
+          <li class="sub-item"><a href="pages/billing.html#dashboard-kpi">1.1. Шапка: 6 KPI</a></li>
+          <li class="sub-item"><a href="pages/billing.html#dashboard-pools-ebs">1.2. IP-пулы + EBS</a></li>
+          <li class="sub-item"><a href="pages/billing.html#dashboard-alerts">1.3. Свежие проблемы</a></li>
+          <li class="sub-item"><a href="pages/billing.html#dashboard-cash">1.4. Касса месяца</a></li>
+          <li class="sub-item"><a href="pages/billing.html#dashboard-payments-today">1.5. Платежи сегодня</a></li>
+          <li class="sub-item"><a href="pages/billing.html#dashboard-hot">1.6. Горячие клиенты + CRM</a></li>
+          <li class="sub-item"><a href="pages/billing.html#dashboard-extras">1.7. Heat-map + Цели + Что нового</a></li>
+          <li class="sub-item"><a href="pages/billing.html#dashboard-finance">1.8. Финансовая динамика</a></li>
+          <li><a href="pages/billing.html#tarifs">2. Тарификация</a></li>
+          <li class="sub-item"><a href="pages/billing.html#tarif-list">2.1. Тарифы</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="pages/billing.html#tarif-folder">— Директория тарифа</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="pages/billing.html#tarif-org">— Тарифы и организация</a></li>
+          <li class="sub-item"><a href="pages/billing.html#usluga-list">2.2. Услуги и Бонусы</a></li>
+          <li class="sub-item"><a href="pages/billing.html#tarif-ruleset">2.3. Правила и сети</a></li>
+          <li class="sub-item"><a href="pages/billing.html#ruleset-conditions">2.3.1. Условия правила</a></li>
+          <li class="sub-item"><a href="pages/billing.html#tarif-bulk">2.3.2. Массовые действия</a></li>
+          <li class="sub-item"><a href="pages/billing.html#card-series">2.4. Карты оплаты</a></li>
+          <li class="sub-item"><a href="pages/billing.html#loyalty">2.5. Программы лояльности</a></li>
+          <li class="sub-item"><a href="pages/billing.html#usluga-range">2.6. Линейки услуг</a></li>
+          <li><a href="pages/billing.html#equipment">3. Оборудование</a></li>
+          <li class="sub-item"><a href="pages/billing.html#equip-nas">3.1. NAS</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="pages/billing.html#nas-map">— Что такое NAS</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="pages/billing.html#nas-multiorg">— Мультиорганизация и доступ</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="pages/billing.html#nas-modal">— Карточка устройства</a></li>
+          <li class="sub-item"><a href="pages/billing.html#nas-status">3.2. Состояние NAS</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="pages/billing.html#nas-danger">— Опасные операции</a></li>
+          <li class="sub-item"><a href="pages/billing.html#equip-monitoring">3.2А. Мониторинг оборудования</a></li>
+          <li class="sub-item"><a href="pages/billing.html#equip-iptv">3.3. IPTV</a></li>
+          <li class="sub-item"><a href="pages/billing.html#switch">3.4. Коммутаторы</a></li>
+          <li class="sub-item"><a href="pages/billing.html#switch-type">3.5. Типы коммутаторов</a></li>
+          <li class="sub-item"><a href="pages/billing.html#sorm-list">3.6. Настройки СОРМ</a></li>
+          <li><a href="pages/billing.html#reports">4. Отчёты</a></li>
+          <li class="sub-item"><a href="pages/billing.html#director-dashboard">4.0. Панель директора</a></li>
+          <li class="sub-item"><a href="pages/billing.html#custom-reports">4.1. Библиотека отчётов</a></li>
+          <li class="sub-item"><a href="pages/billing.html#audit">4.2. Аудит</a></li>
+          <li class="sub-item"><a href="pages/billing.html#paylog">4.3. Журнал платежей</a></li>
+          <li class="sub-item"><a href="pages/billing.html#messages-journal">4.4. Журнал сообщений</a></li>
+          <li class="sub-item"><a href="pages/billing.html#dev-reports">4.5. Разработка и логи</a></li>
+          <li class="sub-item"><a href="pages/billing.html#debtors">4.6. Должники</a></li>
+          <li class="sub-item"><a href="pages/billing.html#migration">4.7. Миграция с других биллингов</a></li>
+          <li><a href="pages/billing.html#games">5. Игры (Маркетинг)</a></li>
+          <li><a href="pages/billing.html#settings">6. Настройки</a></li>
+          <li class="sub-item"><a href="pages/billing.html#system-settings">6.1. Настройки системы</a></li>
+          <li class="sub-item"><a href="pages/billing.html#print-forms">6.2. Шаблоны печати</a></li>
+          <li class="sub-item"><a href="pages/billing.html#atol-config">6.3. Фискализация</a></li>
+          <li class="sub-item"><a href="pages/billing.html#fiscal">6.3.1. Модуль фискализации 54-ФЗ</a></li>
+          <li class="sub-item"><a href="pages/billing.html#payment-systems">6.4. Платёжные системы</a></li>
+          <li class="sub-item"><a href="pages/billing.html#bank-statements">6.4.1. Банковские выписки</a></li>
+          <li class="sub-item"><a href="pages/billing.html#bank-parsers">6.4.2. Банки и парсеры</a></li>
+          <li class="sub-item"><a href="pages/billing.html#bank-queue">6.4.3. Очередь модерации</a></li>
+          <li class="sub-item"><a href="pages/billing.html#bank-imports">6.4.4. Журнал импортов</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="pages/billing.html#bank-flow">— Путь платежа (схема)</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="pages/billing.html#bank-registry">— Сводные реестры</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="pages/billing.html#bank-queue-link-2171">— Привязка платежа и данные ФНС</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="pages/billing.html#bank-org-2171">— Организация платежа</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="pages/billing.html#bank-client-tab">— Вкладка «Банк» в карточке</a></li>
+          <li class="sub-item"><a href="pages/billing.html#mailserver">6.4.5. Почтовый сервер</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="pages/billing.html#mailserver-webmail">— Веб-почта и календарь</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="pages/billing.html#mailserver-identity">— Имя, подпись, фото</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="pages/billing.html#mailserver-addressbook">— Адресная книга</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="pages/billing.html#mailserver-mail-tab">— Вкладка «Почта»</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="pages/billing.html#mailserver-server-settings">— Настройки сервера</a></li>
+          <li class="sub-item"><a href="pages/billing.html#dns">6.4.5А. Домены и DNS</a></li>
+          <li class="sub-item"><a href="pages/billing.html#mail-provisioning">6.4.6. Автонастройка почты</a></li>
+          <li class="sub-item"><a href="pages/billing.html#integrations">6.5. Интеграции</a></li>
+          <li class="sub-item"><a href="pages/billing.html#voice">6.5А. Голосовая связь</a></li>
+          <li class="sub-item"><a href="pages/billing.html#iptv-mappings">6.6. IPTV-пакеты</a></li>
+          <li class="sub-item"><a href="pages/billing.html#iptv-watch">6.6.1. Просмотр ТВ в ЛК</a></li>
+          <li class="sub-item"><a href="pages/billing.html#lk-mobile">6.7. ЛК и мобильные</a></li>
+          <li class="sub-item"><a href="pages/billing.html#messaging">6.8. Сообщения</a></li>
+          <li class="sub-item"><a href="pages/billing.html#staff">6.9. Персонал и доступ</a></li>
+          <li class="sub-item"><a href="pages/billing.html#license">6.10. Лицензия</a></li>
+          <li class="sub-item"><a href="pages/billing.html#modules">6.10А. Модули и расширения</a></li>
+          <li class="sub-item"><a href="pages/billing.html#backup">6.11. Резервные копии</a></li>
+          <li class="sub-item"><a href="pages/billing.html#db-cleanup">6.12. Очистка БД и сессий</a></li>
+          <li class="sub-item"><a href="pages/billing.html#diagnostics">6.13. Диагностика</a></li>
+          <li class="sub-item"><a href="pages/billing.html#mass-actions">6.14. Массовые действия</a></li>
+          <li class="sub-item"><a href="pages/billing.html#performance">6.15. Производительность и оптимизация</a></li>
+          <li class="sub-item"><a href="pages/billing.html#captive-portal">6.16. Captive Portal (финблокировка)</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="pages/billing.html#captive-portal-readiness">— Готовность и проверка</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="pages/billing.html#captive-portal-emergency">— Аварийный режим</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="pages/billing.html#captive-portal-access">— Организации и права</a></li>
+          <li class="sub-item"><a href="pages/billing.html#guest-wifi-portal">6.16.1. Гостевой Wi-Fi портал</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="pages/billing.html#captive-portal-payments">— Платежи</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="pages/billing.html#captive-portal-acl">— Белые списки (ACL)</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="pages/billing.html#captive-portal-sorm">— Гости в СОРМ и хранение</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="pages/billing.html#captive-portal-mobile">— С телефона</a></li>
+          <li><a href="pages/billing.html#dictionary">7. Справочники</a></li>
+          <li class="sub-item"><a href="pages/billing.html#pools">7.1. Пулы IP и VLAN</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="pages/billing.html#ip-pull-overview">— IP-пул: обзор</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="pages/billing.html#vlan-pull-overview">— VLAN-пул: обзор</a></li>
+          <li class="sub-item"><a href="pages/billing.html#acl">7.2. Контроль доступа</a></li>
+          <li class="sub-item"><a href="pages/billing.html#addresses">7.3. Все адреса</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="pages/billing.html#addresses-overview">— Адреса: обзор</a></li>
+          <li class="sub-item"><a href="pages/billing.html#tarif-overview">— Тарифы: обзор</a></li>
+          <li class="sub-item"><a href="pages/billing.html#usluga-overview">— Услуги: обзор</a></li>
+          <li class="sub-item"><a href="pages/billing.html#service-policies">— Политики начислений</a></li>
+          <li class="sub-item"><a href="pages/billing.html#loyalty-overview">— Лояльность: обзор</a></li>
+          <li class="sub-item"><a href="pages/billing.html#admin-accounts-overview">— Счета: обзор</a></li>
+          <li class="sub-item"><a href="pages/billing.html#finops-overview">— Финоперации: обзор</a></li>
+          <li class="sub-item"><a href="pages/billing.html#promise-pay-overview">— Обещанный платёж: обзор</a></li>
+          <li class="sub-item"><a href="pages/billing.html#abonents-block-overview">— Блокировки: обзор</a></li>
+          <li class="sub-item"><a href="pages/billing.html#users-overview">— Учётные записи: обзор</a></li>
+          <li class="sub-item"><a href="pages/billing.html#connection-points-overview">— Точки подключения: обзор</a></li>
+          <li class="sub-item"><a href="pages/billing.html#abonent-folders-overview">— Папки клиентов: обзор</a></li>
+          <li class="sub-item"><a href="pages/billing.html#statuses-overview">— Статусы: обзор</a></li>
+          <li class="sub-item"><a href="pages/billing.html#framework-fields-overview">— FrameworkFormGroupFields: обзор</a></li>
+          <li class="sub-item"><a href="pages/billing.html#custom-reports-overview">— SQL-отчёты: обзор</a></li>
+          <li class="sub-item"><a href="pages/billing.html#support">— Поддержка: единое окно</a></li>
+          <li class="sub-item"><a href="pages/billing.html#support-ticket">— Поддержка: карточка тикета</a></li>
+          <li class="sub-item"><a href="pages/billing.html#support-panel">— Поддержка: выезжающая панель</a></li>
+          <li class="sub-item"><a href="pages/billing.html#radius-sessions-overview">— RADIUS-сессии: обзор</a></li>
+          <li class="sub-item"><a href="pages/billing.html#requisites">7.4. Реквизиты</a></li>
+          <li class="sub-item"><a href="pages/billing.html#currency">7.5. Валюты</a></li>
+          <li class="sub-item"><a href="pages/billing.html#weekends">7.6. Выходные дни</a></li>
+          <li class="sub-item"><a href="pages/billing.html#statuses">7.7. Управление статусами</a></li>
+          <li class="sub-item"><a href="pages/billing.html#report-types">7.8. Типы отчётов</a></li>
+          <li class="sub-item"><a href="pages/billing.html#units">7.9. Единицы измерения</a></li>
+          <li class="sub-item"><a href="pages/billing.html#periods">7.10. Периоды</a></li>
+          <li><a href="pages/billing.html#abonents">8. Клиенты</a></li>
+          <li class="sub-item"><a href="pages/billing.html#abonents-list">8.1. Клиенты</a></li>
+          <li class="sub-item"><a href="pages/billing.html#abonents-folder-view">— Папка клиентов</a></li>
+          <li class="sub-item"><a href="pages/billing.html#abonents-multiorg">— Мультиорганизация</a></li>
+          <li class="sub-item"><a href="pages/billing.html#abonents-quick-add">— Новый клиент и раскладка</a></li>
+          <li class="sub-item"><a href="pages/billing.html#abonents-search">— Глобальный поиск</a></li>
+          <li class="sub-item"><a href="pages/billing.html#abonent-map">8.2. На карте</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="pages/billing.html#abonent-map-data">— Откуда берутся точки</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="pages/billing.html#abonent-map-multiorg">— Мультиорганизация</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="pages/billing.html#abonent-map-performance">— Вес карты и скорость</a></li>
+          <li class="sub-item"><a href="pages/billing.html#admin-accounts">8.3. Счета</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="pages/billing.html#admin-accounts-map">— Что такое счёт</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="pages/billing.html#admin-accounts-multiorg">— Мультиорганизация и доступ</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="pages/billing.html#admin-accounts-modal">— Карточка счёта</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="pages/billing.html#admin-accounts-mobile">— Мобильная версия</a></li>
+          <li class="sub-item"><a href="pages/billing.html#finance-operations">8.4. Финансовые операции</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="pages/billing.html#finops-lifecycle">— Откуда берутся операции</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="pages/billing.html#finops-multiorg">— Мультиорганизация</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="pages/billing.html#modal-finops">— Карточка операции</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="pages/billing.html#finops-mobile">— Мобильная версия</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="pages/billing.html#finance-operations-types">— Типы операций (FinTypes)</a></li>
+          <li><a href="pages/billing.html#abonent-card">9. Карточка клиента</a></li>
+          <li><a href="pages/billing.html#video-surveillance">10. Видеонаблюдение</a></li>
+          <li class="sub-item"><a href="pages/billing.html#video-revenue">10.1. 3 слоя дохода + цены</a></li>
+          <li class="sub-item"><a href="pages/billing.html#video-admin">10.2. Раздел /admin/video/</a></li>
+          <li class="sub-item"><a href="pages/billing.html#video-abonent">10.3. Вкладка клиента + ЛК</a></li>
+          <li class="sub-item"><a href="pages/billing.html#video-billing-flow">10.3.1. Как списываются подписки</a></li>
+          <li class="sub-item"><a href="pages/billing.html#video-archive-lk">10.3.2. Архив: календарь + выделение</a></li>
+          <li class="sub-item"><a href="pages/billing.html#video-notify">10.3.3. Уведомления о сбоях</a></li>
+          <li class="sub-item"><a href="pages/billing.html#video-docs">10.4. Документы (КП/договор/акт)</a></li>
+          <li class="sub-item"><a href="pages/billing.html#video-block">10.5. Блокировка камер по балансу</a></li>
+          <li class="sub-item"><a href="pages/billing.html#video-vsaas">10.6. Облако VSaaS</a></li>
+          <li><a href="pages/billing.html#domofon-demo">11. Домофонный домен (демо АЙТИ)</a></li>
+          <li class="sub-item"><a href="pages/billing.html#domofon-model">11.1. Доменная модель</a></li>
+          <li class="sub-item"><a href="pages/billing.html#domofon-demo-data">11.2. Что заведено в демо</a></li>
+          <li><a href="pages/billing.html#ai-agent">12. AI-агент</a></li>
+          <li class="sub-item"><a href="pages/billing.html#ai-hub">12.1. Обзор модуля (хаб)</a></li>
+          <li class="sub-item"><a href="pages/billing.html#ai-kb">12.2. База знаний</a></li>
+          <li class="sub-item"><a href="pages/billing.html#ai-voice">12.3. Голос (Mango → анализ)</a></li>
+          <li class="sub-item"><a href="pages/billing.html#ai-widget">12.4. Виджет + воронка</a></li>
+          <li class="sub-item"><a href="pages/billing.html#ai-order-forms">12.4.1. Формы заказа → лиды</a></li>
+          <li class="sub-item"><a href="pages/billing.html#ai-test-chat">12.4.2. Тестовый AI-чат</a></li>
+          <li class="sub-item"><a href="pages/billing.html#ai-eval">12.5. Тест-кейсы AI</a></li>
+          <li class="sub-item"><a href="pages/billing.html#ai-dashboard">12.6. Дашборд AI-сессий</a></li>
+          <li class="sub-item"><a href="pages/billing.html#ai-dashboard-costs">12.6.1. Расходы на модели и бюджет</a></li>
+          <li class="sub-item"><a href="pages/billing.html#ai-org-routing">12.6.2. Определение организации</a></li>
+          <li class="sub-item"><a href="pages/billing.html#ai-dashboard-sessions">12.5.1. Сессии и транскрипт</a></li>
+          <li><a href="pages/billing.html#autodial-telephony">13. Автообзвон и телефония</a></li>
+          <li class="sub-item"><a href="pages/billing.html#autodial-providers">13.1. Мультипровайдер</a></li>
+          <li class="sub-item"><a href="pages/billing.html#autodial-asterisk">13.2. Своя телефония (Asterisk)</a></li>
+          <li class="sub-item"><a href="pages/billing.html#autodial-consent">13.3. Согласие и ограничения</a></li>
+          <li class="sub-item"><a href="pages/billing.html#autodial-card-tab">13.4. Вкладка «Звонки» в карточке</a></li>
         </ul>
       </li>
       <li class="has-children">
         <a href="pages/lk.html"><i class="ti ti-device-mobile"></i> ЛК и мобильные <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
         <ul class="submenu">
           <li><a href="pages/lk.html#lk-overview">Обзор и возможности</a></li>
-          <li><a href="pages/lk.html#lk-admin-settings">Раздел «ЛК и мобильные» в админке</a></li>
-          <li class="sub-item"><a href="pages/lk.html#lk-admin-branding">— Брендинг</a></li>
-          <li class="sub-item"><a href="pages/lk.html#lk-admin-features">— Функции (12 toggle)</a></li>
-          <li class="sub-item"><a href="pages/lk.html#lk-admin-security">— Безопасность</a></li>
-          <li class="sub-item"><a href="pages/lk.html#lk-admin-mobile">— Мобильное (Android+iOS)</a></li>
-          <li><a href="pages/lk.html#lk-auth">Авторизация</a></li>
-          <li><a href="pages/lk.html#lk-settings">Настройки интеграций</a></li>
-          <li><a href="pages/lk.html#lk-telegram">Telegram-бот</a></li>
-          <li><a href="pages/lk.html#lk-payments">Оплата (ЮKassa)</a></li>
+          <li><a href="pages/lk.html#lk-admin">Раздел «ЛК и мобильные» в админке</a></li>
+          <li class="sub-item"><a href="pages/lk.html#lk-admin">— Брендинг</a></li>
+          <li class="sub-item"><a href="pages/lk.html#lk-admin">— Функции</a></li>
+          <li class="sub-item"><a href="pages/lk.html#lk-admin">— Безопасность</a></li>
+          <li class="sub-item"><a href="pages/lk.html#lk-mobile-app">— Мобильное (Android+iOS)</a></li>
+          <li><a href="pages/lk.html#lk-login">Авторизация</a></li>
+          <li><a href="pages/lk.html#lk-admin">Настройки интеграций</a></li>
+          <li><a href="pages/lk.html#lk-extra">Telegram-бот</a></li>
+          <li><a href="pages/lk.html#lk-finance">Оплата (ЮKassa)</a></li>
           <li><a href="pages/lk.html#lk-mobile-app">Мобильное приложение</a></li>
-          <li class="sub-item"><a href="pages/lk.html#mobile-api-public">— Public Mobile API</a></li>
-          <li class="sub-item"><a href="pages/lk.html#mobile-force-update">— Force-update</a></li>
-          <li class="sub-item"><a href="pages/lk.html#mobile-ios-distribution">— iOS TestFlight ↔ AppStore</a></li>
-          <li><a href="pages/lk.html#lk-support">FreeScout</a></li>
+          <li><a href="pages/lk.html#lk-support">HelpDesk</a></li>
           <li><a href="pages/lk.html#lk-ai-chat">AI-ассистент</a></li>
           <li><a href="pages/lk.html#lk-profile">Профиль</a></li>
           <li><a href="pages/lk.html#lk-firebase">Push (Firebase)</a></li>
-          <li><a href="pages/lk.html#lk-claude-ai">Claude AI</a></li>
-          <li><a href="pages/lk.html#telegram-admin-bot">TG бот оператора</a></li>
+          <li><a href="pages/lk.html#lk-ai-chat">AI-чат</a></li>
+          <li><a href="pages/billing.html#messaging">TG бот оператора</a></li>
+        </ul>
+      </li>
+      <li class="has-children">
+        <a href="pages/crm.html"><i class="ti ti-briefcase"></i> CRM — продажи <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+        <ul class="submenu">
+          <li><a href="pages/crm.html#crm-overview">1. Как устроен модуль</a></li>
+          <li><a href="pages/crm.html#crm-quickstart">2. Быстрый старт</a></li>
+          <li><a href="pages/crm.html#crm-funnel">3. Воронка сделок</a></li>
+          <li><a href="pages/crm.html#crm-constructor">4. Конструктор воронок</a></li>
+          <li><a href="pages/crm.html#crm-sources">5. Источники сделок</a></li>
+          <li><a href="pages/crm.html#crm-userfields">6. Доп. поля</a></li>
+          <li><a href="pages/crm.html#crm-tasks">7. Задачи</a></li>
+          <li><a href="pages/crm.html#crm-lists">8. Списки (контакты)</a></li>
+          <li><a href="pages/crm.html#crm-salesbot">9. Salesbot</a></li>
+          <li><a href="pages/crm.html#widgets">10. Виджеты-плагины</a></li>
+          <li><a href="pages/crm.html#crm-setup">11. Мастер настройки</a></li>
+          <li><a href="pages/crm.html#crm-montazh">12. Наряды монтажника</a></li>
+          <li><a href="pages/crm.html#crm-dashboard">13. Дашборд и карта</a></li>
+          <li><a href="pages/crm.html#crm-campaigns">14. Рекламные кампании</a></li>
+          <li><a href="pages/crm.html#crm-drawer">15. Карточка сделки</a></li>
         </ul>
       </li>
       <li class="has-children">
@@ -211,16 +354,6 @@
           <li><a href="pages/helpdesk.html#integration">14. Связь с биллингом</a></li>
         </ul>
       </li>
-            <li class="has-children">
-        <a href="pages/crm.html"><i class="ti ti-briefcase"></i> CRM — продажи <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
-        <ul class="submenu">
-          <li><a href="pages/crm.html#crm-funnel">1. Воронка сделок</a></li>
-          <li><a href="pages/crm.html#crm-constructor">2. Конструктор воронок</a></li>
-          <li><a href="pages/crm.html#crm-sources">3. Источники сделок</a></li>
-          <li><a href="pages/crm.html#crm-tasks">5. Задачи</a></li>
-          <li><a href="pages/crm.html#crm-salesbot">7. Salesbot</a></li>
-        </ul>
-      </li>
       <li class="has-children">
         <a href="pages/landing.html"><i class="ti ti-browser"></i> Лендинги <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
         <ul class="submenu">
@@ -236,7 +369,7 @@
           <li><a href="pages/landing.html#landing-multiorg">10. Мульти-орг</a></li>
         </ul>
       </li>
-<li class="has-children">
+      <li class="has-children">
         <a href="pages/server.html"><i class="ti ti-server"></i> Управление сервером <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
         <ul class="submenu">
           <li><a href="pages/server.html#server-setup">1. Настройка сервера</a></li>
@@ -263,9 +396,18 @@
       <li class="has-children">
         <a href="pages/sorm.html"><i class="ti ti-shield-lock"></i> Интеграция с СОРМ3 <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
         <ul class="submenu">
-          <li><a href="pages/sorm.html#principle">1. Принцип работы</a></li>
-          <li><a href="pages/sorm.html#integrated">2. Интегрированные решения</a></li>
-          <li><a href="pages/sorm.html#children">3. Схемы настройки</a></li>
+          <li><a href="pages/sorm.html#principle">Принцип работы</a></li>
+          <li><a href="pages/sorm.html#integrated">Интегрированные решения</a></li>
+          <li><a href="pages/sorm.html#pending">Ожидающие интеграции</a></li>
+          <li><a href="pages/sorm.html#setup">Настройка подключения</a></li>
+          <li class="sub-item"><a href="pages/sorm.html#sorm-add-modal">— Модальное окно «Добавить»</a></li>
+          <li><a href="pages/sorm.html#reports">Отчёты и SQL</a></li>
+          <li><a href="pages/sorm.html#schedule">Расписание выгрузки</a></li>
+          <li><a href="pages/sorm.html#sorm-admin">Админ-UI: список и FTP</a></li>
+          <li><a href="pages/sorm.html#manual-run">Управление отчётами</a></li>
+          <li><a href="pages/sorm.html#metadata">СОРМ-метаданные</a></li>
+          <li><a href="pages/sorm.html#preflight">Pre-flight валидация</a></li>
+          <li><a href="pages/sorm.html#api">REST API готовности</a></li>
         </ul>
       </li>
       <li class="has-children">
@@ -276,12 +418,6 @@
           <li><a href="pages/api.html#rest-v2">3. REST API v2</a></li>
           <li><a href="pages/api.html#promise-pay">4. Обещанный платёж</a></li>
           <li><a href="pages/api.html#payments-api">5. Платёжные API (ЮKassa, W1)</a></li>
-          <li class="sub-item"><a href="pages/api.html#payments-endpoints">5.0. Список endpoint</a></li>
-          <li class="sub-item"><a href="pages/api.html#payments-flow">5.1. Схема платежа</a></li>
-          <li class="sub-item"><a href="pages/api.html#yookassa-rest">5.2. ЮKassa REST v3</a></li>
-          <li class="sub-item"><a href="pages/api.html#yookassa-http">5.3. ЮKassa HTTP</a></li>
-          <li class="sub-item"><a href="pages/api.html#w1-api">5.4. Wallet One</a></li>
-          <li class="sub-item"><a href="pages/api.html#payments-settings">5.5. Настройки</a></li>
           <li><a href="pages/api.html#soap">6. SOAP API</a></li>
           <li><a href="pages/api.html#mobile-api">7. Mobile API</a></li>
         </ul>
@@ -304,11 +440,11 @@
       </li>
       <li><a href="pages/contacts.html"><i class="ti ti-phone"></i> Контакты</a></li>
     </ul>
-  
+
       <div class="nav-section">Разработчикам</div>
       <ul>
         <li class="has-children">
-          <a href="graphify/graph.html"><i class="ti ti-topology-star-3"></i> Архитектура кода <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
+          <a href="graphify/graph.html"><i class="ti ti-topology-star-3"></i> Архитектура кода <span class="arrow"><i class="bi bi-chevron-right"></i></span></a>
           <ul class="submenu">
             <li><a href="graphify/graph.html">Граф сообществ</a></li>
             <li><a href="graphify/wiki/index.html">Wiki модулей</a></li>
@@ -341,7 +477,7 @@
     <strong>Технологический стек:</strong> Python 3.11, Django 4.2 LTS, PostgreSQL 16, Redis 7, Celery 5, FreeRADIUS 3.2.3, Docker Compose, Gunicorn, Nginx, AdminLTE 3 + Bootstrap 5.3.
   </div>
 
-    <!-- Interactive mindmap — build 324 -->
+    <!-- Interactive mindmap -->
   <div class="mindmap-section">
     <h2 class="mindmap-title">Возможности платформы</h2>
     <p class="mindmap-hint">Наведите на узел — чтобы увидеть подробности. Кликните — перейти в раздел документации.</p>
@@ -362,7 +498,7 @@
         <g id="mm-center">
           <circle cx="400" cy="260" r="78" fill="url(#mm-grad)" filter="url(#mm-glow)"/>
           <text x="400" y="255" text-anchor="middle" fill="#fff" font-size="18" font-weight="700">СмИТ Биллинг</text>
-          <text x="400" y="278" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="13">v3.5.0 · build 2174</text>
+          <text x="400" y="278" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="13">v3.5.0 ·</text>
         </g>
       </svg>
       <div class="mindmap-panel" id="mindmap-panel" role="status" aria-live="polite">
@@ -372,15 +508,15 @@
   </div>
 
   <script>
-  (function(){
+  (function{
     var NODES = [
       { id: 'subs',     label: 'Клиенты',        icon: 'people',       href: 'pages/billing.html#subscribers',  title: 'Управление клиентами', desc: 'Поиск, массовые операции, папки, CRM, блокировки, обещанные платежи. Карточка клиента: услуги, счета, сессии, документы.' },
       { id: 'tarifs',   label: 'Тарификация',     icon: 'tags',         href: 'pages/billing.html#tariffs',      title: 'Тарифы и услуги', desc: 'Гибкая тарификация, пакеты услуг, скидки, лояльность, бонусы, периодические списания.' },
       { id: 'pay',      label: 'Платежи',         icon: 'credit-card',  href: 'pages/api.html#payments-api',     title: 'Платёжные системы', desc: 'YooKassa (REST v3 и HTTP), Wallet One, универсальный webhook. История операций и фискализация ATOL.' },
-      { id: 'lk',       label: 'ЛК и мобильные',  icon: 'phone',        href: 'pages/lk.html',                   title: 'ЛК клиента и мобильные приложения', desc: 'Личный кабинет /lk/, Android + iOS приложения. Брендинг, feature flags, безопасность входа (lockout), force-update, Public Mobile API без auth (branding/features/version), AI-чат с Claude, VK/Telegram авторизация.' },
+      { id: 'lk',       label: 'ЛК и мобильные',  icon: 'phone',        href: 'pages/lk.html',                   title: 'ЛК клиента и мобильные приложения', desc: 'Личный кабинет /lk/, Android + iOS приложения. Брендинг, feature flags, безопасность входа (lockout), force-update, Public Mobile API без auth (branding/features/version), AI-чат, VK/Telegram авторизация.' },
       { id: 'radius',   label: 'FreeRADIUS',      icon: 'broadcast',    href: 'pages/billing.html#radius',       title: 'RADIUS-сервер', desc: 'FreeRADIUS 3.2 + rlm_python3, авторизация NAS, accounting, IP-pool, CoA disconnect, online-мониторинг.' },
       { id: 'sorm',     label: 'СОРМ-3',          icon: 'shield-check', href: 'pages/sorm.html',                 title: 'Интеграция СОРМ', desc: '13 стандартных отчётов в формате ФЗ, автоматическая выгрузка по FTP, пользовательские схемы.' },
-      { id: 'api',      label: 'API',             icon: 'braces',       href: 'pages/api.html',                  title: 'Открытое API', desc: 'REST API v2, SOAP UserService/FiscalService, Mobile API (JWT), SmsAero, FreeScout, Firebase Push.' },
+      { id: 'api',      label: 'API',             icon: 'braces',       href: 'pages/api.html',                  title: 'Открытое API', desc: 'REST API v2, SOAP UserService/FiscalService, Mobile API (JWT), SmsAero, Firebase Push.' },
       { id: 'reports',  label: 'Отчёты',          icon: 'bar-chart',    href: 'pages/billing.html#reports',      title: 'Отчёты и аналитика', desc: 'Платежи, аудит, должники, кастомные SQL-отчёты, финансовая динамика, мониторинг NAS и операций.' },
     ];
 
@@ -417,7 +553,7 @@
       t.setAttribute('class', 'mm-node-label');
       t.textContent = n.label;
       g.appendChild(t);
-      g.addEventListener('mouseenter', function(){
+      g.addEventListener('mouseenter', function{
         panel.innerHTML = '<div class="mm-panel-title">' + n.title + '</div><div class="mm-panel-desc">' + n.desc + '</div><a class="mm-panel-link" href="' + n.href + '">Подробнее →</a>';
         nodesG.querySelectorAll('.mm-node').forEach(function(el){ el.classList.toggle('mm-active', el === g); });
         linesG.querySelectorAll('line').forEach(function(el){ el.classList.toggle('mm-line-active', el.getAttribute('data-id') === n.id); });
@@ -427,13 +563,13 @@
 
     var wrap = document.querySelector('.mindmap-wrap');
     if (wrap) {
-      wrap.addEventListener('mouseleave', function(){
+      wrap.addEventListener('mouseleave', function{
         nodesG.querySelectorAll('.mm-node').forEach(function(el){ el.classList.remove('mm-active'); });
         linesG.querySelectorAll('line').forEach(function(el){ el.classList.remove('mm-line-active'); });
         panel.innerHTML = '<span class="mindmap-hint-inline">🖱 Наведите на любой узел</span>';
       });
     }
-  })();
+  });
   </script>
 
 
@@ -753,8 +889,8 @@
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2174)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">25.08.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2174)</span>&nbsp;|&nbsp;<span data-smit="updated">25.08.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">25.08.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0</span>&nbsp;|&nbsp;<span data-smit="updated">25.08.2026</span></span>
 </footer>
 
 <script src="js/main.js?v=2033"></script>
