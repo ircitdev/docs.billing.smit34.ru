@@ -176,7 +176,10 @@
     // Карта раздела расходится лучами, ей нужна вся доступная ширина:
     // в узкой сцене ветви наезжают друг на друга и на связи.
     var srcTxt = pre.getAttribute('data-mermaid-src') || '';
-    if (/^\s*mindmap/m.test(srcTxt)) wrap.classList.add('is-mindmap');
+    // Признак берём и из отрисованной схемы: к моменту обёртки исходник
+    // мог быть ещё не сохранён, а узлы карты в SVG уже на месте.
+    if (pre.querySelector('.mindmap-node, g.mindmap-node') ||
+        /^\s*mindmap/m.test(srcTxt)) wrap.classList.add('is-mindmap');
     var viewport = document.createElement('div'); viewport.className = 'mmd-zoom-viewport';
     var stage = document.createElement('div'); stage.className = 'mmd-zoom-stage';
 
