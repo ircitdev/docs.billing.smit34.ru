@@ -335,7 +335,9 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // --- Copy button on code blocks ---
-  document.querySelectorAll('.content pre').forEach(function (pre) {
+  // Схемы и карты мыслей тоже лежат в <pre>, но кодом не являются: панель
+  // «CODE · Копировать» над диаграммой выглядит ошибкой вёрстки.
+  document.querySelectorAll('.content pre:not(.mermaid):not(.markmap)').forEach(function (pre) {
     // Wrap pre in .code-block if not already
     if (pre.parentElement.classList.contains('code-block')) return;
     var wrap = document.createElement('div');

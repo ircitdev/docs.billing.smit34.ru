@@ -2052,7 +2052,11 @@ pre.markmap:not([data-markmap-done]){
   border:1px dashed var(--border);border-radius:10px;padding:14px 16px}
 
 /* ── Mermaid диаграммы / инфографика / mindmaps (mermaid-init.js) ── */
-pre.mermaid{background:transparent;border:0;padding:8px 0;margin:16px 0;text-align:center;overflow-x:auto}
+/* Шрифт задаётся здесь, а не в скрипте: mermaid берёт fontFamily:'inherit',
+   а <pre> по умолчанию моноширинный — подписи в схемах выглядели кодом. */
+pre.mermaid{background:transparent;border:0;padding:8px 0;margin:16px 0;
+  text-align:center;overflow-x:auto;
+  font-family:"Segoe UI",Roboto,Arial,sans-serif}
 pre.mermaid svg{max-width:100%;width:auto;height:auto;max-height:72vh}
 /* Компактные схемы: не растягивать SVG на всю широкую область (htmlLabels:false —
    узлы строго по тексту, ничего не обрезается). Ограничиваем ширину stage. */
@@ -2131,4 +2135,23 @@ html[data-theme="dark"] .mmd-zoom-viewport{
   color: var(--text-light);
   background: var(--bg-light);
   padding-top: 10px;
+}
+
+/* Схемы на узком экране: подпись не должна упираться в край, поэтому
+   рисунок можно листать вбок внутри своей рамки, а не резать по границе. */
+@media (max-width: 767.98px) {
+  .mmd-zoom-stage { max-width: none; }
+  .mmd-zoom-viewport {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    text-align: left;
+  }
+  .mmd-zoom-viewport > pre.mermaid { display: inline-block; min-width: 100%; }
+  /* подсказка, что рисунок листается: тень у правого края */
+  .mmd-zoom {
+    background-image: linear-gradient(to left, var(--shadow), transparent 24px);
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: 24px calc(100% - 40px);
+  }
 }
