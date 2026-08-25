@@ -2164,3 +2164,13 @@ html[data-theme="dark"] .mmd-zoom-viewport{
 /* связи под узлами, а не поверх подписей */
 .mmd-zoom.is-mindmap pre.mermaid .edgePaths,
 .mmd-zoom.is-mindmap pre.mermaid .mindmap .edge { opacity: .7; }
+
+/* На широком экране карта раздела выходит за колонку текста: справа от неё
+   всё равно пусто, а лишние 250 пикселей убирают наложение ветвей. */
+@media (min-width: 1500px) {
+  .mmd-zoom.is-mindmap {
+    width: min(1160px, calc(100vw - var(--sidebar-width) - 120px));
+    max-width: none;
+  }
+  .mmd-zoom.is-mindmap .mmd-zoom-stage { max-width: none; }
+}
