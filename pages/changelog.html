@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Журнал изменений — СмИТ Биллинг 3.5</title>
-  <link rel="stylesheet" href="../css/style.css?v=2178">
+  <link rel="stylesheet" href="../css/style.css?v=2179">
   <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css">
 </head>
 <body>
@@ -203,7 +203,7 @@
           <li class="sub-item"><a href="billing.html#video-docs">10.4. Документы (КП/договор/акт)</a></li>
           <li class="sub-item"><a href="billing.html#video-block">10.5. Блокировка камер по балансу</a></li>
           <li class="sub-item"><a href="billing.html#video-vsaas">10.6. Облако VSaaS</a></li>
-          <li><a href="billing.html#domofon-demo">11. Домофонный домен (демо АЙТИ)</a></li>
+          <li><a href="billing.html#domofon-demo">11. Домофонный домен</a></li>
           <li class="sub-item"><a href="billing.html#domofon-model">11.1. Доменная модель</a></li>
           <li class="sub-item"><a href="billing.html#domofon-demo-data">11.2. Что заведено в демо</a></li>
           <li><a href="billing.html#ai-agent">12. AI-агент</a></li>
@@ -479,7 +479,7 @@
     <li>Телефон, который AI-ассистент даёт клиентам, теперь берётся из
     <strong>Настройки → Организации → Брендинг → «Телефон поддержки»</strong> (свой у каждой
     организации), а не из зашитого в код значения. Пусто — бот предлагает написать оператору
-    без диктовки номера. Для Робора/ИТЦ подставляется их собственный номер.</li>
+    без диктовки номера. </li>
   </ul>
 
   <h3 id="v3b1798-stock">Склад: роли «держателей подотчёта»</h3>
@@ -559,12 +559,11 @@
   <h3 id="v301-robor-fullwidth">Тарифы по организациям и полноширинный редактор бота</h3>
   <ul>
     <li>В карточке сделки селектор тарифа показывает <strong>только тарифы организации сделки</strong>:
-    для сделок Робор — тарифы Робор, для СмИТ — тарифы СмИТ. У каждого тарифа теперь обязательно
-    указана организация.</li>
+    селектор показывает только тарифы этой организации</li>
     <li>Автозаполнение полей лида из расшифровки звонка: тариф (по публичным тарифам с галкой
     «показывать на сайте»), стоимость подключения, отдельное поле «Настройка», роутер; адрес
-    подключения нормализуется через DaData. Упоминание «робор» в разговоре переводит сделку в
-    организацию Робор со стоимостью подключения 1000 ₽.</li>
+    подключения нормализуется через DaData. Упоминание компании в разговоре переводит сделку в
+    её организацию с соответствующей стоимостью подключения.</li>
     <li>Канвас <strong>редактора Salesbot развёрнут на всю ширину</strong> рабочей области;
     модалка добавления сделки адаптирована для телефонов. Подробнее — <a href="crm.html#crm-salesbot">Salesbot</a>.</li>
   </ul>
@@ -848,7 +847,7 @@ mindmap
   <!-- ═══════════ v1.6.0 ═══════════ -->
   <h2 id="v1-6-0-b428">v1.6.0 — 2 мая 2026</h2>
   <div class="section-toc">
-  <details open>
+  <details>
     <summary><strong>Содержание раздела</strong></summary>
     <ul>
     <li><a href="#sprint-a-addresses">Sprint A: справочник адресов и точек подключения</a></li>
@@ -924,7 +923,7 @@ mindmap
   <!-- ═══════════ v1.6.0 ═══════════ -->
   <h2 id="v1-6-0-b324">v1.6.0 — 27 апреля 2026</h2>
   <div class="section-toc">
-  <details open>
+  <details>
     <summary><strong>Содержание раздела</strong></summary>
     <ul>
     <li><a href="#radius-sessii-build-323">RADIUS / Сессии</a></li>
@@ -1021,7 +1020,7 @@ mindmap
   <!-- ─── NAS Развёртывание ─── -->
   <h2 id="nas-deploy">NAS Развёртывание (OSS)</h2>
   <div class="section-toc">
-  <details open>
+  <details>
     <summary><strong>Содержание раздела</strong></summary>
     <ul>
     <li><a href="#obschaya-shema-raboty">Общая схема работы</a></li>
@@ -1069,7 +1068,7 @@ mindmap
   <!-- ─── OSS утилиты ─── -->
   <h2 id="oss-tools">OSS утилиты</h2>
   <div class="section-toc">
-  <details open>
+  <details>
     <summary><strong>Содержание раздела</strong></summary>
     <ul>
     <li><a href="#rtsh-glavnaya-utilita">rtsh — главная утилита</a></li>
@@ -1198,8 +1197,8 @@ rtsh list scheme            — список доступных схем</code><
   &copy; 2026 СмИТ — СмИТ Биллинг v3.5.0
 </footer>
 
-<script src="../js/main.js?v=2178"></script>
-<script src="../js/mermaid-init.js?v=2178"></script>
-<script src="../js/markmap-init.js?v=2178"></script>
+<script src="../js/main.js?v=2179"></script>
+<script src="../js/mermaid-init.js?v=2179"></script>
+<script src="../js/markmap-init.js?v=2179"></script>
 </body>
 </html>

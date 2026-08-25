@@ -19,8 +19,8 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="REST API v2, SOAP API, обещанный платёж, управление клиентами. Примеры запросов curl и JSON.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=2178">
-  <link rel="stylesheet" href="../css/search.css?v=2178">
+  <link rel="stylesheet" href="../css/style.css?v=2179">
+  <link rel="stylesheet" href="../css/search.css?v=2179">
   <link rel="stylesheet" href="../css/vendor/bootstrap-icons.min.css">
   <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css">
 </head>
@@ -233,7 +233,7 @@
           <li class="sub-item"><a href="billing.html#video-docs">10.4. Документы (КП/договор/акт)</a></li>
           <li class="sub-item"><a href="billing.html#video-block">10.5. Блокировка камер по балансу</a></li>
           <li class="sub-item"><a href="billing.html#video-vsaas">10.6. Облако VSaaS</a></li>
-          <li><a href="billing.html#domofon-demo">11. Домофонный домен (демо АЙТИ)</a></li>
+          <li><a href="billing.html#domofon-demo">11. Домофонный домен</a></li>
           <li class="sub-item"><a href="billing.html#domofon-model">11.1. Доменная модель</a></li>
           <li class="sub-item"><a href="billing.html#domofon-demo-data">11.2. Что заведено в демо</a></li>
           <li><a href="billing.html#ai-agent">12. AI-агент</a></li>
@@ -568,7 +568,7 @@ flowchart TB
   <!-- ============================================ -->
   <h2 id="auth">Аутентификация</h2>
   <div class="section-toc">
-  <details open>
+  <details>
     <summary><strong>Содержание раздела</strong></summary>
     <ul>
     <li><a href="#login-cherez-web-poluchenie-sessii">Логин через Web (получение сессии)</a></li>
@@ -612,7 +612,7 @@ curl -s -b cookies.txt -X POST "https://billing.example.com/rest_api/logout"
   <!-- ============================================ -->
   <h2 id="rest-v2">REST API v2</h2>
   <div class="section-toc">
-  <details open>
+  <details>
     <summary><strong>Содержание раздела</strong></summary>
     <ul>
     <li><a href="#spisok-zapisey">Список записей</a></li>
@@ -729,7 +729,7 @@ curl -s -b cookies.txt \
   <!-- ============================================ -->
   <h2 id="promise-pay">Обещанный платёж</h2>
   <div class="section-toc">
-  <details open>
+  <details>
     <summary><strong>Содержание раздела</strong></summary>
     <ul>
     <li><a href="#get-status-obeschannogo-platezha">GET — Статус обещанного платежа</a></li>
@@ -821,7 +821,7 @@ curl -s -b cookies.txt -X DELETE \
   <!-- ============================================ -->
   <h2 id="payments-api">Платёжные API (ЮKassa и Wallet One)</h2>
   <div class="section-toc">
-  <details open>
+  <details>
     <summary><strong>Содержание раздела</strong></summary>
     <ul>
     <li><a href="#payments-endpoints">Полный список endpoint</a></li>
@@ -1170,7 +1170,7 @@ WMI_MERCHANT_ID=123456
   <!-- ============================================ -->
   <h2 id="soap">SOAP API</h2>
   <div class="section-toc">
-  <details open>
+  <details>
     <summary><strong>Содержание раздела</strong></summary>
     <ul>
     <li><a href="#wsdl">WSDL</a></li>
@@ -1267,7 +1267,7 @@ curl -s "https://billing.example.com/api/fiscal/?wsdl"</code></pre>
   <!-- ============================================ -->
   <h2 id="web-api">Web API (управление клиентами)</h2>
   <div class="section-toc">
-  <details open>
+  <details>
     <summary><strong>Содержание раздела</strong></summary>
     <ul>
     <li><a href="#blokirovka-abonenta">Блокировка клиента</a></li>
@@ -1312,7 +1312,7 @@ curl -s -b cookies.txt -X POST \
   <h2 id="sorm-api">СОРМ API</h2>
   <p>Endpoint'ы для интеграции внешних систем (мониторинг, скрипты pre-deploy) с механизмом проверки готовности СОРМ-данных. Полное описание раздела — на странице <a href="sorm.html#metadata">Интеграция с СОРМ3 → СОРМ-метаданные</a>.</p>
   <div class="section-toc">
-  <details open>
+  <details>
     <summary><strong>Содержание раздела</strong></summary>
     <ul>
     <li><a href="#sorm-validate">GET /admin/equipment/sorm_list/validate/ — pre-flight проверка</a></li>
@@ -1502,7 +1502,7 @@ data_issues = validate_sorm_data(['ABONENT_LEGAL'])
   <!-- ============================================ -->
   <h2 id="ajax">AJAX-эндпоинты</h2>
   <div class="section-toc">
-  <details open>
+  <details>
     <summary><strong>Содержание раздела</strong></summary>
     <ul>
     <li><a href="#poluchit-ip-iz-pula">Получить IP из пула</a></li>
@@ -1550,7 +1550,7 @@ curl -s -b cookies.txt "https://billing.example.com/admin/ajax/ippull_get/1/"</c
   <!-- ============================================ -->
   <h2 id="mobile-api">Mobile API</h2>
   <div class="section-toc">
-  <details open>
+  <details>
     <summary><strong>Содержание раздела</strong></summary>
     <ul>
     <li><a href="#autentifikatsiya">Аутентификация</a></li>
@@ -1801,10 +1801,10 @@ curl -s -X POST "https://billing.example.com/mobile-api/v1/push/register" \
   <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0</span>&nbsp;|&nbsp;<span data-smit="updated">25.08.2026</span></span>
 </footer>
 
-<script src="../js/main.js?v=2178"></script>
+<script src="../js/main.js?v=2179"></script>
 <script src="../js/version.js"></script>
-<script src="../js/mermaid-init.js?v=2178"></script>
-<script src="../js/markmap-init.js?v=2178"></script>
-<script src="../js/search.js?v=2178"></script>
+<script src="../js/mermaid-init.js?v=2179"></script>
+<script src="../js/markmap-init.js?v=2179"></script>
+<script src="../js/search.js?v=2179"></script>
 </body>
 </html>

@@ -19,8 +19,8 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=2178">
-  <link rel="stylesheet" href="../css/search.css?v=2178">
+  <link rel="stylesheet" href="../css/style.css?v=2179">
+  <link rel="stylesheet" href="../css/search.css?v=2179">
   <link rel="stylesheet" href="../css/vendor/bootstrap-icons.min.css">
   <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css">
 </head>
@@ -233,7 +233,7 @@
           <li class="sub-item"><a href="billing.html#video-docs">10.4. Документы (КП/договор/акт)</a></li>
           <li class="sub-item"><a href="billing.html#video-block">10.5. Блокировка камер по балансу</a></li>
           <li class="sub-item"><a href="billing.html#video-vsaas">10.6. Облако VSaaS</a></li>
-          <li><a href="billing.html#domofon-demo">11. Домофонный домен (демо АЙТИ)</a></li>
+          <li><a href="billing.html#domofon-demo">11. Домофонный домен</a></li>
           <li class="sub-item"><a href="billing.html#domofon-model">11.1. Доменная модель</a></li>
           <li class="sub-item"><a href="billing.html#domofon-demo-data">11.2. Что заведено в демо</a></li>
           <li><a href="billing.html#ai-agent">12. AI-агент</a></li>
@@ -797,7 +797,7 @@ docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 3
 
   <h2 id="sorm-admin">Админка: выгрузка на сервера РКН</h2>
   <div class="section-toc">
-  <details open>
+  <details>
     <summary><strong>Содержание раздела</strong></summary>
     <ul>
     <li><a href="#sorm-list">Список конфигураций</a></li>
@@ -1080,7 +1080,7 @@ docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 3
 
   <h3 id="sorm-multiorg">Мульти-организация</h3>
 
-  <p>У каждого оператора-юрлица (СмІТ / Робор / ИТЦ) своя лицензия связи и свой
+  <p>У каждого оператора-юрлица своя лицензия связи и свой
   ТСПУ, поэтому выгрузка одного юрлица не должна содержать абонентов другого.</p>
 
   <ul>
@@ -1347,7 +1347,7 @@ flowchart TB
 
   <h2 id="metadata">СОРМ-метаданные UserAttributes</h2>
   <div class="section-toc">
-  <details open>
+  <details>
     <summary><strong>Содержание раздела</strong></summary>
     <ul>
     <li><a href="#upravlenie-metadannymi-v-ui">Управление метаданными в UI</a></li>
@@ -1434,7 +1434,7 @@ flowchart TB
 
   <h2 id="preflight">Pre-flight валидация перед выгрузкой</h2>
   <div class="section-toc">
-  <details open>
+  <details>
     <summary><strong>Содержание раздела</strong></summary>
     <ul>
     <li><a href="#problemy-metadannyh-meta-issues">Проблемы метаданных (meta_issues)</a></li>
@@ -1572,10 +1572,10 @@ python manage.py merge_sorm_attribute_dups --by-name --apply</code></pre>
   <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0</span>&nbsp;|&nbsp;<span data-smit="updated">25.08.2026</span></span>
 </footer>
 
-<script src="../js/main.js?v=2178"></script>
+<script src="../js/main.js?v=2179"></script>
 <script src="../js/version.js"></script>
-<script src="../js/mermaid-init.js?v=2178"></script>
-<script src="../js/markmap-init.js?v=2178"></script>
-<script src="../js/search.js?v=2178"></script>
+<script src="../js/mermaid-init.js?v=2179"></script>
+<script src="../js/markmap-init.js?v=2179"></script>
+<script src="../js/search.js?v=2179"></script>
 </body>
 </html>

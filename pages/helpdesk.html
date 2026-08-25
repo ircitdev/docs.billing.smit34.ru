@@ -19,8 +19,8 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Нативный модуль техподдержки СмИТ Биллинга: единое окно всех каналов, карточка тикета с биллинг-контекстом, AI-бот, голосовая почта, база знаний, аналитика.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=2178">
-  <link rel="stylesheet" href="../css/search.css?v=2178">
+  <link rel="stylesheet" href="../css/style.css?v=2179">
+  <link rel="stylesheet" href="../css/search.css?v=2179">
   <link rel="stylesheet" href="../css/vendor/bootstrap-icons.min.css">
   <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css">
 </head>
@@ -233,7 +233,7 @@
           <li class="sub-item"><a href="billing.html#video-docs">10.4. Документы (КП/договор/акт)</a></li>
           <li class="sub-item"><a href="billing.html#video-block">10.5. Блокировка камер по балансу</a></li>
           <li class="sub-item"><a href="billing.html#video-vsaas">10.6. Облако VSaaS</a></li>
-          <li><a href="billing.html#domofon-demo">11. Домофонный домен (демо АЙТИ)</a></li>
+          <li><a href="billing.html#domofon-demo">11. Домофонный домен</a></li>
           <li class="sub-item"><a href="billing.html#domofon-model">11.1. Доменная модель</a></li>
           <li class="sub-item"><a href="billing.html#domofon-demo-data">11.2. Что заведено в демо</a></li>
           <li><a href="billing.html#ai-agent">12. AI-агент</a></li>
@@ -428,7 +428,7 @@ flowchart TD
     IN["Единая точка приёма<br/>ingest_message"] --> FLT{"Фильтры шума"}
     FLT -- "bounce / автоответ<br/>уведомление провайдера" --> DROP["Отброшено —<br/>тикет НЕ создаётся"]
     FLT -- "обращение" --> CONV["Тикет<br/>+ привязка клиента"]
-    CONV --> ORG["Маршрутизация по организации<br/>(СмИТ / РОБОР / …)"]
+    CONV --> ORG["Маршрутизация по организации"]
     CONV --> AI{"AI-бот<br/>включён?"}
     AI -- "отвечает сам" --> REPLY["Автоответ клиенту"]
     AI -- "эскалация" --> OP["Оператор: Входящие"]
@@ -482,7 +482,7 @@ mindmap
     <li><strong>Биллинг-контекст с первой секунды</strong> — сопоставленный клиент
     (баланс/тариф/статус/аватар/соцсети) виден в сайдбаре тикета и в выезжающей панели.</li>
     <li><strong>Мульти-организация</strong> — ящики и тикеты изолируются по организациям
-    (СмИТ / РОБОР / …); маршрутизация — по ящику-получателю и маркерам в тексте.</li>
+    маршрутизация — по ящику-получателю и маркерам в тексте.</li>
     <li><strong>Лиды ≠ тикеты</strong> — обращения «хочу подключиться» уходят лидами в
     <a href="crm.html">CRM-воронку</a>, а не в очередь поддержки.</li>
   </ul>
@@ -910,7 +910,7 @@ flowchart LR
 
   <ul>
     <li><strong>Телефонные линии</strong> — по номеру, на который звонил клиент,
-    выбирается сегмент (физлица / юрлица / РОБОР / поддержка), организация, воронка
+    выбирается сегмент (физлица / юрлица / партнёрская компания / поддержка), организация, воронка
     CRM и ящик тикета.</li>
     <li><strong>Авто-SMS</strong> «Мы перезвоним» — клиенту сразу после звонка
     (шаблон на линию).</li>
@@ -1137,10 +1137,10 @@ flowchart LR
 
 </main>
 
-<script src="../js/main.js?v=2178"></script>
+<script src="../js/main.js?v=2179"></script>
 <script src="../js/version.js"></script>
-<script src="../js/mermaid-init.js?v=2178"></script>
-<script src="../js/markmap-init.js?v=2178"></script>
-<script src="../js/search.js?v=2178"></script>
+<script src="../js/mermaid-init.js?v=2179"></script>
+<script src="../js/markmap-init.js?v=2179"></script>
+<script src="../js/search.js?v=2179"></script>
 </body>
 </html>

@@ -80,11 +80,14 @@ document.addEventListener('DOMContentLoaded', function () {
   function openOverlay() {
     if (!overlay) return;
     overlay.classList.add('open');
+    // страница под поиском не должна уезжать вместе с пальцем
+    document.body.classList.add('search-open');
     setTimeout(function(){ if (overlayInput) overlayInput.focus(); }, 50);
   }
   function closeOverlay() {
     if (!overlay) return;
     overlay.classList.remove('open');
+    document.body.classList.remove('search-open');
     if (overlayInput) { overlayInput.value = ''; overlayInput.dispatchEvent(new Event('input')); }
   }
   if (searchBtn) searchBtn.addEventListener('click', openOverlay);
@@ -372,6 +375,25 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 1600);
       });
     });
+  });
+
+  // --- Широкие таблицы листаются внутри своей рамки ---
+  // Без обёртки таблица шире колонки выталкивала вбок всю страницу.
+  document.querySelectorAll('.content table').forEach(function (table) {
+    if (table.parentElement.classList.contains('table-scroll')) return;
+    var box = document.createElement('div');
+    box.className = 'table-scroll';
+    table.parentNode.insertBefore(box, table);
+    box.appendChild(table);
+
+    // тень у правого края — только пока есть что листать
+    function hint() {
+      var more = box.scrollWidth - box.clientWidth - box.scrollLeft > 4;
+      box.classList.toggle('has-overflow', more);
+    }
+    box.addEventListener('scroll', hint, { passive: true });
+    window.addEventListener('resize', hint);
+    hint();
   });
 
   // --- Numeric badge before section H2/H3 headings ---
