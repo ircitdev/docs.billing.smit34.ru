@@ -665,11 +665,36 @@ flowchart LR
 
   <h3 id="native-saved-replies">Шаблонные ответы с переменными</h3>
   <p><strong>Настройки → Шаблонные ответы</strong> (<code>/admin/support/saved-replies/</code>).
-  Готовые тексты для вставки в редактор, с переменными, раскрывающимися против текущего
-  тикета: <code>{%customer.fullname%}</code>, <code>{%abonent.balance%}</code>,
-  <code>{%abonent.contract%}</code>, <code>{%abonent.tariff%}</code>,
-  <code>{%ticket.number%}</code>, <code>{%agent.name%}</code>. Видимость: глобальная /
-  на ящик / личная; категории группируют шаблоны.</p>
+  Готовые тексты для вставки в редактор. Переменные в тексте раскрываются данными
+  текущего тикета в момент вставки. Видимость шаблона: глобальная, на ящик или
+  личная; категории группируют шаблоны в списке.</p>
+
+  <table class="data-table">
+    <thead><tr><th>Переменная</th><th>Что подставляет</th></tr></thead>
+    <tbody>
+      <tr><th colspan="2" class="vars-group">Тикет</th></tr>
+      <tr><td><code>{%ticket.number%}</code></td><td>Номер тикета</td></tr>
+      <tr><td><code>{%ticket.subject%}</code></td><td>Тема</td></tr>
+      <tr><th colspan="2" class="vars-group">Клиент</th></tr>
+      <tr><td><code>{%customer.fullname%}</code></td><td>Полное имя</td></tr>
+      <tr><td><code>{%customer.first%}</code></td><td>Имя — для обращения в письме</td></tr>
+      <tr><td><code>{%customer.email%}</code></td><td>Электронная почта</td></tr>
+      <tr><td><code>{%customer.phone%}</code></td><td>Телефон</td></tr>
+      <tr><th colspan="2" class="vars-group">Клиент в биллинге</th></tr>
+      <tr><td><code>{%abonent.contract%}</code></td><td>Номер договора</td></tr>
+      <tr><td><code>{%abonent.login%}</code></td><td>Логин учётной записи</td></tr>
+      <tr><td><code>{%abonent.tariff%}</code></td><td>Название тарифа</td></tr>
+      <tr><td><code>{%abonent.balance%}</code></td><td>Баланс, ₽</td></tr>
+      <tr><th colspan="2" class="vars-group">Ящик и оператор</th></tr>
+      <tr><td><code>{%mailbox.email%}</code></td><td>Адрес ящика поддержки</td></tr>
+      <tr><td><code>{%mailbox.name%}</code></td><td>Название ящика</td></tr>
+      <tr><td><code>{%agent.name%}</code></td><td>Имя отвечающего оператора</td></tr>
+    </tbody>
+  </table>
+
+  <p>Если данных нет — клиент не опознан в биллинге или у него не заполнен телефон —
+  переменная раскрывается в пустую строку. Составляйте текст так, чтобы он читался
+  и без подстановки: «Здравствуйте!» вместо «Здравствуйте, {%customer.first%}!».</p>
 
   <h3 id="ai-suggest-replies">AI-подбор шаблона</h3>
   <p>Кнопка <strong>«✨ Подобрать»</strong> рядом с «Шаблоны»: AI читает последние

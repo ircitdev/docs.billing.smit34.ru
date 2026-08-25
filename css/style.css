@@ -2119,3 +2119,16 @@ html[data-theme="dark"] .mmd-zoom-viewport{
    раздуваются по высоте до огромных размеров. max-height ограничивает высоту. */
 .mmd-zoom-stage pre.mermaid svg{display:block;max-width:100%;width:auto;height:auto;max-height:72vh;margin:0 auto}
 @media (prefers-reduced-motion:reduce){.mmd-zoom-bar button{transition:none}}
+
+/* Подзаголовок-группа внутри таблицы: делит длинный перечень на смысловые
+   блоки, чтобы не искать нужную строку глазами по всей таблице. */
+.data-table th.vars-group {
+  text-align: left;
+  font-size: .78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--text-light);
+  background: var(--bg-light);
+  padding-top: 10px;
+}
