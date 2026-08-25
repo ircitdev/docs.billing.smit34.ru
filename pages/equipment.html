@@ -615,7 +615,7 @@ docker compose restart freeradius</code></pre>
   <p>NAS имеет 4 поля привязки к пулам: основной (<code>PULL_ID</code>), белый (<code>WHITE_PULL_ID</code>), NAT (<code>NAT_PULL_ID</code>), Hotspot (<code>HOTSPOT_PULL_ID</code>). FreeRADIUS при авторизации выбирает свободный IP из соответствующего пула. Можно строить chain-цепочки (<code>ip_pull.NEXT_PULL_ID</code>) — когда основной пул заполнен, выдача переходит во вспомогательный.</p>
 
   <h5>4. Развёртывание / автоконфиг (<code>buttons_nas.html</code>)</h5>
-  <p>Поля <code>TELNET_IP</code> / <code>TELNET_LOGIN</code> / <code>TELNET_PASSWORD</code> / <code>TELNET_PORT</code> используются вкладкой «Развёртывание» в карточке NAS — там можно с UI запустить <code>cfg_init / cfg_fill / cfg_make / cfg_upload</code>. Это ssh-команды через скрипт <code>ssh_send</code>, генерирующие конфиг роутера на основании текущих клиентов и пулов.</p>
+  <p>Поля <code>TELNET_IP</code> / <code>TELNET_LOGIN</code> / <code>TELNET_PASSWORD</code> / <code>TELNET_PORT</code> / <code>TELNET_TYPE</code> (ssh или telnet) используются вкладкой «Развёртывание» в карточке NAS — там можно с UI запустить <code>cfg_init / cfg_fill / cfg_make / cfg_upload</code>. Это ssh-команды через скрипт <code>ssh_send</code>, генерирующие конфиг роутера на основании текущих клиентов и пулов.</p>
 
   <h4 id="nas-fields-usage">Где это поле используется</h4>
   <table class="data-table">
