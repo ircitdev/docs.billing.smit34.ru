@@ -2155,3 +2155,12 @@ html[data-theme="dark"] .mmd-zoom-viewport{
     background-size: 24px calc(100% - 40px);
   }
 }
+
+/* Карта раздела расходится лучами от центра: в узкой сцене ветви наезжают
+   друг на друга и на связи. Даём ей всю доступную ширину. */
+.mmd-zoom.is-mindmap .mmd-zoom-stage { max-width: 1100px; }
+.mmd-zoom.is-mindmap pre.mermaid .nodeLabel,
+.mmd-zoom.is-mindmap pre.mermaid .mindmap-node text { font-size: 13.5px; }
+/* связи под узлами, а не поверх подписей */
+.mmd-zoom.is-mindmap pre.mermaid .edgePaths,
+.mmd-zoom.is-mindmap pre.mermaid .mindmap .edge { opacity: .7; }

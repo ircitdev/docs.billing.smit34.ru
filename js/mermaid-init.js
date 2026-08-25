@@ -74,13 +74,23 @@
       primaryColor: '#1f2a24', primaryBorderColor: brand, primaryTextColor: '#e6edea',
       lineColor: '#4a5a52', secondaryColor: '#24303a', tertiaryColor: '#2a2f37',
       mainBkg: '#1f2a24', nodeBorder: brand, clusterBkg: 'rgba(67,183,122,.06)',
-      clusterBorder: '#3a4a42', titleColor: '#e6edea', edgeLabelBackground: '#181c1a'
+      clusterBorder: '#3a4a42', titleColor: '#e6edea', edgeLabelBackground: '#181c1a',
+      cScale0: '#1e2c26', cScale1: '#1c2a30', cScale2: '#242c22', cScale3: '#22282f',
+      cScale4: '#262b26', cScale5: '#1f2b2b', cScale6: '#2a2a24', cScale7: '#1d2731',
+      cScaleLabel0: '#e6edea', cScaleLabel1: '#e6edea', cScaleLabel2: '#e6edea',
+      cScaleLabel3: '#e6edea', cScaleLabel4: '#e6edea', cScaleLabel5: '#e6edea',
+      cScaleLabel6: '#e6edea', cScaleLabel7: '#e6edea'
     } : {
       fontFamily: 'inherit', fontSize: '13px',
       primaryColor: '#eef7f1', primaryBorderColor: brand, primaryTextColor: '#1c2b23',
       lineColor: '#9fb3a9', secondaryColor: '#f3f6f8', tertiaryColor: '#f7f9fb',
       mainBkg: '#eef7f1', nodeBorder: brandDark, clusterBkg: 'rgba(67,183,122,.05)',
-      clusterBorder: '#cfe0d6', titleColor: '#1c2b23', edgeLabelBackground: '#ffffff'
+      clusterBorder: '#cfe0d6', titleColor: '#1c2b23', edgeLabelBackground: '#ffffff',
+      cScale0: '#e6f4ec', cScale1: '#e2eef4', cScale2: '#ecf2e6', cScale3: '#e8ecf2',
+      cScale4: '#eaf3ee', cScale5: '#e4f0f0', cScale6: '#f1efe6', cScale7: '#e6ebf2',
+      cScaleLabel0: '#1c2b23', cScaleLabel1: '#1c2b23', cScaleLabel2: '#1c2b23',
+      cScaleLabel3: '#1c2b23', cScaleLabel4: '#1c2b23', cScaleLabel5: '#1c2b23',
+      cScaleLabel6: '#1c2b23', cScaleLabel7: '#1c2b23'
     };
     window.mermaid.initialize({
       startOnLoad: false,
@@ -90,7 +100,7 @@
       // ничего не обрезается (htmlLabels в mermaid v10 режет текст в foreignObject)
       flowchart: { useMaxWidth: true, htmlLabels: false, curve: 'basis',
         padding: 10, nodeSpacing: 34, rankSpacing: 42 },
-      mindmap: { useMaxWidth: true, padding: 12 },
+      mindmap: { useMaxWidth: true, padding: 18 },
       themeVariables: tv
     });
     _initialized = true;
@@ -163,6 +173,10 @@
     pre.dataset.mermaidDone = '1';
 
     var wrap = document.createElement('div'); wrap.className = 'mmd-zoom';
+    // Карта раздела расходится лучами, ей нужна вся доступная ширина:
+    // в узкой сцене ветви наезжают друг на друга и на связи.
+    var srcTxt = pre.getAttribute('data-mermaid-src') || '';
+    if (/^\s*mindmap/m.test(srcTxt)) wrap.classList.add('is-mindmap');
     var viewport = document.createElement('div'); viewport.className = 'mmd-zoom-viewport';
     var stage = document.createElement('div'); stage.className = 'mmd-zoom-stage';
 
