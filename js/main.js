@@ -617,4 +617,137 @@ document.addEventListener('DOMContentLoaded', function () {
       entries.forEach(function (it) { obs.observe(it.el); });
     }
   })();
+  /* ── Правый рельс «На этой странице» ──────────────────────────────────
+   * На длинной странице оглавление в начале уезжает после первой прокрутки,
+   * и понять, где находишься, нечем. Рельс держит подразделы перед глазами
+   * и подсвечивает текущий. Подпункты показываются только у активного
+   * раздела: в справочнике их полторы сотни, все сразу — стена ссылок.
+   */
+  (function pageRail() {
+    var content = document.querySelector('.content');
+    if (!content) return;
+    var heads = content.querySelectorAll('h2[id], h3[id]');
+    if (heads.length < 4) return;
+
+    var rail = document.createElement('nav');
+    rail.className = 'page-rail';
+    rail.setAttribute('aria-label', 'На этой странице');
+    var html = '<div class="pr-head">На этой странице</div><ul class="pr-list">';
+    var items = [];
+    for (var i = 0; i < heads.length; i++) {
+      var h = heads[i];
+      var txt = (h.textContent || '').replace(/\s+/g, ' ').trim();
+      if (!txt) continue;
+      var lvl = h.tagName === 'H2' ? 2 : 3;
+      html += '<li class="pr-i pr-l' + lvl + '" data-for="' + h.id + '">' +
+              '<a href="#' + h.id + '">' + txt + '</a></li>';
+      items.push({ id: h.id, el: h, lvl: lvl });
+    }
+    html += '</ul>';
+    rail.innerHTML = html;
+    content.parentNode.insertBefore(rail, content.nextSibling);
+
+    var links = rail.querySelectorAll('.pr-i');
+
+    function activate(id) {
+      var idx = -1;
+      for (var i = 0; i < items.length; i++) if (items[i].id === id) idx = i;
+      if (idx < 0) return;
+      // корневой раздел активного пункта — от него зависит, что раскрыто
+      var rootIdx = idx;
+      while (rootIdx > 0 && items[rootIdx].lvl > 2) rootIdx--;
+      var rootId = items[rootIdx].id;
+      for (var j = 0; j < links.length; j++) {
+        var li = links[j];
+        var own = items[j];
+        li.classList.toggle('is-active', own.id === id);
+        if (own.lvl === 3) {
+          var myRoot = j;
+          while (myRoot > 0 && items[myRoot].lvl > 2) myRoot--;
+          li.classList.toggle('is-shown', items[myRoot].id === rootId);
+        }
+      }
+      var act = rail.querySelector('.pr-i.is-active');
+      if (act) act.scrollIntoView({ block: 'nearest' });
+    }
+
+    activate(items[0].id);
+    if ('IntersectionObserver' in window) {
+      var obs = new IntersectionObserver(function (entries) {
+        var top = null;
+        entries.forEach(function (e) {
+          if (e.isIntersecting &&
+              (!top || e.boundingClientRect.top < top.boundingClientRect.top)) top = e;
+        });
+        if (top) activate(top.target.id);
+      }, { rootMargin: '-70px 0px -60% 0px', threshold: 0 });
+      items.forEach(function (it) { obs.observe(it.el); });
+    }
+  })();
+
+  /* ── Соседние разделы внизу страницы ──────────────────────────────────
+   * Порядок берём из бокового меню — оно и так описывает всю структуру,
+   * отдельный список вести не нужно.
+   */
+  (function pagePager() {
+    var content = document.querySelector('.content');
+    var nav = document.querySelector('.sidebar nav');
+    if (!content || !nav) return;
+
+    var seen = {}, pages = [];
+    nav.querySelectorAll('a[href]').forEach(function (a) {
+      var href = a.getAttribute('href') || '';
+      if (/^(https?:|mailto:|#)/.test(href)) return;
+      var file = href.split('#')[0];
+      if (!file || !/\.html$/.test(file) || file.indexOf('graphify') >= 0) return;
+      if (seen[file]) return;
+      seen[file] = 1;
+      pages.push({ href: file, title: (a.textContent || '').replace(/\s+/g, ' ').trim() });
+    });
+
+    var here = location.pathname.split('/').pop() || 'index.html';
+    var at = -1;
+    for (var i = 0; i < pages.length; i++) {
+      if (pages[i].href.split('/').pop() === here) at = i;
+    }
+    if (at < 0) return;
+
+    var prev = at > 0 ? pages[at - 1] : null;
+    var next = at < pages.length - 1 ? pages[at + 1] : null;
+    if (!prev && !next) return;
+
+    function side(item, kind) {
+      if (!item) return '<span class="pg-empty"></span>';
+      var label = kind === 'prev' ? 'Предыдущий раздел' : 'Следующий раздел';
+      return '<a class="pg-link pg-' + kind + '" href="' + item.href + '">' +
+             '<span class="pg-kind">' + label + '</span>' +
+             '<span class="pg-title">' + item.title + '</span></a>';
+    }
+
+    var pager = document.createElement('nav');
+    pager.className = 'page-pager';
+    pager.setAttribute('aria-label', 'Соседние разделы');
+    pager.innerHTML = side(prev, 'prev') + side(next, 'next');
+    content.appendChild(pager);
+  })();
+
+  /* ── Кнопка «наверх» ──────────────────────────────────────────────────
+   * Страница справочника — сотни экранов; возвращаться прокруткой долго.
+   */
+  (function toTop() {
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'to-top';
+    btn.setAttribute('aria-label', 'Наверх страницы');
+    btn.innerHTML = '<i class="ti ti-arrow-up" aria-hidden="true"></i>';
+    document.body.appendChild(btn);
+    btn.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    function toggle() {
+      btn.classList.toggle('is-shown', window.pageYOffset > 900);
+    }
+    window.addEventListener('scroll', toggle, { passive: true });
+    toggle();
+  })();
 });
