@@ -606,6 +606,7 @@
     <li class="sub-item"><a href="#custom-reports">4.1. Библиотека отчётов</a></li>
     <li class="sub-item"><a href="#audit">4.2. Аудит</a></li>
     <li class="sub-item"><a href="#paylog">4.3. Журнал платежей</a></li>
+    <li class="sub-item"><a href="#fiscal-queue-ref">4.3.1. Очередь чеков (54-ФЗ)</a></li>
     <li class="sub-item"><a href="#messages-journal">4.4. Журнал сообщений</a></li>
     <li class="sub-item"><a href="#dev-reports">4.5. Разработка и логи</a></li>
     <li class="sub-item"><a href="#debtors">4.6. Должники</a></li>
@@ -1310,6 +1311,14 @@ flowchart TB
 <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/audit_paylog_v1769/paylog_mobile.png" alt="Журнал платежей на телефоне — карточки">
 <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/audit_paylog_v1769/audit_mobile.png" alt="Аудит на телефоне — карточки">
 
+<h3 id="fiscal-queue-ref">4.3.1. Очередь чеков (54-ФЗ)</h3>
+<p>Раздел <strong>Отчёты → Очередь чеков</strong> (<code>/admin/reports/fiscal_queue/</code>)
+показывает, какие операции ждут кассового чека, по каким чек уже пробит и где ОФД вернул
+ошибку. Отсюда же чек отправляется вручную — по одной операции или пачкой.</p>
+<p>Модуль фискализации, настройка «какие платежи фискализируем» и чек-лист готовности
+описаны в разделе <a href="settings.html#fiscal">6.3.1. Модуль фискализации 54-ФЗ</a>;
+сама очередь — <a href="settings.html#fiscal-queue">там же</a>.</p>
+
 <h3 id="messages-journal">4.4. Журнал сообщений</h3>
 <p>Единый сводный журнал всех сообщений (<em>MsgStack</em>) по всем клиентам — SMS,
 Email, Telegram, Push, VK, ЛК. И точечные отправки из карточки клиента, и массовые
@@ -1939,8 +1948,8 @@ GAMES_OF_MONTH_YANDEX_URL / GAMES_OF_MONTH_2GIS_URL</code></pre>
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2174)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">25.08.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2174)</span>&nbsp;|&nbsp;<span data-smit="updated">25.08.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2178)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">25.08.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2178)</span>&nbsp;|&nbsp;<span data-smit="updated">25.08.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2191"></script>
