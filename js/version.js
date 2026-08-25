@@ -21,8 +21,8 @@
     vbuild:         'build ' + v.build,                                       // "build 170"
     full:           'v' + v.version + ' (build ' + v.build + ')',             // "v1.6.0 (build 457)"
     short:          v.version,                                                // "1.6.0" (alias of version)
-    brand:          'СмИТ Биллинг ' + v.version,                              // "СмИТ Биллинг 1.6.0"
-    'brand-short':  'СмИТ Биллинг ' + v.version.replace(/\.0$/, ''),          // "СмИТ Биллинг 1.6"
+    brand:          'СмИТ Биллинг',                                            // без версии, см. brand-short
+    'brand-short':  'СмИТ Биллинг',                                            // без версии: в шапке она устаревает быстрее страниц
     updated:        v.updated,
     year:           v.year,
     company:        v.company,
