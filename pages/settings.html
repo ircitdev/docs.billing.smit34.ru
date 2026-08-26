@@ -1241,6 +1241,14 @@ backup-коды 2FA; IP-список fail-open при пустоте; авари
   через очередь. Отправлять может тот, у кого есть право на финансовые настройки.</li>
   <li><strong>Значок песочных часов</strong> — операция старше порога автоматической
   досылки; автоматика такие не трогает.</li>
+  <li><strong>Убрать из очереди</strong> (корзина в строке или массово) — снимает
+  операцию с фискализации: чек по ней не пробьётся, но само движение денег остаётся.
+  Уже пробитые чеки не затрагиваются — в ОФД по ним лежит фискальный документ, его
+  нельзя «удалить», для отмены нужен чек возврата.</li>
+  <li><strong>Отчёт в Telegram</strong> — кнопка в шапке шлёт сводку в Telegram-группу:
+  пробито за сутки и на какую сумму, сколько ждёт отправки, ошибки. Тот же отчёт уходит
+  автоматически раз в сутки, если включён (настройка «Отчёт в Telegram», час — «Час
+  отправки отчёта»; канал — «chat_id группы», по умолчанию общий админ-чат).</li>
 </ul>
 
 <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/fiscal_v2178/fiscal_queue_dark.png" alt="Очередь чеков в тёмной теме" width="1100"></p>
@@ -2194,8 +2202,8 @@ flowchart LR
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2180)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">26.08.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2180)</span>&nbsp;|&nbsp;<span data-smit="updated">26.08.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2181)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">26.08.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2181)</span>&nbsp;|&nbsp;<span data-smit="updated">26.08.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2193"></script>
