@@ -134,6 +134,11 @@
           <li class="sub-item"><a href="nas-equipment.html#switch">3.4. Коммутаторы</a></li>
           <li class="sub-item"><a href="nas-equipment.html#switch-type">3.5. Типы коммутаторов</a></li>
           <li class="sub-item"><a href="nas-equipment.html#sorm-list">3.6. Настройки СОРМ</a></li>
+          <li class="sub-item"><a href="nas-equipment.html#netmap">3.7. Карта сети</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#netmap-layers">— Слои и тулбар</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#netmap-search">— Поиск и ссылки на объект</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#netmap-import">— Импорт из Google Earth</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#netmap-rosseti">— Подстанции и договорные опоры</a></li>
         </ul>
       </li>
       <li class="has-children">
@@ -149,8 +154,6 @@
           <li class="sub-item"><a href="reports.html#debtors">4.6. Должники</a></li>
           <li class="sub-item"><a href="reports.html#migration">4.7. Миграция с других биллингов</a></li>
           <li><a href="reports.html#games">5. Игры (Маркетинг)</a></li>
-          <li class="sub-item"><a href="reports.html#framework-fields-overview">— FrameworkFormGroupFields: обзор</a></li>
-          <li class="sub-item"><a href="reports.html#custom-reports-overview">— SQL-отчёты: обзор</a></li>
         </ul>
       </li>
       <li class="has-children">
@@ -235,11 +238,6 @@
       <li class="has-children">
         <a href="abonents.html"><i class="ti ti-users"></i> Абоненты <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
         <ul class="submenu">
-          <li class="sub-item"><a href="abonents.html#admin-accounts-overview">— Счета: обзор</a></li>
-          <li class="sub-item"><a href="abonents.html#finops-overview">— Финоперации: обзор</a></li>
-          <li class="sub-item"><a href="abonents.html#promise-pay-overview">— Обещанный платёж: обзор</a></li>
-          <li class="sub-item"><a href="abonents.html#abonents-block-overview">— Блокировки: обзор</a></li>
-          <li class="sub-item"><a href="abonents.html#abonent-folders-overview">— Папки клиентов: обзор</a></li>
           <li><a href="abonents.html#abonents">8. Клиенты</a></li>
           <li class="sub-item"><a href="abonents.html#abonents-list">8.1. Клиенты</a></li>
           <li class="sub-item"><a href="abonents.html#abonents-folder-view">— Папка клиентов</a></li>
@@ -261,15 +259,20 @@
           <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#modal-finops">— Карточка операции</a></li>
           <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#finops-mobile">— Мобильная версия</a></li>
           <li class="sub-item" style="padding-left:1.8em"><a href="abonents.html#finance-operations-types">— Типы операций (FinTypes)</a></li>
+          <li class="sub-item"><a href="abonents.html#admin-accounts-overview">— Счета: обзор</a></li>
+          <li class="sub-item"><a href="abonents.html#finops-overview">— Финоперации: обзор</a></li>
+          <li class="sub-item"><a href="abonents.html#promise-pay-overview">— Обещанный платёж: обзор</a></li>
+          <li class="sub-item"><a href="abonents.html#abonents-block-overview">— Блокировки: обзор</a></li>
+          <li class="sub-item"><a href="abonents.html#abonent-folders-overview">— Папки клиентов: обзор</a></li>
         </ul>
       </li>
       <li class="has-children">
         <a href="abonent-card.html"><i class="ti ti-id"></i> Карточка абонента <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
         <ul class="submenu">
+          <li><a href="abonent-card.html#abonent-card">9. Карточка клиента</a></li>
           <li class="sub-item"><a href="abonent-card.html#users-overview">— Учётные записи: обзор</a></li>
           <li class="sub-item"><a href="abonent-card.html#connection-points-overview">— Точки подключения: обзор</a></li>
           <li class="sub-item"><a href="abonent-card.html#radius-sessions-overview">— RADIUS-сессии: обзор</a></li>
-          <li><a href="abonent-card.html#abonent-card">9. Карточка клиента</a></li>
         </ul>
       </li>
       <li class="has-children">
@@ -314,7 +317,6 @@
           <li><a href="lk.html#lk-admin">Раздел «ЛК и мобильные» в админке</a></li>
           <li class="sub-item"><a href="lk.html#lk-admin">— Брендинг</a></li>
           <li class="sub-item"><a href="lk.html#lk-admin">— Функции</a></li>
-          <li class="sub-item"><a href="lk.html#lk-admin">— Функции (12 toggle)</a></li>
           <li class="sub-item"><a href="lk.html#lk-admin">— Безопасность</a></li>
           <li class="sub-item"><a href="lk.html#lk-mobile-app">— Мобильное (Android+iOS)</a></li>
           <li><a href="lk.html#lk-login">Авторизация</a></li>
@@ -347,50 +349,22 @@
       <li class="has-children">
         <a href="crm.html"><i class="ti ti-briefcase"></i> CRM — продажи <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
         <ul class="submenu">
-          <li><a href="lk.html#lk-overview">Обзор и возможности</a></li>
-          <li><a href="lk.html#lk-admin">Раздел «ЛК и мобильные» в админке</a></li>
-          <li class="sub-item"><a href="lk.html#lk-admin">— Брендинг</a></li>
-          <li class="sub-item"><a href="lk.html#lk-admin">— Функции</a></li>
-          <li class="sub-item"><a href="lk.html#lk-admin">— Безопасность</a></li>
-          <li class="sub-item"><a href="lk.html#lk-mobile-app">— Мобильное (Android+iOS)</a></li>
-          <li><a href="lk.html#lk-login">Авторизация</a></li>
-          <li><a href="lk.html#lk-admin">Настройки интеграций</a></li>
-          <li><a href="lk.html#lk-extra">Telegram-бот</a></li>
-          <li><a href="lk.html#lk-finance">Оплата (ЮKassa)</a></li>
-          <li><a href="lk.html#lk-mobile-app">Мобильное приложение</a></li>
-          <li><a href="lk.html#lk-support">HelpDesk</a></li>
-          <li><a href="lk.html#lk-ai-chat">AI-ассистент</a></li>
-          <li><a href="lk.html#lk-profile">Профиль</a></li>
-          <li><a href="lk.html#lk-firebase">Push (Firebase)</a></li>
-          <li><a href="lk.html#lk-ai-chat">AI-чат</a></li>
-          <li><a href="settings-services.html#messaging">TG бот оператора</a></li>
           <li><a href="crm.html#crm-overview">1. Как устроен модуль</a></li>
-          <li><a href="crm.html#crm-lists">7. Списки</a></li>
-          <li><a href="crm.html#crm-campaigns">11. Кампании</a></li>
-          <li><a href="crm.html#crm-quickstart">2. Быстрый старт</a></li>
-          <li><a href="crm.html#crm-funnel">3. Воронка сделок</a></li>
-          <li><a href="crm.html#crm-constructor">4. Конструктор воронок</a></li>
-          <li><a href="crm.html#crm-sources">5. Источники сделок</a></li>
-          <li><a href="crm.html#crm-userfields">6. Доп. поля</a></li>
-          <li><a href="crm.html#crm-tasks">7. Задачи</a></li>
-          <li><a href="crm.html#crm-lists">8. Списки (контакты)</a></li>
-          <li><a href="crm.html#crm-salesbot">9. Salesbot</a></li>
-          <li><a href="crm.html#widgets">10. Виджеты-плагины</a></li>
-          <li><a href="crm.html#crm-setup">11. Мастер настройки</a></li>
-          <li><a href="crm.html#crm-montazh">12. Наряды монтажника</a></li>
-          <li><a href="crm.html#crm-dashboard">13. Дашборд и карта</a></li>
-          <li><a href="crm.html#crm-campaigns">14. Рекламные кампании</a></li>
-          <li><a href="crm.html#crm-drawer">15. Карточка сделки</a></li>
-          <li><a href="landing.html#landing-overview">1. Что это</a></li>
-          <li><a href="landing.html#landing-blocks">2. Блоки-секции</a></li>
-          <li><a href="landing.html#landing-media">3. Слайдер, медиа-фон и эффекты</a></li>
-          <li><a href="landing.html#landing-editor">4. Редактор</a></li>
-          <li><a href="landing.html#landing-ai">5. AI-генерация</a></li>
-          <li><a href="landing.html#landing-forms">6. Формы и заявки</a></li>
-          <li><a href="landing.html#landing-publish">7. Публикация на поддомене</a></li>
-          <li><a href="landing.html#landing-pd">8. Согласие ПД (152-ФЗ)</a></li>
-          <li><a href="landing.html#landing-analytics">9. Аналитика</a></li>
-          <li><a href="landing.html#landing-multiorg">10. Мульти-орг</a></li>
+          <li class="sub-item"><a href="crm.html#crm-quickstart">2. Быстрый старт</a></li>
+          <li class="sub-item"><a href="crm.html#crm-funnel">3. Воронка сделок</a></li>
+          <li class="sub-item"><a href="crm.html#crm-constructor">4. Конструктор воронок</a></li>
+          <li class="sub-item"><a href="crm.html#crm-sources">5. Источники сделок</a></li>
+          <li class="sub-item"><a href="crm.html#crm-userfields">6. Доп. поля сделок</a></li>
+          <li class="sub-item"><a href="crm.html#crm-tasks">7. Задачи</a></li>
+          <li class="sub-item"><a href="crm.html#crm-lists">8. Списки (контакты)</a></li>
+          <li class="sub-item"><a href="crm.html#crm-salesbot">9. Salesbot</a></li>
+          <li class="sub-item"><a href="crm.html#widgets">10. Виджеты-плагины</a></li>
+          <li class="sub-item"><a href="crm.html#crm-setup">11. Мастер настройки</a></li>
+          <li class="sub-item"><a href="crm.html#crm-montazh">12. Наряды монтажника</a></li>
+          <li class="sub-item"><a href="crm.html#crm-dashboard">13. Дашборд и карта</a></li>
+          <li class="sub-item"><a href="crm.html#crm-campaigns">14. Рекламные кампании</a></li>
+          <li class="sub-item"><a href="crm.html#crm-campaign-wizard">15. AI-мастер кампании</a></li>
+          <li class="sub-item"><a href="crm.html#crm-drawer">16. Карточка сделки</a></li>
         </ul>
       </li>
       <li class="has-children">
@@ -569,15 +543,6 @@
         <a href="../graphify/graph.html"><i class="ti ti-topology-star-3"></i> Архитектура кода <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
         <ul class="submenu">
           <li><a href="../graphify/graph.html">Граф сообществ</a></li>
-      <li class="has-children">
-        <a href="../graphify/graph.html"><i class="ti ti-topology-star-3"></i> Архитектура кода <span class="arrow"><i class="ti ti-chevron-right"></i></span></a>
-        <ul class="submenu">
-          <li><a href="../graphify/graph.html">Граф сообществ</a></li>
-          <li><a href="../graphify/wiki/index.html">Wiki модулей</a></li>
-          <li><a href="dev/index.html">Портал разработчика</a></li>
-          <li><a href="../graphify/help.html">graphify CLI</a></li>
-        </ul>
-      </li>
           <li><a href="../graphify/wiki/index.html">Wiki модулей</a></li>
           <li><a href="dev/index.html">Портал разработчика</a></li>
           <li><a href="../graphify/help.html">graphify CLI</a></li>
