@@ -1529,15 +1529,16 @@ html, body {
   display: block;
   width: 100%;
   height: auto;
-  max-height: 420px;
-  object-fit: cover;
+  /* обложка рисуется целиком: cover с ограничением высоты срезал
+     у иллюстраций низ вместе с подписями */
+  object-fit: contain;
 }
 
 /* ═══ Mobile polish (build 214) ═══ */
 @media (max-width: 768px) {
   /* Welcome-image / problems hero — compact on mobile */
   .welcome-image {
-    max-width: 280px;
+    max-width: 100%;
     margin: 14px auto 18px;
     border-radius: 10px;
   }
