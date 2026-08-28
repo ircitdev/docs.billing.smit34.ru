@@ -347,6 +347,18 @@ a:hover { color: var(--primary-dark); text-decoration: underline; }
   display: block;
 }
 
+/* Иконка подпункта: фиксированная ширина — номера разделов стоят в столбик */
+.sidebar nav ul ul.submenu li a i.ti {
+  display: inline-block;
+  width: 1.15em;
+  margin-right: 6px;
+  font-size: .95em;
+  opacity: .7;
+  vertical-align: -1px;
+}
+.sidebar nav ul ul.submenu li a:hover i.ti,
+.sidebar nav ul ul.submenu li a.active i.ti { opacity: 1; }
+
 .sidebar nav ul ul.submenu li a {
   padding: 6px 24px 6px 40px;
   font-size: .82rem;
