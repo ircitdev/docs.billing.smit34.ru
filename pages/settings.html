@@ -570,6 +570,7 @@
     <li class="sub-item"><a href="#print-forms">6.2. Шаблоны печати</a></li>
     <li class="sub-item"><a href="#atol-config">6.3. Фискализация (54-ФЗ)</a></li>
     <li class="sub-item"><a href="#fiscal-sources">— Какие платежи фискализируем</a></li>
+    <li class="sub-item"><a href="#fiscal-params">— Параметры чека</a></li>
     <li class="sub-item"><a href="#fiscal-readiness">— Готовность к боевому режиму</a></li>
     <li class="sub-item"><a href="#fiscal-queue">— Очередь чеков</a></li>
     <li class="sub-item"><a href="#payment-systems">6.4. Платёжные системы</a></li>
@@ -600,6 +601,7 @@
     <li><a href="#atol-config">6.3. Фискализация (54-ФЗ)</a></li>
     <li><a href="#fiscal">6.3.1. Модуль фискализации 54-ФЗ</a></li>
     <li><a href="#fiscal-sources">— Какие платежи фискализируем</a></li>
+    <li><a href="#fiscal-params">— Параметры чека</a></li>
     <li><a href="#fiscal-readiness">— Готовность к боевому режиму</a></li>
     <li><a href="#fiscal-queue">— Очередь чеков</a></li>
     <li><a href="#payment-systems">6.4. Платёжные системы</a></li>
@@ -1200,6 +1202,54 @@ backup-коды 2FA; IP-список fail-open при пустоте; авари
   совпадают. У онлайн-оплат поле оператора пустое — они узнаются по названию системы в
   описании и по типам операций «Оплата через платежные системы» и «ЮKassa».</p>
 </div>
+
+<h5 id="fiscal-params">Параметры чека — что указывать</h5>
+
+<p>Блок на странице фискализации задаёт, что попадёт в чек и как модуль его отправляет.
+Значения ниже — рекомендация для провайдера, который фискализирует пополнения счёта
+из банковских выписок.</p>
+
+<table class="data-table">
+  <thead><tr><th>Поле</th><th>Что указать</th><th>Почему</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Наименование позиции в чеке</strong><br>(тег 1030)</td>
+      <td><code>Услуги связи</code></td>
+      <td>Пополнение счёта — это аванс за услуги связи в целом, а не оплата конкретной
+      позиции. Обобщённая формулировка корректна по 54-ФЗ. Пусто → подставится
+      «Услуги связи / доступ к сети Интернет». До 128 символов.</td>
+    </tr>
+    <tr>
+      <td><strong>Имя позиции из услуги клиента</strong> (чек-бокс)</td>
+      <td><strong>снять</strong></td>
+      <td>Ставит в чек название услуги абонента, но <em>только если она привязана к
+      операции</em>. У зачислений из банковских выписок услуги нет, поэтому чек всё
+      равно возьмёт общий текст выше — чек-бокс ничего не изменит. Включать имеет смысл,
+      только когда фискализируются начисления за конкретные услуги.</td>
+    </tr>
+    <tr>
+      <td><strong>Контакт в чек</strong></td>
+      <td>e-mail (или телефон)</td>
+      <td>Куда отправить электронный чек клиенту. Если у абонента нет e-mail —
+      используется телефон, иначе e-mail кассы по умолчанию.</td>
+    </tr>
+    <tr>
+      <td><strong>Типы операций для чека</strong></td>
+      <td><strong>оставить пустым</strong></td>
+      <td>Пусто = разумный набор по умолчанию (все приходы реальных денег, кроме
+      служебных списаний и обещанного платежа). Источник платежа уже ограничен
+      настройкой «Какие платежи фискализируем», поэтому жёсткий список типов не нужен.
+      Если указать — фискализируются только эти <code>op_type</code> (для банковских
+      выписок это тип <code>1041</code>).</td>
+    </tr>
+    <tr>
+      <td><strong>Попыток отправки / Опрос ОФД, мин / Алерт застрявших, ч</strong></td>
+      <td>5 / 5 / 6 (по умолчанию)</td>
+      <td>Сколько раз повторять отправку при сбое ОФД, как часто опрашивать статус
+      и через сколько часов застрявшего чека слать Telegram-алерт.</td>
+    </tr>
+  </tbody>
+</table>
 
 <h5 id="fiscal-readiness">Готовность к боевому режиму</h5>
 
@@ -2239,8 +2289,8 @@ flowchart LR
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2195)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">28.08.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2195)</span>&nbsp;|&nbsp;<span data-smit="updated">28.08.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2209)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">28.08.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2209)</span>&nbsp;|&nbsp;<span data-smit="updated">28.08.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2193"></script>
