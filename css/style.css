@@ -2360,3 +2360,23 @@ body.search-open { overflow: hidden; }
   font-size: .92em;
   vertical-align: -2px;
 }
+
+/* ─────────────────────────────────────────────────────────────
+   Кнопка к карточке модуля на сайте продукта (billing.smit34.ru).
+   Ставится под обложкой раздела; открывается в новой вкладке,
+   чтобы читатель не терял место в документации.
+   ───────────────────────────────────────────────────────────── */
+.module-cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin: 4px 0 22px; padding: 9px 16px;
+  border: 1px solid var(--primary); border-radius: 8px;
+  color: var(--primary); background: transparent;
+  font-size: .92rem; font-weight: 600; text-decoration: none;
+  transition: background .18s ease, color .18s ease, transform .18s ease;
+}
+.module-cta:hover { background: var(--primary); color: #fff; transform: translateY(-1px); }
+.module-cta:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.module-cta .ti { font-size: 1.05rem; }
+.module-cta .module-cta-hint { font-weight: 400; opacity: .75; }
+@media (prefers-reduced-motion: reduce) { .module-cta { transition: none; } }
+@media (max-width: 480px) { .module-cta { width: 100%; justify-content: center; } }

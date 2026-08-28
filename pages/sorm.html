@@ -551,11 +551,17 @@
   </div>
 
   <h1>Интеграция с СОРМ3</h1>
-  <p>Интеграция с системами оперативно-розыскных мероприятий (СОРМ) реализована в соответствии с <strong>Приказом Минкомсвязи России № 573 от 29.10.2018</strong>, устанавливающим требования к «техническим и программным средствам информационных систем, содержащих базы данных абонентов оператора связи».</p>
+  <p>Интеграция с системами оперативно-розыскных мероприятий (СОРМ) реализована в соответствии с <strong>Приказом Минкомсвязи России № 573 от 29.10.2018</strong>, устанавливающим требования к «техническим и программным средствам информационных систем, содержащих базы данных клиентов оператора связи».</p>
 
-  <div class="welcome-image">
-    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/robot_sorm.jpg" alt="Интеграция с СОРМ" loading="lazy">
+    <div class="welcome-image">
+    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/covers/cover_sorm.jpg" alt="Интеграция с СОРМ-3" loading="lazy"
+         style="width:100%;border-radius:8px;display:block">
   </div>
+  <a class="module-cta" href="https://billing.smit34.ru/#module-sorm"
+     target="_blank" rel="noopener">
+    <i class="ti ti-package"></i> Модуль «СОРМ»
+    <span class="module-cta-hint">— на сайте продукта</span>
+  </a>
 <div class="page-toc">
 <details open>
   <summary><strong>Содержание страницы</strong></summary>
@@ -641,7 +647,7 @@ flowchart LR
 
   <p>Выгружаемые данные включают:</p>
   <ul>
-    <li>Персональные данные абонентов (ФИО, паспортные данные, адрес регистрации).</li>
+    <li>Персональные данные клиентов (ФИО, паспортные данные, адрес регистрации).</li>
     <li>Данные об услугах и договорах.</li>
     <li>IP-адреса и сессии подключения (логин, начало/конец сессии, NAT-трансляции).</li>
     <li>Данные о платежах и балансе.</li>
@@ -732,9 +738,9 @@ flowchart LR
   <table class="data-table">
     <thead><tr><th>Префикс файла</th><th>Описание</th><th>Формат</th></tr></thead>
     <tbody>
-      <tr><td><code>ABONENT</code></td><td>Абоненты (ФИО, договор, статус, тип)</td><td>SORM-3: IDENT, ACTUAL_NAME, STATUS, NETWORK_TYPE</td></tr>
+      <tr><td><code>ABONENT</code></td><td>Клиенты (ФИО, договор, статус, тип)</td><td>SORM-3: IDENT, ACTUAL_NAME, STATUS, NETWORK_TYPE</td></tr>
       <tr><td><code>ABONENT_IDENT</code></td><td>Идентификаторы (логин, IP, MAC)</td><td>IP в hex (uf_ip2hex), маска FFFFFFFF</td></tr>
-      <tr><td><code>ABONENT_SRV</code></td><td>Услуги абонентов</td><td>ID услуги, дата начала, договор</td></tr>
+      <tr><td><code>ABONENT_SRV</code></td><td>Услуги клиентов</td><td>ID услуги, дата начала, договор</td></tr>
       <tr><td><code>ABONENT_USER</code></td><td>Учётные записи</td><td>USER_NUMBER, USER_NAME</td></tr>
       <tr><td><code>ABONENT_ADDR</code></td><td>Адреса подключений</td><td>CITY, STREET, BUILDING, APARTMENT</td></tr>
       <tr><td><code>PAYMENT</code></td><td>Платежи</td><td>Сумма, телефон, адрес, тип</td></tr>
@@ -795,7 +801,7 @@ flowchart LR
       <tr><td><strong>81</strong></td><td>Наличные средства</td><td>—</td></tr>
       <tr><td><strong>82</strong></td><td>Терминал моментальных платежей</td><td>—</td></tr>
       <tr><td><strong>83</strong></td><td>Центр обслуживания клиентов</td><td><code>operator_name='kassa'</code>, op_type 7/9 (приход через ЦОК / корректировка)</td></tr>
-      <tr><td><strong>84</strong></td><td>Снятие со счёта другого абонента</td><td>—</td></tr>
+      <tr><td><strong>84</strong></td><td>Снятие со счёта другого клиента</td><td>—</td></tr>
       <tr><td><strong>85</strong></td><td>Скретч-карта (express-pay)</td><td>—</td></tr>
       <tr><td><strong>86</strong></td><td>Невозможно определить тип</td><td>прочее</td></tr>
       <tr><td><strong>87</strong></td><td>Бонусные начисления</td><td>—</td></tr>
@@ -810,9 +816,9 @@ flowchart LR
   <table class="data-table">
     <thead><tr><th>Префикс</th><th>Полей</th><th>Содержит</th></tr></thead>
     <tbody>
-      <tr><td><code>ABONENT</code></td><td>37</td><td>Все абоненты (физ. + юр.) с полями ИНН, БАНК и др.</td></tr>
-      <tr><td><code>ABONENT_IDENT</code></td><td>45</td><td>Идентификаторы абонента (логин, MAC, IPv4 hex)</td></tr>
-      <tr><td><code>ABONENT_SRV</code></td><td>10</td><td>Услуги абонента (БЕЗ Обещанного платежа и комиссий)</td></tr>
+      <tr><td><code>ABONENT</code></td><td>37</td><td>Все клиенты (физ. + юр.) с полями ИНН, БАНК и др.</td></tr>
+      <tr><td><code>ABONENT_IDENT</code></td><td>45</td><td>Идентификаторы клиента (логин, MAC, IPv4 hex)</td></tr>
+      <tr><td><code>ABONENT_SRV</code></td><td>10</td><td>Услуги клиента (БЕЗ Обещанного платежа и комиссий)</td></tr>
       <tr><td><code>ABONENT_ADDR</code></td><td>19</td><td>Адреса (структурированные)</td></tr>
       <tr><td><code>PAYMENT</code></td><td>12</td><td>Все приходы за 3 года с PAYMENT_TYPE кодами 80–89</td></tr>
       <tr><td><code>REGIONS</code></td><td>5</td><td>Справочник операторов (с BEGIN_TIME/END_TIME)</td></tr>
@@ -874,7 +880,7 @@ docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 3
     <li><strong>Физ.лица</strong>: процент заполненности даты рождения, ФИО с мусором (цифры/точки/кавычки)</li>
     <li><strong>Юр.лица</strong>: ИНН, КПП, банк, р/с, контакт (В лице/Директор), телефон</li>
     <li><strong>Адреса</strong>: ZIP, Region, Zone, City, Street</li>
-    <li><strong>DETACH</strong>: количество неактивных абонентов без DISABLED_DATE</li>
+    <li><strong>DETACH</strong>: количество неактивных клиентов без DISABLED_DATE</li>
   </ul>
 
   <p>Команда выводит рекомендации с указанием количества записей для бизнес-кампаний (сбор паспортов, реквизитов юр.лиц).</p>
@@ -950,7 +956,7 @@ docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 3
   <p>Раздел: <strong>Оборудование → Настройки СОРМ</strong> (URL
   <a href="/admin/equipment/sorm_list/">/admin/equipment/sorm_list/</a>).</p>
 
-  <p>Оператор связи обязан передавать в Роскомнадзор данные об абонентах,
+  <p>Оператор связи обязан передавать в Роскомнадзор данные об клиентах,
   платежах, услугах. Биллинг автоматически формирует CSV-отчёты по схеме
   поставщика СОРМ-3 оборудования и загружает их на FTP-сервер РКН по
   расписанию.</p>
@@ -985,19 +991,19 @@ docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 3
   скролла нет.</p>
 
   <p>В шапке слева — кнопка <strong>Проверить готовность</strong> (анализирует
-  пропуски обязательных полей у абонентов, см. <a href="#sorm-readiness">22.2</a>).
+  пропуски обязательных полей у клиентов, см. <a href="#sorm-readiness">22.2</a>).
   Результат проверки кешируется и виден в виде бейджа справа.</p>
 
   <h3 id="sorm-readiness">Проверка готовности данных</h3>
 
   <p>Перед выгрузкой полезно проверить — все ли обязательные поля заполнены
-  у активных абонентов. Кнопка <strong>Проверить готовность</strong> запускает
+  у активных клиентов. Кнопка <strong>Проверить готовность</strong> запускает
   анализ <code>UserAttributes</code> и показывает список пропусков.</p>
 
   <p><img class="screenshot" src="../img/v457/sorm/sorm_v457_02_readiness.png" alt="Модал проверки готовности данных"></p>
 
   <p>Например, если у юр.лиц не заполнены ИНН, КПП, ОГРН, Директор — система
-  покажет точное число абонентов с каждым пропуском и в каком отчёте СОРМ это
+  покажет точное число клиентов с каждым пропуском и в каком отчёте СОРМ это
   поле используется. Выгрузка не блокируется, но РКН может вернуть файл с замечанием.</p>
 
   <p>Бейдж результата (рядом с кнопкой):</p>
@@ -1131,7 +1137,7 @@ docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 3
   поллит endpoint каждые 5 секунд пока есть активная (running) выгрузка.</p>
 
   <p><strong>Внимание</strong>: выгрузка нагружает БД (большие SQL-запросы по
-  всем абонентам) и FTP. Запускать вручную лучше в нерабочие часы или в
+  всем клиентам) и FTP. Запускать вручную лучше в нерабочие часы или в
   диагностических целях — обычно достаточно ежедневной автоматической.</p>
 
   <h3 id="sorm-history">История выгрузок</h3>
@@ -1191,13 +1197,13 @@ docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 3
   <h3 id="sorm-multiorg">Мульти-организация</h3>
 
   <p>У каждого оператора-юрлица своя лицензия связи и свой
-  ТСПУ, поэтому выгрузка одного юрлица не должна содержать абонентов другого.</p>
+  ТСПУ, поэтому выгрузка одного юрлица не должна содержать клиентов другого.</p>
 
   <ul>
     <li>Поле <strong>Организация</strong> у конфигурации СОРМ (<code>Sorm.organization</code>,
     миграция <code>0332</code>). При включённом мульти-орг — <strong>обязательное</strong>:
     конфиг «на все организации» недопустим.</li>
-    <li>Данные выгрузок автоматически фильтруются по абонентам организации —
+    <li>Данные выгрузок автоматически фильтруются по клиентам организации —
     сервис <code>billing/services/sorm_org_scope.py</code> оборачивает произвольный
     SQL отчёта: <code>SELECT * FROM (&lt;sql&gt;) WHERE "ABONENT_ID" IN (…)</code>
     (или по <code>CONTRACT_NUMBER</code>). Справочники без абонентских колонок
@@ -1211,7 +1217,7 @@ docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 3
     (декоратор <code>@sorm_org_guard</code> → <code>object_allowed</code>). Если организация
     конфига не входит в <code>allowed_orgs</code> — <strong>404</strong>: нельзя открыть,
     запустить или удалить чужой конфиг (в форме виден FTP-пароль, при запуске — выгрузка
-    PII абонентов). Общие конфиги видны всем.</li>
+    PII клиентов). Общие конфиги видны всем.</li>
     <li>Для инсталляции с одной организацией раздел не меняется — поведение прежнее
     (выгрузка по всей базе).</li>
   </ul>
@@ -1219,7 +1225,7 @@ docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 3
   <h3 id="sorm-readiness-drill">Drill-down пропусков данных</h3>
 
   <p>В модалке «Проверка готовности» число пропусков по каждому обязательному полю
-  стало ссылкой — клик выгружает <strong>CSV со списком абонентов</strong> без этого
+  стало ссылкой — клик выгружает <strong>CSV со списком клиентов</strong> без этого
   значения (ID, договор, ФИО, ссылка на карточку) для точечного исправления.
   Endpoint <code>sorm_validate_missing_csv</code>.</p>
 
@@ -1494,7 +1500,7 @@ flowchart TB
     <li><strong>Техническое имя поля</strong> — латинские буквы/цифры/<code>_</code>, первый символ — буква. Будет именем колонки в SQL и CSV-выгрузке.</li>
     <li><strong>Альтернативные имена графем</strong> — для исторических дублей (например <code>р/с;р/c</code> где <code>с</code> кириллическое и <code>c</code> латинское).</li>
     <li><strong>Типы СОРМ-отчётов</strong> — multi-checkbox: ABONENT / ABONENT_LEGAL / ABONENT_IDENT / ABONENT_USER / ABONENT_ADDR. В каких отчётах поле появляется как колонка.</li>
-    <li><strong>Обязательное поле</strong> — pre-flight валидация заблокирует выгрузку (выдаст предупреждение) при отсутствии значения у активных абонентов.</li>
+    <li><strong>Обязательное поле</strong> — pre-flight валидация заблокирует выгрузку (выдаст предупреждение) при отсутствии значения у активных клиентов.</li>
   </ul>
 
   <p>В таблице атрибутов цветовая индикация:</p>
@@ -1567,7 +1573,7 @@ flowchart TB
 
   <h3 id="propuski-obyazatelnyh-poley-data-issues">Пропуски обязательных полей (<code>data_issues</code>)</h3>
 
-  <p>Для каждого <code>sorm_required=True</code> атрибута проверяется сколько активных абонентов <strong>без</strong> заполненного значения. Юр-поля (<code>ABONENT_LEGAL</code>) проверяются только у юр.лиц (<code>company=True</code>); физ-поля (<code>passport_series_number</code>, <code>birth_date</code>) — только у физических лиц.</p>
+  <p>Для каждого <code>sorm_required=True</code> атрибута проверяется сколько активных клиентов <strong>без</strong> заполненного значения. Юр-поля (<code>ABONENT_LEGAL</code>) проверяются только у юр.лиц (<code>company=True</code>); физ-поля (<code>passport_series_number</code>, <code>birth_date</code>) — только у физических лиц.</p>
 
   <p>Пример вывода на проде рабочий сервер:</p>
 
@@ -1582,7 +1588,7 @@ flowchart TB
   </table>
 
   <div class="info-box">
-    Pre-flight <strong>не блокирует выгрузку</strong> — это информационный сигнал. Оператор сам решает: дозаполнить пропуски в карточках абонентов или запустить выгрузку как есть. РКН может вернуть файл с замечанием, поэтому удобнее закрыть критичные пробелы заранее.
+    Pre-flight <strong>не блокирует выгрузку</strong> — это информационный сигнал. Оператор сам решает: дозаполнить пропуски в карточках клиентов или запустить выгрузку как есть. РКН может вернуть файл с замечанием, поэтому удобнее закрыть критичные пробелы заранее.
   </div>
 
   <h3 id="beydzh-gotovnosti-na-stranitse-build-412">Бейдж готовности на странице</h3>
@@ -1606,7 +1612,7 @@ EXPORT pre-flight: report=33 missing-values=1043 in 4 fields</code></pre>
 
   <h2 id="dedup">Дубликаты атрибутов и команда merge</h2>
 
-  <p>На некоторых базах (исторические записи) могут быть <strong>два атрибута с одинаковым именем</strong> — например «Директор» с <code>id=10</code> и <code>id=-219000</code>. Без дедупликации builder выбирает значение через <code>LIMIT 1</code> <strong>непредсказуемо</strong> — для одного абонента может выгрузиться значение из дубля, для другого — из канонической записи.</p>
+  <p>На некоторых базах (исторические записи) могут быть <strong>два атрибута с одинаковым именем</strong> — например «Директор» с <code>id=10</code> и <code>id=-219000</code>. Без дедупликации builder выбирает значение через <code>LIMIT 1</code> <strong>непредсказуемо</strong> — для одного клиента может выгрузиться значение из дубля, для другого — из канонической записи.</p>
 
   <p>Команда <code>manage.py merge_sorm_attribute_dups</code> группирует атрибуты по <code>sorm_field_code</code>, выбирает каноническую запись (наименьший положительный pk) и переносит все <code>AttributeValues</code> с дублей через <code>UPDATE attribute_id=...</code>:</p>
 
@@ -1659,7 +1665,7 @@ python manage.py merge_sorm_attribute_dups --by-name --apply</code></pre>
   ]
 }</code></pre>
 
-  <p>Аутентификация: стандартная сессионная (Django <code>@login_required</code>). Доступен любому залогиненному пользователю; выдаёт информацию которая не зависит от прав абонент-папок.</p>
+  <p>Аутентификация: стандартная сессионная (Django <code>@login_required</code>). Доступен любому залогиненному пользователю; выдаёт информацию которая не зависит от прав клиент-папок.</p>
 
   <p>Это удобный endpoint для интеграций — например, мониторинг (Zabbix / Grafana) может опрашивать его через cron и алёртить когда <code>has_problems == true</code> или когда <code>data_issues</code> содержит обязательные поля с большим числом пропусков.</p>
 
