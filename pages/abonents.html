@@ -1512,7 +1512,8 @@ debounce 300&nbsp;мс. Шорткат <kbd>Ctrl</kbd>+<kbd>K</kbd> ставит
     <li><a href="#drawer-where">Где доступна панель</a></li>
     <li><a href="#drawer-header">Шапка с плашками статуса</a></li>
     <li><a href="#drawer-kpi">Финансовый KPI-блок</a></li>
-    <li><a href="#drawer-accordions">Аккордеон 6 разделов и smart-defaults</a></li>
+    <li><a href="#drawer-accordions">Аккордеон разделов и smart-defaults</a></li>
+    <li><a href="#drawer-reset-session">Сброс сессии из блока «Последняя сессия»</a></li>
     <li><a href="#drawer-support">Раздел «Поддержка» (HelpDesk)</a></li>
     <li><a href="#drawer-sticky-footer">Sticky footer — отправка сообщений</a></li>
     <li><a href="#drawer-channels">Каналы отправки (SMS/Email/Telegram/ЛК/ВК/Push)</a></li>
@@ -1572,9 +1573,9 @@ debounce 300&nbsp;мс. Шорткат <kbd>Ctrl</kbd>+<kbd>K</kbd> ставит
 <p>Если активен <a href="#promise-pay-overview">обещанный платёж</a> — отдельная плашка
 с суммой и датой окончания под KPI-сеткой.</p>
 
-<h5 id="drawer-accordions">Аккордеон 6 разделов и smart-defaults</h5>
+<h5 id="drawer-accordions">Аккордеон разделов и smart-defaults</h5>
 
-<p>Шесть разделов панели объединены в <strong>аккордеон</strong> — оператор сам
+<p>Разделы панели объединены в <strong>аккордеон</strong> — оператор сам
 открывает что нужно, не скроллит мимо. Состояние свёрнутости запоминается
 в <code>localStorage</code> отдельно по каждой секции — выбор оператора сохраняется.</p>
 
@@ -1585,10 +1586,40 @@ debounce 300&nbsp;мс. Шорткат <kbd>Ctrl</kbd>+<kbd>K</kbd> ставит
     <tr><td>🌐 <strong>Последняя сессия</strong></td><td>Клиент онлайн или есть активная сессия</td></tr>
     <tr><td>📈 <strong>Платежи за 12 мес.</strong></td><td>Всегда свёрнут — открывается по запросу</td></tr>
     <tr><td>📋 <strong>Последние операции</strong></td><td>Должник (<code>balance &lt; 0</code>) — оператор смотрит откуда долг</td></tr>
+    <tr><td>🏛 <strong>Банк</strong></td><td>Раздел <strong>показывается только при наличии хотя бы одного платежа</strong> из банковских выписок; открывается смотря по контексту вызова</td></tr>
     <tr><td>📝 <strong>Комментарии операторов</strong></td><td>Уже есть комментарии — значит история важна</td></tr>
     <tr><td>🎧 <strong>Поддержка</strong></td><td>Клиент ждёт ответа в HelpDesk (<code>waiting_for_us &gt; 0</code>)</td></tr>
   </tbody>
 </table>
+
+<p>Раздел <strong>«Банк»</strong> показывает последние платежи клиента из
+<a href="settings.html#bank-statements">банковских выписок</a> (банк, дата, сумма,
+плательщик). При открытии панели <strong>кликом по имени клиента в очереди чеков</strong>
+(<a href="settings.html#bank-queue">«Очередь чеков»</a>) панель автоматически
+прокручивается к разделу «Банк» и раскрывает его — оператор сразу видит, откуда
+пришёл платёж по разбираемой операции.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/abonent_card_v2221/drawer_bank.png" alt="Слайд-панель клиента — раздел «Банк» раскрыт, показан платёж из выписки Сбербанка" style="max-width:540px"></p>
+
+<h5 id="drawer-reset-session">Сброс сессии из блока «Последняя сессия»</h5>
+
+<p>Если у клиента есть <strong>активная RADIUS-сессия</strong>, в блоке
+<strong>«Последняя сессия»</strong> рядом с бейджем «Активная сессия» появляется
+кнопка <strong>«🔄 Сброс сессии»</strong>. Она нужна при зависшей сессии
+(NAS не прислал <code>Accounting-Stop</code>, клиент «висит онлайн», но интернета нет).</p>
+
+<ul>
+  <li>Клик открывает <strong>модалку подтверждения</strong>: «Сбросить активную
+  сессию? Сессия будет завершена, абонент переподключится. Использовать при
+  зависшей сессии.» — с кнопками <em>Отмена</em> / <em>Сбросить</em>.</li>
+  <li>Подтверждение шлёт <code>POST /admin/users_api/&lt;user_id&gt;/reset_session/</code>:
+  сбрасывает <code>USERS_RADIUSAUTH.LOGGED</code>, закрывает открытые
+  <code>RADIUS_SESSIONS</code> и рассылает CoA&nbsp;Disconnect на NAS —
+  клиент переавторизуется.</li>
+  <li>Действие <strong>записывается в аудит</strong> (<code>AuditOperations</code>).</li>
+</ul>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/abonent_card_v2221/drawer_reset.png" alt="Слайд-панель — блок «Последняя сессия» с кнопкой «Сброс сессии» и модалкой подтверждения" style="max-width:540px"></p>
 
 <p>Если оператор однажды раскрыл/свернул секцию вручную — это его выбор сохраняется
 в <code>localStorage</code> и smart-defaults больше не перетирают.</p>
@@ -1693,8 +1724,10 @@ text, а полноценное письмо с шаблоном <a href="settin
 
 <h5 id="drawer-mobile">Mobile-режим</h5>
 
-<p>На mobile (≤600px) drawer занимает <strong>весь экран</strong>. Поведение
-одинаковое с desktop, только:</p>
+<p>На телефоне (≤768px) панель раскрывается на <strong>весь экран</strong>
+(<code>width: 100vw</code>, <code>height: 100dvh</code>, без скруглений и отступа
+сверху) — не узкая шторка сбоку и не нижний лист, а полноэкранная слайд-панель,
+как модалки в мобильной версии проекта. Поведение одинаковое с desktop, только:</p>
 
 <ul>
   <li>Login-бейдж в шапке скрыт (длинный логин ломает строку).</li>
