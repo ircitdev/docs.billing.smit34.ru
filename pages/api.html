@@ -924,24 +924,67 @@
   </div>
 <div class="page-toc">
 <details open>
-  <summary><strong>Содержание страницы</strong></summary>
+  <summary><strong><i class="ti ti-book"></i> Содержание раздела</strong></summary>
   <ul>
-  <li><a href="#overview">Обзор API</a></li>
-  <li><a href="#auth">Аутентификация</a></li>
-  <li><a href="#rest-v2">REST API v2</a></li>
-  <li><a href="#promise-pay">Обещанный платёж</a></li>
-  <li><a href="#payments-api">Платёжные API (ЮKassa и Wallet One)</a></li>
-  <li><a href="#soap">SOAP API</a></li>
-  <li><a href="#web-api">Web API (управление клиентами)</a></li>
-  <li><a href="#sorm-api">СОРМ API</a></li>
-  <li><a href="#ajax">AJAX-эндпоинты</a></li>
-  <li><a href="#mobile-api">Mobile API</a></li>
-  <li><a href="#errors">Коды ошибок</a></li>
+    <li><a href="#overview">Обзор API</a></li>
+    <li><a href="#auth">Аутентификация</a></li>
+    <li class="sub-item"><a href="#login-cherez-web-poluchenie-sessii">Логин через Web (получение сессии)</a></li>
+    <li class="sub-item"><a href="#api-login-json">API-логин (JSON)</a></li>
+    <li class="sub-item"><a href="#logaut">Логаут</a></li>
+    <li><a href="#rest-v2">REST API v2</a></li>
+    <li class="sub-item"><a href="#spisok-zapisey">Список записей</a></li>
+    <li class="sub-item"><a href="#filtratsiya">Фильтрация</a></li>
+    <li class="sub-item"><a href="#sortirovka">Сортировка</a></li>
+    <li class="sub-item"><a href="#vybor-poley">Выбор полей</a></li>
+    <li class="sub-item"><a href="#poluchenie-odnoy-zapisi">Получение одной записи</a></li>
+    <li class="sub-item"><a href="#sozdanie-zapisi-post">Создание записи (POST)</a></li>
+    <li class="sub-item"><a href="#obnovlenie-zapisi-put">Обновление записи (PUT)</a></li>
+    <li class="sub-item"><a href="#udalenie-zapisi-delete">Удаление записи (DELETE)</a></li>
+    <li class="sub-item"><a href="#dostupnye-modeli">Доступные модели</a></li>
+    <li><a href="#promise-pay">Обещанный платёж</a></li>
+    <li class="sub-item"><a href="#get-status-obeschannogo-platezha">GET — Статус обещанного платежа</a></li>
+    <li class="sub-item"><a href="#post-dobavit-obeschannyy-platezh">POST — Добавить обещанный платёж</a></li>
+    <li class="sub-item"><a href="#delete-udalit-obeschannyy-platezh">DELETE — Удалить обещанный платёж</a></li>
+    <li><a href="#payments-api">Платёжные API (ЮKassa и Wallet One)</a></li>
+    <li class="sub-item"><a href="#payments-endpoints">Полный список endpoint</a></li>
+    <li class="sub-item"><a href="#payments-flow">Схема прохождения платежа</a></li>
+    <li class="sub-item"><a href="#payments-create">Инициация платежа</a></li>
+    <li class="sub-item"><a href="#yookassa-rest">ЮKassa — REST API v3</a></li>
+    <li class="sub-item"><a href="#yookassa-http">ЮKassa — HTTP-протокол (Yandex.Kassa legacy)</a></li>
+    <li class="sub-item"><a href="#w1-api">Wallet One (W1)</a></li>
+    <li class="sub-item"><a href="#payments-settings">Настройки (.env или БД через админ-панель)</a></li>
+    <li class="sub-item"><a href="#payments-receipt">Фискализация на стороне ЮKassa (54-ФЗ)</a></li>
+    <li class="sub-item"><a href="#payments-finops">Запись в FinanceOperations</a></li>
+    <li><a href="#soap">SOAP API</a></li>
+    <li class="sub-item"><a href="#wsdl">WSDL</a></li>
+    <li class="sub-item"><a href="#endpointy">Эндпоинты</a></li>
+    <li class="sub-item"><a href="#get-user-hash-autentifikatsiya">get_user_hash — Аутентификация</a></li>
+    <li class="sub-item"><a href="#pay-usr-act2-provedenie-platezha">pay_usr_act2 — Проведение платежа</a></li>
+    <li><a href="#web-api">Web API (управление клиентами)</a></li>
+    <li class="sub-item"><a href="#blokirovka-abonenta">Блокировка клиента</a></li>
+    <li class="sub-item"><a href="#razblokirovka-abonenta">Разблокировка клиента</a></li>
+    <li class="sub-item"><a href="#otklyuchenie-vosstanovlenie">Отключение / Восстановление</a></li>
+    <li><a href="#sorm-api">СОРМ API</a></li>
+    <li class="sub-item"><a href="#sorm-validate">GET /admin/equipment/sorm_list/validate/ — pre-flight проверка</a></li>
+    <li class="sub-item"><a href="#sorm-attributes-crud">CRUD UserAttributes с СОРМ-метаданными</a></li>
+    <li class="sub-item"><a href="#sorm-builder-python">SormReportBuilder — Python API</a></li>
+    <li><a href="#ajax">AJAX-эндпоинты</a></li>
+    <li class="sub-item"><a href="#poluchit-ip-iz-pula">Получить IP из пула</a></li>
+    <li class="sub-item"><a href="#informatsiya-o-mac-adrese">Информация о MAC-адресе</a></li>
+    <li class="sub-item"><a href="#porty-kommutatora">Порты коммутатора</a></li>
+    <li class="sub-item"><a href="#utility">Утилиты</a></li>
+    <li><a href="#mobile-api">Mobile API</a></li>
+    <li class="sub-item"><a href="#autentifikatsiya">Аутентификация</a></li>
+    <li class="sub-item"><a href="#akkaunt">Аккаунт</a></li>
+    <li class="sub-item"><a href="#finansy">Финансы</a></li>
+    <li class="sub-item"><a href="#podderzhka">Поддержка</a></li>
+    <li class="sub-item"><a href="#uslugi">Услуги</a></li>
+    <li class="sub-item"><a href="#push-uvedomleniya">Push-уведомления</a></li>
+    <li class="sub-item"><a href="#svodnaya-tablitsa-endpointov">Сводная таблица эндпоинтов</a></li>
+    <li><a href="#errors">Коды ошибок</a></li>
   </ul>
 </details>
 </div>
-
-
 <div class="info-box">
     <strong>Базовый URL:</strong> <code>https://your-billing-server.example.com</code><br>
     <strong>Авторизация:</strong> Cookie-сессия (Django) или SOAP-хэш<br>

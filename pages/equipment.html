@@ -929,23 +929,55 @@
   </a>
 <div class="page-toc">
 <details open>
-  <summary><strong>Содержание страницы</strong></summary>
+  <summary><strong><i class="ti ti-book"></i> Содержание раздела</strong></summary>
   <ul>
-  <li><a href="#internet">Интернет оборудование — Пользовательская схема</a></li>
-  <li><a href="#switch-overview">Коммутаторы (Switch) в биллинге — назначение и роль</a></li>
-  <li><a href="#switch-types">Типы коммутаторов</a></li>
-  <li><a href="#opt82-auth">OPT82-авторизация</a></li>
-  <li><a href="#equipment-monitoring">Мониторинг оборудования</a></li>
-  <li><a href="#voip">Телефония</a></li>
-  <li><a href="#iptv">IPTV</a></li>
-  <li><a href="#cpe">Абонентское оборудование</a></li>
-  <li><a href="#cameras">Камеры</a></li>
-  <li><a href="#rental">Аренда оборудования</a></li>
+    <li><a href="#internet">Интернет оборудование — Пользовательская схема</a></li>
+    <li class="sub-item"><a href="#podderzhivaemoe-internet-oborudovanie">Поддерживаемое интернет-оборудование</a></li>
+    <li class="sub-item"><a href="#nas-overview">NAS — назначение и роль в биллинге</a></li>
+    <li class="sub-item"><a href="#nas-modal">Редактирование NAS — модальное окно</a></li>
+    <li class="sub-item"><a href="#nas-online">Онлайн-клиенты NAS</a></li>
+    <li class="sub-item"><a href="#nas-dashboard-v963">Дашборд состояния NAS (Sidebar → «Состояние NAS»)</a></li>
+    <li><a href="#switch-overview">Коммутаторы (Switch) в биллинге — назначение и роль</a></li>
+    <li class="sub-item"><a href="#switch-purpose">Зачем коммутатор хранится в БД</a></li>
+    <li class="sub-item"><a href="#switch-fields-usage">Где это поле используется</a></li>
+    <li class="sub-item"><a href="#switch-when-needed">Нужно ли вам это</a></li>
+    <li class="sub-item"><a href="#switch-cleanup">Что делать со старыми/неиспользуемыми коммутаторами</a></li>
+    <li class="sub-item"><a href="#switch-modal">Редактирование коммутаторов — модальное окно</a></li>
+    <li class="sub-item"><a href="#switch-orgs">Организации коммутатора</a></li>
+    <li><a href="#switch-types">Типы коммутаторов</a></li>
+    <li class="sub-item"><a href="#opt82-params">Параметры Opt82</a></li>
+    <li><a href="#opt82-auth">OPT82-авторизация</a></li>
+    <li class="sub-item"><a href="#kak-eto-rabotaet">Как это работает</a></li>
+    <li class="sub-item"><a href="#shag-1-tip-avtorizatsii-v-uchetnoy-zapisi-abonenta">Шаг 1 — Тип авторизации в учётной записи клиента</a></li>
+    <li class="sub-item"><a href="#shag-2-privyazka-k-portu-kommutatora">Шаг 2 — Привязка к порту коммутатора</a></li>
+    <li class="sub-item"><a href="#shag-3-kommutator-v-spravochnike">Шаг 3 — Коммутатор в справочнике</a></li>
+    <li class="sub-item"><a href="#shag-4-tip-kommutatora-shablony-parsinga">Шаг 4 — Тип коммутатора (шаблоны парсинга)</a></li>
+    <li class="sub-item"><a href="#shag-5-flagi-opt82-na-nas">Шаг 5 — Флаги OPT82 на NAS</a></li>
+    <li class="sub-item"><a href="#itogovaya-shema-privyazki">Итоговая схема привязки</a></li>
+    <li><a href="#equipment-monitoring">Мониторинг оборудования</a></li>
+    <li class="sub-item"><a href="#monitoring-purpose">Что делает раздел</a></li>
+    <li class="sub-item"><a href="#monitoring-mindmap">Карта раздела</a></li>
+    <li class="sub-item"><a href="#monitoring-table">Таблица устройств</a></li>
+    <li class="sub-item"><a href="#monitoring-add">Как поставить устройство на мониторинг</a></li>
+    <li class="sub-item"><a href="#monitoring-ports">Кем заняты порты</a></li>
+    <li class="sub-item"><a href="#monitoring-bind">Если клиент не сопоставлен</a></li>
+    <li class="sub-item"><a href="#monitoring-access">Права и разграничение по организациям</a></li>
+    <li class="sub-item"><a href="#monitoring-model">Как связаны объекты</a></li>
+    <li><a href="#voip">Телефония</a></li>
+    <li class="sub-item"><a href="#podderzhivaemye-oss-shemy">Поддерживаемые OSS-схемы</a></li>
+    <li class="sub-item"><a href="#podderzhivaemye-parsery-cdr">Поддерживаемые парсеры CDR</a></li>
+    <li><a href="#iptv">IPTV</a></li>
+    <li class="sub-item"><a href="#iptv-tvip">TVIP Media (TMS)</a></li>
+    <li class="sub-item"><a href="#iptv-lfstream">LFStream (Смотрёшка)</a></li>
+    <li class="sub-item"><a href="#iptv-mappings">Маппинг IPTV-пакетов</a></li>
+    <li class="sub-item"><a href="#iptv-sync">Синхронизация</a></li>
+    <li class="sub-item"><a href="#drugie-podderzhivaemye-iptv-platformy">Другие поддерживаемые IPTV-платформы</a></li>
+    <li><a href="#cpe">Абонентское оборудование</a></li>
+    <li><a href="#cameras">Камеры</a></li>
+    <li><a href="#rental">Аренда оборудования</a></li>
   </ul>
 </details>
 </div>
-
-
 <pre class="mermaid">
 flowchart LR
     subgraph net["Сеть оператора"]

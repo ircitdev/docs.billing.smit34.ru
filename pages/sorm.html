@@ -930,28 +930,66 @@
   </a>
 <div class="page-toc">
 <details open>
-  <summary><strong>Содержание страницы</strong></summary>
+  <summary><strong><i class="ti ti-book"></i> Содержание раздела</strong></summary>
   <ul>
-  <li><a href="#principle">Принцип работы</a></li>
-  <li><a href="#integrated">Интегрированные решения</a></li>
-  <li><a href="#pending">Ожидающие интеграции</a></li>
-  <li><a href="#setup">Настройка подключения</a></li>
-  <li><a href="#reports">Отчёты и SQL</a></li>
-  <li><a href="#schedule">Расписание автоматической выгрузки</a></li>
-  <li><a href="#sorm-admin">Админка: выгрузка на сервера РКН</a></li>
-  <li><a href="#sorm-vendors">Вендоры и вендор-паки</a></li>
-  <li><a href="#manual-run">Управление отчётами</a></li>
-  <li><a href="#metadata">СОРМ-метаданные UserAttributes</a></li>
-  <li><a href="#preflight">Pre-flight валидация перед выгрузкой</a></li>
-  <li><a href="#dedup">Дубликаты атрибутов и команда merge</a></li>
-  <li><a href="#api">REST API проверки готовности</a></li>
-  <li><a href="#children">Схемы настройки</a></li>
+    <li><a href="#principle">Принцип работы</a></li>
+    <li><a href="#integrated">Интегрированные решения</a></li>
+    <li><a href="#pending">Ожидающие интеграции</a></li>
+    <li><a href="#setup">Настройка подключения</a></li>
+    <li class="sub-item"><a href="#sorm-add-modal">Модальное окно «Добавить настройку СОРМ»</a></li>
+    <li><a href="#reports">Отчёты и SQL</a></li>
+    <li class="sub-item"><a href="#standartnye-otchety-sorm-3-build-324">Стандартные отчёты СОРМ-3</a></li>
+    <li><a href="#prikaz-573-v2">Соответствие приказу Минкомсвязи №573 (актуально на 02.06.2026)</a></li>
+    <li class="sub-item"><a href="#prikaz-573-key-changes">Ключевые требования Приказа №573</a></li>
+    <li class="sub-item"><a href="#prikaz-573-payment-types">Маппинг PAYMENT_TYPE (коды 80–89)</a></li>
+    <li class="sub-item"><a href="#prikaz-573-reports-list">Текущий набор отчётов (12 файлов)</a></li>
+    <li class="sub-item"><a href="#prikaz-573-data-fixes">Исправления качества данных в SQL</a></li>
+    <li class="sub-item"><a href="#sorm-fixes-2026-07">Технологические сети и динамическая адресация</a></li>
+    <li class="sub-item"><a href="#prikaz-573-audit-cmd">Команда аудита качества данных</a></li>
+    <li class="sub-item"><a href="#prikaz-573-files">Файлы реализации</a></li>
+    <li><a href="#schedule">Расписание автоматической выгрузки</a></li>
+    <li><a href="#sorm-admin">Админка: выгрузка на сервера РКН</a></li>
+    <li class="sub-item"><a href="#sorm-list">Список конфигураций</a></li>
+    <li class="sub-item"><a href="#sorm-readiness">Проверка готовности данных</a></li>
+    <li class="sub-item"><a href="#sorm-basic">Основные настройки</a></li>
+    <li class="sub-item"><a href="#sorm-ftp">Подключение к FTP-серверу РКН</a></li>
+    <li class="sub-item"><a href="#sorm-telegram">Уведомления в Telegram</a></li>
+    <li class="sub-item"><a href="#sorm-reports">Список отчётов</a></li>
+    <li class="sub-item"><a href="#sorm-run-now">Ручной запуск выгрузки</a></li>
+    <li class="sub-item"><a href="#sorm-history">История выгрузок</a></li>
+    <li class="sub-item"><a href="#sorm-schedule">Автоматическое расписание</a></li>
+    <li><a href="#sorm-v1691">Мульти-организация, AI-помощник и SQL-редактор (v1.6.0)</a></li>
+    <li class="sub-item"><a href="#sorm-multiorg">Мульти-организация</a></li>
+    <li class="sub-item"><a href="#sorm-readiness-drill">Drill-down пропусков данных</a></li>
+    <li class="sub-item"><a href="#sorm-sql-editor">Редактор SQL отчёта</a></li>
+    <li class="sub-item"><a href="#sorm-ai">AI-помощник по SQL</a></li>
+    <li class="sub-item"><a href="#sorm-reports-bulk">Массовые действия по отчётам</a></li>
+    <li class="sub-item"><a href="#sorm-ux-1691">UX и мелкие правки</a></li>
+    <li class="sub-item"><a href="#sorm-data-model">Структуры данных</a></li>
+    <li class="sub-item"><a href="#sorm-endpoints">URL-эндпоинты</a></li>
+    <li class="sub-item"><a href="#sorm-cli">Команды управления</a></li>
+    <li><a href="#sorm-vendors">Вендоры и вендор-паки (v3.0.0)</a></li>
+    <li class="sub-item"><a href="#sorm-vendor-profiles">Профили вендоров</a></li>
+    <li class="sub-item"><a href="#sorm-vendor-lifecycle">Жизненный цикл вендор-пака</a></li>
+    <li class="sub-item"><a href="#sorm-vendor-versioning">Версионность и обновления</a></li>
+    <li class="sub-item"><a href="#sorm-vendor-license">Управление на сервере лицензий</a></li>
+    <li class="sub-item"><a href="#sorm-vendor-model">Структуры данных и endpoint'ы</a></li>
+    <li><a href="#manual-run">Управление отчётами</a></li>
+    <li class="sub-item"><a href="#deystviya">Действия</a></li>
+    <li><a href="#metadata">СОРМ-метаданные UserAttributes</a></li>
+    <li class="sub-item"><a href="#upravlenie-metadannymi-v-ui">Управление метаданными в UI</a></li>
+    <li class="sub-item"><a href="#tekuschaya-karta-metadannyh-build-411">Текущая карта метаданных</a></li>
+    <li><a href="#preflight">Pre-flight валидация перед выгрузкой</a></li>
+    <li class="sub-item"><a href="#problemy-metadannyh-meta-issues">Проблемы метаданных (meta_issues)</a></li>
+    <li class="sub-item"><a href="#propuski-obyazatelnyh-poley-data-issues">Пропуски обязательных полей (data_issues)</a></li>
+    <li class="sub-item"><a href="#beydzh-gotovnosti-na-stranitse-build-412">Бейдж готовности на странице</a></li>
+    <li class="sub-item"><a href="#pre-flight-v-celery-zadache-vygruzki">Pre-flight в Celery-задаче выгрузки</a></li>
+    <li><a href="#dedup">Дубликаты атрибутов и команда merge</a></li>
+    <li><a href="#api">REST API проверки готовности</a></li>
+    <li><a href="#children">Схемы настройки</a></li>
   </ul>
 </details>
 </div>
-
-
-
 <pre class="mermaid">
 flowchart LR
     subgraph src["Данные биллинга"]
@@ -1032,17 +1070,7 @@ flowchart LR
   <p><strong>СОРМ «Якорь»</strong> (компания НЕОС) — находится в процессе интеграции. Планируется поддержка стандартного протокола обмена данными. Для получения информации о статусе интеграции обращайтесь в техническую поддержку.</p>
 
   <h2 id="setup">Настройка подключения</h2>
-<div class="page-toc">
-<details open>
-  <summary><strong><i class="ti ti-book"></i> Содержание раздела</strong></summary>
-  <ul>
-    <li><a href="#sorm-add-modal">Модальное окно «Добавить настройку СОРМ»</a></li>
-  </ul>
-</details>
-</div>
-
-
-  <p>Перейдите в раздел <strong>Оборудование → Настройки СОРМ</strong> (<code>/admin/equipment/sorm_list/</code>) и нажмите <strong>«+&nbsp;Добавить»</strong>. Откроется модальное окно с формой создания новой конфигурации — без перехода на отдельную страницу.</p>
+<p>Перейдите в раздел <strong>Оборудование → Настройки СОРМ</strong> (<code>/admin/equipment/sorm_list/</code>) и нажмите <strong>«+&nbsp;Добавить»</strong>. Откроется модальное окно с формой создания новой конфигурации — без перехода на отдельную страницу.</p>
 
   <h3 id="sorm-add-modal">Модальное окно «Добавить настройку СОРМ»</h3>
 
@@ -1298,28 +1326,7 @@ docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 3
   </details>
   </div>
 
-<div class="page-toc">
-<details open>
-  <summary><strong><i class="ti ti-book"></i> Содержание раздела</strong></summary>
-  <ul>
-    <li><a href="#sorm-list">Список конфигураций</a></li>
-    <li><a href="#sorm-readiness">Проверка готовности данных</a></li>
-    <li><a href="#sorm-basic">Основные настройки</a></li>
-    <li><a href="#sorm-ftp">Подключение к FTP-серверу РКН</a></li>
-    <li><a href="#sorm-telegram">Уведомления в Telegram</a></li>
-    <li><a href="#sorm-reports">Список отчётов</a></li>
-    <li><a href="#sorm-run-now">Ручной запуск выгрузки</a></li>
-    <li><a href="#sorm-history">История выгрузок</a></li>
-    <li><a href="#sorm-schedule">Автоматическое расписание</a></li>
-    <li><a href="#sorm-data-model">Структуры данных</a></li>
-    <li><a href="#sorm-endpoints">URL-эндпоинты</a></li>
-    <li><a href="#sorm-cli">Команды управления</a></li>
-  </ul>
-</details>
-</div>
-
-  
-  <p>Раздел: <strong>Оборудование → Настройки СОРМ</strong> (URL
+<p>Раздел: <strong>Оборудование → Настройки СОРМ</strong> (URL
   <a href="/admin/equipment/sorm_list/">/admin/equipment/sorm_list/</a>).</p>
 
   <p>Оператор связи обязан передавать в Роскомнадзор данные об клиентах,

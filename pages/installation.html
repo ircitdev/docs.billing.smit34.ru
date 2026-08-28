@@ -933,20 +933,22 @@
 
 <div class="page-toc">
 <details open>
-  <summary><strong>Содержание страницы</strong></summary>
+  <summary><strong><i class="ti ti-book"></i> Содержание раздела</strong></summary>
   <ul>
-  <li><a href="#requirements">Этап 1. Системные требования</a></li>
-  <li><a href="#docker-install">Этап 2. Установка через Docker Compose</a></li>
-  <li><a href="#demo-cleanup">Этап 3. Удаление демо-данных</a></li>
-  <li><a href="#equip-integration">Этап 4. Интеграция с оборудованием</a></li>
-  <li><a href="#tariff-setup">Этап 5. Настройка тарифов</a></li>
-  <li><a href="#add-subscribers">Этап 6. Добавление клиентов</a></li>
-  <li><a href="#final-test">Этап 7. Финальное тестирование</a></li>
-  <li><a href="#children">Дочерние страницы</a></li>
+    <li><a href="#docker-install">Этап 2. Установка через Docker Compose</a></li>
+    <li><a href="#demo-cleanup">Этап 3. Удаление демо-данных</a></li>
+    <li><a href="#equip-integration">Этап 4. Интеграция с оборудованием</a></li>
+    <li class="sub-item"><a href="#internet">Интернет</a></li>
+    <li class="sub-item"><a href="#telefoniya">Телефония</a></li>
+    <li class="sub-item"><a href="#iptv">IPTV</a></li>
+    <li><a href="#tariff-setup">Этап 5. Настройка тарифов</a></li>
+    <li><a href="#add-subscribers">Этап 6. Добавление клиентов</a></li>
+    <li><a href="#final-test">Этап 7. Финальное тестирование</a></li>
+    <li class="sub-item"><a href="#final-test-checklist">Чек-лист приёмки</a></li>
+    <li><a href="#children">Дочерние страницы</a></li>
   </ul>
 </details>
 </div>
-
 <h2 id="requirements">Этап 1. Системные требования</h2>
   <p>Для развёртывания СмИТ Биллинг требуется сервер с поддержкой Docker:</p>
   <table>
@@ -1060,16 +1062,7 @@ docker compose exec web python manage.py loaddata initial_data</code></pre>
   </div>
 
   <h2 id="final-test">Этап 7. Финальное тестирование</h2>
-<div class="page-toc">
-<details open>
-  <summary><strong><i class="ti ti-book"></i> Содержание раздела</strong></summary>
-  <ul>
-    <li><a href="#final-test-checklist">Чек-лист приёмки</a></li>
-  </ul>
-</details>
-</div>
-
-  <p>Перед вводом в эксплуатацию пройдите полный цикл на одном-двух тестовых клиентах. Это проверит, что все компоненты (биллинг, RADIUS, NAS, платёжный шлюз, ЛК) корректно связаны.</p>
+<p>Перед вводом в эксплуатацию пройдите полный цикл на одном-двух тестовых клиентах. Это проверит, что все компоненты (биллинг, RADIUS, NAS, платёжный шлюз, ЛК) корректно связаны.</p>
 
   <h3 id="final-test-checklist">Чек-лист приёмки</h3>
   <ol>

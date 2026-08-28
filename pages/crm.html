@@ -937,40 +937,59 @@
 <details open>
   <summary><strong><i class="ti ti-book"></i> Содержание раздела</strong></summary>
   <ul>
-    <li><a href="#crm-overview">1. Как устроен модуль</a></li>
-    <li><a href="#crm-org-default">1а. Организация по умолчанию</a></li>
-    <li><a href="#crm-unsorted">1б. «Неразобранное» и автораспределение</a></li>
-    <li><a href="#crm-quickstart">1в. Быстрый старт</a></li>
-    <li><a href="#crm-funnel">2. Воронка сделок (канбан)</a></li>
-    <li><a href="#crm-constructor">3. Конструктор воронок и стадий</a></li>
-    <li><a href="#crm-sources">4. Источники сделок</a></li>
-    <li><a href="#crm-userfields">5. Доп. поля сделок</a></li>
-    <li><a href="#crm-tasks">6. Задачи</a></li>
-    <li><a href="#crm-lists">7. Списки (контакты)</a></li>
-    <li><a href="#crm-salesbot">8. Salesbot</a>
-      <ul><li><a href="#crm-salesbot-draft">Черновик и публикация</a></li>
-          <li><a href="#crm-salesbot-lint">Проверка сценария</a></li>
-          <li><a href="#crm-salesbot-templates">Готовые сценарии</a></li>
-          <li><a href="#crm-salesbot-text">Текст шага и превью</a></li>
-          <li><a href="#crm-salesbot-test">Тест сценария</a></li>
-          <li><a href="#crm-salesbot-report">Отчёт клиенту</a></li>
-          <li><a href="#crm-salesbot-broadcast">Рассылка</a></li></ul></li>
-    <li><a href="#widgets">9. Виджеты-плагины</a></li>
-    <li><a href="#crm-dashboard">10. Дашборд и карта</a></li>
-    <li><a href="#crm-campaigns">11. Рекламные кампании</a>
-      <ul><li><a href="#crm-campaigns-charts">Диаграммы</a></li>
-          <li><a href="#crm-campaigns-table">Таблица и итог</a></li>
-          <li><a href="#crm-campaign-wizard">AI-мастер кампании</a></li>
-          <li><a href="#crm-campaign-materials">Материалы и ссылки</a></li>
-          <li><a href="#crm-campaign-analyze">Разбор результатов</a></li></ul></li>
-    <li><a href="#crm-drawer">12. Карточка сделки (дровер)</a></li>
-    <li><a href="#crm-setup">13. Мастер настройки</a></li>
-    <li><a href="#crm-montazh">14. Наряды монтажника</a></li>
+    <li><a href="#crm-overview">Как устроен модуль</a></li>
+    <li class="sub-item"><a href="#crm-org-default">Организация по умолчанию</a></li>
+    <li class="sub-item"><a href="#crm-unsorted">Стадия «Неразобранное» и автораспределение</a></li>
+    <li><a href="#crm-quickstart">Быстрый старт: от нуля до первого лида</a></li>
+    <li><a href="#crm-funnel">Воронка сделок (канбан)</a></li>
+    <li class="sub-item"><a href="#crm-import">Импорт лидов из CSV</a></li>
+    <li><a href="#crm-constructor">Конструктор воронок и стадий</a></li>
+    <li class="sub-item"><a href="#crm-presets">Галерея «Из шаблона»</a></li>
+    <li class="sub-item"><a href="#crm-pipelines-org">Воронки и организации</a></li>
+    <li><a href="#crm-sources">Источники сделок</a></li>
+    <li class="sub-item"><a href="#crm-sources-card">Карточка источника</a></li>
+    <li class="sub-item"><a href="#crm-sources-widgets">Источники в каталоге виджетов</a></li>
+    <li class="sub-item"><a href="#crm-sources-connect">Как подключить форму на сайт</a></li>
+    <li class="sub-item"><a href="#crm-intake-card">Единый приём: как заполняется карточка</a></li>
+    <li><a href="#crm-userfields">Доп. поля сделок</a></li>
+    <li><a href="#crm-tasks">Задачи</a></li>
+    <li><a href="#crm-lists">Списки (контакты)</a></li>
+    <li><a href="#crm-salesbot">Salesbot</a></li>
+    <li class="sub-item"><a href="#crm-salesbot-draft">Черновик и публикация</a></li>
+    <li class="sub-item"><a href="#crm-salesbot-lint">Проверка сценария</a></li>
+    <li class="sub-item"><a href="#crm-salesbot-templates">Готовые сценарии</a></li>
+    <li class="sub-item"><a href="#crm-salesbot-text">Текст шага: форматирование и превью</a></li>
+    <li class="sub-item"><a href="#crm-salesbot-test">Тест сценария</a></li>
+    <li class="sub-item"><a href="#crm-salesbot-report">Отчёт клиенту: PDF и Mini App</a></li>
+    <li class="sub-item"><a href="#crm-salesbot-window">Окно отправки</a></li>
+    <li class="sub-item"><a href="#crm-salesbot-broadcast">Рассылка</a></li>
+    <li class="sub-item"><a href="#crm-salesbot-widget">Веб-виджет на сайт</a></li>
+    <li><a href="#widgets">Виджеты-плагины</a></li>
+    <li class="sub-item"><a href="#widgets-versioning">Версия, «Подробнее» и автообновление</a></li>
+    <li class="sub-item"><a href="#widgets-mount">Точки монтирования и стандартные виджеты</a></li>
+    <li class="sub-item"><a href="#widgets-builtin">Встроенные карточки «Быстрый доступ»</a></li>
+    <li class="sub-item"><a href="#widget-campaigns">Виджет «Рекламные кампании»</a></li>
+    <li class="sub-item"><a href="#widget-salesbot">Виджет «Salesbot»</a></li>
+    <li class="sub-item"><a href="#widget-org-summary">Виджет «Организации: сводка»</a></li>
+    <li><a href="#crm-setup">Мастер настройки</a></li>
+    <li><a href="#crm-montazh">Наряды монтажника</a></li>
+    <li><a href="#crm-dashboard">Дашборд и карта</a></li>
+    <li class="sub-item"><a href="#crm-insights">Инсайты периода</a></li>
+    <li class="sub-item"><a href="#crm-ai-summary">AI-сводка воронки</a></li>
+    <li class="sub-item"><a href="#crm-stage-flow">Переток по стадиям — Sankey</a></li>
+    <li><a href="#crm-campaigns">Рекламные кампании</a></li>
+    <li class="sub-item"><a href="#crm-campaigns-charts">Диаграммы</a></li>
+    <li class="sub-item"><a href="#crm-campaigns-table">Таблица и итог</a></li>
+    <li><a href="#crm-campaign-wizard">AI-мастер кампании</a></li>
+    <li class="sub-item"><a href="#crm-campaign-wizard-dialog">Что спрашивает помощник</a></li>
+    <li class="sub-item"><a href="#crm-campaign-wizard-build">Что создаётся при сборке</a></li>
+    <li class="sub-item"><a href="#crm-campaign-wizard-readiness">Готовность к запуску</a></li>
+    <li class="sub-item"><a href="#crm-campaign-materials">Материалы и ссылки</a></li>
+    <li class="sub-item"><a href="#crm-campaign-analyze">Разбор результатов</a></li>
+    <li><a href="#crm-drawer">Карточка сделки (полноэкранный дровер)</a></li>
   </ul>
 </details>
 </div>
-
-
 <figure class="doc-video">
   <div class="dv-head">
     <span class="dv-kind"><i class="ti ti-player-play-filled" aria-hidden="true"></i> Обучающее видео</span>

@@ -893,26 +893,83 @@
 
 <div class="page-toc">
 <details open>
-  <summary><strong>Содержание страницы</strong></summary>
+  <summary><strong><i class="ti ti-book"></i> Содержание раздела</strong></summary>
   <ul>
-  <li><a href="#v3-b1798">v3.0.0 — август 2026</a></li>
-  <li><a href="#v3-0-0-b1403">v3.0.0 — июнь–июль 2026</a></li>
-  <li><a href="#v2-1-0-b997">v2.1.0 — 6 июня 2026</a></li>
-  <li><a href="#v2-1-0-b885">v2.1.0 — 18 мая 2026</a></li>
-  <li><a href="#v2-0-0-b861">v2.1.0 — 15 мая 2026</a></li>
-  <li><a href="#v1-6-0-b428">v1.6.0 — 2 мая 2026</a></li>
-  <li><a href="#v1-6-0-b324">v1.6.0 — 27 апреля 2026</a></li>
-  <li><a href="#v1-0-0-b37">v1.0.0 — 29 марта 2026</a></li>
-  <li><a href="#nas-deploy">NAS Развёртывание (OSS)</a></li>
-  <li><a href="#oss-tools">OSS утилиты</a></li>
-  <li><a href="#forms-audit">Аудит форм — Select2 и AJAX</a></li>
-  <li><a href="#fixes-25tasks">Исправления из Telegram-чата (25 задач)</a></li>
+    <li><a href="#v3-b1798">v3.0.0 — август 2026</a></li>
+    <li class="sub-item"><a href="#v3b1798-dup">Защита от дублей клиентов</a></li>
+    <li class="sub-item"><a href="#v3b1798-mac">MAC оборудования редактируется в таблице аккаунтов</a></li>
+    <li class="sub-item"><a href="#v3b1798-ai-phone">AI-бот: телефон поддержки берётся из брендинга организации</a></li>
+    <li class="sub-item"><a href="#v3b1798-stock">Склад: роли «держателей подотчёта»</a></li>
+    <li class="sub-item"><a href="#v3b1798-sorm">СОРМ: изоляция по организации и мобильная версия (UX-аудит)</a></li>
+    <li><a href="#v3-0-0-b1426">v3.0.0 — июль 2026</a></li>
+    <li class="sub-item"><a href="#v301-map-audit">Карта клиентов: скорость, права и тёмная тема</a></li>
+    <li class="sub-item"><a href="#v301-folder-routing">Папки организаций и раскладка клиентов</a></li>
+    <li class="sub-item"><a href="#v301-robor-fullwidth">Тарифы по организациям и полноширинный редактор бота</a></li>
+    <li class="sub-item"><a href="#v301-call-transcribe">Поддержка: расшифровка и суть звонка (AI)</a></li>
+    <li class="sub-item"><a href="#v301-drawer">Карточка сделки — полноэкранный дровер</a></li>
+    <li class="sub-item"><a href="#v301-flow">Единый поток клиента</a></li>
+    <li class="sub-item"><a href="#v301-setup">Мастер настройки CRM и навигация</a></li>
+    <li class="sub-item"><a href="#v301-widgets">Виджеты-плагины</a></li>
+    <li class="sub-item"><a href="#v301-unified">Единая CRM: воронки и пресеты</a></li>
+    <li class="sub-item"><a href="#v301-sources">Источники сделок v2</a></li>
+    <li class="sub-item"><a href="#v301-salesbot">Salesbot v2</a></li>
+    <li class="sub-item"><a href="#v301-fiscal">Платежи: фискализация на стороне ЮKassa</a></li>
+    <li class="sub-item"><a href="#v301-crm">CRM-конструктор в стиле amo</a></li>
+    <li class="sub-item"><a href="#v301-sorm">СОРМ (03–04.07.2026)</a></li>
+    <li class="sub-item"><a href="#v301-support">Поддержка</a></li>
+    <li><a href="#v3-0-0-b1403">v3.0.0 — июнь–июль 2026</a></li>
+    <li class="sub-item"><a href="#v300-support">Поддержка</a></li>
+    <li class="sub-item"><a href="#v300-crm">CRM</a></li>
+    <li class="sub-item"><a href="#v300-chat">Внутренний чат</a></li>
+    <li class="sub-item"><a href="#v300-abonents">Клиенты и данные</a></li>
+    <li class="sub-item"><a href="#v300-infra">Интерфейс и инфраструктура</a></li>
+    <li><a href="#v2-1-0-b997">v2.1.0 — 6 июня 2026</a></li>
+    <li class="sub-item"><a href="#v210-fs-diagnostics">Диагностика HelpDesk в настройках</a></li>
+    <li class="sub-item"><a href="#v210-marketing-tab">Вкладка «Маркетинг»</a></li>
+    <li><a href="#v2-1-0-b885">v2.1.0 — 18 мая 2026</a></li>
+    <li class="sub-item"><a href="#v210-unblock-logic">Логика разблокировки и фин-блоки</a></li>
+    <li class="sub-item"><a href="#v210-audit-tools">Аудит и safety net</a></li>
+    <li class="sub-item"><a href="#v210-backup">Backup-модуль</a></li>
+    <li class="sub-item"><a href="#v210-ui">UI — настройки и виджеты</a></li>
+    <li class="sub-item"><a href="#v210-principles">Соблюдённые правила</a></li>
+    <li><a href="#v2-0-0-b861">v2.0.0 — 15 мая 2026</a></li>
+    <li class="sub-item"><a href="#v200-card-rework">Карточка клиента — рестайлинг</a></li>
+    <li class="sub-item"><a href="#v200-badges-revision">Ревизия бейджей шапки и плашек</a></li>
+    <li class="sub-item"><a href="#v200-design-system">Единая дизайн-система компонентов</a></li>
+    <li class="sub-item"><a href="#v200-other-fixes">Прочие фиксы</a></li>
+    <li><a href="#v1-6-0-b428">v1.6.0 — 2 мая 2026</a></li>
+    <li class="sub-item"><a href="#sprint-a-addresses">Sprint A: справочник адресов и точек подключения</a></li>
+    <li class="sub-item"><a href="#ippull-gateway-autofill">Автоподстановка шлюза IpPull</a></li>
+    <li class="sub-item"><a href="#cp-new-columns">Новые колонки точек подключения</a></li>
+    <li class="sub-item"><a href="#brand-green">Фирменный зелёный вместо синего</a></li>
+    <li class="sub-item"><a href="#homes-edit-modal">Модальное редактирование адресов</a></li>
+    <li class="sub-item"><a href="#homes-tooltips">Tooltips к подписям полей</a></li>
+    <li><a href="#v1-6-0-b324">v1.6.0 — 27 апреля 2026</a></li>
+    <li class="sub-item"><a href="#radius-sessii-build-323">RADIUS / Сессии</a></li>
+    <li class="sub-item"><a href="#adresa-fias-dadata-build-297-301-324">Адреса / ФИАС / DaData</a></li>
+    <li class="sub-item"><a href="#yur-litsa-sorm-build-290-296">Юр.лица / СОРМ</a></li>
+    <li class="sub-item"><a href="#ux-audit-sprint-12-3-build-289-290">UX Audit Sprint 1+2-3</a></li>
+    <li class="sub-item"><a href="#tarify-uslugi-build-255-288">Тарифы / Услуги</a></li>
+    <li class="sub-item"><a href="#dashbord-build-250-260">Дашборд (build ~250-260)</a></li>
+    <li class="sub-item"><a href="#freeradius-nas-build-258-323">FreeRADIUS / NAS</a></li>
+    <li class="sub-item"><a href="#prochee">Прочее</a></li>
+    <li><a href="#v1-0-0-b37">v1.0.0 — 29 марта 2026</a></li>
+    <li><a href="#nas-deploy">NAS Развёртывание (OSS)</a></li>
+    <li class="sub-item"><a href="#obschaya-shema-raboty">Общая схема работы</a></li>
+    <li class="sub-item"><a href="#pod-vkladki">Под-вкладки</a></li>
+    <li class="sub-item"><a href="#modalnoe-okno-vyvoda-komand">Модальное окно вывода команд</a></li>
+    <li><a href="#oss-tools">OSS утилиты</a></li>
+    <li class="sub-item"><a href="#rtsh-glavnaya-utilita">rtsh — главная утилита</a></li>
+    <li class="sub-item"><a href="#oss-komandy">OSS команды</a></li>
+    <li class="sub-item"><a href="#oss-shemy-44-sht">OSS схемы (44 шт.)</a></li>
+    <li class="sub-item"><a href="#struktura-katalogov-nas">Структура каталогов NAS</a></li>
+    <li class="sub-item"><a href="#docker-konfiguratsiya">Docker конфигурация</a></li>
+    <li><a href="#forms-audit">Аудит форм — Select2 и AJAX</a></li>
+    <li><a href="#fixes-25tasks">Исправления из Telegram-чата (25 задач)</a></li>
   </ul>
 </details>
 </div>
-
-
-  <!-- ═══════════ v3.0.0 — август 2026 ═══════════ -->
+<!-- ═══════════ v3.0.0 — август 2026 ═══════════ -->
   <h2 id="v3-b1798">v3.0.0 — август 2026</h2>
 
   <h3 id="v3b1798-dup">Защита от дублей клиентов</h3>

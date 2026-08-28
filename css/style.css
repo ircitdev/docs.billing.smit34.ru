@@ -2402,3 +2402,9 @@ body.search-open { overflow: hidden; }
   color: var(--primary);
 }
 .doc-figure-cap { display: block; margin-top: 4px; font-size: .86rem; color: var(--text-light); }
+
+/* Содержание раздела: пункт не разрывается между колонками, длинные
+   названия переносятся по словам, а не по буквам */
+.page-toc li { break-inside: avoid; page-break-inside: avoid; overflow-wrap: normal; }
+.page-toc a { word-break: normal; hyphens: none; }
+.page-toc ul ul { columns: 1; margin-top: 2px; }
