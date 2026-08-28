@@ -1533,6 +1533,9 @@ html, body {
   /* contain, не cover: обложка вписывается целиком, без срезанного низа */
   object-fit: contain;
 }
+/* пропорция кадра: пока ролик не загрузился, у <video> нулевая высота —
+   блок схлопывается и постер не показывается */
+.welcome-image video { aspect-ratio: 16 / 9; height: auto; }
 
 /* ═══ Mobile polish (build 214) ═══ */
 @media (max-width: 768px) {
