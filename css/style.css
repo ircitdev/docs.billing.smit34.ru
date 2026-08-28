@@ -381,10 +381,11 @@ a:hover { color: var(--primary-dark); text-decoration: underline; }
 
 /* Sub-items (indented children without nesting) */
 .sidebar nav ul ul.submenu li.sub-item {
-  display: none;
-}
-.sidebar nav ul ul.submenu li.sub-item.visible {
   display: list-item;
+}
+/* подсветка подпунктов активной секции — она же раньше их и показывала */
+.sidebar nav ul ul.submenu li.sub-item.visible > a {
+  color: var(--primary);
 }
 .sidebar nav ul ul.submenu li.sub-item a {
   padding-left: 52px;
