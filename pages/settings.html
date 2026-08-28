@@ -1899,7 +1899,16 @@ flowchart TD
 </table>
 
 <h4 id="bank-statements-imap">IMAP-приёмник и whitelist</h4>
-<p>IMAP-настройки подключаются к SmitMailServ на <code>mail.вашдомен.ru:993</code> (SSL). Ящик <code>bank@вашдомен.ru</code> читает все UNSEEN-письма, сохраняет вложения <code>.csv</code>/<code>.txt</code> в таблицу <code>BankStatementImport</code>. Whitelist отправителей в виде запятой-разделённой строки доменов: <code>@alfabank.ru,@sberbank.ru,@sbrf.ru</code>. Письма от других отправителей игнорируются (статус <code>skipped</code>).</p>
+<p>IMAP-настройки подключаются к SmitMailServ на <code>mail.вашдомен.ru:993</code> (SSL). Ящик <code>bank@billing.вашдомен</code> читает все UNSEEN-письма, сохраняет вложения <code>.csv</code>/<code>.txt</code> в таблицу <code>BankStatementImport</code>. Whitelist отправителей в виде запятой-разделённой строки доменов: <code>@alfabank.ru,@sberbank.ru,@sbrf.ru</code>. Письма от других отправителей игнорируются (статус <code>skipped</code>).</p>
+
+<p><strong>Автонастройка ящика.</strong> Кнопка «Автонастроить ящик» создаёт
+почтовый ящик приёма выписок (по умолчанию <code>bank@billing.smit34.ru</code> —
+на домене почтовой инфраструктуры биллинга, а не на домене ЛК организации),
+прописывает DNS-записи и заполняет IMAP автоматически. Если ящик уже задан в
+<code>IMAP_BANK_USER</code>, берётся его адрес. Когда ящик настроен, блок
+сворачивается в строку «<strong>Ящик bank@billing.smit34.ru настроен для приёма
+выписок</strong>» с кнопкой «Изменить» — поля IMAP скрыты, чтобы не мешать;
+«Изменить» раскрывает их обратно.</p>
 
 <h4 id="bank-statements-telegram">Telegram-алерты по unmatched</h4>
 <p>Celery beat <code>bank-statements-unmatched-alert</code> запускается ежечасно. Если есть pending платежи ≥ <code>BANK_TG_ALERT_MIN</code>, отправляет сводку в чат: список последних 10 платежей (сумма, плательщик, банк, дата) + итоговая сумма + кнопка-ссылка на очередь модерации. Anti-spam: при стабильном количестве pending повторный алерт не отправляется (cache <code>bank_unmatched_alert:last_count</code> TTL 24h).</p>
@@ -2062,9 +2071,15 @@ flowchart LR
   <li>Поиск по плательщику, ИНН, лицевому счёту, назначению, имени и договору клиента, номеру операции</li>
   <li>Диапазон дат через общий компонент выбора периода</li>
   <li>20 / 50 / 100 / 200 строк на странице, постраничная навигация</li>
-  <li>Итог по отфильтрованному: сколько платежей и на какую сумму</li>
+  <li>Итог по отфильтрованному: сколько платежей и на какую сумму. Крупная сумма показана коротко — «1,2 млн ₽», точное значение — во всплывающей подсказке.</li>
   <li>Фильтр по клиенту <code>?abonent=&lt;id&gt;</code> — переход из карточки клиента</li>
 </ul>
+
+<p><strong>Панель управления — в одну строку.</strong> Поиск, выбор периода и размер
+страницы сужены так, чтобы вместе с кнопкой «Применить» и инструментами раздела
+(горячие клавиши, настройка колонок, <strong>«Журнал»</strong> импортов, «Настройки»)
+уместиться в одну линию — раньше эти кнопки стояли отдельным рядом над таблицей.
+Итог по выборке прижат к правому краю той же строки.</p>
 
 <h4 id="bank-audit-2171">Журнал аудита</h4>
 <p>Запись создаётся на каждое изменение: сохранение настроек с перечнем правок (включая выключатель автозачисления), ручной забор писем, повторный разбор импорта, автонастройка почтового ящика, массовые действия, ручная привязка с суммой и плательщиком, генерация документов с указанием организации, приём письма и определение организации.</p>
@@ -2647,8 +2662,8 @@ flowchart LR
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2222)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">28.08.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2222)</span>&nbsp;|&nbsp;<span data-smit="updated">28.08.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2225)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">28.08.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2225)</span>&nbsp;|&nbsp;<span data-smit="updated">28.08.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2222"></script>
