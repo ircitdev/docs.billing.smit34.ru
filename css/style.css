@@ -2380,3 +2380,20 @@ body.search-open { overflow: hidden; }
 .module-cta .module-cta-hint { font-weight: 400; opacity: .75; }
 @media (prefers-reduced-motion: reduce) { .module-cta { transition: none; } }
 @media (max-width: 480px) { .module-cta { width: 100%; justify-content: center; } }
+
+/* ─────────────────────────────────────────────────────────────
+   Числовая врезка: ряд плиток «цифра — подпись».
+   ───────────────────────────────────────────────────────────── */
+.doc-figures {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px; margin: 22px 0;
+}
+.doc-figure {
+  padding: 16px 18px; border: 1px solid var(--border); border-radius: 10px;
+  background: var(--bg-card); text-align: center;
+}
+.doc-figure-num {
+  display: block; font-size: 1.9rem; font-weight: 700; line-height: 1.1;
+  color: var(--primary);
+}
+.doc-figure-cap { display: block; margin-top: 4px; font-size: .86rem; color: var(--text-light); }

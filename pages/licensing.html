@@ -577,6 +577,47 @@
   <!-- ═══ 1. Сервер лицензий ═══ -->
   <h2 id="license-server">1. Сервер лицензий</h2>
 
+<h3 id="licensing-flow">Как лицензия попадает в биллинг</h3>
+<p>Лицензия не «зашита» в код: биллинг спрашивает у сервера лицензий, что клиенту
+разрешено, и включает ровно эти модули. Связь односторонняя — сервер лицензий сам
+в биллинг не ходит.</p>
+
+<pre class="mermaid">
+flowchart LR
+    subgraph LS["Сервер лицензий"]
+        CL["Клиент<br>и договор"]
+        PL["Тариф:<br>состав модулей"]
+        KEY["Лицензионный<br>ключ"]
+    end
+    subgraph B["Биллинг клиента"]
+        CHK["Проверка ключа<br>раз в сутки"]
+        CAT["Каталог модулей<br>кеш 6 часов"]
+        GATE["Гейт модуля<br>is_enabled(код)"]
+        UI["Разделы, вкладки,<br>задачи по расписанию"]
+    end
+    CL --> PL --> KEY
+    KEY -->|"X-License-Key"| CHK
+    CHK --> CAT --> GATE --> UI
+    GATE -->|"не оплачен<br>или выключен"| OFF["Раздел скрыт"]
+</pre>
+
+<div class="info-box">
+  <strong>Две независимые причины, почему модуля нет на экране:</strong> он не входит
+  в оплаченный тариф либо выключен оператором на странице «Модули». В карточке модуля
+  видно и то, и другое.
+</div>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/v2221/license_page.jpg" loading="lazy"
+  alt="Страница «Лицензия и расширения»: слева лицензия, расширения, документы и расход, справа ключ, поддержка, организации и персонал"></p>
+<p class="img-caption">Раздел «Настройки → Лицензия и расширения»: слева — что оплачено и чем занята инсталляция, справа — ключ, поддержка и доступ.</p>
+
+<div class="doc-figures">
+  <div class="doc-figure"><span class="doc-figure-num">24</span><span class="doc-figure-cap">модуля в каталоге</span></div>
+  <div class="doc-figure"><span class="doc-figure-num">4</span><span class="doc-figure-cap">входят во все тарифы</span></div>
+  <div class="doc-figure"><span class="doc-figure-num">22</span><span class="doc-figure-cap">виджета-плагина</span></div>
+  <div class="doc-figure"><span class="doc-figure-num">6 ч</span><span class="doc-figure-cap">кеш каталога</span></div>
+</div>
+
   <table>
     <thead><tr><th>Параметр</th><th>Значение</th></tr></thead>
     <tbody>
@@ -593,6 +634,10 @@
 
   <!-- ═══ 2. Выдача лицензии ═══ -->
   <h2 id="issue-license">2. Выдача новой лицензии</h2>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/v2221/modules_catalog.jpg" loading="lazy"
+  alt="Каталог модулей: карточки с обложкой, версией и тарифами, кнопка «Подробнее»"></p>
+<p class="img-caption">Каталог модулей в биллинге. «Подробнее» открывает карточку с возможностями, порядком работы, скриншотами и историей версий.</p>
 
   <ol>
     <li>Открыть <a href="https://license.billing.smit34.ru/admin/licenses/installation/add/" target="_blank">Добавить лицензию</a></li>
