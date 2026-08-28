@@ -1175,7 +1175,7 @@ backup-коды 2FA; IP-список fail-open при пустоте; авари
 <p>Настройка на странице фискализации — чипы источников. Отмеченный источник попадает
 в очередь чеков, снятый не попадает в неё вовсе.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/fiscal_v2178/fiscal_settings.png" alt="Страница фискализации: выключатель, чипы источников, параметры чека, очередь и список касс" width="1100"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/fiscal_v2191/fiscal_settings.png" alt="Страница фискализации: выключатель, чипы источников, параметры чека, очередь и список касс" width="1100"></p>
 
 <table class="data-table">
   <thead><tr><th>Источник</th><th>Кто пробивает чек</th><th>По умолчанию</th></tr></thead>
@@ -1228,7 +1228,12 @@ backup-коды 2FA; IP-список fail-open при пустоте; авари
 показывает, что именно ждёт отправки. Раньше состояние очереди было видно только строкой
 счётчиков в настройках, без возможности посмотреть содержимое.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/fiscal_v2178/fiscal_queue.png" alt="Очередь чеков: состояния, фильтры, список операций с источником и статусом" width="1100"></p>
+<p>Список построен на единых компонентах: строки подгружаются по мере прокрутки
+(бесконечная загрузка), действия строки собраны в компактное меню, клик по имени клиента
+открывает боковую карточку абонента, а на телефоне строки превращаются в карточки с
+подписями полей. Период задаётся единым выбором дат с пресетами.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/fiscal_v2191/fiscal_queue.png" alt="Очередь чеков: состояния, фильтры, список операций с источником и статусом" width="1100"></p>
 
 <ul>
   <li><strong>Состояния</strong> — «ждут отправки», «ждут ответа ОФД», «с ошибкой»,
@@ -1251,9 +1256,20 @@ backup-коды 2FA; IP-список fail-open при пустоте; авари
   отправки отчёта»; канал — «chat_id группы», по умолчанию общий админ-чат).</li>
 </ul>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/fiscal_v2178/fiscal_queue_dark.png" alt="Очередь чеков в тёмной теме" width="1100"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/fiscal_v2191/fiscal_queue_dark.png" alt="Очередь чеков в тёмной теме" width="1100"></p>
 
 <h5>Как работает (поток чека)</h5>
+
+<pre class="mermaid">
+flowchart LR
+  A["Приём оплаты<br/>банковская выписка"] --> B{"Источник<br/>подлежит?"}
+  B -->|"нет — агрегатор"| X["Пропуск: чек бьёт<br/>ЮKassa / Wallet One"]
+  B -->|"да — свой безнал"| C["Движок:<br/>состав чека 54-ФЗ"]
+  C --> D["Очередь чеков"]
+  D --> E["АТОЛ → ОФД"]
+  E -->|"done"| F["Чек клиенту<br/>e-mail / SMS / ЛК"]
+  E -->|"fail"| G["Авто-повтор →<br/>Telegram-алерт"]
+</pre>
 
 <ol>
   <li><strong>Приём оплаты</strong> — зачисление банковской выписки создаёт финоперацию.</li>
@@ -1289,12 +1305,17 @@ backup-коды 2FA; IP-список fail-open при пустоте; авари
 логин и пароль, организация, ИНН, место расчётов, система налогообложения, e-mail
 продавца и флаг тестового сервера.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/fiscal_v2178/fiscal_kassa_modal.png" alt="Карточка кассы: доступ к ОФД, организация, налогообложение" width="900"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/fiscal_v2191/fiscal_kassa_modal.png" alt="Карточка кассы: доступ к ОФД, организация, налогообложение" width="900"></p>
 
 <ul>
   <li><strong>Организация</strong> — чей чек пробивает касса. По 54-ФЗ касса привязана к
   ИНН юрлица, поэтому у каждой организации должна быть своя. Касса без организации
-  служит запасной для тех, у кого своей нет.</li>
+  служит запасной для тех, у кого своей нет. Реквизиты продавца (название, ИНН, НДС)
+  правятся в карточке организации на вкладке «Реквизиты» — карандаш рядом со строкой
+  реквизитов ведёт туда напрямую.</li>
+  <li><strong>Боевой режим кассы</strong> и <strong>источники кассы</strong> — у каждой
+  кассы свой выключатель и свой набор источников. По умолчанию касса наследует общие
+  настройки; можно переопределить, когда у разных организаций разный статус.</li>
   <li><strong>ИНН</strong> — 10 цифр для юрлица, 12 для ИП; должен совпадать с ИНН
   компании, иначе чек-лист покажет расхождение.</li>
   <li><strong>Место расчётов</strong> — тег 1187. Для расчётов через интернет туда идёт
@@ -1308,6 +1329,22 @@ backup-коды 2FA; IP-список fail-open при пустоте; авари
 <p>В списке касс колонка <strong>«Состояние»</strong> показывает, чего кассе не хватает
 («нет: логин, пароль, группа ККТ») или что ИНН расходится с компанией — без открытия
 карточки.</p>
+
+<h5>Боевой режим: общий и по кассе</h5>
+
+<p>Чек уходит в ОФД, только когда включён <strong>и общий рубильник</strong>
+(<code>FISCAL_ENABLED</code>), <strong>и боевой режим кассы</strong> организации платежа.
+Касса без явного флага наследует общий — так одна касса работает как раньше, а у
+нескольких организаций режим и источники независимы.</p>
+
+<pre class="mermaid">
+flowchart TD
+  S{"Общий рубильник<br/>FISCAL_ENABLED"} -->|"выключен"| N["Чек не уходит"]
+  S -->|"включён"| K{"Режим кассы<br/>организации"}
+  K -->|"наследует общий"| Y["Чек уходит в ОФД"]
+  K -->|"включён"| Y
+  K -->|"выключен"| N
+</pre>
 
 <h5>Права и журнал</h5>
 <ul>
@@ -2202,8 +2239,8 @@ flowchart LR
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2181)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">26.08.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2181)</span>&nbsp;|&nbsp;<span data-smit="updated">26.08.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2194)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">28.08.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2194)</span>&nbsp;|&nbsp;<span data-smit="updated">28.08.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2193"></script>
