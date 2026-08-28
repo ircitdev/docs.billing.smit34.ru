@@ -1529,8 +1529,8 @@ html, body {
   display: block;
   width: 100%;
   height: auto;
-  /* обложка рисуется целиком: cover с ограничением высоты срезал
-     у иллюстраций низ вместе с подписями */
+  max-height: 500px;
+  /* contain, не cover: обложка вписывается целиком, без срезанного низа */
   object-fit: contain;
 }
 
