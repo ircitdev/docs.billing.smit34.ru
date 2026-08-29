@@ -944,6 +944,7 @@
     <li class="sub-item"><a href="#bank-parsers">6.4.2. Банки и парсеры</a></li>
     <li class="sub-item"><a href="#bank-queue">6.4.3. Очередь модерации</a></li>
     <li class="sub-item"><a href="#bank-imports">6.4.4. Журнал импортов</a></li>
+    <li class="sub-item" style="padding-left:1.8em"><a href="#bank-ux-2240"><i class="ti ti-sparkles" aria-hidden="true"></i> — UX-полировка и единые компоненты</a></li>
     <li class="sub-item"><a href="#mailserver">6.4.5. Почтовый сервер (SmitMailServ)</a></li>
     <li class="sub-item"><a href="#dns">6.4.5А. Домены и DNS (Cloudflare)</a></li>
     <li class="sub-item"><a href="#mail-provisioning">6.4.6. Автонастройка почтовых ящиков и DNS</a></li>
@@ -2174,6 +2175,19 @@ flowchart LR
 </ul>
 <p>Если у юр.лица оба флага OFF — документы не генерируются даже при <code>BANK_AUTO_GENERATE_DOCS=true</code>. Если <code>next_auto_acount</code> не задан, используется fallback на <code>BANK_DOC_DEFAULT_SEND_DAY</code> (день месяца).</p>
 
+<h4 id="bank-ux-2240">UX-полировка и единые компоненты (builds 2233–2240)</h4>
+<p>Раздел прошёл UX-аудит (методика IxDF) и приведён к единому набору компонентов проекта. Все четыре страницы (Настройки · Банки и парсеры · Очередь модерации · Журнал импортов) теперь используют одни и те же элементы интерфейса, без собственных «одноразовых» реализаций.</p>
+<ul>
+  <li><strong>Единые табличные компоненты.</strong> И очередь, и <em>журнал импортов</em> построены на <code>SmitTable</code>: порядок, ширина и видимость колонок настраиваются кнопкой «Колонки» и сохраняются в профиле сотрудника, а не в браузере; на телефоне строки автоматически становятся карточками с подписями полей. Полоса статусов — <code>SmitChipBar</code>, панель массовых действий — <code>SmitBulkBar</code> (появляется только при выборе), выбор периода — <code>SmitDateRange</code>, бейдж организации — <code>OrgBadge</code>, всплывающие уведомления — <code>SmitToast</code>, пустые состояния — <code>smit-empty</code>.</li>
+  <li><strong>Единые подтверждения.</strong> Все диалоги подтверждения переведены на <code>SmitConfirm</code> (корректная тёмная тема, мобильная слайд-панель, явный список последствий). Нативных <code>window.confirm()</code> в разделе не осталось — включая опасное «Забрать сейчас».</li>
+  <li><strong>Тёмная тема — контраст.</strong> Приглушённые подписи (итоги, пейджер, мета-строки) приведены к контрасту не ниже WCAG AA: было ~3.2:1 на <code>#6c757d</code>, стало ~6:1 на <code>#9aa6b2</code> в очереди, настройках и журнале.</li>
+  <li><strong>Превью документов — только в облаке.</strong> Превью PDF счёта/акта загружается в GCS и отдаётся редиректом на подписанный URL (правило проекта «файлы только в GCS»); локальная отдача из <code>/var/db</code> осталась fallback'ом при выключенной (<code>BANK_DOC_UPLOAD_GCS=false</code>) или недоступной GCS-загрузке.</li>
+  <li><strong>Защита от каскадного пробития чеков.</strong> «Забрать сейчас» при одновременно включённых автозачислении (<code>BANK_AUTO_CREDIT_ENABLED</code>) и боевом режиме (<code>FISCAL_ENABLED</code>) требует явного подтверждения: забор писем каскадом зачисляет платежи и пробивает фискальные чеки в ОФД — это необратимо. Осознанное подтверждение отдельно фиксируется в журнале аудита.</li>
+</ul>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_ux_v2240/bank_queue.png" alt="Банковские выписки — очередь модерации (единые компоненты)" loading="lazy"></p>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_ux_v2240/bank_imports_columns.png" alt="Журнал импортов на SmitTable — настройка колонок" loading="lazy"></p>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_ux_v2240/bank_pull_confirm.png" alt="SmitConfirm — подтверждение опасного забора писем" loading="lazy"></p>
+
 <h3 id="mailserver">6.4.5. Почтовый сервер (SmitMailServ)</h3>
 <p><strong>URL:</strong> <code>/admin/settings/mailserver/</code> — управление собственным почтовым сервером <strong>SmitMailServ</strong>, развёрнутым на хосте <code>mail.вашдомен.ru</code>. Операции с ящиками и доменами доступны из биллинга через API <code>https://mail.вашдомен.ru/api/v1/</code>.</p>
 
@@ -2662,8 +2676,8 @@ flowchart LR
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2225)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">28.08.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2225)</span>&nbsp;|&nbsp;<span data-smit="updated">28.08.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2242)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">29.08.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2242)</span>&nbsp;|&nbsp;<span data-smit="updated">29.08.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2222"></script>

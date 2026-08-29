@@ -1437,7 +1437,55 @@ flowchart LR
     </ul>
   </li>
 </ul>
-<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/multiorg_v1155/01_org_list.jpg" alt="Список организаций" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/multiorg_v2242/01_list.jpg" loading="lazy"
+  alt="Страница «Организации»: список компаний, статус, реквизиты, почта и платежи"></p>
+<p class="img-caption">Список компаний. В шапке — переход к лицензии, модулям и виджетам,
+настройка состава колонок и добавление организации.</p>
+
+<h3 id="multi-org-page">Страница «Организации»</h3>
+<p>Раздел открывается по адресу <code>/admin/settings/organizations/</code> и доступен
+только суперпользователю: здесь задаются сами компании, их реквизиты и каналы связи.</p>
+
+<ul>
+  <li><strong>Шапка.</strong> Слева — тариф и число организаций с лимитом (ссылка ведёт
+  в «Лицензию»), справа — кнопки «Управление лицензией», «Модули», «Виджеты»,
+  настройка колонок и «Организация» для добавления новой. Когда лимит тарифа
+  исчерпан, кнопка добавления неактивна и объясняет причину.</li>
+  <li><strong>Таблица.</strong> Название компании показывается фирменным бейджем —
+  иконка и акцентный цвет берутся из брендинга. Дальше идут домен личного кабинета,
+  число клиентов, статус, заполненность реквизитов (полностью / частично с счётчиком /
+  пусто), наличие Telegram-бота, почта и платёжные системы. Состав и порядок колонок
+  настраиваются и запоминаются в профиле сотрудника.</li>
+  <li><strong>Действия в строке</strong> — брендинг, редактирование и деактивация.
+  Деактивация спрашивает подтверждение и перечисляет последствия: компания исчезает
+  из выбора и фильтров, данные и документы сохраняются, действие пишется в аудит.</li>
+</ul>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/multiorg_v2242/02_panel_req.jpg" loading="lazy"
+  alt="Карточка организации, вкладка «Реквизиты»: ИНН, КПП, банковские данные"></p>
+<p class="img-caption">Карточка открывается боковой панелью справа. «Сохранить»
+остаётся неактивной, пока в форме ничего не изменено.</p>
+
+<h4 id="multi-org-mobile">На телефоне</h4>
+<p>Список превращается в карточки: каждая строка — компания с подписанными полями,
+без горизонтальной прокрутки. Кнопки шапки сжимаются до иконок, настройка колонок
+скрыта — в карточках настраивать нечего.</p>
+
+<div class="screenshot-pair">
+  <figure>
+    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/multiorg_v2242/03_mobile_cards.jpg" loading="lazy"
+      alt="Список организаций на телефоне: карточки с подписями полей">
+    <figcaption>Список — карточками</figcaption>
+  </figure>
+  <figure>
+    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/multiorg_v2242/04_mobile_panel.jpg" loading="lazy"
+      alt="Карточка организации на телефоне: панель на весь экран, вкладки в одну строку">
+    <figcaption>Панель на весь экран</figcaption>
+  </figure>
+</div>
+
+<p>Вкладки панели умещаются в одну строку: «Основное» и «Брендинг» остаются подписями,
+«Реквизиты», «Платежи», почта и Telegram показываются иконками.</p>
 
 <h3 id="multi-org-credit">Платежи и выручка по организации</h3>
 <p>Каждая компания принимает оплату <strong>на свой счёт через свою кассу</strong>. На вкладке «Платежи» в карточке организации задаются её YooKassa (Shop ID / секретный ключ / SCID), Wallet One и расчётный счёт приёма оплат (модель <code>OrgPaymentSettings</code>). Если у организации касса не задана — используются общие настройки провайдера (СмИТ).</p>
@@ -2066,8 +2114,8 @@ flowchart LR
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2225)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">28.08.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2225)</span>&nbsp;|&nbsp;<span data-smit="updated">28.08.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2242)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">29.08.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2242)</span>&nbsp;|&nbsp;<span data-smit="updated">29.08.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2222"></script>
