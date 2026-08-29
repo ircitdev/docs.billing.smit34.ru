@@ -2385,6 +2385,15 @@ body.search-open { overflow: hidden; }
 .module-cta .module-cta-hint { font-weight: 400; opacity: .75; }
 @media (prefers-reduced-motion: reduce) { .module-cta { transition: none; } }
 @media (max-width: 480px) { .module-cta { width: 100%; justify-content: center; } }
+/* На телефоне подпись «— на сайте продукта» не помещается и разбивает кнопку
+   на две строки. Убираем её с экрана, но оставляем скринридеру: без неё не
+   слышно, что ссылка уводит с сайта документации. */
+@media (max-width: 575.98px) {
+  .module-cta .module-cta-hint {
+    position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+    border: 0; overflow: hidden; white-space: nowrap; clip-path: inset(50%);
+  }
+}
 
 /* ─────────────────────────────────────────────────────────────
    Числовая врезка: ряд плиток «цифра — подпись».
