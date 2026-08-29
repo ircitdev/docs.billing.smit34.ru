@@ -1818,7 +1818,14 @@ html, body {
   counter-reset: di;
   flex: 1;
 }
-.docs-island-list li { counter-increment: di; margin: 0; }
+.docs-island-list li { margin: 0; }
+.docs-island-list li.di-l2 { counter-increment: di; }
+/* Подпункты — только у текущего раздела: на странице-сборнике их полторы
+   сотни, показывать все сразу нет смысла. */
+.docs-island-list li.di-l3 { display: none; }
+.docs-island-list li.di-l3.is-shown { display: block; }
+.docs-island-list li.di-l3 a { padding-left: 16px; font-size: .8rem; }
+.docs-island-list li.di-l3 a::before { content: '·'; font-size: .9rem; }
 .docs-island-list a {
   display: flex;
   align-items: center;

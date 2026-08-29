@@ -480,17 +480,25 @@ document.addEventListener('DOMContentLoaded', function () {
     var h2list = Array.prototype.slice.call(
       document.querySelectorAll('.content h2[id]')
     );
-    var headings = h2list.length >= 3 ? h2list : Array.prototype.slice.call(
+    var headings = Array.prototype.slice.call(
       document.querySelectorAll('.content h2[id], .content h3[id]')
     );
     if (headings.length < 3) return;  // слишком мало разделов — остров не нужен
 
-    // entries: { id, el, label } — пункты навигации (для scrollspy/прогресса)
+    // Уровень пункта. Если h2 мало (страница с одним заголовком и h3-разделами)
+    // — разделами считаются все, вложенности нет.
+    var flat = h2list.length < 3;
+
+    // entries: { id, el, label, lvl } — пункты навигации (scrollspy/прогресс)
     var entries = headings.map(function (h) {
-      return { id: h.id, el: h, label: headingText(h) };
+      return {
+        id: h.id, el: h, label: headingText(h),
+        lvl: (flat || h.tagName === 'H2') ? 2 : 3
+      };
     });
     var listHtml = entries.map(function (it) {
-      return '<li><a href="#' + it.id + '">' + esc(it.label) + '</a></li>';
+      return '<li class="di-l' + it.lvl + '">' +
+             '<a href="#' + it.id + '">' + esc(it.label) + '</a></li>';
     }).join('');
 
     // --- Разметка острова (создаётся скриптом, HTML-страницы не трогаем) ---
@@ -580,37 +588,78 @@ document.addEventListener('DOMContentLoaded', function () {
     updateProgress();
 
     // --- Scrollspy: подсветка активного раздела ---
+    // индекс корневого раздела (h2) для пункта — от него зависит нумерация
+    // в пилюле и то, какие подпункты раскрыты
+    function rootOf(idx) {
+      while (idx > 0 && entries[idx].lvl > 2) idx--;
+      return idx;
+    }
+    // номер раздела = порядковый среди корневых, как в списке
+    var rootNum = {};
+    var num = 0;
+    entries.forEach(function (it, i) {
+      if (it.lvl === 2) num++;
+      rootNum[i] = num || 1;
+    });
+
+    var activeId = null;
     function setActive(id) {
-      var activeLink = null;
-      links.forEach(function (l) {
-        var on = l.getAttribute('href') === '#' + id;
-        l.classList.toggle('active', on);
-        if (on) activeLink = l;
+      if (id === activeId) return;
+      var idx = -1;
+      entries.forEach(function (it, i) { if (it.id === id) idx = i; });
+      if (idx < 0) return;
+      activeId = id;
+      var rootId = entries[rootOf(idx)].id;
+      links.forEach(function (l, i) {
+        l.classList.toggle('active', i === idx);
+        if (entries[i].lvl === 3) {
+          // подпункты видны только у текущего раздела — иначе стена ссылок
+          l.parentNode.classList.toggle('is-shown',
+            entries[rootOf(i)].id === rootId);
+        }
       });
-      if (!activeLink) return;
-      var idx = links.indexOf(activeLink) + 1;
-      numEl.textContent = idx < 10 ? '0' + idx : String(idx);
-      labelEl.textContent = activeLink.textContent;
+      var n2 = rootNum[idx];
+      numEl.textContent = n2 < 10 ? '0' + n2 : String(n2);
+      labelEl.textContent = entries[idx].label;
       if (island.classList.contains('open')) {
-        activeLink.scrollIntoView({ block: 'nearest' });
+        links[idx].scrollIntoView({ block: 'nearest' });
       }
     }
-    // Стартовое значение — первый раздел
-    setActive(entries[0].id);
 
-    if ('IntersectionObserver' in window) {
-      var obs = new IntersectionObserver(function (obsEntries) {
-        var topMost = null;
-        obsEntries.forEach(function (entry) {
-          if (entry.isIntersecting &&
-              (!topMost || entry.boundingClientRect.top < topMost.boundingClientRect.top)) {
-            topMost = entry;
-          }
-        });
-        if (topMost) setActive(topMost.target.id);
-      }, { rootMargin: '-64px 0px -55% 0px', threshold: 0 });
-      entries.forEach(function (it) { obs.observe(it.el); });
+    // Активный раздел — последний заголовок, ушедший выше линии чтения.
+    // По пересечению это не определить: у якорной ссылки заголовок попадает
+    // в отрезанную верхнюю полосу, а внутри длинного раздела заголовков в
+    // полосе нет вовсе — подсветка застревала на первом пункте.
+    function pickActive() {
+      var line = 88;  // шапка + запас
+      var best = entries[0].id;
+      for (var i = 0; i < entries.length; i++) {
+        if (entries[i].el.getBoundingClientRect().top <= line) best = entries[i].id;
+        else break;
+      }
+      // страница домотана до низа — активен последний раздел
+      if (window.innerHeight + window.pageYOffset >=
+          document.documentElement.scrollHeight - 2) {
+        best = entries[entries.length - 1].id;
+      }
+      setActive(best);
     }
+    // Троттлинг по времени: requestAnimationFrame в фоновой вкладке не
+    // вызывается, и флаг «кадр запрошен» залипал бы навсегда.
+    var spyLast = 0, spyTimer = null;
+    function pickActiveSoon() {
+      var now = Date.now();
+      clearTimeout(spyTimer);
+      if (now - spyLast > 100) { spyLast = now; pickActive(); }
+      else {
+        spyTimer = setTimeout(function () { spyLast = Date.now(); pickActive(); }, 100);
+      }
+    }
+    window.addEventListener('scroll', pickActiveSoon, { passive: true });
+    window.addEventListener('resize', pickActiveSoon);
+    window.addEventListener('hashchange', pickActive);
+    pickActive();
+    setTimeout(pickActive, 250);
   })();
   /* ── Правый рельс «На этой странице» ──────────────────────────────────
    * На длинной странице оглавление в начале уезжает после первой прокрутки,
@@ -669,18 +718,42 @@ document.addEventListener('DOMContentLoaded', function () {
       if (act) act.scrollIntoView({ block: 'nearest' });
     }
 
-    activate(items[0].id);
-    if ('IntersectionObserver' in window) {
-      var obs = new IntersectionObserver(function (entries) {
-        var top = null;
-        entries.forEach(function (e) {
-          if (e.isIntersecting &&
-              (!top || e.boundingClientRect.top < top.boundingClientRect.top)) top = e;
-        });
-        if (top) activate(top.target.id);
-      }, { rootMargin: '-70px 0px -60% 0px', threshold: 0 });
-      items.forEach(function (it) { obs.observe(it.el); });
+    // Активный пункт — последний заголовок, ушедший выше линии чтения.
+    // По пересечению это не определить: заголовок, к которому перешли по
+    // якорю, попадает в отрезанную верхнюю полосу, а внутри длинного
+    // раздела заголовков в полосе нет вовсе.
+    var railActive = null;
+    function pickRail() {
+      var line = 88;
+      var best = items[0].id;
+      for (var i = 0; i < items.length; i++) {
+        if (items[i].el.getBoundingClientRect().top <= line) best = items[i].id;
+        else break;
+      }
+      if (window.innerHeight + window.pageYOffset >=
+          document.documentElement.scrollHeight - 2) {
+        best = items[items.length - 1].id;
+      }
+      if (best === railActive) return;
+      railActive = best;
+      activate(best);
     }
+    // Троттлинг по времени: requestAnimationFrame в фоновой вкладке не
+    // вызывается, и флаг «кадр запрошен» залипал бы навсегда.
+    var railLast = 0, railTimer = null;
+    function pickRailSoon() {
+      var now = Date.now();
+      clearTimeout(railTimer);
+      if (now - railLast > 100) { railLast = now; pickRail(); }
+      else {
+        railTimer = setTimeout(function () { railLast = Date.now(); pickRail(); }, 100);
+      }
+    }
+    window.addEventListener('scroll', pickRailSoon, { passive: true });
+    window.addEventListener('resize', pickRailSoon);
+    window.addEventListener('hashchange', pickRail);
+    pickRail();
+    setTimeout(pickRail, 250);
   })();
 
   /* ── Соседние разделы внизу страницы ──────────────────────────────────
