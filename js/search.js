@@ -28,6 +28,21 @@
     'contacts': 'Контакты'
   };
 
+  // Иконка раздела — та же, что у него в боковой навигации: подсказка и
+  // навигация должны опознаваться одним и тем же значком.
+  var PAGE_ICONS = {
+    'index': 'ti-home', 'dashboard': 'ti-layout-dashboard', 'abonents': 'ti-users',
+    'abonent-card': 'ti-id', 'tariffs': 'ti-receipt', 'dictionaries': 'ti-book',
+    'equipment': 'ti-broadcast', 'nas-equipment': 'ti-server', 'reports': 'ti-chart-bar',
+    'settings': 'ti-settings', 'settings-services': 'ti-plug', 'extras': 'ti-apps',
+    'lk': 'ti-device-mobile', 'crm': 'ti-briefcase', 'helpdesk': 'ti-headset',
+    'sorm': 'ti-shield-lock', 'stock': 'ti-packages', 'video': 'ti-device-cctv',
+    'landing': 'ti-browser', 'api': 'ti-link', 'server': 'ti-server',
+    'installation': 'ti-box', 'licensing': 'ti-file-description',
+    'troubleshooting': 'ti-tool', 'changelog': 'ti-history', 'contacts': 'ti-phone',
+    'billing': 'ti-file-text'
+  };
+
   function loadIndex() {
     if (INDEX) return Promise.resolve(INDEX);
     if (loading) return loading;
@@ -54,7 +69,8 @@
   var SYNONYMS = {
     'радиус': 'radius', 'сорм': 'sorm', 'биллинг': 'billing',
     'апи': 'api', 'црм': 'crm', 'смс': 'sms', 'вайфай': 'wi-fi',
-    'юкасса': 'yookassa', 'телеграм': 'telegram', 'айпи': 'ip'
+    'юкасса': 'yookassa', 'телеграм': 'telegram', 'айпи': 'ip',
+    'вебхук': 'webhook', 'дашборд': 'dashboard', 'логин': 'login'
   };
 
   // Отсечение окончания: «блокировка» и «блокировки» — одно и то же слово.
@@ -80,6 +96,7 @@
       file: file,
       anchor: item.anchor || item.id || '',
       page: item.p || PAGE_NAMES[slug] || slug,
+      icon: PAGE_ICONS[slug] || 'ti-file-text',
       ftitle: fold(title),
       fctx: fold(ctx),
       fpage: fold(item.p || PAGE_NAMES[slug] || slug)
@@ -166,15 +183,16 @@
     var at = -1;
     for (var i = 0; i < terms.length && at < 0; i++) at = n.fctx.indexOf(terms[i]);
     var text;
+    // Ведущее многоточие убрано: строка и так начинается с обрыва, а лишний
+    // символ шумит в каждом результате.
     if (at >= 0) {
-      var start = Math.max(0, at - 40);
-      var end = Math.min(n.ctx.length, at + 100);
-      text = (start > 0 ? '…' : '') + n.ctx.substring(start, end) +
-             (end < n.ctx.length ? '…' : '');
+      var start = Math.max(0, at - 30);
+      var end = Math.min(n.ctx.length, at + 80);
+      text = n.ctx.substring(start, end) + (end < n.ctx.length ? '…' : '');
     } else {
-      text = n.ctx.substring(0, 110) + (n.ctx.length > 110 ? '…' : '');
+      text = n.ctx.substring(0, 90) + (n.ctx.length > 90 ? '…' : '');
     }
-    return '<div class="docs-sr-ctx">' + highlight(text, terms) + '</div>';
+    return highlight(text, terms);
   }
 
   function render(found, terms, results, totalCount) {
@@ -186,10 +204,14 @@
     var html = '';
     for (var j = 0; j < found.length; j++) {
       var n = found[j];
+      var ctx = snippetOf(n, terms);
       html += '<a href="' + buildHref(n) + '" class="docs-sr-item">'
-        + '<div class="docs-sr-section">' + escH(n.page) + '</div>'
-        + '<div class="docs-sr-title">' + highlight(n.title, terms) + '</div>'
-        + snippetOf(n, terms) + '</a>';
+        + '<span class="docs-sr-ico"><i class="ti ' + n.icon + '" aria-hidden="true"></i></span>'
+        + '<span class="docs-sr-main">'
+        + '<span class="docs-sr-title">' + highlight(n.title, terms) + '</span>'
+        + '<span class="docs-sr-ctx"><b class="docs-sr-sec">' + escH(n.page) + '</b>'
+        + (ctx ? ' · ' + ctx : '') + '</span>'
+        + '</span></a>';
     }
     if (totalCount > found.length) {
       html += '<div class="docs-sr-more">Показано ' + found.length +
