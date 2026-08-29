@@ -15,8 +15,18 @@ document.addEventListener('DOMContentLoaded', function () {
   // --- Theme toggle ---
   var html = document.documentElement;
   var saved = localStorage.getItem('smit-docs-theme');
-  var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  var mq = window.matchMedia('(prefers-color-scheme: dark)');
+  var theme = saved || (mq.matches ? 'dark' : 'light');
   html.setAttribute('data-theme', theme);
+
+  // Пока пользователь не выбрал тему сам, документация следует за системой —
+  // в том числе если та переключается на ходу (по расписанию дня и ночи).
+  var onSystemTheme = function (e) {
+    if (localStorage.getItem('smit-docs-theme')) return;
+    html.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+  };
+  if (mq.addEventListener) mq.addEventListener('change', onSystemTheme);
+  else if (mq.addListener) mq.addListener(onSystemTheme);
 
   var toggleBtn = document.querySelector('.theme-toggle');
   if (toggleBtn) {

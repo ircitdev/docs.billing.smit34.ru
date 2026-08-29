@@ -2,6 +2,18 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
+  <script>
+    /* Тема ставится до отрисовки: иначе на каждой загрузке мелькает
+       светлая, даже когда в системе выбрана тёмная. */
+    (function () {
+      try {
+        var t = localStorage.getItem('smit-docs-theme');
+        if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+    })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Лицензирование — СмИТ Биллинг</title>
   <meta property="og:type" content="website">
@@ -19,7 +31,7 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Порядок поставки ПО, решение проблем с оплатой, акты сверки, работа системы при неоплате.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=2256">
+  <link rel="stylesheet" href="../css/style.css?v=2259">
   <link rel="stylesheet" href="../css/search.css?v=2257">
   <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css?v=2193">
 </head>
@@ -1159,7 +1171,7 @@ flowchart LR
   <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full"></span>&nbsp;|&nbsp;<span data-smit="updated">29.08.2026</span></span>
 </footer>
 
-<script src="../js/main.js?v=2258"></script>
+<script src="../js/main.js?v=2259"></script>
 <script src="../js/version.js"></script>
 <script src="../js/mermaid-init.js?v=2193"></script>
 <script src="../js/markmap-init.js?v=2193"></script>
