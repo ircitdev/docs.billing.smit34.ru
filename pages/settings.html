@@ -1784,6 +1784,29 @@ flowchart TD
 <p>Настройка приёма онлайн-платежей: через что клиент платит из личного кабинета и мобильного
 приложения, какая берётся комиссия и с каких адресов принимается webhook.</p>
 
+<figure class="doc-video">
+  <div class="dv-head">
+    <span class="dv-kind"><i class="ti ti-player-play-filled" aria-hidden="true"></i> Обучающее видео</span>
+    <span class="dv-time">3:03</span>
+  </div>
+  <div class="dv-media">
+    <video controls preload="none" playsinline poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/payment-systems-training-poster.jpg">
+        <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/payment-systems-training.mp4" type="video/mp4">
+        Ваш браузер не проигрывает видео —
+        <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/payment-systems-training.mp4">скачайте файл</a>.
+      </video>
+  </div>
+  <figcaption>
+    <p class="dv-desc">Как настроить приём онлайн-оплат: общие настройки и кассы организаций, активная система и комиссия, секретные ключи, проверка подключения, безопасность вебхука и работа с телефона.</p>
+    <div class="dv-foot">
+      <span class="dv-spec">1920×1080</span>
+      <span class="dv-spec">с озвучкой</span>
+      <a class="dv-download" href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/payment-systems-training.mp4" target="_blank" rel="noopener" aria-label="Скачать видеофайл"><i class="ti ti-download" aria-hidden="true"></i> Скачать</a>
+    </div>
+  </figcaption>
+</figure>
+
+
 <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/payment_settings_v2243/01_global_dark.png" alt="Платёжные системы — общие настройки"></p>
 
 <h4 id="payment-scopes">Наборы настроек: общие и кассы организаций</h4>
@@ -2265,7 +2288,7 @@ flowchart LR
 </ul>
 <p>Если у юр.лица оба флага OFF — документы не генерируются даже при <code>BANK_AUTO_GENERATE_DOCS=true</code>. Если <code>next_auto_acount</code> не задан, используется fallback на <code>BANK_DOC_DEFAULT_SEND_DAY</code> (день месяца).</p>
 
-<h4 id="bank-ux-2240">UX-полировка и единые компоненты (builds 2233–2240)</h4>
+<h4 id="bank-ux-2240">UX-полировка и единые компоненты (builds 2233–2250)</h4>
 <p>Раздел прошёл UX-аудит (методика IxDF) и приведён к единому набору компонентов проекта. Все четыре страницы (Настройки · Банки и парсеры · Очередь модерации · Журнал импортов) теперь используют одни и те же элементы интерфейса, без собственных «одноразовых» реализаций.</p>
 <ul>
   <li><strong>Единые табличные компоненты.</strong> И очередь, и <em>журнал импортов</em> построены на <code>SmitTable</code>: порядок, ширина и видимость колонок настраиваются кнопкой «Колонки» и сохраняются в профиле сотрудника, а не в браузере; на телефоне строки автоматически становятся карточками с подписями полей. Полоса статусов — <code>SmitChipBar</code>, панель массовых действий — <code>SmitBulkBar</code> (появляется только при выборе), выбор периода — <code>SmitDateRange</code>, бейдж организации — <code>OrgBadge</code>, всплывающие уведомления — <code>SmitToast</code>, пустые состояния — <code>smit-empty</code>.</li>
@@ -2273,11 +2296,15 @@ flowchart LR
   <li><strong>Тёмная тема — контраст.</strong> Приглушённые подписи (итоги, пейджер, мета-строки) приведены к контрасту не ниже WCAG AA: было ~3.2:1 на <code>#6c757d</code>, стало ~6:1 на <code>#9aa6b2</code> в очереди, настройках и журнале.</li>
   <li><strong>Превью документов — только в облаке.</strong> Превью PDF счёта/акта загружается в GCS и отдаётся редиректом на подписанный URL (правило проекта «файлы только в GCS»); локальная отдача из <code>/var/db</code> осталась fallback'ом при выключенной (<code>BANK_DOC_UPLOAD_GCS=false</code>) или недоступной GCS-загрузке.</li>
   <li><strong>Защита от каскадного пробития чеков.</strong> «Забрать сейчас» при одновременно включённых автозачислении (<code>BANK_AUTO_CREDIT_ENABLED</code>) и боевом режиме (<code>FISCAL_ENABLED</code>) требует явного подтверждения: забор писем каскадом зачисляет платежи и пробивает фискальные чеки в ОФД — это необратимо. Осознанное подтверждение отдельно фиксируется в журнале аудита.</li>
-  <li><strong>Мобильная адаптация.</strong> На телефоне списки очереди, журнала и парсеров превращаются в карточки (данные не прячутся за горизонтальным скроллом). Кнопки и карточки статистики на странице настроек раскрываются на всю ширину, длинные подписи сокращены («Очередь», «Журнал», «Забрать»). В очереди и журнале фильтры сворачиваются в кнопку «Фильтры», кнопка «Колонки» на телефоне скрыта; на странице парсеров кнопка добавления — компактный «+».</li>
+  <li><strong>Мобильная адаптация.</strong> На телефоне списки очереди, журнала и парсеров превращаются в карточки (данные не прячутся за горизонтальным скроллом). Кнопки и карточки статистики на странице настроек раскрываются на всю ширину, длинные подписи сокращены («Очередь», «Журнал», «Забрать»). Кнопки действий в карточках — не меньше 44×44 px (удобно попасть пальцем).</li>
+  <li><strong>Единые мобильные фильтры (build 2250).</strong> В очереди и журнале фильтры на телефоне сворачиваются в единый компонент <em>SmitMobileFilters</em> — кнопку «Фильтры» со счётчиком активных фильтров, открывающую нижнюю панель (bottom-sheet). «Колонки» и справка на телефоне скрываются, а «Журнал»/«Настройки»/«Применить» остаются на виду. На странице парсеров кнопка добавления — компактный «+».</li>
+  <li><strong>Сквозной drill-down до чека ОФД (build 2249).</strong> У зачисленной операции в очереди рядом со ссылкой «FinOp #N» появилась прямая ссылка на кассовый чек в ОФД (54-ФЗ) и индикатор статуса пробития (ожидает / ошибка). Цепочка навигации замкнута: письмо-импорт ↔ очередь → финансовая операция → чек ОФД (карточка финоперации, в свою очередь, показывает чек и обратную ссылку на банковскую операцию).</li>
+  <li><strong>Привязка платежа — раскрытием строки (по образцу Xero).</strong> На широком экране кнопка «Привязать» не открывает модальное окно, а раскрывает строку-аккордеон прямо под операцией: там карточка платежа (сумма, дата, плательщик, ИНН, назначение), поле поиска клиента (ФИО / договор / телефон / e-mail / ИНН / ID) с подсказками-кнопками из назначения платежа и подтверждением перед зачислением. На телефоне (&lt; 768 px) — то же в виде модалки / слайд-панели.</li>
 </ul>
 <p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_ux_v2240/bank_queue.png" alt="Банковские выписки — очередь модерации (единые компоненты)" loading="lazy"></p>
 <p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_ux_v2240/bank_imports_columns.png" alt="Журнал импортов на SmitTable — настройка колонок" loading="lazy"></p>
 <p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_ux_v2240/bank_pull_confirm.png" alt="SmitConfirm — подтверждение опасного забора писем" loading="lazy"></p>
+<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_ux_v2240/bank_link_inline.png" alt="Привязка платежа раскрытием строки (по образцу Xero)" loading="lazy"></p>
 
 <h3 id="mailserver">6.4.5. Почтовый сервер (SmitMailServ)</h3>
 <p><strong>URL:</strong> <code>/admin/settings/mailserver/</code> — управление собственным почтовым сервером <strong>SmitMailServ</strong>, развёрнутым на хосте <code>mail.вашдомен.ru</code>. Операции с ящиками и доменами доступны из биллинга через API <code>https://mail.вашдомен.ru/api/v1/</code>.</p>
@@ -2767,8 +2794,8 @@ flowchart LR
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2245)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">29.08.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2245)</span>&nbsp;|&nbsp;<span data-smit="updated">29.08.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2250)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">29.08.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2250)</span>&nbsp;|&nbsp;<span data-smit="updated">29.08.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2222"></script>
