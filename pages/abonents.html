@@ -2833,16 +2833,114 @@ flowchart LR
 </div>
 
 <ul>
-  <li><strong>Колонки</strong>: остаются дата, клиент и сумма. Номер операции, источник, тип, описание и кнопки действий скрыты — на 390 px они превращали строку в кашу.</li>
+  <li><strong>Строка → карточка</strong> (единый компонент SmitTable): на телефоне каждая операция превращается в карточку. Имя клиента — заголовок карточки сверху; ниже поля в формате «ПОДПИСЬ&nbsp;значение» в одну строку слева (Дата, Тип операции, Сумма, Описание). Данные не прячутся и не уезжают за горизонтальный скролл.</li>
+  <li><strong>Иконка источника</strong> на карточке скрыта — рядом стоит текстовый «Тип операции», значок был бы дублем.</li>
   <li><strong>Дата сокращается</strong> до <code>дд.мм.гг</code>; полная дата со временем доступна по нажатию.</li>
   <li><strong>Панель управления</strong> — одна строка: поиск, кнопка фильтров со счётчиком активных, кнопка добавления.</li>
-  <li><strong>Фильтры</strong> уезжают в нижний лист (offcanvas) — на маленьком экране горизонтальная панель фильтров занимала бы весь первый экран.</li>
-  <li><strong>Карточка операции</strong> открывается полноэкранной панелью снизу, а не «окном посреди экрана».</li>
+  <li><strong>Фильтры</strong> уезжают в нижний лист (offcanvas, единый <code>SmitMobileFilterSheet</code>) — на маленьком экране горизонтальная панель заняла бы весь первый экран.</li>
+  <li><strong>Карточка операции</strong> (просмотр) открывается боковой панелью справа, форма создания/редактирования — панелью снизу.</li>
 </ul>
 
 <h4 id="finops-dark">Тёмная тема</h4>
 <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/finops_v1718/06_list_dark.png" alt="Финансовые операции в тёмной теме"></p>
 <p>Цвета раздела заданы токенами (<code>tokens.css</code>), поэтому тема переключается без отдельного набора правил. Суммы в тёмной теме используют осветлённые оттенки — тёмно-зелёный и тёмно-красный на тёмном фоне не проходят по контрасту.</p>
+
+<h4 id="finops-ux-2259">UX-аудит и доводка (builds 2252–2259)</h4>
+<p>Раздел прошёл UX-аудит (методика IxDF + чек-лист проекта). Технически он и до аудита был крепким (keyset-пагинация на 450k записей, деньги ÷10¹⁰, org-изоляция и списка, и объекта по ID), поэтому правки касались прежде всего <strong>достоверности и понятности чисел</strong> и <strong>важных действий</strong>.</p>
+
+<div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start">
+  <figure style="flex:1 1 300px;margin:0">
+    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/finops_v2259/finops_list.png" alt="Список финансовых операций">
+    <figcaption style="font-size:.85em;opacity:.75">Список: колонка «Орг.» — эффективная организация, ⓘ у «Единой кассы»</figcaption>
+  </figure>
+  <figure style="flex:1 1 300px;margin:0">
+    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/finops_v2259/finops_modal.png" alt="Модалка операции с расшифровкой">
+    <figcaption style="font-size:.85em;opacity:.75">Модалка: строка «Расшифровка» — оплачено / зачислено / комиссия</figcaption>
+  </figure>
+  <figure style="flex:1 1 240px;margin:0">
+    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/finops_v2259/finops_source.png" alt="Дропдаун источника">
+    <figcaption style="font-size:.85em;opacity:.75">Фильтр «Источник» — 8 типов с цветными значками</figcaption>
+  </figure>
+</div>
+
+<h5 id="finops-sources-info">Восемь источников операции</h5>
+<p>Источник определяется на лету по комбинации сигналов (<code>operator_name</code> + метки в <code>descr</code> + <code>op_type_id</code> + связи), без отдельного поля в БД:</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin:12px 0">
+  <div style="display:flex;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--border-subtle,#e9ecef);border-radius:10px">
+    <span style="flex:0 0 26px;width:26px;height:26px;border-radius:7px;background:#7c5cff;display:flex;align-items:center;justify-content:center;color:#fff"><i class="fas fa-credit-card"></i></span>
+    <span><strong>YooKassa</strong><br><span style="font-size:.85em;opacity:.75">эквайринг, метка <code>[txn:…]</code></span></span>
+  </div>
+  <div style="display:flex;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--border-subtle,#e9ecef);border-radius:10px">
+    <span style="flex:0 0 26px;width:26px;height:26px;border-radius:7px;background:#0d6efd;display:flex;align-items:center;justify-content:center;color:#fff"><i class="fas fa-wallet"></i></span>
+    <span><strong>Wallet One</strong><br><span style="font-size:.85em;opacity:.75">эквайринг W1</span></span>
+  </div>
+  <div style="display:flex;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--border-subtle,#e9ecef);border-radius:10px">
+    <span style="flex:0 0 26px;width:26px;height:26px;border-radius:7px;background:#198754;display:flex;align-items:center;justify-content:center;color:#fff"><i class="fas fa-university"></i></span>
+    <span><strong>Банковская выписка</strong><br><span style="font-size:.85em;opacity:.75">метка <code>[bank_op:N]</code></span></span>
+  </div>
+  <div style="display:flex;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--border-subtle,#e9ecef);border-radius:10px">
+    <span style="flex:0 0 26px;width:26px;height:26px;border-radius:7px;background:#6c757d;display:flex;align-items:center;justify-content:center;color:#fff"><i class="fas fa-database"></i></span>
+    <span><strong>EBS (миграция)</strong><br><span style="font-size:.85em;opacity:.75"><code>operator_name=EBS</code></span></span>
+  </div>
+  <div style="display:flex;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--border-subtle,#e9ecef);border-radius:10px">
+    <span style="flex:0 0 26px;width:26px;height:26px;border-radius:7px;background:#fd7e14;display:flex;align-items:center;justify-content:center;color:#fff"><i class="fas fa-handshake"></i></span>
+    <span><strong>Обещанный платёж</strong><br><span style="font-size:.85em;opacity:.75">usluga 30353 / −3 / −4</span></span>
+  </div>
+  <div style="display:flex;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--border-subtle,#e9ecef);border-radius:10px">
+    <span style="flex:0 0 26px;width:26px;height:26px;border-radius:7px;background:#0dcaf0;display:flex;align-items:center;justify-content:center;color:#fff"><i class="fas fa-pen"></i></span>
+    <span><strong>Ручная проводка</strong><br><span style="font-size:.85em;opacity:.75"><code>op_type 7 / 9</code></span></span>
+  </div>
+  <div style="display:flex;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--border-subtle,#e9ecef);border-radius:10px">
+    <span style="flex:0 0 26px;width:26px;height:26px;border-radius:7px;background:#20c997;display:flex;align-items:center;justify-content:center;color:#fff"><i class="fas fa-sync"></i></span>
+    <span><strong>Ежемесячное списание</strong><br><span style="font-size:.85em;opacity:.75"><code>op_type 3 / 31 / 32</code></span></span>
+  </div>
+  <div style="display:flex;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--border-subtle,#e9ecef);border-radius:10px">
+    <span style="flex:0 0 26px;width:26px;height:26px;border-radius:7px;background:#6610f2;display:flex;align-items:center;justify-content:center;color:#fff"><i class="fas fa-exchange-alt"></i></span>
+    <span><strong>Смена тарифа</strong><br><span style="font-size:.85em;opacity:.75"><code>descr = «Смена тарифа…»</code></span></span>
+  </div>
+</div>
+
+<pre class="mermaid">
+flowchart LR
+    OP["Операция<br>FinanceOperations"] --> R{"_resolve_source"}
+    R -->|"метка txn / оператор"| Y["YooKassa"]
+    R -->|"оператор wallet"| W["Wallet One"]
+    R -->|"метка bank_op"| B["Банковская выписка"]
+    R -->|"оператор EBS"| E["EBS (миграция)"]
+    R -->|"услуга ОП"| P["Обещанный платёж"]
+    R -->|"тип 7 или 9"| M["Ручная проводка"]
+    R -->|"тип 3 / 31 / 32"| MO["Ежемесячное"]
+    R -->|"описание «Смена тарифа»"| TC["Смена тарифа"]
+</pre>
+
+<h5 id="finops-drilldown-2259">Сквозной drill-down до чека ОФД</h5>
+<p>Операцию можно проследить от письма банка до фискального чека и обратно — карточка v915 связывает все звенья:</p>
+<pre class="mermaid">
+flowchart LR
+    IMP["Письмо-импорт<br>выписки"] <--> QUE["Очередь<br>модерации"]
+    QUE --> FO["Финансовая<br>операция"]
+    FO --> OFD["Чек ОФД<br>54-ФЗ"]
+    FO -->|"обратная ссылка"| BOP["Банковская<br>операция"]
+    BOP --> IMP
+</pre>
+
+<h5 id="finops-fiscalize-2259">Пробитие чека: подтверждение и аудит</h5>
+<p>«Пробить чек» — необратимое действие (чек уходит в ОФД и ФНС). До аудита оно выполнялось без подтверждения; теперь его закрывает единый компонент <code>SmitConfirm</code>, а результат пишется в журнал аудита. Удаление операции тоже переведено на <code>SmitConfirm</code> (было кастомной модалкой).</p>
+<pre class="mermaid">
+flowchart LR
+    BTN["«Пробить чек»"] --> SC{"SmitConfirm<br>предупреждение"}
+    SC -->|"Отмена"| X["ничего"]
+    SC -->|"Пробить"| API["finops_fiscalize"]
+    API --> FM["FiscalManager<br>в ОФД"]
+    API --> AUD["AuditOperations"]
+</pre>
+
+<h5 id="finops-credibility-2259">Достоверность и понятность чисел</h5>
+<ul>
+  <li><strong>Колонка «Орг.» — эффективная организация.</strong> Раньше показывала денорм-поле <code>organization_id</code> (у старых/«Единая касса» — NULL → «—»), хотя список скоупится по организации клиента. Теперь: <code>organization_id</code> с fallback на организацию клиента — «—» у атрибутированных записей больше нет.</li>
+  <li><strong>«Единая касса»: расшифровка комиссии.</strong> У платежей «Единая касса» в описании лежит голая сумма оплаты (с комиссией агрегатора), а на баланс идёт нетто — числа не сходились. Теперь в списке у таких строк маркер <span style="color:var(--brand-primary,#43b77a)"><i class="fas fa-info-circle"></i></span> и подсказка, а в модалке — строка «Расшифровка: Оплачено / Зачислено / Комиссия». Новые записи из EBS-синка приходят уже с подписью; текущий generic-webhook и так пишет внятно.</li>
+  <li><strong>Без утечки внутренних значений.</strong> Убрано «Единая касса <code>(id=37)</code>» → «Единая касса»; «<code>pay_id (int)</code>» → «ID платежа».</li>
+</ul>
 
 <h4 id="finance-operations-types">Типы операций (FinTypes)</h4>
 <p>Справочник типов хранится в <code>fin_types</code>. Поле <code>op_sign</code> определяет знак суммы:</p>
@@ -2962,8 +3060,8 @@ flowchart TB
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2256)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">29.08.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2256)</span>&nbsp;|&nbsp;<span data-smit="updated">29.08.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2259)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">29.08.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2259)</span>&nbsp;|&nbsp;<span data-smit="updated">29.08.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2222"></script>
