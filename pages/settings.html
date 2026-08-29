@@ -940,6 +940,10 @@
     <li class="sub-item"><a href="#print-forms">6.2. Шаблоны печати</a></li>
     <li class="sub-item"><a href="#atol-config">6.3. Фискализация (54-ФЗ)</a></li>
     <li class="sub-item"><a href="#payment-systems">6.4. Платёжные системы</a></li>
+    <li class="sub-item" style="padding-left:1.8em"><a href="#payment-scopes"><i class="ti ti-building" aria-hidden="true"></i> — Общие настройки и кассы организаций</a></li>
+    <li class="sub-item" style="padding-left:1.8em"><a href="#payment-secrets"><i class="ti ti-key" aria-hidden="true"></i> — Секретные ключи</a></li>
+    <li class="sub-item" style="padding-left:1.8em"><a href="#payment-test"><i class="ti ti-plug" aria-hidden="true"></i> — Проверка подключения</a></li>
+    <li class="sub-item" style="padding-left:1.8em"><a href="#payment-webhook-security"><i class="ti ti-shield-lock" aria-hidden="true"></i> — Безопасность webhook</a></li>
     <li class="sub-item"><a href="#bank-statements">6.4.1. Банковские выписки (автообработка)</a></li>
     <li class="sub-item"><a href="#bank-parsers">6.4.2. Банки и парсеры</a></li>
     <li class="sub-item"><a href="#bank-queue">6.4.3. Очередь модерации</a></li>
@@ -1777,9 +1781,69 @@ flowchart TD
 ставки уже готов.</p>
 
 <h3 id="payment-systems">6.4. Платёжные системы</h3>
-<p>Настройка приёма онлайн-платежей. Поддерживается несколько провайдеров.</p>
+<p>Настройка приёма онлайн-платежей: через что клиент платит из личного кабинета и мобильного
+приложения, какая берётся комиссия и с каких адресов принимается webhook.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_payment.png" alt="Платёжные системы"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/payment_settings_v2243/01_global_dark.png" alt="Платёжные системы — общие настройки"></p>
+
+<h4 id="payment-scopes">Наборы настроек: общие и кассы организаций</h4>
+
+<p>Страница правит <strong>два разных набора</strong>, между ними переключает полоса в шапке:</p>
+
+<ul>
+  <li><strong>Общие настройки</strong> — глобальные ключи. По ним платят клиенты организации
+  по умолчанию и все, у кого организация не проставлена.</li>
+  <li><strong>Касса организации</strong> — собственные реквизиты приёма оплат конкретного
+  юрлица (<code>OrgPaymentSettings</code>). При создании платежа биллинг <em>сначала</em>
+  берёт кассу организации клиента и только при её отсутствии откатывается на общие ключи.</li>
+</ul>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/payment_settings_v2243/04_org_kassa.png" alt="Касса организации"></p>
+
+<p>Если хотя бы у одной организации настроена своя касса, в общем режиме показывается
+предупреждение со ссылками на эти кассы: правки в общих настройках на их клиентов не влияют.
+Тумблер <strong>«Использовать свою кассу»</strong> выключает переопределение — клиенты
+организации возвращаются на общие ключи.</p>
+
+<div class="info-box" style="border-left:4px solid #43b77a; background:rgba(67,183,122,.06); padding:12px 16px; margin:16px 0">
+  <p class="mb-1"><strong>Что остаётся общим для всех организаций</strong></p>
+  <p>Активная платёжная система, комиссия, валюта W1, секрет подписи Generic/UCS и белый
+  список IP. На уровне организации переопределяются только реквизиты кассы, адреса возврата
+  клиента и расчётный счёт приёма оплат.</p>
+</div>
+
+<h4 id="payment-secrets">Секретные ключи</h4>
+
+<p>Секреты в браузер не отдаются: в поле показывается только маска с опознавательным хвостом
+(<code>••••••••2bc9</code>). <strong>Пустое поле при сохранении означает «не менять»</strong> —
+чтобы заменить ключ, введите новый.</p>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/payment_settings_v2243/07_mobile_secret.png" alt="Маска секретного ключа" style="max-width:380px"></p>
+
+<h4 id="payment-test">Проверка подключения</h4>
+
+<p>Кнопка «Проверить подключение» различает три исхода, а не два:</p>
+
+<table>
+  <thead><tr><th>Статус</th><th>Что значит</th></tr></thead>
+  <tbody>
+    <tr><td><span style="color:#2f9e63">✓ зелёный</span></td>
+        <td>Ключ подтверждён сервером платёжной системы (ЮKassa REST API v3, запрос <code>/v3/me</code>).</td></tr>
+    <tr><td><span style="color:#9a5b06">⚠ жёлтый</span></td>
+        <td>Конфигурация заполнена, но протокол не позволяет проверить ключ запросом — старый
+        HTTP-протокол ЮKassa и Wallet One. Работоспособность подтверждается только тестовым платежом.</td></tr>
+    <tr><td><span style="color:#b3261e">✕ красный</span></td>
+        <td>Отказ: неверные учётные данные, недоступен узел, не заполнены обязательные поля.</td></tr>
+  </tbody>
+</table>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/payment_settings_v2243/05_test_unknown.png" alt="Честный статус проверки подключения"></p>
+
+<p>Проверку можно выполнить для любой системы, в том числе неактивной — переключать боевой
+приём платежей для этого не нужно. Неактивная система помечается пунктирной рамкой и
+бейджем «не активна», её поля остаются читаемыми и доступными для правки.</p>
+
+<h4 id="payment-providers">Провайдеры</h4>
 
 <ul>
   <li><strong>ЮKassa (REST API v3)</strong> — современный API, рекомендован.
@@ -1793,7 +1857,33 @@ flowchart TD
   который принимает все форматы (W1, ЮKassa HTTP, ЮKassa REST v3, Generic) и зачисляет на счёт.</li>
 </ul>
 
-<p>Справа на странице — карточка с описанием комиссии каждого провайдера и краткой инструкцией.</p>
+<h4 id="payment-commission">Комиссия</h4>
+
+<p>Задаётся <strong>в процентах</strong> (например, <code>4,5</code>), максимум 20 %; значение
+проверяется на сервере. Комиссия добавляется клиенту сверху: при пополнении на 500 ₽ и ставке
+4,5 % платёжная система спишет 522,50 ₽, а на счёт зачислится ровно 500 ₽. Карточка справа
+пересчитывает пример при вводе.</p>
+
+<h4 id="payment-webhook-security">Безопасность webhook</h4>
+
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/payment_settings_v2243/03_security_dark.png" alt="Безопасность webhook"></p>
+
+<ul>
+  <li><strong>Белый список IP</strong> (CIDR через запятую) — запросы с других адресов получают 403.
+  Пустой список означает набор по умолчанию: ЮKassa, W1 и localhost. Кнопки-пресеты добавляют
+  адреса без дублей, «Очистить» запрашивает подтверждение.</li>
+  <li><strong>Секрет подписи Generic/UCS</strong> — обязателен для приёма через «Единую кассу».
+  Пока он не задан, канал помечается бейджем «не задан — канал отключён», а webhook отвечает 403.
+  Кнопка «Генерировать» создаёт секрет криптостойким генератором браузера.</li>
+</ul>
+
+<h4 id="payment-audit">Аудит и сохранение</h4>
+
+<p>Каждое изменение пишется в журнал аудита (<code>PAYMENT_SETTINGS</code>) с автором и
+перечнем изменённых параметров: для обычных полей — старое и новое значение, для секретов —
+только факт замены. Кнопка «Сохранить настройки» закреплена внизу формы, не исчезает после
+сохранения и снова гаснет, когда изменений нет. Перезапуск сервера вынесен отдельной кнопкой
+и требует подтверждения.</p>
 
 <div class="info-box" style="border-left:4px solid #43b77a; background:rgba(67,183,122,.06); padding:12px 16px; margin:16px 0">
   <p class="mb-1"><strong><i class="ti ti-arrow-right"></i> Подробное описание API — на отдельной странице</strong></p>
@@ -2676,8 +2766,8 @@ flowchart LR
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2242)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">29.08.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2242)</span>&nbsp;|&nbsp;<span data-smit="updated">29.08.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2245)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">29.08.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2245)</span>&nbsp;|&nbsp;<span data-smit="updated">29.08.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2222"></script>
