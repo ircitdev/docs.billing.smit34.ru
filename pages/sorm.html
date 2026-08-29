@@ -1358,7 +1358,7 @@ docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 3
   запустить выгрузку сейчас, <strong>🗑</strong> удалить конфигурацию. Запуск и удаление
   подтверждаются диалогом с перечнем последствий.</p>
 
-  <p><strong>Мобильная версия</strong> (UX-аудит 2026-08-04): на телефоне каждая строка
+  <p><strong>Мобильная версия.</strong> На телефоне каждая строка
   превращается в карточку с подписями полей — колонки FTP, расписание, число отчётов и
   статус последней выгрузки не прячутся, а показываются строками карточки. Горизонтального
   скролла нет.</p>
@@ -1564,8 +1564,8 @@ docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 3
 
   <h2 id="sorm-v1691">Мульти-организация, AI-помощник и SQL-редактор (v1.6.0)</h2>
 
-  <p>Обновление раздела по UX-аудиту от 21.07.2026: поддержка нескольких юрлиц,
-  AI-помощник по SQL и полноценный редактор запросов.</p>
+  <p>Раздел поддерживает несколько юрлиц, содержит AI-помощника по SQL и полноценный
+  редактор запросов.</p>
 
   <h3 id="sorm-multiorg">Мульти-организация</h3>
 
@@ -1585,7 +1585,7 @@ docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 3
     OrgBadge). Список скоуплен по <strong>правам сотрудника</strong> (<code>allowed_orgs</code>),
     а не только по выбору в навбаре — оператор видит лишь конфиги своих организаций
     и общие (<code>organization=NULL</code>).</li>
-    <li><strong>Изоляция по прямой ссылке</strong> (UX-аудит 2026-08-04): переход по URL
+    <li><strong>Изоляция по прямой ссылке.</strong> Переход по URL
     <code>/admin/equipment/sorm_list/&lt;id&gt;/…</code> проверяет права сотрудника
     (декоратор <code>@sorm_org_guard</code> → <code>object_allowed</code>). Если организация
     конфига не входит в <code>allowed_orgs</code> — <strong>404</strong>: нельзя открыть,

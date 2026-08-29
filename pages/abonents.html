@@ -2845,8 +2845,8 @@ flowchart LR
 <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/finops_v1718/06_list_dark.png" alt="Финансовые операции в тёмной теме"></p>
 <p>Цвета раздела заданы токенами (<code>tokens.css</code>), поэтому тема переключается без отдельного набора правил. Суммы в тёмной теме используют осветлённые оттенки — тёмно-зелёный и тёмно-красный на тёмном фоне не проходят по контрасту.</p>
 
-<h4 id="finops-ux-2259">UX-аудит и доводка (builds 2252–2259)</h4>
-<p>Раздел прошёл UX-аудит (методика IxDF + чек-лист проекта). Технически он и до аудита был крепким (keyset-пагинация на 450k записей, деньги ÷10¹⁰, org-изоляция и списка, и объекта по ID), поэтому правки касались прежде всего <strong>достоверности и понятности чисел</strong> и <strong>важных действий</strong>.</p>
+<h4 id="finops-ux-2259">Достоверность чисел и защита важных действий</h4>
+<p>Журнал рассчитан на большие объёмы: около 450 тысяч операций листаются без задержки, суммы хранятся без потери копеек. Доступ закрыт организацией — и к списку, и к каждой операции по прямой ссылке. Отдельно проработаны две вещи: <strong>достоверность и понятность чисел</strong> и <strong>защита действий, которые нельзя отменить</strong>.</p>
 
 <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start">
   <figure style="flex:1 1 300px;margin:0">
@@ -2925,7 +2925,7 @@ flowchart LR
 </pre>
 
 <h5 id="finops-fiscalize-2259">Пробитие чека: подтверждение и аудит</h5>
-<p>«Пробить чек» — необратимое действие (чек уходит в ОФД и ФНС). До аудита оно выполнялось без подтверждения; теперь его закрывает единый компонент <code>SmitConfirm</code>, а результат пишется в журнал аудита. Удаление операции тоже переведено на <code>SmitConfirm</code> (было кастомной модалкой).</p>
+<p>«Пробить чек» — необратимое действие: чек уходит в ОФД и оттуда в ФНС. Поэтому он требует подтверждения, а результат пишется в журнал аудита. Удаление операции подтверждается так же.</p>
 <pre class="mermaid">
 flowchart LR
     BTN["«Пробить чек»"] --> SC{"SmitConfirm<br>предупреждение"}
@@ -3060,8 +3060,8 @@ flowchart TB
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2259)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">29.08.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2259)</span>&nbsp;|&nbsp;<span data-smit="updated">29.08.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2260)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">29.08.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2260)</span>&nbsp;|&nbsp;<span data-smit="updated">29.08.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2222"></script>

@@ -1114,13 +1114,13 @@ flowchart LR
 <p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_module_v2026_06_06/video_projects.png" alt="Канбан проектов видеонаблюдения" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
 
 <h4 id="video-admin-ux">UI/UX раздела</h4>
-<p>Раздел прошёл UI/UX-аудит. Реализованы фильтры, inline-редактирование в модалках, просмотр камер и тёмная/мобильная адаптация:</p>
+<p>В разделе есть фильтры, редактирование в модальных окнах, просмотр камер, тёмная тема и работа с телефона:</p>
 <ul>
   <li><strong>Объекты</strong> — фильтры по типу и компании, чипы «С подписками / Заблокированные / Долг» со счётчиками, <strong>редактирование и удаление в модальных окнах</strong> (с выбором организации), цветовая индикация баланса (красный долг / зелёный плюс).</li>
   <li><strong>Проекты</strong> — на карточке лейбл организации; меню «⋮» содержит <strong>Редактировать</strong> и <strong>Удалить</strong> (модалка редактирования сметы + confirm-удаление).</li>
   <li><strong>Медиа-сервер</strong> — отдельная колонка «Клиент», фильтры (онлайн / оффлайн / архив / не привязан), <strong>модалка просмотра камеры</strong> (live-видео через HLS + список архивных записей за 24ч), <strong>добавление/редактирование потока</strong> с привязкой к клиенту и автоматическим заведением в go2rtc.</li>
   <li><strong>Настройки</strong> — раскладка в 2 колонки на десктопе; новая группа «Архив записей (MediaMTX + GCS)» с тумблером <code>Записывать в GCS</code> (резервное копирование сегментов архива в облако через Celery-задачу <code>video-archive-gcs-upload</code>).</li>
-  <li><strong>Тёмная тема и мобильный</strong> — исправлена читаемость бейджей и код-блоков в тёмной теме; широкие таблицы заменены адаптивными карточками на экранах &lt;768px.</li>
+  <li><strong>Тёмная тема и мобильный</strong> — бейджи и блоки кода читаемы в тёмной теме; на экранах уже 768 px широкие таблицы показываются карточками.</li>
 </ul>
 <p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_audit_v2026_06_12/objects_light.png" alt="Объекты — фильтры, чипы, цвет баланса" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
 <p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_audit_v2026_06_12/stream_view_modal.png" alt="Модалка просмотра камеры — live + архив" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
@@ -2015,8 +2015,8 @@ flowchart LR
     <tr><td><strong>SmitWatchButton</strong></td><td>Кнопка «Наблюдаю» — только иконка глаза + счётчик, зелёный фон в активном состоянии.</td><td>Поддержка (фильтр «Наблюдаю»); задел — «Наблюдать» в CRM/тикетах</td></tr>
     <tr><td><strong>CallButton</strong></td><td>Кнопка «Позвонить» (click-to-call через провайдера телефонии).</td><td>Тикеты, CRM, поиск, карточка клиента</td></tr>
     <tr><td><strong>SmitDrawer</strong></td><td>Боковая панель: заголовок с иконкой и подзаголовком, вкладки, кнопки действий, загрузка содержимого по адресу, стопка вложенных панелей.</td><td>Карточки позиции и единицы склада, тикеты Поддержки, дровер сделки и заявки CRM, карточка клиента, профиль, разделы AI, редактор ботов, монитор сессий</td></tr>
-    <tr><td><strong>SmitToast</strong></td><td>Всплывающие уведомления (стек справа-сверху / снизу на мобильном).</td><td>Замена ~18 частных toast-копий (инкрементально)</td></tr>
-    <tr><td><strong>SmitConfirm</strong></td><td>Модалка подтверждения вместо <code>confirm()</code> (тот ломал тёмную тему).</td><td>Замена ~90 native <code>confirm()</code> (инкрементально)</td></tr>
+    <tr><td><strong>SmitToast</strong></td><td>Всплывающие уведомления (стек справа-сверху / снизу на мобильном).</td><td>Уведомления во всех разделах</td></tr>
+    <tr><td><strong>SmitConfirm</strong></td><td>Модалка подтверждения вместо <code>confirm()</code> (тот ломал тёмную тему).</td><td>Подтверждение опасных действий</td></tr>
     <tr><td><strong>SmitCopy</strong></td><td>Копирование в буфер (clipboard + execCommand fallback + тост).</td><td>Замена ~29 копий clipboard-логики (IP / MAC / договор / e-mail / телефон)</td></tr>
   </tbody>
 </table>
@@ -2063,7 +2063,7 @@ flowchart LR
 </pre>
 
 <div class="note">
-  <p><strong>Почему единые компоненты.</strong> Исправление и улучшение живут в одном файле, эффект — сразу во всех разделах: правка не теряется по копиям, тёмная тема не ломается точечно. Замена частных копий на единые (<code>SmitToast</code> / <code>SmitConfirm</code> / <code>SmitCopy</code>) идёт инкрементально.</p>
+  <p><strong>Почему единые компоненты.</strong> Исправление и улучшение живут в одном файле, а эффект виден сразу во всех разделах: правка не теряется по копиям, тёмная тема не ломается точечно.</p>
 </div>
 
 <div class="note">
@@ -2114,8 +2114,8 @@ flowchart LR
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2259)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">29.08.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2259)</span>&nbsp;|&nbsp;<span data-smit="updated">29.08.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2260)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">29.08.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2260)</span>&nbsp;|&nbsp;<span data-smit="updated">29.08.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2222"></script>

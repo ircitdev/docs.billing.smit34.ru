@@ -1210,7 +1210,7 @@ flowchart LR
 
 <p>Каждое действие защищено JS-confirm, показывает spinner во время выполнения, выводит toast «успех/ошибка», пишет запись в аудит.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/sprint3_v789/sprint3_sparkline_and_actions.png" alt="Sprint 3: sparkline 24ч + 3 action-кнопки в развёрнутой плашке"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/sprint3_v789/sprint3_sparkline_and_actions.png" alt="Sparkline за 24 часа и три кнопки действий в развёрнутой плашке"></p>
 
 <h4 id="abonent-diagnose-ux">UX-особенности</h4>
 
@@ -1850,7 +1850,7 @@ endpoints <code>finops_ajax</code>, <code>finops_crud_ajax</code>,
 </div>
 
 <h4 id="abonent-card-tab-radius">RADIUS / Монитор сессий</h4>
-<p>URL: <code>/admin/Abonents/&lt;id&gt;/check/</code>. Полнофункциональный live-инструмент мониторинга RADIUS-сессий клиента. После UX-аудита (Sprint 1+2+3, builds 535–544) Health Score 64 → <strong>94+/100</strong>.</p>
+<p>URL: <code>/admin/Abonents/&lt;id&gt;/check/</code>. Live-инструмент мониторинга RADIUS-сессий клиента.</p>
 
 <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/01_overview.png" alt="Монитор сессий — общий вид: контекст тарифа, toolbar с KPI, таблица сессий, live-индикатор"></p>
 
@@ -2020,28 +2020,10 @@ endpoints <code>finops_ajax</code>, <code>finops_crud_ajax</code>,
   <li><strong>prefers-reduced-motion: reduce</strong> отключает все анимации (пульсация, flash, sparkline transition).</li>
   <li><strong>scope="col"</strong> на всех <code>&lt;th&gt;</code> + <code>role="grid"</code> + <code>&lt;caption class="visually-hidden"&gt;</code> для скрин-ридеров.</li>
   <li><strong>Цвет НЕ единственный сигнал</strong> — везде есть иконки (fa-arrow-down/up для трафика, fa-circle для Online, fa-check для Завершена и т.д.).</li>
-  <li><strong>Фикс таймзоны</strong>: ранее времена показывались с лишним сдвигом +3 ч. Корень — <code>fmt_dt()</code> делал двойную конвертацию UTC → MSK, тогда как Django при <code>USE_TZ=False</code> и <code>TIME_ZONE='Europe/Moscow'</code> уже отдаёт naive datetime в локальной TZ. Теперь повторная конвертация только для aware-datetime, naive — как есть.</li>
-  <li><strong>Фикс контраста CoA-кнопки на Online</strong>: жёлтый <code>btn-outline-warning</code> сливался с салатовым фоном Online-строки. Заменён на <code>btn-outline-danger</code> (красный — семантически точнее «опасно») + явный override для активных строк (белый фон + красная обводка).</li>
+  <li><strong>Время</strong> — все отметки показываются в московской зоне, без дополнительного сдвига.</li>
+  <li><strong>Кнопка разрыва сессии</strong> — красная: действие опасное. На подсвеченной строке Online она остаётся различимой (белый фон, красная обводка).</li>
 </ul>
 
-<h5 id="abonent-card-tab-radius-history">История внедрения по билдам</h5>
-<table>
-  <thead>
-    <tr><th>Билд</th><th>Что добавлено</th></tr>
-  </thead>
-  <tbody>
-    <tr><td>519</td><td>Колонка MAC, фикс таймзоны MSK</td></tr>
-    <tr><td>525</td><td>Авто-скрытие колонки «Логин» если 1 учётка</td></tr>
-    <tr><td>526</td><td>Колонка IP (Framed-IP-Address)</td></tr>
-    <tr><td>527</td><td>Подсветка Online — салатовый фон + зелёная полоса</td></tr>
-    <tr><td>528</td><td>Цветной трафик — ↓ зелёный / ↑ красный</td></tr>
-    <tr><td>529–530</td><td>Колонка NAS + клик открывает модалку</td></tr>
-    <tr><td>535 (Sprint 1)</td><td>Бейджи причин 5 категорий, колонка «Период», тултипы + OUI vendor + copy-on-click, a11y, mobile card-stack</td></tr>
-    <tr><td>536 (Sprint 2)</td><td>Drawer 4 вкладки, toolbar с KPI, контекст тарифа, CoA Disconnect</td></tr>
-    <tr><td>537 (Sprint 3)</td><td>Группировка Synthetic↔Real, auto-refresh 30 сек, live-индикатор, flash при смене статуса, toast</td></tr>
-    <tr><td>540–544</td><td>Серия фиксов: убран sparkline из таблицы, убраны фиолетовые точки-индикаторы, контраст CoA-кнопки на Online</td></tr>
-  </tbody>
-</table>
 
 <h4 id="abonent-card-tab-sorm">СОРМ</h4>
 <p>Паспортные данные и реквизиты для выгрузки в РКН по СОРМ-3:</p>
@@ -2157,8 +2139,8 @@ endpoints <code>finops_ajax</code>, <code>finops_crud_ajax</code>,
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2259)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">29.08.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2259)</span>&nbsp;|&nbsp;<span data-smit="updated">29.08.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2260)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">29.08.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2260)</span>&nbsp;|&nbsp;<span data-smit="updated">29.08.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2222"></script>
