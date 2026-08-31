@@ -1130,7 +1130,10 @@ Telegram/каналы (пер-ящик). Также: База знаний, Ан
 <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_integrations_lfstream.png" alt="Интеграции — LFStream"></p>
 
 <p>Параметры обоих сервисов: URL API, login/pass или API-ключ, ID оператора,
-тест соединения. Маппинг услуг → пакетов задаётся отдельно в разделе
+тест соединения. У LFStream — выбор режима подключения: <strong>REST API v2</strong>
+(прямой API, авторизация по IP-whitelist) или <strong>CMS-панель</strong> (обход whitelist,
+работает с любого IP). Подробнее — <a href="equipment.html#iptv-lfstream">Оборудование → LFStream</a>.
+Маппинг услуг → пакетов задаётся отдельно в разделе
 <a href="#iptv-mappings">6.6 IPTV-пакеты</a>.</p>
 
 <h4>Вкладка «GCS» (Google Cloud Storage)</h4>
@@ -1289,6 +1292,13 @@ Telegram/каналы (пер-ящик). Также: База знаний, Ан
 плата за IPTV не списывается, дата следующего списания сдвигается вперёд (задним числом долг не образуется),
 провижининг у провайдера продолжает работать. Блокировка IPTV при долге — опциональна
 (<code>IPTV_BLOCK_ON_NEGBAL</code>, по умолчанию выкл).</p>
+<p>Опция <strong>«Создавать аккаунт IPTV новому абоненту»</strong>
+(<code>IPTV_AUTO_CREATE_ACCOUNT</code>) — при подключении ТВ-услуги абоненту без аккаунта
+у провайдера заводит его автоматически (логin <code>smtv</code>+договор). При выключенной
+опции подписка пропускается, пока аккаунт не создан. Email авто-аккаунта —
+<code>smtv‹договор›@‹домен›</code>, домен из поля <strong>«Домен email для авто-аккаунтов»</strong>
+(<code>IPTV_ACCOUNT_EMAIL_DOMAIN</code>, по умолчанию <code>smit34.ru</code>; несуществующие
+домены панель провайдера отклоняет).</p>
 
 <h4 id="iptv-usluga-tab">Привязка пакета в карточке услуги</h4>
 <p>В модалке услуги типа «IP телевидение» есть вкладка <strong>IPTV</strong> — выбор провайдера и пакета.
@@ -2617,8 +2627,8 @@ flowchart LR
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2286)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">30.08.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2286)</span>&nbsp;|&nbsp;<span data-smit="updated">30.08.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2356)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">31.08.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2356)</span>&nbsp;|&nbsp;<span data-smit="updated">31.08.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2266"></script>

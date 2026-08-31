@@ -1733,17 +1733,33 @@ flowchart TB
 
   <h3 id="iptv-lfstream">LFStream (Смотрёшка)</h3>
 
-  <p><strong>LFStream</strong> — IPTV-прокси/CDN для доставки телевизионного контента. Управление аккаунтами клиентов и ТВ-пакетами через CMS-панель провайдера.</p>
-<p>Настройка: <strong>Настройки &rarr; Интеграции &rarr; LFStream</strong></p>
+  <p><strong>LFStream</strong> («Смотрёшка») — OTT-платформа доставки ТВ-контента. Биллинг заводит аккаунты клиентов, подписывает и отписывает их на ТВ-пакеты. Настройка: <strong>Настройки &rarr; IPTV &rarr; LFStream</strong> (<code>/admin/iptv/settings/</code>).</p>
+
+  <h4>Два режима подключения</h4>
+  <table>
+    <thead><tr><th>Режим</th><th>Как работает</th></tr></thead>
+    <tbody>
+      <tr><td><strong>REST API v2</strong> (рекомендуется)</td><td>Прямой API <code>http://smit34.proxy.lfstrm.tv/v2/</code>. Авторизация по <strong>IP-whitelist</strong> прокси-хоста — логин/пароль не нужны. Надёжнее и проще.</td></tr>
+      <tr><td><strong>CMS-панель</strong></td><td>Управление подписками через панель оператора. Работает с любого IP (backend панели ходит в API со своего разрешённого адреса) — <strong>обход IP-whitelist</strong>, пока оператор не внёс адрес сервера.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note"><p><strong>Whitelist для REST.</strong> Прямой API отвечает <code>403 — Access from &lt;ip&gt; is not allowed</code>, пока менеджер Смотрёшки не внесёт IP сервера в список разрешённых (для СмИТ — боевой <code>193.232.2.128</code> и резервный <code>91.132.163.75</code>). До внесения используется режим CMS-панели — подписки работают и без whitelist.</p></div>
 
   <table>
     <thead><tr><th>Параметр</th><th>Описание</th></tr></thead>
     <tbody>
-      <tr><td>URL API LFStream</td><td>Адрес панели провайдера (<code>https://smit34.proxy.lfstrm.tv</code>)</td></tr>
-      <tr><td>Логин / Пароль</td><td>Учётные данные для CMS-панели</td></tr>
+      <tr><td>Режим подключения</td><td>REST API v2 / CMS-панель (настройка <code>LFSTREAM_MODE</code>)</td></tr>
+      <tr><td>API v2 URL</td><td>Адрес REST-API (по умолчанию <code>http://smit34.proxy.lfstrm.tv/v2</code>)</td></tr>
+      <tr><td>CMS URL / Логин / Пароль</td><td>Панель провайдера (<code>https://smit34.proxy.lfstrm.tv</code>) — для режима CMS</td></tr>
       <tr><td>Включить интеграцию</td><td>Глобальный переключатель синхронизации</td></tr>
     </tbody>
   </table>
+
+  <p>Логин аккаунта в Смотрёшке — <code>smtv</code>+номер договора. Существующие аккаунты (заведённые ранее) находятся по логину и не дублируются.</p>
+
+  <h4 id="iptv-account-create">Создание аккаунта новому абоненту</h4>
+  <p>Опция <strong>«Создавать аккаунт IPTV новому абоненту»</strong> (карточка «Биллинг IPTV») при подключении ТВ-услуги абоненту без аккаунта у провайдера заводит его автоматически. При выключенной опции подписка пропускается, пока аккаунт не создан. Email аккаунта — <code>smtv‹договор›@‹домен›</code>, домен задаётся полем <strong>«Домен email для авто-аккаунтов»</strong> (по умолчанию <code>smit34.ru</code>). ⚠ Панель отклоняет несуществующие домены, поэтому домен должен быть реальным.</p>
 
   <h3 id="iptv-mappings">Маппинг IPTV-пакетов</h3>
 
@@ -1822,8 +1838,8 @@ IptvApiLog.objects.filter(success=False).order_by('-created_at')[:10]</code></pr
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full"></span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">30.08.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full"></span>&nbsp;|&nbsp;<span data-smit="updated">30.08.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full"></span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">31.08.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full"></span>&nbsp;|&nbsp;<span data-smit="updated">31.08.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2266"></script>
