@@ -1,0 +1,155 @@
+#!/usr/bin/env python3
+"""Брендовые страницы для схем СмИТ Биллинг.
+
+Вьюер archify сам подбирает раскладку под высоту окна и о внешней шапке
+ничего не знает: любая полоса поверх артефакта отнимает высоту и даёт
+вертикальную прокрутку. Поэтому схема и оформление разделены:
+
+* `viewer/<имя>.html` — артефакт archify как есть (проверки 9/9 и
+  visual-check остаются честными);
+* `<имя>.html` — страница в стиле витрины: шапка с логотипом, названием
+  и ссылками, а под ней схема во весь оставшийся экран.
+
+Внутри рамки вьюер видит собственную высоту и укладывается в неё целиком.
+Якорь страницы (`#focus=…`, `#view=…`) прокидывается в схему, поэтому
+ссылки на конкретный узел продолжают работать.
+
+Запуск: python src/make_pages.py
+"""
+import io
+import os
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(HERE)
+VIEWER_DIR = os.path.join(ROOT, 'viewer')
+GRAPH_URL = 'https://docs.billing.smit34.ru/understand/'
+
+PAGES = [
+    ('smitbilling-runtime.architecture.html', 'Runtime-архитектура rbill', 'Архитектура'),
+    ('smitbilling-charges.workflow.html', 'Прогон абонплаты', 'Процесс'),
+    ('smitbilling-payment.sequence.html', 'Оплата через ЮKassa', 'Последовательность'),
+    ('smitbilling-abonent.lifecycle.html', 'Абонент по балансу', 'Состояния'),
+    ('smitbilling-sorm.dataflow.html', 'Выгрузка СОРМ', 'Поток данных'),
+]
+
+TEMPLATE = """<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>{title} — СмИТ Биллинг</title>
+<link rel="icon" href="../favicon.svg">
+<style>
+  :root{{
+    --em-400:#34d399; --em-500:#10b981; --em-600:#059669; --em-700:#047857;
+    --bg:#f4f6f8; --card:#ffffff; --border:rgba(0,0,0,.08);
+    --text:#0f172a; --mute:#5a6a7d;
+  }}
+  @media (prefers-color-scheme: dark){{
+    :root{{
+      --bg:#0b1220; --card:rgba(30,41,59,.55); --border:rgba(255,255,255,.08);
+      --text:#e9ecef; --mute:#94a3b8; --em-700:#34d399; --em-600:#10b981;
+    }}
+  }}
+  *{{box-sizing:border-box}}
+  html,body{{height:100%}}
+  body{{
+    margin:0; display:flex; flex-direction:column;
+    background:var(--bg); color:var(--text);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  }}
+  .topbar{{
+    flex:0 0 auto;
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+    padding:6px 18px;
+    background:var(--card); border-bottom:1px solid var(--border);
+  }}
+  .logo{{
+    width:28px; height:28px; flex:0 0 28px; border-radius:9px;
+    background:linear-gradient(135deg,var(--em-400),var(--em-600));
+    color:#fff; font-weight:800; font-size:14px;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 4px 12px rgba(16,185,129,.35);
+  }}
+  .brand{{display:flex; align-items:baseline; gap:9px; min-width:0}}
+  .brand-name{{font-weight:700; font-size:15px; letter-spacing:-.01em; white-space:nowrap}}
+  .brand-title{{font-size:14px; color:var(--mute); white-space:nowrap;
+    overflow:hidden; text-overflow:ellipsis}}
+  .badge{{
+    flex:0 0 auto; padding:2px 10px; border-radius:100px;
+    background:rgba(16,185,129,.15); border:1px solid rgba(16,185,129,.25);
+    color:var(--em-700); font-size:10.5px; font-weight:600;
+    text-transform:uppercase; letter-spacing:1.3px; white-space:nowrap;
+  }}
+  .spacer{{flex:1 1 auto}}
+  .topbar a{{
+    display:inline-flex; align-items:center; padding:5px 12px;
+    border-radius:9px; border:1px solid var(--border);
+    color:var(--text); text-decoration:none;
+    font-size:13px; font-weight:500; white-space:nowrap;
+    transition:border-color .16s ease, color .16s ease;
+  }}
+  .topbar a:hover{{border-color:var(--em-600); color:var(--em-700)}}
+  .topbar a:focus-visible{{outline:2px solid var(--em-600); outline-offset:2px}}
+  .stage{{flex:1 1 auto; min-height:0}}
+  .stage iframe{{display:block; width:100%; height:100%; border:0}}
+  @media (max-width:760px){{
+    .topbar{{padding:8px 12px; gap:8px}}
+    .brand-title, .badge{{display:none}}
+  }}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="logo" aria-hidden="true">С</div>
+  <div class="brand">
+    <span class="brand-name">СмИТ Биллинг</span>
+    <span class="brand-title">{title}</span>
+  </div>
+  <span class="badge">{kind}</span>
+  <div class="spacer"></div>
+  <a href="index.html">Все схемы</a>
+  <a href="viewer/{file}" target="_blank" rel="noopener">Открыть отдельно</a>
+  <a href="../index.html">Документация</a>
+  <a href="{graph}">Граф знаний</a>
+</header>
+
+<main class="stage">
+  <iframe id="stage" title="{title}" src="viewer/{file}"></iframe>
+</main>
+
+<script>
+  // якорь страницы прокидываем в схему: ссылки вида #focus=… продолжают работать
+  (function () {{
+    var frame = document.getElementById('stage');
+    var base = 'viewer/{file}';
+    function sync() {{
+      var hash = window.location.hash || '';
+      var next = base + hash;
+      if (frame.getAttribute('src') !== next) frame.setAttribute('src', next);
+    }}
+    sync();
+    window.addEventListener('hashchange', sync);
+  }})();
+</script>
+
+</body>
+</html>
+"""
+
+
+def main():
+    if not os.path.isdir(VIEWER_DIR):
+        os.makedirs(VIEWER_DIR)
+    for file_name, title, kind in PAGES:
+        page = TEMPLATE.format(title=title, kind=kind, file=file_name, graph=GRAPH_URL)
+        path = os.path.join(ROOT, file_name)
+        with io.open(path, 'w', encoding='utf-8', newline='') as fh:
+            fh.write(page)
+        print('%-46s страница собрана' % file_name)
+
+
+if __name__ == '__main__':
+    main()

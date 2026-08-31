@@ -2483,3 +2483,32 @@ body.search-open { overflow: hidden; }
 [data-theme="dark"] .docs-search-input{ background:#1e293b !important; border-color:#334155 !important; color:#e2e8f0 !important; }
 /* ── Активный пункт сайдбара → emerald ── */
 .sidebar nav a.active, .sidebar nav a[aria-current="page"]{ color:var(--primary-dark); }
+
+/* ═══ Контент страниц: полировка под emerald-стиль (все страницы) ═══ */
+.heading-badge{ background:linear-gradient(135deg,#10b981,#059669)!important; box-shadow:0 2px 8px rgba(16,185,129,.3)!important; }
+.content h1{ border-bottom-color:var(--primary); }
+.content h2{ border-left-color:var(--primary); }
+/* callout-карточки */
+.info-box, .info-block{
+  border:1px solid rgba(16,185,129,.22); border-left:4px solid var(--primary);
+  background:linear-gradient(180deg,rgba(16,185,129,.05),rgba(16,185,129,.02));
+  border-radius:12px; padding:14px 18px;
+}
+[data-theme="dark"] .info-box, [data-theme="dark"] .info-block{ background:rgba(16,185,129,.08); border-color:rgba(16,185,129,.28); }
+.note{ border:1px solid rgba(59,130,246,.22); border-left:4px solid #3b82f6; background:rgba(59,130,246,.05); border-radius:12px; padding:14px 18px; }
+[data-theme="dark"] .note{ background:rgba(59,130,246,.1); }
+.note.note-warning, .warning-box{ border-color:rgba(245,158,11,.3)!important; border-left-color:#f59e0b!important; background:rgba(245,158,11,.06)!important; }
+[data-theme="dark"] .note.note-warning, [data-theme="dark"] .warning-box{ background:rgba(245,158,11,.1)!important; }
+/* таблицы */
+.content table{ border-radius:12px; overflow:hidden; border:1px solid var(--border); }
+.content table thead th, .content table th{ background:rgba(16,185,129,.09); color:var(--primary-dark); font-weight:700; border-bottom:2px solid rgba(16,185,129,.2); }
+[data-theme="dark"] .content table thead th, [data-theme="dark"] .content table th{ background:rgba(16,185,129,.12); color:var(--primary); }
+.content table tbody tr:hover{ background:rgba(16,185,129,.045); }
+/* badge */
+.content .badge{ background:rgba(16,185,129,.14); color:var(--primary-dark); border:1px solid rgba(16,185,129,.25); border-radius:100px; padding:2px 10px; font-weight:600; }
+[data-theme="dark"] .content .badge{ color:var(--primary); }
+/* скриншоты — мягкая рамка */
+.screenshot{ border-radius:12px; border:1px solid var(--border); box-shadow:0 4px 16px rgba(15,23,42,.06); }
+/* контентные ссылки в emerald */
+.content a{ color:var(--primary-dark); }
+[data-theme="dark"] .content a{ color:var(--primary); }

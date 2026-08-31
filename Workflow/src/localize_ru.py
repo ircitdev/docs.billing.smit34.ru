@@ -131,7 +131,7 @@ def replace_markup(html, pairs):
 
         for english, russian in SUBSTRINGS:
             segment = segment.replace(english, russian)
-        segment = LANE_OUTCOMES_RE.sub(r'Выходы', segment)
+        segment = LANE_OUTCOMES_RE.sub(lambda m: m.group(1) + 'Выходы', segment)
         return segment
 
     out = []
