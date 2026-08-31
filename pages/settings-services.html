@@ -1246,7 +1246,7 @@ Telegram/каналы (пер-ящик). Также: База знаний, Ан
     <tr><td><code>off</code></td><td>просмотр недоступен</td><td>пояснение причины</td></tr>
   </tbody>
 </table>
-<div class="note"><p><strong>TVIP и Смотрёшка — закрытые OTT без веб-плейлиста</strong> (m3u8 защищён провайдером: доступ привязан к устройству/токену, встраивание в веб-плеер невозможно). Для них используется режим <code>app</code> — просмотр на приставке/Smart&nbsp;TV/в приложении провайдера по логину клиента. Встроенный плеер (<code>embedded</code>) заработает только если провайдер предоставит внешний playlist-URL для веб-плеера.</p></div>
+<div class="note"><p><strong>Просмотр в ЛК — через «Смотрёшку»</strong> (реш. admin). У неё есть реальный веб-плеер <code>smotreshka.tv</code> и приложения; TVIP — приставочный, без веб-плеера, а его m3u8 защищён провайдером и в браузере не встраивается. Поэтому в режиме <code>app</code> ЛК показывает карточку <strong>«Как смотреть ТВ»</strong> с 3 шагами: открыть <code>smotreshka.tv</code> или приложение «Смотрёшка» → войти (логин <code>smtv‹договор›</code>, пароль <code>‹договор›</code>) → смотреть. Поля контекста: <code>sm_login</code>, <code>sm_password</code>, <code>sm_url</code>. Встроенный плеер (<code>embedded</code>) заработает только если провайдер даст внешний playlist-URL для веб-плеера.</p></div>
 
 <p>Если условие не выполнено, клиенту показывается понятная причина
 («Просмотр доступен только в сети СмИТ», «Плеер каналов настраивается» и т.п.).</p>
@@ -2645,8 +2645,8 @@ flowchart LR
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2362)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">31.08.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2362)</span>&nbsp;|&nbsp;<span data-smit="updated">31.08.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2364)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">31.08.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2364)</span>&nbsp;|&nbsp;<span data-smit="updated">31.08.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2266"></script>
