@@ -1147,21 +1147,20 @@ flowchart LR
   </div>
 
   <h3 id="standartnye-otchety-sorm-3-build-324">Стандартные отчёты СОРМ-3</h3>
-  <p>При нажатии кнопки <strong>«Первоначальная настройка отчётов»</strong> создаются 13 стандартных отчётов формата СОРМ-3:</p>
+  <p>При нажатии кнопки <strong>«Первоначальная настройка отчётов»</strong> создаются 12 стандартных отчётов формата СОРМ-3:</p>
   <table class="data-table">
     <thead><tr><th>Префикс файла</th><th>Описание</th><th>Формат</th></tr></thead>
     <tbody>
       <tr><td><code>ABONENT</code></td><td>Клиенты (ФИО, договор, статус, тип)</td><td>SORM-3: IDENT, ACTUAL_NAME, STATUS, NETWORK_TYPE</td></tr>
       <tr><td><code>ABONENT_IDENT</code></td><td>Идентификаторы (логин, IP, MAC)</td><td>IP в hex (uf_ip2hex), маска FFFFFFFF</td></tr>
       <tr><td><code>ABONENT_SRV</code></td><td>Услуги клиентов</td><td>ID услуги, дата начала, договор</td></tr>
-      <tr><td><code>ABONENT_USER</code></td><td>Учётные записи</td><td>USER_NUMBER, USER_NAME</td></tr>
       <tr><td><code>ABONENT_ADDR</code></td><td>Адреса подключений</td><td>CITY, STREET, BUILDING, APARTMENT</td></tr>
       <tr><td><code>PAYMENT</code></td><td>Платежи</td><td>Сумма, телефон, адрес, тип</td></tr>
       <tr><td><code>SUPPLEMENTARY_SERVICE</code></td><td>Каталог услуг</td><td>MNEMONIC, скорость в описании</td></tr>
-      <tr><td><code>REGIONS</code></td><td>Регионы</td><td>ID=3, ООО "СМИТ"</td></tr>
-      <tr><td><code>DOC_TYPES</code></td><td>Типы документов</td><td>Из USER_ATTRIBUTES</td></tr>
-      <tr><td><code>PAY_TYPES</code></td><td>Типы оплаты</td><td>ЮKassa, Wallet One, SberPay, Касса, QIWI</td></tr>
-      <tr><td><code>IP_PLAN</code></td><td>IP-план</td><td>IP в hex, маска в hex, REGION_ID=3</td></tr>
+      <tr><td><code>REGIONS</code></td><td>Регионы</td><td>ID=1, ООО "СМИТ"</td></tr>
+      <tr><td><code>DOC_TYPE</code></td><td>Типы документов</td><td>Из USER_ATTRIBUTES</td></tr>
+      <tr><td><code>PAY_TYPE</code></td><td>Типы оплаты</td><td>ЮKassa, Wallet One, SberPay, Касса, QIWI</td></tr>
+      <tr><td><code>IP_PLAN</code></td><td>IP-план</td><td>IP в hex, маска в hex, REGION_ID=1</td></tr>
       <tr><td><code>IP_GATEWAY</code></td><td>IP шлюзов</td><td>GATE_ID, IP hex, порт</td></tr>
       <tr><td><code>GATEWAY</code></td><td>Шлюзы (NAS)</td><td>GATE_ID, описание, тип=7</td></tr>
     </tbody>
@@ -1181,7 +1180,7 @@ flowchart LR
 
   <div class="info-box">
     <strong>SQL-генерация эталонных отчётов вынесена в отдельный модуль:</strong>
-    <code>billing/services/sorm_prikaz_573.py</code> — там для каждой из 13 таблиц СОРМ-3 собирается полный SQL с правильными именами полей, кодами и форматами.
+    <code>billing/services/sorm_prikaz_573.py</code> — там для каждой таблицы СОРМ-3 собирается полный SQL с правильными именами полей, кодами и форматами (в рабочий набор идут 12 отчётов).
   </div>
 
   <h3 id="prikaz-573-key-changes">Ключевые требования Приказа №573</h3>
@@ -1300,7 +1299,7 @@ docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 3
 
   <h3 id="prikaz-573-files">Файлы реализации</h3>
   <ul>
-    <li><code>billing/services/sorm_prikaz_573.py</code> — эталонные SQL-генераторы для всех 13 таблиц</li>
+    <li><code>billing/services/sorm_prikaz_573.py</code> — эталонные SQL-генераторы (в рабочий набор идут 12 отчётов)</li>
     <li><code>billing/views/sorm.py::prepare_reports_view</code> — создание набора отчётов из эталона</li>
     <li><code>billing/management/commands/sorm_regenerate_default_reports.py</code> — обновление существующих SORM-конфигов из эталона</li>
     <li><code>billing/management/commands/sorm_data_quality_audit.py</code> — аудит качества данных</li>
@@ -1437,7 +1436,7 @@ docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 3
   <p>Кнопки внизу:</p>
   <ul>
     <li><strong>Сохранить</strong> — сохранить изменения формы</li>
-    <li><strong>↻ Дефолты схемы vendor</strong> — переустановить SQL и схему всех 14 отчётов под выбранного поставщика. <strong>Текущие настройки отчётов будут перезаписаны</strong> — требуется подтверждение</li>
+    <li><strong>↻ Дефолты схемы vendor</strong> — переустановить SQL и схему всех 12 отчётов под выбранного поставщика. <strong>Текущие настройки отчётов будут перезаписаны</strong> — требуется подтверждение</li>
     <li><strong>📇 Создать реквизит «Тип документа»</strong> — добавить в <code>UserAttributes</code> стандартный набор типов документов (паспорт, ИНН, СНИЛС и т.д.) если их ещё нет в системе</li>
   </ul>
 
@@ -1487,8 +1486,8 @@ docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 3
 
   <h3 id="sorm-reports">Список отчётов</h3>
 
-  <p>Стандартный набор — 14 отчётов СОРМ-3: ABONENT, ABONENT_IDENT,
-  ABONENT_SRV, ABONENT_USER, ABONENT_ADDR, PAYMENT, SUPPLEMENTARY_SERVICE,
+  <p>Стандартный набор — 12 отчётов СОРМ-3: ABONENT, ABONENT_IDENT,
+  ABONENT_SRV, ABONENT_ADDR, PAYMENT, SUPPLEMENTARY_SERVICE,
   REGIONS, DOC_TYPE, PAY_TYPE и другие. У каждого свой SQL-запрос и префикс
   имени файла.</p>
 
@@ -1496,8 +1495,8 @@ docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 3
 
   <p>В каждой строке:</p>
   <ul>
-    <li><strong>Префикс файла</strong> — например <code>ABONENT_USER</code></li>
-    <li><strong>Расширение</strong> — обычно <code>.csv</code></li>
+    <li><strong>Префикс файла</strong> — например <code>ABONENT_IDENT</code></li>
+    <li><strong>Расширение</strong> — по умолчанию <code>.txt</code></li>
     <li><strong>Описание</strong> — что выгружает отчёт</li>
     <li><strong>Периодичность</strong> — выпадающий список: Вручную / Каждые 10 минут / Каждый час / Ежедневно / Ежемесячно. Меняется одним кликом, изменение сохраняется и пишется в аудит</li>
     <li><strong>▶</strong> — запустить только этот отчёт сейчас (выгрузить на FTP)</li>
@@ -1702,9 +1701,11 @@ docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 3
   <p>Из контейнера web (<code>docker exec app-web-1 python manage.py ...</code>):</p>
 
   <ul>
-    <li><code>sorm_run_export &lt;sorm_id&gt;</code> — запустить выгрузку всех отчётов одной конфигурации</li>
-    <li><code>sorm_run_report &lt;report_id&gt;</code> — запустить один отчёт по ID</li>
-    <li><code>sorm_validate_meta</code> — проверка метаданных <code>UserAttributes</code> без UI</li>
+    <li><code>sorm_data_quality_audit</code> — проверка полноты данных для отчётов (пустые обязательные поля, дубли атрибутов)</li>
+    <li><code>sorm_regenerate_default_reports &lt;sorm_id&gt;</code> — пересоздать стандартный набор из 12 отчётов для конфигурации</li>
+    <li><code>merge_sorm_attribute_dups</code> — объединить дубли СОРМ-атрибутов в <code>UserAttributes</code></li>
+    <li><code>fill_addresses_from_sorm</code> — заполнить адреса абонентов из СОРМ-данных</li>
+    <li><code>fix_sorm_names</code> / <code>fix_sorm_reports</code> — исправление имён и SQL отчётов после миграции</li>
   </ul>
 
 

@@ -1205,7 +1205,7 @@ flowchart TD
 <h5 id="vlan-pull-cleanup">Что делать со старыми пулами</h5>
 <ul>
   <li><strong>Тестовые пулы</strong> с 0 точек подключения — удаляются через UI кнопкой 🗑.</li>
-  <li><strong>Декомиссированные пулы</strong> — лучше выключить (<code>enabled=false</code>), а не удалять, если есть точки подключения с VLAN из этого пула. После миграции точек на новый пул — удалить.</li>
+  <li><strong>Декомиссированные пулы</strong> — сначала перевести все точки подключения на другой VLAN-пул, затем удалить. У VLAN-пула нет флага активности, поэтому «мягкого выключения» нет — только удаление после освобождения.</li>
   <li><strong>Защита удаления</strong>: UI блокирует удаление пула, у которого counter «Использовано» &gt; 0. Чтобы удалить — сначала переведите все точки подключения на другие пулы.</li>
 </ul>
 
@@ -1223,7 +1223,6 @@ flowchart TD
 <ul>
   <li>Список с поиском по названию и оператору.</li>
   <li>Колонка <em>«Использовано»</em> — счётчик точек подключения, занявших VLAN из пула.</li>
-  <li>Бейдж активности (<code>enabled</code>) — Bootstrap-switch прямо в строке.</li>
   <li>Скрытие «оператора», если у системы единственный оператор: колонка убирается через <code>.vp-op-col-hidden</code>, чтобы не путать админа.</li>
 </ul>
 
@@ -1237,8 +1236,6 @@ flowchart TD
   <li><strong>Начальный VLAN</strong> (<code>start_vlan</code>, 1–4094) — первый номер диапазона.</li>
   <li><strong>Конечный VLAN</strong> (<code>end_vlan</code>, 1–4094) — последний номер. Сервер проверяет <code>start ≤ end</code> и непересечение с другими активными пулами того же оператора.</li>
   <li><strong>Оператор</strong> (<code>operator_id</code>) — Select из клиентов в папке Операторы (9002). Для одно-операторских систем поле скрыто.</li>
-  <li><strong>Активность</strong> (<code>enabled</code>) — выключенный пул не назначается на новые точки подключения.</li>
-  <li><strong>Комментарий</strong> — свободный текст.</li>
 </ul>
 
 <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v510/v510_vlan_pool_modal_edit.png" alt="Модалка редактирования VLAN-пула"></p>
@@ -1522,8 +1519,8 @@ Push / Telegram) и RADIUS-параметров (если статус долж�
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2397)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">31.08.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2397)</span>&nbsp;|&nbsp;<span data-smit="updated">31.08.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2400)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">31.08.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2400)</span>&nbsp;|&nbsp;<span data-smit="updated">31.08.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2266"></script>
