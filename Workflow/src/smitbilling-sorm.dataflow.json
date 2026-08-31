@@ -1,0 +1,238 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "СмИТ Биллинг — выгрузка СОРМ",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1085,
+      560
+    ],
+    "views": [
+      {
+        "id": "path",
+        "label": "Основной путь",
+        "focus": [
+          "db",
+          "report",
+          "scope",
+          "csv",
+          "ftp"
+        ],
+        "note": "От данных биллинга до файла на FTP пункта управления."
+      },
+      {
+        "id": "rules",
+        "label": "Правила отбора",
+        "focus": [
+          "report",
+          "scope",
+          "preflight"
+        ],
+        "note": "Организация подставляется в SQL, полнота полей проверяется до выгрузки."
+      },
+      {
+        "id": "control",
+        "label": "Контроль",
+        "focus": [
+          "ftp",
+          "log",
+          "tg"
+        ],
+        "note": "Результат выгрузки пишется в журнал, оттуда уходит уведомление."
+      }
+    ],
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "default": {
+          "label": "поток"
+        },
+        "emphasis": {
+          "label": "основной путь"
+        },
+        "security": {
+          "label": "правило"
+        },
+        "dashed": {
+          "label": "фоновое"
+        },
+        "database": {
+          "label": "хранилище"
+        }
+      }
+    }
+  },
+  "stages": [
+    {
+      "label": "Источник"
+    },
+    {
+      "label": "Отчёт"
+    },
+    {
+      "label": "Правила"
+    },
+    {
+      "label": "Файл"
+    },
+    {
+      "label": "Передача"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "db",
+      "type": "database",
+      "label": "PostgreSQL",
+      "sublabel": "данные биллинга",
+      "stage": 0,
+      "row": 0
+    },
+    {
+      "id": "sched",
+      "type": "messagebus",
+      "label": "Расписание",
+      "sublabel": "час и таймзона",
+      "stage": 0,
+      "row": 2
+    },
+    {
+      "id": "report",
+      "type": "backend",
+      "label": "Отчёт СОРМ",
+      "sublabel": "SQL из карточки",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "scope",
+      "type": "security",
+      "label": "Скоуп орг.",
+      "sublabel": "scoped_sql",
+      "stage": 2,
+      "row": 0
+    },
+    {
+      "id": "preflight",
+      "type": "security",
+      "label": "Пред-проверка",
+      "sublabel": "полнота полей",
+      "stage": 2,
+      "row": 2
+    },
+    {
+      "id": "csv",
+      "type": "backend",
+      "label": "CSV",
+      "sublabel": "кодировка · разделитель",
+      "stage": 3,
+      "row": 1
+    },
+    {
+      "id": "ftp",
+      "type": "external",
+      "label": "FTP пункта",
+      "sublabel": "каталог оператора",
+      "stage": 4,
+      "row": 0
+    },
+    {
+      "id": "log",
+      "type": "database",
+      "label": "Журнал",
+      "sublabel": "SormExportLog",
+      "stage": 4,
+      "row": 1
+    },
+    {
+      "id": "tg",
+      "type": "external",
+      "label": "Telegram",
+      "sublabel": "уведомление",
+      "stage": 4,
+      "row": 2
+    }
+  ],
+  "flows": [
+    {
+      "id": "rows",
+      "from": "db",
+      "to": "report",
+      "label": "выборка строк",
+      "classification": "персональные данные",
+      "variant": "emphasis"
+    },
+    {
+      "id": "tick",
+      "from": "sched",
+      "to": "report",
+      "label": "запуск по расписанию",
+      "classification": "час · дедуп"
+    },
+    {
+      "id": "org",
+      "from": "report",
+      "to": "scope",
+      "label": "SQL + организация",
+      "variant": "security"
+    },
+    {
+      "id": "check",
+      "from": "report",
+      "to": "preflight",
+      "label": "проверка полноты",
+      "variant": "dashed"
+    },
+    {
+      "id": "to-csv",
+      "from": "scope",
+      "to": "csv",
+      "label": "строки отчёта",
+      "variant": "emphasis"
+    },
+    {
+      "id": "upload",
+      "from": "csv",
+      "to": "ftp",
+      "label": "файл на FTP",
+      "classification": "СОРМ-3",
+      "variant": "emphasis"
+    },
+    {
+      "id": "status",
+      "from": "ftp",
+      "to": "log",
+      "label": "статус выгрузки",
+      "route": "straight",
+      "labelDy": 24
+    },
+    {
+      "id": "notify",
+      "from": "log",
+      "to": "tg",
+      "label": "уведомление",
+      "variant": "dashed",
+      "route": "straight",
+      "labelDy": 24
+    }
+  ],
+  "cards": [
+    {
+      "dot": "violet",
+      "title": "Формат",
+      "items": [
+        "13 отчётов СОРМ-3 с фиксированными именами файлов",
+        "IP и маски пишутся в hex через функции БД"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Расписание",
+      "items": [
+        "Период: час / день / месяц по времени карточки СОРМ",
+        "Повторный запуск в том же окне отсекается кэшем"
+      ]
+    }
+  ]
+}

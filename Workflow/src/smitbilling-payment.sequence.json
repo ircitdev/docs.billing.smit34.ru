@@ -1,0 +1,244 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "СмИТ Биллинг — оплата через ЮKassa (REST v3)",
+    "quality_profile": "showcase",
+    "column_fit": "spread",
+    "viewBox": [
+      1080,
+      480
+    ],
+    "views": [
+      {
+        "id": "create",
+        "label": "Создание платежа",
+        "focus": [
+          "client",
+          "web",
+          "yk"
+        ],
+        "note": "Комиссия добавляется поверх суммы зачисления и уходит в ЮKassa."
+      },
+      {
+        "id": "verify",
+        "label": "Проверка подлинности",
+        "focus": [
+          "yk",
+          "web"
+        ],
+        "note": "Webhook не считается доказательством: платёж перепроверяется через API."
+      },
+      {
+        "id": "credit",
+        "label": "Зачисление",
+        "focus": [
+          "web",
+          "db",
+          "fiscal",
+          "nas"
+        ],
+        "note": "Пополнение счёта, чек по 54-ФЗ и автоснятие блокировки за долг."
+      }
+    ],
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "default": {
+          "label": "вызов"
+        },
+        "emphasis": {
+          "label": "основной путь"
+        },
+        "security": {
+          "label": "проверка"
+        },
+        "dashed": {
+          "label": "фоновое"
+        },
+        "return": {
+          "label": "ответ"
+        }
+      }
+    }
+  },
+  "participants": [
+    {
+      "id": "client",
+      "type": "external",
+      "label": "Абонент",
+      "sublabel": "личный кабинет"
+    },
+    {
+      "id": "web",
+      "type": "backend",
+      "label": "Django",
+      "sublabel": "lk.payment"
+    },
+    {
+      "id": "yk",
+      "type": "external",
+      "label": "ЮKassa",
+      "sublabel": "REST API v3"
+    },
+    {
+      "id": "db",
+      "type": "database",
+      "label": "PostgreSQL",
+      "sublabel": "счёт · FinOp"
+    },
+    {
+      "id": "fiscal",
+      "type": "security",
+      "label": "Фискализация",
+      "sublabel": "чек 54-ФЗ"
+    },
+    {
+      "id": "nas",
+      "type": "cloud",
+      "label": "NAS",
+      "sublabel": "CoA"
+    }
+  ],
+  "segments": [
+    {
+      "from": 150,
+      "to": 232,
+      "label": "Создание платежа"
+    },
+    {
+      "from": 240,
+      "to": 320,
+      "label": "Оплата и webhook"
+    },
+    {
+      "from": 328,
+      "to": 404,
+      "label": "Зачисление"
+    }
+  ],
+  "messages": [
+    {
+      "id": "pay-request",
+      "from": "client",
+      "to": "web",
+      "y": 160,
+      "label": "оплатить сумму",
+      "variant": "default"
+    },
+    {
+      "id": "create-payment",
+      "from": "web",
+      "to": "yk",
+      "y": 190,
+      "label": "POST /payments · сумма + комиссия",
+      "variant": "emphasis"
+    },
+    {
+      "id": "confirmation-url",
+      "from": "yk",
+      "to": "web",
+      "y": 220,
+      "label": "confirmation_url",
+      "variant": "return"
+    },
+    {
+      "id": "card-payment",
+      "from": "client",
+      "to": "yk",
+      "y": 250,
+      "label": "оплата картой",
+      "variant": "default"
+    },
+    {
+      "id": "webhook",
+      "from": "yk",
+      "to": "web",
+      "y": 280,
+      "label": "webhook payment.succeeded",
+      "variant": "emphasis"
+    },
+    {
+      "id": "verify",
+      "from": "web",
+      "to": "yk",
+      "y": 309,
+      "label": "проверка платежа по API",
+      "variant": "security"
+    },
+    {
+      "id": "credit",
+      "from": "web",
+      "to": "db",
+      "y": 338,
+      "label": "ostatok += · FinOp",
+      "variant": "emphasis"
+    },
+    {
+      "id": "receipt",
+      "from": "web",
+      "to": "fiscal",
+      "y": 367,
+      "label": "чек 54-ФЗ",
+      "variant": "dashed"
+    },
+    {
+      "id": "unblock",
+      "from": "web",
+      "to": "nas",
+      "y": 396,
+      "label": "снятие b_negbal · CoA",
+      "variant": "dashed"
+    }
+  ],
+  "activations": [
+    {
+      "participant": "web",
+      "from": 160,
+      "to": 402,
+      "type": "backend"
+    },
+    {
+      "participant": "yk",
+      "from": 190,
+      "to": 312,
+      "type": "external"
+    },
+    {
+      "participant": "db",
+      "from": 331,
+      "to": 345,
+      "type": "database"
+    },
+    {
+      "participant": "fiscal",
+      "from": 360,
+      "to": 374,
+      "type": "security"
+    },
+    {
+      "participant": "nas",
+      "from": 389,
+      "to": 403,
+      "type": "cloud"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Деньги",
+      "items": [
+        "Комиссия добавляется сверх суммы зачисления",
+        "Зачисление и финоперация пишутся одной транзакцией"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Доверие к webhook",
+      "items": [
+        "Платёж перепроверяется запросом в ЮKassa",
+        "Касса выбирается по org_id из metadata платежа"
+      ]
+    }
+  ]
+}

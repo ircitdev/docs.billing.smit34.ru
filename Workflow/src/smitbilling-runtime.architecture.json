@@ -1,0 +1,394 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "СмИТ Биллинг — runtime-архитектура (production rbill)",
+    "output": "smitbilling-runtime.architecture.html",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "abonent-path",
+        "label": "Путь абонента",
+        "focus": [
+          "clients",
+          "nginx",
+          "web",
+          "db"
+        ],
+        "note": "Запрос из личного кабинета и мобильного приложения до данных биллинга."
+      },
+      {
+        "id": "async-work",
+        "label": "Фоновые задачи",
+        "focus": [
+          "web",
+          "redis",
+          "celery",
+          "db"
+        ],
+        "note": "Абонплата, выгрузки и рассылки идут через очереди Celery."
+      },
+      {
+        "id": "network-access",
+        "label": "Доступ в сеть",
+        "focus": [
+          "nas",
+          "radius",
+          "db"
+        ],
+        "note": "Авторизация и аккаунтинг абонентов на оборудовании доступа."
+      },
+      {
+        "id": "payments",
+        "label": "Платежи",
+        "focus": [
+          "pay",
+          "nginx",
+          "web",
+          "db"
+        ],
+        "note": "Приём уведомления о платеже и зачисление на лицевой счёт."
+      }
+    ],
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "frontend": {
+          "label": "интерфейс"
+        },
+        "backend": {
+          "label": "сервисы"
+        },
+        "database": {
+          "label": "хранилища"
+        },
+        "cloud": {
+          "label": "инфраструктура"
+        },
+        "security": {
+          "label": "доступ в сеть"
+        },
+        "messagebus": {
+          "label": "очереди"
+        },
+        "external": {
+          "label": "внешние"
+        }
+      }
+    }
+  },
+  "components": [
+    {
+      "id": "staff",
+      "type": "frontend",
+      "label": "Сотрудники",
+      "sublabel": "Админка · CRM · Поддержка",
+      "pos": [
+        40,
+        50
+      ],
+      "size": [
+        190,
+        66
+      ]
+    },
+    {
+      "id": "clients",
+      "type": "external",
+      "label": "Абоненты",
+      "sublabel": "Кабинет · приложение · виджет",
+      "pos": [
+        40,
+        200
+      ],
+      "size": [
+        190,
+        76
+      ]
+    },
+    {
+      "id": "pay",
+      "type": "external",
+      "label": "Платёжные системы",
+      "sublabel": "ЮKassa · W1 · выписки",
+      "pos": [
+        40,
+        350
+      ],
+      "size": [
+        190,
+        76
+      ]
+    },
+    {
+      "id": "nas",
+      "type": "external",
+      "label": "NAS",
+      "sublabel": "MikroTik · узлы доступа",
+      "pos": [
+        40,
+        500
+      ],
+      "size": [
+        190,
+        66
+      ]
+    },
+    {
+      "id": "nginx",
+      "type": "cloud",
+      "label": "Nginx",
+      "sublabel": "TLS :443 · Let's Encrypt",
+      "pos": [
+        320,
+        200
+      ],
+      "size": [
+        180,
+        66
+      ]
+    },
+    {
+      "id": "redis",
+      "type": "messagebus",
+      "label": "Redis 7",
+      "sublabel": "брокер · кэш",
+      "pos": [
+        600,
+        40
+      ],
+      "size": [
+        180,
+        66
+      ]
+    },
+    {
+      "id": "web",
+      "type": "backend",
+      "label": "Django 4.2",
+      "sublabel": "gunicorn :8877",
+      "pos": [
+        600,
+        200
+      ],
+      "size": [
+        190,
+        78
+      ]
+    },
+    {
+      "id": "celery",
+      "type": "backend",
+      "label": "Celery",
+      "sublabel": "worker + beat",
+      "pos": [
+        880,
+        200
+      ],
+      "size": [
+        180,
+        66
+      ]
+    },
+    {
+      "id": "db",
+      "type": "database",
+      "label": "PostgreSQL 17",
+      "sublabel": "основная база",
+      "pos": [
+        600,
+        400
+      ],
+      "size": [
+        190,
+        66
+      ]
+    },
+    {
+      "id": "radius",
+      "type": "security",
+      "label": "FreeRADIUS 3.2",
+      "sublabel": "rlm_python3 · 1812/1813",
+      "pos": [
+        320,
+        400
+      ],
+      "size": [
+        190,
+        66
+      ]
+    },
+    {
+      "id": "lic",
+      "type": "external",
+      "label": "Лиц-сервер",
+      "sublabel": "лицензии · модули · AI",
+      "pos": [
+        1160,
+        40
+      ],
+      "size": [
+        190,
+        66
+      ]
+    },
+    {
+      "id": "msg",
+      "type": "external",
+      "label": "Каналы связи",
+      "sublabel": "Telegram · VK · SMS · почта",
+      "pos": [
+        1160,
+        200
+      ],
+      "size": [
+        190,
+        76
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "rbill.smit34.ru · Docker Compose · Debian 11",
+      "wraps": [
+        "nginx",
+        "web",
+        "redis",
+        "celery",
+        "db",
+        "radius"
+      ]
+    },
+    {
+      "kind": "security-group",
+      "label": "TLS :443 → gunicorn :8877",
+      "wraps": [
+        "nginx",
+        "web"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "clients-to-nginx",
+      "from": "clients",
+      "to": "nginx",
+      "label": "HTTPS",
+      "variant": "emphasis",
+      "labelDy": 16
+    },
+    {
+      "id": "staff-to-nginx",
+      "from": "staff",
+      "to": "nginx",
+      "label": "HTTPS"
+    },
+    {
+      "id": "pay-to-nginx",
+      "from": "pay",
+      "to": "nginx",
+      "label": "webhook о платеже"
+    },
+    {
+      "id": "nginx-to-web",
+      "from": "nginx",
+      "to": "web",
+      "label": "proxy :8877",
+      "variant": "emphasis"
+    },
+    {
+      "id": "web-redis",
+      "from": "web",
+      "to": "redis",
+      "label": "кэш · постановка задач",
+      "fromSide": "top",
+      "toSide": "bottom"
+    },
+    {
+      "id": "redis-celery",
+      "from": "redis",
+      "to": "celery",
+      "label": "очереди default · coa · reports"
+    },
+    {
+      "id": "celery-db",
+      "from": "celery",
+      "to": "db",
+      "label": "абонплата · выгрузки"
+    },
+    {
+      "id": "web-sql",
+      "from": "web",
+      "to": "db",
+      "label": "SQL",
+      "variant": "emphasis",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelDy": 24
+    },
+    {
+      "id": "nas-radius",
+      "from": "nas",
+      "to": "radius",
+      "label": "Access-Request · Accounting",
+      "variant": "security",
+      "labelDy": 20
+    },
+    {
+      "id": "radius-db",
+      "from": "radius",
+      "to": "db",
+      "label": "проверка учётной записи",
+      "labelDy": -27
+    },
+    {
+      "id": "celery-msg",
+      "from": "celery",
+      "to": "msg",
+      "label": "уведомления · боты",
+      "variant": "dashed",
+      "labelDy": 22
+    },
+    {
+      "id": "celery-lic",
+      "from": "celery",
+      "to": "lic",
+      "label": "лицензия · вызовы AI"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Каналы",
+      "items": [
+        "Абоненты: кабинет, приложение, AI-виджет",
+        "Сотрудники: админка, CRM, Поддержка"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Ядро",
+      "items": [
+        "Django под gunicorn, код запечён в образ",
+        "Celery worker и beat: default, coa, reports"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "Сеть",
+      "items": [
+        "FreeRADIUS: авторизация и аккаунтинг",
+        "CoA Disconnect на NAS из очереди coa"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Внешние",
+      "items": [
+        "Зачисление платежа приходит webhook",
+        "Лиц-сервер: модули и вызовы AI"
+      ]
+    }
+  ]
+}

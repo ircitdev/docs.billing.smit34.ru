@@ -31,9 +31,54 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Документация биллинговой платформы СмИТ Биллинг для операторов связи и сервис-провайдеров. Python 3.11, Django 4.2, PostgreSQL 16, Docker Compose.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/style.css?v=2266">
+  <link rel="stylesheet" href="css/style.css?v=2390">
   <link rel="stylesheet" href="css/vendor/tabler-icons.min.css?v=2193">
   <link rel="stylesheet" href="css/search.css?v=2257">
+  <style id="dh-landing">
+  /* ── Главная документации в стиле страницы плана (emerald) ── */
+  .dh-hero{--e400:#34d399;--e500:#10b981;--e600:#059669;--e700:#047857;
+    display:grid;grid-template-columns:1.5fr 1fr;gap:22px;align-items:stretch;
+    margin:6px 0 26px}
+  .dh-hero-main{background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(20,184,166,.05));
+    border:1px solid rgba(16,185,129,.18);border-radius:18px;padding:28px 30px}
+  .dh-badge{display:inline-flex;align-items:center;gap:7px;padding:5px 13px;border-radius:100px;
+    background:rgba(16,185,129,.14);color:var(--e700);border:1px solid rgba(16,185,129,.25);
+    font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1.3px;margin-bottom:14px}
+  .dh-badge .dh-dot{width:7px;height:7px;border-radius:50%;background:var(--e500);box-shadow:0 0 0 3px rgba(16,185,129,.2)}
+  .dh-title{font-size:2.25rem;font-weight:800;letter-spacing:-.02em;line-height:1.1;margin:0 0 12px;color:var(--text)}
+  .dh-title span{background:linear-gradient(90deg,var(--e600),#14b8a6);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .dh-lead{color:var(--text-light);font-size:1.02rem;line-height:1.6;margin:0 0 20px;max-width:60ch}
+  .dh-actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+  .dh-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:12px;
+    font-weight:600;font-size:.95rem;text-decoration:none;transition:transform .12s,box-shadow .2s,background .2s;border:1px solid transparent}
+  .dh-btn:hover{transform:translateY(-1px);text-decoration:none}
+  .dh-btn-main{background:linear-gradient(135deg,var(--e500),var(--e600));color:#fff;box-shadow:0 6px 18px rgba(16,185,129,.28)}
+  .dh-btn-main:hover{box-shadow:0 10px 26px rgba(16,185,129,.4);color:#fff}
+  .dh-btn-ghost{background:rgba(255,255,255,.7);border-color:rgba(16,185,129,.28);color:var(--e700)}
+  .dh-btn-ghost:hover{background:#fff;border-color:var(--e500);color:var(--e700)}
+  .dh-meta{display:flex;gap:26px;flex-wrap:wrap;padding-top:16px;border-top:1px dashed rgba(16,185,129,.22)}
+  .dh-meta span{font-size:.9rem;color:var(--text-light)}
+  .dh-meta b{display:block;font-size:1.35rem;font-weight:800;color:var(--e700);line-height:1.1}
+  .dh-hero-side{display:flex;flex-direction:column;gap:16px}
+  .dh-card{border-radius:18px;padding:20px 22px;display:flex;flex-direction:column;flex:1;text-decoration:none;position:relative;overflow:hidden}
+  .dh-card-eyebrow{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1.4px;opacity:.85;margin-bottom:10px}
+  .dh-card-green{background:linear-gradient(150deg,var(--e500),var(--e700));color:#fff;box-shadow:0 10px 30px rgba(5,150,105,.28)}
+  .dh-card-green:hover{transform:translateY(-2px);color:#fff;text-decoration:none;transition:transform .15s}
+  .dh-card-big{font-size:1.42rem;font-weight:800;letter-spacing:-.01em;line-height:1.15}
+  .dh-card-sub{font-size:.86rem;opacity:.85;margin-top:4px}
+  .dh-card-cta{margin-top:auto;padding-top:14px;font-weight:700;font-size:.9rem}
+  .dh-card-dark{background:#0f172a;color:#cbd5e1;border:1px solid rgba(255,255,255,.06)}
+  .dh-card-dark .dh-card-eyebrow{color:var(--e400)}
+  .dh-card-stack{font-size:.9rem;line-height:1.7;color:#e2e8f0}
+  .dh-card-stack b{color:var(--e400)}
+  @media (max-width:900px){.dh-hero{grid-template-columns:1fr}.dh-title{font-size:1.9rem}}
+  @media (max-width:560px){.dh-hero-main{padding:22px 20px}.dh-meta{gap:18px}.dh-btn{flex:1 1 auto;justify-content:center}}
+  /* dark */
+  [data-theme="dark"] .dh-hero-main{background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(20,184,166,.06));border-color:rgba(16,185,129,.25)}
+  [data-theme="dark"] .dh-badge,[data-theme="dark"] .dh-title span,[data-theme="dark"] .dh-meta b,[data-theme="dark"] .dh-btn-ghost{color:var(--e400)}
+  [data-theme="dark"] .dh-btn-ghost{background:rgba(30,41,59,.55);border-color:rgba(16,185,129,.3)}
+  [data-theme="dark"] .dh-card-dark{background:#0b1220;border-color:rgba(255,255,255,.07)}
+  </style>
 </head>
 <body>
 
@@ -934,8 +979,35 @@
     <a href="index.html">Документация</a>
   </div>
 
-  <h1>Документация СмИТ Биллинг</h1>
-  <p>Добро пожаловать в документацию системы <strong>СмИТ Биллинг</strong> — биллинговой платформы для операторов связи и сервис-провайдеров.</p>
+  <section class="dh-hero">
+    <div class="dh-hero-main">
+      <span class="dh-badge"><span class="dh-dot"></span>Документация продукта</span>
+      <h1 class="dh-title">Документация <span>СмИТ&nbsp;Биллинг</span></h1>
+      <p class="dh-lead">Биллинговая платформа для операторов связи и сервис-провайдеров: абоненты, тарифы, платежи, СОРМ, оборудование, CRM, поддержка и личный кабинет — единый справочник по системе.</p>
+      <div class="dh-actions">
+        <a class="dh-btn dh-btn-main" href="https://billing.smit34.ru/?utm_source=docs&utm_medium=referral&utm_campaign=docs_hero&utm_content=site" target="_blank" rel="noopener">Сайт продукта →</a>
+        <a class="dh-btn dh-btn-ghost" href="#training-videos">Обучающие ролики</a>
+        <a class="dh-btn dh-btn-ghost" href="https://billing.smit34.ru/?utm_source=docs&utm_medium=referral&utm_campaign=docs_hero&utm_content=demo" target="_blank" rel="noopener">Запросить демо</a>
+      </div>
+      <div class="dh-meta">
+        <span><b>21</b>модуль платформы</span>
+        <span><b>911</b>разделов справочника</span>
+        <span><b>16</b>обучающих роликов</span>
+      </div>
+    </div>
+    <div class="dh-hero-side">
+      <a class="dh-card dh-card-green" href="http://billing.smit34.ru" target="_blank" rel="noopener">
+        <div class="dh-card-eyebrow">Веб-интерфейс</div>
+        <div class="dh-card-big">billing.smit34.ru</div>
+        <div class="dh-card-sub">Рабочая система биллинга</div>
+        <span class="dh-card-cta">Открыть →</span>
+      </a>
+      <div class="dh-card dh-card-dark">
+        <div class="dh-card-eyebrow">Технологии</div>
+        <div class="dh-card-stack"><b>Python 3.11</b> · Django 4.2 LTS · PostgreSQL 16 · Redis 7 · Celery 5 · FreeRADIUS 3.2 · Docker · Nginx</div>
+      </div>
+    </div>
+  </section>
 
   <div class="welcome-image">
     <video src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/robot_home.mp4"
@@ -944,15 +1016,7 @@
            onended="this.outerHTML='<img src=&apos;https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/robot_home.jpg&apos; style=&apos;width:100%;border-radius:8px;display:block&apos; alt=&apos;&apos;>'"></video>
   </div>
 
-  <div class="info-box">
-    <strong>Веб-интерфейс биллинга:</strong> <a href="http://billing.smit34.ru" target="_blank">billing.smit34.ru</a><br>
-    <strong>Технологический стек:</strong> Python 3.11, Django 4.2 LTS, PostgreSQL 16, Redis 7, Celery 5, FreeRADIUS 3.2.3, Docker Compose, Gunicorn, Nginx, AdminLTE 3 + Bootstrap 5.3.
-  </div>
-
-
-
-
-  <section class="landing-cta">
+  <section class="landing-cta" hidden>
     <div class="lc-body">
       <div class="lc-eyebrow">СмИТ Биллинг</div>
       <h2 class="lc-title">Смотрите систему целиком</h2>

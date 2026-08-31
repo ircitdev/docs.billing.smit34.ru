@@ -1,0 +1,232 @@
+{
+  "schema_version": 1,
+  "diagram_type": "lifecycle",
+  "meta": {
+    "title": "СмИТ Биллинг — состояния абонента по балансу",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1085,
+      566
+    ],
+    "views": [
+      {
+        "id": "main",
+        "label": "Основной цикл",
+        "focus": [
+          "connected",
+          "charging",
+          "negative",
+          "blocked",
+          "restored"
+        ],
+        "note": "От подключения до блокировки за долг и обратно после оплаты."
+      },
+      {
+        "id": "waits",
+        "label": "Отсрочки",
+        "focus": [
+          "negative",
+          "legal",
+          "promise"
+        ],
+        "note": "Юрлицу даётся отсрочка, абоненту — обещанный платёж."
+      },
+      {
+        "id": "promise",
+        "label": "Обещанный платёж",
+        "focus": [
+          "blocked",
+          "promise",
+          "restored"
+        ],
+        "note": "ОП снимает блок на срок; если не оплатить — лимит снимается и блок возвращается."
+      }
+    ],
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "start": {
+          "label": "начало"
+        },
+        "active": {
+          "label": "в работе"
+        },
+        "waiting": {
+          "label": "ожидание"
+        },
+        "decision": {
+          "label": "развилка"
+        },
+        "success": {
+          "label": "успех"
+        },
+        "failure": {
+          "label": "блокировка"
+        }
+      }
+    }
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "Основной цикл"
+    },
+    {
+      "id": "pause",
+      "label": "Отсрочки и выходы"
+    }
+  ],
+  "states": [
+    {
+      "id": "connected",
+      "type": "start",
+      "label": "Подключён",
+      "sublabel": "услуги активны",
+      "lane": "main",
+      "col": 0,
+      "step": "01"
+    },
+    {
+      "id": "charging",
+      "type": "active",
+      "label": "Списание",
+      "sublabel": "ежедневный прогон",
+      "lane": "main",
+      "col": 1,
+      "step": "02"
+    },
+    {
+      "id": "negative",
+      "type": "decision",
+      "label": "Минус на счёте",
+      "sublabel": "ostatok < limit",
+      "lane": "main",
+      "col": 2,
+      "step": "03"
+    },
+    {
+      "id": "blocked",
+      "type": "failure",
+      "label": "Блокировка",
+      "sublabel": "b_negbal · CoA",
+      "lane": "main",
+      "col": 3,
+      "step": "04",
+      "yOffset": 7
+    },
+    {
+      "id": "restored",
+      "type": "success",
+      "label": "Доступ вернули",
+      "sublabel": "unblock · Users on",
+      "lane": "main",
+      "col": 4,
+      "step": "05",
+      "yOffset": 14
+    },
+    {
+      "id": "legal",
+      "type": "waiting",
+      "label": "Отсрочка юрлицу",
+      "sublabel": "N дней в минусе",
+      "lane": "pause",
+      "col": 0
+    },
+    {
+      "id": "promise",
+      "type": "waiting",
+      "label": "Обещанный платёж",
+      "sublabel": "лимит + комиссия",
+      "lane": "pause",
+      "col": 1
+    }
+  ],
+  "transitions": [
+    {
+      "id": "start-charging",
+      "from": "connected",
+      "to": "charging",
+      "label": "услуги в работе",
+      "labelDy": -25
+    },
+    {
+      "id": "charge-minus",
+      "from": "charging",
+      "to": "negative",
+      "label": "не хватило денег",
+      "labelDy": -25
+    },
+    {
+      "id": "minus-block",
+      "from": "negative",
+      "to": "blocked",
+      "label": "физлицо — сразу",
+      "variant": "security",
+      "labelDy": -26
+    },
+    {
+      "id": "block-restore",
+      "from": "blocked",
+      "to": "restored",
+      "label": "оплата · баланс ≥ 0",
+      "variant": "emphasis",
+      "labelDy": -25
+    },
+    {
+      "id": "minus-legal",
+      "from": "negative",
+      "to": "legal",
+      "label": "юрлицо: ждём N дней",
+      "labelDy": 24
+    },
+    {
+      "id": "legal-block",
+      "from": "legal",
+      "to": "blocked",
+      "label": "срок истёк",
+      "variant": "security"
+    },
+    {
+      "id": "block-promise",
+      "from": "blocked",
+      "to": "promise",
+      "label": "включили ОП",
+      "labelDx": -27,
+      "labelDy": 28
+    },
+    {
+      "id": "promise-restore",
+      "from": "promise",
+      "to": "restored",
+      "label": "лимит покрывает долг",
+      "variant": "emphasis"
+    },
+    {
+      "id": "promise-back",
+      "from": "promise",
+      "to": "blocked",
+      "label": "срок вышел",
+      "variant": "security",
+      "labelDx": 36,
+      "labelDy": -12
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "Блокировка",
+      "items": [
+        "Порог — не ноль, а AdminAccounts.limit",
+        "Снятие блока включает Users и шлёт CoA Disconnect"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Отсрочки",
+      "items": [
+        "Юрлицу блок откладывается на LEGAL_BLOCK_DELAY_DAYS",
+        "Обещанный платёж даёт лимит на 5 дней за комиссию"
+      ]
+    }
+  ]
+}

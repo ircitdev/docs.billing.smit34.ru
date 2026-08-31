@@ -1,0 +1,270 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "СмИТ Биллинг — прогон абонплаты (process_billing)",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "happy",
+        "label": "Обычное списание",
+        "focus": [
+          "tick",
+          "select",
+          "lock",
+          "price",
+          "charge",
+          "advance"
+        ],
+        "note": "Путь услуги, по которой деньги действительно списываются."
+      },
+      {
+        "id": "skips",
+        "label": "Когда не списываем",
+        "focus": [
+          "guards",
+          "skipped",
+          "advance"
+        ],
+        "note": "Регламентные пропуски и случаи, когда денег нет, но дата всё равно сдвигается."
+      },
+      {
+        "id": "after",
+        "label": "После списания",
+        "focus": [
+          "charge",
+          "effects",
+          "advance"
+        ],
+        "note": "Побочные эффекты и перенос даты следующего списания."
+      }
+    ],
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "backend": {
+          "label": "шаг прогона"
+        },
+        "security": {
+          "label": "пропуск"
+        },
+        "messagebus": {
+          "label": "расписание"
+        },
+        "database": {
+          "label": "запись в БД"
+        }
+      }
+    }
+  },
+  "lanes": [
+    {
+      "id": "worker",
+      "label": "Прогон услуги"
+    },
+    {
+      "id": "skip",
+      "label": "Пропуски",
+      "variant": "exception"
+    },
+    {
+      "id": "money",
+      "label": "Деньги и эффекты"
+    }
+  ],
+  "phases": [
+    {
+      "id": "pick",
+      "label": "Выборка",
+      "fromCol": 0,
+      "toCol": 1
+    },
+    {
+      "id": "decide",
+      "label": "Проверки и цена",
+      "fromCol": 2,
+      "toCol": 3,
+      "variant": "emphasis"
+    },
+    {
+      "id": "apply",
+      "label": "Списание и сдвиг",
+      "fromCol": 4,
+      "toCol": 5
+    }
+  ],
+  "mainPath": [
+    "tick",
+    "select",
+    "lock",
+    "price",
+    "charge",
+    "advance"
+  ],
+  "nodes": [
+    {
+      "id": "tick",
+      "lane": "worker",
+      "col": 0,
+      "type": "messagebus",
+      "label": "Celery Beat",
+      "sublabel": "час из VpnConst",
+      "width": 140
+    },
+    {
+      "id": "select",
+      "lane": "worker",
+      "col": 1,
+      "type": "backend",
+      "label": "Выборка услуг",
+      "sublabel": "sched_date ≤ now",
+      "width": 150
+    },
+    {
+      "id": "lock",
+      "lane": "worker",
+      "col": 2,
+      "type": "backend",
+      "label": "Атомарный блок",
+      "sublabel": "select_for_update",
+      "width": 150
+    },
+    {
+      "id": "price",
+      "lane": "worker",
+      "col": 3,
+      "type": "backend",
+      "label": "Сумма списания",
+      "sublabel": "summ → summa → price",
+      "tag": "хранится ×10^10",
+      "width": 150
+    },
+    {
+      "id": "advance",
+      "lane": "worker",
+      "col": 5,
+      "type": "backend",
+      "label": "Сдвиг sched_date",
+      "sublabel": "следующий период",
+      "width": 150
+    },
+    {
+      "id": "guards",
+      "lane": "skip",
+      "col": 2,
+      "type": "security",
+      "label": "Не тарифицируем",
+      "sublabel": "ОП · IPTV · вне окна",
+      "width": 150
+    },
+    {
+      "id": "charge",
+      "lane": "money",
+      "col": 4,
+      "type": "database",
+      "label": "Списание",
+      "sublabel": "FinOp + ostatok −=",
+      "width": 150
+    },
+    {
+      "id": "effects",
+      "lane": "money",
+      "col": 5,
+      "type": "backend",
+      "label": "Пост-эффекты",
+      "sublabel": "видео · IPTV · лояльность",
+      "width": 150
+    },
+    {
+      "id": "skipped",
+      "lane": "skip",
+      "col": 4,
+      "type": "security",
+      "label": "Списание не выполнено",
+      "sublabel": "b_negbal · нет средств",
+      "width": 170
+    }
+  ],
+  "edges": [
+    {
+      "id": "tick-select",
+      "from": "tick",
+      "to": "select",
+      "variant": "default"
+    },
+    {
+      "id": "select-lock",
+      "from": "select",
+      "to": "lock",
+      "variant": "default"
+    },
+    {
+      "id": "lock-price",
+      "from": "lock",
+      "to": "price",
+      "variant": "default"
+    },
+    {
+      "id": "price-charge",
+      "from": "price",
+      "to": "charge",
+      "label": "сумма ≠ 0",
+      "variant": "emphasis"
+    },
+    {
+      "id": "charge-effects",
+      "from": "charge",
+      "to": "effects",
+      "variant": "default",
+      "role": "branch"
+    },
+    {
+      "id": "charge-advance",
+      "from": "charge",
+      "to": "advance",
+      "variant": "emphasis"
+    },
+    {
+      "id": "lock-guards",
+      "from": "lock",
+      "to": "guards",
+      "label": "регламент",
+      "variant": "security",
+      "role": "error"
+    },
+    {
+      "id": "price-skipped",
+      "from": "price",
+      "to": "skipped",
+      "label": "долг · приостановка",
+      "variant": "security",
+      "role": "error"
+    },
+    {
+      "id": "skipped-advance",
+      "from": "skipped",
+      "to": "advance",
+      "label": "дату всё равно двигаем",
+      "variant": "dashed",
+      "role": "branch"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Как считается сумма",
+      "items": [
+        "Каскад: UsersUsluga.summ → Usluga.summa → price → шаблон тарифа",
+        "Режим «равными долями» делит месячную цену на дни месяца"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Почему списание пропускают",
+      "items": [
+        "Обещанный платёж и IPTV kill-switch не тарифицируются",
+        "При b_negbal списываем только услуги с charge_ignore_balance"
+      ]
+    }
+  ]
+}
