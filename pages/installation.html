@@ -1013,9 +1013,7 @@ docker compose exec web python manage.py collectstatic --noinput</code></pre>
   </div>
 
   <h2 id="demo-cleanup">Этап 3. Удаление демо-данных</h2>
-  <p>Удалите демонстрационные тарифы и клиентов через веб-интерфейс (<strong>Настройки &rarr; Очистка базы данных</strong>) или через Django management-команду:</p>
-  <pre><code>docker compose exec web python manage.py flush --no-input
-docker compose exec web python manage.py loaddata initial_data</code></pre>
+  <p>Удалите демонстрационные тарифы и клиентов через веб-интерфейс: <strong>Настройки &rarr; Очистка базы данных</strong> (<code>/admin/settings/db_cleanup/</code>). Готовой фикстуры <code>initial_data</code> для чистой установки нет — стартовые справочники создаются миграциями, а демо-данные удаляются точечно через эту страницу.</p>
 
   <h2 id="equip-integration">Этап 4. Интеграция с оборудованием</h2>
   <div class="section-toc">
@@ -1087,7 +1085,7 @@ docker compose exec web python manage.py loaddata initial_data</code></pre>
   <ol>
     <li><strong>Тестовый клиент</strong> — создайте клиента (см. <a href="../pages/abonent-card.html#abonent-card-quick">Создание клиента</a>), назначьте тариф, привяжите учётную запись (login/password) и точку подключения.</li>
     <li><strong>RADIUS-авторизация</strong> — выполните <code>radtest &lt;login&gt; &lt;password&gt; 127.0.0.1 0 testing123</code> внутри контейнера <code>freeradius</code>. Ответ должен быть <code>Access-Accept</code> с корректным <code>Framed-IP-Address</code> и <code>Mikrotik-Rate-Limit</code>. Альтернатива — кнопка «Тест авторизации» (🧪) в карточке учётной записи (<a href="../pages/tariffs.html#tarifs">подробнее</a>).</li>
-    <li><strong>Платёж</strong> — пополните баланс через тестовый шлюз (YooKassa тестовый магазин или ручной приход через <code>/admin/Abonents/finance/</code>). Убедитесь, что <code>FinanceOperations</code> создалась и баланс обновился.</li>
+    <li><strong>Платёж</strong> — пополните баланс через тестовый шлюз (YooKassa тестовый магазин) или ручным приходом через <code>/admin/Abonents/FinanceOperations/</code>. Убедитесь, что <code>FinanceOperations</code> создалась и баланс обновился.</li>
     <li><strong>Блокировка по балансу</strong> — выставьте клиенту отрицательный баланс или активируйте флаг <code>b_admin</code>. Проверьте, что в RADIUS приходит <code>Access-Reject</code> и сессия завершается через CoA-Disconnect.</li>
     <li><strong>Разблокировка</strong> — пополните баланс или снимите блок. Через 1–2 минуты RADIUS должен снова отвечать <code>Access-Accept</code>, клиент получит интернет.</li>
     <li><strong>Личный кабинет</strong> — войдите в ЛК (<code>/lk/</code>) под тестовым клиентом, убедитесь, что отображаются баланс, тариф, история операций. См. <a href="../pages/lk.html">документацию ЛК</a>.</li>

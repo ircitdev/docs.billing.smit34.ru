@@ -2044,9 +2044,9 @@ OSM. Стиль карточки в <a href="settings-services.html#integrations
 <table class="data-table">
   <thead><tr><th>Параметр</th><th>Значение</th><th>Где настраивается</th></tr></thead>
   <tbody>
-    <tr><td><strong>Лимит</strong></td><td><code>max(месячная цена тарифа, |долг|+1₽)</code> с cap <code>2× тарифа</code></td><td>Автоматически. Override: <code>LK_PROMISE_PAY_MAX_LIMIT_OVERRIDE</code></td></tr>
+    <tr><td><strong>Лимит</strong></td><td><code>max(месячная цена тарифа, |долг|+1₽) + комиссия</code> с cap <code>2× тарифа + комиссия</code></td><td>Автоматически (<code>calc_limit</code>). Override: <code>LK_PROMISE_PAY_MAX_LIMIT_OVERRIDE</code></td></tr>
     <tr><td><strong>Длительность</strong></td><td>5 дней</td><td><code>Usluga.end_count_days=5</code>. Override: <code>LK_PROMISE_PAY_MAX_DURATION_DAYS</code></td></tr>
-    <tr><td><strong>Стоимость в день</strong></td><td>30 ₽/день — списывается ежедневно через <code>billing_worker</code>, если включено</td><td><code>Usluga 30353.price</code> + флаг <code>LK_PROMISE_PAY_DAILY_CHARGE</code> (default 1)</td></tr>
+    <tr><td><strong>Комиссия оператора</strong></td><td><strong>90 ₽ разово</strong> при подключении ОП оператором (отдельная <code>FinanceOperations op_type=9</code>, списывается с лицевого счёта). Дневная плата 30 ₽/день <strong>отменена</strong>.</td><td><code>PROMISE_PAY_OPERATOR_FEE</code> (default 90; 0 = без комиссии)</td></tr>
     <tr><td><strong>Cooldown</strong></td><td>30 дней между двумя ОП</td><td><code>LK_PROMISE_PAY_COOLDOWN_DAYS</code> (default 30)</td></tr>
     <tr><td><strong>Min age</strong></td><td>30 дней с момента создания договора</td><td><code>LK_PROMISE_PAY_MIN_AGE_DAYS</code> (default 30)</td></tr>
     <tr><td><strong>Авто-погашение при оплате</strong></td><td>Если YooKassa/W1/Generic webhook зачислил достаточно — ОП авто-отменяется</td><td><code>LK_PROMISE_PAY_AUTO_CLOSE_ON_PAYMENT</code> (default 1)</td></tr>
@@ -2127,17 +2127,16 @@ OSM. Стиль карточки в <a href="settings-services.html#integrations
   </tbody>
 </table>
 
-<h5 id="pp-daily-charge">Дневная плата 30 ₽/день</h5>
-<p>Услуга 30353 имеет <code>price=30 ₽</code>, <code>is_periodic=true</code>, <code>every_day=true</code>.</p>
-<p>Что происходит при активации:</p>
+<h5 id="pp-daily-charge">Комиссия оператора 90 ₽ (единый путь активации)</h5>
+<p>Прежняя модель «30 ₽/день» <strong>отменена</strong>. Сейчас при подключении ОП <em>оператором</em> берётся <strong>разовая комиссия</strong> — по умолчанию 90 ₽ (настройка <code>PROMISE_PAY_OPERATOR_FEE</code>, 0 = без комиссии).</p>
+<p>Вся операторская логика ОП собрана в едином сервисе <code>billing/services/promise_pay.py::activate_by_operator</code> (build 2365). Тот же путь используют кнопка в карточке, дровер и массовое действие раздела «Должники». При активации в одной транзакции:</p>
 <ol>
-  <li>Если <code>LK_PROMISE_PAY_DAILY_CHARGE=1</code> — <code>UU.sched_date = now+1d 09:00</code>;</li>
-  <li>Каждый день в 09:00 <code>billing_worker</code> списывает <code>Usluga.price</code> (30 ₽) с лицевого счёта;</li>
-  <li>Запись <code>FinanceOperations(op_type=32, descr='Списание абонплаты ...')</code>;</li>
-  <li><code>sched_date</code> сдвигается на следующий день — пока ОП активен, плата идёт ежедневно;</li>
-  <li>При завершении ОП (любой из 4 сценариев) UU удаляется → списания прекращаются.</li>
+  <li>Создаётся <code>UsersUsluga(usluga_id=30353, countt=1)</code> и <code>FinanceOperations(op_type=31, +limit)</code> — баланс пополняется на лимит;</li>
+  <li>Если комиссия &gt; 0 и есть лицевой счёт — отдельная <code>FinanceOperations(op_type=9, −комиссия)</code>, <code>ostatok</code> уменьшается на сумму комиссии;</li>
+  <li>Снимается <code>b_negbal</code>, интернет возвращается через CoA Disconnect;</li>
+  <li>Аудит: «лимит N ₽, комиссия M ₽».</li>
 </ol>
-<p>Чтобы выключить дневную плату: <code>LK_PROMISE_PAY_DAILY_CHARGE=0</code> в <a href="settings.html#system-settings">/admin/settings/system/</a> + переименовать услугу 30353 (убрать «30 руб/день» из названия).</p>
+<p>Самостоятельная активация клиентом (ЛК / мобильное / SMS) идёт без операторской комиссии.</p>
 
 <h5 id="pp-notifications">Уведомления</h5>
 <ul>

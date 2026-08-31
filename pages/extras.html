@@ -1798,7 +1798,7 @@ flowchart LR
 </div>
 
 <h3 id="ai-dashboard">Дашборд AI-сессий</h3>
-<p>Дашборд <code>/admin/reports/ai_chat_dashboard/</code> — единая аналитика всех AI-диалогов (ЛК, мобильное приложение, виджет на сайте). Это рабочий инструмент для оценки качества ассистента и обучения промпта. Сюда перенесена история диалогов из внешнего сервиса — <strong>19 332 строки</strong> (1811 диалогов, 18 171 сообщение, 1161 вызов инструментов), сопоставленные с клиентами по телефону.</p>
+<p>Дашборд <code>/admin/reports/ai_chat_dashboard/</code> — единая аналитика всех AI-диалогов (ЛК, мобильное приложение, виджет на сайте). Это рабочий инструмент для оценки качества ассистента и обучения промпта. Сюда при запуске была перенесена история диалогов из внешнего сервиса (первоначально ~19 тыс. строк), сопоставленных с клиентами по телефону; дальше журнал пополняется в реальном времени, а поздние бэкфиллы (организации, разбивка на обращения) меняют разрезы аналитики.</p>
 
 <p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_dashboard.png" alt="Дашборд AI-сессий: KPI, активность по дням, каналы" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
 
@@ -1967,7 +1967,7 @@ flowchart LR
 <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_dashboard_mobile.png" alt="AI-дашборд на телефоне" class="screenshot">
 <p>Период задаётся единым date-range-picker (общий для всех отчётов). Стоимость токенов считается из настроек <code>AI_PRICE_*</code> и курса <code>AI_USD_RUB</code>.</p>
 
-<h4 id="ai-dashboard-sessions">Список сессий и транскрипт</h4>
+<h4 id="ai-dashboard-transcript">Список сессий и транскрипт</h4>
 <p>Блок <strong>«Все сессии за период»</strong> — таблица с фильтрами по каналу (Все/LK/Mobile) и фидбеку (Все/👍/👎/Эскал.), живым поиском (ID/клиент/договор) и сортировкой по столбцам. Клик по строке открывает <strong>транскрипт диалога в стиле iMessage</strong>: реплики клиента — справа (светло-серый градиент), Аиды — слева, с поддержкой markdown-форматирования (<code>**жирный**</code>, заголовки <code>#/##/###</code>, <code>`код`</code>). Клик по имени клиента открывает <strong>slide-панель клиента</strong> (как в других разделах) — без ухода со страницы.</p>
 
 <p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_transcript.png" alt="Транскрипт AI-сессии в стиле iMessage с markdown-анализом" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>

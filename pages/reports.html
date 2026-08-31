@@ -1191,7 +1191,7 @@ flowchart LR
     <tr><td><code>SMTP</code></td><td>SQL-код запроса (text) — исторически поле называется <code>SMTP</code>, verbose «SQL запрос»; именно из него исполняется отчёт</td></tr>
     <tr><td><code>REPORT_TYPE</code></td><td>FK на <code>AdminCustomReportsType</code> — категория</td></tr>
     <tr><td><code>ALLOW_IN_CABINET</code></td><td>Видим ли клиенту в ЛК (раздел «Мои отчёты»)</td></tr>
-    <tr><td><code>TECH_ADMIN</code> / <code>FIN_ADMIN</code> / <code>FULL_ADMIN</code> / <code>CARD_ADMIN</code> / <code>READ_ADMIN</code></td><td>Матрица прав по ролям оператора (1 = доступно)</td></tr>
+    <tr><td><code>TECH_ADMIN</code> / <code>FIN_ADMIN</code> / <code>FULL_ADMIN</code> / <code>CARD_ADMIN</code> / <code>READ_ADMIN</code></td><td>Унаследованные поля прав по ролям (int). В текущей версии доступом к разделам управляет RBAC (<code>section_access</code>, deny-by-default) — эти поля в гейтинге не участвуют</td></tr>
   </tbody>
 </table>
 <p>Связанные таблицы:</p>
@@ -1235,7 +1235,7 @@ flowchart LR
   <li>Live-counter параметров — автоматически считает <code>:Имя|тип$</code> в коде;</li>
   <li>Подсветка плейсхолдеров жёлтым overlay'ем;</li>
   <li>Hot-keys: Ctrl+/ comment, Ctrl+F find, Tab indent;</li>
-  <li>Auto-fix SQL — <code>_fix_sql_column_case()</code> для миграций Carbon4 → PostgreSQL (uppercase ID → lowercase id).</li>
+  <li>Auto-fix SQL — <code>_fix_sql_column_case()</code> для запросов, перенесённых из предыдущей версии (uppercase <code>ID</code> → корректный регистр колонок PostgreSQL).</li>
 </ul>
 <p><strong>AI Builder</strong>: кнопка «✨ AI» в toolbar. Открывает чат с AI-ассистентом:</p>
 <ol>
