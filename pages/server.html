@@ -1137,7 +1137,7 @@ docker compose exec -T db psql -U carbon carbon &lt; backup.sql</code></pre>
   <table>
     <thead><tr><th>Сервис</th><th>Контейнер</th><th>Назначение</th></tr></thead>
     <tbody>
-      <tr><td>db</td><td>PostgreSQL 16 Alpine</td><td>Основная база данных</td></tr>
+      <tr><td>db</td><td>PostgreSQL 17 (production; репозиторный compose по умолчанию — 16 Alpine)</td><td>Основная база данных</td></tr>
       <tr><td>redis</td><td>Redis 7 Alpine</td><td>Кэш, сессии, брокер Celery</td></tr>
       <tr><td>web</td><td>Python 3.11 + Gunicorn</td><td>Веб-интерфейс (Django 4.2)</td></tr>
       <tr><td>celery</td><td>Python 3.11</td><td>Фоновые задачи (тарификация, блокировки, рассылки)</td></tr>
@@ -1178,7 +1178,7 @@ docker compose exec db psql -U carbon carbon</code></pre>
   <p>Основной модуль биллинга. Содержит: веб-интерфейс (AdminLTE 3 + Bootstrap 5.3), REST API v2, SOAP API. Конфигурация через <code>.env</code> и <code>config/settings.py</code>. Перезапуск: <code>docker compose restart web</code>.</p>
 
   <h3 id="module-celery">Celery (фоновые задачи)</h3>
-  <p>10 задач в 7 модулях: тарификация (5 мин), блокировки (5 мин), смена тарифов (10 мин), рассылки (1 мин), CSV-импорт (10 мин) и др. Перезапуск: <code>docker compose restart celery celery-beat</code>.</p>
+  <p>Десятки периодических задач: тарификация, блокировки, RADIUS-синхронизация и авто-назначение NAS, мониторинг NAS и IP-пулов, приём и обработка банковских выписок, push-уведомления, видео и др. (полный список — в <code>config/settings.py::CELERY_BEAT_SCHEDULE</code>). Перезапуск: <code>docker compose restart celery celery-beat</code>.</p>
 
   <h3 id="module-collector">Collector</h3>
   <p>Модуль сбора статистики трафика. Принимает данные Netflow/sFlow от маршрутизаторов и коммутаторов, агрегирует их и передаёт в биллинг для тарификации. Настраивается порт приёма данных и формат (Netflow v5/v9, IPFIX, sFlow).</p>

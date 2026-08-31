@@ -1812,17 +1812,16 @@ from billing.models.iptv import IptvApiLog
 IptvApiLog.objects.filter(success=False).order_by('-created_at')[:10]</code></pre>
 
   <h3 id="drugie-podderzhivaemye-iptv-platformy">Другие поддерживаемые IPTV-платформы</h3>
+  <p>Помимо интегрированных <strong>TVIP Media</strong> и <strong>LFStream «Смотрёшка»</strong> в витрине провайдеров (<code>/admin/iptv/settings/</code>) показаны платформы, для которых интеграция может быть добавлена:</p>
   <ul>
-    <li><strong>IPTVPortal</strong> — облачная платформа интерактивного ТВ.</li>
-    <li><strong>Infomir Ministra (Stalker)</strong> — middleware для STB-приставок.</li>
-    <li><strong>Megogo</strong> — онлайн-кинотеатр с IPTV-функциями.</li>
-    <li><strong>TITV</strong> — платформа интерактивного телевидения.</li>
-    <li><strong>NextTV</strong> — IPTV-middleware.</li>
-    <li><strong>24hTV</strong> — сервис интернет-телевидения.</li>
-    <li><strong>MOOVI</strong> — OTT/IPTV-платформа.</li>
+    <li><strong>Смартила</strong> — OTT-платформа для операторов.</li>
+    <li><strong>Infomir Ministra (Stalker)</strong> — middleware для STB-приставок MAG.</li>
+    <li><strong>Микроимпульс</strong> — Smart Media Platform, IPTV/OTT.</li>
+    <li><strong>24часаТВ</strong> — OTT-агрегатор каналов «под ключ».</li>
+    <li><strong>LIME HD</strong> — бесплатное эфирное OTT-ТВ.</li>
   </ul>
 
-  <div class="info-box">Дополнительные IPTV-модули доступны в расширенной версии. Для подключения обратитесь в отдел продаж.</div>
+  <div class="info-box">Список платформ соответствует витрине <code>IPTV_PROVIDER_CATALOG</code> в разделе IPTV. Интегрированы (реальная синхронизация подписок) пока только TVIP и Смотрёшка; остальные — задел на будущее.</div>
 
   <!-- ===== Прочее оборудование ===== -->
   <h2 id="cpe">Абонентское оборудование</h2>
@@ -1833,9 +1832,9 @@ IptvApiLog.objects.filter(success=False).order_by('-created_at')[:10]</code></pr
 
   <h2 id="cameras">Камеры</h2>
 
-  <p>Интеграция с системами видеонаблюдения, в частности <strong>Flussonic Watcher</strong>. Биллинг управляет подписками клиентов на услуги видеонаблюдения: активация/деактивация доступа к камерам, тарификация просмотра архива, управление правами доступа к группам камер.</p>
+  <p>Видеонаблюдение реализовано <strong>собственным модулем</strong> биллинга (<code>/admin/video/</code>) — продажа услуги «под ключ»: объект → проект (воронка) → камеры и оборудование → recurring-подписки → документы → личный кабинет. Биллинг управляет подписками клиентов: активация/деактивация доступа к камерам, тарификация, отдельный видео-счёт, блок камер при отрицательном балансе. Медиа-слой — MediaMTX/go2rtc, архив в GCS.</p>
 
-  <div class="info-box">Модуль видеонаблюдения (Flussonic Watcher) доступен в расширенной версии. Для подключения обратитесь в отдел продаж.</div>
+  <div class="info-box">Подробное описание модуля — на странице <a href="video.html">Видеонаблюдение</a> (или <a href="extras.html#video-surveillance">Дополнительные модули → Видеонаблюдение</a>). Модуль по умолчанию выключен (<code>VIDEO_ENABLED=false</code>) и включается после настройки услуг и контура 152-ФЗ.</div>
 
   <h2 id="rental">Аренда оборудования</h2>
 

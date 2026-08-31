@@ -1255,7 +1255,7 @@ flowchart LR
 </ul>
 
 <div class="info-box">
-  <strong>Защита удаления отчёта:</strong> <code>report_executions</code> и <code>AdminCustomReportsHistory</code> ссылаются на отчёт с FK NO ACTION. Если есть история запусков — удаление падает с ошибкой. Сначала очистите историю или используйте архивирование (поле <code>archive=true</code>).
+  <strong>Защита удаления отчёта:</strong> <code>report_executions</code> ссылаются на отчёт с FK NO ACTION. Если есть история запусков — удаление падает с ошибкой. Сначала очистите историю запусков. Отдельного «архивирования» отчётов нет — только удаление (hard-delete).
 </div>
 
 <h3 id="custom-reports">4.1. Библиотека отчётов</h3>
@@ -1891,10 +1891,13 @@ count = 0 или count &gt; 500 (бейдж становится красным 
   <li><code>radius.log</code> — авторизация и accounting;</li>
   <li><code>sorm.log</code> — выгрузка СОРМ;</li>
   <li><code>staff.log</code> — действия сотрудников;</li>
+  <li><code>fiscal.log</code> — фискализация (кассовые чеки 54-ФЗ);</li>
   <li><code>celery_worker.log</code>, <code>celery_beat.log</code> — фоновые задачи;</li>
-  <li><code>nginx_access.log</code>, <code>nginx_error.log</code> — веб-сервер;</li>
+  <li><code>gunicorn_access.log</code>, <code>gunicorn_error.log</code> — веб-сервер приложения (Gunicorn);</li>
+  <li><code>nginx_access.log</code>, <code>nginx_error.log</code> — веб-сервер (nginx);</li>
   <li><code>freeradius.log</code> — нативные логи FreeRADIUS.</li>
 </ul>
+<p>Всего 13 каналов (список — <code>billing/views/dev_reports.py::LOG_FILES</code>).</p>
 <p>Показываются последние 500 строк, есть кнопка обновления. Файлы автоматически
 ротируются (10 МБ × 5 копий).</p>
 
@@ -1988,7 +1991,7 @@ count = 0 или count &gt; 500 (бейдж становится красным 
 </ul>
 
 <h4 id="autocsv">Авто-импорт CSV (схемы)</h4>
-<p><code>/admin/settings/autocsv/</code> — настройка <strong>повторяющихся</strong> импортов:
+<p><code>/admin/settings/autocsv_upload_config/</code> — настройка <strong>повторяющихся</strong> импортов:
 оператор сохраняет «схему» (маппинг колонок + способ обработки дубликатов), и потом
 загрузка одной кнопкой берёт CSV и применяет схему без повторной настройки. Полезно для
 ежемесячных выгрузок из бухгалтерии или экспорта из биллинга мобильного оператора (массовое

@@ -2027,7 +2027,7 @@ flowchart TD
   </tbody>
 </table>
 
-<p><strong>Расписание</strong>: Celery beat-задача <code>db-cleanup-daily</code> запускается ежедневно в <strong>03:30</strong> по серверному времени. Время фиксированное, для теста есть кнопка <em>«Запустить чистку сейчас»</em>.</p>
+<p><strong>Расписание</strong>: Celery beat-задача <code>db-cleanup-daily</code> запускается <strong>раз в сутки</strong> по интервалу (86400 с от старта Celery beat) — точное время суток зависит от момента последнего запуска beat, к фиксированному часу не привязано. Для теста есть кнопка <em>«Запустить чистку сейчас»</em>.</p>
 
 <p><strong>Что делает задача</strong> (<code>billing/tasks/db_cleanup.py::run_db_cleanup</code>):</p>
 <ol>
@@ -2110,8 +2110,8 @@ flowchart TD
 
 <h4 id="db-cleanup-troubleshooting">Решение проблем</h4>
 <dl>
-  <dt><strong>Чистка не отрабатывает в 03:30</strong></dt>
-  <dd>Проверь Celery beat: <code>docker logs app-celery-beat-1 | grep db-cleanup</code>. Должна быть запись «Scheduler: Sending due task db-cleanup-daily». Если нет — beat не запущен или не видит задачу (импорт <code>config/celery.py</code>).</dd>
+  <dt><strong>Чистка не отрабатывает</strong></dt>
+  <dd>Проверь Celery beat: <code>docker logs smit-billing-celery-beat-1 | grep db-cleanup</code>. Должна быть запись «Scheduler: Sending due task db-cleanup-daily». Если нет — beat не запущен или не видит задачу (импорт <code>config/celery.py</code>).</dd>
 
   <dt><strong>«MSG_STACK слишком большой» — 5М+ записей</strong></dt>
   <dd>Уменьши <code>DB_CLEANUP_MSG_DAYS</code> до 14 или 7 → жми «Запустить чистку сейчас». При первом проходе может удалить миллионы строк (займёт 10–20 минут). Дальше beat-задача держит размер в норме.</dd>
@@ -2123,7 +2123,7 @@ flowchart TD
   <dd>Один из NAS постоянно теряет Accounting-Stop. Проверь логи NAS, прошивку, сетевые потери до FreeRADIUS. Временно отключи аудит для этого NAS (чекбокс «Включён в аудит» = False) пока разбираешься.</dd>
 
   <dt><strong>Вернуть удалённые данные</strong></dt>
-  <dd>Backup до чистки берётся ежедневно в 03:00 (за 30 минут до db-cleanup) — в <code>/var/backups/carbon/</code>. Восстановление таблицы: <code>pg_restore -t msg_stack &lt;dump-file&gt;.dump</code> в отдельную БД, потом <code>INSERT</code> нужных строк.</dd>
+  <dd>Если настроен регулярный бэкап БД (<code>/var/backups/carbon/</code>) — восстановление таблицы: <code>pg_restore -t msg_stack &lt;dump-file&gt;.dump</code> в отдельную БД, потом <code>INSERT</code> нужных строк.</dd>
 </dl>
 
 <h3 id="diagnostics">6.13. Диагностика</h3>

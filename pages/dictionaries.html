@@ -1098,7 +1098,7 @@ flowchart TD
   <li><strong>Привязка к NAS</strong> — цветные бейджи ролей (main / nat / white / hotspot), tooltip раскрывает все привязки одного NAS.</li>
   <li><strong>Бейдж «🔗 → #N»</strong> в колонке «Название» — ссылка на следующий пул в цепочке (клик открывает его модалку).</li>
   <li><strong>Сортировка</strong> сохраняется в localStorage — после CRUD страница перерисовывается с тем же sort и фильтрами.</li>
-  <li><strong>«Авто-шлюз»</strong> — кнопка-помощник: для пулов без шлюза подставляет первый IP диапазона (по конвенции <code>start_ip - 1</code> или <code>start_ip</code>).</li>
+  <li><strong>«Авто-шлюз»</strong> — кнопка-помощник: для пулов без шлюза подставляет первый адрес сети (<code>_derive_gateway</code> = <code>network_address + 1</code>).</li>
 </ul>
 
 <h5 id="ip-pull-add">Добавление пула</h5>
@@ -1114,11 +1114,10 @@ flowchart TD
 
 <p><strong>Опциональные поля</strong>:</p>
 <ul>
-  <li><strong>Маска</strong> (<code>netmask</code>) — справочное значение, клиенту через RADIUS не назначается. Используется только для cfg-генерации NAS (<code>rtsh cfg make</code>) и SORM-отчётов. По умолчанию — <code>255.255.255.0</code> (/24).</li>
+  <li><strong>Маска</strong> (<code>mask</code>, целое — CIDR-префикс, напр. 24) — справочное значение, клиенту через RADIUS не назначается. Используется только для cfg-генерации NAS (<code>rtsh cfg make</code>) и SORM-отчётов. В UI/CSV показывается как <code>/24</code>.</li>
   <li><strong>Шлюз</strong> (<code>gateway</code>) — справочное, отображается в cfg-шаблонах. По умолчанию — пусто (можно автозаполнить кнопкой «Авто-шлюз» в toolbar).</li>
   <li><strong>Следующий пул</strong> (<code>next_pull_id</code>) — Select из активных пулов того же оператора. Когда основной исчерпан, <code>allocate_ip_from_pools</code> переходит в этот пул автоматически (<a href="#ip-pull-chain">см. цепочки</a>). Защита от циклов: <code>max_depth=10</code>.</li>
-  <li><strong>Активность</strong> (<code>enabled</code>, default = true) — выключенный пул не выдаёт IP, но остаётся в БД. Используется при выводе пула из эксплуатации без удаления.</li>
-  <li><strong>Комментарий</strong> (<code>comment</code>) — свободный текст. Удобно фиксировать VLAN-номер, оператора или причину создания.</li>
+  <li><strong>Активность</strong> (<code>enabled</code>) — выключенный пул не выдаёт IP, но остаётся в БД. Используется при выводе пула из эксплуатации без удаления.</li>
 </ul>
 
 <p><strong>Что происходит после сохранения</strong>:</p>
@@ -1126,7 +1125,7 @@ flowchart TD
   <li>Запись в БД (<code>ip_pull</code>): новый <code>pull_id</code> генерируется автоинкрементом.</li>
   <li>Audit-запись в <code>AuditOperations</code> (<code>table_name='IP_PULL'</code>, <code>object_id=pull_id</code>).</li>
   <li>Кеш статистики (<code>ip_pool_stats_v3</code>) инвалидируется — следующая загрузка списка пересчитывает использование.</li>
-  <li>Пул автоматически становится доступным в Select-полях NAS (Pull / NAT-pull / White-pull / Hotspot-pull) и в <code>RADIUS_USERAUTH</code> при авторизации.</li>
+  <li>Пул автоматически становится доступным в Select-полях NAS (Pull / NAT-pull / White-pull / Hotspot-pull) и в <code>USERS_RADIUSAUTH</code> при авторизации.</li>
 </ol>
 
 <h5 id="ip-pull-edit">Редактирование пула</h5>
@@ -1135,7 +1134,7 @@ flowchart TD
 
 <p>Все поля редактируются. Изменение <code>start_ip</code> / <code>end_ip</code> у используемого пула — <strong>опасная операция</strong>: если новый диапазон не покрывает уже выданные адреса, клиенты со «старыми» IP не попадут в пул при следующей авторизации (<code>allocate_ip_from_pools</code> не считает их занятыми, может выдать дубль). Прежде чем сужать диапазон — проверьте через <code>find_ip_duplicates --pool_id=N</code>.</p>
 
-<p><strong>Удаление</strong> через кнопку <em>«Удалить»</em> внутри модалки. Защита: пул нельзя удалить, если на него ссылается хоть один <code>NAS</code> (через любое из 4 полей <code>pull_id / nat_pull_id / white_pull_id / hotspot_pull_id</code>) или другой пул через <code>next_pull_id</code>. Сервер вернёт ошибку «Пул используется в N NAS / M пулах. Сначала уберите ссылки.»</p>
+<p><strong>Удаление</strong> через кнопку <em>«Удалить»</em> внутри модалки. Защита (<code>ip_pull_crud</code>): пул нельзя удалить, если на него ссылаются <code>Users.pull_id</code>, <code>Homes.pull_id</code> или другой пул через <code>next_pull_id</code> — сервер вернёт ошибку с числом ссылок. Привязки к NAS (4 поля <code>pull_id / nat_pull_id / white_pull_id / hotspot_pull_id</code>) автоматически <strong>не</strong> проверяются — их нужно убрать вручную (см. предупреждение «Что делать со старыми пулами»).</p>
 
 <h5 id="ip-pull-nas-roles-detail">Роли пула на NAS (4 поля)</h5>
 <p>Один NAS может ссылаться на пул через 4 разных поля, что определяет <em>как</em> IP из этого пула используется:</p>

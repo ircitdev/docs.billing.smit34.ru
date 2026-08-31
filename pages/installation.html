@@ -1009,7 +1009,7 @@ docker compose exec web python manage.py createsuperuser
 docker compose exec web python manage.py collectstatic --noinput</code></pre>
   <p>После запуска веб-интерфейс доступен по адресу <code>http://&lt;ip-сервера&gt;</code>.</p>
   <div class="info-box">
-    <strong>Сервисы Docker Compose:</strong> db (PostgreSQL 16), redis (Redis 7), web (Django/Gunicorn), celery, celery-beat, freeradius, nginx.
+    <strong>Сервисы Docker Compose:</strong> db (PostgreSQL 17 в production; репозиторный compose по умолчанию — PostgreSQL 16), redis (Redis 7), web (Django/Gunicorn), celery, celery-beat, freeradius, nginx.
   </div>
 
   <h2 id="demo-cleanup">Этап 3. Удаление демо-данных</h2>
