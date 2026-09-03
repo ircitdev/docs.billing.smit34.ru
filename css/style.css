@@ -2312,63 +2312,6 @@ body.search-open { overflow: hidden; }
   background: var(--border); border-radius: 8px; border: 2px solid transparent; background-clip: content-box;
 }
 
-/* ── Переход на сайт продукта ────────────────────────────────────────
-   Справочник читают и те, кто ещё выбирает систему: с главной стоит дать
-   дорогу к описанию продукта и демонстрации. */
-.landing-cta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 28px;
-  align-items: center;
-  justify-content: space-between;
-  margin: 36px 0;
-  padding: 30px 34px;
-  border-radius: 16px;
-  color: #e9eef5;
-  background:
-    radial-gradient(circle at 12% 0%, rgba(67,160,71,.34), transparent 58%),
-    radial-gradient(circle at 92% 110%, rgba(38,166,154,.28), transparent 58%),
-    #0d1117;
-}
-.landing-cta .lc-body { flex: 1 1 420px; min-width: 0; }
-.landing-cta .lc-eyebrow {
-  font-size: .74rem; font-weight: 600; letter-spacing: .12em;
-  text-transform: uppercase; color: #7ee0c4;
-}
-.landing-cta .lc-title {
-  margin: 8px 0 10px; font-size: 1.65rem; font-weight: 700; color: #fff;
-  border: 0; padding: 0;
-}
-.landing-cta .lc-lead { margin: 0 0 18px; color: #a8b8cc; font-size: .94rem; line-height: 1.5; }
-.landing-cta .lc-actions { display: flex; flex-wrap: wrap; gap: 10px; }
-.landing-cta .lc-btn {
-  display: inline-flex; align-items: center; min-height: 42px;
-  padding: 10px 20px; border-radius: 9px;
-  font-size: .9rem; font-weight: 600; text-decoration: none;
-  transition: background-color .18s, border-color .18s;
-}
-.landing-cta .lc-btn-main { background: linear-gradient(135deg, #43a047, #26a69a); color: #fff; }
-.landing-cta .lc-btn-main:hover { background: linear-gradient(135deg, #4cae50, #2bb5a8); }
-.landing-cta .lc-btn-ghost {
-  color: #cfe0d8; border: 1px solid rgba(255,255,255,.24);
-}
-.landing-cta .lc-btn-ghost:hover { border-color: #7ee0c4; color: #fff; }
-.landing-cta .lc-btn:focus-visible { outline: 2px solid #7ee0c4; outline-offset: 2px; }
-
-.landing-cta .lc-facts {
-  flex: 0 1 280px; display: flex; gap: 22px; margin: 0; padding: 0; list-style: none;
-}
-.landing-cta .lc-facts li { display: flex; flex-direction: column; gap: 2px; }
-.landing-cta .lc-facts b { font-size: 1.5rem; font-weight: 700; color: #fff; }
-.landing-cta .lc-facts span { font-size: .74rem; color: #a8b8cc; line-height: 1.25; }
-
-@media (max-width: 767.98px) {
-  .landing-cta { padding: 24px 20px; gap: 20px; }
-  .landing-cta .lc-title { font-size: 1.35rem; }
-  .landing-cta .lc-actions .lc-btn { flex: 1 1 100%; justify-content: center; }
-  .landing-cta .lc-facts { flex: 1 1 100%; gap: 18px; }
-}
-@media (prefers-reduced-motion: reduce) { .landing-cta .lc-btn { transition: none; } }
 
 /* Значок раздела в заголовке: набор тот же, что в меню. Из навигации и поиска
    он не попадает — подпись там строится из текста. */
