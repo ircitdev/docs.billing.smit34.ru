@@ -32,20 +32,21 @@
     });
   }
 
-  var touch = window.matchMedia('(hover: none)').matches;
+  // Наведение и фокус вешаем всегда: на тач-устройстве эти события просто не
+  // приходят, а на десктопе это основной способ посмотреть ролик.
+  cards.forEach(function (card) {
+    card.addEventListener('mouseenter', function () { play(card); });
+    card.addEventListener('mouseleave', function () { stop(card); });
+    card.addEventListener('focus', function () { play(card); });
+    card.addEventListener('blur', function () { stop(card); });
+  });
 
-  if (!touch) {
-    cards.forEach(function (card) {
-      card.addEventListener('mouseenter', function () { play(card); });
-      card.addEventListener('mouseleave', function () { stop(card); });
-      card.addEventListener('focus', function () { play(card); });
-      card.addEventListener('blur', function () { stop(card); });
-    });
-    return;
-  }
-
-  // на телефоне курсора нет: играет та карточка, что ближе к середине экрана
-  if (!('IntersectionObserver' in window)) return;
+  // Узкий экран или отсутствие курсора: играет карточка в середине экрана.
+  // Проверяем и ширину — эмуляция телефона в браузере оставляет hover: hover,
+  // и по одному только hover поведение на разработке не воспроизвести.
+  var touch = window.matchMedia('(hover: none)').matches ||
+              window.matchMedia('(max-width: 700px)').matches;
+  if (!touch || !('IntersectionObserver' in window)) return;
   var active = null;
   var io = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
