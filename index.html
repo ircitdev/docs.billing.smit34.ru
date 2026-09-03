@@ -35,7 +35,7 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Документация биллинговой платформы СмИТ Биллинг для операторов связи и сервис-провайдеров. Python 3.11, Django 4.2, PostgreSQL 17, Docker Compose.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/style.css?v=2425">
+  <link rel="stylesheet" href="css/style.css?v=2426">
   <link rel="stylesheet" href="css/vendor/tabler-icons.min.css?v=2193">
   <link rel="stylesheet" href="css/search.css?v=2257">
   <style id="dh-landing">
@@ -1219,7 +1219,9 @@
   [data-theme="dark"] .wfx-card .light { display: none; }
   [data-theme="dark"] .wfx-card .dark { display: block; }
   @media (prefers-reduced-motion: reduce) { .wfx-card .clip { display: none !important; } }
-  .wfx-body { padding: .85rem 1.05rem 1.05rem; }
+  /* span по умолчанию строчный: без display:block отступы не разносят текст,
+     и подпись прилипает к краям карточки */
+  .wfx-body { display: block; padding: .85rem 1.05rem 1.05rem; }
   .wfx-kind { display: inline-flex; align-items: center; gap: .3rem; font-size: .67rem;
               font-weight: 700; text-transform: uppercase; letter-spacing: .09em;
               color: var(--text-muted, #6c757d); }
