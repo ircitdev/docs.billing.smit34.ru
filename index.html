@@ -35,7 +35,7 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Документация биллинговой платформы СмИТ Биллинг для операторов связи и сервис-провайдеров. Python 3.11, Django 4.2, PostgreSQL 17, Docker Compose.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/style.css?v=2422">
+  <link rel="stylesheet" href="css/style.css?v=2423">
   <link rel="stylesheet" href="css/vendor/tabler-icons.min.css?v=2193">
   <link rel="stylesheet" href="css/search.css?v=2257">
   <style id="dh-landing">
@@ -1001,10 +1001,10 @@
 
 <main class="content">
   <div class="doc-cover">
-    <video src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/robot_home.mp4"
-           autoplay muted playsinline preload="auto"
-           poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/robot_home.jpg"
-           onended="this.outerHTML='<img src=&apos;https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/robot_home.jpg&apos; alt=&apos;&apos;>'"></video>
+    <img class="light" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/doc_cover_light.jpg"
+         alt="" fetchpriority="high" decoding="async">
+    <img class="dark" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/doc_cover_dark.jpg"
+         alt="" loading="lazy" decoding="async">
   </div>
 
   <div class="breadcrumb">
@@ -1067,14 +1067,23 @@
      высоты — иначе при разных пропорциях видео страница дёргается. */
   /* Колонка содержимого имеет боковые отступы (40px, на телефоне 16px) —
      обложка выходит за них, чтобы занять всю ширину, и поднимается под шапку. */
-  .doc-cover{ margin: -32px -40px 1.2rem; border-radius: 0 0 18px 18px; overflow: hidden;
-              background: #eef4f1; line-height: 0; }
-  @media (max-width: 1024px){ .doc-cover{ margin: -20px -16px 1rem; } }
+  /* Обложка занимает всю область справа от бокового меню: колонка текста
+     ограничена 960px, поэтому ширину берём от окна, а отступы колонки
+     компенсируем отрицательным margin. */
+  .doc-cover{ margin: -32px 0 1.4rem -40px; width: calc(100vw - var(--sidebar-width));
+              max-width: calc(100vw - var(--sidebar-width));
+              overflow: hidden; background: #eef4f1; line-height: 0; }
   [data-theme="dark"] .doc-cover{ background: #0f1c2f; }
-  .doc-cover video, .doc-cover img{ display: block; width: 100%; height: 300px;
-              object-fit: cover; margin: 0; border-radius: 0; box-shadow: none; }
-  @media (max-width: 860px){ .doc-cover video, .doc-cover img{ height: 210px; } }
-  @media (max-width: 560px){ .doc-cover video, .doc-cover img{ height: 160px; } }
+  @media (max-width: 1024px){
+    .doc-cover{ margin: -20px 0 1.1rem -16px; width: 100vw; max-width: 100vw; }
+  }
+  .doc-cover img{ display: block; width: 100%; height: 300px; object-fit: cover;
+              object-position: center; margin: 0; border-radius: 0; box-shadow: none; }
+  .doc-cover .dark{ display: none; }
+  [data-theme="dark"] .doc-cover .light{ display: none; }
+  [data-theme="dark"] .doc-cover .dark{ display: block; }
+  @media (max-width: 860px){ .doc-cover img{ height: 210px; } }
+  @media (max-width: 560px){ .doc-cover img{ height: 160px; } }
   </style>
 
   <style id="wfx-styles">
