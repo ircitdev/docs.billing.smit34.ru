@@ -105,6 +105,29 @@ else
   echo "  dist готов: $DIST"
 fi
 
+# ── Счётчик Метрики в собранную страницу ─────────────────────────────────────
+# Сборка каждый раз создаёт index.html заново, вместе с ним пропадает счётчик.
+# Фрагмент лежит рядом со скриптом, чтобы правка не жила только на сервере.
+SNIPPET_FILE="$(cd "$(dirname "$0")" && pwd)/metrika_snippet.html"
+if [ -f "$DIST/index.html" ] && [ -f "$SNIPPET_FILE" ]; then
+  if grep -q 'mc.yandex.ru/metrika/tag.js' "$DIST/index.html"; then
+    echo "  счётчик уже в сборке"
+  else
+    if command -v py >/dev/null 2>&1; then PYBIN=py; else PYBIN=python3; fi
+    "$PYBIN" - "$DIST/index.html" "$SNIPPET_FILE" <<'PYEOF'
+import io, sys
+page, snippet = sys.argv[1], sys.argv[2]
+s = io.open(page, encoding='utf-8', newline='').read()
+frag = io.open(snippet, encoding='utf-8', newline='').read()
+if '</head>' in s:
+    io.open(page, 'w', encoding='utf-8', newline='').write(s.replace('</head>', frag + '</head>', 1))
+    print('  счётчик Метрики вставлен в dist/index.html')
+else:
+    print('  !! в dist/index.html нет </head> — счётчик не вставлен')
+PYEOF
+  fi
+fi
+
 # ── Внедрение свежего графа знаний в dist ────────────────────────────────────
 if [ "$MODE" != "build" ]; then
   say "Копирую свежий граф знаний в сборку"

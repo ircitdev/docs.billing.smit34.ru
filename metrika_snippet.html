@@ -1,0 +1,42 @@
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=112276394', 'ym');
+
+    ym(112276394, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/112276394" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+<script>
+/* Цели раздела «Граф знаний». Интерфейс рисует приложение, разметку не
+   трогаем — слушаем клики на документе и узнаём кнопки по подписи. */
+(function () {
+  var ID = 112276394;
+  function goal(name, params) {
+    if (typeof window.ym !== 'function') return;
+    try { window.ym(ID, 'reachGoal', name, params || {}); } catch (e) {}
+  }
+  var MODES = { 'Обзор': 'overview', 'Обучение': 'learning', 'Погружение': 'deep' };
+
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('button');
+    if (!b) return;
+    var label = (b.textContent || '').trim();
+    if (MODES[label]) goal('graph_mode', { mode: label });
+  }, true);
+
+  var t = null, last = '';
+  document.addEventListener('input', function (e) {
+    var el = e.target;
+    if (!el || el.tagName !== 'INPUT') return;
+    var q = (el.value || '').trim();
+    if (q.length < 3 || q === last) return;
+    clearTimeout(t);
+    t = setTimeout(function () { last = q; goal('graph_search', { query: q.slice(0, 60) }); }, 1200);
+  }, true);
+})();
+</script>

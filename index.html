@@ -35,7 +35,7 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Документация биллинговой платформы СмИТ Биллинг для операторов связи и сервис-провайдеров. Python 3.11, Django 4.2, PostgreSQL 17, Docker Compose.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/style.css?v=2416">
+  <link rel="stylesheet" href="css/style.css?v=2417">
   <link rel="stylesheet" href="css/vendor/tabler-icons.min.css?v=2193">
   <link rel="stylesheet" href="css/search.css?v=2257">
   <style id="dh-landing">
@@ -1065,10 +1065,13 @@
          background: linear-gradient(135deg, rgba(16,185,129,.07), rgba(20,184,166,.04)); }
   [data-theme="dark"] .wfx { border-color: rgba(16,185,129,.3);
          background: linear-gradient(135deg, rgba(16,185,129,.11), rgba(20,184,166,.06)); }
-  .wfx-top { display: flex; align-items: flex-end; justify-content: space-between;
-             gap: 1.1rem; flex-wrap: wrap; }
+  /* Сетка, а не flex-wrap: при переносе кнопка прыгала под текст от любых
+     сотых доли ширины — теперь место под неё зарезервировано. */
+  .wfx-top { display: grid; grid-template-columns: minmax(0, 1fr) auto;
+             align-items: end; gap: 1.1rem; }
+  @media (max-width: 860px) { .wfx-top { grid-template-columns: 1fr; } }
   .wfx h2 { margin: 0 0 .35rem; }
-  .wfx-lead { margin: 0; max-width: 70ch; color: var(--text-muted, #6c757d); line-height: 1.6; }
+  .wfx-lead { margin: 0; max-width: 62ch; color: var(--text-muted, #6c757d); line-height: 1.6; }
   /* цвет задаём с приоритетом: общий стиль ссылок в тёмной теме красил текст
      кнопки в тот же зелёный, что и фон, — надпись почти пропадала */
   .wfx-all, .wfx-all:visited, [data-theme="dark"] .wfx-all { display: inline-flex;
