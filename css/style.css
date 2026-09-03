@@ -2539,8 +2539,11 @@ body.search-open { overflow: hidden; }
   transition:border-color .18s ease, transform .18s ease, box-shadow .18s ease;
   min-height:56px;
 }
+.wf-link, .wf-link:hover, .wf-link .nm, .wf-link .kd{ text-decoration:none; }
 .wf-link:hover{ border-color:#10b981; transform:translateY(-2px);
   box-shadow:0 8px 20px rgba(15,23,42,.08); }
+.wf-link:hover .nm{ color:#059669; }
+[data-theme="dark"] .wf-link:hover .nm{ color:#34d399; }
 [data-theme="dark"] .wf-link{ background:rgba(255,255,255,.03); }
 [data-theme="dark"] .wf-link:hover{ box-shadow:0 8px 20px rgba(0,0,0,.35); }
 .wf-link .ic{
