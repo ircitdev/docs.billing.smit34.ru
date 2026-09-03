@@ -903,11 +903,13 @@ document.addEventListener('DOMContentLoaded', function () {
     if (seen >= 0.9) { deepSent = true; goal('read_deep'); }
   }, { passive: true });
 
-  // Запуск обучающего ролика
+  // Запуск обучающего ролика. Декоративные схемы (зацикленные, беззвучные,
+  // скрытые от чтения) стартуют сами — их не считаем.
   document.addEventListener('play', function (e) {
-    if (e.target && e.target.tagName === 'VIDEO') {
-      goal('video_play', { src: (e.target.currentSrc || '').slice(-60) });
-    }
+    var v = e.target;
+    if (!v || v.tagName !== 'VIDEO') return;
+    if (!v.controls || v.loop || v.getAttribute('aria-hidden') === 'true') return;
+    goal('video_play', { src: (v.currentSrc || '').slice(-60) });
   }, true);
 
   // Скопировал команду или фрагмент кода — значит применяет у себя
