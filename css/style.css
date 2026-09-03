@@ -1625,6 +1625,50 @@ html, body {
   .sidebar-theme-toggle { display: none; }
 }
 
+/* ── Кнопка «Запросить демо» в подвале бокового меню ───────────────────
+   Справочник читают и те, кто ещё выбирает систему: снизу меню, под всеми
+   разделами, даём один явный шаг — открыть форму заявки на показ.
+   Тон градиента взят тёмный намеренно: белая подпись на нём даёт контраст
+   ~5.5:1, тогда как на светло-зелёном было бы около 3:1. */
+.sidebar-demo-btn,
+.sidebar-demo-btn:visited {
+  margin: 16px 14px 0;
+  padding: 11px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: calc(100% - 28px);
+  border-radius: 10px;
+  background: linear-gradient(135deg, #047857, #065f46);
+  color: #fff;
+  font-size: .93rem;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 6px 16px rgba(4, 120, 87, .28);
+  transition: transform .15s, box-shadow .15s;
+}
+.sidebar-demo-btn:hover {
+  color: #fff;
+  text-decoration: none;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(4, 120, 87, .38);
+}
+.sidebar-demo-btn:focus-visible {
+  outline: 2px solid #34d399;
+  outline-offset: 2px;
+}
+.sidebar-demo-btn i { font-size: 1.05rem; line-height: 1; }
+[data-theme="dark"] .sidebar-demo-btn,
+[data-theme="dark"] .sidebar-demo-btn:visited {
+  background: linear-gradient(135deg, #059669, #047857);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .35);
+}
+@media (prefers-reduced-motion: reduce) {
+  .sidebar-demo-btn { transition: none; }
+  .sidebar-demo-btn:hover { transform: none; }
+}
+
 .sidebar-theme-toggle {
   margin: 16px 14px;
   padding: 10px 14px;
