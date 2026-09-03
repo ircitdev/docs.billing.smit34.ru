@@ -35,7 +35,7 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Документация биллинговой платформы СмИТ Биллинг для операторов связи и сервис-провайдеров. Python 3.11, Django 4.2, PostgreSQL 17, Docker Compose.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/style.css?v=2423">
+  <link rel="stylesheet" href="css/style.css?v=2424">
   <link rel="stylesheet" href="css/vendor/tabler-icons.min.css?v=2193">
   <link rel="stylesheet" href="css/search.css?v=2257">
   <style id="dh-landing">
@@ -1070,12 +1070,17 @@
   /* Обложка занимает всю область справа от бокового меню: колонка текста
      ограничена 960px, поэтому ширину берём от окна, а отступы колонки
      компенсируем отрицательным margin. */
-  .doc-cover{ margin: -32px 0 1.4rem -40px; width: calc(100vw - var(--sidebar-width));
-              max-width: calc(100vw - var(--sidebar-width));
+  /* Колонка текста ограничена 960px и центрирована в окне, поэтому обложку
+     растягиваем приёмом full-bleed, но обрезаем слева на ширину бокового меню —
+     чтобы она заняла ровно свободную область, не залезая под меню. */
+  .doc-cover{ margin: -32px 0 1.4rem calc(50% - 50vw + var(--sidebar-width));
+              width: calc(100vw - var(--sidebar-width));
               overflow: hidden; background: #eef4f1; line-height: 0; }
   [data-theme="dark"] .doc-cover{ background: #0f1c2f; }
+  /* лишние пиксели от полосы прокрутки срезаем, а не превращаем в скролл */
+  main.content{ overflow-x: clip; }
   @media (max-width: 1024px){
-    .doc-cover{ margin: -20px 0 1.1rem -16px; width: 100vw; max-width: 100vw; }
+    .doc-cover{ margin: -20px 0 1.1rem calc(50% - 50vw); width: 100vw; }
   }
   .doc-cover img{ display: block; width: 100%; height: 300px; object-fit: cover;
               object-position: center; margin: 0; border-radius: 0; box-shadow: none; }
