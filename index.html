@@ -35,7 +35,7 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Документация биллинговой платформы СмИТ Биллинг для операторов связи и сервис-провайдеров. Python 3.11, Django 4.2, PostgreSQL 17, Docker Compose.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/style.css?v=2419">
+  <link rel="stylesheet" href="css/style.css?v=2420">
   <link rel="stylesheet" href="css/vendor/tabler-icons.min.css?v=2193">
   <link rel="stylesheet" href="css/search.css?v=2257">
   <style id="dh-landing">
@@ -56,13 +56,14 @@
   .dh-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:12px;
     font-weight:600;font-size:.95rem;text-decoration:none;transition:transform .12s,box-shadow .2s,background .2s;border:1px solid transparent}
   .dh-btn:hover{transform:translateY(-1px);text-decoration:none}
-  .dh-btn-main{background:linear-gradient(135deg,var(--e500),var(--e600));color:#fff;box-shadow:0 6px 18px rgba(16,185,129,.28)}
-  .dh-btn-main:hover{box-shadow:0 10px 26px rgba(16,185,129,.4);color:#fff}
+  /* Кнопка — ссылка, и общий стиль ссылок красил её текст зелёным по зелёному.
+     Цвет закрепляем, фон затемняем: белый на #10b981 давал всего 2.5:1. */
+  .dh-btn-main, .dh-btn-main:visited, .dh-btn-main:hover{
+    background:linear-gradient(135deg,var(--e600),var(--e700));color:#fff !important;
+    box-shadow:0 6px 18px rgba(4,120,87,.3)}
+  .dh-btn-main:hover{box-shadow:0 10px 26px rgba(4,120,87,.42)}
   .dh-btn-ghost{background:rgba(255,255,255,.7);border-color:rgba(16,185,129,.28);color:var(--e700)}
   .dh-btn-ghost:hover{background:#fff;border-color:var(--e500);color:var(--e700)}
-  .dh-meta{display:flex;gap:26px;flex-wrap:wrap;padding-top:16px;border-top:1px dashed rgba(16,185,129,.22)}
-  .dh-meta span{font-size:.9rem;color:var(--text-light)}
-  .dh-meta b{display:block;font-size:1.35rem;font-weight:800;color:var(--e700);line-height:1.1}
   .dh-hero-side{display:flex;flex-direction:column;gap:16px}
   .dh-card{border-radius:18px;padding:20px 22px;display:flex;flex-direction:column;flex:1;text-decoration:none;position:relative;overflow:hidden}
   .dh-card-eyebrow{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1.4px;opacity:.85;margin-bottom:10px}
@@ -83,10 +84,10 @@
   .dh-card-stack{font-size:.9rem;line-height:1.7;color:#e2e8f0}
   .dh-card-stack b{color:var(--e400)}
   @media (max-width:900px){.dh-hero{grid-template-columns:1fr}.dh-title{font-size:1.9rem}}
-  @media (max-width:560px){.dh-hero-main{padding:22px 20px}.dh-meta{gap:18px}.dh-btn{flex:1 1 auto;justify-content:center}}
+  @media (max-width:560px){.dh-hero-main{padding:22px 20px}.dh-btn{flex:1 1 auto;justify-content:center}}
   /* dark */
   [data-theme="dark"] .dh-hero-main{background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(20,184,166,.06));border-color:rgba(16,185,129,.25)}
-  [data-theme="dark"] .dh-badge,[data-theme="dark"] .dh-title span,[data-theme="dark"] .dh-meta b,[data-theme="dark"] .dh-btn-ghost{color:var(--e400)}
+  [data-theme="dark"] .dh-badge,[data-theme="dark"] .dh-title span,[data-theme="dark"] .dh-btn-ghost{color:var(--e400)}
   [data-theme="dark"] .dh-btn-ghost{background:rgba(30,41,59,.55);border-color:rgba(16,185,129,.3)}
   [data-theme="dark"] .dh-card-dark{background:#0b1220;border-color:rgba(255,255,255,.07)}
   </style>
@@ -999,6 +1000,13 @@
 </aside>
 
 <main class="content">
+  <div class="doc-cover">
+    <video src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/robot_home.mp4"
+           autoplay muted playsinline preload="auto"
+           poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/robot_home.jpg"
+           onended="this.outerHTML='<img src=&apos;https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/robot_home.jpg&apos; alt=&apos;&apos;>'"></video>
+  </div>
+
   <div class="breadcrumb">
     <a href="index.html">Документация</a>
   </div>
@@ -1013,11 +1021,6 @@
         <a class="dh-btn dh-btn-ghost" href="#schemes">Схемы системы</a>
         <a class="dh-btn dh-btn-ghost" href="#training-videos">Обучающие ролики</a>
         <a class="dh-btn dh-btn-ghost" href="https://billing.smit34.ru/?utm_source=docs&utm_medium=referral&utm_campaign=docs_hero&utm_content=demo" target="_blank" rel="noopener">Запросить демо</a>
-      </div>
-      <div class="dh-meta">
-        <span><b>21</b>модуль платформы</span>
-        <span><b>911</b>разделов справочника</span>
-        <span><b>18</b>обучающих роликов</span>
       </div>
     </div>
     <div class="dh-hero-side">
@@ -1034,12 +1037,6 @@
     </div>
   </section>
 
-  <div class="welcome-image">
-    <video src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/robot_home.mp4"
-           autoplay muted playsinline preload="auto" poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/robot_home.jpg"
-           style="width:100%;border-radius:8px;display:block"
-           onended="this.outerHTML='<img src=&apos;https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/robot_home.jpg&apos; style=&apos;width:100%;border-radius:8px;display:block&apos; alt=&apos;&apos;>'"></video>
-  </div>
 
   <section class="landing-cta" hidden>
     <div class="lc-body">
@@ -1064,6 +1061,18 @@
       <li><b>18</b><span>обучающих роликов</span></li>
     </ul>
   </section>
+
+  <style id="doc-cover-styles">
+  /* Обложка над всем содержимым: во всю ширину колонки, фиксированной
+     высоты — иначе при разных пропорциях видео страница дёргается. */
+  .doc-cover{ margin: 0 0 1.1rem; border-radius: 0 0 18px 18px; overflow: hidden;
+              background: #eef4f1; line-height: 0; }
+  [data-theme="dark"] .doc-cover{ background: #0f1c2f; }
+  .doc-cover video, .doc-cover img{ display: block; width: 100%; height: 300px;
+              object-fit: cover; margin: 0; border-radius: 0; box-shadow: none; }
+  @media (max-width: 860px){ .doc-cover video, .doc-cover img{ height: 210px; } }
+  @media (max-width: 560px){ .doc-cover video, .doc-cover img{ height: 160px; } }
+  </style>
 
   <style id="wfx-styles">
   /* Витрина схем: те же карточки, что на стратегическом портале. */
