@@ -35,7 +35,7 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Документация биллинговой платформы СмИТ Биллинг для операторов связи и сервис-провайдеров. Python 3.11, Django 4.2, PostgreSQL 17, Docker Compose.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/style.css?v=2424">
+  <link rel="stylesheet" href="css/style.css?v=2425">
   <link rel="stylesheet" href="css/vendor/tabler-icons.min.css?v=2193">
   <link rel="stylesheet" href="css/search.css?v=2257">
   <style id="dh-landing">
@@ -1073,7 +1073,12 @@
   /* Колонка текста ограничена 960px и центрирована в окне, поэтому обложку
      растягиваем приёмом full-bleed, но обрезаем слева на ширину бокового меню —
      чтобы она заняла ровно свободную область, не залезая под меню. */
-  .doc-cover{ margin: -32px 0 1.4rem calc(50% - 50vw + var(--sidebar-width));
+  /* Параллакс: картинка выше своей рамки на 2 x --cover-bleed и при прокрутке
+     сдвигается вниз, отставая от страницы. Запас по высоте и нужен для того,
+     чтобы под сдвинутой картинкой не открылся край рамки. */
+  .doc-cover{ --cover-h: 300px; --cover-bleed: 70px;
+              position: relative; height: var(--cover-h);
+              margin: -32px 0 1.4rem calc(50% - 50vw + var(--sidebar-width));
               width: calc(100vw - var(--sidebar-width));
               overflow: hidden; background: #eef4f1; line-height: 0; }
   [data-theme="dark"] .doc-cover{ background: #0f1c2f; }
@@ -1082,14 +1087,57 @@
   @media (max-width: 1024px){
     .doc-cover{ margin: -20px 0 1.1rem calc(50% - 50vw); width: 100vw; }
   }
-  .doc-cover img{ display: block; width: 100%; height: 300px; object-fit: cover;
-              object-position: center; margin: 0; border-radius: 0; box-shadow: none; }
+  .doc-cover img{ position: absolute; left: 0; top: calc(-1 * var(--cover-bleed));
+              display: block; width: 100%;
+              height: calc(var(--cover-h) + var(--cover-bleed) * 2);
+              object-fit: cover; object-position: center;
+              margin: 0; border-radius: 0; box-shadow: none;
+              transform: translate3d(0, var(--cover-shift, 0px), 0); will-change: transform; }
   .doc-cover .dark{ display: none; }
   [data-theme="dark"] .doc-cover .light{ display: none; }
   [data-theme="dark"] .doc-cover .dark{ display: block; }
-  @media (max-width: 860px){ .doc-cover img{ height: 210px; } }
-  @media (max-width: 560px){ .doc-cover img{ height: 160px; } }
+  @media (max-width: 860px){ .doc-cover{ --cover-h: 210px; --cover-bleed: 48px; } }
+  @media (max-width: 560px){ .doc-cover{ --cover-h: 160px; --cover-bleed: 36px; } }
+  @media (prefers-reduced-motion: reduce){
+    .doc-cover img{ transform: none !important; }
+  }
   </style>
+
+  <script id="doc-cover-parallax">
+  /* Обложка отстаёт от прокрутки: страница уезжает вверх на y, картинка — на
+     y - y * K, поэтому кажется, что она лежит глубже. Считаем в rAF и только
+     пока обложка на экране: дальше сдвиг всё равно не виден. */
+  (function () {
+    var cover = document.querySelector('.doc-cover');
+    if (!cover) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    var K = 0.25, pending = false;
+
+    function bleed() {
+      var v = getComputedStyle(cover).getPropertyValue('--cover-bleed');
+      return parseFloat(v) || 70;
+    }
+
+    function apply() {
+      pending = false;
+      var y = window.scrollY || window.pageYOffset || 0;
+      if (y > cover.offsetHeight + bleed()) return;   // обложка уже за экраном
+      var shift = Math.min(y * K, bleed());
+      cover.style.setProperty('--cover-shift', shift.toFixed(1) + 'px');
+    }
+
+    function onScroll() {
+      if (pending) return;
+      pending = true;
+      requestAnimationFrame(apply);
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    apply();
+  })();
+  </script>
 
   <style id="wfx-styles">
   /* Витрина схем: те же карточки, что на стратегическом портале. */
@@ -1171,13 +1219,13 @@
   [data-theme="dark"] .wfx-card .light { display: none; }
   [data-theme="dark"] .wfx-card .dark { display: block; }
   @media (prefers-reduced-motion: reduce) { .wfx-card .clip { display: none !important; } }
-  .wfx-body { padding: .7rem .9rem .85rem; }
+  .wfx-body { padding: .85rem 1.05rem 1.05rem; }
   .wfx-kind { display: inline-flex; align-items: center; gap: .3rem; font-size: .67rem;
               font-weight: 700; text-transform: uppercase; letter-spacing: .09em;
               color: var(--text-muted, #6c757d); }
   .wfx-kind i { color: #10b981; font-size: .85rem; }
-  .wfx-name { display: block; margin-top: .25rem; font-weight: 600; font-size: .95rem;
-              line-height: 1.3; }
+  .wfx-name { display: block; margin-top: .35rem; font-weight: 600; font-size: .95rem;
+              line-height: 1.35; }
   .wfx-card:hover .wfx-name { color: #059669; }
   [data-theme="dark"] .wfx-card:hover .wfx-name { color: #34d399; }
   .wfx-nav { position: absolute; top: 33%; z-index: 3; width: 38px; height: 38px;
