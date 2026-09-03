@@ -2596,3 +2596,14 @@ body.search-open { overflow: hidden; }
 [data-theme="dark"] .wf-link .cover .clip.light{ display:none; }
 [data-theme="dark"] .wf-link .cover .clip.dark{ display:block; }
 @media (prefers-reduced-motion: reduce){ .wf-link .cover .clip{ display:none !important; } }
+
+/* Значок переключателя темы: солнце в тёмной, месяц в светлой, монитор —
+   когда тема следует за системой. */
+.theme-toggle .icon-auto,
+.sidebar-theme-toggle .icon-auto{ display: none; line-height: 1; }
+[data-theme-mode="system"] .theme-toggle .icon-auto,
+[data-theme-mode="system"] .sidebar-theme-toggle .icon-auto{ display: inline; }
+[data-theme-mode="system"] .theme-toggle .icon-sun,
+[data-theme-mode="system"] .theme-toggle .icon-moon,
+[data-theme-mode="system"] .sidebar-theme-toggle .icon-sun,
+[data-theme-mode="system"] .sidebar-theme-toggle .icon-moon{ display: none !important; }

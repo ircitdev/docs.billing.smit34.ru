@@ -28,27 +28,46 @@ document.addEventListener('DOMContentLoaded', function () {
   if (mq.addEventListener) mq.addEventListener('change', onSystemTheme);
   else if (mq.addListener) mq.addListener(onSystemTheme);
 
-  var toggleBtn = document.querySelector('.theme-toggle');
-  if (toggleBtn) {
-    toggleBtn.addEventListener('click', function () {
-      var current = html.getAttribute('data-theme');
-      var next = current === 'dark' ? 'light' : 'dark';
-      html.setAttribute('data-theme', next);
-      localStorage.setItem('smit-docs-theme', next);
-    });
+  // Переключатель ходит по кругу: как в системе → светлая → тёмная.
+  // Без состояния «как в системе» один случайный клик навсегда отвязывал
+  // документацию от системной темы — вернуть её было нечем.
+  var MODES = ['system', 'light', 'dark'];
+  var TITLES = {
+    system: 'Тема: как в системе (нажмите — светлая)',
+    light: 'Тема: светлая (нажмите — тёмная)',
+    dark: 'Тема: тёмная (нажмите — как в системе)'
+  };
 
-  // Sidebar theme toggle (mobile)
-  var sidebarTheme = document.querySelector('.sidebar-theme-toggle');
-  if (sidebarTheme) {
-    sidebarTheme.addEventListener('click', function () {
-      var current = html.getAttribute('data-theme');
-      var next = current === 'dark' ? 'light' : 'dark';
-      html.setAttribute('data-theme', next);
-      localStorage.setItem('smit-docs-theme', next);
-    });
+  function currentMode() {
+    var stored = localStorage.getItem('smit-docs-theme');
+    return stored === 'light' || stored === 'dark' ? stored : 'system';
   }
 
+  function applyMode(mode) {
+    if (mode === 'system') {
+      localStorage.removeItem('smit-docs-theme');
+      html.setAttribute('data-theme', mq.matches ? 'dark' : 'light');
+    } else {
+      localStorage.setItem('smit-docs-theme', mode);
+      html.setAttribute('data-theme', mode);
+    }
+    html.setAttribute('data-theme-mode', mode);
+    [].forEach.call(document.querySelectorAll('.theme-toggle, .sidebar-theme-toggle'),
+      function (btn) {
+        btn.setAttribute('title', TITLES[mode]);
+        btn.setAttribute('aria-label', TITLES[mode]);
+      });
   }
+
+  applyMode(currentMode());
+
+  [].forEach.call(document.querySelectorAll('.theme-toggle, .sidebar-theme-toggle'),
+    function (btn) {
+      btn.addEventListener('click', function () {
+        var next = MODES[(MODES.indexOf(currentMode()) + 1) % MODES.length];
+        applyMode(next);
+      });
+    });
 
   // --- Mobile sidebar toggle ---
   var toggle = document.querySelector('.menu-toggle');

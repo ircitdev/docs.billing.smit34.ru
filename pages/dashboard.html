@@ -11,6 +11,10 @@
         if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches
           ? 'dark' : 'light';
         document.documentElement.setAttribute('data-theme', t);
+        // режим нужен до загрузки скриптов: иначе значок «как в системе»
+        // подменяется солнцем или месяцем на первые доли секунды
+        document.documentElement.setAttribute('data-theme-mode',
+          localStorage.getItem('smit-docs-theme') ? t : 'system');
       } catch (e) {}
     })();
   </script>
@@ -31,7 +35,7 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Главный экран биллинга: показатели за день, тревоги, касса и финансовая динамика. С него начинается рабочий день оператора.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=2409">
+  <link rel="stylesheet" href="../css/style.css?v=2411">
   <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css?v=2193">
   <link rel="stylesheet" href="../css/search.css?v=2257">
 <!-- Yandex.Metrika counter -->
@@ -77,7 +81,7 @@
     </button>
     <button class="theme-toggle" aria-label="Переключить тему" title="Светлая / тёмная тема">
       <span class="icon-sun"><i class="ti ti-sun"></i></span>
-      <span class="icon-moon"><i class="ti ti-moon"></i></span>
+      <span class="icon-moon"><i class="ti ti-moon"></i></span><span class="icon-auto"><i class="ti ti-device-desktop"></i></span>
     </button>
   </div>
 </header>
@@ -1353,7 +1357,7 @@ GROUP BY 1, 2;</code></pre>
   <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2446)</span>&nbsp;|&nbsp;<span data-smit="updated">03.09.2026</span></span>
 </footer>
 
-<script src="../js/main.js?v=2322"></script>
+<script src="../js/main.js?v=2411"></script>
 <script src="../js/search.js?v=2257"></script>
 <script src="../js/version.js"></script>
 <script src="../js/mermaid-init.js?v=2193"></script>
