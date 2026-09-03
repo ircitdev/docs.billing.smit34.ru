@@ -35,7 +35,7 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Документация биллинговой платформы СмИТ Биллинг для операторов связи и сервис-провайдеров. Python 3.11, Django 4.2, PostgreSQL 16, Docker Compose.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/style.css?v=2411">
+  <link rel="stylesheet" href="css/style.css?v=2412">
   <link rel="stylesheet" href="css/vendor/tabler-icons.min.css?v=2193">
   <link rel="stylesheet" href="css/search.css?v=2257">
   <style id="dh-landing">
@@ -1003,6 +1003,7 @@
       <p class="dh-lead">Биллинговая платформа для операторов связи и сервис-провайдеров: абоненты, тарифы, платежи, СОРМ, оборудование, CRM, поддержка и личный кабинет — единый справочник по системе.</p>
       <div class="dh-actions">
         <a class="dh-btn dh-btn-main" href="https://billing.smit34.ru/?utm_source=docs&utm_medium=referral&utm_campaign=docs_hero&utm_content=site" target="_blank" rel="noopener">Сайт продукта →</a>
+        <a class="dh-btn dh-btn-ghost" href="#schemes">Схемы системы</a>
         <a class="dh-btn dh-btn-ghost" href="#training-videos">Обучающие ролики</a>
         <a class="dh-btn dh-btn-ghost" href="https://billing.smit34.ru/?utm_source=docs&utm_medium=referral&utm_campaign=docs_hero&utm_content=demo" target="_blank" rel="noopener">Запросить демо</a>
       </div>
@@ -1056,225 +1057,315 @@
       <li><b>16</b><span>обучающих роликов</span></li>
     </ul>
   </section>
+
+  <style id="wfx-styles">
+  /* Витрина схем: те же карточки, что на стратегическом портале. */
+  .wfx { margin: 2.4rem 0; padding: 1.4rem 1.5rem 1.5rem; border-radius: 18px;
+         border: 1px solid rgba(16,185,129,.2);
+         background: linear-gradient(135deg, rgba(16,185,129,.07), rgba(20,184,166,.04)); }
+  [data-theme="dark"] .wfx { border-color: rgba(16,185,129,.3);
+         background: linear-gradient(135deg, rgba(16,185,129,.11), rgba(20,184,166,.06)); }
+  .wfx-top { display: flex; align-items: flex-end; justify-content: space-between;
+             gap: 1.1rem; flex-wrap: wrap; }
+  .wfx h2 { margin: 0 0 .35rem; }
+  .wfx-lead { margin: 0; max-width: 70ch; color: var(--text-muted, #6c757d); line-height: 1.6; }
+  .wfx-all { display: inline-flex; align-items: center; gap: .45rem; white-space: nowrap;
+             min-height: 44px; padding: .55rem 1.1rem; border-radius: 12px;
+             background: #10b981; color: #fff; font-weight: 600; text-decoration: none; }
+  .wfx-all:hover { background: #059669; color: #fff; }
+
+  .wfx-tabs { display: flex; align-items: center; flex-wrap: wrap; gap: .5rem; margin: 1.1rem 0 .9rem; }
+  .wfx-tab { min-height: 40px; padding: .4rem .95rem; border-radius: 100px; cursor: pointer;
+             border: 1px solid var(--border, #e6e8eb); background: var(--bg-card, #fff);
+             color: var(--text-muted, #6c757d); font: inherit; font-size: .87rem; font-weight: 600; }
+  [data-theme="dark"] .wfx-tab { background: rgba(255,255,255,.04); }
+  .wfx-tab:hover { border-color: #10b981; color: #059669; }
+  .wfx-tab[aria-selected="true"] { background: #10b981; border-color: #10b981; color: #fff; }
+  .wfx-hint { display: none; align-items: center; gap: .35rem; margin-left: auto;
+              padding: .3rem .7rem; border-radius: 100px; font-size: .75rem; font-weight: 600;
+              color: #059669; background: rgba(16,185,129,.12); transition: opacity .7s ease; }
+  [data-theme="dark"] .wfx-hint { color: #34d399; }
+  .wfx-hint.off { opacity: 0; }
+
+  .wfx-slider { position: relative; }
+  .wfx-track { display: flex; gap: .9rem; overflow-x: auto; scroll-behavior: smooth;
+               scroll-snap-type: x mandatory; padding: .2rem .1rem .7rem; }
+  .wfx-card { flex: 0 0 290px; scroll-snap-align: start; overflow: hidden; position: relative;
+              border-radius: 14px; border: 1px solid var(--border, #e6e8eb);
+              background: var(--bg-card, #fff); text-decoration: none; color: inherit;
+              transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+  [data-theme="dark"] .wfx-card { background: rgba(255,255,255,.03); }
+  .wfx-card:hover { transform: translateY(-3px); border-color: #10b981;
+                    box-shadow: 0 12px 28px rgba(15,23,42,.12); }
+  [data-theme="dark"] .wfx-card:hover { box-shadow: 0 12px 28px rgba(0,0,0,.4); }
+  .wfx-media { position: relative; display: block; background: #eef2f5; }
+  [data-theme="dark"] .wfx-media { background: #0f172a; }
+  .wfx-card img { display: block; width: 100%; aspect-ratio: 16/9; object-fit: cover;
+                  margin: 0; border-radius: 0; box-shadow: none; }
+  .wfx-card .clip { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+                    opacity: 0; transition: opacity .3s ease; pointer-events: none; }
+  .wfx-card .clip.ready { opacity: 1; }
+  .wfx-card .dark { display: none; }
+  [data-theme="dark"] .wfx-card .light { display: none; }
+  [data-theme="dark"] .wfx-card .dark { display: block; }
+  @media (prefers-reduced-motion: reduce) { .wfx-card .clip { display: none !important; } }
+  .wfx-body { padding: .7rem .9rem .85rem; }
+  .wfx-kind { display: inline-flex; align-items: center; gap: .3rem; font-size: .67rem;
+              font-weight: 700; text-transform: uppercase; letter-spacing: .09em;
+              color: var(--text-muted, #6c757d); }
+  .wfx-kind i { color: #10b981; font-size: .85rem; }
+  .wfx-name { display: block; margin-top: .25rem; font-weight: 600; font-size: .95rem;
+              line-height: 1.3; }
+  .wfx-card:hover .wfx-name { color: #059669; }
+  [data-theme="dark"] .wfx-card:hover .wfx-name { color: #34d399; }
+  .wfx-nav { position: absolute; top: 32%; z-index: 2; width: 40px; height: 40px;
+             display: flex; align-items: center; justify-content: center; cursor: pointer;
+             border-radius: 50%; border: 1px solid var(--border, #e6e8eb);
+             background: var(--bg-card, #fff); color: inherit;
+             box-shadow: 0 6px 18px rgba(15,23,42,.14); }
+  [data-theme="dark"] .wfx-nav { background: #111c2f; }
+  .wfx-prev { left: -14px; } .wfx-next { right: -14px; }
+  .wfx-nav[hidden] { display: none; }
+  @media (max-width: 640px) {
+    .wfx { padding: 1.1rem 1rem 1.2rem; border-radius: 14px; }
+    .wfx-card { flex-basis: 240px; }
+    .wfx-nav { display: none; }
+    .wfx-hint { display: inline-flex; }
+    .wfx-all { width: 100%; justify-content: center; }
+  }
+  </style>
+
+  <section id="schemes" class="wfx">
+    <div class="wfx-top">
+      <div>
+        <h2>Как устроен биллинг внутри</h2>
+        <p class="wfx-lead">Шестнадцать интерактивных схем: архитектура боевого сервера,
+        прогон абонплаты, приём платежей, работа с сетью и порядок выкатки. Каждая
+        открывается в браузере — с поиском по узлам и разбором связей.</p>
+      </div>
+      <a class="wfx-all" href="https://docs.billing.smit34.ru/Workflow/" target="_blank" rel="noopener">
+        Открыть все схемы <i class="ti ti-arrow-right"></i></a>
+    </div>
+
+    <div class="wfx-tabs" role="tablist" aria-label="Разделы схем">
+      <button class="wfx-tab" type="button" role="tab" aria-selected="true">Ядро</button>
+      <button class="wfx-tab" type="button" role="tab" aria-selected="false">Сеть</button>
+      <button class="wfx-tab" type="button" role="tab" aria-selected="false">Клиенты</button>
+      <button class="wfx-tab" type="button" role="tab" aria-selected="false">Деньги</button>
+      <button class="wfx-tab" type="button" role="tab" aria-selected="false">Инженерам</button>
+      <span class="wfx-hint" aria-hidden="true"><i class="ti ti-arrow-right"></i>листайте</span>
+    </div>
+
+    <div class="wfx-slider">
+      <button class="wfx-nav wfx-prev" type="button" aria-label="Показать предыдущие схемы" hidden>
+        <i class="ti ti-chevron-left"></i></button>
+      <div class="wfx-track" id="wfxTrack"></div>
+      <button class="wfx-nav wfx-next" type="button" aria-label="Показать следующие схемы">
+        <i class="ti ti-chevron-right"></i></button>
+    </div>
+  </section>
+
   <section id="training-videos" class="training-videos">
     <h2>Обучающие ролики</h2>
-    <p class="tv-lead">Короткие разборы разделов для новых сотрудников — по две-три минуты, с реальными экранами системы. Нажмите «смотреть ролик», чтобы открыть плеер прямо здесь.</p>
+    <p class="tv-lead">Короткие разборы разделов для новых сотрудников — по две-три минуты, с реальными экранами системы. Плееры ниже: нажмите на любой, чтобы начать.</p>
     <div class="tv-grid">
       <div class="tv-item">
         <div class="tv-head"><strong>Дашборд</strong><span class="tv-meta">2:35 · с озвучкой</span></div>
         <p class="tv-about">период и организация, ключевые показатели, сводки по модулям, деньги</p>
-        <details class="tv-player">
-          <summary>смотреть ролик</summary>
+        <div class="tv-player">
           <video controls preload="none" playsinline poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v2166/dashboard_video_poster.jpg">
             <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/dashboard-training-voice.mp4" type="video/mp4">
             <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/dashboard-training-voice.mp4">Скачать ролик (MP4)</a>
           </video>
-        </details>
-        <p class="tv-links"><a href="pages/dashboard.html#dashboard">раздел документации</a> · <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/dashboard-training-voice.mp4" target="_blank" rel="noopener">открыть файл</a></p>
+        </div>
+        <p class="tv-links"><a href="pages/dashboard.html#dashboard">раздел документации</a></p>
       </div>
       <div class="tv-item">
         <div class="tv-head"><strong>Платёжные системы</strong><span class="tv-meta">3:03 · с озвучкой</span></div>
         <p class="tv-about">общие настройки и кассы организаций, комиссия, секретные ключи, проверка подключения, безопасность вебхука</p>
-        <details class="tv-player">
-          <summary>смотреть ролик</summary>
+        <div class="tv-player">
           <video controls preload="none" playsinline poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/payment-systems-training-poster.jpg">
             <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/payment-systems-training.mp4" type="video/mp4">
             <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/payment-systems-training.mp4">Скачать ролик (MP4)</a>
           </video>
-        </details>
-        <p class="tv-links"><a href="pages/settings.html#payment-systems">раздел документации</a> · <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/payment-systems-training.mp4" target="_blank" rel="noopener">открыть файл</a></p>
+        </div>
+        <p class="tv-links"><a href="pages/settings.html#payment-systems">раздел документации</a></p>
       </div>
       <div class="tv-item">
         <div class="tv-head"><strong>Банковские выписки</strong><span class="tv-meta">2:43 · с озвучкой</span></div>
         <p class="tv-about">очередь платежей, привязка к клиенту, сводные реестры, платежи в карточке</p>
-        <details class="tv-player">
-          <summary>смотреть ролик</summary>
+        <div class="tv-player">
           <video controls preload="none" playsinline poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/bank-statements-training-poster.jpg">
             <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/bank-statements-training.mp4" type="video/mp4">
             <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/bank-statements-training.mp4">Скачать ролик (MP4)</a>
           </video>
-        </details>
-        <p class="tv-links"><a href="pages/settings.html#bank-statements">раздел документации</a> · <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/bank-statements-training.mp4" target="_blank" rel="noopener">открыть файл</a></p>
+        </div>
+        <p class="tv-links"><a href="pages/settings.html#bank-statements">раздел документации</a></p>
       </div>
       <div class="tv-item">
         <div class="tv-head"><strong>Фискализация</strong><span class="tv-meta">2:49 · с озвучкой</span></div>
         <p class="tv-about">чек в ОФД по 54-ФЗ, какие платежи фискализируем, чек-лист готовности, касса и очередь чеков</p>
-        <details class="tv-player">
-          <summary>смотреть ролик</summary>
+        <div class="tv-player">
           <video controls preload="none" playsinline poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/smit_fiscal_training_2026-08-26-poster.jpg">
             <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/smit_fiscal_training_2026-08-26.mp4" type="video/mp4">
             <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/smit_fiscal_training_2026-08-26.mp4">Скачать ролик (MP4)</a>
           </video>
-        </details>
-        <p class="tv-links"><a href="pages/settings.html#fiscal">раздел документации</a> · <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/smit_fiscal_training_2026-08-26.mp4" target="_blank" rel="noopener">открыть файл</a></p>
+        </div>
+        <p class="tv-links"><a href="pages/settings.html#fiscal">раздел документации</a></p>
       </div>
       <div class="tv-item">
         <div class="tv-head"><strong>Тарификация</strong><span class="tv-meta">2:30 · с озвучкой</span></div>
         <p class="tv-about">тарифы, услуги, линейки, что видит клиент</p>
-        <details class="tv-player">
-          <summary>смотреть ролик</summary>
+        <div class="tv-player">
           <video controls preload="none" playsinline poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/tarifs-training-poster.jpg">
             <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/tarifs-training.mp4" type="video/mp4">
             <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/tarifs-training.mp4">Скачать ролик (MP4)</a>
           </video>
-        </details>
-        <p class="tv-links"><a href="pages/tariffs.html#tarifs">раздел документации</a> · <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/tarifs-training.mp4" target="_blank" rel="noopener">открыть файл</a></p>
+        </div>
+        <p class="tv-links"><a href="pages/tariffs.html#tarifs">раздел документации</a></p>
       </div>
       <div class="tv-item">
         <div class="tv-head"><strong>Почтовый сервер</strong><span class="tv-meta">3:00 · с озвучкой</span></div>
         <p class="tv-about">ящики, домены и организации, роли ящика, разбор «почта не работает»</p>
-        <details class="tv-player">
-          <summary>смотреть ролик</summary>
+        <div class="tv-player">
           <video controls preload="none" playsinline poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/mailserver-training-poster.jpg">
             <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/mailserver-training.mp4" type="video/mp4">
             <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/mailserver-training.mp4">Скачать ролик (MP4)</a>
           </video>
-        </details>
-        <p class="tv-links"><a href="pages/settings.html#mailserver">раздел документации</a> · <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/mailserver-training.mp4" target="_blank" rel="noopener">открыть файл</a></p>
+        </div>
+        <p class="tv-links"><a href="pages/settings.html#mailserver">раздел документации</a></p>
       </div>
       <div class="tv-item">
         <div class="tv-head"><strong>Склад</strong><span class="tv-meta">2:47 · с озвучкой</span></div>
         <p class="tv-about">приход, подотчёт, установка у клиента, возврат, инвентаризация</p>
-        <details class="tv-player">
-          <summary>смотреть ролик</summary>
+        <div class="tv-player">
           <video controls preload="none" playsinline poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/smit_stock_training_2026-08-20-poster.jpg">
             <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/smit_stock_training_2026-08-20.mp4" type="video/mp4">
             <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/smit_stock_training_2026-08-20.mp4">Скачать ролик (MP4)</a>
           </video>
-        </details>
-        <p class="tv-links"><a href="pages/stock.html">раздел документации</a> · <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/smit_stock_training_2026-08-20.mp4" target="_blank" rel="noopener">открыть файл</a></p>
+        </div>
+        <p class="tv-links"><a href="pages/stock.html">раздел документации</a></p>
       </div>
       <div class="tv-item">
         <div class="tv-head"><strong>Видеонаблюдение</strong><span class="tv-meta">2:30 · с озвучкой</span></div>
         <p class="tv-about">объекты и камеры, проекты, подписки и оплата</p>
-        <details class="tv-player">
-          <summary>смотреть ролик</summary>
+        <div class="tv-player">
           <video controls preload="none" playsinline poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/video-training-poster.jpg">
             <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/video-training.mp4" type="video/mp4">
             <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/video-training.mp4">Скачать ролик (MP4)</a>
           </video>
-        </details>
-        <p class="tv-links"><a href="pages/video.html">раздел документации</a> · <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/video-training.mp4" target="_blank" rel="noopener">открыть файл</a></p>
+        </div>
+        <p class="tv-links"><a href="pages/video.html">раздел документации</a></p>
       </div>
       <div class="tv-item">
         <div class="tv-head"><strong>CRM</strong><span class="tv-meta">2:40 · с озвучкой</span></div>
         <p class="tv-about">приём заявок, воронка и карточка сделки, задачи, источники, автоматизация</p>
-        <details class="tv-player">
-          <summary>смотреть ролик</summary>
+        <div class="tv-player">
           <video controls preload="none" playsinline poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/crm-training-poster.jpg">
             <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/crm-training.mp4" type="video/mp4">
             <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/crm-training.mp4">Скачать ролик (MP4)</a>
           </video>
-        </details>
-        <p class="tv-links"><a href="pages/crm.html">раздел документации</a> · <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/crm-training.mp4" target="_blank" rel="noopener">открыть файл</a></p>
+        </div>
+        <p class="tv-links"><a href="pages/crm.html">раздел документации</a></p>
       </div>
       <div class="tv-item">
         <div class="tv-head"><strong>Captive Portal</strong><span class="tv-meta">2:40 · с озвучкой</span></div>
         <p class="tv-about">гостевой Wi-Fi, финансовая блокировка, страница-заглушка</p>
-        <details class="tv-player">
-          <summary>смотреть ролик</summary>
+        <div class="tv-player">
           <video controls preload="none" playsinline poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/captive-portal-training-poster.jpg">
             <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/captive-portal-training.mp4" type="video/mp4">
             <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/captive-portal-training.mp4">Скачать ролик (MP4)</a>
           </video>
-        </details>
-        <p class="tv-links"><a href="pages/settings-services.html#captive-portal">раздел документации</a> · <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/captive-portal-training.mp4" target="_blank" rel="noopener">открыть файл</a></p>
+        </div>
+        <p class="tv-links"><a href="pages/settings-services.html#captive-portal">раздел документации</a></p>
       </div>
       <div class="tv-item">
         <div class="tv-head"><strong>AI-агент</strong><span class="tv-meta">2:48 · с озвучкой</span></div>
         <p class="tv-about">каналы и промпт, база знаний, инструменты бота, виджет, разбор провалов</p>
-        <details class="tv-player">
-          <summary>смотреть ролик</summary>
+        <div class="tv-player">
           <video controls preload="none" playsinline poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/ai-agent-training-poster.jpg">
             <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/ai-agent-training.mp4" type="video/mp4">
             <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/ai-agent-training.mp4">Скачать ролик (MP4)</a>
           </video>
-        </details>
-        <p class="tv-links"><a href="pages/extras.html#ai-agent">раздел документации</a> · <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/ai-agent-training.mp4" target="_blank" rel="noopener">открыть файл</a></p>
+        </div>
+        <p class="tv-links"><a href="pages/extras.html#ai-agent">раздел документации</a></p>
       </div>
       <div class="tv-item">
         <div class="tv-head"><strong>Персонал и доступ</strong><span class="tv-meta">2:55 · с озвучкой</span></div>
         <p class="tv-about">карточка сотрудника, права групп, разделы админки, профиль и безопасность</p>
-        <details class="tv-player">
-          <summary>смотреть ролик</summary>
+        <div class="tv-player">
           <video controls preload="none" playsinline poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/staff-training-poster.jpg">
             <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/staff-training.mp4" type="video/mp4">
             <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/staff-training.mp4">Скачать ролик (MP4)</a>
           </video>
-        </details>
-        <p class="tv-links"><a href="pages/settings-services.html#staff">раздел документации</a> · <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/staff-training.mp4" target="_blank" rel="noopener">открыть файл</a></p>
+        </div>
+        <p class="tv-links"><a href="pages/settings-services.html#staff">раздел документации</a></p>
       </div>
       <div class="tv-item">
         <div class="tv-head"><strong>СОРМ</strong><span class="tv-meta">2:55 · с озвучкой</span></div>
         <p class="tv-about">готовность данных, формат вендора, FTP Роскомнадзора, отчёты и история выгрузок</p>
-        <details class="tv-player">
-          <summary>смотреть ролик</summary>
+        <div class="tv-player">
           <video controls preload="none" playsinline poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/sorm-training-poster.jpg">
             <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/sorm-training.mp4" type="video/mp4">
             <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/sorm-training.mp4">Скачать ролик (MP4)</a>
           </video>
-        </details>
-        <p class="tv-links"><a href="pages/sorm.html">раздел документации</a> · <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/sorm-training.mp4" target="_blank" rel="noopener">открыть файл</a></p>
+        </div>
+        <p class="tv-links"><a href="pages/sorm.html">раздел документации</a></p>
       </div>
       <div class="tv-item">
         <div class="tv-head"><strong>Библиотека отчётов</strong><span class="tv-meta">2:33 · с озвучкой</span></div>
         <p class="tv-about">поиск отчёта, запуск с параметрами, экспорт результата, свой SQL и AI-помощник</p>
-        <details class="tv-player">
-          <summary>смотреть ролик</summary>
+        <div class="tv-player">
           <video controls preload="none" playsinline poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/reports-training-poster.jpg">
             <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/reports-training.mp4" type="video/mp4">
             <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/reports-training.mp4">Скачать ролик (MP4)</a>
           </video>
-        </details>
-        <p class="tv-links"><a href="pages/reports.html#custom-reports">раздел документации</a> · <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/reports-training.mp4" target="_blank" rel="noopener">открыть файл</a></p>
+        </div>
+        <p class="tv-links"><a href="pages/reports.html#custom-reports">раздел документации</a></p>
       </div>
       <div class="tv-item">
         <div class="tv-head"><strong>Поддержка</strong><span class="tv-meta">2:42 · с озвучкой</span></div>
         <p class="tv-about">разбор входящих, выезжающая панель, шаблоны ответов, SLA, звонки, дашборд смены</p>
-        <details class="tv-player">
-          <summary>смотреть ролик</summary>
+        <div class="tv-player">
           <video controls preload="none" playsinline poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/support-training-poster.jpg">
             <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/support-training.mp4" type="video/mp4">
             <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/support-training.mp4">Скачать ролик (MP4)</a>
           </video>
-        </details>
-        <p class="tv-links"><a href="pages/helpdesk.html">раздел документации</a> · <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/support-training.mp4" target="_blank" rel="noopener">открыть файл</a></p>
+        </div>
+        <p class="tv-links"><a href="pages/helpdesk.html">раздел документации</a></p>
       </div>
       <div class="tv-item">
         <div class="tv-head"><strong>Личный кабинет и приложение</strong><span class="tv-meta">2:52 · с озвучкой</span></div>
         <p class="tv-about">кабинет глазами клиента: вход, баланс, пополнение, «за что списали», тарифы, услуги, AI-ассистент</p>
-        <details class="tv-player">
-          <summary>смотреть ролик</summary>
+        <div class="tv-player">
           <video controls preload="none" playsinline poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/lk-training-poster.jpg">
             <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/lk-training.mp4" type="video/mp4">
             <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/lk-training.mp4">Скачать ролик (MP4)</a>
           </video>
-        </details>
-        <p class="tv-links"><a href="pages/lk.html">раздел документации</a> · <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/lk-training.mp4" target="_blank" rel="noopener">открыть файл</a></p>
+        </div>
+        <p class="tv-links"><a href="pages/lk.html">раздел документации</a></p>
       </div>
       <div class="tv-item">
         <div class="tv-head"><strong>Организации</strong><span class="tv-meta">2:49 · с озвучкой</span></div>
         <p class="tv-about">несколько компаний в одной установке: домен ЛК, брендинг, реквизиты для счетов, своя касса, почта и Telegram</p>
-        <details class="tv-player">
-          <summary>смотреть ролик</summary>
+        <div class="tv-player">
           <video controls preload="none" playsinline poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/org-training-poster.jpg">
             <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/org-training.mp4" type="video/mp4">
             <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/org-training.mp4">Скачать ролик (MP4)</a>
           </video>
-        </details>
-        <p class="tv-links"><a href="pages/extras.html#multi-org">раздел документации</a> · <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/org-training.mp4" target="_blank" rel="noopener">открыть файл</a></p>
+        </div>
+        <p class="tv-links"><a href="pages/extras.html#multi-org">раздел документации</a></p>
       </div>
       <div class="tv-item">
         <div class="tv-head"><strong>Клиенты</strong><span class="tv-meta">2:50 · с озвучкой</span></div>
         <p class="tv-about">папка и глобальный поиск, счётчики-фильтры, массовые действия, создание клиента, карточка и карта</p>
-        <details class="tv-player">
-          <summary>смотреть ролик</summary>
+        <div class="tv-player">
           <video controls preload="none" playsinline poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/clients-training-poster.jpg">
             <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/clients-training.mp4" type="video/mp4">
             <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/clients-training.mp4">Скачать ролик (MP4)</a>
           </video>
-        </details>
-        <p class="tv-links"><a href="pages/abonents.html#abonents">раздел документации</a> · <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/clients-training.mp4" target="_blank" rel="noopener">открыть файл</a></p>
+        </div>
+        <p class="tv-links"><a href="pages/abonents.html#abonents">раздел документации</a></p>
       </div>
     </div>
   </section>
@@ -1291,21 +1382,10 @@
              gap: .6rem; }
   .tv-meta { font-size: .78rem; color: var(--text-muted, #6c757d); white-space: nowrap; }
   .tv-about { margin: .35rem 0 .6rem; font-size: .92rem; }
-  /* плеер разворачивается на месте: файл тяжёлый, грузим только по требованию */
-  .tv-player > summary { cursor: pointer; display: inline-flex; align-items: center;
-                         gap: .4rem; font-weight: 600; color: var(--brand, #43b77a); }
-  .tv-player > summary::marker { content: ""; }
-  .tv-player > summary::-webkit-details-marker { display: none; }
-  .tv-player > summary::before { content: "▸"; transition: transform .15s ease; }
-  .tv-player[open] > summary::before { transform: rotate(90deg); }
-  .tv-player > summary:focus-visible { outline: 2px solid var(--brand, #43b77a);
-                                       outline-offset: 3px; border-radius: 6px; }
+  /* плеер стоит открытым: страница про обучение, лишний клик тут не нужен */
   .tv-player video { width: 100%; display: block; margin: .7rem 0 .2rem;
                      border-radius: 10px; background: #000; }
   .tv-links { margin: .5rem 0 0; font-size: .9rem; }
-  @media (prefers-reduced-motion: reduce) {
-    .tv-player > summary::before { transition: none; }
-  }
   </style>
 
   <div class="cards">
@@ -1400,10 +1480,136 @@
   <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full"></span>&nbsp;|&nbsp;<span data-smit="updated">03.09.2026</span></span>
 </footer>
 
-<script src="js/main.js?v=2411"></script>
+<script src="js/main.js?v=2412"></script>
 <script src="js/version.js"></script>
 <script src="js/mermaid-init.js?v=2193"></script>
 <script src="js/markmap-init.js?v=2193"></script>
 <script src="js/search.js?v=2257"></script>
+
+  <script id="wfx-script">
+  (function () {
+    var DOCS = 'https://docs.billing.smit34.ru/Workflow/';
+    var COVERS = 'https://storage.googleapis.com/uspeshnyy-projects/smit/billing/workflow/';
+    var GROUPS = [{name:"Ядро",items:[{f:"smitbilling-runtime.architecture",t:"Runtime-архитектура",k:"Архитектура",v:1},{f:"smitbilling-charges.workflow",t:"Прогон абонплаты",k:"Процесс",v:1},{f:"smitbilling-payment.sequence",t:"Оплата через ЮKassa",k:"Последовательность",v:1},{f:"smitbilling-abonent.lifecycle",t:"Абонент по балансу",k:"Состояния",v:1},{f:"smitbilling-sorm.dataflow",t:"Выгрузка СОРМ",k:"Поток данных",v:1}]},{name:"Сеть",items:[{f:"smitbilling-radius.sequence",t:"Путь RADIUS-пакета",k:"Последовательность",v:1},{f:"smitbilling-block.sequence",t:"Блокировка и возврат доступа",k:"Последовательность",v:0},{f:"smitbilling-finblock.architecture",t:"Финблокировка и заглушка",k:"Архитектура",v:0}]},{name:"Клиенты",items:[{f:"smitbilling-support.workflow",t:"Путь обращения",k:"Процесс",v:1},{f:"smitbilling-ai.sequence",t:"Запрос к ассистенту",k:"Последовательность",v:0},{f:"smitbilling-deal.lifecycle",t:"Жизненный цикл сделки",k:"Состояния",v:0}]},{name:"Деньги",items:[{f:"smitbilling-bank.dataflow",t:"Банковская выписка",k:"Поток данных",v:1},{f:"smitbilling-fiscal.lifecycle",t:"Путь чека до ОФД",k:"Состояния",v:0}]},{name:"Инженерам",items:[{f:"smitbilling-deploy.workflow",t:"Безопасный деплой",k:"Процесс",v:1},{f:"smitbilling-queues.architecture",t:"Очереди и фоновые задачи",k:"Архитектура",v:0},{f:"smitbilling-org.dataflow",t:"Разделение по организациям",k:"Поток данных",v:0}]}];
+    var ICONS = {
+      'Архитектура': 'ti ti-sitemap', 'Процесс': 'ti ti-route',
+      'Последовательность': 'ti ti-arrows-right-left',
+      'Состояния': 'ti ti-circles-relation', 'Поток данных': 'ti ti-git-branch'
+    };
+
+    var tabs = document.querySelectorAll('.wfx-tab');
+    var track = document.getElementById('wfxTrack');
+    var prev = document.querySelector('.wfx-prev');
+    var next = document.querySelector('.wfx-next');
+    var hint = document.querySelector('.wfx-hint');
+    if (!track || !tabs.length) return;
+
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function render(index) {
+      track.innerHTML = GROUPS[index].items.map(function (it) {
+        var clips = it.v && !reduced
+          ? '<video class="clip light" data-src="' + COVERS + it.f + '.mp4" muted loop ' +
+            'playsinline preload="none" aria-hidden="true"></video>' +
+            '<video class="clip dark" data-src="' + COVERS + it.f + '_dark.mp4" muted loop ' +
+            'playsinline preload="none" aria-hidden="true"></video>'
+          : '';
+        return '<a class="wfx-card' + (it.v ? ' has-clip' : '') + '" href="' + DOCS + it.f +
+          '.html" target="_blank" rel="noopener">' +
+          '<span class="wfx-media">' +
+            '<img class="light" src="' + COVERS + it.f + '.jpg" alt="" loading="lazy">' +
+            '<img class="dark" src="' + COVERS + it.f + '_dark.jpg" alt="" loading="lazy">' +
+            clips +
+          '</span>' +
+          '<span class="wfx-body">' +
+            '<span class="wfx-kind"><i class="' + (ICONS[it.k] || 'ti ti-schema') + '"></i>' +
+              it.k + '</span>' +
+            '<span class="wfx-name">' + it.t + '</span>' +
+          '</span></a>';
+      }).join('');
+      track.scrollLeft = 0;
+      bindClips();
+      updateNav();
+    }
+
+    // ролик грузится только тогда, когда его собираются смотреть
+    function bindClips() {
+      [].forEach.call(track.querySelectorAll('.wfx-card.has-clip'), function (card) {
+        var clips = [].slice.call(card.querySelectorAll('.clip'));
+        if (!clips.length) return;
+        card.addEventListener('mouseenter', function () { playCard(card); });
+        card.addEventListener('focus', function () { playCard(card); });
+        card.addEventListener('mouseleave', function () { stopCard(card); });
+        card.addEventListener('blur', function () { stopCard(card); });
+      });
+      watchVisible();
+    }
+
+    function playCard(card) {
+      var clip = [].slice.call(card.querySelectorAll('.clip'))
+        .filter(function (v) { return v.offsetParent !== null; })[0];
+      if (!clip) return;
+      if (!clip.src) clip.src = clip.dataset.src;
+      clip.classList.add('ready');
+      var started = clip.play();
+      if (started && started.catch) started.catch(function () {});
+    }
+
+    function stopCard(card) {
+      [].forEach.call(card.querySelectorAll('.clip'), function (v) {
+        v.classList.remove('ready');
+        if (!v.paused) v.pause();
+      });
+    }
+
+    // на телефоне курсора нет: играет карточка, попавшая в середину экрана
+    var io = null, active = null;
+    function watchVisible() {
+      var touch = window.matchMedia('(hover: none)').matches ||
+                  window.matchMedia('(max-width: 700px)').matches;
+      if (!touch || !('IntersectionObserver' in window) || reduced) return;
+      if (io) io.disconnect();
+      io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting && e.intersectionRatio > 0.7) {
+            if (active && active !== e.target) stopCard(active);
+            active = e.target;
+            playCard(active);
+          } else if (e.target === active && e.intersectionRatio < 0.4) {
+            stopCard(active);
+            active = null;
+          }
+        });
+      }, { root: track, threshold: [0.4, 0.7] });
+      [].forEach.call(track.querySelectorAll('.wfx-card.has-clip'), function (c) { io.observe(c); });
+    }
+
+    function updateNav() {
+      var max = track.scrollWidth - track.clientWidth - 4;
+      prev.hidden = track.scrollLeft <= 4;
+      next.hidden = max <= 0 || track.scrollLeft >= max;
+    }
+
+    [].forEach.call(tabs, function (tab, i) {
+      tab.addEventListener('click', function () {
+        [].forEach.call(tabs, function (t) { t.setAttribute('aria-selected', 'false'); });
+        tab.setAttribute('aria-selected', 'true');
+        render(i);
+      });
+    });
+
+    prev.addEventListener('click', function () { track.scrollBy({ left: -600, behavior: 'smooth' }); });
+    next.addEventListener('click', function () { track.scrollBy({ left: 600, behavior: 'smooth' }); });
+    track.addEventListener('scroll', function () {
+      updateNav();
+      if (hint) hint.classList.add('off');
+    }, { passive: true });
+    window.addEventListener('resize', updateNav);
+
+    if (hint) setTimeout(function () { hint.classList.add('off'); }, 3200);
+    render(0);
+  })();
+  </script>
+
 </body>
 </html>
