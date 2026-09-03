@@ -1,0 +1,229 @@
+{
+  "schema_version": 1,
+  "diagram_type": "lifecycle",
+  "meta": {
+    "title": "Путь чека до ОФД",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1085,
+      566
+    ],
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "start": {
+          "label": "начало"
+        },
+        "active": {
+          "label": "в работе"
+        },
+        "waiting": {
+          "label": "ожидание"
+        },
+        "success": {
+          "label": "успешный итог"
+        },
+        "failure": {
+          "label": "отказ"
+        }
+      }
+    },
+    "views": [
+      {
+        "id": "main",
+        "label": "Обычный путь",
+        "focus": [
+          "income",
+          "check",
+          "queued",
+          "sent",
+          "receipt"
+        ],
+        "note": "Чек уходит только по реальному приходу денег."
+      },
+      {
+        "id": "skip",
+        "label": "Когда чека нет",
+        "focus": [
+          "check",
+          "skip"
+        ],
+        "note": "Обещанный платёж и начисления абонплаты не фискализируются."
+      },
+      {
+        "id": "retry",
+        "label": "Повтор",
+        "focus": [
+          "sent",
+          "error",
+          "queued"
+        ],
+        "note": "Ошибка кассы не теряет операцию: расписание добивает её позже."
+      }
+    ]
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "Фискализация"
+    },
+    {
+      "id": "pause",
+      "label": "Отклонения"
+    }
+  ],
+  "states": [
+    {
+      "id": "income",
+      "type": "start",
+      "label": "Приход денег",
+      "sublabel": "платёж зачислен",
+      "lane": "main",
+      "col": 0,
+      "step": "01",
+      "width": 112,
+      "height": 62
+    },
+    {
+      "id": "check",
+      "type": "active",
+      "label": "Проверка правил",
+      "sublabel": "реальные деньги",
+      "lane": "main",
+      "col": 1,
+      "step": "02",
+      "width": 112,
+      "height": 62
+    },
+    {
+      "id": "queued",
+      "type": "active",
+      "label": "В очереди",
+      "sublabel": "ждёт отправки",
+      "lane": "main",
+      "col": 2,
+      "step": "03",
+      "width": 112,
+      "height": 62
+    },
+    {
+      "id": "sent",
+      "type": "active",
+      "label": "Отправлен",
+      "sublabel": "ждём ответа",
+      "lane": "main",
+      "col": 3,
+      "step": "04",
+      "width": 112,
+      "height": 62
+    },
+    {
+      "id": "receipt",
+      "type": "success",
+      "label": "Чек выбит",
+      "sublabel": "номер и ссылка",
+      "lane": "main",
+      "col": 4,
+      "step": "05",
+      "width": 112,
+      "height": 62
+    },
+    {
+      "id": "skip",
+      "type": "failure",
+      "label": "Без чека",
+      "sublabel": "обещанный платёж",
+      "lane": "pause",
+      "col": 0,
+      "width": 112,
+      "height": 62
+    },
+    {
+      "id": "error",
+      "type": "failure",
+      "label": "Ошибка кассы",
+      "sublabel": "повтор позже",
+      "lane": "pause",
+      "col": 1,
+      "width": 112,
+      "height": 62
+    }
+  ],
+  "transitions": [
+    {
+      "id": "f1",
+      "from": "income",
+      "to": "check",
+      "label": "операция создана",
+      "labelDy": -25
+    },
+    {
+      "id": "f2",
+      "from": "check",
+      "to": "queued",
+      "label": "чек положен",
+      "variant": "emphasis",
+      "labelDy": -25,
+      "route": "straight"
+    },
+    {
+      "id": "f3",
+      "from": "queued",
+      "to": "sent",
+      "label": "уходит в кассу",
+      "variant": "emphasis",
+      "labelDy": -25,
+      "route": "straight"
+    },
+    {
+      "id": "f4",
+      "from": "sent",
+      "to": "receipt",
+      "label": "касса ответила",
+      "variant": "emphasis",
+      "labelDy": -25,
+      "route": "straight"
+    },
+    {
+      "id": "f5",
+      "from": "check",
+      "to": "skip",
+      "label": "не тот случай",
+      "variant": "security",
+      "labelDy": 26
+    },
+    {
+      "id": "f6",
+      "from": "sent",
+      "to": "error",
+      "label": "сбой связи",
+      "variant": "security",
+      "labelDy": 26
+    },
+    {
+      "id": "f7",
+      "from": "error",
+      "to": "queued",
+      "label": "повтор по расписанию",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Когда бьём чек",
+      "items": [
+        "Только по реальному приходу денег от клиента",
+        "Повторная отправка одной операции защищена признаком в базе"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Когда не бьём",
+      "items": [
+        "Обещанный платёж и списания абонплаты — не приход денег",
+        "Сбой кассы не теряет операцию: она остаётся в очереди"
+      ]
+    }
+  ]
+}

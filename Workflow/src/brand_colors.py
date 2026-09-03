@@ -20,19 +20,45 @@ ROOT = os.path.dirname(HERE)
 VIEWER_DIR = os.path.join(ROOT, 'viewer')
 
 # бирюзовый акцент archify → фирменный зелёный
+# (светлая тема / тёмная тема)
 COLORS = {
     '#0891b2': '#28c38c',
+    '#22d3ee': '#059669',
 }
+SCRIPT_RE = re.compile(r'<script.*?</script>', re.S)
 
 
 def recolor(path):
+    """Меняет цвета в стилях, разметке и запасных значениях вьюера.
+
+    Те же цвета встречаются в скриптах как запасной вариант на случай пустой
+    CSS-переменной, поэтому приводятся к новому оттенку вместе с палитрой —
+    иначе при сбросе стиля вьюер вернул бы старый бирюзовый.
+    """
     with io.open(path, encoding='utf-8') as fh:
         html = fh.read()
+
+    chunks, scripts, last = [], [], 0
+    for match in SCRIPT_RE.finditer(html):
+        chunks.append(html[last:match.start()])
+        scripts.append(match.group(0))
+        last = match.end()
+    chunks.append(html[last:])
+
     total = 0
-    for old, new in COLORS.items():
-        pattern = re.compile(re.escape(old), re.IGNORECASE)
-        html, count = pattern.subn(new, html)
-        total += count
+    for index, chunk in enumerate(chunks):
+        for old, new in COLORS.items():
+            chunk, count = re.compile(re.escape(old), re.IGNORECASE).subn(new, chunk)
+            total += count
+        chunks[index] = chunk
+
+    out = []
+    for index, chunk in enumerate(chunks):
+        out.append(chunk)
+        if index < len(scripts):
+            out.append(scripts[index])
+    html = ''.join(out)
+
     if total:
         with io.open(path, 'w', encoding='utf-8', newline='') as fh:
             fh.write(html)

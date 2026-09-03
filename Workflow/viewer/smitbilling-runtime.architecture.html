@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="generator" content="archify 2.16.0">
-  <title>Runtime-архитектура rbill Diagram</title>
+  <title>Runtime-архитектура Diagram</title>
   <script>
     // Resolve the theme before first paint so light-preference users don't
     // see a dark flash. The toolbar script below re-applies with UI state.
@@ -66,7 +66,7 @@
       --mask: #0f172a;
 
       --frontend-fill:    rgba(8, 51, 68, 0.4);
-      --frontend-stroke:  #22d3ee;
+      --frontend-stroke:  #059669;
       --backend-fill:     rgba(6, 78, 59, 0.4);
       --backend-stroke:   #34d399;
       --database-fill:    rgba(76, 29, 149, 0.4);
@@ -3255,7 +3255,7 @@
       right: 0.35rem;
       bottom: 0.42rem;
       left: 0.35rem;
-      border: 1px solid #22d3ee;
+      border: 1px solid #059669;
       border-radius: 0.16rem;
       background: rgba(34, 211, 238, 0.14);
     }
@@ -4847,6 +4847,34 @@
       svg [data-node-id], svg [data-edge-from], svg [data-detail], svg [data-detail-anchor], svg [data-legend-hit], svg { transition: none !important; }
     }
   </style>
+<style id="smit-viewer-mobile">
+  @media (max-width: 760px) {
+    /* Выбор оформления и режим показа — приёмы для большого экрана.
+       Тема и экспорт переехали в шапку страницы, поэтому кнопки панели
+       прячем, но саму панель и меню экспорта оставляем в документе:
+       шапка открывает это меню программно. */
+    .preset-wrap,
+    #btn-preset,
+    #btn-present,
+    #btn-theme,
+    #btn-motion,
+    #btn-export { display: none !important; }
+    .toolbar { gap: 0; padding: 0; min-height: 0; }
+  }
+</style>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=112276394', 'ym');
+
+    ym(112276394, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/112276394" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
 </head>
 <body>
   <!-- Toolbar: theme, live visual style, trace motion, presentation stage, and export.
@@ -4955,7 +4983,7 @@
            data-preset-badge-blueprint="BLUEPRINT / REV 01"
            data-preset-badge-editorial="EDITORIAL / FIELD NOTE">
         <div class="pulse-dot"></div>
-        <h1>Runtime-архитектура rbill</h1>
+        <h1>Runtime-архитектура</h1>
       </div>
     </div>
 
@@ -5005,7 +5033,7 @@
     <div class="diagram-container" data-detail-level="read"
          data-preset-badge-editorial-plate="ARCHIFY / PLATE 04">
       <svg viewBox="0 0 1390 634" role="img" lang="en" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="classic" data-quality-profile="showcase">
-        <title id="archify-diagram-title">Runtime-архитектура rbill</title>
+        <title id="archify-diagram-title">Runtime-архитектура</title>
         <desc id="archify-diagram-description">Схема архитектуры, собранная в Archify.</desc>
         <!-- Definitions -->
         <defs>
@@ -5030,7 +5058,7 @@
         <rect width="100%" height="100%" fill="url(#grid)" />
 
         <!-- Boundaries (behind everything) -->
-        <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="0" data-composition-frame-label="rbill.smit34.ru · Docker Compose · Debian 11" x="290" y="10" width="800" height="476" rx="12" class="c-region" stroke-width="1"/>
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="0" data-composition-frame-label="Боевой сервер · Docker Compose · Debian 11" x="290" y="10" width="800" height="476" rx="12" class="c-region" stroke-width="1"/>
 
         <rect data-graph-role="structural-frame" data-composition-frame-kind="security-group" data-composition-frame-id="1" data-composition-frame-label="TLS :443 → gunicorn :8877" x="290" y="170" width="530" height="128" rx="8" class="c-security-group" stroke-width="1"/>
 
@@ -5099,8 +5127,8 @@
         <text data-detail="context" x="135" y="547" class="t-muted" font-size="9" text-anchor="middle">MikroTik · узлы доступа</text>
         </g>
 
-        <g id="node-nginx" data-node-id="nginx" data-node-label="Nginx" tabindex="0" role="button" aria-label="Focus Nginx, TLS :443 · Let&#39;s Encrypt, rbill.smit34.ru · Docker Compose · Debian 11 › TLS :443 → gunicorn :8877" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="TLS :443 · Let&#39;s Encrypt" data-node-context="rbill.smit34.ru · Docker Compose · Debian 11 › TLS :443 → gunicorn :8877">
-          <title>Nginx · TLS :443 · Let&#39;s Encrypt · rbill.smit34.ru · Docker Compose · Debian 11 › TLS :443 → gunicorn :8877</title>
+        <g id="node-nginx" data-node-id="nginx" data-node-label="Nginx" tabindex="0" role="button" aria-label="Focus Nginx, TLS :443 · Let&#39;s Encrypt, Боевой сервер · Docker Compose · Debian 11 › TLS :443 → gunicorn :8877" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="TLS :443 · Let&#39;s Encrypt" data-node-context="Боевой сервер · Docker Compose · Debian 11 › TLS :443 → gunicorn :8877">
+          <title>Nginx · TLS :443 · Let&#39;s Encrypt · Боевой сервер · Docker Compose · Debian 11 › TLS :443 → gunicorn :8877</title>
           <rect x="320" y="200" width="180" height="66" rx="6" class="c-mask"/>
           <rect x="320" y="200" width="180" height="66" rx="6" class="c-cloud" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="cloud" class="semantic-sigil s-cloud" transform="translate(326 206) scale(0.6875)">
@@ -5110,8 +5138,8 @@
         <text data-detail="context" x="410" y="247" class="t-muted" font-size="9" text-anchor="middle">TLS :443 · Let&#39;s Encrypt</text>
         </g>
 
-        <g id="node-redis" data-node-id="redis" data-node-label="Redis 7" tabindex="0" role="button" aria-label="Focus Redis 7, брокер · кэш, rbill.smit34.ru · Docker Compose · Debian 11" aria-pressed="false" data-node-kind="messagebus" data-node-sublabel="брокер · кэш" data-node-context="rbill.smit34.ru · Docker Compose · Debian 11">
-          <title>Redis 7 · брокер · кэш · rbill.smit34.ru · Docker Compose · Debian 11</title>
+        <g id="node-redis" data-node-id="redis" data-node-label="Redis 7" tabindex="0" role="button" aria-label="Focus Redis 7, брокер · кэш, Боевой сервер · Docker Compose · Debian 11" aria-pressed="false" data-node-kind="messagebus" data-node-sublabel="брокер · кэш" data-node-context="Боевой сервер · Docker Compose · Debian 11">
+          <title>Redis 7 · брокер · кэш · Боевой сервер · Docker Compose · Debian 11</title>
           <rect x="600" y="40" width="180" height="66" rx="6" class="c-mask"/>
           <rect x="600" y="40" width="180" height="66" rx="6" class="c-messagebus" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="messagebus" class="semantic-sigil s-messagebus" transform="translate(606 46) scale(0.6875)">
@@ -5124,8 +5152,8 @@
         <text data-detail="context" x="690" y="87" class="t-muted" font-size="9" text-anchor="middle">брокер · кэш</text>
         </g>
 
-        <g id="node-web" data-node-id="web" data-node-label="Django 4.2" tabindex="0" role="button" aria-label="Focus Django 4.2, gunicorn :8877, rbill.smit34.ru · Docker Compose · Debian 11 › TLS :443 → gunicorn :8877" aria-pressed="false" data-node-kind="backend" data-node-sublabel="gunicorn :8877" data-node-context="rbill.smit34.ru · Docker Compose · Debian 11 › TLS :443 → gunicorn :8877">
-          <title>Django 4.2 · gunicorn :8877 · rbill.smit34.ru · Docker Compose · Debian 11 › TLS :443 → gunicorn :8877</title>
+        <g id="node-web" data-node-id="web" data-node-label="Django 4.2" tabindex="0" role="button" aria-label="Focus Django 4.2, gunicorn :8877, Боевой сервер · Docker Compose · Debian 11 › TLS :443 → gunicorn :8877" aria-pressed="false" data-node-kind="backend" data-node-sublabel="gunicorn :8877" data-node-context="Боевой сервер · Docker Compose · Debian 11 › TLS :443 → gunicorn :8877">
+          <title>Django 4.2 · gunicorn :8877 · Боевой сервер · Docker Compose · Debian 11 › TLS :443 → gunicorn :8877</title>
           <rect x="600" y="200" width="190" height="78" rx="6" class="c-mask"/>
           <rect x="600" y="200" width="190" height="78" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(606 206) scale(0.6875)">
@@ -5135,8 +5163,8 @@
         <text data-detail="context" x="695" y="253" class="t-muted" font-size="9" text-anchor="middle">gunicorn :8877</text>
         </g>
 
-        <g id="node-celery" data-node-id="celery" data-node-label="Celery" tabindex="0" role="button" aria-label="Focus Celery, worker + beat, rbill.smit34.ru · Docker Compose · Debian 11" aria-pressed="false" data-node-kind="backend" data-node-sublabel="worker + beat" data-node-context="rbill.smit34.ru · Docker Compose · Debian 11">
-          <title>Celery · worker + beat · rbill.smit34.ru · Docker Compose · Debian 11</title>
+        <g id="node-celery" data-node-id="celery" data-node-label="Celery" tabindex="0" role="button" aria-label="Focus Celery, worker + beat, Боевой сервер · Docker Compose · Debian 11" aria-pressed="false" data-node-kind="backend" data-node-sublabel="worker + beat" data-node-context="Боевой сервер · Docker Compose · Debian 11">
+          <title>Celery · worker + beat · Боевой сервер · Docker Compose · Debian 11</title>
           <rect x="880" y="200" width="180" height="66" rx="6" class="c-mask"/>
           <rect x="880" y="200" width="180" height="66" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(886 206) scale(0.6875)">
@@ -5146,8 +5174,8 @@
         <text data-detail="context" x="970" y="247" class="t-muted" font-size="9" text-anchor="middle">worker + beat</text>
         </g>
 
-        <g id="node-db" data-node-id="db" data-node-label="PostgreSQL 17" tabindex="0" role="button" aria-label="Focus PostgreSQL 17, основная база, rbill.smit34.ru · Docker Compose · Debian 11" aria-pressed="false" data-node-kind="database" data-node-sublabel="основная база" data-node-context="rbill.smit34.ru · Docker Compose · Debian 11">
-          <title>PostgreSQL 17 · основная база · rbill.smit34.ru · Docker Compose · Debian 11</title>
+        <g id="node-db" data-node-id="db" data-node-label="PostgreSQL 17" tabindex="0" role="button" aria-label="Focus PostgreSQL 17, основная база, Боевой сервер · Docker Compose · Debian 11" aria-pressed="false" data-node-kind="database" data-node-sublabel="основная база" data-node-context="Боевой сервер · Docker Compose · Debian 11">
+          <title>PostgreSQL 17 · основная база · Боевой сервер · Docker Compose · Debian 11</title>
           <rect x="600" y="400" width="190" height="66" rx="6" class="c-mask"/>
           <rect x="600" y="400" width="190" height="66" rx="6" class="c-database" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(606 406) scale(0.6875)">
@@ -5158,8 +5186,8 @@
         <text data-detail="context" x="695" y="447" class="t-muted" font-size="9" text-anchor="middle">основная база</text>
         </g>
 
-        <g id="node-radius" data-node-id="radius" data-node-label="FreeRADIUS 3.2" tabindex="0" role="button" aria-label="Focus FreeRADIUS 3.2, rlm_python3 · 1812/1813, rbill.smit34.ru · Docker Compose · Debian 11" aria-pressed="false" data-node-kind="security" data-node-sublabel="rlm_python3 · 1812/1813" data-node-context="rbill.smit34.ru · Docker Compose · Debian 11">
-          <title>FreeRADIUS 3.2 · rlm_python3 · 1812/1813 · rbill.smit34.ru · Docker Compose · Debian 11</title>
+        <g id="node-radius" data-node-id="radius" data-node-label="FreeRADIUS 3.2" tabindex="0" role="button" aria-label="Focus FreeRADIUS 3.2, rlm_python3 · 1812/1813, Боевой сервер · Docker Compose · Debian 11" aria-pressed="false" data-node-kind="security" data-node-sublabel="rlm_python3 · 1812/1813" data-node-context="Боевой сервер · Docker Compose · Debian 11">
+          <title>FreeRADIUS 3.2 · rlm_python3 · 1812/1813 · Боевой сервер · Docker Compose · Debian 11</title>
           <rect x="320" y="400" width="190" height="66" rx="6" class="c-mask"/>
           <rect x="320" y="400" width="190" height="66" rx="6" class="c-security" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(326 406) scale(0.6875)">
@@ -5245,9 +5273,9 @@
         </g>
 
         <!-- Boundary labels (foreground masks keep routes out of titles) -->
-        <g data-graph-role="structural-frame-label" data-composition-frame-id="0" data-composition-frame-kind="region" data-composition-frame-label="rbill.smit34.ru · Docker Compose · Debian 11">
-          <rect data-graph-role="structural-frame-label-mask" x="294" y="20" width="247.6" height="16" rx="3" class="c-mask"/>
-          <text data-boundary-label="" x="298" y="33" class="t-cloud" font-size="9" font-weight="600">rbill.smit34.ru · Docker Compose · Debian 11</text>
+        <g data-graph-role="structural-frame-label" data-composition-frame-id="0" data-composition-frame-kind="region" data-composition-frame-label="Боевой сервер · Docker Compose · Debian 11">
+          <rect data-graph-role="structural-frame-label-mask" x="294" y="20" width="236.79999999999998" height="16" rx="3" class="c-mask"/>
+          <text data-boundary-label="" x="298" y="33" class="t-cloud" font-size="9" font-weight="600">Боевой сервер · Docker Compose · Debian 11</text>
         </g>
 
         <g data-graph-role="structural-frame-label" data-composition-frame-id="1" data-composition-frame-kind="security-group" data-composition-frame-label="TLS :443 → gunicorn :8877">
@@ -6453,7 +6481,7 @@
               var accentProperty = reachSnapshot
                 ? (reachSnapshot.direction === 'upstream' ? '--database-stroke' : '--backend-stroke')
                 : '--frontend-stroke';
-              var accent = computed.getPropertyValue(accentProperty).trim() || '#22d3ee';
+              var accent = computed.getPropertyValue(accentProperty).trim() || '#059669';
               var titleNode = document.querySelector('.header h1');
               var subtitleNode = document.querySelector('.header .subtitle');
               var title = titleNode ? titleNode.textContent : document.title;
@@ -6637,7 +6665,7 @@
             var computed = getComputedStyle(element);
             return {
               points: samplesFor(element),
-              color: computed.stroke && computed.stroke !== 'none' ? computed.stroke : '#22d3ee',
+              color: computed.stroke && computed.stroke !== 'none' ? computed.stroke : '#059669',
               width: Math.max(1.5, parseFloat(computed.strokeWidth) || 1.5),
               delay: Math.min(12, authoredStep(element, index)) * 0.16
             };
@@ -6653,7 +6681,7 @@
               y: box.y,
               width: box.width,
               height: box.height,
-              color: computed.stroke && computed.stroke !== 'none' ? computed.stroke : '#22d3ee',
+              color: computed.stroke && computed.stroke !== 'none' ? computed.stroke : '#059669',
               delay: Math.min(12, authoredStep(element, index)) * 0.16
             };
           }).filter(Boolean);

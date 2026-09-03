@@ -1,0 +1,305 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Очереди и фоновые задачи",
+    "quality_profile": "showcase",
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "frontend": {
+          "label": "интерфейс"
+        },
+        "backend": {
+          "label": "воркеры"
+        },
+        "database": {
+          "label": "хранилища"
+        },
+        "cloud": {
+          "label": "инфраструктура"
+        },
+        "security": {
+          "label": "доступ в сеть"
+        },
+        "messagebus": {
+          "label": "очереди"
+        },
+        "external": {
+          "label": "внешние"
+        }
+      }
+    },
+    "views": [
+      {
+        "id": "acct",
+        "label": "Учёт сессий",
+        "focus": [
+          "fr",
+          "qacc",
+          "wacc"
+        ],
+        "note": "Самый плотный поток: отдельная очередь и отдельный воркер."
+      },
+      {
+        "id": "coa",
+        "label": "Отключения",
+        "focus": [
+          "web",
+          "qcoa",
+          "wcoa",
+          "nas"
+        ],
+        "note": "Медленные рассылки на узлы изолированы, чтобы не забивать учёт."
+      },
+      {
+        "id": "default",
+        "label": "Всё остальное",
+        "focus": [
+          "beat",
+          "qdef",
+          "wdef"
+        ],
+        "note": "Абонплата, почта, выгрузки и рассылки идут по расписанию."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "fr",
+      "type": "security",
+      "label": "FreeRADIUS",
+      "sublabel": "учёт сессий",
+      "pos": [
+        40,
+        60
+      ],
+      "size": [
+        180,
+        66
+      ]
+    },
+    {
+      "id": "web",
+      "type": "backend",
+      "label": "Django",
+      "sublabel": "действия оператора",
+      "pos": [
+        40,
+        230
+      ],
+      "size": [
+        180,
+        66
+      ]
+    },
+    {
+      "id": "beat",
+      "type": "cloud",
+      "label": "Расписание",
+      "sublabel": "beat",
+      "pos": [
+        40,
+        400
+      ],
+      "size": [
+        180,
+        66
+      ]
+    },
+    {
+      "id": "qacc",
+      "type": "messagebus",
+      "label": "accounting",
+      "sublabel": "учёт сессий",
+      "pos": [
+        300,
+        60
+      ],
+      "size": [
+        170,
+        66
+      ]
+    },
+    {
+      "id": "qcoa",
+      "type": "messagebus",
+      "label": "coa",
+      "sublabel": "отключения",
+      "pos": [
+        300,
+        230
+      ],
+      "size": [
+        170,
+        66
+      ]
+    },
+    {
+      "id": "qdef",
+      "type": "messagebus",
+      "label": "default",
+      "sublabel": "прочие задачи",
+      "pos": [
+        300,
+        400
+      ],
+      "size": [
+        170,
+        66
+      ]
+    },
+    {
+      "id": "wacc",
+      "type": "backend",
+      "label": "Воркер учёта",
+      "sublabel": "12 потоков · пишет сессии",
+      "pos": [
+        550,
+        60
+      ],
+      "size": [
+        180,
+        66
+      ]
+    },
+    {
+      "id": "wcoa",
+      "type": "backend",
+      "label": "Воркер отключений",
+      "sublabel": "4 потока",
+      "pos": [
+        550,
+        230
+      ],
+      "size": [
+        180,
+        66
+      ]
+    },
+    {
+      "id": "wdef",
+      "type": "backend",
+      "label": "Общий воркер",
+      "sublabel": "4 потока",
+      "pos": [
+        550,
+        400
+      ],
+      "size": [
+        180,
+        66
+      ]
+    },
+    {
+      "id": "db",
+      "type": "database",
+      "label": "PostgreSQL",
+      "sublabel": "сессии и счета",
+      "pos": [
+        810,
+        400
+      ],
+      "size": [
+        180,
+        66
+      ]
+    },
+    {
+      "id": "nas",
+      "type": "external",
+      "label": "NAS",
+      "sublabel": "узлы доступа",
+      "pos": [
+        810,
+        230
+      ],
+      "size": [
+        180,
+        66
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Redis · брокер задач",
+      "wraps": [
+        "qacc",
+        "qcoa",
+        "qdef"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "fr-acc",
+      "from": "fr",
+      "to": "qacc",
+      "label": "пакет учёта",
+      "variant": "emphasis"
+    },
+    {
+      "id": "web-coa",
+      "from": "web",
+      "to": "qcoa",
+      "label": "отключить абонента",
+      "labelDy": -27
+    },
+    {
+      "id": "beat-def",
+      "from": "beat",
+      "to": "qdef",
+      "label": "по расписанию"
+    },
+    {
+      "id": "acc-w",
+      "from": "qacc",
+      "to": "wacc",
+      "variant": "emphasis"
+    },
+    {
+      "id": "coa-w",
+      "from": "qcoa",
+      "to": "wcoa"
+    },
+    {
+      "id": "def-w",
+      "from": "qdef",
+      "to": "wdef"
+    },
+    {
+      "id": "wdef-db",
+      "from": "wdef",
+      "to": "db",
+      "label": "начисления и выгрузки",
+      "labelDy": -27
+    },
+    {
+      "id": "wcoa-nas",
+      "from": "wcoa",
+      "to": "nas",
+      "label": "разрыв сессии",
+      "variant": "security",
+      "labelDy": -27
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Зачем делить",
+      "items": [
+        "Учёт сессий — самый плотный поток, ему нужен свой воркер",
+        "Медленные отключения не забивают очередь учёта"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Что смотреть при сбое",
+      "items": [
+        "Длину каждой очереди по отдельности, а не общую",
+        "Живы ли все три воркера: у них разные образы и настройки"
+      ]
+    }
+  ]
+}

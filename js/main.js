@@ -822,3 +822,81 @@ document.addEventListener('DOMContentLoaded', function () {
     toggle();
   })();
 });
+
+/* ── Цели Яндекс.Метрики ────────────────────────────────────────────────
+ * Просмотры страниц счётчик собирает сам. Здесь — действия, по которым
+ * видно, дошёл ли человек до дела: ушёл ли смотреть систему, написал ли
+ * нам, нашёл ли ответ поиском. Обработчики делегированные: разметку
+ * страниц ради статистики не трогаем.
+ *
+ * Цели с такими же идентификаторами должны быть заведены в Метрике
+ * (тип «JavaScript-событие»), иначе события просто не с чем сопоставить.
+ */
+(function metrikaGoals() {
+  var ID = 112276394;
+
+  function goal(name, params) {
+    // счётчик мог не загрузиться — блокировщик, офлайн, ошибка сети
+    if (typeof window.ym !== 'function') return;
+    try { window.ym(ID, 'reachGoal', name, params || {}); } catch (e) {}
+  }
+
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var href = a.getAttribute('href') || '';
+
+    if (/demo\.billing\.smit34\.ru/i.test(href)) return goal('demo_open');
+    if (/^https?:\/\/billing\.smit34\.ru/i.test(href)) return goal('product_open');
+    if (/^mailto:|^tel:|t\.me\//i.test(href)) return goal('contact_click', { where: href.slice(0, 60) });
+
+    // документ, а не страница: инструкция, договор, презентация
+    if (/\.(pdf|docx?|xlsx?|zip)(\?|$)/i.test(href)) return goal('file_download', { file: href.slice(-60) });
+  }, true);
+
+  // Поиск: сам факт и — отдельно — запрос без ответа. Второе прямо
+  // показывает, какой документации не хватает.
+  var searchTimer = null, lastQuery = '';
+  document.addEventListener('input', function (e) {
+    var el = e.target;
+    if (!el || !el.id || el.id.indexOf('docsSearch') !== 0) return;
+    var q = (el.value || '').trim();
+    if (q.length < 3 || q === lastQuery) return;
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(function () {
+      lastQuery = q;
+      goal('search_used', { query: q.slice(0, 80) });
+      // результаты рисует search.js — читаем то, что человек уже видит
+      var box = document.getElementById(el.id.replace('docsSearch', 'docsSearchResults'))
+             || document.querySelector('.docs-sr, [id^=docsSearchResults]');
+      if (box && /Ничего не найдено/.test(box.textContent || '')) {
+        goal('search_empty', { query: q.slice(0, 80) });
+      }
+    }, 1200);   // ждём, пока человек допечатает: иначе цель на каждую букву
+  }, true);
+
+  // Дочитал до конца — страница ответила на вопрос, а не оттолкнула
+  var deepSent = false;
+  window.addEventListener('scroll', function () {
+    if (deepSent) return;
+    var h = document.documentElement;
+    var seen = (h.scrollTop + window.innerHeight) / (h.scrollHeight || 1);
+    if (seen >= 0.9) { deepSent = true; goal('read_deep'); }
+  }, { passive: true });
+
+  // Запуск обучающего ролика
+  document.addEventListener('play', function (e) {
+    if (e.target && e.target.tagName === 'VIDEO') {
+      goal('video_play', { src: (e.target.currentSrc || '').slice(-60) });
+    }
+  }, true);
+
+  // Скопировал команду или фрагмент кода — значит применяет у себя
+  document.addEventListener('copy', function () {
+    var sel = (window.getSelection() || '').toString();
+    if (sel.length < 8) return;
+    var node = window.getSelection().anchorNode;
+    var el = node && (node.nodeType === 1 ? node : node.parentElement);
+    if (el && el.closest && el.closest('pre, code, .code, .cmd')) goal('copy_code');
+  }, true);
+})();

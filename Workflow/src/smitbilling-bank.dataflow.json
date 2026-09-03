@@ -1,0 +1,250 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Банковская выписка до зачисления",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1085,
+      560
+    ],
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "default": {
+          "label": "поток"
+        },
+        "emphasis": {
+          "label": "основной путь"
+        },
+        "security": {
+          "label": "правило"
+        },
+        "dashed": {
+          "label": "фоновое"
+        },
+        "database": {
+          "label": "хранилище"
+        }
+      }
+    },
+    "views": [
+      {
+        "id": "path",
+        "label": "Основной путь",
+        "focus": [
+          "mail",
+          "imp",
+          "parse",
+          "ops",
+          "credit"
+        ],
+        "note": "От письма банка до зачисления на лицевой счёт."
+      },
+      {
+        "id": "match",
+        "label": "Поиск клиента",
+        "focus": [
+          "ops",
+          "match",
+          "manual"
+        ],
+        "note": "ИНН, договор, назначение платежа, ФИО — по очереди."
+      },
+      {
+        "id": "docs",
+        "label": "Документы",
+        "focus": [
+          "credit",
+          "fisc",
+          "doc"
+        ],
+        "note": "После зачисления уходят чек и закрывающие документы."
+      }
+    ]
+  },
+  "stages": [
+    {
+      "label": "Почта"
+    },
+    {
+      "label": "Импорт"
+    },
+    {
+      "label": "Разбор"
+    },
+    {
+      "label": "Сопоставление"
+    },
+    {
+      "label": "Зачисление"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "mail",
+      "type": "external",
+      "label": "Ящик банка",
+      "sublabel": "IMAP",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "imp",
+      "type": "backend",
+      "label": "Импорт",
+      "sublabel": "файл выписки",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "parse",
+      "type": "backend",
+      "label": "Парсер",
+      "sublabel": "формат банка",
+      "stage": 2,
+      "row": 0
+    },
+    {
+      "id": "ops",
+      "type": "database",
+      "label": "Операции",
+      "sublabel": "очередь разбора",
+      "stage": 2,
+      "row": 2
+    },
+    {
+      "id": "match",
+      "type": "security",
+      "label": "Поиск клиента",
+      "sublabel": "ИНН · договор",
+      "stage": 3,
+      "row": 0
+    },
+    {
+      "id": "manual",
+      "type": "security",
+      "label": "Ручной разбор",
+      "sublabel": "спорные платежи",
+      "stage": 3,
+      "row": 2
+    },
+    {
+      "id": "credit",
+      "type": "backend",
+      "label": "Зачисление",
+      "sublabel": "финоперация",
+      "stage": 4,
+      "row": 0
+    },
+    {
+      "id": "fisc",
+      "type": "external",
+      "label": "Чек ОФД",
+      "sublabel": "54-ФЗ",
+      "stage": 4,
+      "row": 1
+    },
+    {
+      "id": "doc",
+      "type": "external",
+      "label": "Счёт и акт",
+      "sublabel": "PDF в хранилище",
+      "stage": 4,
+      "row": 2
+    }
+  ],
+  "flows": [
+    {
+      "id": "letter",
+      "from": "mail",
+      "to": "imp",
+      "label": "письмо с выпиской",
+      "classification": "вложение",
+      "variant": "emphasis"
+    },
+    {
+      "id": "file",
+      "from": "imp",
+      "to": "parse",
+      "label": "разбор файла",
+      "variant": "emphasis"
+    },
+    {
+      "id": "rows",
+      "from": "parse",
+      "to": "ops",
+      "label": "операции банка",
+      "classification": "плательщик · сумма",
+      "variant": "emphasis",
+      "labelDy": 24
+    },
+    {
+      "id": "search",
+      "from": "ops",
+      "to": "match",
+      "label": "поиск по реквизитам",
+      "variant": "emphasis"
+    },
+    {
+      "id": "found",
+      "from": "match",
+      "to": "credit",
+      "label": "клиент найден",
+      "variant": "emphasis",
+      "route": "straight"
+    },
+    {
+      "id": "risky",
+      "from": "ops",
+      "to": "manual",
+      "label": "не нашли или спорно",
+      "variant": "dashed",
+      "route": "straight",
+      "labelDy": 26
+    },
+    {
+      "id": "linked",
+      "from": "manual",
+      "to": "credit",
+      "label": "привязка оператором",
+      "variant": "security"
+    },
+    {
+      "id": "receipt",
+      "from": "credit",
+      "to": "fisc",
+      "label": "чек по приходу",
+      "variant": "dashed",
+      "route": "straight",
+      "labelDy": 24
+    },
+    {
+      "id": "papers",
+      "from": "fisc",
+      "to": "doc",
+      "label": "закрывающие документы",
+      "variant": "dashed",
+      "route": "straight",
+      "labelDy": 24
+    }
+  ],
+  "cards": [
+    {
+      "dot": "violet",
+      "title": "Как ищем клиента",
+      "items": [
+        "По ИНН, лицевому счёту, назначению платежа и ФИО",
+        "Совпадение по неточному имени помечается как спорное"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Что после зачисления",
+      "items": [
+        "Чек уходит только по реальному приходу денег",
+        "Счёт и акт формируются с реквизитами нужного юрлица"
+      ]
+    }
+  ]
+}

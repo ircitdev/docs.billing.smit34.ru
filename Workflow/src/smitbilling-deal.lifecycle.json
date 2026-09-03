@@ -1,0 +1,217 @@
+{
+  "schema_version": 1,
+  "diagram_type": "lifecycle",
+  "meta": {
+    "title": "Жизненный цикл сделки",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1085,
+      566
+    ],
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "start": {
+          "label": "начало"
+        },
+        "active": {
+          "label": "в работе"
+        },
+        "waiting": {
+          "label": "ожидание"
+        },
+        "success": {
+          "label": "успешный итог"
+        },
+        "failure": {
+          "label": "отказ"
+        }
+      }
+    },
+    "views": [
+      {
+        "id": "main",
+        "label": "Основной путь",
+        "focus": [
+          "lead",
+          "qual",
+          "agree",
+          "mount",
+          "won"
+        ],
+        "note": "От заявки до подключения: стадии задаёт воронка."
+      },
+      {
+        "id": "lost",
+        "label": "Отказ",
+        "focus": [
+          "agree",
+          "lost"
+        ],
+        "note": "Причина отказа обязательна, если так настроена воронка."
+      },
+      {
+        "id": "client",
+        "label": "Появление клиента",
+        "focus": [
+          "won",
+          "abonent"
+        ],
+        "note": "Из выигранной сделки заводится абонент с привязкой к сделке."
+      }
+    ]
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "Воронка"
+    },
+    {
+      "id": "pause",
+      "label": "Итоги"
+    }
+  ],
+  "states": [
+    {
+      "id": "lead",
+      "type": "start",
+      "label": "Заявка",
+      "sublabel": "источник заявки",
+      "lane": "main",
+      "col": 0,
+      "step": "01",
+      "height": 62,
+      "width": 112
+    },
+    {
+      "id": "qual",
+      "type": "active",
+      "label": "Квалификация",
+      "sublabel": "есть возможность",
+      "lane": "main",
+      "col": 1,
+      "step": "02",
+      "height": 62,
+      "width": 112
+    },
+    {
+      "id": "agree",
+      "type": "active",
+      "label": "Договорённость",
+      "sublabel": "тариф и дата",
+      "lane": "main",
+      "col": 2,
+      "step": "03",
+      "height": 62,
+      "width": 112
+    },
+    {
+      "id": "mount",
+      "type": "active",
+      "label": "Монтаж",
+      "sublabel": "наряд бригаде",
+      "lane": "main",
+      "col": 3,
+      "step": "04",
+      "height": 62,
+      "width": 112
+    },
+    {
+      "id": "won",
+      "type": "success",
+      "label": "Подключено",
+      "sublabel": "сделка выиграна",
+      "lane": "main",
+      "col": 4,
+      "step": "05",
+      "height": 62,
+      "width": 112
+    },
+    {
+      "id": "lost",
+      "type": "failure",
+      "label": "Отказ",
+      "sublabel": "нужна причина",
+      "lane": "pause",
+      "col": 1,
+      "height": 62,
+      "width": 112
+    },
+    {
+      "id": "abonent",
+      "type": "success",
+      "label": "Абонент заведён",
+      "sublabel": "карточка клиента",
+      "lane": "pause",
+      "col": 2,
+      "height": 62,
+      "width": 112
+    }
+  ],
+  "transitions": [
+    {
+      "id": "t1",
+      "from": "lead",
+      "to": "qual",
+      "label": "взяли в работу",
+      "labelDy": -25
+    },
+    {
+      "id": "t2",
+      "from": "qual",
+      "to": "agree",
+      "label": "техвозможность есть",
+      "labelDy": -25
+    },
+    {
+      "id": "t3",
+      "from": "agree",
+      "to": "mount",
+      "label": "согласовали",
+      "variant": "emphasis",
+      "labelDy": -25,
+      "route": "straight"
+    },
+    {
+      "id": "t4",
+      "from": "mount",
+      "to": "won",
+      "label": "работы приняты",
+      "variant": "emphasis",
+      "labelDy": -25
+    },
+    {
+      "id": "t5",
+      "from": "agree",
+      "to": "lost",
+      "label": "отказ клиента",
+      "variant": "security"
+    },
+    {
+      "id": "t6",
+      "from": "won",
+      "to": "abonent",
+      "label": "создаём карточку",
+      "variant": "emphasis",
+      "labelDy": 24
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Стадии",
+      "items": [
+        "Набор стадий задаёт воронка, их несколько под разные задачи",
+        "Монтаж ведётся нарядом: у бригады свой мобильный список"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Правила",
+      "items": [
+        "Вход в стадию можно закрыть правилом — например, требовать причину отказа",
+        "Выигранная сделка превращается в абонента без повторного ввода"
+      ]
+    }
+  ]
+}

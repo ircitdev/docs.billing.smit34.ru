@@ -1,0 +1,245 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Путь RADIUS-пакета",
+    "quality_profile": "showcase",
+    "column_fit": "spread",
+    "viewBox": [
+      1080,
+      480
+    ],
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "default": {
+          "label": "вызов"
+        },
+        "emphasis": {
+          "label": "основной путь"
+        },
+        "security": {
+          "label": "проверка"
+        },
+        "dashed": {
+          "label": "фоновое"
+        },
+        "return": {
+          "label": "ответ"
+        }
+      }
+    },
+    "views": [
+      {
+        "id": "auth",
+        "label": "Авторизация",
+        "focus": [
+          "nas",
+          "fr",
+          "cache",
+          "db"
+        ],
+        "note": "Быстрый путь идёт через кэш; в базу лезем только при промахе."
+      },
+      {
+        "id": "acct",
+        "label": "Аккаунтинг",
+        "focus": [
+          "fr",
+          "redis",
+          "worker"
+        ],
+        "note": "Пакет учёта сразу подтверждается, работа уходит в очередь."
+      },
+      {
+        "id": "block",
+        "label": "Отключение",
+        "focus": [
+          "worker",
+          "redis",
+          "nas"
+        ],
+        "note": "Должник получает CoA не чаще раза в час."
+      }
+    ]
+  },
+  "participants": [
+    {
+      "id": "nas",
+      "type": "external",
+      "label": "NAS",
+      "sublabel": "MikroTik"
+    },
+    {
+      "id": "fr",
+      "type": "security",
+      "label": "FreeRADIUS",
+      "sublabel": "один поток"
+    },
+    {
+      "id": "cache",
+      "type": "messagebus",
+      "label": "Кэш",
+      "sublabel": "Redis"
+    },
+    {
+      "id": "db",
+      "type": "database",
+      "label": "PostgreSQL",
+      "sublabel": "учётки"
+    },
+    {
+      "id": "redis",
+      "type": "messagebus",
+      "label": "Очередь",
+      "sublabel": "accounting"
+    },
+    {
+      "id": "worker",
+      "type": "backend",
+      "label": "Воркер",
+      "sublabel": "Celery"
+    }
+  ],
+  "segments": [
+    {
+      "from": 150,
+      "to": 264,
+      "label": "Авторизация"
+    },
+    {
+      "from": 270,
+      "to": 352,
+      "label": "Учёт сессии"
+    },
+    {
+      "from": 358,
+      "to": 406,
+      "label": "Отключение"
+    }
+  ],
+  "messages": [
+    {
+      "id": "access",
+      "from": "nas",
+      "to": "fr",
+      "y": 160,
+      "label": "Access-Request :1812",
+      "variant": "emphasis"
+    },
+    {
+      "id": "snapshot",
+      "from": "fr",
+      "to": "cache",
+      "y": 190,
+      "label": "снимок учётки",
+      "variant": "default"
+    },
+    {
+      "id": "miss",
+      "from": "fr",
+      "to": "db",
+      "y": 220,
+      "label": "промах кэша — читаем базу",
+      "variant": "security"
+    },
+    {
+      "id": "accept",
+      "from": "fr",
+      "to": "nas",
+      "y": 250,
+      "label": "Access-Accept · IP и лимиты",
+      "variant": "return"
+    },
+    {
+      "id": "acct",
+      "from": "nas",
+      "to": "fr",
+      "y": 280,
+      "label": "Accounting-Request :1813",
+      "variant": "emphasis"
+    },
+    {
+      "id": "enqueue",
+      "from": "fr",
+      "to": "redis",
+      "y": 310,
+      "label": "задача в очередь",
+      "variant": "dashed"
+    },
+    {
+      "id": "ack",
+      "from": "fr",
+      "to": "nas",
+      "y": 338,
+      "label": "Accounting-Response",
+      "variant": "return"
+    },
+    {
+      "id": "session",
+      "from": "worker",
+      "to": "db",
+      "y": 368,
+      "label": "сессия · трафик · LOGGED",
+      "variant": "emphasis"
+    },
+    {
+      "id": "coa",
+      "from": "worker",
+      "to": "nas",
+      "y": 396,
+      "label": "CoA должнику · раз в час",
+      "variant": "security"
+    }
+  ],
+  "activations": [
+    {
+      "participant": "fr",
+      "from": 160,
+      "to": 344,
+      "type": "security"
+    },
+    {
+      "participant": "cache",
+      "from": 185,
+      "to": 199,
+      "type": "messagebus"
+    },
+    {
+      "participant": "db",
+      "from": 215,
+      "to": 229,
+      "type": "database"
+    },
+    {
+      "participant": "redis",
+      "from": 305,
+      "to": 319,
+      "type": "messagebus"
+    },
+    {
+      "participant": "worker",
+      "from": 363,
+      "to": 401,
+      "type": "backend"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Почему быстро",
+      "items": [
+        "Учётка берётся из кэша, база — только при промахе",
+        "Отказ заблокированному помнится минуту, без похода в базу"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Где узкое место",
+      "items": [
+        "FreeRADIUS обрабатывает пакеты в один поток",
+        "Учёт сессии отвечает сразу, запись идёт фоном"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Блокировка за долг и возврат доступа",
+    "quality_profile": "showcase",
+    "column_fit": "spread",
+    "viewBox": [1080, 480],
+    "legend": { "mode": "auto", "entries": {
+      "default": { "label": "вызов" }, "emphasis": { "label": "основной путь" },
+      "security": { "label": "проверка" }, "dashed": { "label": "фоновое" }, "return": { "label": "ответ" } } },
+    "views": [
+      { "id": "block", "label": "Блокировка", "focus": ["beat", "bill", "db"], "note": "Порог — не ноль, а лимит счёта; юрлицу даётся отсрочка." },
+      { "id": "coa", "label": "Разрыв сессии", "focus": ["queue", "nas"], "note": "Отключение рассылается на все узлы: где сессия есть, приходит подтверждение." },
+      { "id": "back", "label": "Возврат", "focus": ["pay", "bill", "db", "nas"], "note": "Оплата снимает блок и включает учётные записи." }
+    ]
+  },
+  "participants": [
+    { "id": "beat", "type": "messagebus", "label": "Расписание", "sublabel": "проверка" },
+    { "id": "pay", "type": "external", "label": "Оплата", "sublabel": "зачисление" },
+    { "id": "bill", "type": "backend", "label": "Биллинг", "sublabel": "правила" },
+    { "id": "db", "type": "database", "label": "PostgreSQL", "sublabel": "счета" },
+    { "id": "queue", "type": "messagebus", "label": "Очередь", "sublabel": "coa" },
+    { "id": "nas", "type": "external", "label": "NAS", "sublabel": "узлы" }
+  ],
+  "segments": [
+    { "from": 150, "to": 264, "label": "Проверка долга" },
+    { "from": 270, "to": 322, "label": "Разрыв сессии" },
+    { "from": 328, "to": 406, "label": "Возврат доступа" }
+  ],
+  "messages": [
+    { "id": "tick", "from": "beat", "to": "bill", "y": 160, "label": "почасовая проверка", "variant": "default" },
+    { "id": "debtors", "from": "bill", "to": "db", "y": 190, "label": "баланс ниже лимита счёта", "variant": "emphasis" },
+    { "id": "delay", "from": "bill", "to": "db", "y": 220, "label": "юрлицу — отсрочка N дней", "variant": "security" },
+    { "id": "block", "from": "bill", "to": "db", "y": 250, "label": "блок · учётные записи off", "variant": "emphasis" },
+    { "id": "task", "from": "bill", "to": "queue", "y": 280, "label": "задача отключения", "variant": "dashed" },
+    { "id": "disc", "from": "queue", "to": "nas", "y": 310, "label": "разрыв сессии на все узлы", "variant": "security" },
+    { "id": "credit", "from": "pay", "to": "bill", "y": 340, "label": "платёж зачислен", "variant": "emphasis" },
+    { "id": "unblock", "from": "bill", "to": "db", "y": 368, "label": "блок снят · записи on", "variant": "emphasis" },
+    { "id": "back", "from": "bill", "to": "nas", "y": 396, "label": "новая авторизация", "variant": "return" }
+  ],
+  "activations": [
+    { "participant": "bill", "from": 160, "to": 401, "type": "backend" },
+    { "participant": "db", "from": 185, "to": 255, "type": "database" },
+    { "participant": "queue", "from": 275, "to": 315, "type": "messagebus" },
+    { "participant": "nas", "from": 305, "to": 320, "type": "external" }
+  ],
+  "cards": [
+    { "dot": "rose", "title": "Как блокируем", "items": ["Порог берётся из лимита счёта, а не из нуля", "Юрлицу блокировка откладывается на заданное число дней"] },
+    { "dot": "emerald", "title": "Как возвращаем", "items": ["Оплата снимает блок и включает учётные записи", "Отключение шлётся на все узлы: нужный отвечает подтверждением"] }
+  ]
+}

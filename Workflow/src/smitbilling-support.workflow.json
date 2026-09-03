@@ -1,0 +1,249 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Путь обращения в поддержку",
+    "quality_profile": "showcase",
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "backend": {
+          "label": "шаг обработки"
+        },
+        "security": {
+          "label": "особый случай"
+        },
+        "external": {
+          "label": "канал"
+        },
+        "messagebus": {
+          "label": "тикет"
+        }
+      }
+    },
+    "views": [
+      {
+        "id": "main",
+        "label": "Обычный путь",
+        "focus": [
+          "chan",
+          "route",
+          "ident",
+          "ticket",
+          "ai",
+          "human"
+        ],
+        "note": "От сообщения в любом канале до ответа оператора."
+      },
+      {
+        "id": "org",
+        "label": "Разные операторы",
+        "focus": [
+          "route",
+          "robor"
+        ],
+        "note": "Письмо клиента другого оператора уходит в его ящик."
+      },
+      {
+        "id": "anon",
+        "label": "Клиент не опознан",
+        "focus": [
+          "ident",
+          "anon",
+          "ticket"
+        ],
+        "note": "Тикет создаётся всё равно — без привязки к карточке."
+      }
+    ]
+  },
+  "lanes": [
+    {
+      "id": "flow",
+      "label": "Обработка обращения"
+    },
+    {
+      "id": "side",
+      "label": "Особые случаи",
+      "variant": "exception"
+    }
+  ],
+  "phases": [
+    {
+      "id": "in",
+      "label": "Приём",
+      "fromCol": 0,
+      "toCol": 1
+    },
+    {
+      "id": "who",
+      "label": "Кто написал",
+      "fromCol": 2,
+      "toCol": 3,
+      "variant": "emphasis"
+    },
+    {
+      "id": "ans",
+      "label": "Ответ",
+      "fromCol": 4,
+      "toCol": 5
+    }
+  ],
+  "mainPath": [
+    "chan",
+    "route",
+    "ident",
+    "ticket",
+    "ai",
+    "human"
+  ],
+  "nodes": [
+    {
+      "id": "chan",
+      "lane": "flow",
+      "col": 0,
+      "type": "external",
+      "label": "Обращение",
+      "sublabel": "чат · почта · звонок",
+      "width": 150
+    },
+    {
+      "id": "route",
+      "lane": "flow",
+      "col": 1,
+      "type": "backend",
+      "label": "Выбор ящика",
+      "sublabel": "по адресу",
+      "width": 150
+    },
+    {
+      "id": "ident",
+      "lane": "flow",
+      "col": 2,
+      "type": "backend",
+      "label": "Кто клиент",
+      "sublabel": "чат · соцсеть",
+      "width": 150
+    },
+    {
+      "id": "ticket",
+      "lane": "flow",
+      "col": 3,
+      "type": "messagebus",
+      "label": "Тикет",
+      "sublabel": "номер в ящике",
+      "width": 150
+    },
+    {
+      "id": "ai",
+      "lane": "flow",
+      "col": 4,
+      "type": "backend",
+      "label": "Ответ ассистента",
+      "sublabel": "база знаний",
+      "width": 150
+    },
+    {
+      "id": "human",
+      "lane": "flow",
+      "col": 5,
+      "type": "backend",
+      "label": "Оператор",
+      "sublabel": "закрывает тикет",
+      "width": 150
+    },
+    {
+      "id": "robor",
+      "lane": "side",
+      "col": 1,
+      "type": "security",
+      "label": "Другой оператор",
+      "sublabel": "свой ящик",
+      "width": 150
+    },
+    {
+      "id": "anon",
+      "lane": "side",
+      "col": 2,
+      "type": "security",
+      "label": "Не опознан",
+      "sublabel": "без карточки",
+      "width": 150
+    }
+  ],
+  "edges": [
+    {
+      "id": "s1",
+      "from": "chan",
+      "to": "route",
+      "variant": "default"
+    },
+    {
+      "id": "s2",
+      "from": "route",
+      "to": "ident",
+      "variant": "emphasis"
+    },
+    {
+      "id": "s3",
+      "from": "ident",
+      "to": "ticket",
+      "label": "клиент найден",
+      "variant": "emphasis"
+    },
+    {
+      "id": "s4",
+      "from": "ticket",
+      "to": "ai",
+      "variant": "default"
+    },
+    {
+      "id": "s5",
+      "from": "ai",
+      "to": "human",
+      "label": "просит человека",
+      "variant": "emphasis"
+    },
+    {
+      "id": "s6",
+      "from": "route",
+      "to": "robor",
+      "label": "чужой клиент",
+      "variant": "security",
+      "role": "error"
+    },
+    {
+      "id": "s7",
+      "from": "ident",
+      "to": "anon",
+      "label": "не нашли",
+      "variant": "security",
+      "role": "error"
+    },
+    {
+      "id": "s8",
+      "from": "anon",
+      "to": "ticket",
+      "label": "тикет всё равно",
+      "variant": "dashed",
+      "role": "branch"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Как узнаём клиента",
+      "items": [
+        "По чату в мессенджере, привязке соцсети или адресу почты",
+        "Не опознали — тикет создаётся без карточки, оператор привяжет"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Разные операторы",
+      "items": [
+        "Обращение уходит в ящик своего оператора связи",
+        "Номер тикета считается внутри ящика"
+      ]
+    }
+  ]
+}

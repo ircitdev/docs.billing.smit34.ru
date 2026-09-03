@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Разделение данных по организациям",
+    "quality_profile": "showcase",
+    "viewBox": [1085, 560],
+    "legend": { "mode": "auto", "entries": {
+      "default": { "label": "поток" }, "emphasis": { "label": "основной путь" },
+      "security": { "label": "правило" }, "dashed": { "label": "фоновое" }, "database": { "label": "хранилище" } } },
+    "views": [
+      { "id": "who", "label": "Чей запрос", "focus": ["req", "staff", "switch"], "note": "Есть список доступных организаций и текущий выбор в шапке." },
+      { "id": "rule", "label": "Правило", "focus": ["rule", "query"], "note": "Выбор в шапке — удобство, право доступа проверяется отдельно." },
+      { "id": "cache", "label": "Кэш и отчёты", "focus": ["cache", "data"], "note": "Ключ кэша содержит организацию, иначе цифры утекут между ними." }
+    ]
+  },
+  "stages": [
+    { "label": "Запрос" },
+    { "label": "Кто спрашивает" },
+    { "label": "Правило" },
+    { "label": "Выборка" },
+    { "label": "Ответ" }
+  ],
+  "nodes": [
+    { "id": "req", "type": "external", "label": "Запрос", "sublabel": "страница или API", "stage": 0, "row": 1 },
+    { "id": "staff", "type": "backend", "label": "Сотрудник", "sublabel": "его организации", "stage": 1, "row": 0 },
+    { "id": "switch", "type": "frontend", "label": "Выбор в шапке", "sublabel": "текущая организация", "stage": 1, "row": 2 },
+    { "id": "rule", "type": "security", "label": "Право доступа", "sublabel": "список разрешённых", "stage": 2, "row": 1 },
+    { "id": "query", "type": "backend", "label": "Фильтр выборки", "sublabel": "по организации", "stage": 3, "row": 0 },
+    { "id": "cache", "type": "messagebus", "label": "Ключ кэша", "sublabel": "с организацией", "stage": 3, "row": 2 },
+    { "id": "data", "type": "database", "label": "Данные", "sublabel": "только своей", "stage": 4, "row": 1 }
+  ],
+  "flows": [
+    { "id": "o1", "from": "req", "to": "staff", "label": "кто запрашивает", "variant": "emphasis" },
+    { "id": "o2", "from": "req", "to": "switch", "label": "что выбрано", "variant": "default" },
+    { "id": "o3", "from": "staff", "to": "rule", "label": "доступные организации", "classification": "право", "variant": "emphasis" },
+    { "id": "o4", "from": "switch", "to": "rule", "label": "проверяем выбор", "variant": "security" },
+    { "id": "o5", "from": "rule", "to": "query", "label": "условие выборки", "variant": "emphasis" },
+    { "id": "o6", "from": "rule", "to": "cache", "label": "организация в ключе", "variant": "dashed" },
+    { "id": "o7", "from": "query", "to": "data", "label": "строки своей организации", "variant": "emphasis" },
+    { "id": "o8", "from": "cache", "to": "data", "label": "готовые цифры", "variant": "dashed" }
+  ],
+  "cards": [
+    { "dot": "violet", "title": "Два разных вопроса", "items": ["Что выбрано в шапке — это удобство, а не право доступа", "Право проверяется по объекту: чья это запись на самом деле"] },
+    { "dot": "amber", "title": "Где обычно течёт", "items": ["Ключ кэша без организации отдаёт чужие цифры", "Пустой список доступных организаций означает «все», а не «ни одной»"] }
+  ]
+}

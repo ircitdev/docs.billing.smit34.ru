@@ -66,7 +66,7 @@
       --mask: #0f172a;
 
       --frontend-fill:    rgba(8, 51, 68, 0.4);
-      --frontend-stroke:  #22d3ee;
+      --frontend-stroke:  #059669;
       --backend-fill:     rgba(6, 78, 59, 0.4);
       --backend-stroke:   #34d399;
       --database-fill:    rgba(76, 29, 149, 0.4);
@@ -3255,7 +3255,7 @@
       right: 0.35rem;
       bottom: 0.42rem;
       left: 0.35rem;
-      border: 1px solid #22d3ee;
+      border: 1px solid #059669;
       border-radius: 0.16rem;
       background: rgba(34, 211, 238, 0.14);
     }
@@ -4847,6 +4847,34 @@
       svg [data-node-id], svg [data-edge-from], svg [data-detail], svg [data-detail-anchor], svg [data-legend-hit], svg { transition: none !important; }
     }
   </style>
+<style id="smit-viewer-mobile">
+  @media (max-width: 760px) {
+    /* Выбор оформления и режим показа — приёмы для большого экрана.
+       Тема и экспорт переехали в шапку страницы, поэтому кнопки панели
+       прячем, но саму панель и меню экспорта оставляем в документе:
+       шапка открывает это меню программно. */
+    .preset-wrap,
+    #btn-preset,
+    #btn-present,
+    #btn-theme,
+    #btn-motion,
+    #btn-export { display: none !important; }
+    .toolbar { gap: 0; padding: 0; min-height: 0; }
+  }
+</style>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=112276394', 'ym');
+
+    ym(112276394, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/112276394" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
 </head>
 <body>
   <!-- Toolbar: theme, live visual style, trace motion, presentation stage, and export.
@@ -6367,7 +6395,7 @@
               var accentProperty = reachSnapshot
                 ? (reachSnapshot.direction === 'upstream' ? '--database-stroke' : '--backend-stroke')
                 : '--frontend-stroke';
-              var accent = computed.getPropertyValue(accentProperty).trim() || '#22d3ee';
+              var accent = computed.getPropertyValue(accentProperty).trim() || '#059669';
               var titleNode = document.querySelector('.header h1');
               var subtitleNode = document.querySelector('.header .subtitle');
               var title = titleNode ? titleNode.textContent : document.title;
@@ -6551,7 +6579,7 @@
             var computed = getComputedStyle(element);
             return {
               points: samplesFor(element),
-              color: computed.stroke && computed.stroke !== 'none' ? computed.stroke : '#22d3ee',
+              color: computed.stroke && computed.stroke !== 'none' ? computed.stroke : '#059669',
               width: Math.max(1.5, parseFloat(computed.strokeWidth) || 1.5),
               delay: Math.min(12, authoredStep(element, index)) * 0.16
             };
@@ -6567,7 +6595,7 @@
               y: box.y,
               width: box.width,
               height: box.height,
-              color: computed.stroke && computed.stroke !== 'none' ? computed.stroke : '#22d3ee',
+              color: computed.stroke && computed.stroke !== 'none' ? computed.stroke : '#059669',
               delay: Math.min(12, authoredStep(element, index)) * 0.16
             };
           }).filter(Boolean);

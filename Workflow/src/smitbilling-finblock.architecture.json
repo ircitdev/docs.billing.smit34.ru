@@ -1,0 +1,235 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Финблокировка и страница-заглушка",
+    "quality_profile": "showcase",
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "frontend": {
+          "label": "интерфейс"
+        },
+        "backend": {
+          "label": "сервисы"
+        },
+        "database": {
+          "label": "хранилища"
+        },
+        "cloud": {
+          "label": "адресация"
+        },
+        "security": {
+          "label": "доступ в сеть"
+        },
+        "messagebus": {
+          "label": "очереди"
+        },
+        "external": {
+          "label": "внешние"
+        }
+      }
+    },
+    "views": [
+      {
+        "id": "block",
+        "label": "Должник в сети",
+        "focus": [
+          "client",
+          "fr",
+          "pool"
+        ],
+        "note": "Вместо отказа выдаётся адрес из отдельного пула."
+      },
+      {
+        "id": "portal",
+        "label": "Что видит клиент",
+        "focus": [
+          "pool",
+          "portal"
+        ],
+        "note": "Разрешён узкий список адресов, остальное ведёт на заглушку."
+      },
+      {
+        "id": "back",
+        "label": "Возврат в сеть",
+        "focus": [
+          "pay",
+          "bill",
+          "db",
+          "fr"
+        ],
+        "note": "После оплаты блок снимается и выдаётся обычный адрес."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "client",
+      "type": "external",
+      "label": "Клиент с долгом",
+      "sublabel": "подключается",
+      "pos": [
+        40,
+        60
+      ],
+      "size": [
+        180,
+        66
+      ]
+    },
+    {
+      "id": "fr",
+      "type": "security",
+      "label": "FreeRADIUS",
+      "sublabel": "мягкая блокировка",
+      "pos": [
+        300,
+        60
+      ],
+      "size": [
+        180,
+        66
+      ]
+    },
+    {
+      "id": "pool",
+      "type": "cloud",
+      "label": "Блок-пул",
+      "sublabel": "отдельная адресация",
+      "pos": [
+        560,
+        60
+      ],
+      "size": [
+        180,
+        66
+      ]
+    },
+    {
+      "id": "portal",
+      "type": "frontend",
+      "label": "Заглушка",
+      "sublabel": "оплата и обещанный",
+      "pos": [
+        820,
+        60
+      ],
+      "size": [
+        180,
+        66
+      ]
+    },
+    {
+      "id": "pay",
+      "type": "external",
+      "label": "Оплата",
+      "sublabel": "касса или кабинет",
+      "pos": [
+        40,
+        300
+      ],
+      "size": [
+        180,
+        66
+      ]
+    },
+    {
+      "id": "bill",
+      "type": "backend",
+      "label": "Биллинг",
+      "sublabel": "снятие блока",
+      "pos": [
+        300,
+        300
+      ],
+      "size": [
+        180,
+        66
+      ]
+    },
+    {
+      "id": "db",
+      "type": "database",
+      "label": "PostgreSQL",
+      "sublabel": "блоки и счета",
+      "pos": [
+        560,
+        300
+      ],
+      "size": [
+        180,
+        66
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "client",
+      "to": "fr",
+      "label": "авторизация",
+      "variant": "emphasis",
+      "labelDy": -22
+    },
+    {
+      "id": "c2",
+      "from": "fr",
+      "to": "pool",
+      "label": "адрес блок-пула",
+      "variant": "security",
+      "labelDy": -26
+    },
+    {
+      "id": "c3",
+      "from": "pool",
+      "to": "portal",
+      "label": "трафик на заглушку",
+      "variant": "emphasis",
+      "labelDy": -26
+    },
+    {
+      "id": "c4",
+      "from": "pay",
+      "to": "bill",
+      "label": "платёж",
+      "variant": "emphasis",
+      "labelDy": -22
+    },
+    {
+      "id": "c5",
+      "from": "bill",
+      "to": "db",
+      "label": "блок снят",
+      "labelDy": -22
+    },
+    {
+      "id": "c6",
+      "from": "fr",
+      "to": "db",
+      "label": "проверка блока",
+      "variant": "dashed",
+      "labelDy": 0,
+      "fromSide": "bottom",
+      "toSide": "top"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "Вместо отказа",
+      "items": [
+        "Должник не получает отказ, а попадает в отдельную адресацию",
+        "Разрешён узкий список адресов, остальное ведёт на заглушку"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Возврат",
+      "items": [
+        "Оплата снимает блок, следующая авторизация даёт обычный адрес",
+        "Заглушка предлагает оплату и обещанный платёж"
+      ]
+    }
+  ]
+}

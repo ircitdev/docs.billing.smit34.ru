@@ -1,0 +1,49 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Безопасный деплой на боевой сервер",
+    "quality_profile": "showcase",
+    "legend": { "mode": "auto", "entries": {
+      "backend": { "label": "шаг деплоя" }, "security": { "label": "риск" },
+      "messagebus": { "label": "проверка" }, "database": { "label": "образ" } } },
+    "views": [
+      { "id": "order", "label": "Порядок шагов", "focus": ["urlconf", "diff", "sync", "build", "recreate", "verify"], "note": "Шесть шагов от проверки живого контейнера до контроля результата." },
+      { "id": "risks", "label": "Где теряют правки", "focus": ["diff", "merge", "beat"], "note": "Чужие правки живут только в контейнере, а beat собирается из своего образа." }
+    ]
+  },
+  "lanes": [
+    { "id": "deploy", "label": "Порядок деплоя" },
+    { "id": "risk", "label": "Риски", "variant": "exception" }
+  ],
+  "phases": [
+    { "id": "check", "label": "Проверка", "fromCol": 0, "toCol": 1 },
+    { "id": "sync", "label": "Синхронизация", "fromCol": 2, "toCol": 3, "variant": "emphasis" },
+    { "id": "roll", "label": "Выкатка", "fromCol": 4, "toCol": 5 }
+  ],
+  "mainPath": ["urlconf", "diff", "sync", "build", "recreate", "verify"],
+  "nodes": [
+    { "id": "urlconf", "lane": "deploy", "col": 0, "type": "messagebus", "label": "Проверка маршрутов", "sublabel": "в живом контейнере", "width": 160 },
+    { "id": "diff", "lane": "deploy", "col": 1, "type": "backend", "label": "Сверка файлов", "sublabel": "контейнер ↔ копия", "width": 160 },
+    { "id": "sync", "lane": "deploy", "col": 2, "type": "backend", "label": "Обновление дерева", "sublabel": "то, из чего собирают", "width": 160 },
+    { "id": "build", "lane": "deploy", "col": 3, "type": "database", "label": "Сборка образов", "sublabel": "веб и воркеры", "width": 160 },
+    { "id": "recreate", "lane": "deploy", "col": 4, "type": "backend", "label": "Пересоздание", "sublabel": "контейнеры заново", "width": 160 },
+    { "id": "verify", "lane": "deploy", "col": 5, "type": "messagebus", "label": "Контроль", "sublabel": "ответ и маркеры", "width": 160 },
+    { "id": "merge", "lane": "risk", "col": 1, "type": "security", "label": "Чужие правки", "sublabel": "слить, не затирать", "width": 160 },
+    { "id": "beat", "lane": "risk", "col": 3, "type": "security", "label": "Планировщик", "sublabel": "образ отдельный", "width": 160 }
+  ],
+  "edges": [
+    { "id": "e1", "from": "urlconf", "to": "diff", "variant": "default" },
+    { "id": "e2", "from": "diff", "to": "sync", "label": "расхождений нет", "variant": "emphasis" },
+    { "id": "e3", "from": "sync", "to": "build", "variant": "default" },
+    { "id": "e4", "from": "build", "to": "recreate", "variant": "emphasis" },
+    { "id": "e5", "from": "recreate", "to": "verify", "variant": "default" },
+    { "id": "e6", "from": "diff", "to": "merge", "label": "есть чужое", "variant": "security", "role": "error" },
+    { "id": "e7", "from": "merge", "to": "sync", "label": "после слияния", "variant": "dashed", "role": "branch" },
+    { "id": "e8", "from": "build", "to": "beat", "label": "собирать отдельно", "variant": "security", "role": "error" }
+  ],
+  "cards": [
+    { "dot": "rose", "title": "Почему теряются фичи", "items": ["Правки из соседней сессии живут только в контейнере", "Пересоздание откатывает контейнер к образу"] },
+    { "dot": "cyan", "title": "Чем проверяем", "items": ["Маршруты импортируются в живом контейнере до сборки", "После выкатки — код ответа и поиск маркеров в новом образе"] }
+  ]
+}

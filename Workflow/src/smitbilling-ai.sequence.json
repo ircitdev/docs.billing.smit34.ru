@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Маршрут запроса к ассистенту",
+    "quality_profile": "showcase",
+    "column_fit": "spread",
+    "viewBox": [1080, 480],
+    "legend": { "mode": "auto", "entries": {
+      "default": { "label": "вызов" }, "emphasis": { "label": "основной путь" },
+      "security": { "label": "проверка" }, "dashed": { "label": "фоновое" }, "return": { "label": "ответ" } } },
+    "views": [
+      { "id": "org", "label": "Чей это клиент", "focus": ["client", "bill", "db"], "note": "Организация определяется до ответа: от неё зависят промпт и телефоны." },
+      { "id": "model", "label": "Вызов модели", "focus": ["bill", "gw", "model"], "note": "Ключи и лимиты живут на сервере лицензий, а не в биллинге." },
+      { "id": "tools", "label": "Данные клиента", "focus": ["bill", "db", "support"], "note": "Часть инструментов доступна только после подтверждения личности." }
+    ]
+  },
+  "participants": [
+    { "id": "client", "type": "external", "label": "Клиент", "sublabel": "виджет или бот" },
+    { "id": "bill", "type": "backend", "label": "Биллинг", "sublabel": "сборка запроса" },
+    { "id": "db", "type": "database", "label": "PostgreSQL", "sublabel": "данные клиента" },
+    { "id": "gw", "type": "cloud", "label": "Сервер лицензий", "sublabel": "шлюз" },
+    { "id": "model", "type": "external", "label": "Модель", "sublabel": "провайдер" },
+    { "id": "support", "type": "security", "label": "Поддержка", "sublabel": "оператор" }
+  ],
+  "segments": [
+    { "from": 150, "to": 232, "label": "Кто спрашивает" },
+    { "from": 238, "to": 320, "label": "Ответ модели" },
+    { "from": 326, "to": 406, "label": "Данные и эскалация" }
+  ],
+  "messages": [
+    { "id": "ask", "from": "client", "to": "bill", "y": 160, "label": "вопрос", "variant": "emphasis" },
+    { "id": "org", "from": "bill", "to": "db", "y": 190, "label": "организация и настройки канала", "variant": "security" },
+    { "id": "call", "from": "bill", "to": "gw", "y": 220, "label": "промпт · история · инструменты", "variant": "emphasis" },
+    { "id": "key", "from": "gw", "to": "model", "y": 250, "label": "ключ оператора и лимиты", "variant": "default" },
+    { "id": "answer", "from": "model", "to": "gw", "y": 280, "label": "ответ или вызов инструмента", "variant": "return" },
+    { "id": "back", "from": "gw", "to": "bill", "y": 310, "label": "ответ и расход токенов", "variant": "return" },
+    { "id": "tool", "from": "bill", "to": "db", "y": 338, "label": "баланс · тариф · заявка", "variant": "emphasis" },
+    { "id": "reply", "from": "bill", "to": "client", "y": 368, "label": "ответ клиенту", "variant": "return" },
+    { "id": "esc", "from": "bill", "to": "support", "y": 396, "label": "просит человека — тикет", "variant": "security" }
+  ],
+  "activations": [
+    { "participant": "bill", "from": 160, "to": 401, "type": "backend" },
+    { "participant": "db", "from": 185, "to": 199, "type": "database" },
+    { "participant": "gw", "from": 215, "to": 315, "type": "cloud" },
+    { "participant": "model", "from": 245, "to": 285, "type": "external" },
+    { "participant": "support", "from": 391, "to": 401, "type": "security" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Организация решает всё", "items": ["От неё зависят приветствие, телефоны и воронка заявок", "Определяется по каналу, домену виджета или явной привязке"] },
+    { "dot": "rose", "title": "Что доступно не всем", "items": ["Инструменты с данными клиента открываются после проверки личности", "Расход токенов пишется на организацию, лимиты — на шлюзе"] }
+  ]
+}
