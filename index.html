@@ -35,7 +35,7 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Документация биллинговой платформы СмИТ Биллинг для операторов связи и сервис-провайдеров. Python 3.11, Django 4.2, PostgreSQL 17, Docker Compose.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/style.css?v=2420">
+  <link rel="stylesheet" href="css/style.css?v=2421">
   <link rel="stylesheet" href="css/vendor/tabler-icons.min.css?v=2193">
   <link rel="stylesheet" href="css/search.css?v=2257">
   <style id="dh-landing">
@@ -1065,8 +1065,11 @@
   <style id="doc-cover-styles">
   /* Обложка над всем содержимым: во всю ширину колонки, фиксированной
      высоты — иначе при разных пропорциях видео страница дёргается. */
-  .doc-cover{ margin: 0 0 1.1rem; border-radius: 0 0 18px 18px; overflow: hidden;
+  /* Колонка содержимого имеет боковые отступы (40px, на телефоне 16px) —
+     обложка выходит за них, чтобы занять всю ширину, и поднимается под шапку. */
+  .doc-cover{ margin: -32px -40px 1.2rem; border-radius: 0 0 18px 18px; overflow: hidden;
               background: #eef4f1; line-height: 0; }
+  @media (max-width: 1024px){ .doc-cover{ margin: -20px -16px 1rem; } }
   [data-theme="dark"] .doc-cover{ background: #0f1c2f; }
   .doc-cover video, .doc-cover img{ display: block; width: 100%; height: 300px;
               object-fit: cover; margin: 0; border-radius: 0; box-shadow: none; }
