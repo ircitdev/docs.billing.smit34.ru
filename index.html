@@ -35,7 +35,7 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Документация биллинговой платформы СмИТ Биллинг для операторов связи и сервис-провайдеров. Python 3.11, Django 4.2, PostgreSQL 17, Docker Compose.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/style.css?v=2415">
+  <link rel="stylesheet" href="css/style.css?v=2416">
   <link rel="stylesheet" href="css/vendor/tabler-icons.min.css?v=2193">
   <link rel="stylesheet" href="css/search.css?v=2257">
   <style id="dh-landing">
@@ -1060,7 +1060,7 @@
 
   <style id="wfx-styles">
   /* Витрина схем: те же карточки, что на стратегическом портале. */
-  .wfx { margin: 2.4rem 0; padding: 1.4rem 1.5rem 1.5rem; border-radius: 18px;
+  .wfx { margin: 2.4rem 0; padding: 1.4rem 1.7rem 1.5rem; border-radius: 18px;
          border: 1px solid rgba(16,185,129,.2);
          background: linear-gradient(135deg, rgba(16,185,129,.07), rgba(20,184,166,.04)); }
   [data-theme="dark"] .wfx { border-color: rgba(16,185,129,.3);
@@ -1092,8 +1092,30 @@
   .wfx-hint.off { opacity: 0; }
 
   .wfx-slider { position: relative; }
+  /* Край ленты растворяется: обрезанная карточка иначе читается как сломанная,
+     а так видно, что список продолжается. */
+  .wfx-slider::after { content: ""; position: absolute; top: 0; right: 0; width: 46px;
+    bottom: 14px; pointer-events: none; border-radius: 0 14px 14px 0;
+    background: linear-gradient(90deg, rgba(255,255,255,0), var(--bg, #fff) 92%); }
+  [data-theme="dark"] .wfx-slider::after {
+    background: linear-gradient(90deg, rgba(15,28,47,0), #0f1c2f 92%); }
+  .wfx-slider.at-end::after { opacity: 0; }
+
   .wfx-track { display: flex; gap: .9rem; overflow-x: auto; scroll-behavior: smooth;
-               scroll-snap-type: x mandatory; padding: .2rem .1rem .7rem; }
+               scroll-snap-type: x mandatory; padding: .2rem .1rem .7rem;
+               scrollbar-width: thin; scrollbar-color: rgba(16,185,129,.5) transparent; }
+  /* Системная полоса прокрутки была толстой и серой — под ленту карточек
+     рисуем свою, в цвете раздела. */
+  .wfx-track::-webkit-scrollbar { height: 8px; }
+  .wfx-track::-webkit-scrollbar-track { background: transparent; }
+  .wfx-track::-webkit-scrollbar-thumb { border-radius: 8px;
+    background: rgba(16,185,129,.45); border: 2px solid transparent; background-clip: content-box; }
+  .wfx-track::-webkit-scrollbar-thumb:hover { background: rgba(16,185,129,.75);
+    background-clip: content-box; }
+  [data-theme="dark"] .wfx-track::-webkit-scrollbar-thumb {
+    background: rgba(52,211,153,.4); background-clip: content-box; }
+  [data-theme="dark"] .wfx-track::-webkit-scrollbar-thumb:hover {
+    background: rgba(52,211,153,.7); background-clip: content-box; }
   .wfx-card { flex: 0 0 290px; scroll-snap-align: start; overflow: hidden; position: relative;
               border-radius: 14px; border: 1px solid var(--border, #e6e8eb);
               background: var(--bg-card, #fff); text-decoration: none; color: inherit;
@@ -1122,13 +1144,17 @@
               line-height: 1.3; }
   .wfx-card:hover .wfx-name { color: #059669; }
   [data-theme="dark"] .wfx-card:hover .wfx-name { color: #34d399; }
-  .wfx-nav { position: absolute; top: 32%; z-index: 2; width: 40px; height: 40px;
+  .wfx-nav { position: absolute; top: 33%; z-index: 3; width: 38px; height: 38px;
              display: flex; align-items: center; justify-content: center; cursor: pointer;
              border-radius: 50%; border: 1px solid var(--border, #e6e8eb);
              background: var(--bg-card, #fff); color: inherit;
-             box-shadow: 0 6px 18px rgba(15,23,42,.14); }
+             box-shadow: 0 6px 18px rgba(15,23,42,.16);
+             transition: transform .16s ease, background .16s ease; }
   [data-theme="dark"] .wfx-nav { background: #111c2f; }
-  .wfx-prev { left: -14px; } .wfx-next { right: -14px; }
+  .wfx-nav:hover { transform: scale(1.06); }
+  .wfx-nav:focus-visible { outline: 2px solid #10b981; outline-offset: 2px; }
+  /* стрелки стоят у самого края блока, а не поверх карточек */
+  .wfx-prev { left: -19px; } .wfx-next { right: -19px; }
   .wfx-nav[hidden] { display: none; }
   @media (max-width: 640px) {
     .wfx { padding: 1.1rem 1rem 1.2rem; border-radius: 14px; }
@@ -1592,6 +1618,8 @@
       var max = track.scrollWidth - track.clientWidth - 4;
       prev.hidden = track.scrollLeft <= 4;
       next.hidden = max <= 0 || track.scrollLeft >= max;
+      var slider = track.parentNode;
+      slider.classList.toggle('at-end', max <= 0 || track.scrollLeft >= max);
     }
 
     [].forEach.call(tabs, function (tab, i) {
