@@ -35,7 +35,7 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Документация биллинговой платформы СмИТ Биллинг для операторов связи и сервис-провайдеров. Python 3.11, Django 4.2, PostgreSQL 17, Docker Compose.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/style.css?v=2418">
+  <link rel="stylesheet" href="css/style.css?v=2419">
   <link rel="stylesheet" href="css/vendor/tabler-icons.min.css?v=2193">
   <link rel="stylesheet" href="css/search.css?v=2257">
   <style id="dh-landing">
@@ -69,7 +69,12 @@
   /* белый текст на светлом зелёном давал 1.46:1 — градиент затемнён,
      теперь 5.5:1 у мелких подписей */
   .dh-card-green{background:linear-gradient(150deg,var(--e700),#064e3b);color:#fff;box-shadow:0 10px 30px rgba(5,150,105,.28)}
-  .dh-card-green:hover{transform:translateY(-2px);color:#fff;text-decoration:none;transition:transform .15s}
+  .dh-card-green:hover{transform:translateY(-2px);text-decoration:none;transition:transform .15s}
+  /* Карточка — ссылка, и общий стиль ссылок красил её текст в зелёный:
+     на зелёном фоне выходило 1.46:1. Цвет задаём с приоритетом. */
+  .dh-card-green, .dh-card-green:visited, .dh-card-green:hover,
+  .dh-card-green .dh-card-eyebrow, .dh-card-green .dh-card-big,
+  .dh-card-green .dh-card-sub, .dh-card-green .dh-card-cta{ color:#fff !important; }
   .dh-card-big{font-size:1.42rem;font-weight:800;letter-spacing:-.01em;line-height:1.15}
   .dh-card-sub{font-size:.86rem;opacity:.92;margin-top:4px}
   .dh-card-cta{margin-top:auto;padding-top:14px;font-weight:700;font-size:.9rem}
