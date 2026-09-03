@@ -2584,3 +2584,15 @@ body.search-open { overflow: hidden; }
   .wf-links{ padding:15px 16px 14px; border-radius:14px; }
   .wf-links-grid{ grid-template-columns:1fr; }
 }
+
+/* Ролик поверх обложки: показывается под курсором, а на телефоне — у карточки,
+   попавшей в центр экрана. При «уменьшить движение» роликов нет вовсе. */
+.wf-link .cover .clip{
+  position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+  opacity:0; transition:opacity .3s ease; pointer-events:none;
+}
+.wf-link .cover .clip.ready{ opacity:1; }
+.wf-link .cover .clip.dark{ display:none; }
+[data-theme="dark"] .wf-link .cover .clip.light{ display:none; }
+[data-theme="dark"] .wf-link .cover .clip.dark{ display:block; }
+@media (prefers-reduced-motion: reduce){ .wf-link .cover .clip{ display:none !important; } }
