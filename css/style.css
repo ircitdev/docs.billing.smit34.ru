@@ -2512,3 +2512,55 @@ body.search-open { overflow: hidden; }
 /* контентные ссылки в emerald */
 .content a{ color:var(--primary-dark); }
 [data-theme="dark"] .content a{ color:var(--primary); }
+
+/* ── Ссылки на интерактивные схемы ──────────────────────────────────────
+   Схемы живут отдельным сайтом; блок ставится в разделе, который объясняет
+   тот же механизм словами, и открывает схему в новой вкладке. */
+.wf-links{
+  margin: 26px 0;
+  padding: 18px 20px 16px;
+  border: 1px solid rgba(16,185,129,.22);
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(16,185,129,.07), rgba(20,184,166,.04));
+}
+[data-theme="dark"] .wf-links{
+  border-color: rgba(16,185,129,.3);
+  background: linear-gradient(135deg, rgba(16,185,129,.11), rgba(20,184,166,.06));
+}
+.wf-links-head{ display:flex; align-items:center; gap:9px; margin-bottom:4px; }
+.wf-links-head i{ color:#10b981; font-size:1.15rem; }
+.wf-links-head b{ font-size:.95rem; font-weight:700; }
+.wf-links-sub{ font-size:.82rem; color:var(--text-muted,#64748b); margin:0 0 14px; }
+.wf-links-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:10px; }
+.wf-link{
+  display:flex; align-items:center; gap:11px; padding:11px 14px;
+  border:1px solid var(--border-color,#e2e8f0); border-radius:12px;
+  background:var(--bg-card,#fff); text-decoration:none; color:inherit;
+  transition:border-color .18s ease, transform .18s ease, box-shadow .18s ease;
+  min-height:56px;
+}
+.wf-link:hover{ border-color:#10b981; transform:translateY(-2px);
+  box-shadow:0 8px 20px rgba(15,23,42,.08); }
+[data-theme="dark"] .wf-link{ background:rgba(255,255,255,.03); }
+[data-theme="dark"] .wf-link:hover{ box-shadow:0 8px 20px rgba(0,0,0,.35); }
+.wf-link .ic{
+  width:34px; height:34px; flex:0 0 34px; border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(16,185,129,.13); color:#059669; font-size:1rem;
+}
+[data-theme="dark"] .wf-link .ic{ color:#34d399; }
+.wf-link .tx{ min-width:0; }
+.wf-link .nm{ display:block; font-weight:600; font-size:.88rem; line-height:1.25; }
+.wf-link .kd{ display:block; font-size:.7rem; text-transform:uppercase;
+  letter-spacing:.09em; color:var(--text-muted,#64748b); margin-top:2px; }
+.wf-link .go{ margin-left:auto; color:var(--text-muted,#94a3b8); font-size:.9rem; }
+.wf-links-all{
+  display:inline-flex; align-items:center; gap:6px; margin-top:12px;
+  font-size:.82rem; font-weight:600; color:#059669; text-decoration:none;
+}
+[data-theme="dark"] .wf-links-all{ color:#34d399; }
+.wf-links-all:hover{ text-decoration:underline; }
+@media (max-width: 640px){
+  .wf-links{ padding:15px 16px 14px; border-radius:14px; }
+  .wf-links-grid{ grid-template-columns:1fr; }
+}
