@@ -35,7 +35,7 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Общие настройки, печатные формы, фискализация, платёжные системы, банковские выписки и почтовый сервер.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=2474">
+  <link rel="stylesheet" href="../css/style.css?v=2476">
   <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css?v=2193">
   <link rel="stylesheet" href="../css/search.css?v=2257">
 <!-- Yandex.Metrika counter -->
@@ -1457,7 +1457,7 @@ backup-коды 2FA; IP-список fail-open при пустоте; авари
 <code>billing/views/auth.py</code> (вход), <code>billing/views/profile.py</code>
 (2FA + смена пароля).</p>
 
-<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/su_security/security_tab_full.png"
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/su_security/security_tab_full.png"
      alt="Вкладка Безопасность: финансовые операции + доступ суперпользователя + Web-консоль"
      style="max-width:100%;border:1px solid #ddd;border-radius:6px"></p>
 
@@ -2625,15 +2625,15 @@ flowchart LR
   <li><strong>Сквозной переход до чека ОФД.</strong> У зачисленной операции в очереди рядом со ссылкой «FinOp #N» появилась прямая ссылка на кассовый чек в ОФД (54-ФЗ) и индикатор статуса пробития (ожидает / ошибка). Цепочка навигации замкнута: письмо-импорт ↔ очередь → финансовая операция → чек ОФД (карточка финоперации, в свою очередь, показывает чек и обратную ссылку на банковскую операцию).</li>
   <li><strong>Привязка платежа — раскрытием строки (по образцу Xero).</strong> На широком экране кнопка «Привязать» не открывает модальное окно, а раскрывает строку-аккордеон прямо под операцией: там карточка платежа (сумма, дата, плательщик, ИНН, назначение), поле поиска клиента (ФИО / договор / телефон / e-mail / ИНН / ID) с подсказками-кнопками из назначения платежа и подтверждением перед зачислением. На телефоне (&lt; 768 px) — то же в виде модалки / слайд-панели.</li>
 </ul>
-<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_ux_v2240/bank_queue.png" alt="Банковские выписки — очередь модерации (единые компоненты)" loading="lazy"></p>
-<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_ux_v2240/bank_imports_columns.png" alt="Журнал импортов на SmitTable — настройка колонок" loading="lazy"></p>
-<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_ux_v2240/bank_pull_confirm.png" alt="SmitConfirm — подтверждение опасного забора писем" loading="lazy"></p>
-<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_ux_v2240/bank_link_inline.png" alt="Привязка платежа раскрытием строки (по образцу Xero)" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_ux_v2240/bank_queue.png" alt="Банковские выписки — очередь модерации (единые компоненты)" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_ux_v2240/bank_imports_columns.png" alt="Журнал импортов на SmitTable — настройка колонок" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_ux_v2240/bank_pull_confirm.png" alt="SmitConfirm — подтверждение опасного забора писем" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_ux_v2240/bank_link_inline.png" alt="Привязка платежа раскрытием строки (по образцу Xero)" loading="lazy"></p>
 
 <h3 id="mailserver">6.4.5. Почтовый сервер (SmitMailServ)</h3>
 <p><strong>URL:</strong> <code>/admin/settings/mailserver/</code> — управление собственным почтовым сервером <strong>SmitMailServ</strong>, развёрнутым на хосте <code>mail.вашдомен.ru</code>. Операции с ящиками и доменами доступны из биллинга через API <code>https://mail.вашдомен.ru/api/v1/</code>.</p>
 
-<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v960/mailserver_overview.png" alt="Почтовый сервер — Обзор" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v960/mailserver_overview.png" alt="Почтовый сервер — Обзор" loading="lazy"></p>
 
 <figure class="doc-video">
   <div class="dv-head">
@@ -2667,7 +2667,7 @@ flowchart LR
   <li><strong>DKIM / SPF / DMARC</strong> — статус DNS-записей по нажатию «Обновить».</li>
 </ul>
 
-<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v960/mailserver_domain_select.png" alt="Селект «Основной домен»" loading="lazy" style="max-width:760px"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v960/mailserver_domain_select.png" alt="Селект «Основной домен»" loading="lazy" style="max-width:760px"></p>
 
 <h4 id="mailserver-mailboxes">Вкладка «Ящики»</h4>
 
@@ -2771,7 +2771,7 @@ flowchart TB
 
 
 <p><strong>Добавление ящика</strong> (кнопка «Добавить ящик»):</p>
-<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v960/mailserver_mailbox_add_modal.png" alt="Модалка «Добавить ящик»" loading="lazy" style="max-width:820px"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v960/mailserver_mailbox_add_modal.png" alt="Модалка «Добавить ящик»" loading="lazy" style="max-width:820px"></p>
 <ul>
   <li><strong>Домен</strong> — <code>&lt;select&gt;</code> с подгрузкой реального списка из SmitMailServ: опечататься нельзя.</li>
   <li><strong>Логин (до @)</strong> — локальная часть адреса.</li>
@@ -2781,7 +2781,7 @@ flowchart TB
 </ul>
 
 <h4 id="mailserver-admins">Вкладка «Админы доменов»</h4>
-<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v960/mailserver_admins.png" alt="Админы доменов" loading="lazy"></p>
+<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v960/mailserver_admins.png" alt="Админы доменов" loading="lazy"></p>
 <p>Управление доменными админами SmitMailServ. У админа можно назначить набор доменов, которыми он управляет (<code>&lt;select multiple&gt;</code> с тем же AJAX-источником). Полезно если на сервере несколько обслуживаемых доменов — каждому даём отдельного админа.</p>
 
 <h4 id="mailserver-api">REST API внутри биллинга</h4>
@@ -2858,11 +2858,11 @@ sequenceDiagram
 
 <div class="screenshot-pair">
   <figure>
-    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2100/calendar_smit.jpg" alt="Календарь почты СмИТ" loading="lazy">
+    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2100/calendar_smit.jpg" alt="Календарь почты СмИТ" loading="lazy">
     <figcaption>Домен СмИТ: сегодняшний день отмечен плашкой фирменного цвета, выходные приглушены.</figcaption>
   </figure>
   <figure>
-    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2100/calendar_itc.jpg" alt="Календарь почты ИТ Консалтинга" loading="lazy">
+    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2100/calendar_itc.jpg" alt="Календарь почты ИТ Консалтинга" loading="lazy">
     <figcaption>Тот же календарь на домене ИТ Консалтинга — свой цвет и логотип, настройка отдельно не нужна.</figcaption>
   </figure>
 </div>
@@ -3118,8 +3118,8 @@ flowchart LR
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2474)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">04.09.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2474)</span>&nbsp;|&nbsp;<span data-smit="updated">04.09.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2475)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">04.09.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2475)</span>&nbsp;|&nbsp;<span data-smit="updated">04.09.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2323"></script>

@@ -1122,6 +1122,11 @@ pre code {
   .screenshot-pair { grid-template-columns: 1fr; }
 }
 
+/* Широкий снимок интерфейса: в 720 px полосы вкладок и таблицы
+   настроек уже не читаются. */
+.screenshot.is-wide { max-width: 1100px; }
+@media (max-width: 1200px) { .screenshot.is-wide { max-width: 100%; } }
+
 /* Mobile screenshot — narrow column */
 .screenshot.is-mobile { max-width: 280px; }
 @media (max-width: 768px) {
