@@ -1006,6 +1006,7 @@
     <li><a href="#iptv">IPTV</a></li>
     <li class="sub-item"><a href="#iptv-tvip">TVIP Media (TMS)</a></li>
     <li class="sub-item"><a href="#iptv-lfstream">LFStream (Смотрёшка)</a></li>
+    <li class="sub-item"><a href="#iptv-lfstream-codes">Коды пакетов LFStream</a></li>
     <li class="sub-item"><a href="#iptv-mappings">Маппинг IPTV-пакетов</a></li>
     <li class="sub-item"><a href="#iptv-sync">Синхронизация</a></li>
     <li class="sub-item"><a href="#drugie-podderzhivaemye-iptv-platformy">Другие поддерживаемые IPTV-платформы</a></li>
@@ -1828,11 +1829,47 @@ flowchart TB
     <thead><tr><th>Режим</th><th>Как работает</th></tr></thead>
     <tbody>
       <tr><td><strong>REST API v2</strong> (рекомендуется)</td><td>Прямой API <code>http://smit34.proxy.lfstrm.tv/v2/</code>. Авторизация по <strong>IP-whitelist</strong> прокси-хоста — логин/пароль не нужны. Надёжнее и проще.</td></tr>
-      <tr><td><strong>CMS-панель</strong></td><td>Управление подписками через панель оператора. Работает с любого IP (backend панели ходит в API со своего разрешённого адреса) — <strong>обход IP-whitelist</strong>, пока оператор не внёс адрес сервера.</td></tr>
+      <tr><td><strong>CMS-панель</strong></td><td>Управление подписками через панель оператора. Работает с любого IP (backend панели ходит в API со своего разрешённого адреса) — запасной путь, пока адрес сервера не внесён в список. Подписки включаются и снимаются, но медленнее, и всё ломается, если провайдер поменяет вёрстку панели.</td></tr>
     </tbody>
   </table>
 
-  <div class="note"><p><strong>Whitelist для REST.</strong> Прямой API отвечает <code>403 — Access from &lt;ip&gt; is not allowed</code>, пока менеджер Смотрёшки не внесёт IP сервера в список разрешённых (для СмИТ — боевой <code>193.232.2.128</code> и резервный <code>91.132.163.75</code>). До внесения используется режим CMS-панели — подписки работают и без whitelist.</p></div>
+  <div class="note"><p><strong>Доступ к прямому API — по списку адресов.</strong>
+  Пока адрес сервера не внесён, API отвечает <code>403 — Access from &lt;ip&gt; is not
+  allowed</code>. Для СмИТ внесены боевой <code>193.232.2.128</code> и резервный
+  <code>91.132.163.75</code> — с сентября 2026 работает прямой API. Пока адреса не было,
+  подписки шли через панель оператора: её backend обращается к API со своего
+  разрешённого адреса.</p></div>
+
+  <figure class="shot">
+    <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/iptv_v2490/iptv_lfstream.jpg" alt="Карточка LFStream в настройках IPTV: выбор режима и адрес API">
+    <figcaption>Выбор способа подключения и адреса, для которых нужен доступ у провайдера</figcaption>
+  </figure>
+
+  <h4 id="iptv-lfstream-codes">Коды пакетов: панель и API считают по-разному</h4>
+
+  <p>Панель оператора нумерует пакеты длинными кодами вида
+  <code>65e87bfd572648971816eccc</code>, прямой API — короткими:
+  <code>209</code>, <code>6017</code>. Маппинги услуг заводились через панель, поэтому
+  при переходе на API подписка ушла бы с чужим кодом. Приводит их в порядок команда:</p>
+
+  <pre><code>manage.py lfstream_sync_packages            # показать, что изменится
+manage.py lfstream_sync_packages --apply    # записать коды из API
+manage.py lfstream_sync_packages --match --apply   # плюс подобрать замену тем,
+                                                   # у кого кода в API нет</code></pre>
+
+  <p>Команда ищет каждый пакет в каталоге API по названию (слово «Тариф», регистр и
+  пометка «Архив» не мешают) и подставляет его код. Старый код остаётся в аудите —
+  вернуться можно.</p>
+
+  <div class="note"><p><strong>Часть пакетов провайдер отдаёт без кода.</strong> Из 418
+  позиций каталога код есть у 90; у остальных («Тариф Gold», «Тариф Bronze», «Тариф
+  Ночной» и подобных) поле пустое, и подписать по ним через API нельзя. Ключ
+  <code>--match</code> подбирает замену по <em>составу каналов</em>: берёт пакет с кодом,
+  чей набор ближе всего к исходному (порог — 85&nbsp;% совпадения, задаётся
+  <code>--min-similarity</code>). Служебный пакет «Поддержка», куда входит почти всё
+  подряд, из кандидатов исключён — иначе он побеждал бы везде, а клиент получал бы не
+  своё. Что подобрать не удалось — видно в выводе команды; для таких пакетов нужно
+  запросить коды у менеджера Смотрёшки.</p></div>
 
   <table>
     <thead><tr><th>Параметр</th><th>Описание</th></tr></thead>
