@@ -35,7 +35,7 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Видеонаблюдение и домофония, мультиорганизация, AI-агент, автообзвон и телефония, интерфейсные компоненты и внутренний мессенджер.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=2431">
+  <link rel="stylesheet" href="../css/style.css?v=2473">
   <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css?v=2193">
   <link rel="stylesheet" href="../css/search.css?v=2257">
 <!-- Yandex.Metrika counter -->
@@ -1021,6 +1021,7 @@
     <li><a href="#ui-components">Единые компоненты интерфейса</a></li>
     <li class="sub-item"><a href="#ui-components-list">Состав библиотеки</a></li>
     <li class="sub-item"><a href="#ui-drawer">Боковые панели: одна механика на весь биллинг</a></li>
+    <li class="sub-item"><a href="#ui-section-search">Поиск внутри раздела</a></li>
     <li class="sub-item"><a href="#ui-components-arch">Как это устроено</a></li>
     <li><a href="#autodial-telephony">Автообзвон и своя телефония</a></li>
     <li class="sub-item"><a href="#autodial-providers">Мультипровайдер</a></li>
@@ -2054,6 +2055,8 @@ flowchart LR
     <tr><td><strong>SmitDrawer</strong></td><td>Боковая панель: заголовок с иконкой и подзаголовком, вкладки, кнопки действий, загрузка содержимого по адресу, стопка вложенных панелей.</td><td>Карточки позиции и единицы склада, тикеты Поддержки, дровер сделки и заявки CRM, карточка клиента, профиль, разделы AI, редактор ботов, монитор сессий</td></tr>
     <tr><td><strong>SmitToast</strong></td><td>Всплывающие уведомления (стек справа-сверху / снизу на мобильном).</td><td>Уведомления во всех разделах</td></tr>
     <tr><td><strong>SmitConfirm</strong></td><td>Модалка подтверждения вместо <code>confirm()</code> (тот ломал тёмную тему).</td><td>Подтверждение опасных действий</td></tr>
+    <tr><td><strong>SmitSectionSearch</strong></td><td>Строка поиска внутри раздела: стоит в линию с полосой вкладок, подсказки со значком подраздела, Ctrl+K, на телефоне — над вкладками во всю ширину. Ищет только по своему разделу.</td><td>Настройки системы, ЛК и мобильные, AI-ассистент, Интеграции, Сообщения, Банковские выписки, Модули, Виджеты, карточка СОРМ, профиль сотрудника, каталог компонентов</td></tr>
+    <tr><td><strong>SmitSaveBar</strong></td><td>Панель сохранения: появляется, когда штатная кнопка ушла за экран; подтверждает правку ответственной настройки и пишет её в аудит.</td><td>Разделы настроек биллинга</td></tr>
     <tr><td><strong>SmitCopy</strong></td><td>Копирование в буфер (clipboard + execCommand fallback + тост).</td><td>Замена ~29 копий clipboard-логики (IP / MAC / договор / e-mail / телефон)</td></tr>
   </tbody>
 </table>
@@ -2085,6 +2088,49 @@ flowchart LR
     D2 -. "Esc / клик мимо" .-> D1
     D1 -. "закрытие" .-> T
 </pre>
+
+<h3 id="ui-section-search">Поиск внутри раздела</h3>
+
+<p>В разделах настроек десятки полей и до тринадцати вкладок. Строка поиска
+стоит в одной линии с полосой вкладок и ищет <strong>только по своему
+разделу</strong> — глобальный поиск клиентов живёт в шапке админки, и путать их
+не нужно. Курсор в поле ставит <code>Ctrl+K</code> из любого места страницы.</p>
+
+<p>Подсказка показывает путь «Вкладка · Карточка» и значок подраздела. Если
+настройка на открытой вкладке — поле подсвечивается на месте; если на соседней —
+раздел откроется на ней и подсветит нужное поле.</p>
+
+<pre class="mermaid">
+flowchart LR
+    Q["Оператор вводит<br/>«порог»"] --> IDX["Индекс раздела"]
+    IDX --> D["Поля открытой<br/>страницы"]
+    IDX --> J["Серверный список<br/>(вкладки грузятся<br/>по одной)"]
+    IDX --> F["Свой источник:<br/>карточки, строки таблиц"]
+    D --> HIT["Подсказка:<br/>Порог суммы (₽)<br/>Сообщения · Низкий баланс"]
+    J --> HIT
+    F --> HIT
+    HIT --> HERE{"Настройка<br/>на этой вкладке?"}
+    HERE -- да --> MARK["Показать вкладку<br/>и подсветить поле"]
+    HERE -- нет --> GO["Перейти на вкладку<br/>?find=&lt;поле&gt;"]
+    GO --> MARK
+</pre>
+
+<p>Список полей для разделов, где вкладки грузятся по одной, собирается из самих
+шаблонов вкладок — вести его руками не нужно: добавили поле в форму, оно само
+появилось в поиске. Разбор выполняется один раз после обновления биллинга.</p>
+
+<pre class="mermaid">
+flowchart TD
+    T["Шаблоны вкладок раздела"] --> P["Разбор: подпись ↔ поле<br/>+ карточка, в которой оно лежит"]
+    P --> C["Список настроек раздела<br/>(«Настройки системы» — 124 поля)"]
+    C --> S["Строка поиска"]
+    N["Новое поле в форме"] --> T
+</pre>
+
+<p class="note"><i class="ti ti-info-circle"></i> Где вкладки лежат на одной
+странице (Интеграции, Сообщения), поиск берёт поля прямо со страницы и сам
+переключает вкладку, в которой нашлась настройка. Где искать нужно не поле, а
+блок (профиль сотрудника) — в подсказки попадают заголовки карточек.</p>
 
 <h3 id="ui-components-arch">Как это устроено</h3>
 <p>Каждый компонент следует одному паттерну: самовыполняющаяся функция с защитой от повторной инициализации (<code>if (window.X) return</code>), публичное API в <code>window.X</code>, инъекция своих стилей в <code>&lt;head&gt;</code>. CSS подключается в шапке <code>base_adminlte.html</code>, JS — в подвале. Разделу достаточно вызвать API или разметить элемент data-атрибутом — компонент сам себя инициализирует.</p>
@@ -2151,8 +2197,8 @@ flowchart LR
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2458)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">03.09.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2458)</span>&nbsp;|&nbsp;<span data-smit="updated">03.09.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2473)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">04.09.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2473)</span>&nbsp;|&nbsp;<span data-smit="updated">04.09.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2323"></script>

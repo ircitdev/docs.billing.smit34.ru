@@ -35,7 +35,7 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Личный кабинет клиента (/lk/), мобильные приложения Android+iOS, брендинг, Public Mobile API, force-update.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=2431">
+  <link rel="stylesheet" href="../css/style.css?v=2473">
   <link rel="stylesheet" href="../css/search.css?v=2257">
   <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css?v=2193">
 <!-- Yandex.Metrika counter -->
@@ -1365,13 +1365,27 @@ flowchart TB
   <p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/lk_settings_v1983/lk_search.jpg"
   alt="Поиск по настройкам ЛК по сочетанию Ctrl+K" loading="lazy"></p>
   <ul>
-    <li><strong>Поиск (Ctrl+K)</strong> — по всем 141 настройке раздела, включая вкладки,
-    которые ещё не загружены: выбор результата открывает нужную вкладку и подсвечивает поле.</li>
+    <li><strong>Поиск (Ctrl+K)</strong> — по всем 139 настройкам раздела, включая вкладки,
+    которые ещё не загружены: выбор результата открывает нужную вкладку и подсвечивает поле.
+    Строка стоит в линии с полосой вкладок; на телефоне — над ней, во всю ширину. Это общий
+    компонент, тот же, что в «Настройках системы» и остальных разделах
+    (<a href="extras.html#ui-section-search">как он устроен</a>).</li>
     <li><strong>Единая панель несохранённого</strong> внизу экрана — показывает, в каких
-    разделах есть правки, и сохраняет их одним нажатием.</li>
+    разделах есть правки, и сохраняет их одним нажатием. Правку ответственной настройки
+    (деньги, доступ клиентов, массовые рассылки) она показывает отдельным подтверждением и
+    пишет в аудит.</li>
+    <li><strong>Журнал правок читается словами</strong>: «Смена тарифа из ЛК: вкл → выкл»,
+    а не «LK_FEATURE_TARIFF_CHANGE=0».</li>
     <li><strong>Проверки на месте</strong>: тестовый push на устройство клиента, письмо
     восстановления пароля, вопрос AI-ассистенту — без входа в ЛК под тестовой учётной записью.</li>
   </ul>
+
+  <p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/section_search_v2473/06_history_human.png"
+  alt="Журнал последних изменений настроек: названия настроек и «вкл/выкл» вместо имён ключей" loading="lazy"></p>
+
+  <p class="note"><i class="ti ti-info-circle"></i> В разделе не называются
+  поставщики и модели нейросетей — везде просто «AI»: оператору настроек кабинета
+  это не нужно, а имена моделей меняются.</p>
 
   <h3 id="lk-login-backgrounds">Фон страницы входа</h3>
   <p>Фон настраивается в <em>Брендинг → Фон страницы логина</em>.</p>
@@ -1424,8 +1438,8 @@ flowchart TB
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.0.0</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">03.09.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.0.0</span>&nbsp;|&nbsp;<span data-smit="updated">03.09.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.0.0</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">04.09.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.0.0</span>&nbsp;|&nbsp;<span data-smit="updated">04.09.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2323"></script>
