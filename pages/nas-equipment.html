@@ -1577,7 +1577,10 @@ middleware и stream-серверы провайдера (TVIP Media, LFStream �
   смены: <strong>Ожидают</strong> (открытые и ждущие ответа, включён по
   умолчанию), <strong>Мои</strong> (назначенные на вас), <strong>Не
   назначены</strong> (ничьи), <strong>Закрыты</strong>. Срезы складываются;
-  последний включённый выключить нельзя — иначе карта опустела бы молча.</li>
+  последний включённый выключить нельзя — иначе карта опустела бы молча.
+  На карту попадают только заявки, у клиента которых заполнен адрес с
+  координатами, поэтому у сотрудника с внутренними задачами «Мои» честно
+  показывает ноль — об этом говорит подсказка среза.</li>
 </ul>
 
 <p>Внизу карты — <strong>линейка масштаба</strong> и переключатель подложки
@@ -1737,7 +1740,35 @@ manage.py import_netmap_kml --purge-source kmz_smit34_map      # откат им
 <p>Слой «Заявки» накладывает геопривязанные тикеты <a href="settings-services.html#support">Поддержки
 СмИТ&nbsp;Биллинг</a>. Клик по маркеру открывает панель тикета: ответ клиенту,
 <em>Нейроответ</em> (AI-черновик), внутренняя заметка, назначение ответственного,
-а также drawer карточки клиента.</p>
+а также drawer карточки клиента. Та же панель работает на
+<a href="abonents.html#abonent-map">карте клиентов</a>.</p>
+
+<p><strong>Вложения.</strong> Снимки открываются просмотрщиком прямо в панели:
+стрелки на экране и клавиши ←&nbsp;→ листают вложения заявки, счётчик показывает
+«N из M», Esc закрывает, кнопка «Скачать» отдаёт оригинал. Раньше клик уводил на
+отдельную вкладку с голой картинкой, и к следующей приходилось возвращаться
+назад. Файлы (PDF, таблица, документ, архив) выводятся со значком своего
+формата — до этого на всём висела скрепка.</p>
+
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/netmap_v2480/doc_lightbox.jpg" alt="Просмотрщик снимков заявки: стрелки листания и счётчик «1 из 5»">
+  <figcaption>Снимок из переписки открыт в панели: стрелки листают вложения, счётчик показывает номер</figcaption>
+</figure>
+
+<p><strong>Прошлые обращения.</strong> Список под шапкой открывает выбранную
+заявку в этой же панели, а в шапке появляется стрелка возврата к предыдущей.
+Ctrl+клик по-прежнему открывает заявку в новой вкладке раздела Поддержки.</p>
+
+<div class="row">
+  <div class="col-md-6"><figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/netmap_v2480/doc_past.jpg" alt="Список прошлых обращений клиента в панели заявки">
+  <figcaption>Прошлые обращения клиента — с номером, темой и датой</figcaption>
+</figure></div>
+  <div class="col-md-6"><figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/netmap_v2480/doc_back.jpg" alt="Открытое прошлое обращение со стрелкой возврата в шапке">
+  <figcaption>Открытое прошлое обращение: слева от номера — стрелка возврата</figcaption>
+</figure></div>
+</div>
 
 <div class="row">
   <div class="col-md-6"><figure class="shot">
@@ -1930,8 +1961,8 @@ erDiagram
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2476)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">04.09.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.5.0 (build 2476)</span>&nbsp;|&nbsp;<span data-smit="updated">04.09.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2480)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">04.09.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2480)</span>&nbsp;|&nbsp;<span data-smit="updated">04.09.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2323"></script>
