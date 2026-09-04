@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Блог — СмИТ Биллинг</title>
+<meta name="description" content="Статьи о работе интернет-провайдера: биллинг, поддержка, продажи, оборудование и автоматизация.">
+<link rel="canonical" href="https://billing.smit34.ru/blog/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Блог — СмИТ Биллинг">
+<meta property="og:description" content="Статьи о работе интернет-провайдера: биллинг, поддержка, продажи, оборудование и автоматизация.">
+<meta property="og:url" content="https://billing.smit34.ru/blog/">
+<meta property="og:site_name" content="СмИТ Биллинг">
+<meta property="og:image" content="https://billing.smit34.ru/blog/covers/zayavka-ne-teryaetsya.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/blog/blog.css?v=1788528006">
+<script>
+  // тема общая с главной: ключ billing-theme, светлая — атрибутом data-theme
+  (function () {
+    try {
+      var saved = localStorage.getItem('billing-theme');
+      var light = saved
+        ? saved === 'light'
+        : window.matchMedia('(prefers-color-scheme: light)').matches;
+      if (light) document.documentElement.setAttribute('data-theme', 'light');
+    } catch (e) {}
+  })();
+</script>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=111523440', 'ym');
+
+    ym(111523440, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+    window.ymGoal = function(g, p){ try { if (window.ym) ym(111523440, 'reachGoal', g, p || {}); } catch (e) {} };
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/111523440" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+</head>
+<body>
+<header class="header">
+  <a href="/" class="header-logo">
+    <div class="header-logo-icon">C</div>
+    <div class="header-logo-text">СмИТ Биллинг<span>3.5</span></div>
+  </a>
+  <nav class="header-nav">
+    <a href="/#features">Возможности</a>
+    <a href="/#modules">Модули</a>
+    <a href="/#lk">Приложение</a>
+    <a href="/#pricing">Тарифы</a>
+    <a href="/#api">API</a>
+    <a href="/#demo">Демо</a>
+    <a href="/blog/" aria-current="page">Блог</a>
+    <a href="https://docs.billing.smit34.ru" class="btn-header" target="_blank">Документация</a>
+  </nav>
+  <div class="header-actions" style="display:flex;align-items:center;gap:8px">
+    <button class="theme-toggle" id="theme-toggle" aria-label="Переключить тему">
+      <span class="icon-sun"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.4 1.4M17.6 17.6L19 19M5 19l1.4-1.4M17.6 6.4L19 5"/></svg></span>
+      <span class="icon-moon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg></span>
+    </button>
+    <button class="mobile-toggle" id="mobile-toggle" aria-label="Меню"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+  </div>
+</header>
+<div class="mobile-menu" id="mobile-menu">
+  <button class="mobile-close" id="mobile-close">&#10005;</button>
+  <a href="/#features" class="mobile-link">Возможности</a>
+  <a href="/#lk" class="mobile-link">Приложение</a>
+  <a href="/#pricing" class="mobile-link">Тарифы</a>
+  <a href="/#api" class="mobile-link">API</a>
+  <a href="/#demo" class="mobile-link">Демо</a>
+  <a href="/blog/" class="mobile-link">Блог</a>
+  <a href="/SMIT_Billing_Unified_ISP_Platform.pdf" class="mobile-link" download><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M12 3v12M7 11l5 4 5-4M5 20h14"/></svg> Презентация</a>
+  <a href="https://docs.billing.smit34.ru" target="_blank" class="mobile-link">Документация</a>
+  <a data-demo="1" href="/#demo" class="mobile-link" style="color:var(--emerald-400)">Запросить демо</a>
+</div>
+
+
+<main>
+  <div class="container">
+    <div class="bhead">
+      <div class="bhead-top">
+        <span class="bkicker">Блог</span>
+        <div class="bsel" id="bsel">
+          <button type="button" class="bsel-btn" id="bsel-btn" aria-haspopup="listbox"
+                  aria-expanded="false" aria-controls="bsel-list">
+            <svg class="bsel-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg><span class="bsel-cap">Категория</span>
+            <span class="bsel-val" id="bsel-val">Все</span>
+            <svg class="bsel-caret" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <ul class="bsel-list" id="bsel-list" role="listbox" aria-label="Категория" hidden></ul>
+        </div>
+      </div>
+      <h1>Как устроена работа провайдера</h1>
+      <p>Разбираем задачи, с которыми оператор связи сталкивается каждый день: заявки и подключения,
+         деньги на счетах, обращения абонентов, оборудование у монтажников. Без общих слов — на том,
+         как это работает в СмИТ Биллинге.</p>
+    </div>
+    <div class="bfilter" id="bfilter" hidden>
+      <span>Тег:</span> <strong id="bfilter-name"></strong>
+      <a href="/blog/">показать все →</a>
+    </div>
+    <h2 class="visually-hidden">Статьи</h2>
+    <div class="bgrid" id="bgrid">
+      <a class="bcard" href="/blog/robot-zvonit-dolzhnikam" data-cat="Деньги" data-tags="автоматизация,телефония,деньги">
+        <picture><source data-cover srcset="/blog/covers/robot-zvonit-dolzhnikam-light.jpg" media="(prefers-color-scheme: light)"><img class="bcard-cover" src="/blog/covers/robot-zvonit-dolzhnikam.jpg" alt="" loading="lazy" width="1600" height="900"></picture>
+        <span class="bcard-read">6 мин</span>
+        <div class="bcard-meta"><span class="btag">Деньги</span><time datetime="2026-09-04">4 сентября 2026</time></div>
+        <h3>Робот звонит должникам: где помогает, а где портит отношения</h3>
+        <p>Автообзвон дешевле оператора в десятки раз — и ровно поэтому им легко испортить впечатление о компании. Что проверить до запуска и какая ошибка обходится дороже всего.</p>
+        <span class="bcard-more">Читать →</span>
+      </a>
+      <a class="bcard" href="/blog/minus-na-schete" data-cat="Деньги" data-tags="деньги,блокировка,абоненты">
+        <picture><source data-cover srcset="/blog/covers/minus-na-schete-light.jpg" media="(prefers-color-scheme: light)"><img class="bcard-cover" src="/blog/covers/minus-na-schete.jpg" alt="" loading="lazy" width="1600" height="900"></picture>
+        <span class="bcard-read">7 мин</span>
+        <div class="bcard-meta"><span class="btag">Деньги</span><time datetime="2026-09-03">3 сентября 2026</time></div>
+        <h3>Абонент ушёл в минус: что происходит дальше</h3>
+        <p>Отключить сразу — потерять клиента, не отключать — кормить его в долг. Разбираем порядок, при котором должник узнаёт о долге до отключения, а не после.</p>
+        <span class="bcard-more">Читать →</span>
+      </a>
+      <a class="bcard" href="/blog/moduli-so-storony" data-cat="Платформа" data-tags="платформа,модули,разработка">
+        <picture><source data-cover srcset="/blog/covers/moduli-so-storony-light.jpg" media="(prefers-color-scheme: light)"><img class="bcard-cover" src="/blog/covers/moduli-so-storony.jpg" alt="" loading="lazy" width="1600" height="900"></picture>
+        <span class="bcard-read">6 мин</span>
+        <div class="bcard-meta"><span class="btag">Платформа</span><time datetime="2026-09-02">2 сентября 2026</time></div>
+        <h3>Модули со стороны: как чужой код попадает в ваш биллинг</h3>
+        <p>Нужного модуля нет — ждать полгода или ставить чужой? Разбираем, как устроен каталог расширений: кто пишет, кто проверяет и почему обновления не приезжают сами.</p>
+        <span class="bcard-more">Читать →</span>
+      </a>
+      <a class="bcard" href="/blog/avtopost-o-sborkah" data-cat="Платформа" data-tags="разработка,автоматизация,уведомления">
+        <picture><source data-cover srcset="/blog/covers/avtopost-o-sborkah-light.jpg" media="(prefers-color-scheme: light)"><img class="bcard-cover" src="/blog/covers/avtopost-o-sborkah.jpg" alt="" loading="lazy" width="1600" height="900"></picture>
+        <span class="bcard-read">5 мин</span>
+        <div class="bcard-meta"><span class="btag">Платформа</span><time datetime="2026-08-30">30 августа 2026</time></div>
+        <h3>Автопост, который не спамит: заметку пишет человек, расписание проверяет</h3>
+        <p>Соблазн собрать пост о новой версии из истории коммитов заканчивается «fix typo» в ленте подписчиков. Что в уведомлениях автоматизировать можно, а что нельзя.</p>
+        <span class="bcard-more">Читать →</span>
+      </a>
+      <a class="bcard" href="/blog/sorm-573" data-cat="Закон" data-tags="СОРМ,отчётность,закон">
+        <picture><source data-cover srcset="/blog/covers/sorm-573-light.jpg" media="(prefers-color-scheme: light)"><img class="bcard-cover" src="/blog/covers/sorm-573.jpg" alt="" loading="lazy" width="1600" height="900"></picture>
+        <span class="bcard-read">7 мин</span>
+        <div class="bcard-meta"><span class="btag">Закон</span><time datetime="2026-08-30">30 августа 2026</time></div>
+        <h3>СОРМ по приказу №573: что выгружать и почему выгрузка — не главное</h3>
+        <p>Файлы формируются, расписание работает, проверка проходит — а данные внутри пустые. Разбираем, из чего состоит выгрузка и где она ломается на практике.</p>
+        <span class="bcard-more">Читать →</span>
+      </a>
+      <a class="bcard" href="/blog/karta-seti" data-cat="Сеть и оборудование" data-tags="сеть,аварии,инфраструктура">
+        <picture><source data-cover srcset="/blog/covers/karta-seti-light.jpg" media="(prefers-color-scheme: light)"><img class="bcard-cover" src="/blog/covers/karta-seti.jpg" alt="" loading="lazy" width="1600" height="900"></picture>
+        <span class="bcard-read">6 мин</span>
+        <div class="bcard-meta"><span class="btag">Сеть и оборудование</span><time datetime="2026-08-29">29 августа 2026</time></div>
+        <h3>Карта сети: кто останется без интернета, если оборвётся эта трасса</h3>
+        <p>Схема сети обычно живёт в голове монтажника и в файле у одного человека. Что меняется, когда узлы, трассы и абоненты оказываются на одной карте.</p>
+        <span class="bcard-more">Читать →</span>
+      </a>
+      <a class="bcard" href="/blog/bankovskie-vypiski" data-cat="Деньги" data-tags="финансы,юрлица,автоматизация">
+        <picture><source data-cover srcset="/blog/covers/bankovskie-vypiski-light.jpg" media="(prefers-color-scheme: light)"><img class="bcard-cover" src="/blog/covers/bankovskie-vypiski.jpg" alt="" loading="lazy" width="1600" height="900"></picture>
+        <span class="bcard-read">7 мин</span>
+        <div class="bcard-meta"><span class="btag">Деньги</span><time datetime="2026-08-27">27 августа 2026</time></div>
+        <h3>Платежи юрлиц: как перестать разбирать выписку руками</h3>
+        <p>Оплата пришла, а клиент числится должником и уходит в блокировку. Разбираем путь платежа от письма банка до зачисления и то, почему часть платежей всегда придётся смотреть глазами.</p>
+        <span class="bcard-more">Читать →</span>
+      </a>
+      <a class="bcard" href="/blog/zayavka-ne-teryaetsya" data-cat="Клиенты" data-tags="CRM,продажи,монтаж,автоматизация">
+        <picture><source data-cover srcset="/blog/covers/zayavka-ne-teryaetsya-light.jpg" media="(prefers-color-scheme: light)"><img class="bcard-cover" src="/blog/covers/zayavka-ne-teryaetsya.jpg" alt="" loading="lazy" width="1600" height="900"></picture>
+        <span class="bcard-read">6 мин</span>
+        <div class="bcard-meta"><span class="btag">Клиенты</span><time datetime="2026-08-25">25 августа 2026</time></div>
+        <h3>Путь заявки: от звонка до подключения</h3>
+        <p>Где заявки теряются у большинства провайдеров и как выглядит маршрут, на котором ни одна не пропадает: единый приём, воронка, наряд монтажнику и честная оценка рекламы.</p>
+        <span class="bcard-more">Читать →</span>
+      </a>
+      <a class="bcard" href="/blog/ai-agent-v-podderzhke" data-cat="Клиенты" data-tags="AI,поддержка,автоматизация">
+        <picture><source data-cover srcset="/blog/covers/ai-agent-v-podderzhke-light.jpg" media="(prefers-color-scheme: light)"><img class="bcard-cover" src="/blog/covers/ai-agent-v-podderzhke.jpg" alt="" loading="lazy" width="1600" height="900"></picture>
+        <span class="bcard-read">7 мин</span>
+        <div class="bcard-meta"><span class="btag">Клиенты</span><time datetime="2026-08-22">22 августа 2026</time></div>
+        <h3>AI-агент в поддержке: что он закрывает сам, а что отдаёт человеку</h3>
+        <p>Три четверти обращений закрываются без оператора — но только если агент подключён к биллингу и умеет вовремя позвать человека. Разбираем, где проходит эта граница.</p>
+        <span class="bcard-more">Читать →</span>
+      </a>
+      <a class="bcard" href="/blog/sklad-pod-podotchet" data-cat="Сеть и оборудование" data-tags="склад,оборудование,монтаж">
+        <picture><source data-cover srcset="/blog/covers/sklad-pod-podotchet-light.jpg" media="(prefers-color-scheme: light)"><img class="bcard-cover" src="/blog/covers/sklad-pod-podotchet.jpg" alt="" loading="lazy" width="1600" height="900"></picture>
+        <span class="bcard-read">6 мин</span>
+        <div class="bcard-meta"><span class="btag">Сеть и оборудование</span><time datetime="2026-08-18">18 августа 2026</time></div>
+        <h3>Оборудование под подотчёт: как склад перестаёт быть тетрадкой</h3>
+        <p>Роутеры «где-то у монтажников», недостача, которую находят раз в год, и списание задним числом. Как выглядит учёт, при котором вещь всегда числится за кем-то одним.</p>
+        <span class="bcard-more">Читать →</span>
+      </a>
+    </div>
+    <p class="bempty" id="bempty" hidden>По этому тегу статей пока нет.</p>
+    <section class="btagcloud" id="btagcloud" aria-labelledby="btagcloud-h" hidden>
+      <h2 id="btagcloud-h">Темы</h2>
+      <div class="btagcloud-list" id="btagcloud-list"></div>
+    </section>
+  </div>
+</main>
+<script>
+// Фильтр списка: категория из селекта и хештег из статьи работают вместе.
+(function () {
+  var grid = document.getElementById('bgrid');
+  var sel = document.getElementById('bsel');
+  if (!grid || !sel) return;
+
+  var btn = document.getElementById('bsel-btn');
+  var list = document.getElementById('bsel-list');
+  var valEl = document.getElementById('bsel-val');
+  var empty = document.getElementById('bempty');
+  var bar = document.getElementById('bfilter');
+  var cards = [].slice.call(grid.querySelectorAll('.bcard'));
+
+  var params = new URLSearchParams(location.search);
+  var tag = params.get('tag') || '';
+  var cat = params.get('cat') || '';
+
+  // Категории берём из самих карточек: новый пост попадёт в список сам.
+  var order = [], count = {};
+  cards.forEach(function (c) {
+    var t = c.querySelector('.btag');
+    var name = c.dataset.cat || (t ? t.textContent.trim() : '');
+    c.dataset.cat = name;
+    if (!name) return;
+    if (!(name in count)) { count[name] = 0; order.push(name); }
+    count[name]++;
+  });
+  order.sort(function (a, b) { return a.localeCompare(b, 'ru'); });
+  if (order.indexOf(cat) < 0) cat = '';
+
+  var items = [{ value: '', label: 'Все категории', n: cards.length }];
+  order.forEach(function (name) { items.push({ value: name, label: name, n: count[name] }); });
+
+  items.forEach(function (it, i) {
+    var li = document.createElement('li');
+    li.className = 'bsel-opt';
+    li.id = 'bsel-opt-' + i;
+    li.setAttribute('role', 'option');
+    li.tabIndex = -1;
+    li.dataset.value = it.value;
+    li.innerHTML = '<svg class="bsel-check" width="15" height="15" viewBox="0 0 24 24" fill="none"'
+      + ' stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"'
+      + ' aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>'
+      + '<span class="bsel-name"></span><span class="bsel-n"></span>';
+    li.querySelector('.bsel-name').textContent = it.label;
+    li.querySelector('.bsel-n').textContent = it.n;
+    li.addEventListener('click', function () { choose(it.value); close(true); });
+    list.appendChild(li);
+  });
+  var opts = [].slice.call(list.querySelectorAll('.bsel-opt'));
+
+  function apply() {
+    var shown = 0;
+    cards.forEach(function (c) {
+      var okCat = !cat || c.dataset.cat === cat;
+      var okTag = !tag || (c.dataset.tags || '').split(',').indexOf(tag) > -1;
+      c.hidden = !(okCat && okTag);
+      if (!c.hidden) shown++;
+    });
+    valEl.textContent = cat || 'Все';
+    sel.classList.toggle('is-set', !!cat);
+    opts.forEach(function (o) {
+      var on = o.dataset.value === cat;
+      o.classList.toggle('is-on', on);
+      o.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    if (empty) {
+      empty.textContent = tag && cat
+        ? 'По этому фильтру статей пока нет.'
+        : (cat ? 'В этой категории статей пока нет.' : 'По этому тегу статей пока нет.');
+      empty.hidden = shown > 0;
+    }
+    if (bar) {
+      var nameEl = document.getElementById('bfilter-name');
+      if (nameEl) nameEl.textContent = '#' + tag;
+      bar.hidden = !tag;
+    }
+  }
+
+  function choose(v) {
+    if (v === cat) return;
+    cat = v;
+    var p = new URLSearchParams(location.search);
+    if (cat) { p.set('cat', cat); } else { p.delete('cat'); }
+    var qs = p.toString();
+    history.replaceState(null, '', location.pathname + (qs ? '?' + qs : ''));
+    apply();
+    try { if (window.ymGoal) ymGoal('blog_category', { category: cat || 'all' }); } catch (e) {}
+  }
+
+  function open() {
+    list.hidden = false;
+    btn.setAttribute('aria-expanded', 'true');
+    var cur = opts.filter(function (o) { return o.classList.contains('is-on'); })[0] || opts[0];
+    cur.focus();
+    document.addEventListener('mousedown', outside, true);
+  }
+  function close(back) {
+    if (list.hidden) return;
+    list.hidden = true;
+    btn.setAttribute('aria-expanded', 'false');
+    document.removeEventListener('mousedown', outside, true);
+    if (back) btn.focus();
+  }
+  function outside(e) { if (!sel.contains(e.target)) close(false); }
+
+  btn.addEventListener('click', function () { list.hidden ? open() : close(true); });
+  btn.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); open(); }
+  });
+  list.addEventListener('keydown', function (e) {
+    var i = opts.indexOf(document.activeElement);
+    if (e.key === 'ArrowDown') { e.preventDefault(); opts[Math.min(i + 1, opts.length - 1)].focus(); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); opts[Math.max(i - 1, 0)].focus(); }
+    else if (e.key === 'Home') { e.preventDefault(); opts[0].focus(); }
+    else if (e.key === 'End') { e.preventDefault(); opts[opts.length - 1].focus(); }
+    else if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault(); choose(opts[i].dataset.value); close(true);
+    }
+    else if (e.key === 'Escape' || e.key === 'Tab') { close(e.key === 'Escape'); }
+  });
+
+  // Облако тегов. Категория отвечает «про что раздел», тег — «про что
+  // конкретно»; выбираются вместе, поэтому счётчики считаем по текущей
+  // категории, а не по всему списку.
+  var cloud = document.getElementById('btagcloud');
+  var cloudList = document.getElementById('btagcloud-list');
+  var tagOrder = [], tagChips = {};
+  cards.forEach(function (c) {
+    (c.dataset.tags || '').split(',').forEach(function (t) {
+      t = t.trim();
+      if (t && tagOrder.indexOf(t) < 0) tagOrder.push(t);
+    });
+  });
+  tagOrder.sort(function (a, b) { return a.localeCompare(b, 'ru'); });
+
+  tagOrder.forEach(function (t) {
+    var a = document.createElement('a');
+    a.className = 'btagchip';
+    a.href = '/blog/?tag=' + encodeURIComponent(t);
+    a.innerHTML = '<span class="btagchip-name"></span><span class="btagchip-n"></span>';
+    a.querySelector('.btagchip-name').textContent = '#' + t;
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      chooseTag(tag === t ? '' : t);
+    });
+    cloudList.appendChild(a);
+    tagChips[t] = a;
+  });
+  if (tagOrder.length) cloud.hidden = false;
+
+  function paintTags() {
+    tagOrder.forEach(function (t) {
+      var n = cards.filter(function (c) {
+        var okCat = !cat || c.dataset.cat === cat;
+        return okCat && (c.dataset.tags || '').split(',').indexOf(t) > -1;
+      }).length;
+      var chip = tagChips[t];
+      chip.querySelector('.btagchip-n').textContent = n;
+      chip.classList.toggle('is-on', tag === t);
+      chip.classList.toggle('is-empty', n === 0);
+      chip.setAttribute('aria-pressed', tag === t ? 'true' : 'false');
+    });
+  }
+
+  function chooseTag(v) {
+    tag = v;
+    var p = new URLSearchParams(location.search);
+    if (tag) { p.set('tag', tag); } else { p.delete('tag'); }
+    var qs = p.toString();
+    history.replaceState(null, '', location.pathname + (qs ? '?' + qs : ''));
+    apply();
+    paintTags();
+    try { if (window.ymGoal) ymGoal('blog_tag', { tag: tag || 'all' }); } catch (e) {}
+  }
+
+  // «показать все» в полосе фильтра больше не перезагружает страницу
+  if (bar) {
+    var reset = bar.querySelector('a');
+    if (reset) reset.addEventListener('click', function (e) {
+      e.preventDefault();
+      chooseTag('');
+    });
+  }
+
+  // при смене категории счётчики у тегов пересчитываются
+  var origChoose = choose;
+  choose = function (v) { origChoose(v); paintTags(); };
+
+  apply();
+  paintTags();
+})();
+</script>
+<footer class="bfoot">
+  <div class="container">
+    <span class="bfoot-copy">© 2026 СмИТ Биллинг — платформа для операторов связи</span>
+    <a class="sep bfoot-icolink" href="/" title="На главную"><svg class="bfoot-ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 11.3 12 4l8.5 7.3"/><path d="M6 10.2V20h12v-9.8"/></svg><span class="bfoot-txt">На главную</span></a>
+    <a href="https://docs.billing.smit34.ru" target="_blank" rel="noopener"><span class="bfoot-txt">Документация</span></a>
+    <a href="https://license.billing.smit34.ru/developers/" target="_blank" rel="noopener"><span class="bfoot-txt">Разработчикам</span></a>
+    <a class="bfoot-icolink" href="https://t.me/smitbillingdev" target="_blank" rel="noopener" title="Канал разработки"><svg class="bfoot-ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.6 3.6 2.9 10.7l6.2 2.3 2.3 6.2Z"/><path d="M9.1 13 21.6 3.6"/></svg><span class="bfoot-txt">Канал разработки</span></a>
+  </div>
+</footer>
+<script>
+  (function () {
+    var html = document.documentElement;
+    var themeToggle = document.getElementById('theme-toggle');
+    // Три состояния: как в системе → светлая → тёмная. Без третьего однажды
+    // нажатый переключатель навсегда перекрывал бы системную настройку.
+    var THEME_MODES = ['system', 'light', 'dark'];
+    var THEME_LABEL = {
+      system: 'Тема: как в системе', light: 'Тема: светлая', dark: 'Тема: тёмная'
+    };
+    function themeMode() {
+      try {
+        var v = localStorage.getItem('billing-theme');
+        return v === 'light' || v === 'dark' ? v : 'system';
+      } catch (e) { return 'system'; }
+    }
+    function applyThemeMode(m) {
+      var light = m === 'light' || (m === 'system' &&
+        window.matchMedia('(prefers-color-scheme: light)').matches);
+      if (light) html.setAttribute('data-theme', 'light');
+      else html.removeAttribute('data-theme');
+      try {
+        if (m === 'system') localStorage.removeItem('billing-theme');
+        else localStorage.setItem('billing-theme', m);
+      } catch (e) {}
+      if (themeToggle) {
+        themeToggle.title = THEME_LABEL[m];
+        themeToggle.setAttribute('aria-label', THEME_LABEL[m] + ' (нажмите, чтобы сменить)');
+      }
+    }
+    applyThemeMode(themeMode());
+    if (themeToggle) themeToggle.addEventListener('click', function () {
+      applyThemeMode(THEME_MODES[(THEME_MODES.indexOf(themeMode()) + 1) % 3]);
+    });
+    try {
+      var mq = window.matchMedia('(prefers-color-scheme: light)');
+      var onSystem = function () {
+        if (themeMode() === 'system') applyThemeMode('system');
+      };
+      if (mq.addEventListener) mq.addEventListener('change', onSystem);
+      else if (mq.addListener) mq.addListener(onSystem);
+    } catch (e) {}
+    var menu = document.getElementById('mobile-menu');
+    var open = document.getElementById('mobile-toggle');
+    var close = document.getElementById('mobile-close');
+    if (open && menu) open.addEventListener('click', function () {
+      menu.classList.add('open'); document.body.style.overflow = 'hidden';
+    });
+    function hide() { menu.classList.remove('open'); document.body.style.overflow = ''; }
+    if (close && menu) close.addEventListener('click', hide);
+    if (menu) menu.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', hide); });
+  })();
+</script>
+<script>
+  // Тему, выбранную вручную, медиа-запрос в <picture> не видит — переключаем
+  // источник обложек сами. Наблюдатель ловит и клик по переключателю, и
+  // смену системной настройки.
+  (function () {
+    var html = document.documentElement;
+    function sync() {
+      var light = html.getAttribute('data-theme') === 'light';
+      document.querySelectorAll('source[data-cover]').forEach(function (s) {
+        s.media = light ? 'all' : 'not all';
+      });
+    }
+    sync();
+    new MutationObserver(sync).observe(html, {
+      attributes: true, attributeFilter: ['data-theme']
+    });
+  })();
+</script>
+</body>
+</html>
