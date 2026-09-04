@@ -35,7 +35,7 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Общие настройки, печатные формы, фискализация, платёжные системы, банковские выписки и почтовый сервер.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=2478">
+  <link rel="stylesheet" href="../css/style.css?v=2479">
   <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css?v=2193">
   <link rel="stylesheet" href="../css/search.css?v=2257">
 <!-- Yandex.Metrika counter -->
@@ -1053,7 +1053,10 @@
 по типам: RADIUS, валюта, ЛК, общие, сообщения, учёт, интерфейс. Каждая настройка
 имеет имя, значение и описание.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_system_settings.png" alt="Настройки системы — параметры"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_system_settings.png" alt="Настройки системы — параметры">
+  <figcaption>Настройки системы — параметры</figcaption>
+</figure>
 
 <p>Примеры параметров: лимит обещанного платежа в днях, частота auto-assign NAS,
 SLA-цели для NAS-мониторинга, частота автоматической очистки БД.</p>
@@ -1062,7 +1065,10 @@ SLA-цели для NAS-мониторинга, частота автомати�
 логотип, цвет акцента, контактные данные. Эти данные показываются в админке,
 в личном кабинете и в шаблонах печати.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_branding.png" alt="Настройки системы — брендинг"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_branding.png" alt="Настройки системы — брендинг">
+  <figcaption>Настройки системы — брендинг</figcaption>
+</figure>
 
 <h4 id="system-security-finops">Вкладка «Безопасность» — политика финансовых операций</h4>
 
@@ -1128,7 +1134,10 @@ auto-block по отрицательному балансу — работают
 
 <p>Ниже блока «Финансовые операции» на странице <code>/admin/settings/system/security/</code> расположены 4 блока управления безопасностью входа.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/auth_overhaul_v1183/02_security_blocks.png" alt="Блоки безопасности: FIDO2, reCAPTCHA, блокировка, сессия"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/auth_overhaul_v1183/02_security_blocks.png" alt="Блоки безопасности: FIDO2, reCAPTCHA, блокировка, сессия">
+  <figcaption>Блоки безопасности: FIDO2, reCAPTCHA, блокировка, сессия</figcaption>
+</figure>
 
 <table class="data-table">
   <thead><tr><th>Блок</th><th>Что делает</th></tr></thead>
@@ -1158,7 +1167,10 @@ auto-block по отрицательному балансу — работают
 
 <p>Верхнее меню сжимается ступенями при нехватке ширины (только десктоп ≥768px), освобождая место без потери пунктов.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/auth_overhaul_v1183/09_header_compact.png" alt="Адаптивная шапка в сжатом виде"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/auth_overhaul_v1183/09_header_compact.png" alt="Адаптивная шапка в сжатом виде">
+  <figcaption>Адаптивная шапка в сжатом виде</figcaption>
+</figure>
 
 <ul>
   <li>Пункт «Продажи» переименован в <strong>«CRM»</strong>.</li>
@@ -1172,7 +1184,10 @@ auto-block по отрицательному балансу — работают
 
 <p>Управление параметрами вкладки <a href="abonent-card.html#abonent-card-tab-audit">Аудит</a> в карточке клиента и общим поведением логирования. Доступна по адресу <code>/admin/settings/system/?tab=audit</code> только пользователям группы <code>root</code> или с <code>is_superuser=True</code>.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/audit_settings_v778/audit_settings_v778_01_form.png" alt="Настройки аудита — форма с 4 параметрами"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/audit_settings_v778/audit_settings_v778_01_form.png" alt="Настройки аудита — форма с 4 параметрами">
+  <figcaption>Настройки аудита — форма с 4 параметрами</figcaption>
+</figure>
 
 <table class="data-table">
   <thead><tr><th>Параметр</th><th>Диапазон</th><th>Default</th><th>Что меняет</th></tr></thead>
@@ -1210,7 +1225,10 @@ auto-block по отрицательному балансу — работают
 
 <p><strong>Быстрый переход в настройки</strong>: для пользователей с <code>is_superuser=True</code> в toolbar вкладки «Аудит» карточки клиента появляется иконка-шестерёнка справа от кнопки CSV-экспорта — клик ведёт прямо в <code>/admin/settings/system/?tab=audit</code>.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/audit_settings_v778/audit_settings_v778_02_toolbar_with_cog.png" alt="Toolbar вкладки Аудит клиента с шестерёнкой настроек"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/audit_settings_v778/audit_settings_v778_02_toolbar_with_cog.png" alt="Toolbar вкладки Аудит клиента с шестерёнкой настроек">
+  <figcaption>Toolbar вкладки Аудит клиента с шестерёнкой настроек</figcaption>
+</figure>
 
 <h4 id="system-settings-logs">Вкладка «Логи» — хранение и уровень логирования</h4>
 
@@ -1254,7 +1272,10 @@ auto-block по отрицательному балансу — работают
 
 <p>Страница <code>/admin/reports/dev/logs/</code> (раздел «Отчёты → Разработка и логи», только root-доступ) показывает 12 каналов журналов слева с текущим размером, справа — содержимое выбранного файла.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/backup_logs_v967/logs_colorized.png" alt="Просмотр логов с подсветкой по уровням"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/backup_logs_v967/logs_colorized.png" alt="Просмотр логов с подсветкой по уровням">
+  <figcaption>Просмотр логов с подсветкой по уровням</figcaption>
+</figure>
 
 <ul>
   <li><strong>Чтение с конца файла</strong> — функция <code>_tail_log()</code> читает последние
@@ -1299,7 +1320,10 @@ maxBytes 10 МБ, backupCount 5, в просмотрщике видны как <
 <p>Текущий размер каждого файла виден в просмотрщике — после фикса <code>freeradius.log</code>
 держится в районе десятков мегабайт:</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/backup_logs_v967/logs_list.png" alt="Список лог-каналов с размерами"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/backup_logs_v967/logs_list.png" alt="Список лог-каналов с размерами">
+  <figcaption>Список лог-каналов с размерами</figcaption>
+</figure>
 
 <h4 id="system-settings-performance">Вкладка «Скорость» — Gunicorn / Celery / БД / Throttling (переименована)</h4>
 
@@ -1457,9 +1481,12 @@ backup-коды 2FA; IP-список fail-open при пустоте; авари
 <code>billing/views/auth.py</code> (вход), <code>billing/views/profile.py</code>
 (2FA + смена пароля).</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/su_security/security_tab_full.png"
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/su_security/security_tab_full.png"
      alt="Вкладка Безопасность: финансовые операции + доступ суперпользователя + Web-консоль"
-     style="max-width:100%;border:1px solid #ddd;border-radius:6px"></p>
+     style="max-width:100%;border:1px solid #ddd;border-radius:6px">
+  <figcaption>Вкладка Безопасность: финансовые операции + доступ суперпользователя + Web-консоль</figcaption>
+</figure>
 
 <h4 id="system-settings-blocks">Вкладка «Блокировки и финансы» — captive-portal + бизнес-правила</h4>
 
@@ -1499,7 +1526,10 @@ backup-коды 2FA; IP-список fail-open при пустоте; авари
   <p><strong>Управление прокси — на сервере лицензий.</strong> Пул прокси теперь ведётся централизованно на сервере лицензий (один пул на все инсталляции — прокси меняются в одном месте, все биллинги подхватывают). Биллинг получает пул по лицензионному ключу (<code>GET /api/gw/proxies/</code>) и зеркалит его в свою таблицу. На странице «Прокси» такие прокси помечены значком <strong>облака</strong> ☁ и редактируются только на сервере лицензий; кнопка <strong>«Синхронизировать»</strong> подтягивает изменения сразу. При недоступности сервера лицензий биллинг продолжает работать с последним полученным пулом (offline-safety). Локально добавленные прокси (без облака) остаются как аварийный fallback.</p>
 </div>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/proxy_v1064/proxy_overview.png" alt="Вкладка Прокси — общий вид: переключатель, форма добавления, таблица прокси, журнал событий"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/proxy_v1064/proxy_overview.png" alt="Вкладка Прокси — общий вид: переключатель, форма добавления, таблица прокси, журнал событий">
+  <figcaption>Вкладка Прокси — общий вид: переключатель, форма добавления, таблица прокси, журнал событий</figcaption>
+</figure>
 
 <p><strong>Как работает выбор прокси (fallback):</strong></p>
 <div class="flow-diagram" style="display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin:1rem 0;font-size:.9rem">
@@ -1523,7 +1553,10 @@ backup-коды 2FA; IP-список fail-open при пустоте; авари
 <h5 id="system-settings-proxy-table">Таблица «Прокси-серверы»</h5>
 <p>Колонки: Тип (бейдж HTTP/SOCKS5), Адрес (<code>ip:port</code>, иконка-ключ + тултип логин/пароль), Гео (флаг страны + город), Роли (TG / Нейросеть), Статус (🟢 доступен · 🔴 недоступен · ⚪ не проверялся, с латентностью в тултипе), Приоритет, Ред (kebab-меню действий). Действия в kebab: Проверить, Включить/Выключить, Назначить роль (Только Telegram / Только Нейросеть / Обе), Удалить.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/proxy_v1064/proxy_kebab.png" alt="Таблица прокси с открытым kebab-меню действий"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/proxy_v1064/proxy_kebab.png" alt="Таблица прокси с открытым kebab-меню действий">
+  <figcaption>Таблица прокси с открытым kebab-меню действий</figcaption>
+</figure>
 
 <p><strong>«Проверить все»</strong> — проверяет все прокси и расставляет приоритеты: живые по возрастанию задержки (быстрый = приоритет 1), мёртвые в конец. Если есть нерабочие — кнопка превращается в «Удалить нерабочие (N)».</p>
 
@@ -1533,7 +1566,10 @@ backup-коды 2FA; IP-список fail-open при пустоте; авари
 <h5 id="system-settings-proxy-log">Журнал событий</h5>
 <p>Правая колонка — последние 50 событий (проверки, переходы up/down, добавление/удаление) с авто-обновлением каждые 30с. Кнопка «Скачать» выгружает журнал в CSV (до 1000 записей).</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/proxy_v1064/proxy_dark_table.png" alt="Вкладка Прокси в тёмной теме"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/proxy_v1064/proxy_dark_table.png" alt="Вкладка Прокси в тёмной теме">
+  <figcaption>Вкладка Прокси в тёмной теме</figcaption>
+</figure>
 
 <p class="note">Тёмная тема и работа с телефона поддержаны. Потребители прокси (Telegram-рассылки, AI-чаты ЛК/мобильного, геокодер и др., ~18 точек) используют пул автоматически через <code>get_api_proxies()</code>.</p>
 
@@ -1543,7 +1579,10 @@ backup-коды 2FA; IP-список fail-open при пустоте; авари
 <code>{{ abonent.name }}</code>, <code>{{ tariff }}</code>. Готовый документ
 генерируется при печати из карточки клиента.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_print_forms.png" alt="Шаблоны печати"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_print_forms.png" alt="Шаблоны печати">
+  <figcaption>Шаблоны печати</figcaption>
+</figure>
 
 <h3 id="atol-config">6.3. Фискализация (54-ФЗ)</h3>
 <p>Автоматическая отправка кассовых чеков в ОФД: <a href="#fiscal">модуль фискализации</a>,
@@ -1590,7 +1629,10 @@ backup-коды 2FA; IP-список fail-open при пустоте; авари
 <p>Настройка на странице фискализации — чипы источников. Отмеченный источник попадает
 в очередь чеков, снятый не попадает в неё вовсе.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/fiscal_v2191/fiscal_settings.png" alt="Страница фискализации: выключатель, чипы источников, параметры чека, очередь и список касс" width="1100"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/fiscal_v2191/fiscal_settings.png" alt="Страница фискализации: выключатель, чипы источников, параметры чека, очередь и список касс" width="1100">
+  <figcaption>Страница фискализации: выключатель, чипы источников, параметры чека, очередь и список касс</figcaption>
+</figure>
 
 <table class="data-table">
   <thead><tr><th>Источник</th><th>Кто пробивает чек</th><th>По умолчанию</th></tr></thead>
@@ -1698,7 +1740,10 @@ backup-коды 2FA; IP-список fail-open при пустоте; авари
 пункты не выполнены, кнопка «Включить боевой режим» заблокирована. Сервер проверяет то
 же самое: запрос на включение мимо интерфейса будет отклонён.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/fiscal_v2178/fiscal_readiness.png" alt="Чек-лист готовности к боевому режиму" width="760"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/fiscal_v2178/fiscal_readiness.png" alt="Чек-лист готовности к боевому режиму" width="760">
+  <figcaption>Чек-лист готовности к боевому режиму</figcaption>
+</figure>
 
 <table class="data-table">
   <thead><tr><th>Пункт</th><th>Блокирует включение</th><th>Что означает</th></tr></thead>
@@ -1725,7 +1770,10 @@ backup-коды 2FA; IP-список fail-open при пустоте; авари
 клиента открывает боковую карточку абонента и сразу прокручивает к блоку «Банк»
 с его платежами из выписок.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/fiscal_v2221/fiscal_queue_live.png" alt="Очередь чеков: состояния, фильтры, список операций с источником и статусом" width="1100"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/fiscal_v2221/fiscal_queue_live.png" alt="Очередь чеков: состояния, фильтры, список операций с источником и статусом" width="1100">
+  <figcaption>Очередь чеков: состояния, фильтры, список операций с источником и статусом</figcaption>
+</figure>
 
 <ul>
   <li><strong>Состояния</strong> — «ждут отправки», «ждут ответа ОФД», «с ошибкой»,
@@ -1754,7 +1802,10 @@ backup-коды 2FA; IP-список fail-open при пустоте; авари
   отправки отчёта»; канал — «chat_id группы», по умолчанию общий админ-чат).</li>
 </ul>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/fiscal_v2191/fiscal_queue_dark.png" alt="Очередь чеков в тёмной теме" width="1100"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/fiscal_v2191/fiscal_queue_dark.png" alt="Очередь чеков в тёмной теме" width="1100">
+  <figcaption>Очередь чеков в тёмной теме</figcaption>
+</figure>
 
 <h5>Как работает (поток чека)</h5>
 
@@ -1803,7 +1854,10 @@ flowchart LR
 логин и пароль, организация, ИНН, место расчётов, система налогообложения, e-mail
 продавца и флаг тестового сервера.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/fiscal_v2191/fiscal_kassa_modal.png" alt="Карточка кассы: доступ к ОФД, организация, налогообложение" width="900"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/fiscal_v2191/fiscal_kassa_modal.png" alt="Карточка кассы: доступ к ОФД, организация, налогообложение" width="900">
+  <figcaption>Карточка кассы: доступ к ОФД, организация, налогообложение</figcaption>
+</figure>
 
 <ul>
   <li><strong>Организация</strong> — чей чек пробивает касса. По 54-ФЗ касса привязана к
@@ -2131,7 +2185,10 @@ flowchart TD
 </figure>
 
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/payment_settings_v2243/01_global_dark.png" alt="Платёжные системы — общие настройки"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/payment_settings_v2243/01_global_dark.png" alt="Платёжные системы — общие настройки">
+  <figcaption>Платёжные системы — общие настройки</figcaption>
+</figure>
 
 <h4 id="payment-scopes">Наборы настроек: общие и кассы организаций</h4>
 
@@ -2145,7 +2202,10 @@ flowchart TD
   берёт кассу организации клиента и только при её отсутствии откатывается на общие ключи.</li>
 </ul>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/payment_settings_v2243/04_org_kassa.png" alt="Касса организации"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/payment_settings_v2243/04_org_kassa.png" alt="Касса организации">
+  <figcaption>Касса организации</figcaption>
+</figure>
 
 <p>Если хотя бы у одной организации настроена своя касса, в общем режиме показывается
 предупреждение со ссылками на эти кассы: правки в общих настройках на их клиентов не влияют.
@@ -2165,7 +2225,10 @@ flowchart TD
 (<code>••••••••2bc9</code>). <strong>Пустое поле при сохранении означает «не менять»</strong> —
 чтобы заменить ключ, введите новый.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/payment_settings_v2243/07_mobile_secret.png" alt="Маска секретного ключа" style="max-width:380px"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/payment_settings_v2243/07_mobile_secret.png" alt="Маска секретного ключа" style="max-width:380px">
+  <figcaption>Маска секретного ключа</figcaption>
+</figure>
 
 <h4 id="payment-test">Проверка подключения</h4>
 
@@ -2184,7 +2247,10 @@ flowchart TD
   </tbody>
 </table>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/payment_settings_v2243/05_test_unknown.png" alt="Честный статус проверки подключения"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/payment_settings_v2243/05_test_unknown.png" alt="Честный статус проверки подключения">
+  <figcaption>Честный статус проверки подключения</figcaption>
+</figure>
 
 <p>Проверку можно выполнить для любой системы, в том числе неактивной — переключать боевой
 приём платежей для этого не нужно. Неактивная система помечается пунктирной рамкой и
@@ -2213,7 +2279,10 @@ flowchart TD
 
 <h4 id="payment-webhook-security">Безопасность webhook</h4>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/payment_settings_v2243/03_security_dark.png" alt="Безопасность webhook"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/payment_settings_v2243/03_security_dark.png" alt="Безопасность webhook">
+  <figcaption>Безопасность webhook</figcaption>
+</figure>
 
 <ul>
   <li><strong>Белый список IP</strong> (CIDR через запятую) — запросы с других адресов получают 403.
@@ -2306,7 +2375,10 @@ flowchart TD
 </ol>
 
 <h4 id="bank-statements-settings">Главная страница настроек</h4>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v961/bank_v961_settings.png" alt="Настройки модуля автообработки выписок" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v961/bank_v961_settings.png" alt="Настройки модуля автообработки выписок" loading="lazy">
+  <figcaption>Настройки модуля автообработки выписок</figcaption>
+</figure>
 <p>Структура страницы:</p>
 <ul>
   <li><strong>Tab-навигация:</strong> «Общие настройки» ↔ «Банки и парсеры»</li>
@@ -2354,7 +2426,10 @@ flowchart TD
 <p>В UI кнопка «Добавить» парсит ссылку <code>https://t.me/c/2910452601/18140</code> → автоматически заполняет <code>chat_id=-1002910452601</code> и <code>thread_id=18140</code>. Поддерживаются 3 формата: <code>/c/&lt;chat&gt;/&lt;thread&gt;</code>, <code>https://t.me/&lt;username&gt;</code>, числовой <code>-100...</code>.</p>
 
 <h3 id="bank-parsers">6.4.2. Банки и парсеры</h3>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v961/bank_v961_parsers.png" alt="Раздел Банки и парсеры" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v961/bank_v961_parsers.png" alt="Раздел Банки и парсеры" loading="lazy">
+  <figcaption>Раздел Банки и парсеры</figcaption>
+</figure>
 
 <p>Регистр банков с привязкой к парсерам и email-доменам отправителей. По умолчанию загружены Сбербанк и АльфаБанк через миграцию 0144 (data-seed). Без активных записей здесь IMAP-приёмник игнорирует все входящие письма.</p>
 
@@ -2381,7 +2456,10 @@ flowchart TD
 <p><strong>Защита от потери данных:</strong> при удалении банк-парсера <code>BankStatementImport</code> с этим email_domain в БД сохраняются (FK не настроен). Новые письма с домена будут игнорироваться. Восстановить — повторное добавление с тем же доменом.</p>
 
 <h3 id="bank-queue">6.4.3. Очередь модерации</h3>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v961/bank_v961_queue.png" alt="Очередь модерации платежей" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v961/bank_v961_queue.png" alt="Очередь модерации платежей" loading="lazy">
+  <figcaption>Очередь модерации платежей</figcaption>
+</figure>
 
 <p><strong>Ключевая страница</strong> для финансиста-оператора: через неё проходит 50–100 платежей в день. Один платёж разбирается в один клик через массовое действие или в два — через модальное окно.</p>
 
@@ -2415,7 +2493,10 @@ flowchart TD
 </ul>
 
 <h4 id="bank-queue-onboarding">Onboarding-tooltip</h4>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v914/bank_v914_queue_onboarding.png" alt="Onboarding-tooltip 4 шага" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v914/bank_v914_queue_onboarding.png" alt="Onboarding-tooltip 4 шага" loading="lazy">
+  <figcaption>Onboarding-tooltip 4 шага</figcaption>
+</figure>
 <p>При первом визите показывает 4-step tour: Bulk-операции → Keyboard shortcuts → Undo → Risk-проверка. Bump версии (v4 → v5 в JS) — снова покажется после новых фич. Shift+Click на help-иконку (клавиатура в toolbar) — перезапуск.</p>
 
 <h4 id="bank-flow">Путь платежа: от письма банка до баланса клиента</h4>
@@ -2438,7 +2519,10 @@ flowchart TD
 </pre>
 
 <h4 id="bank-registry">Сводные перечисления приёмщиков платежей</h4>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v2171/registry.png" alt="Вкладка «Реестры»: сводные перечисления Сбербанка и «Единой кассы»" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v2171/registry.png" alt="Вкладка «Реестры»: сводные перечисления Сбербанка и «Единой кассы»" loading="lazy">
+  <figcaption>Вкладка «Реестры»: сводные перечисления Сбербанка и «Единой кассы»</figcaption>
+</figure>
 
 <p>Клиент платит через кассу Сбербанка или терминал «Единой кассы», приёмщик копит оплаты за период и перечисляет провайдеру одной строкой. В назначении так и написано:</p>
 
@@ -2477,7 +2561,10 @@ flowchart LR
 </div>
 
 <h4 id="bank-queue-2171">Разбор очереди, организации и аудит</h4>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v2171/queue2.png" alt="Очередь модерации: чипы статусов со счётчиками, поиск, период, суммовой итог, колонка организации" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v2171/queue2.png" alt="Очередь модерации: чипы статусов со счётчиками, поиск, период, суммовой итог, колонка организации" loading="lazy">
+  <figcaption>Очередь модерации: чипы статусов со счётчиками, поиск, период, суммовой итог, колонка организации</figcaption>
+</figure>
 
 <p>Аудит модуля 24.08.2026 показал, что очередь стояла не из-за неудобств интерфейса, а из-за трёх дефектов.</p>
 
@@ -2488,7 +2575,10 @@ flowchart LR
 </ul>
 
 <h4 id="bank-queue-link-2171">Привязка платежа: контекст и данные ФНС</h4>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v2171/inline.png" alt="Привязка платежа: форма раскрывается прямо под строкой, видны соседние платежи" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v2171/inline.png" alt="Привязка платежа: форма раскрывается прямо под строкой, видны соседние платежи" loading="lazy">
+  <figcaption>Привязка платежа: форма раскрывается прямо под строкой, видны соседние платежи</figcaption>
+</figure>
 
 <p>Поиск клиента идёт по ФИО или названию, номеру договора, телефону, e-mail, ИНН и номеру клиента. Клиенты с совпавшим ИНН поднимаются в начало списка.</p>
 
@@ -2523,17 +2613,26 @@ flowchart LR
 <p>Запись создаётся на каждое изменение: сохранение настроек с перечнем правок (включая выключатель автозачисления), ручной забор писем, повторный разбор импорта, автонастройка почтового ящика, массовые действия, ручная привязка с суммой и плательщиком, генерация документов с указанием организации, приём письма и определение организации.</p>
 
 <h4 id="bank-client-tab">Вкладка «Банк» в карточке клиента</h4>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v2171/client_tab.png" alt="Вкладка «Банк» в карточке клиента" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v2171/client_tab.png" alt="Вкладка «Банк» в карточке клиента" loading="lazy">
+  <figcaption>Вкладка «Банк» в карточке клиента</figcaption>
+</figure>
 
 <p>Вкладка показывает платежи клиента из выписок — дата, банк, сумма, плательщик, назначение, статус и ссылка на финоперацию — и выписанные счета с актами с кнопкой открытия PDF. В шапке сумма зачисленного и переход в очередь, отфильтрованную по этому клиенту.</p>
 
 <h4 id="bank-mobile-2171">На телефоне</h4>
-<p><img class="screenshot welcome-image" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v2171/mobile.png" alt="Очередь модерации на телефоне: карточки вместо таблицы" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v2171/mobile.png" alt="Очередь модерации на телефоне: карточки вместо таблицы" loading="lazy">
+  <figcaption>Очередь модерации на телефоне: карточки вместо таблицы</figcaption>
+</figure>
 
 <p>На телефоне строка разворачивается карточкой «поле — значение», сумма показана крупно, кнопки во всю ширину. Чекбоксы массового выбора на телефоне скрыты: платежи здесь разбирают по одному.</p>
 
 <h3 id="bank-imports">6.4.4. Журнал импортов</h3>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v961/bank_v961_imports.png" alt="Журнал импортов выписок" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v961/bank_v961_imports.png" alt="Журнал импортов выписок" loading="lazy">
+  <figcaption>Журнал импортов выписок</figcaption>
+</figure>
 
 <p>Полный лог писем от банков с возможностью отладки. <strong>По умолчанию показывает последние 30 дней</strong> (защита от бесконечной выдачи при N тысячах импортов).</p>
 
@@ -2625,15 +2724,30 @@ flowchart LR
   <li><strong>Сквозной переход до чека ОФД.</strong> У зачисленной операции в очереди рядом со ссылкой «FinOp #N» появилась прямая ссылка на кассовый чек в ОФД (54-ФЗ) и индикатор статуса пробития (ожидает / ошибка). Цепочка навигации замкнута: письмо-импорт ↔ очередь → финансовая операция → чек ОФД (карточка финоперации, в свою очередь, показывает чек и обратную ссылку на банковскую операцию).</li>
   <li><strong>Привязка платежа — раскрытием строки (по образцу Xero).</strong> На широком экране кнопка «Привязать» не открывает модальное окно, а раскрывает строку-аккордеон прямо под операцией: там карточка платежа (сумма, дата, плательщик, ИНН, назначение), поле поиска клиента (ФИО / договор / телефон / e-mail / ИНН / ID) с подсказками-кнопками из назначения платежа и подтверждением перед зачислением. На телефоне (&lt; 768 px) — то же в виде модалки / слайд-панели.</li>
 </ul>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_ux_v2240/bank_queue.png" alt="Банковские выписки — очередь модерации (единые компоненты)" loading="lazy"></p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_ux_v2240/bank_imports_columns.png" alt="Журнал импортов на SmitTable — настройка колонок" loading="lazy"></p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_ux_v2240/bank_pull_confirm.png" alt="SmitConfirm — подтверждение опасного забора писем" loading="lazy"></p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_ux_v2240/bank_link_inline.png" alt="Привязка платежа раскрытием строки (по образцу Xero)" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_ux_v2240/bank_queue.png" alt="Банковские выписки — очередь модерации (единые компоненты)" loading="lazy">
+  <figcaption>Банковские выписки — очередь модерации (единые компоненты)</figcaption>
+</figure>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_ux_v2240/bank_imports_columns.png" alt="Журнал импортов на SmitTable — настройка колонок" loading="lazy">
+  <figcaption>Журнал импортов на SmitTable — настройка колонок</figcaption>
+</figure>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_ux_v2240/bank_pull_confirm.png" alt="SmitConfirm — подтверждение опасного забора писем" loading="lazy">
+  <figcaption>SmitConfirm — подтверждение опасного забора писем</figcaption>
+</figure>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_ux_v2240/bank_link_inline.png" alt="Привязка платежа раскрытием строки (по образцу Xero)" loading="lazy">
+  <figcaption>Привязка платежа раскрытием строки (по образцу Xero)</figcaption>
+</figure>
 
 <h3 id="mailserver">6.4.5. Почтовый сервер (SmitMailServ)</h3>
 <p><strong>URL:</strong> <code>/admin/settings/mailserver/</code> — управление собственным почтовым сервером <strong>SmitMailServ</strong>, развёрнутым на хосте <code>mail.вашдомен.ru</code>. Операции с ящиками и доменами доступны из биллинга через API <code>https://mail.вашдомен.ru/api/v1/</code>.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v960/mailserver_overview.png" alt="Почтовый сервер — Обзор" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v960/mailserver_overview.png" alt="Почтовый сервер — Обзор" loading="lazy">
+  <figcaption>Почтовый сервер — Обзор</figcaption>
+</figure>
 
 <figure class="doc-video">
   <div class="dv-head">
@@ -2667,15 +2781,20 @@ flowchart LR
   <li><strong>DKIM / SPF / DMARC</strong> — статус DNS-записей по нажатию «Обновить».</li>
 </ul>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v960/mailserver_domain_select.png" alt="Селект «Основной домен»" loading="lazy" style="max-width:760px"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v960/mailserver_domain_select.png" alt="Селект «Основной домен»" loading="lazy" style="max-width:760px">
+  <figcaption>Селект «Основной домен»</figcaption>
+</figure>
 
 <h4 id="mailserver-mailboxes">Вкладка «Ящики»</h4>
 
 <p>Список всех ящиков сервера: кто владелец, сколько занято, что ящик обслуживает.
 Строки подгружаются AJAX-ом, поиск идёт по адресу и имени.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2130/mailboxes_desktop.jpg" alt="Список ящиков: тулбар, организации, роли" loading="lazy"></p>
-<p class="img-caption"><em>Одна строка тулбара: домен, тип ящика, поиск, колонки, добавление. Ниже — таблица с организацией, счётчиком писем и ролями.</em></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2130/mailboxes_desktop.jpg" alt="Список ящиков: тулбар, организации, роли" loading="lazy">
+  <figcaption><em>Одна строка тулбара: домен, тип ящика, поиск, колонки, добавление. Ниже — таблица с организацией, счётчиком писем и ролями.</em></figcaption>
+</figure>
 
 <h5 id="mailserver-mailboxes-list">Что показывает таблица</h5>
 <table style="font-size:.92em">
@@ -2771,7 +2890,10 @@ flowchart TB
 
 
 <p><strong>Добавление ящика</strong> (кнопка «Добавить ящик»):</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v960/mailserver_mailbox_add_modal.png" alt="Модалка «Добавить ящик»" loading="lazy" style="max-width:820px"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v960/mailserver_mailbox_add_modal.png" alt="Модалка «Добавить ящик»" loading="lazy" style="max-width:820px">
+  <figcaption>Модалка «Добавить ящик»</figcaption>
+</figure>
 <ul>
   <li><strong>Домен</strong> — <code>&lt;select&gt;</code> с подгрузкой реального списка из SmitMailServ: опечататься нельзя.</li>
   <li><strong>Логин (до @)</strong> — локальная часть адреса.</li>
@@ -2781,7 +2903,10 @@ flowchart TB
 </ul>
 
 <h4 id="mailserver-admins">Вкладка «Админы доменов»</h4>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v960/mailserver_admins.png" alt="Админы доменов" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v960/mailserver_admins.png" alt="Админы доменов" loading="lazy">
+  <figcaption>Админы доменов</figcaption>
+</figure>
 <p>Управление доменными админами SmitMailServ. У админа можно назначить набор доменов, которыми он управляет (<code>&lt;select multiple&gt;</code> с тем же AJAX-источником). Полезно если на сервере несколько обслуживаемых доменов — каждому даём отдельного админа.</p>
 
 <h4 id="mailserver-api">REST API внутри биллинга</h4>
@@ -2872,8 +2997,10 @@ sequenceDiagram
 <p>В правом верхнем углу, слева от кнопки выхода, есть значок <strong>«?»</strong> — он открывает
 этот раздел документации.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2100/help_btn.jpg" alt="Кнопка справки слева от кнопки выхода" loading="lazy"></p>
-<p class="img-caption"><em>Кнопка справки соседствует с выходом — там, где её ищут.</em></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2100/help_btn.jpg" alt="Кнопка справки слева от кнопки выхода" loading="lazy">
+  <figcaption><em>Кнопка справки соседствует с выходом — там, где её ищут.</em></figcaption>
+</figure>
 
 <h4 id="mailserver-identity">Имя, подпись и фото из профиля</h4>
 
@@ -2905,8 +3032,10 @@ flowchart TD
     S --> C["Личная книга и календарь<br/>названы по организации"]
 </pre>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2100/profile_mail.jpg" alt="Блок «Почта» в профиле сотрудника" loading="lazy"></p>
-<p class="img-caption"><em>Блок «Почта» в профиле: ящики сотрудника, переключатели уведомлений, адрес пересылки и подсказка про пароль.</em></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2100/profile_mail.jpg" alt="Блок «Почта» в профиле сотрудника" loading="lazy">
+  <figcaption><em>Блок «Почта» в профиле: ящики сотрудника, переключатели уведомлений, адрес пересылки и подсказка про пароль.</em></figcaption>
+</figure>
 
 <div class="note">
   <strong>Пароль от ящика совпадает с паролем входа в биллинг</strong> и меняется вместе с ним —
@@ -2929,8 +3058,10 @@ flowchart TD
 и адрес подставится сам. Личная книга и календарь названы по организации домена
 (например «Контакты СмИТ Поддержка») вместо стандартного «Personal Address Book».</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2100/addressbook.jpg" alt="Адресная книга почты с контактами из биллинга" loading="lazy"></p>
-<p class="img-caption"><em>Общая книга «Контакты» рядом с личной книгой сотрудника.</em></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2100/addressbook.jpg" alt="Адресная книга почты с контактами из биллинга" loading="lazy">
+  <figcaption><em>Общая книга «Контакты» рядом с личной книгой сотрудника.</em></figcaption>
+</figure>
 
 <h4 id="mailserver-mail-tab">Вкладка «Почта» в панели уведомлений</h4>
 
@@ -2953,8 +3084,10 @@ flowchart TD
 в ленте, каждый выбирает у себя в профиле; вкладку целиком можно выключить в
 <a href="#mailserver-server-settings">«Настройках сервера»</a>.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2100/mail_panel.jpg" alt="Вкладка «Почта» в панели уведомлений с открытым письмом" loading="lazy"></p>
-<p class="img-caption"><em>Лента писем и открытое письмо с полем ответа.</em></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2100/mail_panel.jpg" alt="Вкладка «Почта» в панели уведомлений с открытым письмом" loading="lazy">
+  <figcaption><em>Лента писем и открытое письмо с полем ответа.</em></figcaption>
+</figure>
 
 <h4 id="mailserver-server-settings">Настройки сервера</h4>
 
@@ -3038,8 +3171,10 @@ flowchart LR
 открывает ящик в почте. Пока сбор не отработал, вместо чисел стоит прочерк — это не то же
 самое, что «писем нет».</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2100/mailboxes_list.jpg" alt="Список ящиков с колонками «Квота» и «Писем»" loading="lazy"></p>
-<p class="img-caption"><em>Список ящиков: роли, владелец, занятое место и счётчик писем.</em></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2100/mailboxes_list.jpg" alt="Список ящиков с колонками «Квота» и «Писем»" loading="lazy">
+  <figcaption><em>Список ящиков: роли, владелец, занятое место и счётчик писем.</em></figcaption>
+</figure>
 
 <div class="note">
   <strong>Как это устроено внутри.</strong> Количество писем и занятое место считаются обходом

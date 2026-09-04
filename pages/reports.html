@@ -35,7 +35,7 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Готовые и произвольные отчёты, аудит операций, журналы платежей и сообщений, должники. Здесь же — раздел геймификации.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=2478">
+  <link rel="stylesheet" href="../css/style.css?v=2479">
   <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css?v=2193">
   <link rel="stylesheet" href="../css/search.css?v=2257">
 <!-- Yandex.Metrika counter -->
@@ -1023,7 +1023,10 @@
 
 <p><strong>Панель директора</strong> (<code>/admin/reports/dashboard/</code>, сайдбар «Отчёты → Панель директора») отвечает на четыре вопроса о бизнесе за выбранный период: сколько денег пришло, сколько в среднем приносит клиент, сколько людей подключилось и сколько заблокировано. Ниже — шесть графиков по тем же данным в динамике.</p>
 
-<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/director_v1761/director_overview.png" alt="Панель директора — общий вид" class="screenshot">
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/director_v1761/director_overview.png" alt="Панель директора — общий вид">
+  <figcaption>Панель директора — общий вид</figcaption>
+</figure>
 
 <h4 id="director-map">Карта раздела</h4>
 
@@ -1093,7 +1096,10 @@
 
 <h4 id="director-charts">Шесть графиков</h4>
 
-<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/director_v1761/director_dark.png" alt="Панель директора в тёмной теме" class="screenshot">
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/director_v1761/director_dark.png" alt="Панель директора в тёмной теме">
+  <figcaption>Панель директора в тёмной теме</figcaption>
+</figure>
 
 <table class="data-table">
   <thead>
@@ -1113,7 +1119,10 @@
 
 <h4 id="director-filters">Период и фильтры</h4>
 
-<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/director_v1761/director_filters.png" alt="Панель фильтров" class="screenshot">
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/director_v1761/director_filters.png" alt="Панель фильтров">
+  <figcaption>Панель фильтров</figcaption>
+</figure>
 
 <p>Слева — выбор периода с пресетами (текущий месяц, прошлый месяц, квартал, год, всё время). Рядом кнопка <strong>«Фильтры»</strong> со счётчиком активных срезов:</p>
 
@@ -1133,7 +1142,10 @@
 
 <p>Выбранный набор сохраняется между заходами, сбрасывается ссылкой «Сбросить фильтры». Списки тарифов и точек показывают количество клиентов — выбирать можно осознанно.</p>
 
-<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/director_v1761/director_segment_company.png" alt="Срез по юрлицам" class="screenshot">
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/director_v1761/director_segment_company.png" alt="Срез по юрлицам">
+  <figcaption>Срез по юрлицам</figcaption>
+</figure>
 
 <div class="info-box">
   <strong>Про точку подключения.</strong> Срез строится по записям <code>CONNECTION_POINTS</code>, названным по населённому пункту. Клиенты без точки в такой срез не попадают, поэтому под фильтром показано, скольких это касается. Массово назначить точки по адресу помогает команда <code>manage.py assign_connection_points</code> (с предпросмотром и откатом).
@@ -1172,8 +1184,14 @@ flowchart LR
 
 <p>Графики перерисовываются вместе со сменой темы, перезагрузка не нужна. На телефоне показатели встают в две колонки, фильтры — в одну, горизонтальной прокрутки нет.</p>
 
-<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/director_v1761/director_mobile.png" alt="Панель директора на телефоне" class="screenshot">
-<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/director_v1761/director_mobile_filters.png" alt="Фильтры на телефоне" class="screenshot">
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/director_v1761/director_mobile.png" alt="Панель директора на телефоне">
+  <figcaption>Панель директора на телефоне</figcaption>
+</figure>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/director_v1761/director_mobile_filters.png" alt="Фильтры на телефоне">
+  <figcaption>Фильтры на телефоне</figcaption>
+</figure>
 
 <!-- ===== AdminCustomReports: обзор ===== -->
 <h3 id="custom-reports-overview">Пользовательские SQL-отчёты — назначение и роль</h3>
@@ -1304,7 +1322,10 @@ flowchart LR
 </figure>
 
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/custom_reports_v511/v511_reports_library.png" alt="Библиотека отчётов — список с типами и поиском"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/custom_reports_v511/v511_reports_library.png" alt="Библиотека отчётов — список с типами и поиском">
+  <figcaption>Библиотека отчётов — список с типами и поиском</figcaption>
+</figure>
 
 <h4 id="custom-reports-list">Список отчётов</h4>
 <ul>
@@ -1322,7 +1343,10 @@ flowchart LR
 <p>URL: <code>/admin/reports/AdminCustomReports/&lt;id&gt;/executesql/</code></p>
 <p>Кнопка <em>▶ Запустить</em> в строке списка ведёт на форму с параметрами отчёта. Параметры извлекаются из SQL-кода по синтаксису <code>:Имя|тип$</code> и рендерятся в форму автоматически.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/custom_reports_v511/v511_report_136_form.png" alt="Форма параметров отчёта (executesql)"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/custom_reports_v511/v511_report_136_form.png" alt="Форма параметров отчёта (executesql)">
+  <figcaption>Форма параметров отчёта (executesql)</figcaption>
+</figure>
 
 <p>На скриншоте — форма отчёта <strong>«Действия сотрудника»</strong> (#136): три параметра — <em>Дата с</em>, <em>Дата по</em>, <em>Сотрудник</em>. По умолчанию период — последний месяц (07.04 → 07.05), сотрудник = «Все сотрудники».</p>
 
@@ -1337,14 +1361,20 @@ flowchart LR
 <h4 id="custom-reports-form-filled">Пример: запуск с фильтром по конкретному сотруднику</h4>
 <p>Выбор конкретного сотрудника из выпадающего списка <code>choices</code>:</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/custom_reports_v511/v511_report_136_form_filled.png" alt="Форма с заполненными параметрами"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/custom_reports_v511/v511_report_136_form_filled.png" alt="Форма с заполненными параметрами">
+  <figcaption>Форма с заполненными параметрами</figcaption>
+</figure>
 
 <p>На скриншоте — выбран сотрудник <strong>uspeshnyy (Aleksandr Uspeshnyy)</strong>, период <strong>01.05.2026 → 07.05.2026</strong>. Список доступных значений для параметра <code>:Sotrudnik|choices[...]$</code> формируется на лету: SQL-генератор выбирает уникальных <code>owner</code> из <code>AuditOperations</code> и подставляет их в опции.</p>
 
 <h4 id="custom-reports-result">Пример: результат выполнения</h4>
 <p>После клика <em>«Выполнить»</em> срабатывает редирект на <code>/admin/reports/AdminCustomReports/&lt;id&gt;/history/&lt;run_id&gt;/</code> — каждое выполнение получает свой <code>run_id</code> (хранится 30 дней для повторного открытия результата без перезапуска SQL):</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/custom_reports_v511/v511_report_136_result_top.png" alt="Результат выполнения отчёта — HTML-таблица"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/custom_reports_v511/v511_report_136_result_top.png" alt="Результат выполнения отчёта — HTML-таблица">
+  <figcaption>Результат выполнения отчёта — HTML-таблица</figcaption>
+</figure>
 
 <p>На скриншоте — результат отчёта «Действия сотрудника» за месяц: <strong>604 строки</strong>, колонки <em>#, Дата/время, Сотрудник, ФИО, Событие, IP-адрес, Подробности</em>. Каждая строка — один аудит-event с детализацией («FIN_TYPES: Тип фин. операции #28 «Перевод средств…»», «ABONENTS: создан клиент…», «USERS_USLUGA: услуга подключена…»).</p>
 
@@ -1443,7 +1473,10 @@ LIMIT :Лимит|sum$;</code></pre>
 
 <p>Раздел переработан: нерабочие отчёты вычищены, редактор запросов приведён к тому же виду, что в СОРМ, у отчётов появились обложки и разделение по организациям.</p>
 
-<img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/library_v1764/library_list_covers.png" alt="Библиотека — список с обложками и колонкой «Орг.»">
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/library_v1764/library_list_covers.png" alt="Библиотека — список с обложками и колонкой «Орг.»">
+  <figcaption>Библиотека — список с обложками и колонкой «Орг.»</figcaption>
+</figure>
 
 <pre class="markmap">
 - Библиотека отчётов
@@ -1508,7 +1541,10 @@ flowchart LR
 
 <h5>Редактор как в СОРМ + обложка</h5>
 
-<img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/library_v1764/library_modal_editor.png" alt="Модалка отчёта: редактор на всю высоту, кнопки AI и Формат, обложка, чекбоксы организаций">
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/library_v1764/library_modal_editor.png" alt="Модалка отчёта: редактор на всю высоту, кнопки AI и Формат, обложка, чекбоксы организаций">
+  <figcaption>Модалка отчёта: редактор на всю высоту, кнопки AI и Формат, обложка, чекбоксы организаций</figcaption>
+</figure>
 
 <ul>
   <li>Поле кода на всю высоту окна, компактный шрифт, кнопки <strong>AI</strong> (помощник по SQL) и <strong>Формат</strong> (автоформатирование) над редактором.</li>
@@ -1533,7 +1569,10 @@ flowchart TB
 
 <h5>Единые компоненты</h5>
 
-<img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/library_v1764/library_run_daterange.png" alt="Форма запуска: единый выбор периода вместо двух полей дат">
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/library_v1764/library_run_daterange.png" alt="Форма запуска: единый выбор периода вместо двух полей дат">
+  <figcaption>Форма запуска: единый выбор периода вместо двух полей дат</figcaption>
+</figure>
 
 <table class="data-table">
   <thead><tr><th>Где</th><th>Что было</th><th>Стало</th></tr></thead>
@@ -1546,8 +1585,14 @@ flowchart TB
 
 <h5>Тёмная тема и телефон</h5>
 
-<img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/library_v1764/library_dark.png" alt="Библиотека в тёмной теме">
-<img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/library_v1764/library_mobile.png" alt="Библиотека на телефоне">
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/library_v1764/library_dark.png" alt="Библиотека в тёмной теме">
+  <figcaption>Библиотека в тёмной теме</figcaption>
+</figure>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/library_v1764/library_mobile.png" alt="Библиотека на телефоне">
+  <figcaption>Библиотека на телефоне</figcaption>
+</figure>
 
 <p>Тёмная тема выдержана целиком; на телефоне список сжимается до имени и кнопки запуска,
 а модалки раскрываются на весь экран выдвижной панелью.</p>
@@ -1556,7 +1601,10 @@ flowchart TB
 <p>Журнал всех значимых действий в биллинге: создание, изменение, удаление клиентов,
 подключение услуг, платежи, блокировки, изменения настроек, действия СОРМ.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/03_audit.png" alt="Аудит"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/03_audit.png" alt="Аудит">
+  <figcaption>Аудит</figcaption>
+</figure>
 
 <p>Каждая запись содержит дату/время, оператора, тип события, клиента и описание.
 Для большинства событий есть <strong>drill-down</strong>: клик по записи открывает
@@ -1575,7 +1623,10 @@ flowchart TB
 сторно, обещанные платежи. Это представление таблицы <em>FinanceOperations</em>
 с серверной пагинацией (поддерживает сотни тысяч записей).</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/03_paylog.png" alt="Журнал платежей"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/03_paylog.png" alt="Журнал платежей">
+  <figcaption>Журнал платежей</figcaption>
+</figure>
 
 <p><strong>Возможности</strong>:</p>
 <ul>
@@ -1591,7 +1642,10 @@ flowchart TB
 
 <p>У обоих журналов общий набор инструментов: выбор периода, показатели, цветные категории, поиск и экспорт. К ним добавлены разделение по организациям, работа с телефона и единый визуальный язык.</p>
 
-<img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/audit_paylog_v1769/paylog_smitui.png" alt="Журнал платежей в едином виде SmitUI">
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/audit_paylog_v1769/paylog_smitui.png" alt="Журнал платежей в едином виде SmitUI">
+  <figcaption>Журнал платежей в едином виде SmitUI</figcaption>
+</figure>
 
 <pre class="markmap">
 - Журналы: Аудит и Платежи
@@ -1640,7 +1694,10 @@ flowchart TB
 
 <h5>Единый вид SmitUI и работа с клиентом</h5>
 
-<img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/audit_paylog_v1769/audit_smitui.png" alt="Аудит в едином виде SmitUI">
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/audit_paylog_v1769/audit_smitui.png" alt="Аудит в едином виде SmitUI">
+  <figcaption>Аудит в едином виде SmitUI</figcaption>
+</figure>
 
 <ul>
   <li>Обе таблицы выглядят одинаково: чистая шапка без заливки, воздушные строки,
@@ -1652,15 +1709,24 @@ flowchart TB
       поверх бокового меню.</li>
 </ul>
 
-<img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/audit_paylog_v1769/paylog_drawer.png" alt="Боковая панель клиента поверх журнала">
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/audit_paylog_v1769/paylog_drawer.png" alt="Боковая панель клиента поверх журнала">
+  <figcaption>Боковая панель клиента поверх журнала</figcaption>
+</figure>
 
 <h5>Телефон</h5>
 
 <p>На телефоне строки обоих журналов становятся карточками: у каждого значения — подпись поля,
 ничего не обрезается. В Журнале платежей слева остаётся цветная полоса прихода/расхода.</p>
 
-<img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/audit_paylog_v1769/paylog_mobile.png" alt="Журнал платежей на телефоне — карточки">
-<img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/audit_paylog_v1769/audit_mobile.png" alt="Аудит на телефоне — карточки">
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/audit_paylog_v1769/paylog_mobile.png" alt="Журнал платежей на телефоне — карточки">
+  <figcaption>Журнал платежей на телефоне — карточки</figcaption>
+</figure>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/audit_paylog_v1769/audit_mobile.png" alt="Аудит на телефоне — карточки">
+  <figcaption>Аудит на телефоне — карточки</figcaption>
+</figure>
 
 <h3 id="fiscal-queue-ref">4.3.1. Очередь чеков (54-ФЗ)</h3>
 <p>Раздел <strong>Отчёты → Очередь чеков</strong> (<code>/admin/reports/fiscal_queue/</code>)
@@ -1677,7 +1743,10 @@ Email, Telegram, Push, VK, ЛК. И точечные отправки из ка�
 (пункт меню «Отчёты → Журнал сообщений»,, единый вид SmitUI и
 мульти-орг).</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v1770/01_journal_overview.png" alt="Журнал сообщений: KPI, фильтры, чипы каналов, таблица SmitUI с колонкой Орг."></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v1770/01_journal_overview.png" alt="Журнал сообщений: KPI, фильтры, чипы каналов, таблица SmitUI с колонкой Орг.">
+  <figcaption>Журнал сообщений: KPI, фильтры, чипы каналов, таблица SmitUI с колонкой Орг.</figcaption>
+</figure>
 
 <h4 id="messages-journal-map">Карта раздела</h4>
 <pre class="markmap">
@@ -1786,7 +1855,10 @@ Telegram / Push). Hard-limit — <strong>500 получателей</strong> н�
   <li><strong>Поиск</strong> — Select2 AJAX по имени/договору для точечного выбора.</li>
 </ol>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v1770/02_broadcast_modal.png" alt="Рассылка: 5 вкладок, категория Должники, предпросмотр 1620 получателей с разбивкой по каналам SMS/Email/TG/Push"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v1770/02_broadcast_modal.png" alt="Рассылка: 5 вкладок, категория Должники, предпросмотр 1620 получателей с разбивкой по каналам SMS/Email/TG/Push">
+  <figcaption>Рассылка: 5 вкладок, категория Должники, предпросмотр 1620 получателей с разбивкой по каналам SMS/Email/TG/Push</figcaption>
+</figure>
 
 <p><strong>Live-preview</strong> снизу всегда показывает: фактическое количество
 получателей, первые 10 имён + «…и ещё N», статистику доступности каналов
@@ -1803,14 +1875,20 @@ count = 0 или count &gt; 500 (бейдж становится красным 
 (Tab → Enter/Space), live-фильтр по имени с автоматическим раскрытием родителей,
 кнопки <em>Раскрыть всё / Свернуть всё / Очистить выбор</em>.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v594/docs_v594_broadcast_folders_tree.png" alt="Tree папок: SMIT (5554), ртк-червленое (49), Дубовый (27, выбран)"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v594/docs_v594_broadcast_folders_tree.png" alt="Tree папок: SMIT (5554), ртк-червленое (49), Дубовый (27, выбран)">
+  <figcaption>Tree папок: SMIT (5554), ртк-червленое (49), Дубовый (27, выбран)</figcaption>
+</figure>
 
 <h4 id="messages-journal-nas">Рассылка по NAS-серверам</h4>
 <p>Полезно когда нужно предупредить клиентов конкретного NAS (профилактические
 работы, замена оборудования, миграция). Каждый NAS показывается с IP, статусом
 (включён / выкл) и количеством клиентов.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v594/docs_v594_broadcast_nas_tab.png" alt="Рассылка по NAS: 2 выбранных NAS, preview 408 клиентов"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v594/docs_v594_broadcast_nas_tab.png" alt="Рассылка по NAS: 2 выбранных NAS, preview 408 клиентов">
+  <figcaption>Рассылка по NAS: 2 выбранных NAS, preview 408 клиентов</figcaption>
+</figure>
 
 <h4 id="messages-journal-audit">Аудит рассылок</h4>
 <p>Каждая отправка пишется в <em>AuditOperations</em> (категория «Сообщения», см.
@@ -1829,7 +1907,10 @@ count = 0 или count &gt; 500 (бейдж становится красным 
 <p>Клик по строке открывает полный текст сообщения, дату, клиента и статусы всех
 каналов доставки. Из неё — переход в карточку клиента.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v1770/03_detail_modal.png" alt="Модалка деталей сообщения: дата, клиент, заголовок, полный текст, каналы доставки"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v1770/03_detail_modal.png" alt="Модалка деталей сообщения: дата, клиент, заголовок, полный текст, каналы доставки">
+  <figcaption>Модалка деталей сообщения: дата, клиент, заголовок, полный текст, каналы доставки</figcaption>
+</figure>
 
 <h4 id="messages-journal-mobile">Адаптивность и единый вид SmitUI</h4>
 <p>Раздел приведён к единому виду <a href="extras.html#ui-patterns">SmitUI</a>: чистая
@@ -1869,7 +1950,10 @@ count = 0 или count &gt; 500 (бейдж становится красным 
 <p><strong>Отчёты</strong> — встроенный markdown-просмотрщик внутренних документов
 проекта (отчёты по разработке, планы, документация).</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/03_dev_reports.png" alt="Отчёты разработки"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/03_dev_reports.png" alt="Отчёты разработки">
+  <figcaption>Отчёты разработки</figcaption>
+</figure>
 
 <p>Поддерживается сортировка по дате/имени или ручной drag-and-drop, inline-переименование,
 создание папок, загрузка новых .md-файлов через интерфейс.</p>
@@ -1900,7 +1984,10 @@ count = 0 или count &gt; 500 (бейдж становится красным 
 
 <p><strong>Логи</strong> — просмотр серверных логов прямо из админки.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/03_dev_logs.png" alt="Серверные логи"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/03_dev_logs.png" alt="Серверные логи">
+  <figcaption>Серверные логи</figcaption>
+</figure>
 
 <p>Доступны каналы:</p>
 <ul>
@@ -2111,7 +2198,10 @@ Flappy Bird, Helicopter</em>. Доступны в админке, мобильн
 мобильное приложение. Данные результатов хранятся в <code>GameScore</code>,
 история победителей — в <code>GameMonthWinner</code>.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/marketing_games_v980/scheme_01_architecture.png" alt="Архитектура модуля Маркетинг → Игры"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/marketing_games_v980/scheme_01_architecture.png" alt="Архитектура модуля Маркетинг → Игры">
+  <figcaption>Архитектура модуля Маркетинг → Игры</figcaption>
+</figure>
 
 <table class="data-table">
   <thead><tr><th>Компонент</th><th>Назначение</th></tr></thead>
@@ -2131,7 +2221,10 @@ Flappy Bird, Helicopter</em>. Доступны в админке, мобильн
 Сейчас Маркетинг = Игры; в будущем туда добавятся другие маркетинговые механики
 (акции, реферальные программы, бонусы за активность).</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/marketing_games_v992/01_marketing_settings_full.png" alt="Вкладка Маркетинг — полная страница настроек"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/marketing_games_v992/01_marketing_settings_full.png" alt="Вкладка Маркетинг — полная страница настроек">
+  <figcaption>Вкладка Маркетинг — полная страница настроек</figcaption>
+</figure>
 
 <p>Страница содержит 5 секций:</p>
 <ul>
@@ -2145,7 +2238,10 @@ Flappy Bird, Helicopter</em>. Доступны в админке, мобильн
   <li><strong>Текущий лидер и история</strong> — live-превью лидера + список победителей.</li>
 </ul>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/marketing_games_v980/02_marketing_tabs_top.png" alt="Шапка вкладки Маркетинг — Общее + Мобильное"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/marketing_games_v980/02_marketing_tabs_top.png" alt="Шапка вкладки Маркетинг — Общее + Мобильное">
+  <figcaption>Шапка вкладки Маркетинг — Общее + Мобильное</figcaption>
+</figure>
 
 <div class="note">
 <strong>🌓 Тёмная тема и адаптивность.</strong> Все секции — карточки, тумблеры,
@@ -2154,16 +2250,25 @@ Flappy Bird, Helicopter</em>. Доступны в админке, мобильн
 (активная подсвечивается), а переключатели и поля увеличены под удобное касание.
 </div>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/marketing_games_v992/08_mobile_tabs.png" alt="Мобильный вид вкладки Маркетинг" style="max-width:320px"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/marketing_games_v992/08_mobile_tabs.png" alt="Мобильный вид вкладки Маркетинг" style="max-width:320px">
+  <figcaption>Мобильный вид вкладки Маркетинг</figcaption>
+</figure>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/marketing_games_v992/07_settings_dark.png" alt="Вкладка Маркетинг в тёмной теме"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/marketing_games_v992/07_settings_dark.png" alt="Вкладка Маркетинг в тёмной теме">
+  <figcaption>Вкладка Маркетинг в тёмной теме</figcaption>
+</figure>
 
 <h3 id="marketing-game-of-month">5.3. «Игра месяца» — бесплатный интернет</h3>
 <p>Главная механика. Клиент с максимальным счётом за календарный месяц получает
 <strong>бесплатный месяц интернета</strong> — кредит-финоперацию на сумму
 месячной стоимости его тарифа.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/marketing_games_v980/scheme_02_flow.png" alt="Поток Игра месяца"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/marketing_games_v980/scheme_02_flow.png" alt="Поток Игра месяца">
+  <figcaption>Поток Игра месяца</figcaption>
+</figure>
 
 <p><strong>Настройки розыгрыша:</strong></p>
 <ul>
@@ -2187,7 +2292,10 @@ Flappy Bird, Helicopter</em>. Доступны в админке, мобильн
 заданы условия участия (см. §5.4), оператор отмечает их выполнение прямо в окне;
 кнопка «Начислить» становится доступной только после подтверждения всех условий.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/marketing_games_v992/06_award_modal.png" alt="Окно подтверждения начисления приза победителю"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/marketing_games_v992/06_award_modal.png" alt="Окно подтверждения начисления приза победителю">
+  <figcaption>Окно подтверждения начисления приза победителю</figcaption>
+</figure>
 
 <div class="note">
 <strong>🔒 Безопасное начисление:</strong> бонус начисляется только через
@@ -2209,7 +2317,10 @@ EBS-синхронизация его не затирает. Сотрудник�
   </tbody>
 </table>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/marketing_games_v980/03_game_of_month_conditions.png" alt="Игра месяца + условия участия"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/marketing_games_v980/03_game_of_month_conditions.png" alt="Игра месяца + условия участия">
+  <figcaption>Игра месяца + условия участия</figcaption>
+</figure>
 
 <p>Включённые условия показываются клиенту в мобильном приложении
 как требования перед участием в розыгрыше. По умолчанию все выключены.</p>
@@ -2229,7 +2340,10 @@ EBS-синхронизация его не затирает. Сотрудник�
   <code>GAMES_OF_MONTH_2GIS_URL</code>).</li>
 </ul>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/marketing_games_v992/scheme_03_sources.svg" alt="Источники ссылок условий участия"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/marketing_games_v992/scheme_03_sources.svg" alt="Источники ссылок условий участия">
+  <figcaption>Источники ссылок условий участия</figcaption>
+</figure>
 
 <div class="note">
 <strong>Проверка оценки.</strong> Мобильное приложение получает ссылки через
@@ -2242,7 +2356,10 @@ EBS-синхронизация его не затирает. Сотрудник�
 <p>В карточке клиента появляется вкладка <strong>«Маркетинг»</strong> —
 только если модуль игр включён <strong>и</strong> у клиента есть лицевой счёт.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/marketing_games_v980/04_abonent_marketing_tab.png" alt="Вкладка Маркетинг в карточке клиента"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/marketing_games_v980/04_abonent_marketing_tab.png" alt="Вкладка Маркетинг в карточке клиента">
+  <figcaption>Вкладка Маркетинг в карточке клиента</figcaption>
+</figure>
 
 <p>Содержимое вкладки:</p>
 <ul>
@@ -2263,7 +2380,10 @@ EBS-синхронизация его не затирает. Сотрудник�
 Управляется через context-processor — без жёсткой проверки прав, видимость
 определяется единым тогглом.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/marketing_games_v980/05_profile_menu_games.png" alt="Пункт Игры в профиль-меню"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/marketing_games_v980/05_profile_menu_games.png" alt="Пункт Игры в профиль-меню">
+  <figcaption>Пункт Игры в профиль-меню</figcaption>
+</figure>
 
 <p><strong>Мобильное приложение</strong> (<code>/mobile-api/v1/game/config</code>)
 отдаёт список доступных игр (из <code>GAMES_MOBILE_ALLOWED</code>) и данные

@@ -35,7 +35,7 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Пулы адресов и VLAN, списки доступа, адресная база, реквизиты, валюта, статусы, единицы измерения и периоды — плюс краткие обзоры ключевых сущностей биллинга.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=2478">
+  <link rel="stylesheet" href="../css/style.css?v=2479">
   <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css?v=2193">
   <link rel="stylesheet" href="../css/search.css?v=2257">
 <!-- Yandex.Metrika counter -->
@@ -1104,7 +1104,10 @@ flowchart TD
 <p>URL: <code>/admin/dictionary/IpPull/</code></p>
 <p><strong>Пул IP-адресов</strong> — это диапазон от <em>start_ip</em> до <em>end_ip</em>, из которого FreeRADIUS выдаёт <code>Framed-IP-Address</code> при авторизации клиента. Один пул привязан к одному или нескольким NAS-устройствам через 4 разных поля (см. <a href="#ip-pull-nas-roles-detail">роли</a>). Список загружается AJAX, статистика занятости считается раз в минуту с кешем.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v510/v510_ip_pool_list.png" alt="Список IP-пулов"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v510/v510_ip_pool_list.png" alt="Список IP-пулов">
+  <figcaption>Список IP-пулов</figcaption>
+</figure>
 
 <h5 id="ip-pull-list-features">Возможности списка</h5>
 <ul>
@@ -1121,7 +1124,10 @@ flowchart TD
 
 <h5 id="ip-pull-add">Добавление пула</h5>
 <p>Кнопка <strong>«+ Новый IP-пул»</strong> в правом верхнем углу открывает модалку:</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v510/v510_ip_pool_modal_add.png" alt="Модалка добавления IP-пула"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v510/v510_ip_pool_modal_add.png" alt="Модалка добавления IP-пула">
+  <figcaption>Модалка добавления IP-пула</figcaption>
+</figure>
 
 <p><strong>Обязательные поля</strong>:</p>
 <ul>
@@ -1148,7 +1154,10 @@ flowchart TD
 
 <h5 id="ip-pull-edit">Редактирование пула</h5>
 <p>Клик по строке (или иконке карандаша справа) открывает ту же модалку с предзаполненными полями:</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v510/v510_ip_pool_modal_edit.png" alt="Модалка редактирования IP-пула"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v510/v510_ip_pool_modal_edit.png" alt="Модалка редактирования IP-пула">
+  <figcaption>Модалка редактирования IP-пула</figcaption>
+</figure>
 
 <p>Все поля редактируются. Изменение <code>start_ip</code> / <code>end_ip</code> у используемого пула — <strong>опасная операция</strong>: если новый диапазон не покрывает уже выданные адреса, клиенты со «старыми» IP не попадут в пул при следующей авторизации (<code>allocate_ip_from_pools</code> не считает их занятыми, может выдать дубль). Прежде чем сужать диапазон — проверьте через <code>find_ip_duplicates --pool_id=N</code>.</p>
 
@@ -1234,7 +1243,10 @@ flowchart TD
 <p>URL: <code>/admin/dictionary/VlanPull/</code></p>
 <p><strong>Пул VLAN</strong> — диапазон номеров VLAN, выделенных оператору связи. Используется при настройке точек подключения (одна точка = одна VLAN из пула) и в шаблонах конфигурации коммутаторов.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v510/v510_vlan_pool_list.png" alt="Список VLAN-пулов"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v510/v510_vlan_pool_list.png" alt="Список VLAN-пулов">
+  <figcaption>Список VLAN-пулов</figcaption>
+</figure>
 
 <h5 id="vlan-pull-features">Возможности списка</h5>
 <ul>
@@ -1245,7 +1257,10 @@ flowchart TD
 
 <h5 id="vlan-pull-add">Добавление и редактирование</h5>
 <p>Кнопка <strong>«+ Новый VLAN-пул»</strong> открывает модалку:</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v510/v510_vlan_pool_modal_add.png" alt="Модалка добавления VLAN-пула"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v510/v510_vlan_pool_modal_add.png" alt="Модалка добавления VLAN-пула">
+  <figcaption>Модалка добавления VLAN-пула</figcaption>
+</figure>
 
 <p><strong>Поля</strong>:</p>
 <ul>
@@ -1255,7 +1270,10 @@ flowchart TD
   <li><strong>Оператор</strong> (<code>operator_id</code>) — Select из клиентов в папке Операторы (9002). Для одно-операторских систем поле скрыто.</li>
 </ul>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v510/v510_vlan_pool_modal_edit.png" alt="Модалка редактирования VLAN-пула"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v510/v510_vlan_pool_modal_edit.png" alt="Модалка редактирования VLAN-пула">
+  <figcaption>Модалка редактирования VLAN-пула</figcaption>
+</figure>
 
 <p>На скриншоте edit-режим: модалка идентична add, но с заполненными значениями + кнопкой «Удалить» снизу слева.</p>
 
@@ -1280,7 +1298,10 @@ flowchart TD
 в его карточке (на вкладке «Точки подключения») и попадает в RADIUS-ответ
 как Filter-Id.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_acl_groups.png" alt="ACL группы"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_acl_groups.png" alt="ACL группы">
+  <figcaption>ACL группы</figcaption>
+</figure>
 
 <h4>Подраздел «Списки разрешённых сайтов»</h4>
 <p>Белые списки доменов для клиентов в финансовой блокировке (captive portal):
@@ -1288,7 +1309,10 @@ flowchart TD
 ограничивает его трафик до этих доменов — чтобы он мог пополнить счёт, но не мог
 пользоваться интернетом для развлечений.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_acl_whitelist.png" alt="ACL — белые списки"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_acl_whitelist.png" alt="ACL — белые списки">
+  <figcaption>ACL — белые списки</figcaption>
+</figure>
 
 <h3 id="addresses">7.3. Все адреса</h3>
 <p>Подменю с тремя справочниками для адресной системы оператора.</p>
@@ -1357,7 +1381,10 @@ flowchart TD
 с unicode-сравнением, дома содержат геокоординаты (lat/lon), индекс, дату начала
 обслуживания.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_homes.png" alt="Адреса"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_homes.png" alt="Адреса">
+  <figcaption>Адреса</figcaption>
+</figure>
 
 <p>Возможности списка:</p>
 <ul>
@@ -1374,14 +1401,20 @@ flowchart TD
 несколько провайдерских узлов). Используется для DHCP Option 82, RADIUS-фильтра
 и СОРМ-выгрузки.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_conn_points.png" alt="Точки подключения"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_conn_points.png" alt="Точки подключения">
+  <figcaption>Точки подключения</figcaption>
+</figure>
 
 <h4>Подраздел «Типы адресных единиц»</h4>
 <p>Словарь сокращений: <em>ул, пер, наб, пр, пл, бульв, проезд, тупик, шоссе, поселение, мкрн</em>
 и т.д. Используется для нормализации и парсинга полных адресов, передачи в DaData
 и в форматирование адреса для печатных документов.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_home_types.png" alt="Типы адресных единиц"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_home_types.png" alt="Типы адресных единиц">
+  <figcaption>Типы адресных единиц</figcaption>
+</figure>
 
 <h3 id="requisites">7.4. Реквизиты</h3>
 <p>Шаблоны атрибутов для физлиц и юрлиц. <strong>Физлицо</strong>: паспорт серия/номер,
@@ -1389,7 +1422,10 @@ flowchart TD
 ОГРН, юридический/физический/почтовый адрес, расчётный счёт, банк, БИК,
 корреспондентский счёт, в лице, директор.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_requisites.png" alt="Реквизиты"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_requisites.png" alt="Реквизиты">
+  <figcaption>Реквизиты</figcaption>
+</figure>
 
 <p>Атрибуты автоматически создаются у клиента при создании в зависимости от типа
 (физлицо / юрлицо). Заполняются во вкладке <em>«Реквизиты»</em> карточки клиента.
@@ -1399,7 +1435,10 @@ flowchart TD
 <p>Список валют биллинга. По умолчанию — рубль (₽). Для мультивалютных схем можно
 добавить USD/EUR с курсами.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_currency.png" alt="Валюты"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_currency.png" alt="Валюты">
+  <figcaption>Валюты</figcaption>
+</figure>
 
 <h3 id="fin-types">7.5А. Типы фин. операций</h3>
 <p>Справочник <code>/admin/dictionary/FinTypes/</code> (модель <code>FinTypes</code>, PK — <code>type_id</code>) — типы <code>FinanceOperations</code>: пополнение, абонплата, обещанный платёж, банковская выписка и т.п. У типа есть флаг <strong>«Активный»</strong> (<code>enabled</code>) — выключенный тип не показывается в селектах создания операций. Используется в фильтрах отчётов и в модалке финопераций.</p>
@@ -1408,7 +1447,10 @@ flowchart TD
 <p>Календарь нерабочих дней. Используется в расчётах, которые должны учитывать рабочие дни:
 например, обещанный платёж сдвигает срок на ближайший рабочий день, если выпадает на выходной.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_weekends.png" alt="Выходные дни"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_weekends.png" alt="Выходные дни">
+  <figcaption>Выходные дни</figcaption>
+</figure>
 
 <!-- ===== Statuses: обзор ===== -->
 <h3 id="statuses-overview">Статусы клиентов — назначение и роль</h3>
@@ -1499,7 +1541,10 @@ flowchart TD
 клиента в списке (отдельного поля цвета у статуса нет) и имеет шаблон сообщения,
 которое отправляется автоматически при назначении статуса.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_statuses.png" alt="Статусы"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_statuses.png" alt="Статусы">
+  <figcaption>Статусы</figcaption>
+</figure>
 
 <p>В модалке статуса есть вкладки для шаблонов сообщений по каналам (Email / SMS /
 Push / Telegram) и RADIUS-параметров (если статус должен влиять на скорость
@@ -1510,13 +1555,19 @@ Push / Telegram) и RADIUS-параметров (если статус долж�
 статус «Активный»; задержка платежа &gt; N дней → статус «Должник»; истечение договора
 → статус «Архив». Правила применяются Celery-задачей раз в час.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_status_follow.png" alt="Настройка статусов"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_status_follow.png" alt="Настройка статусов">
+  <figcaption>Настройка статусов</figcaption>
+</figure>
 
 <h3 id="report-types">7.8. Типы отчётов</h3>
 <p>Категории SQL-отчётов для разделения по ролям сотрудников: Техсервис, Руководство,
 Бухгалтерия, ЦОК, Телефония, Техподдержка, ЦУС. Каждый тип имеет цвет и иконку.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_report_types.png" alt="Типы отчётов"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_report_types.png" alt="Типы отчётов">
+  <figcaption>Типы отчётов</figcaption>
+</figure>
 
 <p>Управляется из этого справочника или прямо из <a href="reports.html#custom-reports">Библиотеки отчётов</a>
 кнопкой <em>«Типы»</em>.</p>
@@ -1525,13 +1576,19 @@ Push / Telegram) и RADIUS-параметров (если статус долж�
 <p>Словарь единиц измерения для услуг: МБ, ГБ, минуты, штуки. Используется
 в названиях услуг и в детализации расхода.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_units.png" alt="Единицы измерения"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_units.png" alt="Единицы измерения">
+  <figcaption>Единицы измерения</figcaption>
+</figure>
 
 <h3 id="periods">7.10. Периоды</h3>
 <p>Биллинговые периоды (обычно «месяц с 1-го по последний день»). Период определяет
 дату списания абонплаты, формирование отчётов, закрытие периода.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_periods.png" alt="Периоды"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_periods.png" alt="Периоды">
+  <figcaption>Периоды</figcaption>
+</figure>
 
 
 <!-- ===== 8. АБОНЕНТЫ ===== -->

@@ -35,7 +35,7 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Складской модуль: номенклатура, серийный учёт со штрихкодами, подотчёт монтажника, материалы в наряде, продажа и аренда оборудования, алерты остатков.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=2478">
+  <link rel="stylesheet" href="../css/style.css?v=2479">
   <link rel="stylesheet" href="../css/search.css?v=2257">
   <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css?v=2193">
 <!-- Yandex.Metrika counter -->
@@ -1056,7 +1056,10 @@ flowchart LR
     поддерживаются.</li>
 </ul>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/stock_dashboard.png" alt="Остатки — сводная с подсветкой ниже минимума" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/stock_dashboard.png" alt="Остатки — сводная с подсветкой ниже минимума" loading="lazy">
+  <figcaption>Остатки — сводная с подсветкой ниже минимума</figcaption>
+</figure>
 
 <div class="info-box"><strong>Как связан с остальной системой.</strong>
 Склад — не изолированный реестр: списание материалов происходит прямо из наряда
@@ -1128,7 +1131,10 @@ stateDiagram-v2
 единая иконка штрихкода (во всех таблицах модуля): тултип показывает
 серийник, MAC и штрихкод, клик открывает карточку движения со всеми
 деталями. Даты — компактно «дд.мм.гг», полная дата в тултипе.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/stock_movements.png" alt="Журнал движений — фильтр по сотруднику, S/N-иконки" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/stock_movements.png" alt="Журнал движений — фильтр по сотруднику, S/N-иконки" loading="lazy">
+  <figcaption>Журнал движений — фильтр по сотруднику, S/N-иконки</figcaption>
+</figure>
 
 <h2 id="stock-items">Номенклатура и остатки</h2>
 <p>Позиция каталога задаёт: категорию, единицу измерения, тип учёта
@@ -1140,8 +1146,14 @@ stateDiagram-v2
 номенклатуры добавляет готовый набор позиций с категориями, ценами и порогами
 остатков — «Интернет-провайдер (ISP)», «Видеонаблюдение», «Домофония».
 Применение идемпотентно: существующие позиции с теми же названиями не меняются.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/stock_presets.png" alt="Пресеты номенклатуры" loading="lazy"></p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/stock_items.png" alt="Номенклатура — позиции, категории, склады" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/stock_presets.png" alt="Пресеты номенклатуры" loading="lazy">
+  <figcaption>Пресеты номенклатуры</figcaption>
+</figure>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/stock_items.png" alt="Номенклатура — позиции, категории, склады" loading="lazy">
+  <figcaption>Номенклатура — позиции, категории, склады</figcaption>
+</figure>
 
 <h3 id="stock-balances">Остатки: где лежит запас и сколько он стоит</h3>
 <p>Страница «Остатки» отвечает на вопрос «что у нас есть» не только штуками,
@@ -1164,7 +1176,10 @@ flowchart LR
 категории и выгружается в CSV — ровно тот срез, который на экране. Внизу —
 строка итогов: сколько позиций попало в выборку и на какую сумму.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v2018/stock_balances.png" alt="Остатки: полоса распределения, суммы по закупочной, фильтр склада" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v2018/stock_balances.png" alt="Остатки: полоса распределения, суммы по закупочной, фильтр склада" loading="lazy">
+  <figcaption>Остатки: полоса распределения, суммы по закупочной, фильтр склада</figcaption>
+</figure>
 
 <h3 id="stock-deficit">Дефицит и список к закупке</h3>
 <p>У позиции задаётся минимальный остаток. В номенклатуре рядом с остатком
@@ -1173,7 +1188,10 @@ flowchart LR
 CSV со списком: что докупить, сколько и на какую сумму по закупочной цене —
 такой файл можно сразу отдать снабженцу.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v2018/stock_items_deficit.png" alt="Номенклатура: колонка «Дефицит» и кнопка «К закупке»" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v2018/stock_items_deficit.png" alt="Номенклатура: колонка «Дефицит» и кнопка «К закупке»" loading="lazy">
+  <figcaption>Номенклатура: колонка «Дефицит» и кнопка «К закупке»</figcaption>
+</figure>
 
 <h2 id="stock-cards">Карточка позиции и карточка единицы</h2>
 
@@ -1199,9 +1217,15 @@ CSV со списком: что докупить, сколько и на как�
 владения</em>: приход → выдача в подотчёт → передача другому сотруднику →
 установка клиенту → демонтаж или брак. Сторнированные события зачёркнуты.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v2018/stock_item_card.png" alt="Карточка позиции: распределение остатка, деньги, дефицит, вкладки" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v2018/stock_item_card.png" alt="Карточка позиции: распределение остатка, деньги, дефицит, вкладки" loading="lazy">
+  <figcaption>Карточка позиции: распределение остатка, деньги, дефицит, вкладки</figcaption>
+</figure>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v2018/stock_unit_card.png" alt="Карточка единицы: где она сейчас и таймлайн владения" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v2018/stock_unit_card.png" alt="Карточка единицы: где она сейчас и таймлайн владения" loading="lazy">
+  <figcaption>Карточка единицы: где она сейчас и таймлайн владения</figcaption>
+</figure>
 
 <p>Обе карточки уважают организацию: чужую позицию или единицу открыть нельзя
 (см. <a href="#stock-multiorg">10а. Несколько организаций</a>).</p>
@@ -1223,15 +1247,24 @@ Code128 кодирует только латиницу и цифры — есл�
 таблицах модуля при наведении на иконку штрихкода всплывает
 <strong>сканируемая картинка кода</strong> — сканер прикладывают прямо к экрану,
 не отходя к принтеру этикеток.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/stock_receipt.png" alt="Приход — накладная и массовое заведение серийников" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/stock_receipt.png" alt="Приход — накладная и массовое заведение серийников" loading="lazy">
+  <figcaption>Приход — накладная и массовое заведение серийников</figcaption>
+</figure>
 
 <h2 id="stock-issue">Подотчёт сотрудника</h2>
 <p>Кладовщик выдаёт монтажнику оборудование по скану и расходники количеством.
 Выбор сотрудника — единый компонент ProfileSelect (аватар, роли, поиск).
 У монтажника есть свой мобильный экран «Мой подотчёт»: что на руках, возврат
 на склад, акт брака.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/stock_issue.png" alt="Выдача в подотчёт — скан и единый селектор сотрудника" loading="lazy"></p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/stock_my.png" alt="Мой подотчёт — мобильный экран монтажника" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/stock_issue.png" alt="Выдача в подотчёт — скан и единый селектор сотрудника" loading="lazy">
+  <figcaption>Выдача в подотчёт — скан и единый селектор сотрудника</figcaption>
+</figure>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/stock_my.png" alt="Мой подотчёт — мобильный экран монтажника" loading="lazy">
+  <figcaption>Мой подотчёт — мобильный экран монтажника</figcaption>
+</figure>
 <p><strong>«Я выдал»</strong> (<code>/admin/stock/issued/</code>) — зеркальная
 страница для кладовщика: все выдачи и передачи, которые он провёл, и
 <strong>судьба каждой единицы</strong> — в чьём подотчёте сейчас, установлена
@@ -1239,7 +1272,10 @@ Code128 кодирует только латиницу и цифры — есл�
 склад, списана в брак или сторнирована. В профиле сотрудника — блоки
 «Мой подотчёт» (итог материальной ответственности + акт PDF, даты выдачи)
 и «Я выдал».</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/stock_issued.png" alt="Я выдал — судьба каждой выдачи" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/stock_issued.png" alt="Я выдал — судьба каждой выдачи" loading="lazy">
+  <figcaption>Я выдал — судьба каждой выдачи</figcaption>
+</figure>
 <p><strong>Передача подотчёт→подотчёт</strong>: при включённой настройке
 сотрудники передают единицы друг другу (например, бригадир — монтажнику)
 без возврата на склад; движение «Перемещение» в журнале, уведомление
@@ -1253,7 +1289,10 @@ Code128 кодирует только латиницу и цифры — есл�
 Клик по счётчику оставляет в списке только эти строки; рядом — фильтры «кому
 выдал» и период.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v2018/stock_issued_fates.png" alt="«Я выдал»: счётчики по судьбам, фильтры по получателю и периоду" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v2018/stock_issued_fates.png" alt="«Я выдал»: счётчики по судьбам, фильтры по получателю и периоду" loading="lazy">
+  <figcaption>«Я выдал»: счётчики по судьбам, фильтры по получателю и периоду</figcaption>
+</figure>
 
 <h3 id="stock-journal">Журнал движений</h3>
 <p>Журнал — полная история склада: приход, выдача, передача, установка,
@@ -1261,7 +1300,10 @@ Code128 кодирует только латиницу и цифры — есл�
 тип движения; выгрузка в CSV отдаёт тот же отфильтрованный срез. Из карточки
 движения открываются карточка единицы и карточка позиции.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v2018/stock_journal.png" alt="Журнал движений: период, организация, склад, тип и выгрузка CSV" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v2018/stock_journal.png" alt="Журнал движений: период, организация, склад, тип и выгрузка CSV" loading="lazy">
+  <figcaption>Журнал движений: период, организация, склад, тип и выгрузка CSV</figcaption>
+</figure>
 
 <h2 id="stock-inventory">Инвентаризация: пересчёт и акт расхождений</h2>
 <p>Все цифры склада — остатки, дефицит, стоимость запаса — держатся на одном
@@ -1269,7 +1311,10 @@ Code128 кодирует только латиницу и цифры — есл�
 Раздел <em>Склад → Инвентаризация</em> показывает список актов; кнопка
 <strong>«Начать пересчёт»</strong> открывает новый лист по выбранному складу.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v2025/stock_inventory_list.png" alt="Список актов инвентаризации со статусами" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v2025/stock_inventory_list.png" alt="Список актов инвентаризации со статусами" loading="lazy">
+  <figcaption>Список актов инвентаризации со статусами</figcaption>
+</figure>
 
 <p>Главное правило: <strong>пересчёт не правит историю</strong>. Разница
 оформляется отдельными движениями типа
@@ -1294,7 +1339,10 @@ flowchart LR
 — свод: сколько позиций, сколько внесено, сколько излишков и недостач, сколько
 серийников найдено и во что расхождение обходится по закупочной цене.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v2025/stock_inventory_sheet.png" alt="Лист пересчёта: свод, ввод факта, скан серийников" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v2025/stock_inventory_sheet.png" alt="Лист пересчёта: свод, ввод факта, скан серийников" loading="lazy">
+  <figcaption>Лист пересчёта: свод, ввод факта, скан серийников</figcaption>
+</figure>
 
 <ul>
   <li><strong>Факт по позициям.</strong> Вводится прямо в таблице, сохраняется
@@ -1349,12 +1397,18 @@ flowchart LR
 <p>Бронь ставится там, где о ней думают, — <strong>в наряде</strong>, в модалке
 «Материалы наряда». Клиент для этого не нужен: наряд уже есть, вещь нужна.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v2028/stock_reserve_montazh.png" alt="Блок «Отложено под наряд» в модалке материалов и кнопка «Забронировать выбранное»" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v2028/stock_reserve_montazh.png" alt="Блок «Отложено под наряд» в модалке материалов и кнопка «Забронировать выбранное»" loading="lazy">
+  <figcaption>Блок «Отложено под наряд» в модалке материалов и кнопка «Забронировать выбранное»</figcaption>
+</figure>
 
 <p>Общая картина — в разделе <em>Склад → Резервы</em>: что отложено, под какой
 наряд, к какой дате и кем. Оттуда же бронь снимается.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v2028/stock_reserve_list.png" alt="Список резервов: позиция, наряд, дата, статус" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v2028/stock_reserve_list.png" alt="Список резервов: позиция, наряд, дата, статус" loading="lazy">
+  <figcaption>Список резервов: позиция, наряд, дата, статус</figcaption>
+</figure>
 
 <h3 id="stock-reserve-rules">Что резерв меняет в работе склада</h3>
 <ul>
@@ -1388,7 +1442,10 @@ flowchart LR
 движений выглядела бы в журнале как потеря в одном месте и находка в другом,
 хотя это одна и та же вещь.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v2028/stock_transfer_modal.png" alt="Модалка перемещения: откуда, куда, позиция или штрихкод" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v2028/stock_transfer_modal.png" alt="Модалка перемещения: откуда, куда, позиция или штрихкод" loading="lazy">
+  <figcaption>Модалка перемещения: откуда, куда, позиция или штрихкод</figcaption>
+</figure>
 
 <p>Кнопка «Переместить» — в разделе «Остатки». Переместить можно количеством
 (расходники) или по штрихкоду конкретной единицы. Не даст: на тот же склад,
@@ -1401,7 +1458,10 @@ flowchart LR
 на фирму, вся история закупок и цен в одном месте. Отсюда ответ на вопрос
 «сколько у них закупили и почём брали в прошлый раз».</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v2028/stock_supplier_receipt.png" alt="Приход: отдельные поля «№ документа» и «Поставщик» с быстрым добавлением" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v2028/stock_supplier_receipt.png" alt="Приход: отдельные поля «№ документа» и «Поставщик» с быстрым добавлением" loading="lazy">
+  <figcaption>Приход: отдельные поля «№ документа» и «Поставщик» с быстрым добавлением</figcaption>
+</figure>
 
 <ul>
   <li>На приходе поставщик выбирается из списка; кнопка <em>+</em> рядом
@@ -1433,8 +1493,14 @@ flowchart LR
 <code>/admin/crm/montazh/</code>). Кладовщик, суперпользователь и менеджеры
 работают без ограничения. Смена статуса единиц по-прежнему возможна только для
 того, что в <strong>своём подотчёте</strong>.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/montazh_materials_row.png" alt="Наряды монтажника — строка Материалы на карточке" loading="lazy"></p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/montazh_materials_modal.png" alt="Модалка материалов наряда" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/montazh_materials_row.png" alt="Наряды монтажника — строка Материалы на карточке" loading="lazy">
+  <figcaption>Наряды монтажника — строка Материалы на карточке</figcaption>
+</figure>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/montazh_materials_modal.png" alt="Модалка материалов наряда" loading="lazy">
+  <figcaption>Модалка материалов наряда</figcaption>
+</figure>
 
 <h2 id="stock-abonent">Оборудование в карточке клиента</h2>
 <p>Вкладка «Оборудование» (прямая ссылка —
@@ -1443,7 +1509,10 @@ flowchart LR
 и <strong>демонтаж</strong> (с вопросом «исправное или брак?»). При установке
 серийной единицы её MAC/серийник автоматически подставляются в учётку клиента
 (тумблер <code>STOCK_AUTO_FILL_MAC</code>).</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/abonent_equipment_tab.png" alt="Вкладка Оборудование в карточке клиента" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/abonent_equipment_tab.png" alt="Вкладка Оборудование в карточке клиента" loading="lazy">
+  <figcaption>Вкладка Оборудование в карточке клиента</figcaption>
+</figure>
 
 <h2 id="stock-money">Деньги: продажа и аренда</h2>
 <p>Режим передачи определяет финансовые последствия установки:</p>
@@ -1487,7 +1556,10 @@ flowchart TB
     (<code>deal#N</code>, со ссылками на сделку и клиента) — сколько материалов
     и на какую сумму ушло. Сторно исключается автоматически.</li>
 </ul>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/stock_analytics.png" alt="Аналитика склада — KPI, обороты, подотчёты, себестоимость" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/stock_analytics.png" alt="Аналитика склада — KPI, обороты, подотчёты, себестоимость" loading="lazy">
+  <figcaption>Аналитика склада — KPI, обороты, подотчёты, себестоимость</figcaption>
+</figure>
 
 <h2 id="stock-scan">Скан-центр: операции с телефона</h2>
 <p>Страница <code>/admin/stock/scan/</code> (пункт меню «Скан») — максимум
@@ -1521,7 +1593,10 @@ flowchart TB
 браузерах. После каждого действия — уведомление и журнал операций на экране;
 можно сканировать следующий код без перезагрузки. USB-сканер работает как
 клавиатура (ввод + Enter).</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/stock_scan_mobile.png" alt="Скан-центр на телефоне — контекстные действия по статусу единицы" loading="lazy" style="max-width:390px"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v1846/stock_scan_mobile.png" alt="Скан-центр на телефоне — контекстные действия по статусу единицы" loading="lazy" style="max-width:390px">
+  <figcaption>Скан-центр на телефоне — контекстные действия по статусу единицы</figcaption>
+</figure>
 
 <h3 id="stock-scan-offline">Сканирование подряд и работа без связи</h3>
 <p>Сканирование в поле рассчитано на две ситуации: серия кодов подряд и работа

@@ -35,7 +35,7 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Нативная CRM: канбан-воронка, конструктор стадий и триггеров, источники сделок, Salesbot, Задачи, Списки, виджеты-плагины.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=2478">
+  <link rel="stylesheet" href="../css/style.css?v=2479">
   <link rel="stylesheet" href="../css/search.css?v=2257">
   <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css?v=2193">
 <!-- Yandex.Metrika counter -->
@@ -1155,7 +1155,10 @@ root); остальные видят эти разделы в режиме пр�
 <p>URL: <code>/admin/crm/deals/</code>. Колонки — стадии воронки, карточка сделки
 показывает то, что настроено в «Виде карточки»: клиента и телефон, адрес, сумму,
 цветные теги, чипы источника/тарифа/монтажа, «дней в стадии», аватар ответственного.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_v1846/crm_kanban.png" alt="CRM — воронка сделок с тегами и чипами" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_v1846/crm_kanban.png" alt="CRM — воронка сделок с тегами и чипами" loading="lazy">
+  <figcaption>CRM — воронка сделок с тегами и чипами</figcaption>
+</figure>
 <ul>
   <li><strong>Чипы-фильтры</strong>: Все / Мои / Наблюдаю / Не назнач. — со счётчиками;
   плюс мультивыбор источников, поиск (имя / телефон в любом формате / адрес / текст
@@ -1185,7 +1188,10 @@ root); остальные видят эти разделы в режиме пр�
 («Дозвонился / Не дозвонился / Перезвонить») и попадает в таймлайн.</p>
 
 <h3 id="crm-import">Импорт лидов из CSV</h3>
-<p><img class="screenshot" src="../img/v1443/crm_import_modal.png" alt="Импорт лидов из CSV" loading="lazy"></p>
+<figure class="shot">
+  <img src="../img/v1443/crm_import_modal.png" alt="Импорт лидов из CSV" loading="lazy">
+  <figcaption>Импорт лидов из CSV</figcaption>
+</figure>
 <p>Кнопка «Импорт» в тулбаре канбана принимает файл или вставленный текст в
 формате <code>Имя;Телефон;Комментарий</code> (разделитель — точка с запятой,
 запятая или табуляция; до 500 строк за раз). Каждая строка проходит штатный
@@ -1280,7 +1286,10 @@ stateDiagram-v2
 </ul>
 
 <h3 id="crm-presets">Галерея «Из шаблона»</h3>
-<p><img class="screenshot" src="../img/v1443/crm_preset_gallery.png" alt="Галерея преднастроенных воронок" loading="lazy"></p>
+<figure class="shot">
+  <img src="../img/v1443/crm_preset_gallery.png" alt="Галерея преднастроенных воронок" loading="lazy">
+  <figcaption>Галерея преднастроенных воронок</figcaption>
+</figure>
 <p>Кнопка «Из шаблона» открывает галерею готовых воронок провайдера:
 подключение интернета, продажи B2B, доп. продажи, возврат ушедших,
 видеонаблюдение. Пресет создаёт новую воронку со стадиями, правилами входа,
@@ -1290,8 +1299,11 @@ stateDiagram-v2
 CRM стартовый набор воронок создаётся автоматически при развёртывании.</p>
 
 <h3 id="crm-pipelines-org">Воронки и организации</h3>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_v1951/pipeline_picker.jpg"
-     alt="Селектор воронок: бейдж организации перед названием" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_v1951/pipeline_picker.jpg"
+     alt="Селектор воронок: бейдж организации перед названием" loading="lazy">
+  <figcaption>Селектор воронок: бейдж организации перед названием</figcaption>
+</figure>
 <p>Воронка принадлежит организации: у каждой компании свои стадии, правила
 перехода и триггеры. Селектор воронок в канбане показывает только воронки
 выбранной в шапке компании — если она одна, селектор не показывается вовсе.
@@ -1307,7 +1319,10 @@ CRM стартовый набор воронок создаётся автома
 типа. Как только сделки перенесены, общая воронка из списка уходит.</p>
 
 <h2 id="crm-sources">Источники сделок</h2>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_v1846/crm_kanban_filters.png" alt="Источники сделок" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_v1846/crm_kanban_filters.png" alt="Источники сделок" loading="lazy">
+  <figcaption>Источники сделок</figcaption>
+</figure>
 <p>CRM → Настройки → Источники сделок (панель вверху конструктора воронок).
 Источник — это <strong>запись, а не фиксированный канал</strong>: на один канал
 (Mango, AI-виджет, AI Voice, VK, Telegram, MAX, веб-форма, заявка из Поддержки)
@@ -1340,7 +1355,10 @@ UTM-кампании и организация работают одинаков
 сохраняется ссылка на источник — на ней строится аналитика.</p>
 
 <h3 id="crm-sources-widgets">Источники в каталоге виджетов</h3>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_v1846/crm_widgets.png" alt="Источники лидов в каталоге виджетов" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_v1846/crm_widgets.png" alt="Источники лидов в каталоге виджетов" loading="lazy">
+  <figcaption>Источники лидов в каталоге виджетов</figcaption>
+</figure>
 <p>Виджеты приёма заявок (Mango, AI-виджет, AI Voice, веб-формы) показаны и в
 каталоге <a href="crm.html#widgets">Настройки → Виджеты</a> — секция «Источники
 лидов»: включение/выключение источника тумблером, переходы в настройки канала
@@ -1455,7 +1473,10 @@ flowchart LR
 </pre>
 
 <h2 id="crm-userfields">Доп. поля сделок</h2>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_v1846/crm_userfields.png" alt="Доп. поля — панель групп" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_v1846/crm_userfields.png" alt="Доп. поля — панель групп" loading="lazy">
+  <figcaption>Доп. поля — панель групп</figcaption>
+</figure>
 <p>URL: <code>/admin/crm/userfields/</code>. Панель групп слева (как разделы анкеты),
 поля выбранной группы справа — с порядком ↑↓ и добавлением «+ поле в группу».</p>
 <table class="data-table">
@@ -1475,7 +1496,10 @@ flowchart LR
 заполнит паспорт; для юр. лиц действует своя группа с ИНН/КПП.</p>
 
 <h2 id="crm-tasks">Задачи</h2>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_v1846/crm_tasks.png" alt="Задачи — просроченные, типы, результат" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_v1846/crm_tasks.png" alt="Задачи — просроченные, типы, результат" loading="lazy">
+  <figcaption>Задачи — просроченные, типы, результат</figcaption>
+</figure>
 <p>URL: <code>/admin/crm/tasks/</code> (CRM → Задачи). Единый список задач по всем
 сделкам:</p>
 <ul>
@@ -1496,7 +1520,10 @@ flowchart LR
 закрывает задачи с результатами — вся история остаётся в таймлайнах сделок.</p>
 
 <h2 id="crm-lists">Списки (контакты)</h2>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/smit/billing/crm_v1424/crm_lists.png" alt="Списки — настройки таблицы и inline-редактор" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/smit/billing/crm_v1424/crm_lists.png" alt="Списки — настройки таблицы и inline-редактор" loading="lazy">
+  <figcaption>Списки — настройки таблицы и inline-редактор</figcaption>
+</figure>
 <p>URL: <code>/admin/crm/contacts/</code> (CRM → Списки). Все клиенты CRM одной
 таблицей:</p>
 <ul>
@@ -1523,7 +1550,10 @@ flowchart LR
 <h2 id="crm-salesbot">Salesbot</h2>
 <p>Пункт меню: <strong>CRM → Salesbot</strong> (—
 сценарии правят чаще, чем воронки).</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_salesbot_v1972/01_editor.jpg" alt="Редактор сценария: канвас со связями и правая панель с палитрой шагов" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_salesbot_v1972/01_editor.jpg" alt="Редактор сценария: канвас со связями и правая панель с палитрой шагов" loading="lazy">
+  <figcaption>Редактор сценария: канвас со связями и правая панель с палитрой шагов</figcaption>
+</figure>
 <p>URL: <code>/admin/crm/bots/</code> (CRM → Настройки → Salesbot). Визуальный
 конструктор чат-сценариев для входящих каналов и веб-виджета: узлы перетаскиваются
 по канвасу, <strong>связи-ветки тянутся мышью</strong> от кружка-выхода к целевому
@@ -1575,7 +1605,10 @@ flowchart LR
 </pre>
 
 <h3 id="crm-salesbot-lint">Проверка сценария</h3>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_salesbot_v1972/04_lint.jpg" alt="Проверка сценария: список проблем и подсветка шагов на канвасе" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_salesbot_v1972/04_lint.jpg" alt="Проверка сценария: список проблем и подсветка шагов на канвасе" loading="lazy">
+  <figcaption>Проверка сценария: список проблем и подсветка шагов на канвасе</figcaption>
+</figure>
 <p>Сломанный сценарий видит только клиент: он упирается в шаг без продолжения и
 остаётся без ответа. Поэтому перед публикацией сценарий проверяется, и
 <strong>ошибки публикацию блокируют</strong>:</p>
@@ -1594,7 +1627,10 @@ flowchart LR
 (красная рамка — ошибка, жёлтая — предупреждение).</p>
 
 <h3 id="crm-salesbot-templates">Готовые сценарии</h3>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_salesbot_v1972/05_templates.jpg" alt="Галерея готовых сценариев" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_salesbot_v1972/05_templates.jpg" alt="Галерея готовых сценариев" loading="lazy">
+  <figcaption>Галерея готовых сценариев</figcaption>
+</figure>
 <p>Кебаб → <strong>«Из шаблона»</strong>: приём заявки на подключение (адрес через
 DaData, контакты с проверкой, сделка и уведомление операторам), заявка на ремонт
 (в рабочее время сразу оператору, ночью принимает описание) и квалификация лида
@@ -1602,7 +1638,10 @@ DaData, контакты с проверкой, сделка и уведомле
 опубликованный сценарий не меняется, пока вы не посмотрите и не опубликуете сами.</p>
 
 <h3 id="crm-salesbot-text">Текст шага: форматирование и превью</h3>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_salesbot_v1972/02_node_preview.jpg" alt="Панель шага: превью «как увидит клиент» и панель форматирования" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_salesbot_v1972/02_node_preview.jpg" alt="Панель шага: превью «как увидит клиент» и панель форматирования" loading="lazy">
+  <figcaption>Панель шага: превью «как увидит клиент» и панель форматирования</figcaption>
+</figure>
 <p>Над полем текста — панель форматирования: <strong>жирный</strong>, <em>курсив</em>,
 моноширинный, цитата, ссылка и эмодзи. Это ровно та разметка, которую понимает
 отправка в мессенджеры: <code>**жирный**</code>, <code>*курсив*</code>,
@@ -1615,7 +1654,10 @@ DaData, контакты с проверкой, сделка и уведомле
 не приходится править вслепую.</p>
 
 <h3 id="crm-salesbot-test">Тест сценария</h3>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_salesbot_v1972/06_test.jpg" alt="Тест сценария: диалог с кнопками-подсказками" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_salesbot_v1972/06_test.jpg" alt="Тест сценария: диалог с кнопками-подсказками" loading="lazy">
+  <figcaption>Тест сценария: диалог с кнопками-подсказками</figcaption>
+</figure>
 <p><strong>«Тест»</strong> открывает боковую панель с диалогом на живом движке —
 проверяется черновик, клиенты его не видят. Под полем ввода — кнопки-подсказки:
 варианты, которых ждёт текущий шаг (кнопки сообщения, варианты квиза, физ/юр лицо),
@@ -1627,7 +1669,10 @@ DaData, контакты с проверкой, сделка и уведомле
 делать бот («приём заявок: поприветствуй, спроси адрес и телефон, создай лид,
 поблагодари»), — AI соберёт готовый граф узлов. Результат применяется на канвасе
 (откат Ctrl+Z), проверьте и сохраните черновик.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_salesbot_v1972/08_ai_review.jpg" alt="AI-помощник: разбор сценария с советами и чекбоксами" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_salesbot_v1972/08_ai_review.jpg" alt="AI-помощник: разбор сценария с советами и чекбоксами" loading="lazy">
+  <figcaption>AI-помощник: разбор сценария с советами и чекбоксами</figcaption>
+</figure>
 <p>Там же — <strong>«Проанализировать и дать советы»</strong>: AI читает шаги и связи
 и возвращает разбор — где тупик, чего не хватает, что переписать. Советы приходят
 списком с чекбоксами (по умолчанию отмечены все); <strong>«Применить выбранное»</strong>
@@ -1751,7 +1796,10 @@ flowchart TD
 <code>BOT_SEND_WINDOW_FROM</code>, <code>BOT_SEND_WINDOW_TO</code>.</p>
 
 <h3 id="crm-salesbot-broadcast">Рассылка</h3>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_salesbot_v1972/09_broadcast.jpg" alt="Панель рассылки: текст, получатели, превью и проверка на себе" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_salesbot_v1972/09_broadcast.jpg" alt="Панель рассылки: текст, получатели, превью и проверка на себе" loading="lazy">
+  <figcaption>Панель рассылки: текст, получатели, превью и проверка на себе</figcaption>
+</figure>
 <p>Кебаб → <strong>«Рассылка»</strong>. Получатели — <strong>только те, кто сам писал
 этому боту</strong>: согласие берём из факта переписки, чужие списки не грузим —
 это уже спам, и бота за него блокируют. Панель показывает, сколько человек и по
@@ -1782,7 +1830,10 @@ flowchart TD
 узлом «Лид в CRM» — заявки придут в воронку бота с источником <code>web</code>.</p>
 
 <h2 id="widgets">Виджеты-плагины</h2>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_v1846/crm_widgets.png" alt="Виджеты — каталог с сервера лицензий" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_v1846/crm_widgets.png" alt="Виджеты — каталог с сервера лицензий" loading="lazy">
+  <figcaption>Виджеты — каталог с сервера лицензий</figcaption>
+</figure>
 <p>URL: <code>/admin/settings/widgets/</code> (Настройки → Виджеты). Каталог
 загружаемых расширений: новый виджет публикуется на сервере лицензий и появляется
 у всех инсталляций <em>без обновления биллинга</em>, с фильтрацией по тарифному плану.</p>
@@ -1848,7 +1899,10 @@ window.SmitWidget.register('funnel-summary', function (el, settings) {
   <li><strong>Дашборд биллинга</strong> — «Лицензия и модули»: тариф с обложкой,
       статус и срок лицензии, версия сборки, включённые модули.</li>
 </ul>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/smit/billing/docs_v1430/widgets_license.png" alt="Виджет «Лицензия и модули»" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/smit/billing/docs_v1430/widgets_license.png" alt="Виджет «Лицензия и модули»" loading="lazy">
+  <figcaption>Виджет «Лицензия и модули»</figcaption>
+</figure>
 
 <h3 id="widgets-builtin">Встроенные карточки «Быстрый доступ»</h3>
 <p>Шесть карточек в карточке клиента (Аудит, Услуги и бонусы, Операции,
@@ -1856,7 +1910,10 @@ window.SmitWidget.register('funnel-summary', function (el, settings) {
 «Встроенные карточки» и включаются/выключаются тумблером для всех сотрудников
 сразу. Удалить встроенную карточку нельзя — только выключить; персональная
 видимость из настроек профиля продолжает действовать поверх.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/smit/billing/docs_v1430/widgets_abonent.png" alt="Карточка клиента с виджетами" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/smit/billing/docs_v1430/widgets_abonent.png" alt="Карточка клиента с виджетами" loading="lazy">
+  <figcaption>Карточка клиента с виджетами</figcaption>
+</figure>
 
 
 <h3 id="widget-campaigns">Виджет «Рекламные кампании»</h3>
@@ -1879,7 +1936,10 @@ window.SmitWidget.register('funnel-summary', function (el, settings) {
 <code>/admin/settings/widgets/</code>.</p>
 
 <h2 id="crm-setup">Мастер настройки</h2>
-<p><img class="screenshot" src="../img/v1443/crm_setup_wizard.png" alt="Мастер настройки CRM" loading="lazy"></p>
+<figure class="shot">
+  <img src="../img/v1443/crm_setup_wizard.png" alt="Мастер настройки CRM" loading="lazy">
+  <figcaption>Мастер настройки CRM</figcaption>
+</figure>
 <p>URL: <code>/admin/crm/setup/</code> (CRM → Настройки → Мастер настройки).
 Пять шагов приводят CRM в боевое состояние: воронки из пресетов, каналы приёма
 заявок, команда и распределение лидов, AI-бот Поддержки, рекомендованные
@@ -1889,7 +1949,10 @@ window.SmitWidget.register('funnel-summary', function (el, settings) {
 установлен виджет) обновляется после каждого шага.</p>
 
 <h2 id="crm-montazh">Наряды монтажника</h2>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v2018/crm_montazh.png" alt="Наряды монтажника: карточки нарядов по дням, статусы и адреса" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/stock_v2018/crm_montazh.png" alt="Наряды монтажника: карточки нарядов по дням, статусы и адреса" loading="lazy">
+  <figcaption>Наряды монтажника: карточки нарядов по дням, статусы и адреса</figcaption>
+</figure>
 <p>URL: <code>/admin/crm/montazh/</code> — вид «Наряды» календаря
 (переключатель «Календарь | Наряды» на обеих страницах). Мобильный сценарий
 «мой наряд на день»: назначенные монтажи карточками — дата и окно времени,
@@ -1901,8 +1964,11 @@ window.SmitWidget.register('funnel-summary', function (el, settings) {
 закрыть чужой; менеджеру доступны все наряды и фильтр по монтажнику.</p>
 
 <h2 id="crm-dashboard">Дашборд и карта</h2>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_v1951/crm_dashboard.jpg"
-     alt="Дашборд CRM: плитки KPI, воронка по организациям, рекламные кампании" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_v1951/crm_dashboard.jpg"
+     alt="Дашборд CRM: плитки KPI, воронка по организациям, рекламные кампании" loading="lazy">
+  <figcaption>Дашборд CRM: плитки KPI, воронка по организациям, рекламные кампании</figcaption>
+</figure>
 <p>Плитки KPI идут одной строкой; крупные суммы показываются коротко
 («5,5М&nbsp;₽»), точное значение — в подсказке при наведении. В разбивке по
 организациям и в таблице кампаний стоит единый бейдж компании.</p>
@@ -1911,7 +1977,10 @@ window.SmitWidget.register('funnel-summary', function (el, settings) {
 маркера: аватарка + Фамилия / Имя Отчество, телефон, стадия, адрес. Цвет маркера —
 по стадии сделки.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_v1846/crm_dashboard.png" alt="CRM — дашборд с картой"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_v1846/crm_dashboard.png" alt="CRM — дашборд с картой">
+  <figcaption>CRM — дашборд с картой</figcaption>
+</figure>
 
 <h3 id="crm-insights">Инсайты периода</h3>
 <p>Полоса над KPI: <strong>новые лиды · подключено · выручка подключений ·
@@ -1940,9 +2009,12 @@ Endpoint: <code>GET /admin/crm/stage_flow/?days=30</code>.</p>
 <p>URL: <code>/admin/crm/campaigns/</code>. Кампании и каналы с UTM-метками:
 линк-билдер + QR-код, привязка сделки к кампании по <code>utm_campaign</code> в
 момент приёма (единая точка всех каналов), дашборд CAC (стоимость привлечения).</p>
-<p><img class="screenshot"
+<figure class="shot">
+  <img
      src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_v1951/campaigns_charts.jpg"
-     alt="Рекламные кампании: выбор периода, диаграммы и таблица с ROI" loading="lazy"></p>
+     alt="Рекламные кампании: выбор периода, диаграммы и таблица с ROI" loading="lazy">
+  <figcaption>Рекламные кампании: выбор периода, диаграммы и таблица с ROI</figcaption>
+</figure>
 <p>Слева от поиска — <strong>выбор периода</strong> (тот же компонент, что в
 отчётах и аудите), по умолчанию последние 30 дней. Период применяется и к
 диаграммам.</p>
@@ -1974,10 +2046,13 @@ Endpoint: <code>GET /admin/crm/stage_flow/?days=30</code>.</p>
 в списке кампаний. Оператор описывает задумку словами, помощник задаёт один круг
 уточняющих вопросов и собирает кампанию целиком: метки UTM и каналы, лендинг,
 форму заявки с воронкой и источником, запись DNS для поддомена.</p>
-<p><img class="screenshot"
+<figure class="shot">
+  <img
      src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_wizard_v1978/wizard_dialog.jpg"
      alt="AI-мастер кампании: слева диалог с уточняющими вопросами, справа собранный план"
-     loading="lazy"></p>
+     loading="lazy">
+  <figcaption>AI-мастер кампании: слева диалог с уточняющими вопросами, справа собранный план</figcaption>
+</figure>
 <p>Слева — разговор, справа — то, что будет собрано. План обновляется по ходу
 диалога, поддомен и поля можно поправить перед сборкой.</p>
 
@@ -2017,10 +2092,13 @@ Endpoint: <code>GET /admin/crm/stage_flow/?days=30</code>.</p>
 так, и ведёт туда, где это чинится.</p>
 
 <h3 id="crm-campaign-materials">Материалы и ссылки</h3>
-<p><img class="screenshot"
+<figure class="shot">
+  <img
      src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_wizard_v1978/campaign_materials.jpg"
      alt="Карточка кампании: тексты объявлений, ссылки с UTM, QR-код и разбор результатов"
-     loading="lazy"></p>
+     loading="lazy">
+  <figcaption>Карточка кампании: тексты объявлений, ссылки с UTM, QR-код и разбор результатов</figcaption>
+</figure>
 <p>На карточке кампании — блок <strong>«Материалы для размещения»</strong>.
 Кнопка «Подготовить тексты» пишет объявления под те каналы, что заведены в
 кампании, и проверяет лимиты площадок: Яндекс.Директ режет длинный текст молча,
@@ -2042,7 +2120,10 @@ Endpoint: <code>GET /admin/crm/stage_flow/?days=30</code>.</p>
 </div>
 
 <h2 id="crm-drawer">Карточка сделки (полноэкранный дровер)</h2>
-<p><img class="screenshot" src="../img/v1443/crm_drawer_main.png" alt="Карточка сделки — полноэкранный дровер" loading="lazy"></p>
+<figure class="shot">
+  <img src="../img/v1443/crm_drawer_main.png" alt="Карточка сделки — полноэкранный дровер" loading="lazy">
+  <figcaption>Карточка сделки — полноэкранный дровер</figcaption>
+</figure>
 <p>Одинарный клик по карточке канбана открывает сделку дровером на весь экран.
 Слева — «паспорт сделки»: полоса-прогресс стадий (клик по сегменту переводит
 сделку), контакт с телефонами и адресом, параметры, клиент биллинга, обращения
@@ -2084,7 +2165,10 @@ Endpoint: <code>GET /admin/crm/stage_flow/?days=30</code>.</p>
 click-to-call; i-иконки справки в заголовках — <strong>SmitHelpIcon</strong>.
 Полоса-прогресс стадий учитывает правила воронки (запрет пропуска/движения назад,
 цвета стадий).</div>
-<p><img class="screenshot" src="../img/v1443/crm_drawer_stats.png" alt="Вкладка Статистика — источник, счётчики, UTM-метки" loading="lazy"></p>
+<figure class="shot">
+  <img src="../img/v1443/crm_drawer_stats.png" alt="Вкладка Статистика — источник, счётчики, UTM-метки" loading="lazy">
+  <figcaption>Вкладка Статистика — источник, счётчики, UTM-метки</figcaption>
+</figure>
 <p><strong>Задачи</strong> в ленте — карточками: видно, до какого времени и для
 кого поставлена задача; поле «Добавить результат» и кнопку «Выполнить» видит
 только ответственный. Новая задача из композера требует дату/время и

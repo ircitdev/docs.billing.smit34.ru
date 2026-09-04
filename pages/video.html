@@ -35,7 +35,7 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Модуль видеонаблюдения: объекты и камеры, воронка проектов, пульт ЧОПа, медиа-сервер go2rtc, архив записей, сервисные планы и подписки, отчётность по SLA, связь со складом и CRM.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=2478">
+  <link rel="stylesheet" href="../css/style.css?v=2479">
   <link rel="stylesheet" href="../css/search.css?v=2257">
   <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css?v=2193">
 <!-- Yandex.Metrika counter -->
@@ -1012,7 +1012,10 @@
   </figcaption>
 </figure>
 <h2 id="video-overview">Как устроен модуль</h2>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_v2044/dashboard.png" alt="Дашборд модуля: KPI воронки, MRR, привязка камер" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_v2044/dashboard.png" alt="Дашборд модуля: KPI воронки, MRR, привязка камер" loading="lazy">
+  <figcaption>Дашборд модуля: KPI воронки, MRR, привязка камер</figcaption>
+</figure>
 <p>Ядро — <strong>объект наблюдения</strong>: адрес клиента, на котором стоят
 камеры. У объекта свой лицевой счёт, поэтому долг за видео блокирует камеры, но
 не трогает интернет. Всё остальное навешивается на объект:</p>
@@ -1038,7 +1041,10 @@ flowchart LR
 </div>
 
 <h2 id="video-objects">Объекты и камеры</h2>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_v2044/objects.png" alt="Список объектов: колонка «В эфире», чипы фильтров, организация" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_v2044/objects.png" alt="Список объектов: колонка «В эфире», чипы фильтров, организация" loading="lazy">
+  <figcaption>Список объектов: колонка «В эфире», чипы фильтров, организация</figcaption>
+</figure>
 <p>Список объектов — <code>/admin/video/objects/</code>. Колонка
 <strong>«В эфире»</strong> показывает, сколько камер реально отдают видео из
 общего числа: «3 / 4» зелёным — всё в порядке, «0 / 4» красным — объект
@@ -1052,7 +1058,10 @@ flowchart LR
 <strong>«Видео»</strong>, там же камеры, оборудование и подписки.</p>
 
 <h2 id="video-projects">Проекты: воронка и документы</h2>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_v2044/projects.png" alt="Канбан проектов: стадии, суммы по колонкам, документы на карточке" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_v2044/projects.png" alt="Канбан проектов: стадии, суммы по колонкам, документы на карточке" loading="lazy">
+  <figcaption>Канбан проектов: стадии, суммы по колонкам, документы на карточке</figcaption>
+</figure>
 
 <p>Путь проекта от заявки до абонплаты:</p>
 <pre class="mermaid">
@@ -1084,7 +1093,10 @@ flowchart LR
 печать берутся из брендинга организации.</p>
 
 <h2 id="video-plans">Сервисные планы и подписки</h2>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_v2044/plans.png" alt="Сервисные планы карточками: цена, архив, SLA, health-check" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_v2044/plans.png" alt="Сервисные планы карточками: цена, архив, SLA, health-check" loading="lazy">
+  <figcaption>Сервисные планы карточками: цена, архив, SLA, health-check</figcaption>
+</figure>
 
 <p>Как подписка превращается в деньги:</p>
 <pre class="mermaid">
@@ -1110,7 +1122,10 @@ health-check и услуга каталога, по которой идёт сп
 интернет-лояльности.</p>
 
 <h2 id="video-catalog">Каталог оборудования и склад</h2>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_v2044/models.png" alt="Каталог моделей: фото, закупка, остаток на складе, паспорт" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_v2044/models.png" alt="Каталог моделей: фото, закупка, остаток на складе, паспорт" loading="lazy">
+  <figcaption>Каталог моделей: фото, закупка, остаток на складе, паспорт</figcaption>
+</figure>
 <p><code>/admin/video/models/</code> — справочник моделей: камеры, регистраторы,
 PoE-коммутаторы, ИБП, накопители. У модели есть характеристики (мегапиксели,
 PTZ, уличная), цена-ориентир для сметы и ссылка на паспорт — она открывается
@@ -1123,7 +1138,10 @@ PTZ, уличная), цена-ориентир для сметы и ссылк�
 бы всей сумме КП.</p>
 
 <h2 id="video-media">Медиа-сервер go2rtc</h2>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_v2044/streams.png" alt="Медиа-сервер: состояние потоков, маскированный источник, «Завести»" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_v2044/streams.png" alt="Медиа-сервер: состояние потоков, маскированный источник, «Завести»" loading="lazy">
+  <figcaption>Медиа-сервер: состояние потоков, маскированный источник, «Завести»</figcaption>
+</figure>
 
 <p>Состояния камеры и что с ними делать:</p>
 <pre class="mermaid">
@@ -1155,7 +1173,10 @@ stateDiagram-v2
 создаёт потоки для всех таких камер разом.</p>
 
 <h2 id="video-archive">Архив записей</h2>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_v2044/archive.png" alt="Архив камеры: живой поток, шкала суток, фрагменты" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_v2044/archive.png" alt="Архив камеры: живой поток, шкала суток, фрагменты" loading="lazy">
+  <figcaption>Архив камеры: живой поток, шкала суток, фрагменты</figcaption>
+</figure>
 <p>Архив камеры открывается из списка потоков или карточки объекта. На странице
 живой поток, шкала суток с сегментами записи и список фрагментов.</p>
 <ul>
@@ -1169,7 +1190,10 @@ stateDiagram-v2
 </ul>
 
 <h2 id="video-dispatch">Пульт ЧОПа</h2>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_v2044/dispatch.png" alt="Пульт ЧОПа: стена камер, счётчики, панель тревог" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_v2044/dispatch.png" alt="Пульт ЧОПа: стена камер, счётчики, панель тревог" loading="lazy">
+  <figcaption>Пульт ЧОПа: стена камер, счётчики, панель тревог</figcaption>
+</figure>
 
 <p>Жизненный цикл тревоги — и откуда берётся время реакции:</p>
 <pre class="mermaid">
@@ -1198,7 +1222,10 @@ stateDiagram-v2
 должен пролистывать десятки плиток, чтобы увидеть тревогу.</p>
 
 <h2 id="video-reports">Отчётность по SLA</h2>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_v2044/reports.png" alt="Отчётность ЧОП: KPI, графики доступности и тревог, таблицы" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_v2044/reports.png" alt="Отчётность ЧОП: KPI, графики доступности и тревог, таблицы" loading="lazy">
+  <figcaption>Отчётность ЧОП: KPI, графики доступности и тревог, таблицы</figcaption>
+</figure>
 <p><code>/admin/video/reports/</code> — отчёт по охраняемым объектам за период
 (7 / 30 / 90 дней, год): доступность, простой, тревоги, время реакции и
 выручка. Кроме таблиц есть два графика: доступность по дням и тревоги со
@@ -1235,7 +1262,10 @@ flowchart TD
 <p>Настраиваются в <code>/admin/settings/permission_settings/</code>.</p>
 
 <h2 id="video-settings">Настройки модуля</h2>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_v2044/settings.png" alt="Настройки модуля: основные, биллинг, облако, архив" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_v2044/settings.png" alt="Настройки модуля: основные, биллинг, облако, архив" loading="lazy">
+  <figcaption>Настройки модуля: основные, биллинг, облако, архив</figcaption>
+</figure>
 <p><code>/admin/video/settings/</code> — четыре группы:</p>
 <ul>
   <li><strong>Основные</strong> — включение модуля, отдельный счёт под видео.</li>

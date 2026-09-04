@@ -35,7 +35,7 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="NAS-серверы, коммутаторы, IPTV-приставки и настройки СОРМ — всё сетевое оборудование, которым управляет биллинг.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=2478">
+  <link rel="stylesheet" href="../css/style.css?v=2479">
   <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css?v=2193">
   <link rel="stylesheet" href="../css/search.css?v=2257">
 <!-- Yandex.Metrika counter -->
@@ -1079,7 +1079,10 @@ flowchart LR
 <p><code>clients.conf</code> генерируется из таблицы NAS при старте контейнера FreeRADIUS. Поэтому после добавления устройства или смены secret нужен <strong>перезапуск RADIUS</strong> — иначе новый NAS для демона не существует. Список сам показывает предупреждение, когда конфигурация изменилась.</p>
 
 <h4 id="nas-list">Список устройств</h4>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/nas_v1730/01_list.png" alt="Список NAS с KPI, чипами-фильтрами и колонкой организации"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/nas_v1730/01_list.png" alt="Список NAS с KPI, чипами-фильтрами и колонкой организации">
+  <figcaption>Список NAS с KPI, чипами-фильтрами и колонкой организации</figcaption>
+</figure>
 
 <ul>
   <li><strong>KPI-чипы</strong> справа: Всего / UP / DOWN / Онлайн / CoA-готовность. Считаются по всей выборке, не по странице.</li>
@@ -1121,31 +1124,52 @@ flowchart LR
 <p>Ответ на чужого клиента — <strong>404</strong>: одинаковая реакция на «нет такого» и «есть, но не ваш» не даёт перебором выяснить, какие клиенты существуют. Перезапуск RADIUS отвечает <strong>403</strong> — здесь скрывать нечего, а причина отказа должна быть понятной.</p>
 
 <h4 id="nas-modal">Карточка устройства</h4>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/nas_v1730/02_modal_main.png" alt="Карточка NAS — вкладка Основное с выбором организаций"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/nas_v1730/02_modal_main.png" alt="Карточка NAS — вкладка Основное с выбором организаций">
+  <figcaption>Карточка NAS — вкладка Основное с выбором организаций</figcaption>
+</figure>
 
 <p>Шесть вкладок. Сверху — полоса статистики (активных / максимум / последняя авторизация) и чекбоксы организаций.</p>
 
 <h5 id="nas-modal-radius">RADIUS</h5>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/nas_v1730/03_modal_radius.png" alt="Карточка NAS — вкладка RADIUS"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/nas_v1730/03_modal_radius.png" alt="Карточка NAS — вкладка RADIUS">
+  <figcaption>Карточка NAS — вкладка RADIUS</figcaption>
+</figure>
 <p><strong>RADIUS secret</strong> — общий ключ с устройством; при несовпадении демон молча отбрасывает пакеты, и клиенты просто не авторизуются. <strong>CoA пароль и порт</strong> (по умолчанию 3799) нужны для команды Disconnect. Флаг «Не использовать CoA» переводит разрыв сессий на SSH-fallback — медленнее, но работает там, где CoA не включён.</p>
 
 <h5 id="nas-modal-auth">Авторизация</h5>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/nas_v1730/04_modal_auth.png" alt="Карточка NAS — вкладка Авторизация"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/nas_v1730/04_modal_auth.png" alt="Карточка NAS — вкладка Авторизация">
+  <figcaption>Карточка NAS — вкладка Авторизация</figcaption>
+</figure>
 <p>Правила выдачи доступа: тип авторизации, привязка к MAC и порту, поведение при переподключении. Здесь же — «Отправлять подключение если заблокирован»: для схем с walled-garden, где заблокированного клиента пускают на страницу-заглушку вместо полного отказа.</p>
 
 <h5 id="nas-modal-pools">IP-пулы</h5>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/nas_v1730/05_modal_pools.png" alt="Карточка NAS — вкладка IP-пулы"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/nas_v1730/05_modal_pools.png" alt="Карточка NAS — вкладка IP-пулы">
+  <figcaption>Карточка NAS — вкладка IP-пулы</figcaption>
+</figure>
 <p>Пулы динамических и белых адресов, NAT, hotspot, DNS и «следующий NAS» для цепочек. Из этих пулов выдаётся адрес при авторизации; свободный ищет <code>ip_allocation</code> с проверкой занятости по трём источникам сразу.</p>
 
 <h5 id="nas-online">Онлайн-сессии</h5>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/nas_v1730/07_online_modal.png" alt="Список онлайн-сессий устройства"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/nas_v1730/07_online_modal.png" alt="Список онлайн-сессий устройства">
+  <figcaption>Список онлайн-сессий устройства</figcaption>
+</figure>
 <p>Открывается кликом по числу в колонке «Онлайн». Поиск по логину, ФИО, договору и IP; подгрузка по мере прокрутки. Клик по имени открывает <strong>боковую панель клиента поверх списка</strong> — оператор смотрит карточку, не теряя разобранный список сессий.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/nas_v1730/08_drawer_over_modal.png" alt="Панель клиента поверх списка сессий"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/nas_v1730/08_drawer_over_modal.png" alt="Панель клиента поверх списка сессий">
+  <figcaption>Панель клиента поверх списка сессий</figcaption>
+</figure>
 
 <h4 id="nas-status">3.2. Состояние NAS</h4>
 <p>URL: <code>/admin/equipment/nas_status/</code></p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/nas_v1730/06_status.png" alt="Дашборд состояния NAS с алертом, sparkline и SLA"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/nas_v1730/06_status.png" alt="Дашборд состояния NAS с алертом, sparkline и SLA">
+  <figcaption>Дашборд состояния NAS с алертом, sparkline и SLA</figcaption>
+</figure>
 
 <p>Страница для дежурного: что сейчас лежит и насколько это больно.</p>
 
@@ -1166,14 +1190,23 @@ flowchart LR
 <p>Признак «конфигурация изменена» появляется в списке автоматически после сохранения или удаления NAS — чтобы перезапуск не забыли.</p>
 
 <h4 id="nas-mobile">Мобильная версия</h4>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/nas_v1730/10_mobile_list.png" alt="Список NAS на телефоне"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/nas_v1730/10_mobile_list.png" alt="Список NAS на телефоне">
+  <figcaption>Список NAS на телефоне</figcaption>
+</figure>
 <p>На телефоне остаются три колонки: название, состояние и онлайн — то, ради чего в список заходят с телефона во время аварии. IP, RADIUS, SSH, адрес и время последней авторизации скрыты, горизонтальной прокрутки нет.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/nas_v1730/11_mobile_online.png" alt="Список сессий на телефоне"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/nas_v1730/11_mobile_online.png" alt="Список сессий на телефоне">
+  <figcaption>Список сессий на телефоне</figcaption>
+</figure>
 <p>В списке сессий на телефоне остаются клиент и IP: номер строки и логин на 390 px только отнимают место. ФИО не переносится — иначе одна строка растягивалась на три-четыре ряда и список переставал читаться; полное имя доступно в подсказке.</p>
 
 <h4 id="nas-dark">Тёмная тема</h4>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/nas_v1730/09_list_dark.png" alt="Список NAS в тёмной теме"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/nas_v1730/09_list_dark.png" alt="Список NAS в тёмной теме">
+  <figcaption>Список NAS в тёмной теме</figcaption>
+</figure>
 
 <h4 id="nas-api">Endpoints</h4>
 <table>
@@ -1344,7 +1377,10 @@ python manage.py disable_abonents_without_tariff --apply
 число активных портов, история падений. Биллинг опрашивает устройства сам, раз в 5 минут,
 и присылает алерт в Telegram при падении.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/smit/billing/equipment_monitor_v1516/dashboard.png" alt="Мониторинг оборудования — дашборд состояния коммутаторов"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/smit/billing/equipment_monitor_v1516/dashboard.png" alt="Мониторинг оборудования — дашборд состояния коммутаторов">
+  <figcaption>Мониторинг оборудования — дашборд состояния коммутаторов</figcaption>
+</figure>
 
 <div class="info-box" style="border-left:4px solid #43b77a; background:rgba(67,183,122,.06); padding:12px 16px; margin:16px 0">
   <p class="mb-1"><strong><i class="ti ti-info-circle"></i> Как это работает</strong></p>
@@ -1401,7 +1437,10 @@ MAC-адресов по портам и сопоставляет их с MAC-а�
 <p>Тот же список NAS, но отфильтрованный по типу оборудования <em>IPTV-серверы</em>:
 middleware и stream-серверы провайдера (TVIP Media, LFStream «Смотрёшка»).</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/02_iptv_list.png" alt="IPTV"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/02_iptv_list.png" alt="IPTV">
+  <figcaption>IPTV</figcaption>
+</figure>
 
 <p>Привязка пакетов IPTV к услугам биллинга настраивается отдельно — в разделе
 <em>Настройки → IPTV-пакеты</em> (см. <a href="settings-services.html#iptv-mappings">5.6</a>).</p>
@@ -1420,7 +1459,10 @@ middleware и stream-серверы провайдера (TVIP Media, LFStream �
   <li>Генерации конфигов и SORM-отчётов.</li>
 </ul>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/02_switch_list.png" alt="Коммутаторы"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/02_switch_list.png" alt="Коммутаторы">
+  <figcaption>Коммутаторы</figcaption>
+</figure>
 
 <p>В списке доступны поиск, модальное добавление/редактирование/удаление.
 Колонка <strong>«Тип»</strong> показывает модель коммутатора (бренд + серия) и скрывается на мобильном.</p>
@@ -1429,14 +1471,20 @@ middleware и stream-серверы провайдера (TVIP Media, LFStream �
 <p>Шаблоны типов коммутаторов: бренд, модель, число портов, наличие Opt82.
 Используется при создании коммутатора чтобы не вводить параметры вручную.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/02_switch_type.png" alt="Типы коммутаторов"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/02_switch_type.png" alt="Типы коммутаторов">
+  <figcaption>Типы коммутаторов</figcaption>
+</figure>
 
 <h3 id="sorm-list">3.6. Настройки СОРМ</h3>
 <p>Список конфигураций выгрузки данных в СОРМ-3 на FTP-сервер РКН.
 Каждая конфигурация определяет: имя оператора СОРМ, FTP-сервер, расписание выгрузки,
 набор отчётов.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/02_sorm_list.png" alt="Настройки СОРМ"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/02_sorm_list.png" alt="Настройки СОРМ">
+  <figcaption>Настройки СОРМ</figcaption>
+</figure>
 
 <div class="info-box" style="border-left:4px solid #43b77a; background:rgba(67,183,122,.06); padding:12px 16px; margin:16px 0">
   <p class="mb-1"><strong><i class="ti ti-arrow-right"></i> Подробная документация — на отдельной странице</strong></p>
@@ -1480,7 +1528,10 @@ middleware и stream-серверы провайдера (TVIP Media, LFStream �
   </figcaption>
 </figure>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/netmap_v2195/nm_overview.jpg" alt="Карта сети — обзор"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/netmap_v2195/nm_overview.jpg" alt="Карта сети — обзор">
+  <figcaption>Карта сети — обзор</figcaption>
+</figure>
 
 <h4 id="netmap-layers">Слои и тулбар</h4>
 <ul>
@@ -1498,7 +1549,10 @@ middleware и stream-серверы провайдера (TVIP Media, LFStream �
   UP/DOWN на маркеры NAS, авто-обновление каждые 30&nbsp;с, счётчик онлайн-клиентов.</li>
 </ul>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/netmap_v2195/nm_toolbar.jpg" alt="Тулбар карты: слои со счётчиками и полосы фильтров"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/netmap_v2195/nm_toolbar.jpg" alt="Тулбар карты: слои со счётчиками и полосы фильтров">
+  <figcaption>Тулбар карты: слои со счётчиками и полосы фильтров</figcaption>
+</figure>
 
 <p><strong>Инструменты карты</strong> — в её правом верхнем углу, отдельной
 панелью поверх полотна: карандаш (режим редактора — рисование и перетаскивание
@@ -1507,7 +1561,10 @@ middleware и stream-серверы провайдера (TVIP Media, LFStream �
 экран» (вернуться к общему плану сети) и обновление данных без перезагрузки
 страницы. На телефоне те же кнопки остаются в мобильной панели.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/netmap_v2195/nm_maptools.jpg" alt="Панель инструментов в правом верхнем углу карты"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/netmap_v2195/nm_maptools.jpg" alt="Панель инструментов в правом верхнем углу карты">
+  <figcaption>Панель инструментов в правом верхнем углу карты</figcaption>
+</figure>
 
 <h4 id="netmap-bars">Полосы фильтров под тулбаром</h4>
 <p>Под кнопками слоёв — две полосы, каждая появляется вместе со своим слоем и
@@ -1562,7 +1619,10 @@ flowchart LR
 временная метка — видно, куда именно попали. Список управляется с клавиатуры:
 стрелки, Enter, Escape.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/netmap_v2195/nm_search.jpg" alt="Поиск по карте: узлы, опоры, адреса"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/netmap_v2195/nm_search.jpg" alt="Поиск по карте: узлы, опоры, адреса">
+  <figcaption>Поиск по карте: узлы, опоры, адреса</figcaption>
+</figure>
 
 <p><strong>Ссылка на объект.</strong> Адрес страницы меняется при выборе объекта:
 <code>?node=1222</code>, <code>?route=87</code> или <code>?lat=&amp;lon=&amp;z=</code>.
@@ -1582,7 +1642,10 @@ flowchart LR
 Инструмент считает расстояние по прямой между точками — для прикидки длины
 кабеля с запасом на провис это и нужно.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/netmap_v2183/nm_measure.jpg" alt="Измерение расстояния по карте"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/netmap_v2183/nm_measure.jpg" alt="Измерение расстояния по карте">
+  <figcaption>Измерение расстояния по карте</figcaption>
+</figure>
 
 <h4 id="netmap-import">Импорт схемы из Google Earth</h4>
 <p>Если схема сети ведётся в Google&nbsp;Earth, её не нужно перерисовывать: выгрузка
@@ -1637,7 +1700,10 @@ manage.py import_netmap_kml --purge-source kmz_smit34_map      # откат им
 «Зоны» и прячется вместе с ним. При наведении на полигон всплывает подсказка
 «название&nbsp;· технология».</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/netmap_v1746/05_techbar.jpg" alt="Легенда-фильтр зон по технологии"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/netmap_v1746/05_techbar.jpg" alt="Легенда-фильтр зон по технологии">
+  <figcaption>Легенда-фильтр зон по технологии</figcaption>
+</figure>
 
 <div class="info-box" style="border-left:4px solid #43b77a; background:rgba(67,183,122,.06); padding:12px 16px; margin:16px 0">
   <p class="mb-0"><strong>Перенос из Конструктора Яндекс.Карт.</strong> Если карта
@@ -1657,8 +1723,14 @@ manage.py import_netmap_kml --purge-source kmz_smit34_map      # откат им
 подсветка участков на карте.</p>
 
 <div class="row">
-  <div class="col-md-6"><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/netmap_v1203/05_fibers.jpg" alt="Волокна и разварка"></div>
-  <div class="col-md-6"><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/netmap_v1203/06_trace.jpg" alt="Трассировка пути волокна"></div>
+  <div class="col-md-6"><figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/netmap_v1203/05_fibers.jpg" alt="Волокна и разварка">
+  <figcaption>Волокна и разварка</figcaption>
+</figure></div>
+  <div class="col-md-6"><figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/netmap_v1203/06_trace.jpg" alt="Трассировка пути волокна">
+  <figcaption>Трассировка пути волокна</figcaption>
+</figure></div>
 </div>
 
 <h4 id="netmap-tickets">Заявки Поддержки на карте</h4>
@@ -1668,8 +1740,14 @@ manage.py import_netmap_kml --purge-source kmz_smit34_map      # откат им
 а также drawer карточки клиента.</p>
 
 <div class="row">
-  <div class="col-md-6"><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/netmap_v1203/07_tickets.jpg" alt="Заявки на карте"></div>
-  <div class="col-md-6"><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/netmap_v1203/08_ticket_panel.jpg" alt="Панель заявки"></div>
+  <div class="col-md-6"><figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/netmap_v1203/07_tickets.jpg" alt="Заявки на карте">
+  <figcaption>Заявки на карте</figcaption>
+</figure></div>
+  <div class="col-md-6"><figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/netmap_v1203/08_ticket_panel.jpg" alt="Панель заявки">
+  <figcaption>Панель заявки</figcaption>
+</figure></div>
 </div>
 
 <h4 id="netmap-monitoring">Мониторинг NAS</h4>
@@ -1677,7 +1755,10 @@ manage.py import_netmap_kml --purge-source kmz_smit34_map      # откат им
 <em>Ping</em>, <em>Синхронизация</em>, <em>Рестарт RADIUS</em> и список
 онлайн-клиентов.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/netmap_v1203/09_monitor.jpg" alt="Мониторинг NAS на карте"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/netmap_v1203/09_monitor.jpg" alt="Мониторинг NAS на карте">
+  <figcaption>Мониторинг NAS на карте</figcaption>
+</figure>
 
 <h4 id="netmap-flow">Слои и источники данных</h4>
 <pre class="mermaid">
@@ -1809,7 +1890,10 @@ erDiagram
 показывается подсказка с предложением загрузить схему из Google&nbsp;Earth или
 нарисовать её в режиме редактора.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/netmap_v2183/nm_empty.jpg" alt="Карта без объектов: подсказка вместо пустого поля"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/netmap_v2183/nm_empty.jpg" alt="Карта без объектов: подсказка вместо пустого поля">
+  <figcaption>Карта без объектов: подсказка вместо пустого поля</figcaption>
+</figure>
 
 <h4 id="netmap-dark">Тёмная тема и адаптив</h4>
 <p>При тёмной теме интерфейса карта переключается на тёмный скин
@@ -1824,8 +1908,14 @@ erDiagram
 объекта раскрывается во весь экран, как остальные слайд-панели системы.</p>
 
 <div class="row">
-  <div class="col-md-7"><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/netmap_v1203/02_overview_dark.jpg" alt="Карта сети — тёмная тема"></div>
-  <div class="col-md-5"><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/netmap_v2183/nm_mobile.jpg" alt="Карта сети на телефоне"></div>
+  <div class="col-md-7"><figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/netmap_v1203/02_overview_dark.jpg" alt="Карта сети — тёмная тема">
+  <figcaption>Карта сети — тёмная тема</figcaption>
+</figure></div>
+  <div class="col-md-5"><figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/netmap_v2183/nm_mobile.jpg" alt="Карта сети на телефоне">
+  <figcaption>Карта сети на телефоне</figcaption>
+</figure></div>
 </div>
 
 <div class="info-box" style="border-left:4px solid #43b77a; background:rgba(67,183,122,.06); padding:12px 16px; margin:16px 0">

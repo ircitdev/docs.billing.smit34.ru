@@ -35,7 +35,7 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Видеонаблюдение и домофония, мультиорганизация, AI-агент, автообзвон и телефония, интерфейсные компоненты и внутренний мессенджер.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=2478">
+  <link rel="stylesheet" href="../css/style.css?v=2479">
   <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css?v=2193">
   <link rel="stylesheet" href="../css/search.css?v=2257">
 <!-- Yandex.Metrika counter -->
@@ -1039,7 +1039,10 @@
 чат «Поддержка разработчика» (AI-ассистент + эскалация специалисту), вкладка
 «Уведомления» с системными событиями.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_v1403/12_chat_sidebar.png" alt="Внутренний чат — панель"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_v1403/12_chat_sidebar.png" alt="Внутренний чат — панель">
+  <figcaption>Внутренний чат — панель</figcaption>
+</figure>
 
 <ul>
   <li><strong>Комнаты</strong>: личные (direct), групповые (group, с обложкой),
@@ -1077,7 +1080,10 @@ flowchart LR
 (backdrop-blur), тёмная тема, авто-скрытие через 9 сек, стек до 4 штук.
 Открытая комната не тостится; свои сообщения не триггерят.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_v1403/13_chat_toast.png" alt="Toast новых сообщений чата"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_v1403/13_chat_toast.png" alt="Toast новых сообщений чата">
+  <figcaption>Toast новых сообщений чата</figcaption>
+</figure>
 
 <!-- ===== Интерфейс: темы и единые паттерны ===== -->
 <!-- ===== Интерфейс: темы и единые паттерны ===== -->
@@ -1089,7 +1095,10 @@ flowchart LR
 выбор запоминается за пользователем. Тёмная тема покрывает весь админ-интерфейс
 (<code>theme-smit.css</code>).</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_v1403/14_theme_toggle.png" alt="Переключатель темы в меню профиля"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_v1403/14_theme_toggle.png" alt="Переключатель темы в меню профиля">
+  <figcaption>Переключатель темы в меню профиля</figcaption>
+</figure>
 
 <h3 id="ui-patterns">Единые паттерны настроек</h3>
 <ul>
@@ -1111,7 +1120,10 @@ flowchart LR
 <p>Модуль продажи видеонаблюдения через биллинг: от заявки и обследования до монтажа, recurring-подписок и документов. Реализован как собственный сервисно-инсталляционный домен (объект → проект → камеры/оборудование → подписки), а не плоская интеграция. Использует существующее ядро биллинга: тарификацию <code>Usluga</code>/<code>UsersUsluga</code>, ежемесячное списание <code>billing_worker</code>, <code>FinanceOperations</code>, генерацию PDF (WeasyPrint), фискализацию.</p>
 
 <h3 id="video-revenue">3 слоя дохода — как продавать правильно</h3>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_module_v2026_06_06/video_revenue_layers.png" alt="3 слоя дохода видеонаблюдения" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_module_v2026_06_06/video_revenue_layers.png" alt="3 слоя дохода видеонаблюдения" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px">
+  <figcaption>3 слоя дохода видеонаблюдения</figcaption>
+</figure>
 <p>Ключевой принцип: <strong>маржа бизнеса — в recurring-подписке, а не в разовом монтаже</strong>. Продажа только «установки под ключ» убыточна, потому что облако (хранилище, трафик) — постоянная затрата, которую нужно отбивать ежемесячной платой.</p>
 <table>
   <thead><tr><th>Слой</th><th>Услуга</th><th>Цена</th><th>Тип</th></tr></thead>
@@ -1143,13 +1155,19 @@ flowchart LR
 
 <h3 id="video-admin">Раздел /admin/video/</h3>
 <p>Раздел сайдбара «Видеонаблюдение» с 5 страницами: дашборд, проекты (канбан), объекты, сервисные планы, заявки.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_module_v2026_06_06/video_dashboard.png" alt="Дашборд видеонаблюдения" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_module_v2026_06_06/video_dashboard.png" alt="Дашборд видеонаблюдения" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px">
+  <figcaption>Дашборд видеонаблюдения</figcaption>
+</figure>
 <ul>
   <li><strong>Дашборд</strong> — 8 KPI: объекты, камеры, активные проекты, подписки, <strong>MRR</strong> (recurring/мес), сумма воронки, конверсия, attach-rate; воронка проектов по 9 статусам; последние проекты.</li>
   <li><strong>Проекты (канбан)</strong> — drag-drop по статусам (Заявка → Обследование → Проект/КП → Договор → Монтаж → ПНР → Сдан → На сервисе); на карточке — кнопки документов.</li>
   <li><strong>Сервисные планы</strong> — CRUD SLA-пакетов (камеры от/до, цена/мес, SLA-реакция, health-check, связь с услугой каталога).</li>
 </ul>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_module_v2026_06_06/video_projects.png" alt="Канбан проектов видеонаблюдения" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_module_v2026_06_06/video_projects.png" alt="Канбан проектов видеонаблюдения" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px">
+  <figcaption>Канбан проектов видеонаблюдения</figcaption>
+</figure>
 
 <h4 id="video-admin-ux">UI/UX раздела</h4>
 <p>В разделе есть фильтры, редактирование в модальных окнах, просмотр камер, тёмная тема и работа с телефона:</p>
@@ -1160,9 +1178,18 @@ flowchart LR
   <li><strong>Настройки</strong> — раскладка в 2 колонки на десктопе; новая группа «Архив записей (MediaMTX + GCS)» с тумблером <code>Записывать в GCS</code> (резервное копирование сегментов архива в облако через Celery-задачу <code>video-archive-gcs-upload</code>).</li>
   <li><strong>Тёмная тема и мобильный</strong> — бейджи и блоки кода читаемы в тёмной теме; на экранах уже 768 px широкие таблицы показываются карточками.</li>
 </ul>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_audit_v2026_06_12/objects_light.png" alt="Объекты — фильтры, чипы, цвет баланса" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_audit_v2026_06_12/stream_view_modal.png" alt="Модалка просмотра камеры — live + архив" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_audit_v2026_06_12/settings_2col.png" alt="Настройки видеонаблюдения в 2 колонки" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_audit_v2026_06_12/objects_light.png" alt="Объекты — фильтры, чипы, цвет баланса" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px">
+  <figcaption>Объекты — фильтры, чипы, цвет баланса</figcaption>
+</figure>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_audit_v2026_06_12/stream_view_modal.png" alt="Модалка просмотра камеры — live + архив" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px">
+  <figcaption>Модалка просмотра камеры — live + архив</figcaption>
+</figure>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_audit_v2026_06_12/settings_2col.png" alt="Настройки видеонаблюдения в 2 колонки" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px">
+  <figcaption>Настройки видеонаблюдения в 2 колонки</figcaption>
+</figure>
 
 <h4 id="video-admin-ux-1130">Превью камер, просмотр в модалке и «Диск, Гб»</h4>
 <p>Доработка раздела «Объекты» и панели объекта: камеры теперь с превью и просмотром live/архива прямо в модальном окне, без перехода на другую страницу.</p>
@@ -1189,10 +1216,22 @@ flowchart LR
   <span>→ подсчёт размера →</span>
   <span class="badge" style="background:#dcfce7;color:#166534;padding:.4rem .7rem;border-radius:6px">Колонка «Диск, Гб» (по объекту)</span>
 </div>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_v1130/01_objects_light.png" alt="Объекты: колонки «Компания» (компактная) и «Диск, Гб»"></p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_v1130/03_object_drawer_cameras.png" alt="Панель объекта: камеры с превью и кнопками Трансляция / Архив / Поток"></p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_v1130/05_modal_stream.png" alt="Модальное окно трансляции камеры (live-плеер go2rtc)"></p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_v1130/04_modal_archive.png" alt="Модальное окно архива камеры: live + таймлайн записей за 24 часа"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_v1130/01_objects_light.png" alt="Объекты: колонки «Компания» (компактная) и «Диск, Гб»">
+  <figcaption>Объекты: колонки «Компания» (компактная) и «Диск, Гб»</figcaption>
+</figure>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_v1130/03_object_drawer_cameras.png" alt="Панель объекта: камеры с превью и кнопками Трансляция / Архив / Поток">
+  <figcaption>Панель объекта: камеры с превью и кнопками Трансляция / Архив / Поток</figcaption>
+</figure>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_v1130/05_modal_stream.png" alt="Модальное окно трансляции камеры (live-плеер go2rtc)">
+  <figcaption>Модальное окно трансляции камеры (live-плеер go2rtc)</figcaption>
+</figure>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_v1130/04_modal_archive.png" alt="Модальное окно архива камеры: live + таймлайн записей за 24 часа">
+  <figcaption>Модальное окно архива камеры: live + таймлайн записей за 24 часа</figcaption>
+</figure>
 
 <h4 id="video-gcs-proxy">Архив в GCS через прокси (роль «GCS»)</h4>
 <p>Из российских сетей <code>storage.googleapis.com</code> и <code>oauth2.googleapis.com</code> недоступны напрямую. Чтобы биллинг мог считать размер архива и выгружать сегменты в облако, добавлена отдельная <strong>роль «GCS» у прокси-сервера</strong>.</p>
@@ -1201,11 +1240,17 @@ flowchart LR
   <li>Для GCS используется <strong>HTTP-прокси (CONNECT)</strong> — он нативно поддерживается клиентом Google Cloud Storage. Доступность прокси проверяется по <code>storage.googleapis.com</code>.</li>
   <li>Подсчёт «Диск, Гб» делает один запрос со списком объектов GCS (с кэшем 10 минут) и суммирует размеры по каждой камере объекта.</li>
 </ul>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_v1130/07_proxy_roles.png" alt="Меню прокси: пункт «Добавить роль GCS» рядом с ролями Telegram / Нейросеть"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_v1130/07_proxy_roles.png" alt="Меню прокси: пункт «Добавить роль GCS» рядом с ролями Telegram / Нейросеть">
+  <figcaption>Меню прокси: пункт «Добавить роль GCS» рядом с ролями Telegram / Нейросеть</figcaption>
+</figure>
 
 <h3 id="chop-reports">Отчётность ЧОП (Фаза 4) — SLA, uptime, выручка</h3>
 <p>Раздел <a href="#chop-reports"><code>/admin/video/reports/</code></a> («Видео → Отчётность ЧОП») — единый экран по охраняемым объектам ЧОПа. Отвечает на три вопроса заказчика: насколько стабильна связь (SLA-uptime %), как быстро оператор реагирует на тревоги (время реакции + % в пределах SLA) и сколько объект приносит в месяц (recurring-выручка). Это <strong>доказуемый SLA</strong> — ключевая ценность, которую мы продаём охранным предприятиям.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/chop_reports_v1150/reports_overview.png" alt="Дашборд отчётности ЧОП: KPI, таблица по объектам, сводка по ЧОПам и операторам"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/chop_reports_v1150/reports_overview.png" alt="Дашборд отчётности ЧОП: KPI, таблица по объектам, сводка по ЧОПам и операторам">
+  <figcaption>Дашборд отчётности ЧОП: KPI, таблица по объектам, сводка по ЧОПам и операторам</figcaption>
+</figure>
 <h4 id="chop-reports-kpi">KPI и как они считаются</h4>
 <table>
   <thead><tr><th>KPI</th><th>Источник / формула</th></tr></thead>
@@ -1221,7 +1266,10 @@ flowchart LR
 <p>Под KPI — таблица <strong>по объектам</strong> (uptime, простой, тревоги, реакция, выручка), сводка <strong>по охранным предприятиям</strong> (группировка по <code>security_company</code>) и <strong>реакция по операторам</strong> (через <code>acked_by</code>).</p>
 <h4 id="chop-reports-period">Период и экспорт</h4>
 <p>Кнопки периода <strong>7 / 30 / 90 дней / Год</strong> перезапрашивают данные через <code>/admin/video/reports/json/</code> без перезагрузки. <strong>Экспорт CSV</strong> (<code>/admin/video/reports/export/</code>) — UTF-8 BOM + <code>;</code> для Excel, колонки по объектам.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/chop_reports_v1150/reports_90d.png" alt="Отчётность ЧОП за 90 дней"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/chop_reports_v1150/reports_90d.png" alt="Отчётность ЧОП за 90 дней">
+  <figcaption>Отчётность ЧОП за 90 дней</figcaption>
+</figure>
 <div class="flow-diagram" style="display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin:1rem 0;font-size:.9rem">
   <span class="badge" style="background:#0d1117;color:#fff;padding:.4rem .7rem;border-radius:6px">SecurityAlarm (тревоги, реакция, offline/restore)</span>
   <span>+</span>
@@ -1235,9 +1283,15 @@ flowchart LR
 
 <h3 id="video-abonent">Вкладка клиента и ЛК</h3>
 <p>На карточке клиента — вкладка «📹 Видеонаблюдение»: объекты → камеры / оборудование / подписки / проекты, с модалкой объекта (side-nav). У каждого объекта — отдельный лицевой счёт под видео (не смешивается с интернет-балансом). Recurring-подписки списываются с этого счёта; при минусе блокируются камеры/облако (настройка <code>VIDEO_BLOCK_ON_NEGBAL</code>), интернет не трогается.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_module_v2026_06_06/video_abonent_tab.png" alt="Вкладка видеонаблюдения на карточке клиента" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_module_v2026_06_06/video_abonent_tab.png" alt="Вкладка видеонаблюдения на карточке клиента" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px">
+  <figcaption>Вкладка видеонаблюдения на карточке клиента</figcaption>
+</figure>
 <p>В <strong>личном кабинете</strong> (<code>/lk/video/</code>) и <strong>мобильном приложении</strong> (<code>GET /mobile-api/v1/video/objects</code>) клиент видит свои объекты, камеры, подписки, статус проекта, баланс видео-счёта и кнопку пополнения.</p>
-<p><img class="screenshot" src="../img/video_v1049/04_lk_video_list.png" alt="ЛК: объект «Ворота» — 4 камеры, подписка 390 ₽/мес, кнопка Пополнить"></p>
+<figure class="shot">
+  <img src="../img/video_v1049/04_lk_video_list.png" alt="ЛК: объект «Ворота» — 4 камеры, подписка 390 ₽/мес, кнопка Пополнить">
+  <figcaption>ЛК: объект «Ворота» — 4 камеры, подписка 390 ₽/мес, кнопка Пополнить</figcaption>
+</figure>
 
 <h3 id="video-billing-flow">Как списываются подписки — пошагово</h3>
 <p>Видеоподписка — это recurring-услуга (<code>UsersUsluga</code>, <code>system_type=20</code>), которую <code>billing_worker</code> списывает <strong>1-го числа каждого месяца</strong>. Деньги берутся с <strong>отдельного видео-счёта объекта</strong> (<code>VideoObject.account</code>) — интернет-баланс клиента не затрагивается.</p>
@@ -1288,13 +1342,22 @@ flowchart LR
   <li><b>Выделение участка</b> (как обрезка в онлайн-сервисах) — потяните по таймлайну, появятся две ручки и панель «Просмотр / Скачать фрагмент / Сбросить». Вырезанный фрагмент скачивается одним файлом MP4.</li>
   <li><b>Выбор камеры</b> — если у объекта несколько камер с записью, в шапке появляется селектор камеры (дата сохраняется при переключении).</li>
 </ul>
-<p><img class="screenshot" src="../img/video_v1049/02_calendar_open.png" alt="Архив видео: календарь выбора даты с точками на днях с записью, таймлайн суток"></p>
-<p><img class="screenshot" src="../img/video_v1049/03_selection.png" alt="Архив видео: выделение участка на таймлайне (5 ч 31 мин) + кнопки Просмотр / Скачать фрагмент / Сбросить"></p>
+<figure class="shot">
+  <img src="../img/video_v1049/02_calendar_open.png" alt="Архив видео: календарь выбора даты с точками на днях с записью, таймлайн суток">
+  <figcaption>Архив видео: календарь выбора даты с точками на днях с записью, таймлайн суток</figcaption>
+</figure>
+<figure class="shot">
+  <img src="../img/video_v1049/03_selection.png" alt="Архив видео: выделение участка на таймлайне (5 ч 31 мин) + кнопки Просмотр / Скачать фрагмент / Сбросить">
+  <figcaption>Архив видео: выделение участка на таймлайне (5 ч 31 мин) + кнопки Просмотр / Скачать фрагмент / Сбросить</figcaption>
+</figure>
 
 <h3 id="video-notify">Уведомления о сбоях записи</h3>
 <p>Клиент может подключить уведомления о прерывании записи прямо в ЛК (вкладка «Архив» карточки объекта). Опция доступна <strong>только если у объекта активна запись</strong>. Канал — Telegram / Email / оба; контакты берутся из профиля клиента.</p>
 <p>Серверный health-мониторинг (<code>video-archive-health</code>, каждые 10 мин) проверяет свежесть последнего записанного сегмента по каждой <code>archive_enabled</code> камере. Если записи нет дольше 15 минут — запись считается отвалившейся: <code>billing_worker</code>-независимая задача шлёт Telegram-алерт оператору, а при включённой подписке на уведомления — ещё и клиенту (группировка по объекту, анти-спам 6 ч).</p>
-<p><img class="screenshot" src="../img/video_v1049/06_notify_on.png" alt="ЛК: переключатель «Уведомлять о сбоях записи» включён, выбор канала Telegram/Email"></p>
+<figure class="shot">
+  <img src="../img/video_v1049/06_notify_on.png" alt="ЛК: переключатель «Уведомлять о сбоях записи» включён, выбор канала Telegram/Email">
+  <figcaption>ЛК: переключатель «Уведомлять о сбоях записи» включён, выбор канала Telegram/Email</figcaption>
+</figure>
 
 <h3 id="documents">Модуль «Документы»: реестр, шаблоны, реквизиты</h3>
 <p>Раздел меню <strong>«Документы»</strong> — единый документооборот: три подстраницы
@@ -1313,7 +1376,10 @@ flowchart LR
 сотруднику). Фильтры: поиск по номеру/названию, категория, статус и
 <strong>единый компонент диапазона дат</strong> (как в отчётах). Организация
 выбирается в шапке навбара — отдельного фильтра на странице нет.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/documents_v1773/01_registry.png" alt="Реестр документов: фильтры (категория/статус/диапазон дат), таблица с колонкой Организация, действия"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/documents_v1773/01_registry.png" alt="Реестр документов: фильтры (категория/статус/диапазон дат), таблица с колонкой Организация, действия">
+  <figcaption>Реестр документов: фильтры (категория/статус/диапазон дат), таблица с колонкой Организация, действия</figcaption>
+</figure>
 <ul>
   <li><strong>Действия в строке</strong>: предпросмотр PDF (модалка), скачивание,
     отметка «подписан», аннулирование (статус <em>void</em>, файл сохраняется).</li>
@@ -1333,7 +1399,10 @@ flowchart LR
 типов, чьи модули выключены, скрываются автоматически. Тело шаблона (HTML с
 плейсхолдерами) правится визуально; шапка с реквизитами организации, логотип и
 подписи добавляются единым движком. Есть предпросмотр на демо-данных.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/documents_v1773/02_stock_tab.png" alt="Шаблоны документов: вкладки типов сделок, включая вкладку Склад"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/documents_v1773/02_stock_tab.png" alt="Шаблоны документов: вкладки типов сделок, включая вкладку Склад">
+  <figcaption>Шаблоны документов: вкладки типов сделок, включая вкладку Склад</figcaption>
+</figure>
 
 <h4 id="documents-stock">Вкладка «Склад» — акты оборудования</h4>
 <p>При включённом модуле <strong>Склад</strong> появляется вкладка «Склад» с двумя
@@ -1364,7 +1433,10 @@ flowchart LR
   <li><strong>Акт сдачи-приёмки</strong> с 11-пунктным чек-листом приёмки</li>
   <li><strong>Согласие на обработку ПДн (152-ФЗ)</strong> — обязательно до начала съёмки (видео с людьми = персональные данные)</li>
 </ul>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_module_v2026_06_06/video_plans.png" alt="Сервисные планы видеонаблюдения" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_module_v2026_06_06/video_plans.png" alt="Сервисные планы видеонаблюдения" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px">
+  <figcaption>Сервисные планы видеонаблюдения</figcaption>
+</figure>
 
 <h3 id="video-settings">Настройки модуля</h3>
 <p>Страница <code>/admin/video/settings/</code> — 4 группы настроек в карточках: <strong>Основные</strong> (включение, отдельный счёт), <strong>Биллинг и блокировки</strong>, <strong>Облако VSaaS</strong>. У облака — кнопка «Проверить соединение» прямо со страницы.</p>
@@ -1399,7 +1471,10 @@ flowchart LR
 
 <h2 id="domofon-demo"><i class="ti ti-door h-ico" aria-hidden="true"></i>Домофонный домен</h2>
 <p>Домофония для новостроек реализована как <strong>рескин</strong> существующего биллинга, а не отдельный модуль: иерархия «оператор → ЖК → подъезд → квартира» укладывается на MPTT-дерево клиентов один-в-один, пакеты домофона — это тарифы, абонентская плата — recurring-услуги (списываются <code>billing_worker</code>). Все клиенты домофонных/видео-услуг привязаны к оператору домофонии (отдельная папка-юр.лицо).</p>
-<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/demo_domofon_v1029/demo_domain_model.svg" alt="Доменная модель домофонного проекта" class="screenshot" style="max-width:720px"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/demo_domofon_v1029/demo_domain_model.svg" alt="Доменная модель домофонного проекта" style="max-width:720px">
+  <figcaption>Доменная модель домофонного проекта</figcaption>
+</figure>
 <h3 id="domofon-model">Доменная модель</h3>
 <ul>
   <li><strong>Оператор</strong> = папка клиентов (<code>is_folder=True, company=True</code>) с реквизитами юр.лица.</li>
@@ -1411,14 +1486,20 @@ flowchart LR
 <h3 id="domofon-demo-data">Что заведено в демо</h3>
 <p>40 квартир-клиентов · 3 тарифа-пакета · 40 лицевых счетов · 4 видео-объекта + 8 камер + 4 видео-подписки (390 ₽) · 2 подписки «дверь» (50 ₽) · 4 демо-платежа. Всего <strong>46 живых recurring-услуг</strong> с <code>sched_date</code> — списываются <code>billing_worker</code> 1-го числа. Открыть: <code>/admin/Abonents/9482/</code>.</p>
 <p>На карточке квартиры видны все три услуги сразу (вкладка «Услуги») и объект видеонаблюдения с камерами (вкладка «Видео»):</p>
-<p><img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/demo_domofon_v1029/demo_flat_services.png" alt="Услуги квартиры: домофон + видео + дверь" class="screenshot" style="max-width:720px"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/demo_domofon_v1029/demo_flat_services.png" alt="Услуги квартиры: домофон + видео + дверь" style="max-width:720px">
+  <figcaption>Услуги квартиры: домофон + видео + дверь</figcaption>
+</figure>
 <div class="note">
   <p>Демо-данные — для показа полного flow, не боевые клиенты.</p>
 </div>
 
 <h2 id="multi-org"><i class="ti ti-building h-ico" aria-hidden="true"></i>Мульти-организации и SLA-сервис</h2>
 <p>Один экземпляр СмИТ Биллинг может обслуживать несколько компаний-операторов как самостоятельные юрлица. В контуре может быть несколько организаций: основная — провайдер связи (она же по умолчанию), рядом с ней дочерние или партнёрские компании со своими доменами — например, ИТ-услуги или охранное абонентское обслуживание. У каждой компании — свои реквизиты, платёжные кассы, счёт приёма оплат, документы, брендинг, домен ЛК и маршрутизация поддержки. Сотрудники видят данные только своих компаний.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/multiorg_ayti_v2026_06_08/multiorg.svg" alt="Multi-org: один биллинг — несколько компаний" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/multiorg_ayti_v2026_06_08/multiorg.svg" alt="Multi-org: один биллинг — несколько компаний" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px">
+  <figcaption>Multi-org: один биллинг — несколько компаний</figcaption>
+</figure>
 
 <figure class="doc-video">
   <div class="dv-head">
@@ -1475,10 +1556,12 @@ flowchart LR
     </ul>
   </li>
 </ul>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/multiorg_v2242/01_list.jpg" loading="lazy"
-  alt="Страница «Организации»: список компаний, статус, реквизиты, почта и платежи"></p>
-<p class="img-caption">Список компаний. В шапке — переход к лицензии, модулям и виджетам,
-настройка состава колонок и добавление организации.</p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/multiorg_v2242/01_list.jpg" loading="lazy"
+  alt="Страница «Организации»: список компаний, статус, реквизиты, почта и платежи">
+  <figcaption>Список компаний. В шапке — переход к лицензии, модулям и виджетам,
+настройка состава колонок и добавление организации.</figcaption>
+</figure>
 
 <h3 id="multi-org-page">Страница «Организации»</h3>
 <p>Раздел открывается по адресу <code>/admin/settings/organizations/</code> и доступен
@@ -1499,10 +1582,12 @@ flowchart LR
   из выбора и фильтров, данные и документы сохраняются, действие пишется в аудит.</li>
 </ul>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/multiorg_v2242/02_panel_req.jpg" loading="lazy"
-  alt="Карточка организации, вкладка «Реквизиты»: ИНН, КПП, банковские данные"></p>
-<p class="img-caption">Карточка открывается боковой панелью справа. «Сохранить»
-остаётся неактивной, пока в форме ничего не изменено.</p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/multiorg_v2242/02_panel_req.jpg" loading="lazy"
+  alt="Карточка организации, вкладка «Реквизиты»: ИНН, КПП, банковские данные">
+  <figcaption>Карточка открывается боковой панелью справа. «Сохранить»
+остаётся неактивной, пока в форме ничего не изменено.</figcaption>
+</figure>
 
 <h4 id="multi-org-mobile">На телефоне</h4>
 <p>Список превращается в карточки: каждая строка — компания с подписанными полями,
@@ -1559,8 +1644,14 @@ flowchart LR
   <li><strong>Фон дашборда админки</strong> — свет/тёмная тема.</li>
 </ul>
 <p>Изображения до 2&nbsp;МБ (PNG/JPG/WEBP/SVG). Файлы можно загружать только у сохранённой организации. У организации по умолчанию (СмИТ) брендинг хранится в общей записи реквизитов, у остальных компаний — в собственной.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/multiorg_v1155/02_brand_tab_light.jpg" alt="Вкладка «Брендинг» — фирменные цвета, логотип, фоны входа и дашборда" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/multiorg_ayti_v2026_06_08/03_dashboard.png" alt="Личный кабинет организации" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/multiorg_v1155/02_brand_tab_light.jpg" alt="Вкладка «Брендинг» — фирменные цвета, логотип, фоны входа и дашборда" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px">
+  <figcaption>Вкладка «Брендинг» — фирменные цвета, логотип, фоны входа и дашборда</figcaption>
+</figure>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/multiorg_ayti_v2026_06_08/03_dashboard.png" alt="Личный кабинет организации" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px">
+  <figcaption>Личный кабинет организации</figcaption>
+</figure>
 
 <h3 id="org-mail">Почта организации (SMTP)</h3>
 <p>Карточка организации (<code>/admin/settings/organizations/</code>) открывается <strong>правым выезжающим сайдбаром</strong> — на мобильном он занимает всю ширину. Вкладка <strong>«Почта (SMTP)»</strong> задаёт, через какой сервер уходят письма клиентам этой компании.</p>
@@ -1591,11 +1682,17 @@ flowchart LR
   <li><strong>Chat ID супергруппы</strong> — числовой идентификатор (например <code>-1002910452601</code>) для отправки через Bot API.</li>
 </ul>
 <p>Если поля пусты — используется глобальный бот системы (поведение СмИТ не меняется). Топики (<code>thread_id</code>) под конкретные типы уведомлений настраиваются отдельно; здесь задаётся бот и супергруппа организации.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/multiorg_v1155/03_telegram_tab_light.jpg" alt="Вкладка «Telegram» — токен бота, ссылка на супергруппу, Chat ID" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/multiorg_v1155/03_telegram_tab_light.jpg" alt="Вкладка «Telegram» — токен бота, ссылка на супергруппу, Chat ID" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px">
+  <figcaption>Вкладка «Telegram» — токен бота, ссылка на супергруппу, Chat ID</figcaption>
+</figure>
 
 <h3 id="api-proxy">API-прокси для внешних сервисов</h3>
 <p>Запросы к недоступным из РФ сервисам (AI-провайдеры, Telegram) идут через собственный forward-прокси на сервере с прямым доступом к этим API. Настройка <code>API_PROXY_URL</code> — единая точка для всех внешних вызовов (AI-чат, уведомления, фискализация, геокодер). Это устранило таймауты AI-ассистента: ответ приходит за ~1–2 сек.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/multiorg_ayti_v2026_06_08/api_proxy.svg" alt="Схема API-прокси" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/multiorg_ayti_v2026_06_08/api_proxy.svg" alt="Схема API-прокси" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px">
+  <figcaption>Схема API-прокси</figcaption>
+</figure>
 
 <div class="note">
   <p><strong>Статус:</strong> мульти-орг полностью реализован (2026-06-13, вкладки «Брендинг» и «Telegram» добавлены 2026-06-16). Per-организацию: реквизиты и документы, визуальный брендинг (цвета/логотип/favicon/фоны), платёжные кассы и счёт приёма оплат, маршрутизация онлайн-платежей и банковских выписок, фискализация (54-ФЗ), изоляция входа в ЛК и брендинг по домену, изоляция персонала по компаниям, свой Telegram-бот и супергруппа уведомлений, SLA-сервис и API-прокси. Состав компаний ведётся в карточках организаций. Платёжные/фискальные реквизиты вводятся в карточке организации по мере оформления юр.лиц.</p>
@@ -1627,7 +1724,10 @@ flowchart LR
   </figcaption>
 </figure>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_module_v1132/ai_architecture.svg" alt="Архитектура AI-агента: каналы → движок → биллинг ORM → результат" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_module_v1132/ai_architecture.svg" alt="Архитектура AI-агента: каналы → движок → биллинг ORM → результат" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px">
+  <figcaption>Архитектура AI-агента: каналы → движок → биллинг ORM → результат</figcaption>
+</figure>
 
 <p><strong>Карта возможностей модуля:</strong></p>
 <pre class="mermaid">
@@ -1660,15 +1760,24 @@ flowchart LR
 
 <h3 id="ai-hub">Обзор модуля (хаб)</h3>
 <p>Главная страница <code>/admin/ai/</code> — единая точка управления: статусы API-ключей подключённых провайдеров, список каналов с выбранной моделью, стоимость токенов за месяц в рублях, переходы к разделам (промпты, база знаний, журнал звонков, сессии и дашборд). Ключи хранятся в БД (<code>SystemSettings</code>), не в <code>.env</code> — настраиваются из интерфейса.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_hub.png" alt="AI-агент — обзорная страница хаба" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_hub.png" alt="AI-агент — обзорная страница хаба" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px">
+  <figcaption>AI-агент — обзорная страница хаба</figcaption>
+</figure>
 
 <h3 id="ai-providers">Мультипровайдер: выбор модели</h3>
 <p>Для каждого из 7 каналов (Личный кабинет, Мобильное, Email/Поддержка, Виджет, Голос, Телефон, Подсказка оператору) выбирается провайдер и конкретная модель. Запросы маршрутизируются единым движком <code>ai_prompt_builder.build()</code>; ответы и токены логируются в <code>ai_chat_log</code> с разбивкой по провайдеру. Запросы к внешним API провайдеров идут через прокси (эти сервисы заблокированы из РФ).</p>
 
 <h3 id="ai-kb">База знаний</h3>
 <p>Раздел <code>/admin/ai/kb/</code> — сценарии решения проблем (статьи <code>KnowledgeArticle</code>) с кодом, приоритетом и аудиторией (бот / оператор / оба). Интерфейс повторяет рабочую базу знаний поддержки: четыре вкладки (<strong>Сценарии решения</strong>, <strong>Дерево диагностики</strong>, <strong>Шаблоны ответов</strong>, <strong>Аналитика</strong>), фильтры по аудитории и приоритету, поиск. Карточка-аккордеон раскрывается в четыре колонки-шага (Уточнение → Диагностика → Решение → Если не помогло) с блоком эскалации и примечаниями. Активные статьи автоматически подмешиваются в системный промпт бота.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_kb.png" alt="База знаний — список сценариев с фильтрами" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_kb.png" alt="База знаний — развёрнутый сценарий с четырьмя шагами" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_kb.png" alt="База знаний — список сценариев с фильтрами" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px">
+  <figcaption>База знаний — список сценариев с фильтрами</figcaption>
+</figure>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_kb.png" alt="База знаний — развёрнутый сценарий с четырьмя шагами" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px">
+  <figcaption>База знаний — развёрнутый сценарий с четырьмя шагами</figcaption>
+</figure>
 
 <h3 id="ai-tools">Инструменты на ORM (tool-use)</h3>
 <p>AI-ассистент умеет вызывать нативные функции напрямую через ORM, без HTTP к самому себе. Инструменты делятся на две группы:</p>
@@ -1762,8 +1871,14 @@ flowchart LR
 </ul>
 <p>Состав полей и тексты настраиваются в модалке «Формы заказа» (заголовок, цвет, телефон, видимость блоков). Главный выключатель приёма заявок — <code>CRM_PUBLIC_LEAD_ENABLED</code> (по умолчанию выключен, включается тумблером в хабе).</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/order_forms_v1212/order_page.png" alt="Полностраничная форма заказа /order" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/order_forms_v1212/order_widget_open.png" alt="Встраиваемый виджет формы заказа в модальном окне" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/order_forms_v1212/order_page.png" alt="Полностраничная форма заказа /order" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px">
+  <figcaption>Полностраничная форма заказа /order</figcaption>
+</figure>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/order_forms_v1212/order_widget_open.png" alt="Встраиваемый виджет формы заказа в модальном окне" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px">
+  <figcaption>Встраиваемый виджет формы заказа в модальном окне</figcaption>
+</figure>
 
 <p><strong>Маршрут заявки:</strong></p>
 <pre class="mermaid">
@@ -1779,7 +1894,10 @@ flowchart LR
 
 <h4 id="ai-test-chat">Тестовый AI-чат</h4>
 <p>Страница <code>/admin/ai/test_chat/</code> — отработка сценариев ассистента так, как его видит клиент на сайте. Использует тот же движок, что и боевой виджет: создаёт реальные лиды и тикеты, показывает <code>session_id</code>, факт эскалации, номер тикета и ссылку на сессию в дашборде. Эскалация (фраза вроде «хочу оператора» или жалоба) создаёт тикет во внутренней Поддержке.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_test_chat.png" alt="Тестовый AI-чат в админке с панелью состояния сессии" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_test_chat.png" alt="Тестовый AI-чат в админке с панелью состояния сессии" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px">
+  <figcaption>Тестовый AI-чат в админке с панелью состояния сессии</figcaption>
+</figure>
 
 <p><strong>Эскалация чата в тикет:</strong></p>
 <pre class="mermaid">
@@ -1819,11 +1937,17 @@ flowchart LR
 <h3 id="ai-dashboard">Дашборд AI-сессий</h3>
 <p>Дашборд <code>/admin/reports/ai_chat_dashboard/</code> — единая аналитика всех AI-диалогов (ЛК, мобильное приложение, виджет на сайте). Это рабочий инструмент для оценки качества ассистента и обучения промпта. Сюда при запуске была перенесена история диалогов из внешнего сервиса (первоначально ~19 тыс. строк), сопоставленных с клиентами по телефону; дальше журнал пополняется в реальном времени, а поздние бэкфиллы (организации, разбивка на обращения) меняют разрезы аналитики.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_dashboard.png" alt="Дашборд AI-сессий: KPI, активность по дням, каналы" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_dashboard.png" alt="Дашборд AI-сессий: KPI, активность по дням, каналы" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px">
+  <figcaption>Дашборд AI-сессий: KPI, активность по дням, каналы</figcaption>
+</figure>
 
 <h4 id="ai-dashboard-kpi">Показатели и графики</h4>
 
-<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_dashboard.png" alt="AI-чат: дашборд — показатели и графики" class="screenshot">
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_dashboard.png" alt="AI-чат: дашборд — показатели и графики">
+  <figcaption>AI-чат: дашборд — показатели и графики</figcaption>
+</figure>
 
 <p>Пять карточек сверху отвечают на вопросы «сколько было разговоров», «насколько они были длинными», «дошли ли до конкретного клиента» и «сколько это стоило»:</p>
 
@@ -1974,7 +2098,10 @@ flowchart LR
 
 <h4 id="ai-dashboard-sessions">Список сессий</h4>
 
-<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_transcript.png" alt="Стенограмма диалога в модальном окне" class="screenshot">
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_transcript.png" alt="Стенограмма диалога в модальном окне">
+  <figcaption>Стенограмма диалога в модальном окне</figcaption>
+</figure>
 
 <p>Список приходит страницами по 50 записей: поиск (по идентификатору сессии, каналу, ФИО и договору), фильтры канала и оценки, сортировка — всё считается на сервере. Клик по строке открывает стенограмму: реплики клиента и ассистента с временем, ответы в формате JSON показываются моноширинным блоком, имя клиента ведёт в его карточку.</p>
 
@@ -1982,14 +2109,23 @@ flowchart LR
 
 <h4 id="ai-dashboard-theme">Тёмная тема и телефон</h4>
 
-<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_dashboard_dark.png" alt="AI-дашборд в тёмной теме" class="screenshot">
-<img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_dashboard_mobile.png" alt="AI-дашборд на телефоне" class="screenshot">
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_dashboard_dark.png" alt="AI-дашборд в тёмной теме">
+  <figcaption>AI-дашборд в тёмной теме</figcaption>
+</figure>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_dashboard_mobile.png" alt="AI-дашборд на телефоне">
+  <figcaption>AI-дашборд на телефоне</figcaption>
+</figure>
 <p>Период задаётся единым date-range-picker (общий для всех отчётов). Стоимость токенов считается из настроек <code>AI_PRICE_*</code> и курса <code>AI_USD_RUB</code>.</p>
 
 <h4 id="ai-dashboard-transcript">Список сессий и транскрипт</h4>
 <p>Блок <strong>«Все сессии за период»</strong> — таблица с фильтрами по каналу (Все/LK/Mobile) и фидбеку (Все/👍/👎/Эскал.), живым поиском (ID/клиент/договор) и сортировкой по столбцам. Клик по строке открывает <strong>транскрипт диалога в стиле iMessage</strong>: реплики клиента — справа (светло-серый градиент), Аиды — слева, с поддержкой markdown-форматирования (<code>**жирный**</code>, заголовки <code>#/##/###</code>, <code>`код`</code>). Клик по имени клиента открывает <strong>slide-панель клиента</strong> (как в других разделах) — без ухода со страницы.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_transcript.png" alt="Транскрипт AI-сессии в стиле iMessage с markdown-анализом" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/ai_v1846/ai_transcript.png" alt="Транскрипт AI-сессии в стиле iMessage с markdown-анализом" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px">
+  <figcaption>Транскрипт AI-сессии в стиле iMessage с markdown-анализом</figcaption>
+</figure>
 
 <p><strong>Поток данных дашборда:</strong></p>
 <pre class="mermaid">
@@ -2013,7 +2149,10 @@ flowchart LR
 
 
 <h2 id="ui-components"><i class="ti ti-puzzle h-ico" aria-hidden="true"></i>Единые компоненты интерфейса</h2>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v1999/components_catalog.png" alt="Каталог единых компонентов"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/tarifs_v1999/components_catalog.png" alt="Каталог единых компонентов">
+  <figcaption>Каталог единых компонентов</figcaption>
+</figure>
 
 <p>Каталог живёт в <em>Настройки → Лицензия и расширения → Единые компоненты</em>
 (<code>/admin/settings/components/</code>) и содержит 59 компонентов с описанием, публичным API,
@@ -2177,7 +2316,10 @@ flowchart LR
 
 <h3 id="autodial-card-tab">Вкладка «Звонки» в карточке клиента</h3>
 <p>В карточке клиента (<code>/admin/Abonents/&lt;id&gt;/calls/</code>) есть вкладка <strong>«Звонки»</strong> — журнал голосовых звонков клиента и панель управления исходящими вызовами. Видна, когда модуль автообзвона включён.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/calls_tab_v1151/calls_light.png" alt="Вкладка «Звонки»: панель управления и журнал звонков клиента" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/calls_tab_v1151/calls_light.png" alt="Вкладка «Звонки»: панель управления и журнал звонков клиента" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px">
+  <figcaption>Вкладка «Звонки»: панель управления и журнал звонков клиента</figcaption>
+</figure>
 <p>Панель содержит:</p>
 <ul>
   <li><strong>Согласие на голосовые звонки (152-ФЗ)</strong> — переключатель; без согласия исходящие не уходят.</li>
@@ -2186,7 +2328,10 @@ flowchart LR
   <li><strong>«Автодозвон»</strong> — Mango набирает оператора и соединяет его с клиентом (живой разговор, не робот).</li>
 </ul>
 <p>Журнал звонков показывает: дату, направление (входящий/исходящий с иконкой), статус (цветной бейдж), AI-категорию обращения, краткое AI-резюме. Если по звонку создан тикет в Поддержке — рядом с резюме появляется ссылка <strong>«Создан тикет #N»</strong>, ведущая в Поддержку. Для звонков с записью кнопка ▶ открывает <strong>встроенный плеер в модальном окне</strong> (прослушать или скачать запись).</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/calls_tab_v1151/calls_player.png" alt="Плеер записи звонка в модальном окне" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/calls_tab_v1151/calls_player.png" alt="Плеер записи звонка в модальном окне" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px">
+  <figcaption>Плеер записи звонка в модальном окне</figcaption>
+</figure>
 
 <div class="note">
   <p><strong>Статус:</strong> модуль и стенд своей телефонии готовы. Реальные звонки в телефонную сеть ждут подключения SIP-транка провайдера и маркировки звонков. До этого момента работает облачный провайдер Zvonok. Модуль по умолчанию выключен (kill-switch <code>AUTODIAL_ENABLED</code>).</p>

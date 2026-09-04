@@ -35,7 +35,7 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="NAS/BRAS, коммутаторы, VoIP-шлюзы, IPTV, FreeRADIUS с rlm_python3, абонентское оборудование.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=2478">
+  <link rel="stylesheet" href="../css/style.css?v=2479">
   <link rel="stylesheet" href="../css/search.css?v=2257">
   <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css?v=2193">
 <!-- Yandex.Metrika counter -->
@@ -1187,7 +1187,10 @@ docker compose restart freeradius</code></pre>
   <h3 id="nas-modal">Редактирование NAS — модальное окно</h3>
   <p>Начиная с, все операции с NAS-устройствами выполняются в модальном окне (без перехода на отдельную страницу). Кнопка <i class="ti ti-pencil"></i> в строке таблицы открывает полнофункциональное окно редактирования.</p>
 
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v329/equipment_nas_list.png" alt="Список NAS" class="screenshot">
+  <figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v329/equipment_nas_list.png" alt="Список NAS">
+  <figcaption>Список NAS</figcaption>
+</figure>
 
   <p>Модальное окно содержит 6 вкладок:</p>
   <ul>
@@ -1199,12 +1202,30 @@ docker compose restart freeradius</code></pre>
     <li><strong>OSS / Скрипты</strong> — пути скриптов, интерфейсы для MikroTik / Cisco / Redback.</li>
   </ul>
 
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v329/nas_modal_main.png" alt="NAS модалка — вкладка Основное" class="screenshot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v329/nas_modal_radius.png" alt="NAS модалка — вкладка RADIUS" class="screenshot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v329/nas_modal_auth.png" alt="NAS модалка — вкладка Авторизация" class="screenshot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v329/nas_modal_telnet.png" alt="NAS модалка — вкладка Управление" class="screenshot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v329/nas_modal_pulls.png" alt="NAS модалка — вкладка IP-пулы" class="screenshot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v329/nas_modal_oss.png" alt="NAS модалка — вкладка OSS" class="screenshot">
+  <figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v329/nas_modal_main.png" alt="NAS модалка — вкладка Основное">
+  <figcaption>NAS модалка — вкладка Основное</figcaption>
+</figure>
+  <figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v329/nas_modal_radius.png" alt="NAS модалка — вкладка RADIUS">
+  <figcaption>NAS модалка — вкладка RADIUS</figcaption>
+</figure>
+  <figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v329/nas_modal_auth.png" alt="NAS модалка — вкладка Авторизация">
+  <figcaption>NAS модалка — вкладка Авторизация</figcaption>
+</figure>
+  <figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v329/nas_modal_telnet.png" alt="NAS модалка — вкладка Управление">
+  <figcaption>NAS модалка — вкладка Управление</figcaption>
+</figure>
+  <figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v329/nas_modal_pulls.png" alt="NAS модалка — вкладка IP-пулы">
+  <figcaption>NAS модалка — вкладка IP-пулы</figcaption>
+</figure>
+  <figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v329/nas_modal_oss.png" alt="NAS модалка — вкладка OSS">
+  <figcaption>NAS модалка — вкладка OSS</figcaption>
+</figure>
 
   <div class="info-box">После сохранения NAS биллинг показывает баннер «Требуется перезапуск FreeRADIUS» — clients.conf обновляется при следующем старте контейнера.</div>
 
@@ -1212,7 +1233,10 @@ docker compose restart freeradius</code></pre>
   <h3 id="nas-online">Онлайн-клиенты NAS</h3>
   <p>Начиная с, в столбце <strong>Онлайн</strong> таблицы NAS отображается кликабельная ссылка с числом активных сессий. Клик открывает модальное окно со списком клиентов, подключённых через данный NAS прямо сейчас.</p>
 
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v334/nas_list_with_online.png" alt="Список NAS — кликабельный счётчик онлайн" class="screenshot">
+  <figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v334/nas_list_with_online.png" alt="Список NAS — кликабельный счётчик онлайн">
+  <figcaption>Список NAS — кликабельный счётчик онлайн</figcaption>
+</figure>
 
   <p>Модальное окно «Онлайн на NAS» показывает до 200 активных сессий:</p>
   <ul>
@@ -1224,7 +1248,10 @@ docker compose restart freeradius</code></pre>
     <li><strong>Обновление</strong> — время последнего Accounting-Update.</li>
   </ul>
 
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v334/nas_online_modal.png" alt="Модалка онлайн-клиентов NAS" class="screenshot">
+  <figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v334/nas_online_modal.png" alt="Модалка онлайн-клиентов NAS">
+  <figcaption>Модалка онлайн-клиентов NAS</figcaption>
+</figure>
 
   <p>Кнопка <strong>Обновить</strong> перезагружает данные без закрытия окна. Если сессий больше 200 — отображается подсказка о лимите.</p>
 
@@ -1237,7 +1264,10 @@ docker compose restart freeradius</code></pre>
 
   <p>Отдельная страница <code>/admin/equipment/nas_status/</code> предоставляет real-time мониторинг всех NAS-устройств: текущее состояние (UP/DOWN), uptime за 7/30 дней, простой за 24 часа, и историю последних 50 событий.</p>
 
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_v963/nas_status_v963.png" alt="Дашборд состояния NAS" class="screenshot">
+  <figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_v963/nas_status_v963.png" alt="Дашборд состояния NAS">
+  <figcaption>Дашборд состояния NAS</figcaption>
+</figure>
 
   <p>Дашборд показывает:</p>
   <ul>
@@ -1253,7 +1283,10 @@ docker compose restart freeradius</code></pre>
 
   <p>В <strong>список NAS</strong> добавлены KPI-карточки и чипы-фильтры:</p>
 
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_v963/nas_list_v963.png" alt="Список NAS с KPI и фильтрами" class="screenshot">
+  <figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_v963/nas_list_v963.png" alt="Список NAS с KPI и фильтрами">
+  <figcaption>Список NAS с KPI и фильтрами</figcaption>
+</figure>
 
   <ul>
     <li><strong>KPI-cards</strong>: Всего NAS / UP / DOWN / Онлайн клиентов</li>
@@ -1340,23 +1373,38 @@ docker compose restart freeradius</code></pre>
   <p>Коммутаторы (<code>/admin/equipment/Switch/</code>) редактируются в модальном окне с двухколоночным макетом: слева — название и IP, справа — адрес установки (Select2), этаж, помещение.</p>
   <p>Начиная с, в таблице коммутаторов добавлена колонка <strong>Тип</strong> — отображает привязанный тип коммутатора (бейдж с названием). Тип определяет регулярные выражения для парсинга Option 82 и используется при OPT82-авторизации.</p>
 
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v334/switch_list_with_type.png" alt="Список коммутаторов с колонкой Тип" class="screenshot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v334/switch_modal_with_type.png" alt="Модалка коммутатора — поле Тип" class="screenshot">
+  <figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v334/switch_list_with_type.png" alt="Список коммутаторов с колонкой Тип">
+  <figcaption>Список коммутаторов с колонкой Тип</figcaption>
+</figure>
+  <figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v334/switch_modal_with_type.png" alt="Модалка коммутатора — поле Тип">
+  <figcaption>Модалка коммутатора — поле Тип</figcaption>
+</figure>
 
   <p>На телефоне модальное окно раскрывается на весь экран и выезжает снизу — это касается всех модальных окон биллинга, не только коммутаторов. Шапку можно потянуть пальцем вниз, чтобы закрыть панель.</p>
 
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v1755/switch_modal_mobile_sheet.png" alt="Модалка коммутатора на телефоне — полноэкранная слайд-панель" class="screenshot">
+  <figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v1755/switch_modal_mobile_sheet.png" alt="Модалка коммутатора на телефоне — полноэкранная слайд-панель">
+  <figcaption>Модалка коммутатора на телефоне — полноэкранная слайд-панель</figcaption>
+</figure>
 
   <!-- ===== Организации коммутатора ===== -->
   <h3 id="switch-orgs">Организации коммутатора</h3>
 
   <p>Один коммутатор в доме может обслуживать клиентов нескольких компаний, поэтому организация у коммутатора — <strong>набор</strong>, а не единственный выбор: в модальном окне это чекбоксы, а не выпадающий список. Связь хранится в таблице <code>SWITCH_ORGANIZATION</code> (как у NAS).</p>
 
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v1755/switch_modal_org.png" alt="Модалка коммутатора — чекбоксы организаций" class="screenshot">
+  <figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v1755/switch_modal_org.png" alt="Модалка коммутатора — чекбоксы организаций">
+  <figcaption>Модалка коммутатора — чекбоксы организаций</figcaption>
+</figure>
 
   <p>В списке <code>/admin/equipment/Switch/</code> организации показаны второй колонкой бейджами с фирменным цветом компании:</p>
 
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v1755/switch_list_org.png" alt="Список коммутаторов с колонкой Орг." class="screenshot">
+  <figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v1755/switch_list_org.png" alt="Список коммутаторов с колонкой Орг.">
+  <figcaption>Список коммутаторов с колонкой Орг.</figcaption>
+</figure>
 
   <p>Что из этого следует на практике:</p>
   <ul>
@@ -1370,9 +1418,15 @@ docker compose restart freeradius</code></pre>
   <h2 id="switch-types">Типы коммутаторов</h2>
 
   <p>Справочник типов коммутаторов <code>/admin/equipment/SwitchType/</code> — настройка правил парсинга DHCP Option 82 для каждого типа оборудования. Используется при авторизации клиентов по коммутатору.</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v329/equipment_switchtype_list.png" alt="Типы коммутаторов — список" class="screenshot">
+  <figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v329/equipment_switchtype_list.png" alt="Типы коммутаторов — список">
+  <figcaption>Типы коммутаторов — список</figcaption>
+</figure>
   <p>С добавление и редактирование типов выполняется в модальном окне с двумя вкладками: <strong>Основные</strong> (название, признак «Порты с 0») и <strong>Opt82</strong> (поля парсинга). Изменения сохраняются без перезагрузки страницы.</p>
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v329/switch_type_modal.png" alt="Модалка типа коммутатора" class="screenshot">
+  <figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v329/switch_type_modal.png" alt="Модалка типа коммутатора">
+  <figcaption>Модалка типа коммутатора</figcaption>
+</figure>
 
   <h3 id="opt82-params">Параметры Opt82</h3>
   <p>Каждая запись задаёт регулярные выражения для извлечения данных из поля Option 82:</p>
@@ -1535,7 +1589,10 @@ docker compose restart freeradius</code></pre>
 
   <h3 id="monitoring-table">Таблица устройств</h3>
 
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v1755/monitoring_overview.png" alt="Мониторинг оборудования — список устройств" class="screenshot">
+  <figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v1755/monitoring_overview.png" alt="Мониторинг оборудования — список устройств">
+  <figcaption>Мониторинг оборудования — список устройств</figcaption>
+</figure>
 
   <table class="data-table">
     <thead>
@@ -1570,13 +1627,19 @@ docker compose restart freeradius</code></pre>
 
   <p>Клик по счётчику портов («10 / 28») открывает снимок MAC-таблицы коммутатора: какой MAC на каком порту, в каком VLAN, какому клиенту он принадлежит, логин учётной записи, выданный IP и когда MAC был замечен.</p>
 
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v1755/monitoring_ports_modal.png" alt="Модалка: кем заняты порты коммутатора" class="screenshot">
+  <figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v1755/monitoring_ports_modal.png" alt="Модалка: кем заняты порты коммутатора">
+  <figcaption>Модалка: кем заняты порты коммутатора</figcaption>
+</figure>
 
   <p>В шапке — сводка: сколько портов активно, сколько MAC найдено, сколько сопоставлено с клиентами и сколько скрыто как чужие. Поле поиска фильтрует по порту, MAC, ФИО, логину и IP.</p>
 
   <p><strong>Клик по имени клиента открывает боковую панель</strong> — баланс, тариф, контакты, последняя сессия — прямо поверх таблицы портов, без ухода со страницы. В панели, в блоке «Последняя сессия», оборудование показано ссылками: «Шлюз» ведёт на карточку NAS, «Коммутатор» — на карточку коммутатора с номером порта и VLAN.</p>
 
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v1755/monitoring_abonent_drawer.png" alt="Панель клиента поверх таблицы портов" class="screenshot">
+  <figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/equipment_v1755/monitoring_abonent_drawer.png" alt="Панель клиента поверх таблицы портов">
+  <figcaption>Панель клиента поверх таблицы портов</figcaption>
+</figure>
 
   <p>Данные в таблице — снимок последнего снятия FDB, а не «живой» опрос. Обновить его можно кнопкой «Обновить MAC портов» в самой модалке или иконкой 🖧 в строке устройства.</p>
 
@@ -1790,7 +1853,10 @@ flowchart TB
 
   <p>Для каждого IPTV-провайдера необходимо настроить соответствие между услугами биллинга и пакетами во внешней системе. Настройка: <strong>Настройки &rarr; IPTV-пакеты</strong>.</p>
 
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/shots_v2185/iptv_packages.jpg" alt="Маппинг IPTV-пакетов" class="screenshot">
+  <figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/shots_v2185/iptv_packages.jpg" alt="Маппинг IPTV-пакетов">
+  <figcaption>Маппинг IPTV-пакетов</figcaption>
+</figure>
 
   <p>Таблица маппинга содержит:</p>
   <table>

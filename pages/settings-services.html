@@ -35,7 +35,7 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Интеграции, голосовые настройки, IPTV, личный кабинет и мобильное приложение, рассылки, персонал и доступы, лицензия и модули, обслуживание базы, гостевой портал.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=2478">
+  <link rel="stylesheet" href="../css/style.css?v=2479">
   <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css?v=2193">
   <link rel="stylesheet" href="../css/search.css?v=2257">
 <!-- Yandex.Metrika counter -->
@@ -1033,14 +1033,20 @@
 Кнопка <em>«Проверить все»</em> запускает последовательно тест каждой настроенной интеграции;
 результаты появляются как Bootstrap-toast в правом верхнем углу.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_integrations_overview.png" alt="Интеграции — обзор"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_integrations_overview.png" alt="Интеграции — обзор">
+  <figcaption>Интеграции — обзор</figcaption>
+</figure>
 
 <h4>Вкладка «Telegram»</h4>
 <p>Подключение Telegram-бота для двух целей: <em>отправка уведомлений клиентам</em>
 (те, кто подписался через личный кабинет) и <em>чат оператора</em> для системных алертов
 (NAS DOWN, ошибки платежей, СОРМ-выгрузка).</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_integrations_telegram.png" alt="Интеграции — Telegram"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_integrations_telegram.png" alt="Интеграции — Telegram">
+  <figcaption>Интеграции — Telegram</figcaption>
+</figure>
 
 <p>Параметры: токен бота, прокси SOCKS5 (api.telegram.org заблокирован для российских IP),
 ID чата администратора, переключатели типов алертов, тест отправки сообщения.</p>
@@ -1049,7 +1055,10 @@ ID чата администратора, переключатели типов 
 <p>Интеграция VKontakte для двух функций: <em>OAuth-логин в ЛК</em> (клиент может зайти
 через свой VK-аккаунт) и <em>отправка сообщений</em> в личку группы.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_integrations_vk.png" alt="Интеграции — VK"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_integrations_vk.png" alt="Интеграции — VK">
+  <figcaption>Интеграции — VK</figcaption>
+</figure>
 
 <p>Параметры: App ID для OAuth-логина, Community Token для отправки сообщений,
 ID группы. Тест соединения проверяет валидность токена.</p>
@@ -1086,20 +1095,29 @@ flowchart TD
 <h4 id="support-inbox">Входящие: список тикетов, поиск</h4>
 <p>KPI-карточки (Активные/Ожидают/Закрыто/Спам), статусные папки, фильтры
 (приоритет/категория/период/ящик) и умный поиск.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/smit/billing/support_v1402/01_inbox.png" alt="Поддержка — Входящие"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/smit/billing/support_v1402/01_inbox.png" alt="Поддержка — Входящие">
+  <figcaption>Поддержка — Входящие</figcaption>
+</figure>
 
 <p><strong>Поиск по тексту переписки.</strong> Ищет по теме, <strong>тексту
 сообщений</strong>, ФИО/договору клиента, адресу, телефону (любой формат) и №.
 Если совпадение не в теме — в строке тикета показывается сниппет-выдержка из тела
 сообщения с жёлтой подсветкой, чтобы оператор видел, почему тикет найден.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/smit/billing/support_v1402/02_search_snippet.png" alt="Поддержка — поиск по тексту, сниппет"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/smit/billing/support_v1402/02_search_snippet.png" alt="Поддержка — поиск по тексту, сниппет">
+  <figcaption>Поддержка — поиск по тексту, сниппет</figcaption>
+</figure>
 
 <h4 id="support-ticket">Карточка тикета и сайдбар</h4>
 <p>Слева — тред сообщений и редактор ответа (шаблоны saved-replies, AI-«Нейроответ»).
 Справа — сайдбар: Ответственный + Приоритет, Категория, <strong>Биллинг</strong>
 (аватар/баланс/тариф/статус/соцсети), <strong>SLA-таймер «Ждёт ответа»</strong>,
 <strong>Прошлые обращения клиента</strong>, Теги, Доп. поля, Логи времени.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/smit/billing/support_v1402/03_ticket_sidebar.png" alt="Поддержка — карточка тикета, сайдбар"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/smit/billing/support_v1402/03_ticket_sidebar.png" alt="Поддержка — карточка тикета, сайдбар">
+  <figcaption>Поддержка — карточка тикета, сайдбар</figcaption>
+</figure>
 
 <ul>
   <li><strong>SLA-таймер</strong> — время с последнего сообщения клиента без ответа
@@ -1112,13 +1130,19 @@ flowchart TD
 <p>Клик по тикету из «Входящих» выдвигает панель быстрого просмотра без ухода со
 списка: мини-Биллинг (аватар/баланс/тариф/статус/соцсети), быстрая смена приоритета
 одним кликом, SLA-таймер, прошлые обращения, тред и блок ответа.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/smit/billing/support_v1402/04_slideout_panel.png" alt="Поддержка — выезжающая панель"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/smit/billing/support_v1402/04_slideout_panel.png" alt="Поддержка — выезжающая панель">
+  <figcaption>Поддержка — выезжающая панель</figcaption>
+</figure>
 
 <h4 id="support-mobile">Мобильная адаптация</h4>
 <p>На узком экране над тредом появляется свёрнутая <strong>sticky-шапка клиента</strong>
 (аватар/ФИО/баланс/статус); разворот показывает SLA, договор/тариф/телефон и кнопки
 «Карточка» / «Управление». Ключевой контекст всегда перед глазами.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/smit/billing/support_v1402/05_mobile_summary.png" alt="Поддержка — мобильная шапка клиента"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/smit/billing/support_v1402/05_mobile_summary.png" alt="Поддержка — мобильная шапка клиента">
+  <figcaption>Поддержка — мобильная шапка клиента</figcaption>
+</figure>
 
 <h4 id="support-attachments">Вложения: политика, оптимизация, архив в GCS</h4>
 <ul>
@@ -1165,13 +1189,19 @@ flowchart TD
 ответственного/наблюдателя, Категории, Рейтинги, Учёт времени, IMAP+SMTP,
 Telegram/каналы (пер-ящик). Также: База знаний, Аналитика, Голосовая почта,
 Мессенджеры, Теги.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/smit/billing/support_v1402/06_settings.png" alt="Поддержка — настройки"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/smit/billing/support_v1402/06_settings.png" alt="Поддержка — настройки">
+  <figcaption>Поддержка — настройки</figcaption>
+</figure>
 
 <h4>Вкладка «Резервный AI-провайдер»</h4>
 <p>Резервный ИИ-ассистент на случай недоступности основного. Используется те же сценарии
 (чат в ЛК и мобильном приложении), но через альтернативный API.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_integrations_aida.png" alt="Интеграции — резервный AI-провайдер"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_integrations_aida.png" alt="Интеграции — резервный AI-провайдер">
+  <figcaption>Интеграции — резервный AI-провайдер</figcaption>
+</figure>
 
 <p>Параметры: адрес сервера, API-ключ, переключатели мест использования
 (LK / Mobile / Billing-monitor). Если настроены оба — приоритет у основного.</p>
@@ -1182,9 +1212,15 @@ Telegram/каналы (пер-ящик). Также: База знаний, Ан
 или деактивации соответствующей услуги в биллинге автоматически включается/выключается
 пакет в middleware.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_integrations_tvip.png" alt="Интеграции — TVIP"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_integrations_tvip.png" alt="Интеграции — TVIP">
+  <figcaption>Интеграции — TVIP</figcaption>
+</figure>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_integrations_lfstream.png" alt="Интеграции — LFStream"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_integrations_lfstream.png" alt="Интеграции — LFStream">
+  <figcaption>Интеграции — LFStream</figcaption>
+</figure>
 
 <p>Параметры обоих сервисов: URL API, login/pass или API-ключ, ID оператора,
 тест соединения. У LFStream — выбор режима подключения: <strong>REST API v2</strong>
@@ -1197,7 +1233,10 @@ Telegram/каналы (пер-ящик). Также: База знаний, Ан
 <p>Google Cloud Storage используется для публичных файлов: скриншоты документации,
 иконки услуг, отчёты для скачивания.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_integrations_gcs.png" alt="Интеграции — GCS"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_integrations_gcs.png" alt="Интеграции — GCS">
+  <figcaption>Интеграции — GCS</figcaption>
+</figure>
 
 <p>Параметры: Service Account JSON-ключ (загружается через файл или вставляется как текст),
 имя GCP-проекта, имя бакета, префикс для путей внутри бакета.</p>
@@ -1207,9 +1246,15 @@ Telegram/каналы (пер-ящик). Также: База знаний, Ан
 с автокомплитом и автоматический расчёт координат) и <strong>тайловый слой карты</strong>
 (OpenStreetMap / 2ГИС / Yandex Maps). Используется в карте клиентов и при создании адреса.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_integrations_address.png" alt="Интеграции — Адреса"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_integrations_address.png" alt="Интеграции — Адреса">
+  <figcaption>Интеграции — Адреса</figcaption>
+</figure>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_integrations_map.png" alt="Интеграции — Карта"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_integrations_map.png" alt="Интеграции — Карта">
+  <figcaption>Интеграции — Карта</figcaption>
+</figure>
 
 <p>Параметры DaData: API-ключ. KPI-блок показывает <em>сколько адресов уже геокодировано</em>
 из общего числа (на демо: 4045 / 4261 = 94.93%).</p>
@@ -1265,7 +1310,10 @@ Telegram/каналы (пер-ящик). Также: База знаний, Ан
 При активации/деактивации услуги клиента биллинг автоматически
 включает/выключает соответствующий пакет в middleware.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_iptv_mappings.png" alt="IPTV-пакеты"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_iptv_mappings.png" alt="IPTV-пакеты">
+  <figcaption>IPTV-пакеты</figcaption>
+</figure>
 
 <h4 id="iptv-watch">Встроенный просмотр ТВ в ЛК и приложении</h4>
 <p>Клиент с активной IPTV-подпиской может смотреть каналы прямо в личном кабинете
@@ -1273,7 +1321,10 @@ Telegram/каналы (пер-ящик). Также: База знаний, Ан
 В ЛК это HTML5-плеер (нативный HLS в Safari/iOS или через hls.js в остальных браузерах),
 в приложении — нативный <code>video_player</code> (ExoPlayer на Android, AVPlayer на iOS).</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/iptv_lk_v1079/iptv_lk_overview.png" alt="ЛК — Интерактивное ТВ с просмотром"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/iptv_lk_v1079/iptv_lk_overview.png" alt="ЛК — Интерактивное ТВ с просмотром">
+  <figcaption>ЛК — Интерактивное ТВ с просмотром</figcaption>
+</figure>
 
 <p>Плейлист каналов формируется по шаблону URL провайдера с подстановкой
 <code>{login}</code> / <code>{account}</code> клиента из таблицы маппинга
@@ -1321,29 +1372,44 @@ Telegram/каналы (пер-ящик). Также: База знаний, Ан
 <p>Отдельный раздел сайдбара <strong>IPTV</strong> объединяет управление интеграцией с TV-провайдерами
 (TVIP Media и LFStream «Смотрёшка»): дашборд, пакеты, аккаунты клиентов, журнал API и настройки.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/iptv_docs_v1097/00_infographic.png" alt="Модуль IPTV — обзор"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/iptv_docs_v1097/00_infographic.png" alt="Модуль IPTV — обзор">
+  <figcaption>Модуль IPTV — обзор</figcaption>
+</figure>
 
 <h4>Дашборд</h4>
 <p>Бизнес-метрики: выручка IPTV (MRR — сумма активных подписок <code>UsersUsluga</code> с <code>system_type=21</code>),
 число активных подписок и витринных пакетов, динамика подключений/отключений за 30 дней,
 здоровье интеграции (% успешных запросов к провайдерам за сутки), топ-пакеты, распределение по провайдерам.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/iptv_docs_v1097/01_dashboard.png" alt="Дашборд IPTV"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/iptv_docs_v1097/01_dashboard.png" alt="Дашборд IPTV">
+  <figcaption>Дашборд IPTV</figcaption>
+</figure>
 
 <h4>Пакеты и витрина провайдеров</h4>
 <p>Витрина-справочник популярных РФ-провайдеров: TVIP Media и LFStream — с рабочей интеграцией,
 остальные (24часаТВ, LIME HD, Ministra, Микроимпульс, Смартила) — справочно. Ниже — таблица
 маппинга «услуга биллинга ↔ пакет провайдера» с автоподбором по имени и подсветкой несопоставленных строк.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/iptv_docs_v1097/01_packages.png" alt="Пакеты IPTV"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/iptv_docs_v1097/01_packages.png" alt="Пакеты IPTV">
+  <figcaption>Пакеты IPTV</figcaption>
+</figure>
 
 <h4 id="iptv-accounts">Аккаунты клиентов</h4>
 <p>Список связок «клиент ↔ аккаунт у провайдера» (<code>IptvAccountMapping</code>). Чипы-фильтры по статусу
 (Все / Подтверждённые / Не подтверждённые / С ошибкой), колонки <strong>Пакет</strong> и <strong>Услуга</strong>
 (берутся из БД через активные IPTV-услуги клиента, без онлайн-опроса провайдера).</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/iptv_docs_v1097/01_accounts.png" alt="Аккаунты IPTV"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/iptv_docs_v1097/01_accounts.png" alt="Аккаунты IPTV">
+  <figcaption>Аккаунты IPTV</figcaption>
+</figure>
 <p>Клик по кнопке <em>«Подробнее»</em> открывает модалку деталей аккаунта в три колонки — статус,
 синхронизация, аккаунт/логин, договор, тариф, баланс, блокировки + IPTV-услуги клиента и журнал
 запросов к провайдеру. Клик по имени клиента открывает слайд-панель (см. ниже).</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/iptv_docs_v1097/02_account_detail_modal.png" alt="Детали аккаунта"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/iptv_docs_v1097/02_account_detail_modal.png" alt="Детали аккаунта">
+  <figcaption>Детали аккаунта</figcaption>
+</figure>
 <p><strong>Подтверждение аккаунта</strong> (<code>account_verified</code>): ресинк находит аккаунт у провайдера
 по логину; только для подтверждённых аккаунтов реально выполняются block/unblock (гейт защищает от массовых
 ложных ошибок). В TVIP-панели ~127 аккаунтов, из них принадлежат СмИТ — 16.</p>
@@ -1351,7 +1417,10 @@ Telegram/каналы (пер-ящик). Также: База знаний, Ан
 <h4>Журнал API и настройки</h4>
 <p>Журнал всех запросов к провайдерам (<code>IptvApiLog</code>) с человекочитаемым действием и телом ошибки.
 Настройки — credentials TVIP/LFStream, тест подключения, биллинг-toggle.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/iptv_docs_v1097/01_settings.png" alt="Настройки IPTV"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/iptv_docs_v1097/01_settings.png" alt="Настройки IPTV">
+  <figcaption>Настройки IPTV</figcaption>
+</figure>
 
 <h4 id="iptv-billing-killswitch">Биллинг IPTV и kill-switch</h4>
 <p>IPTV-подписка — обычная услуга клиента (<code>UsersUsluga</code>, <code>system_type=21</code>), списывается
@@ -1371,22 +1440,34 @@ Telegram/каналы (пер-ящик). Также: База знаний, Ан
 <h4 id="iptv-usluga-tab">Привязка пакета в карточке услуги</h4>
 <p>В модалке услуги типа «IP телевидение» есть вкладка <strong>IPTV</strong> — выбор провайдера и пакета.
 Связь «услуга ↔ пакет» можно задавать прямо из карточки услуги (не только на странице Пакеты).</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/iptv_docs_v1097/06_usluga_iptv_tab.png" alt="Вкладка IPTV в услуге"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/iptv_docs_v1097/06_usluga_iptv_tab.png" alt="Вкладка IPTV в услуге">
+  <figcaption>Вкладка IPTV в услуге</figcaption>
+</figure>
 
 <h4 id="iptv-abonent-card">На карточке клиента</h4>
 <p>На вкладке «Услуги» клиента в колонке «Примечание» для IPTV-услуги показывается
 «📺 провайдер: пакет», для трафика — «⚡ N Мбит/с» (макс. скорость <code>CEIL_IN</code>). У IPTV-услуги —
 бейдж «провайдер», открывающий модалку диагностики (сводка/пакеты/аккаунты/журнал).</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/iptv_docs_v1097/07_abonent_services_notes.png" alt="Примечания услуг клиента"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/iptv_docs_v1097/07_abonent_services_notes.png" alt="Примечания услуг клиента">
+  <figcaption>Примечания услуг клиента</figcaption>
+</figure>
 
 <h4 id="iptv-drawer">Слайд-панель клиента: блок «Услуги» и IPTV-сайдбар</h4>
 <p>В слайд-панели клиента (открывается кликом по имени) после блока «Последняя сессия» добавлен
 аккордеон <strong>«Услуги»</strong> — список услуг с иконкой по типу, примечанием (провайдер/скорость) и ценой.
 При открытии со страницы аккаунтов аккордеон автоматически разворачивается.</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/iptv_docs_v1097/03_drawer_services.png" alt="Слайд-панель: блок Услуги"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/iptv_docs_v1097/03_drawer_services.png" alt="Слайд-панель: блок Услуги">
+  <figcaption>Слайд-панель: блок Услуги</figcaption>
+</figure>
 <p>У IPTV-услуги — кнопка <strong>«Провайдер»</strong>, открывающая поверх вложенный IPTV-сайдбар
 (сводка, активные пакеты, аккаунты у провайдеров с отметкой «подтверждён», журнал запросов).</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/iptv_docs_v1097/05_iptv_sidebar.png" alt="IPTV-сайдбар"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/iptv_docs_v1097/05_iptv_sidebar.png" alt="IPTV-сайдбар">
+  <figcaption>IPTV-сайдбар</figcaption>
+</figure>
 
 <h3 id="lk-mobile">6.7. ЛК и мобильные</h3>
 <p>Настройки личного кабинета и мобильных приложений. Страница в админке разделена
@@ -1397,21 +1478,30 @@ Telegram/каналы (пер-ящик). Также: База знаний, Ан
 количество установок мобильного приложения, ссылки на сторы (Google Play / App Store),
 ссылка на сам ЛК и на админ-страницы HelpDesk.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_lk_overview.png" alt="ЛК и мобильные — обзор"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_lk_overview.png" alt="ЛК и мобильные — обзор">
+  <figcaption>ЛК и мобильные — обзор</figcaption>
+</figure>
 
 <h4>Вкладка «Брендинг»</h4>
 <p>Фирменное оформление ЛК: логотип, цвет акцента, доменное имя
 (<code>lk.example.ru</code>), favicon, OG-теги для соцсетей. Эти данные применяются
 к ЛК отдельно от админки — у админки и у ЛК могут быть разные цвета и логотипы.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_lk_branding.png" alt="ЛК — брендинг"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_lk_branding.png" alt="ЛК — брендинг">
+  <figcaption>ЛК — брендинг</figcaption>
+</figure>
 
 <h4>Вкладка «Функции»</h4>
 <p>Toggle-переключатели видимости разделов в ЛК. Каждый переключатель — это глобальное
 правило, видит ли его клиент. Например, выключив <em>«Тариф»</em>, оператор скрывает
 у всех клиентов возможность сменить тариф самостоятельно.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_lk_features.png" alt="ЛК — функции"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_lk_features.png" alt="ЛК — функции">
+  <figcaption>ЛК — функции</figcaption>
+</figure>
 
 <p>Контролируемые функции: видимость тарифов и их смена, разрешение менять MAC-адрес,
 HelpDesk, история операций, обещанный платёж, реферальная программа, чат-AI и др.</p>
@@ -1421,14 +1511,20 @@ HelpDesk, история операций, обещанный платёж, ре
 дома), автологин по IP без логина и пароля, запрет смены пароля клиентом
 (полезно при общем семейном договоре).</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_lk_security.png" alt="ЛК — безопасность"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_lk_security.png" alt="ЛК — безопасность">
+  <figcaption>ЛК — безопасность</figcaption>
+</figure>
 
 <h4>Вкладка «Мобильное»</h4>
 <p>Настройки мобильных приложений Android и iOS: текущая версия в сторе, минимальная
 версия для force-update (если клиент использует более старую — увидит диалог обновления),
 ссылки на стора, параметры push-уведомлений (Firebase).</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_lk_mobile.png" alt="ЛК — мобильное"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_lk_mobile.png" alt="ЛК — мобильное">
+  <figcaption>ЛК — мобильное</figcaption>
+</figure>
 
 <div class="info-box" style="border-left:4px solid #43b77a; background:rgba(67,183,122,.06); padding:12px 16px; margin:16px 0">
   <p class="mb-1"><strong><i class="ti ti-arrow-right"></i> Подробная документация — на отдельной странице</strong></p>
@@ -1451,7 +1547,10 @@ HelpDesk, история операций, обещанный платёж, ре
 отправляет письмо на указанный адрес <strong>через текущие несохранённые значения формы</strong> —
 это позволяет проверить настройки до сохранения.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/email_v961/email_card_radio.png" alt="Email — настройки SMTP с radio-группой шифрования" loading="lazy" style="max-width:760px"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/email_v961/email_card_radio.png" alt="Email — настройки SMTP с radio-группой шифрования" loading="lazy" style="max-width:760px">
+  <figcaption>Email — настройки SMTP с radio-группой шифрования</figcaption>
+</figure>
 
 <h5 id="messaging-email-encryption">Шифрование SMTP — radio-группа</h5>
 <p>Тип шифрования задаётся <strong>одной radio-группой</strong> из трёх взаимоисключающих
@@ -1485,7 +1584,10 @@ Sender address rejected: not owned by user noreply@вашдомен.ru</code></p
 <em>Свой шлюз (Android-телефон)</em>. Каждый со своими параметрами (логин/пароль или API-ключ),
 общий — имя отправителя. Тест отправки на тестовый номер.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_msg_sms.png" alt="Сообщения — SMS"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_msg_sms.png" alt="Сообщения — SMS">
+  <figcaption>Сообщения — SMS</figcaption>
+</figure>
 
 <h5 id="messaging-sms-android">Свой шлюз — СмИТ SMS Gate for Android</h5>
 <p>Установите приложение <strong>СмИТ SMS Gate for Android</strong> на телефон с SIM-картой и следуйте инструкциям прямо в приложении (мастер первого запуска подготовит всё за 1–2 минуты).</p>
@@ -1668,7 +1770,10 @@ X-Timestamp: 1715091045   # Unix epoch</code></pre>
 один раз связать свой Telegram-аккаунт с учётной записью в личном кабинете
 (нажав кнопку <em>«Привязать Telegram»</em>).</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_msg_telegram.png" alt="Сообщения — Telegram"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_msg_telegram.png" alt="Сообщения — Telegram">
+  <figcaption>Сообщения — Telegram</figcaption>
+</figure>
 
 <p>Бот используется тот же, что и в разделе <em>Интеграции → Telegram</em>.
 На этой вкладке только переключатели: посылать ли уведомления через Telegram
@@ -1679,14 +1784,20 @@ X-Timestamp: 1715091045   # Unix epoch</code></pre>
 Параметры: путь к Service Account JSON-файлу Firebase, имя проекта,
 переключатели типов событий.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_msg_push.png" alt="Сообщения — Push"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_msg_push.png" alt="Сообщения — Push">
+  <figcaption>Сообщения — Push</figcaption>
+</figure>
 
 <h4>Вкладка «Шаблоны»</h4>
 <p>Текстовые шаблоны уведомлений с переменными подстановки. Каждое событие имеет
 свой шаблон и список включённых каналов. Например, событие <em>«Низкий баланс»</em>
 может отправляться по Email + SMS, а <em>«Подключение услуги»</em> — только по Push.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_msg_templates.png" alt="Сообщения — шаблоны"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_msg_templates.png" alt="Сообщения — шаблоны">
+  <figcaption>Сообщения — шаблоны</figcaption>
+</figure>
 
 <p>Поддерживаемые события (19):</p>
 <ul>
@@ -1710,7 +1821,10 @@ X-Timestamp: 1715091045   # Unix epoch</code></pre>
 для Email — берётся HTML, если он заполнен, иначе fallback на plain (с заменой
 переносов на <code>&lt;br&gt;</code>).</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/msg_templates_v596/docs_v596_msg_template_html_editor.png" alt="Редактор шаблонов: вкладка HTML с TinyMCE"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/msg_templates_v596/docs_v596_msg_template_html_editor.png" alt="Редактор шаблонов: вкладка HTML с TinyMCE">
+  <figcaption>Редактор шаблонов: вкладка HTML с TinyMCE</figcaption>
+</figure>
 
 <h5 id="messaging-template-editor-features">Возможности</h5>
 <ul>
@@ -1735,7 +1849,10 @@ X-Timestamp: 1715091045   # Unix epoch</code></pre>
     iframe — удаляются. Защита от XSS в HTML-шаблонах.</li>
 </ul>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/msg_templates_v596/docs_v596_msg_template_plain_text.png" alt="Редактор шаблонов: вкладка Plain-текст"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/msg_templates_v596/docs_v596_msg_template_plain_text.png" alt="Редактор шаблонов: вкладка Plain-текст">
+  <figcaption>Редактор шаблонов: вкладка Plain-текст</figcaption>
+</figure>
 
 <h5 id="messaging-template-editor-vars">Кликабельные переменные</h5>
 <p>В правой панели модалки — справочник переменных в двух форматах:
@@ -1746,7 +1863,10 @@ X-Timestamp: 1715091045   # Unix epoch</code></pre>
 в TinyMCE через <code>insertContent()</code>; если plain — в обычное
 <code>&lt;textarea&gt;</code>.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/msg_templates_v596/docs_v596_msg_template_clickable_vars.png" alt="Подсветка переменной при наведении (зелёный фон)"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/msg_templates_v596/docs_v596_msg_template_clickable_vars.png" alt="Подсветка переменной при наведении (зелёный фон)">
+  <figcaption>Подсветка переменной при наведении (зелёный фон)</figcaption>
+</figure>
 
 <h5 id="messaging-template-editor-routing">Какой канал берёт что</h5>
 <table class="docs-table">
@@ -1767,7 +1887,10 @@ X-Timestamp: 1715091045   # Unix epoch</code></pre>
 <strong>8 готовых пресетов</strong> с автоматической подстановкой брендинга компании
 (<code>CompanyBranding</code>) — название, логотип, ИНН/КПП, контакты, адрес, акцентный цвет.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/msg_presets_v597/docs_v597_msg_presets_dropdown.png" alt="Dropdown «Шаблоны писем» с 8 пресетами"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/msg_presets_v597/docs_v597_msg_presets_dropdown.png" alt="Dropdown «Шаблоны писем» с 8 пресетами">
+  <figcaption>Dropdown «Шаблоны писем» с 8 пресетами</figcaption>
+</figure>
 
 <table class="docs-table">
   <thead><tr><th>Пресет</th><th>Сценарий использования</th></tr></thead>
@@ -1796,7 +1919,10 @@ X-Timestamp: 1715091045   # Unix epoch</code></pre>
     <code>director_name</code> в брендинге).</li>
 </ul>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/msg_presets_v597/docs_v597_msg_preset_low_balance_inserted.png" alt="Пресет «Низкий баланс» — вставленное письмо с брендингом"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/msg_presets_v597/docs_v597_msg_preset_low_balance_inserted.png" alt="Пресет «Низкий баланс» — вставленное письмо с брендингом">
+  <figcaption>Пресет «Низкий баланс» — вставленное письмо с брендингом</figcaption>
+</figure>
 
 <p><strong>Поведение при вставке</strong>:</p>
 <ul>
@@ -1863,7 +1989,10 @@ X-Timestamp: 1715091045   # Unix epoch</code></pre>
 Уволенный сотрудник переводится в архив (не удаляется), его действия в аудите остаются.
 Auto-аватары с инициалами на цветном градиенте (хеш от имени).</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_staff_list.png" alt="Персонал — список"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_staff_list.png" alt="Персонал — список">
+  <figcaption>Персонал — список</figcaption>
+</figure>
 
 <p>Карточка сотрудника содержит: ФИО, e-mail, телефон, должность, дату приёма,
 группы доступа, настройки уведомлений. Дополнительно у каждого сотрудника
@@ -1875,14 +2004,20 @@ Auto-аватары с инициалами на цветном градиент
 сделать read-only или required. Например, кассиру оставить только поле <em>«Сумма платежа»</em>,
 а инженеру — все поля кроме финансовых.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_staff_interface.png" alt="Персонал — настройка интерфейса"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_staff_interface.png" alt="Персонал — настройка интерфейса">
+  <figcaption>Персонал — настройка интерфейса</figcaption>
+</figure>
 
 <h4>Подраздел «Доступ к моделям»</h4>
 <p>Какие модели биллинга видит каждая группа пользователей. Чекбоксы Read / Create /
 Update / Delete для каждой модели (Tarif, Usluga, Abonents, NAS, и т.д.).
 Без галочки Read — пункт меню скрывается у этой группы.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_staff_permissions.png" alt="Персонал — доступ к моделям"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_staff_permissions.png" alt="Персонал — доступ к моделям">
+  <figcaption>Персонал — доступ к моделям</figcaption>
+</figure>
 
 <h4 id="section-rbac">RBAC разделов админки</h4>
 <p>Обычные модели (Тариф, Услуга и т.п.) гейтятся чекбоксами выше. Но часть
@@ -1906,7 +2041,10 @@ flowchart TD
   D -- Нет --> DENY[403 «Доступ запрещён»<br/>+ пункт скрыт в меню]
 </pre>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/section_rbac_v1978/permission_block.png" alt="Блок «Разделы админки» в правах группы"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/section_rbac_v1978/permission_block.png" alt="Блок «Разделы админки» в правах группы">
+  <figcaption>Блок «Разделы админки» в правах группы</figcaption>
+</figure>
 
 <p>Дефолтное распределение, засеянное при внедрении (суперпользователь и
 <strong>Администратор + Директор</strong> — во всех разделах):</p>
@@ -1939,7 +2077,10 @@ flowchart TD
 <p>Если у роли нет доступа к разделу, при переходе по ссылке открывается понятная
 страница:</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/section_rbac_v1978/forbidden_403.png" alt="Страница «Доступ к разделу запрещён»"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/section_rbac_v1978/forbidden_403.png" alt="Страница «Доступ к разделу запрещён»">
+  <figcaption>Страница «Доступ к разделу запрещён»</figcaption>
+</figure>
 
 <div class="info-box" style="border-left:4px solid #43b77a; background:rgba(67,183,122,.06); padding:12px 16px; margin:16px 0">
   <p class="mb-1"><strong><i class="ti ti-alert-triangle"></i> Аварийный выключатель</strong></p>
@@ -1954,7 +2095,10 @@ flowchart TD
 филиалов: агент филиала «Север» видит только папку «Север», агент филиала «Юг» —
 только папку «Юг», главный администратор видит весь корень.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_staff_groups.png" alt="Персонал — доступ к клиентам"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_staff_groups.png" alt="Персонал — доступ к клиентам">
+  <figcaption>Персонал — доступ к клиентам</figcaption>
+</figure>
 
 <h4 id="staff-profile">Профиль сотрудника</h4>
 <p><code>/admin/settings/profile/</code> — личная страница сотрудника (сам о себе; root — о любом). Помимо аватара, ФИО и контактов здесь:</p>
@@ -1982,7 +2126,10 @@ flowchart TD
 <p>Информация о действующей лицензии: количество разрешённых клиентов,
 дата окончания, тип (коммерческая / тестовая / OEM).</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_license.png" alt="Лицензия"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_license.png" alt="Лицензия">
+  <figcaption>Лицензия</figcaption>
+</figure>
 
 <div class="info-box" style="border-left:4px solid #43b77a; background:rgba(67,183,122,.06); padding:12px 16px; margin:16px 0">
   <p class="mb-1"><strong><i class="ti ti-arrow-right"></i> Подробная документация — на отдельной странице</strong></p>
@@ -2028,7 +2175,10 @@ flowchart TD
 <h3 id="backup">6.11. Резервные копии</h3>
 <p>Резервные копии — самостоятельный таб в группе «Обслуживание».</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/backup_logs_v967/backup_configs.png" alt="Резервные копии — конфигурации и список копий"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/backup_logs_v967/backup_configs.png" alt="Резервные копии — конфигурации и список копий">
+  <figcaption>Резервные копии — конфигурации и список копий</figcaption>
+</figure>
 
 <p><strong>Типы копий</strong>:</p>
 <ul>
@@ -2069,7 +2219,10 @@ flowchart TD
 <p>URL: <code>/admin/settings/db_cleanup/</code> (раздел «Обслуживание», только root-доступ).</p>
 <p>Раздел централизованного автоматического обслуживания БД и борьбы с «зомби»-сессиями RADIUS. Состоит из 5 блоков (сверху вниз): <a href="#db-cleanup-state">Состояние БД</a>, <a href="#db-cleanup-auto">Автоочистка</a>, <a href="#db-cleanup-history">История запусков</a>, <a href="#db-cleanup-session-audit">Аудит зомби-сессий</a>, <a href="#db-cleanup-nas-list">Выбор NAS для аудита</a>.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/db_cleanup_v512/v512_db_cleanup_top.png" alt="Очистка БД — общий вид и состояние"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/db_cleanup_v512/v512_db_cleanup_top.png" alt="Очистка БД — общий вид и состояние">
+  <figcaption>Очистка БД — общий вид и состояние</figcaption>
+</figure>
 
 <h4 id="db-cleanup-state">Состояние БД сейчас</h4>
 <p>Верхний блок — реальный счётчик записей в 4 ключевых таблицах (обновляется AJAX):</p>
@@ -2082,7 +2235,10 @@ flowchart TD
 <p>Каждая ячейка показывает <em>размер</em> (Кб/Мб/Гб) + <em>количество записей</em>. Если рядом с цифрой растёт ⚠ — таблица превышает порог опасного роста и требует внимания.</p>
 
 <h4 id="db-cleanup-auto">Автоочистка БД</h4>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/db_cleanup_v512/v512_db_cleanup_settings.png" alt="Настройки автоочистки и аудита"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/db_cleanup_v512/v512_db_cleanup_settings.png" alt="Настройки автоочистки и аудита">
+  <figcaption>Настройки автоочистки и аудита</figcaption>
+</figure>
 
 <p><strong>Параметры retention</strong> (период хранения, после которого записи удаляются):</p>
 <table>
@@ -2129,7 +2285,10 @@ flowchart TD
 </ul>
 
 <h4 id="db-cleanup-session-audit">Аудит зомби-сессий на NAS</h4>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/db_cleanup_v512/v512_db_cleanup_session_audit.png" alt="Аудит зомби-сессий"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/db_cleanup_v512/v512_db_cleanup_session_audit.png" alt="Аудит зомби-сессий">
+  <figcaption>Аудит зомби-сессий</figcaption>
+</figure>
 
 <p><strong>Зомби-сессия</strong> — это запись в <code>RADIUS_SESSIONS</code> с <code>END_TIME IS NULL</code> (то есть «сессия активна»), но при этом NAS не подтверждает её существование. Возникает когда:</p>
 <ul>
@@ -2166,7 +2325,10 @@ flowchart TD
 <p><strong>История аудитов</strong> ниже — таблица из <code>SessionAuditRun</code>: время, NAS, проверено сессий, найдено зомби, длительность, статус.</p>
 
 <h4 id="db-cleanup-nas-list">Выбор NAS для аудита</h4>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/db_cleanup_v512/v512_db_cleanup_nas_list.png" alt="Выбор NAS для аудита"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/db_cleanup_v512/v512_db_cleanup_nas_list.png" alt="Выбор NAS для аудита">
+  <figcaption>Выбор NAS для аудита</figcaption>
+</figure>
 
 <p>Таблица всех NAS с <code>enabled=True</code> и колонками:</p>
 <ul>
@@ -2214,14 +2376,20 @@ flowchart TD
 с десятков клиентов. Можно задать тип блокировки (b_negbal — долг, b_admin —
 админская) и фильтр клиентов (папка, тариф, дата блокировки).</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_mass_unblock.png" alt="Массовая разблокировка"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_mass_unblock.png" alt="Массовая разблокировка">
+  <figcaption>Массовая разблокировка</figcaption>
+</figure>
 
 <h4>Подраздел «Чистка БД»</h4>
 <p>Удаление тестовых/демо-данных при первичной настройке системы. Удаляет
 демо-клиентов, тестовые услуги, фейковые финансовые операции — всё, что было
 в стартовой поставке для демонстрации. Не трогает реальные данные оператора.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_mass_clean_db.png" alt="Массовая чистка БД"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_mass_clean_db.png" alt="Массовая чистка БД">
+  <figcaption>Массовая чистка БД</figcaption>
+</figure>
 
 <p>Запускать только один раз — после первичной настройки и до загрузки реальных
 клиентов. Действие необратимо, перед запуском система запрашивает подтверждение.</p>
@@ -2231,7 +2399,10 @@ flowchart TD
 (soft-deleted клиентов) в архив, готовит данные для бухгалтерской выгрузки.
 Запускается оператором вручную — обычно в первые дни нового месяца.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_mass_close_period.png" alt="Закрытие периода"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_mass_close_period.png" alt="Закрытие периода">
+  <figcaption>Закрытие периода</figcaption>
+</figure>
 
 
 <!-- ===== 6.15 ПРОИЗВОДИТЕЛЬНОСТЬ ===== -->
@@ -2389,7 +2560,10 @@ flowchart TB
 страницы «пополните баланс». Вверху вкладки стоит список проверок, а если хоть одна
 не пройдена — красная плашка «Captive Portal не работает».</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/captive_portal_v2033/cp_financial.png" alt="Вкладка «Финблокировка»: список готовности и результат проверки конфигурации" style="max-width:100%;border-radius:8px;border:1px solid #e3e8ee"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/captive_portal_v2033/cp_financial.png" alt="Вкладка «Финблокировка»: список готовности и результат проверки конфигурации" style="max-width:100%;border-radius:8px;border:1px solid #e3e8ee">
+  <figcaption>Вкладка «Финблокировка»: список готовности и результат проверки конфигурации</figcaption>
+</figure>
 
 <p>Проверяется пять вещей: профиль включён, задан блок-пул, осмысленный
 <code>Filter-Id</code>, у белого списка есть <em>активные</em> правила и режим жёсткого
@@ -2497,7 +2671,10 @@ Wi-Fi портал</strong> — инструмент для турбаз, каф
 чего получает интернет. Турбаза собирает <strong>легальную базу контактов</strong> с согласием
 на рекламу и автоматически рассылает SMS-поздравления с днём рождения.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/captive_portal_v2033/cp_guest.png" alt="Вкладка «Гостевые порталы»: организация, состояние сети, готовность анкеты" style="max-width:100%;border-radius:8px;border:1px solid #e3e8ee"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/captive_portal_v2033/cp_guest.png" alt="Вкладка «Гостевые порталы»: организация, состояние сети, готовность анкеты" style="max-width:100%;border-radius:8px;border:1px solid #e3e8ee">
+  <figcaption>Вкладка «Гостевые порталы»: организация, состояние сети, готовность анкеты</figcaption>
+</figure>
 
 <p>В таблице разведены два состояния: <strong>«Сеть»</strong> — привязан ли NAS (или работает адаптер B), и
 <strong>«Анкета»</strong> — готовы ли форма и текст согласия. Портал может собирать
@@ -2505,7 +2682,10 @@ Wi-Fi портал</strong> — инструмент для турбаз, каф
 <strong>«Сеть не привязана»</strong> со счётчиком отбирает такие порталы, поиск ищет по
 турбазе, названию портала и имени NAS.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/captive_portal_v2033/cp_net_drawer.png" alt="Панель «Сеть портала»: пул, Filter-Id, ACL, гостевые NAS с числом учётных записей" style="max-width:100%;border-radius:8px;border:1px solid #e3e8ee"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/captive_portal_v2033/cp_net_drawer.png" alt="Панель «Сеть портала»: пул, Filter-Id, ACL, гостевые NAS с числом учётных записей" style="max-width:100%;border-radius:8px;border:1px solid #e3e8ee">
+  <figcaption>Панель «Сеть портала»: пул, Filter-Id, ACL, гостевые NAS с числом учётных записей</figcaption>
+</figure>
 
 <p><strong>Подключение:</strong> услуга «Гостевой Wi-Fi портал» (<code>system_type=12</code>)
 клиенту-турбазе (юр.лицо). При подключении автоматически создаётся портал с дефолтной анкетой
@@ -2575,7 +2755,10 @@ CoA-разблокировка по MAC); <em>B</em> — чужой MikroTik т�
 Рядом период (30 дней / 90 дней / год / всё время), выбор портала и поиск по e-mail,
 телефону или MAC.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/captive_portal_v2033/cp_paid.png" alt="Вкладка «Платежи»: сегменты по статусам, конверсия и доля ошибок" style="max-width:100%;border-radius:8px;border:1px solid #e3e8ee"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/captive_portal_v2033/cp_paid.png" alt="Вкладка «Платежи»: сегменты по статусам, конверсия и доля ошибок" style="max-width:100%;border-radius:8px;border:1px solid #e3e8ee">
+  <figcaption>Вкладка «Платежи»: сегменты по статусам, конверсия и доля ошибок</figcaption>
+</figure>
 
 <p>Показатели считаются по всей выборке периода, а не по видимой странице:</p>
 
@@ -2603,7 +2786,10 @@ CoA-разблокировка по MAC); <em>B</em> — чужой MikroTik т�
 группы, рядом видно, в каком профиле группа используется, а группа без активных правил
 помечена красным.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/captive_portal_v2033/cp_acl.png" alt="Вкладка «Белые списки»: правила внутри группы и пометка «нет активных правил»" style="max-width:100%;border-radius:8px;border:1px solid #e3e8ee"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/captive_portal_v2033/cp_acl.png" alt="Вкладка «Белые списки»: правила внутри группы и пометка «нет активных правил»" style="max-width:100%;border-radius:8px;border:1px solid #e3e8ee">
+  <figcaption>Вкладка «Белые списки»: правила внутри группы и пометка «нет активных правил»</figcaption>
+</figure>
 
 <p>Строка правила показывает адрес, комментарий и состояние. Выключенное правило не
 работает, даже если группа выбрана в профиле — именно так портал и оказывается
@@ -2697,10 +2883,16 @@ flowchart LR
 подписаны и помещаются в строку, а панель настроек сети открывается боковой панелью.</p>
 
 <div style="display:flex;gap:12px;flex-wrap:wrap">
-  <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/captive_portal_v2033/cp_mobile_guest.png" alt="Гостевые порталы на телефоне"
+  <figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/captive_portal_v2033/cp_mobile_guest.png" alt="Гостевые порталы на телефоне"
        style="max-width:290px;border-radius:8px;border:1px solid #e3e8ee">
-  <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/captive_portal_v2033/cp_mobile_paid.png" alt="Платежи на телефоне"
+  <figcaption>Гостевые порталы на телефоне</figcaption>
+</figure>
+  <figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/captive_portal_v2033/cp_mobile_paid.png" alt="Платежи на телефоне"
        style="max-width:290px;border-radius:8px;border:1px solid #e3e8ee">
+  <figcaption>Платежи на телефоне</figcaption>
+</figure>
 </div>
 
 <div class="warning-box">

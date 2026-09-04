@@ -35,7 +35,7 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Главный экран биллинга: показатели за день, тревоги, касса и финансовая динамика. С него начинается рабочий день оператора.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=2478">
+  <link rel="stylesheet" href="../css/style.css?v=2479">
   <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css?v=2193">
   <link rel="stylesheet" href="../css/search.css?v=2257">
 <!-- Yandex.Metrika counter -->
@@ -1024,11 +1024,17 @@
 визуальный язык компактных карточек (<code>.dash-tile</code>), все блоки скрываются автоматически
 при отсутствии данных.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v966/dashboard_v966_whats_new_comments.png" alt="Дашборд v966: «Что нового» с бейджами комментариев"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v966/dashboard_v966_whats_new_comments.png" alt="Дашборд v966: «Что нового» с бейджами комментариев">
+  <figcaption>Дашборд v966: «Что нового» с бейджами комментариев</figcaption>
+</figure>
 
 
 <p><strong>Виджет SORM</strong> в правой колонке показывает статус выгрузок:</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v966/dashboard_v966_sorm_widget.png" alt="Виджет SORM на дашборде"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v966/dashboard_v966_sorm_widget.png" alt="Виджет SORM на дашборде">
+  <figcaption>Виджет SORM на дашборде</figcaption>
+</figure>
 <ul>
   <li>Имя конфига → ссылка на <code>/admin/equipment/sorm_list/&lt;id&gt;/</code></li>
   <li>Vendor (СпецТехПитон / СигналТек / ...)</li>
@@ -1041,10 +1047,16 @@
 </ul>
 
 <p><strong>«Горячие клиенты» + «Платежи: день × час»</strong> теперь в одном ряду:</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v966/dashboard_v966_hot_heatmap.png" alt="Горячие клиенты + Heatmap в одном ряду"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v966/dashboard_v966_hot_heatmap.png" alt="Горячие клиенты + Heatmap в одном ряду">
+  <figcaption>Горячие клиенты + Heatmap в одном ряду</figcaption>
+</figure>
 
 <p><strong>Карта клиентов</strong> (была пустой до v966):</p>
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v966/dashboard_v966_map_fixed.png" alt="Карта клиентов на дашборде (fix)"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v966/dashboard_v966_map_fixed.png" alt="Карта клиентов на дашборде (fix)">
+  <figcaption>Карта клиентов на дашборде (fix)</figcaption>
+</figure>
 
 <h3 id="dashboard-period">Период и организация — общие для всей страницы</h3>
 
@@ -1052,8 +1064,10 @@
 <strong>за какой срок</strong>. Оба ответа задаются один раз и действуют на все блоки
 «за период».</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v2166/dash_top_light.jpg" alt="Дашборд: переключатель периода, KPI и сводки модулей" loading="lazy"></p>
-<p class="img-caption"><em>Наверху — период, ниже ключевые показатели, под ними сводки по модулям.</em></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v2166/dash_top_light.jpg" alt="Дашборд: переключатель периода, KPI и сводки модулей" loading="lazy">
+  <figcaption><em>Наверху — период, ниже ключевые показатели, под ними сводки по модулям.</em></figcaption>
+</figure>
 
 <h4 id="dashboard-org">Показатели по выбранной организации</h4>
 <p>Селектор компаний в шапке админки управляет и дашбордом: клиенты, должники,
@@ -1099,7 +1113,10 @@ flowchart LR
 раздел. Плитка появляется только если модуль включён, поэтому на тарифе без модуля строка
 просто короче.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v2166/dash_tiles.jpg" alt="Строка сводок по модулям" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v2166/dash_tiles.jpg" alt="Строка сводок по модулям" loading="lazy">
+  <figcaption>Строка сводок по модулям</figcaption>
+</figure>
 
 <table style="font-size:.92em">
 <tr><th>Плитка</th><th>Что показывает</th><th>Куда ведёт</th></tr>
@@ -1195,7 +1212,10 @@ JS-обновление каждые 60 сек через <code>/admin/dictionar
 <p>. Расчёт по <strong>календарному месяцу</strong> (с 1-го числа) из
 <code>FinanceOperations</code>:</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v558/dashboard_v558_02_cash_payments.png" alt="Касса месяца + Платежи сегодня vs вчера"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v558/dashboard_v558_02_cash_payments.png" alt="Касса месяца + Платежи сегодня vs вчера">
+  <figcaption>Касса месяца + Платежи сегодня vs вчера</figcaption>
+</figure>
 <ul>
   <li><strong>Начислено</strong> — сумма всех <code>op_summa &lt; 0</code></li>
   <li><strong>Оплачено</strong> — сумма всех <code>op_summa &gt; 0</code> (зелёный) +
@@ -1224,7 +1244,10 @@ JS-обновление каждые 60 сек через <code>/admin/dictionar
 <p>. Две карточки в одной строке: «Горячие клиенты» (col-lg-8) +
 «CRM сегодня» (col-lg-4).</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v558/dashboard_v558_03_hot_crm.png" alt="Горячие клиенты + CRM с 3 последними тикетами"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v558/dashboard_v558_03_hot_crm.png" alt="Горячие клиенты + CRM с 3 последними тикетами">
+  <figcaption>Горячие клиенты + CRM с 3 последними тикетами</figcaption>
+</figure>
 
 <h4 id="hot-abonents">Горячие клиенты 24ч — скоринг и интерпретация</h4>
 <p>Топ-5 клиентов, кому стоит уделить внимание прямо сейчас. Алгоритм в
@@ -1308,7 +1331,10 @@ JS-обновление каждые 60 сек через <code>/admin/dictionar
 <h3 id="dashboard-extras">Heat-map + Цели + Что нового</h3>
 <p>. Три узких карточки в одной строке.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v558/dashboard_v558_04_heatmap_kpi_news.png" alt="Heat-map платежей 7×24 + KPI цели + Что нового"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v558/dashboard_v558_04_heatmap_kpi_news.png" alt="Heat-map платежей 7×24 + KPI цели + Что нового">
+  <figcaption>Heat-map платежей 7×24 + KPI цели + Что нового</figcaption>
+</figure>
 
 <p><strong>Heat-map платежей 7×24</strong> (фиолетовая палитра) — день недели × час, цветовая
 интенсивность <code>rgba(#6f42c1, alpha)</code> от количества платежей. SQL:</p>
@@ -1343,7 +1369,10 @@ GROUP BY 1, 2;</code></pre>
 и периода (7д/14д/30д/90д/180д/1г). Кнопки в чистом стиле ( — фикс «серой губой»
 заливки <code>.btn-outline-secondary</code>).</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v558/dashboard_v558_05_finance_chart.png" alt="Итого за период + Финансовая динамика — линейный график"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dashboard_v558/dashboard_v558_05_finance_chart.png" alt="Итого за период + Финансовая динамика — линейный график">
+  <figcaption>Итого за период + Финансовая динамика — линейный график</figcaption>
+</figure>
 
 <h3 id="dashboard-auto-refresh">Auto-refresh</h3>
 <p>Переключатель в шапке: <em>Выкл / 30с / 1м / 2м / 5м / 10м</em>.

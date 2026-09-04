@@ -35,7 +35,7 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Передача данных по ФЗ, стандартные и пользовательские схемы СОРМ, интегрированные решения.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=2478">
+  <link rel="stylesheet" href="../css/style.css?v=2479">
   <link rel="stylesheet" href="../css/search.css?v=2257">
   <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css?v=2193">
 <!-- Yandex.Metrika counter -->
@@ -1397,7 +1397,10 @@ docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 3
   В одной системе обычно одна конфигурация, но можно создать несколько
   (например, для разных регионов).</p>
 
-  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_v963/sorm_list_v963.png" alt="Список конфигураций СОРМ"></p>
+  <figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_v963/sorm_list_v963.png" alt="Список конфигураций СОРМ">
+  <figcaption>Список конфигураций СОРМ</figcaption>
+</figure>
 
   <p>Таблица показывает по каждой конфигурации:</p>
   <ul>
@@ -1409,7 +1412,10 @@ docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 3
   </ul>
 
   <p>Карточка конфигурации СОРМ:</p>
-  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_v963/sorm_card_v963.png" alt="Карточка СОРМ — список отчётов"></p>
+  <figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_v963/sorm_card_v963.png" alt="Карточка СОРМ — список отчётов">
+  <figcaption>Карточка СОРМ — список отчётов</figcaption>
+</figure>
 
   <p>Кнопки в строке: <strong>⚙</strong> открыть настройки, <strong>▶</strong>
   запустить выгрузку сейчас, <strong>🗑</strong> удалить конфигурацию. Запуск и удаление
@@ -1430,7 +1436,10 @@ docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 3
   у активных клиентов. Кнопка <strong>Проверить готовность</strong> запускает
   анализ <code>UserAttributes</code> и показывает список пропусков.</p>
 
-  <p><img class="screenshot" src="../img/v457/sorm/sorm_v457_02_readiness.png" alt="Модал проверки готовности данных"></p>
+  <figure class="shot">
+  <img src="../img/v457/sorm/sorm_v457_02_readiness.png" alt="Модал проверки готовности данных">
+  <figcaption>Модал проверки готовности данных</figcaption>
+</figure>
 
   <p>Например, если у юр.лиц не заполнены ИНН, КПП, ОГРН, Директор — система
   покажет точное число клиентов с каждым пропуском и в каком отчёте СОРМ это
@@ -1452,7 +1461,10 @@ docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 3
   <p>Открывается при клике на имя конфигурации. Содержит пять под-вкладок:
   <strong>Основные · FTP · Уведомления · Отчёты · История</strong>.</p>
 
-  <p><img class="screenshot" src="../img/v457/sorm/sorm_v457_03_settings.png" alt="Вкладка Основные"></p>
+  <figure class="shot">
+  <img src="../img/v457/sorm/sorm_v457_03_settings.png" alt="Вкладка Основные">
+  <figcaption>Вкладка Основные</figcaption>
+</figure>
 
   <p><strong>Что задаётся:</strong></p>
 
@@ -1487,7 +1499,10 @@ docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 3
   <p>Параметры доступа предоставляет поставщик СОРМ-оборудования. Запросите
   у их техподдержки: хост, пользователь, пароль, путь.</p>
 
-  <p><img class="screenshot" src="../img/v457/sorm/sorm_v457_04_ftp.png" alt="Вкладка FTP"></p>
+  <figure class="shot">
+  <img src="../img/v457/sorm/sorm_v457_04_ftp.png" alt="Вкладка FTP">
+  <figcaption>Вкладка FTP</figcaption>
+</figure>
 
   <ul>
     <li><strong>FTP хост</strong> — IP или DNS-имя сервера РКН</li>
@@ -1508,7 +1523,10 @@ docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 3
   <p>После каждой выгрузки можно отправлять отчёт в Telegram-чат — удобно для
   оперативного контроля что СОРМ доходит до РКН.</p>
 
-  <p><img class="screenshot" src="../img/v457/sorm/sorm_v457_05_telegram.png" alt="Вкладка Уведомления Telegram"></p>
+  <figure class="shot">
+  <img src="../img/v457/sorm/sorm_v457_05_telegram.png" alt="Вкладка Уведомления Telegram">
+  <figcaption>Вкладка Уведомления Telegram</figcaption>
+</figure>
 
   <ul>
     <li><strong>Отправлять отчёт после каждой выгрузки</strong> — главный переключатель</li>
@@ -1530,7 +1548,10 @@ docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 3
   REGIONS, DOC_TYPE, PAY_TYPE и другие. У каждого свой SQL-запрос и префикс
   имени файла.</p>
 
-  <p><img class="screenshot" src="../img/v457/sorm/sorm_v457_06_reports.png" alt="Вкладка Отчёты"></p>
+  <figure class="shot">
+  <img src="../img/v457/sorm/sorm_v457_06_reports.png" alt="Вкладка Отчёты">
+  <figcaption>Вкладка Отчёты</figcaption>
+</figure>
 
   <p>В каждой строке:</p>
   <ul>
@@ -1550,7 +1571,10 @@ docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 3
   <p>Кнопка <strong>▶ Выгрузить сейчас</strong> в шапке detail-страницы
   запускает выгрузку всех отчётов конфигурации немедленно (минуя расписание).</p>
 
-  <p><img class="screenshot" src="../img/v457/sorm/sorm_v457_07_run_now.png" alt="Шапка карточки СОРМ с кнопкой «Выгрузить сейчас»" style="max-width:100%"></p>
+  <figure class="shot">
+  <img src="../img/v457/sorm/sorm_v457_07_run_now.png" alt="Шапка карточки СОРМ с кнопкой «Выгрузить сейчас»" style="max-width:100%">
+  <figcaption>Шапка карточки СОРМ с кнопкой «Выгрузить сейчас»</figcaption>
+</figure>
 
   <p>Что происходит:</p>
   <ol>
@@ -1575,7 +1599,10 @@ docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 3
   <p>Журнал последних 50 запусков — для compliance-аудита и быстрой
   диагностики «что выгружали и доходили ли файлы до РКН».</p>
 
-  <p><img class="screenshot" src="../img/v457/sorm/sorm_v457_08_history.png" alt="Вкладка История выгрузок"></p>
+  <figure class="shot">
+  <img src="../img/v457/sorm/sorm_v457_08_history.png" alt="Вкладка История выгрузок">
+  <figcaption>Вкладка История выгрузок</figcaption>
+</figure>
 
   <p>Колонки:</p>
   <table>
@@ -1757,7 +1784,10 @@ docker exec smit-billing-web-1 python3 manage.py sorm_data_quality_audit --top 3
   на карточке конфигурации СОРМ (вкладка <strong>Вендоры</strong>) позволяет выбрать
   профиль вендора и переустановить под него схему отчётов.</p>
 
-  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/sorm_vendors_v1717/doc_sorm_vendors.jpg" alt="Вкладка «Вендоры» — карточки вендоров с обложками, бейджем версии и кнопками"></p>
+  <figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/sorm_vendors_v1717/doc_sorm_vendors.jpg" alt="Вкладка «Вендоры» — карточки вендоров с обложками, бейджем версии и кнопками">
+  <figcaption>Вкладка «Вендоры» — карточки вендоров с обложками, бейджем версии и кнопками</figcaption>
+</figure>
 
   <h3 id="sorm-vendor-profiles">Профили вендоров</h3>
 
@@ -1850,7 +1880,10 @@ flowchart TB
   биллинг видит обновление через <code>gw_sorm_vendors</code> → показывает кнопку
   «Обновить».</p>
 
-  <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/sorm_vendors_v1717/doc_sorm_ls_admin.jpg" alt="Админка вендор-паков на сервере лицензий"></p>
+  <figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/sorm_vendors_v1717/doc_sorm_ls_admin.jpg" alt="Админка вендор-паков на сервере лицензий">
+  <figcaption>Админка вендор-паков на сервере лицензий</figcaption>
+</figure>
 
   <h3 id="sorm-vendor-model">Структуры данных и endpoint'ы</h3>
 

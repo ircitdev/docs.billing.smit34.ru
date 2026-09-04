@@ -35,7 +35,7 @@
   <meta name="twitter:image" content="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/ogimage-v2.jpg">
   <meta name="description" content="Всё, что открывается в карточке клиента: вкладки, действия оператора, история изменений.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=2478">
+  <link rel="stylesheet" href="../css/style.css?v=2479">
   <link rel="stylesheet" href="../css/vendor/tabler-icons.min.css?v=2193">
   <link rel="stylesheet" href="../css/search.css?v=2257">
 <!-- Yandex.Metrika counter -->
@@ -990,7 +990,10 @@
 <h2 id="abonent-card">9. Карточка клиента</h2>
 <p>URL: <code>/admin/Abonents/&lt;id&gt;/</code>. Открывается кликом по строке клиента в любом списке (папка, глобальный поиск, модалка счёта). Это центральная рабочая страница оператора — здесь видны все аспекты клиента и доступны все действия.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/07_abonent_card_main.png" alt="Карточка клиента"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/07_abonent_card_main.png" alt="Карточка клиента">
+  <figcaption>Карточка клиента</figcaption>
+</figure>
 
 <h3 id="abonent-avatar-socials">Аватарка и соцсети клиента</h3>
 <p>Карточка показывает <strong>аватарку клиента</strong> (в шапке профиля, в
@@ -1000,7 +1003,10 @@
 (атрибуты «Аватарка VK», «Аватарка TG», «VK ID», «Telegram ID», «MAX ID»),
 файлы аватарок — в GCS.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_v1403/15_abonent_avatar_socials.png" alt="Карточка клиента — аватарка и соцсети"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_v1403/15_abonent_avatar_socials.png" alt="Карточка клиента — аватарка и соцсети">
+  <figcaption>Карточка клиента — аватарка и соцсети</figcaption>
+</figure>
 
 <pre class="mermaid">
 flowchart LR
@@ -1035,16 +1041,25 @@ flowchart LR
 <p><strong>Состояния кнопки «Сохранить»:</strong></p>
 <ul>
   <li><strong>Серая, приглушённая</strong> — несохранённых изменений нет, сохранять нечего.
-    <p><img class="screenshot" src="../img/v830/title_bar_idle.png" alt="Шапка карточки клиента — кнопка Сохранить серая, изменений нет"></p>
+    <figure class="shot">
+  <img src="../img/v830/title_bar_idle.png" alt="Шапка карточки клиента — кнопка Сохранить серая, изменений нет">
+  <figcaption>Шапка карточки клиента — кнопка Сохранить серая, изменений нет</figcaption>
+</figure>
   </li>
   <li><strong>Зелёная с мягкой пульсацией</strong> — в форме есть несохранённые правки. Пульсация привлекает внимание, но не раздражает; уважает системную настройку <code>prefers-reduced-motion</code> (при ней анимация отключается).
-    <p><img class="screenshot" src="../img/v830/title_bar_active.png" alt="Шапка карточки клиента — кнопка Сохранить зелёная, есть несохранённые изменения"></p>
+    <figure class="shot">
+  <img src="../img/v830/title_bar_active.png" alt="Шапка карточки клиента — кнопка Сохранить зелёная, есть несохранённые изменения">
+  <figcaption>Шапка карточки клиента — кнопка Сохранить зелёная, есть несохранённые изменения</figcaption>
+</figure>
   </li>
 </ul>
 <p>Кнопка <strong>всегда физически кликабельна</strong> — серый вид это лишь подсказка «нечего сохранять», а не блокировка. Если клиент в этот момент обрабатывается биллингом (фоновая операция), кнопка не пульсирует, а tooltip объясняет, почему сохранение временно недоступно.</p>
 
 <p><strong>Подсветка изменённых полей.</strong> Любое поле формы, значение которого отличается от исходного, подсвечивается жёлтой рамкой и фоном (класс <code>.ab-field-changed</code>). Работает и для обычных полей, и для Select2-виджетов; есть отдельный вариант для тёмной темы.</p>
-<p><img class="screenshot" src="../img/v830/field_changed.png" alt="Изменённое поле формы подсвечено жёлтой рамкой и фоном"></p>
+<figure class="shot">
+  <img src="../img/v830/field_changed.png" alt="Изменённое поле формы подсвечено жёлтой рамкой и фоном">
+  <figcaption>Изменённое поле формы подсвечено жёлтой рамкой и фоном</figcaption>
+</figure>
 
 <p><strong>Как это работает.</strong> При загрузке страницы JavaScript снимает «снимок» исходных значений всех полей формы <code>#changelist-form</code> (часть полей догружается через AJAX — снимок повторяется через короткие интервалы, чтобы захватить и их). На событиях <code>change</code>/<code>input</code> текущее значение сравнивается со снимком: поле получает/теряет подсветку, кнопка «Сохранить» — зелёный вид. Технические поля (CSRF-токен, management-формы formset'ов) из отслеживания исключены.</p>
 <p class="note">Индикатор — это только визуальная подсказка поверх формы. Он не участвует в самом сохранении: клик по кнопке отправляет форму всегда, независимо от состояния индикатора.</p>
@@ -1072,7 +1087,10 @@ flowchart LR
 
 <p><strong>С версии 2.1.0</strong> страница в 2-колоночном layout (на экранах ≥1280px). 9 секций укладываются masonry-style через CSS <code>column-count:2</code> + <code>break-inside:avoid</code> — без выравнивания по высоте, плотно. На узких экранах автоматически 1 колонка.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/abonent_profile_v885/abonent_profile_v2.1.0.png" alt="Обзор вкладки «Профиль» — 2-колоночный layout, 9 свёрнутых секций"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/abonent_profile_v885/abonent_profile_v2.1.0.png" alt="Обзор вкладки «Профиль» — 2-колоночный layout, 9 свёрнутых секций">
+  <figcaption>Обзор вкладки «Профиль» — 2-колоночный layout, 9 свёрнутых секций</figcaption>
+</figure>
 
 <p><strong>Также переименованы две соседние вкладки</strong> для краткости:</p>
 <ul>
@@ -1080,15 +1098,24 @@ flowchart LR
 <li>«Сессии и RADIUS» → <strong>«RADIUS»</strong> (таймауты, retention, NAS auto-assign)</li>
 </ul>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/abonent_profile_v885/system_tabs_renamed.png" alt="Вкладки «Скорость» и «RADIUS» в /admin/settings/system/ (переименованы)"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/abonent_profile_v885/system_tabs_renamed.png" alt="Вкладки «Скорость» и «RADIUS» в /admin/settings/system/ (переименованы)">
+  <figcaption>Вкладки «Скорость» и «RADIUS» в /admin/settings/system/ (переименованы)</figcaption>
+</figure>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/abonent_profile_v885/abonent_profile_v2.1.0_expanded.png" alt="Вкладка «Профиль» с раскрытыми секциями — 2-колоночный layout"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/abonent_profile_v885/abonent_profile_v2.1.0_expanded.png" alt="Вкладка «Профиль» с раскрытыми секциями — 2-колоночный layout">
+  <figcaption>Вкладка «Профиль» с раскрытыми секциями — 2-колоночный layout</figcaption>
+</figure>
 
 <h5 id="system-abonent-profile-quick">Секция 0 — Быстрый доступ (Quick Cards)</h5>
 
 <p>Master-toggle + 6 индивидуальных тогглов по карточкам (Аудит / Услуги / Операции / HelpDesk / Сообщения / Сессии). При выключении master блок не загружается — карточка клиента грузится быстрее (нет AJAX-запроса <code>/quick_cards/</code>).</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/profile_v883/profile_section_quick.png" alt="Секция «Быстрый доступ» — master + 6 индивидуальных тогглов"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/profile_v883/profile_section_quick.png" alt="Секция «Быстрый доступ» — master + 6 индивидуальных тогглов">
+  <figcaption>Секция «Быстрый доступ» — master + 6 индивидуальных тогглов</figcaption>
+</figure>
 
 <h5 id="system-abonent-profile-sections">Секция 1 — Видимость секций карточки</h5>
 
@@ -1100,7 +1127,10 @@ flowchart LR
   <li>🕑 <strong>Recent pages</strong> в шапке — дропдаун последних посещённых страниц (по умолчанию вкл.)</li>
 </ul>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/profile_v883/profile_section_sections.png" alt="Секция «Видимость секций карточки»"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/profile_v883/profile_section_sections.png" alt="Секция «Видимость секций карточки»">
+  <figcaption>Секция «Видимость секций карточки»</figcaption>
+</figure>
 
 <h5 id="system-abonent-profile-list">Секция 2 — Колонки списка клиентов</h5>
 
@@ -1113,7 +1143,10 @@ flowchart LR
   <li>📞 <strong>Tooltip с контактами</strong> на иконках ✉/📞</li>
 </ul>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/profile_v883/profile_section_list.png" alt="Секция «Колонки списка»"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/profile_v883/profile_section_list.png" alt="Секция «Колонки списка»">
+  <figcaption>Секция «Колонки списка»</figcaption>
+</figure>
 
 <h5 id="system-abonent-profile-ajax">Секция 3 — AJAX и автообновление</h5>
 
@@ -1124,7 +1157,10 @@ flowchart LR
   <li><strong>Показывать «Загрузка...» placeholder</strong> — spinner до AJAX-ответа</li>
 </ul>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/profile_v883/profile_section_ajax.png" alt="Секция «AJAX и автообновление»"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/profile_v883/profile_section_ajax.png" alt="Секция «AJAX и автообновление»">
+  <figcaption>Секция «AJAX и автообновление»</figcaption>
+</figure>
 
 <h5 id="system-abonent-profile-defaults">Секция 4 — Дефолты карточки</h5>
 
@@ -1136,7 +1172,10 @@ flowchart LR
   <li><strong>Период «Сообщения» по умолчанию</strong>: Неделя / Месяц / Квартал / Все</li>
 </ul>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/profile_v883/profile_section_defaults.png" alt="Секция «Дефолты карточки»"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/profile_v883/profile_section_defaults.png" alt="Секция «Дефолты карточки»">
+  <figcaption>Секция «Дефолты карточки»</figcaption>
+</figure>
 
 <h5 id="system-abonent-profile-tabs">Секция 4А — Управление вкладками карточки</h5>
 
@@ -1154,7 +1193,10 @@ flowchart LR
 
 <p><strong>Drag&amp;drop</strong>: каждую вкладку можно перетащить за иконку «☰» в любую позицию. Изменения сохраняются в <code>ABONENT_PROFILE_TABS_CONFIG</code> как JSON. Кнопка «Сбросить к дефолту» возвращает порядок и видимость из <code>build_abonent_card_tabs</code> в коде.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/profile_v883/profile_section_tabs.png" alt="Секция «Управление вкладками карточки» — drag&drop + 4 стиля"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/profile_v883/profile_section_tabs.png" alt="Секция «Управление вкладками карточки» — drag&drop + 4 стиля">
+  <figcaption>Секция «Управление вкладками карточки» — drag&drop + 4 стиля</figcaption>
+</figure>
 
 <h5 id="system-abonent-profile-style">Секция 5 — Стиль и плотность</h5>
 
@@ -1164,7 +1206,10 @@ flowchart LR
   <li>🎨 <strong>Цвет бейджа «Активен»</strong>: Зелёный / Бирюзовый / Серый</li>
 </ul>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/profile_v883/profile_section_style.png" alt="Секция «Стиль и плотность»"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/profile_v883/profile_section_style.png" alt="Секция «Стиль и плотность»">
+  <figcaption>Секция «Стиль и плотность»</figcaption>
+</figure>
 
 <h5 id="system-abonent-profile-banners">Секция 7 — Баннеры уведомлений оператору</h5>
 
@@ -1177,7 +1222,10 @@ flowchart LR
   <li>📞 <strong>Свежее обращение в HelpDesk</strong> — есть тикет &lt; 24ч (по умолчанию вкл.)</li>
 </ul>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/profile_v883/profile_section_banners.png" alt="Секция «Баннеры уведомлений»"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/profile_v883/profile_section_banners.png" alt="Секция «Баннеры уведомлений»">
+  <figcaption>Секция «Баннеры уведомлений»</figcaption>
+</figure>
 
 <h5 id="system-abonent-profile-misc">Секция 8 — Прочее</h5>
 
@@ -1187,7 +1235,10 @@ flowchart LR
   <li>📱 <strong>Скрывать пароль RADIUS на mobile</strong> — чип с паролем не показывается на экранах ≤768px (риск утечки выше).</li>
 </ul>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/profile_v883/profile_section_misc.png" alt="Секция «Прочее»"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/profile_v883/profile_section_misc.png" alt="Секция «Прочее»">
+  <figcaption>Секция «Прочее»</figcaption>
+</figure>
 
 <h5 id="system-abonent-profile-tech">Технические детали</h5>
 
@@ -1211,7 +1262,10 @@ flowchart LR
 
 <p>Свёрнутая плашка — компактный светофор + 5 чипов проверок. Каждый чип имеет свой цвет (зелёный/жёлтый/красный/серый) и tooltip с детальным summary.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/diagnose_v782/diag_yellow_yudina_3083.png" alt="Жёлтая плашка диагностики — Lost-Carrier ×3 за сутки"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/diagnose_v782/diag_yellow_yudina_3083.png" alt="Жёлтая плашка диагностики — Lost-Carrier ×3 за сутки">
+  <figcaption>Жёлтая плашка диагностики — Lost-Carrier ×3 за сутки</figcaption>
+</figure>
 
 <h4 id="abonent-diagnose-checks">5 проверок диагностики</h4>
 
@@ -1232,7 +1286,10 @@ flowchart LR
 
 <p>Клик на кнопку «Подробнее» раскрывает 5 карточек с полным summary каждой проверки + блок «<strong>Готовый ответ для клиента</strong>» с кнопкой «Скопировать». Текст ответа автоматически подбирается по decision tree из 12 веток (нет тарифа → инструкция назначить тариф, 2+ Lost-Carrier → инструкция про кабель и роутер, активный трафик → «перезагрузите Wi-Fi», блок за неуплату → «внесите оплату», и т.д.).</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/diagnose_v782/diag_red_no_tarif_9318_expanded.png" alt="Развёрнутая плашка с 5 карточками + advice + кнопка Скопировать"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/diagnose_v782/diag_red_no_tarif_9318_expanded.png" alt="Развёрнутая плашка с 5 карточками + advice + кнопка Скопировать">
+  <figcaption>Развёрнутая плашка с 5 карточками + advice + кнопка Скопировать</figcaption>
+</figure>
 
 <h4 id="abonent-diagnose-sprint3">Sparkline 24ч и auto-actions</h4>
 
@@ -1247,7 +1304,10 @@ flowchart LR
 
 <p>Каждое действие защищено JS-confirm, показывает spinner во время выполнения, выводит toast «успех/ошибка», пишет запись в аудит.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/sprint3_v789/sprint3_sparkline_and_actions.png" alt="Sparkline за 24 часа и три кнопки действий в развёрнутой плашке"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/sprint3_v789/sprint3_sparkline_and_actions.png" alt="Sparkline за 24 часа и три кнопки действий в развёрнутой плашке">
+  <figcaption>Sparkline за 24 часа и три кнопки действий в развёрнутой плашке</figcaption>
+</figure>
 
 <h4 id="abonent-diagnose-ux">UX-особенности</h4>
 
@@ -1435,7 +1495,10 @@ flowchart LR
 с быстрыми фильтрами и формами создания операций. Открывается в карточке клиента
 по табу <strong>«Операции»</strong>: <code>/admin/Abonents/&lt;id&gt;/operations/</code>.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/operations_v767/operations_v767_01_desktop.png" alt="Вкладка Операции — общий вид"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/operations_v767/operations_v767_01_desktop.png" alt="Вкладка Операции — общий вид">
+  <figcaption>Вкладка Операции — общий вид</figcaption>
+</figure>
 
 <details class="section-toc">
   <summary><strong>Содержание раздела</strong></summary>
@@ -1501,9 +1564,15 @@ toolbar или из шапки на mobile. Цветной header (<span style="
   <li><strong>Услуга</strong> — опционально, см. ниже.</li>
 </ul>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/operations_v767/operations_v767_03_modal_income.png" alt="Модалка Приход (зелёный header)" style="max-width:540px"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/operations_v767/operations_v767_03_modal_income.png" alt="Модалка Приход (зелёный header)" style="max-width:540px">
+  <figcaption>Модалка Приход (зелёный header)</figcaption>
+</figure>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/operations_v767/operations_v767_02_modal_expense.png" alt="Модалка Расход с раскрытой услугой" style="max-width:540px"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/operations_v767/operations_v767_02_modal_expense.png" alt="Модалка Расход с раскрытой услугой" style="max-width:540px">
+  <figcaption>Модалка Расход с раскрытой услугой</figcaption>
+</figure>
 
 <h5 id="ops-usluga">Привязка услуги к расходу</h5>
 
@@ -1533,9 +1602,15 @@ toolbar или из шапки на mobile. Цветной header (<span style="
   <li>Поля input <code>font-size: 16px</code> (iOS Safari не зумит при фокусе).</li>
 </ul>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/operations_v767/operations_v767_06_mobile.png" alt="Вкладка Операции на mobile" style="max-width:390px"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/operations_v767/operations_v767_06_mobile.png" alt="Вкладка Операции на mobile" style="max-width:390px">
+  <figcaption>Вкладка Операции на mobile</figcaption>
+</figure>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/operations_v767/operations_v767_07_mobile_modal.png" alt="Модалка Расход на mobile (fullscreen)" style="max-width:390px"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/operations_v767/operations_v767_07_mobile_modal.png" alt="Модалка Расход на mobile (fullscreen)" style="max-width:390px">
+  <figcaption>Модалка Расход на mobile (fullscreen)</figcaption>
+</figure>
 
 <h5 id="ops-dark">Тёмная тема</h5>
 
@@ -1543,9 +1618,15 @@ toolbar или из шапки на mobile. Цветной header (<span style="
 модалка (background <code>#1f2227</code>, поля <code>#2a2f37</code>, borders <code>#3a3f47</code>,
 labels <code>#c8d0d8</code>).</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/operations_v767/operations_v767_04_dark.png" alt="Вкладка Операции в тёмной теме"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/operations_v767/operations_v767_04_dark.png" alt="Вкладка Операции в тёмной теме">
+  <figcaption>Вкладка Операции в тёмной теме</figcaption>
+</figure>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/operations_v767/operations_v767_05_modal_dark.png" alt="Модалка Расход в тёмной теме" style="max-width:540px"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/operations_v767/operations_v767_05_modal_dark.png" alt="Модалка Расход в тёмной теме" style="max-width:540px">
+  <figcaption>Модалка Расход в тёмной теме</figcaption>
+</figure>
 
 <h5>Действия со строкой операции</h5>
 
@@ -1889,7 +1970,10 @@ endpoints <code>finops_ajax</code>, <code>finops_crud_ajax</code>,
 <h4 id="abonent-card-tab-radius">RADIUS / Монитор сессий</h4>
 <p>URL: <code>/admin/Abonents/&lt;id&gt;/check/</code>. Live-инструмент мониторинга RADIUS-сессий клиента.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/01_overview.png" alt="Монитор сессий — общий вид: контекст тарифа, toolbar с KPI, таблица сессий, live-индикатор"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/01_overview.png" alt="Монитор сессий — общий вид: контекст тарифа, toolbar с KPI, таблица сессий, live-индикатор">
+  <figcaption>Монитор сессий — общий вид: контекст тарифа, toolbar с KPI, таблица сессий, live-индикатор</figcaption>
+</figure>
 
 <h5 id="abonent-card-tab-radius-context">Карточка контекста тарифа</h5>
 <p>Сверху страницы — компактный градиентный блок с информацией о тарифе клиента: имя, цена, шейпер из <code>TarifRadiusParams</code> (Mikrotik-Rate-Limit), Acct-Interim-Interval, статистика 7 дней (всего сессий / обрывов / процент). При <code>drop_pct &gt; 20%</code> — иконка ⚠ предупреждения «выше нормы по тарифу».</p>
@@ -1905,7 +1989,10 @@ endpoints <code>finops_ajax</code>, <code>finops_crud_ajax</code>,
 </ul>
 <p>Переключатель периода: <em>Сутки / Неделя / Месяц / Всё</em>. Клик → fetch <code>GET /admin/Abonents/&lt;ab_id&gt;/sessions/kpi/?period=...</code> → JSON → точечное обновление цифр.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/07_kpi_24h.png" alt="KPI обновляются при выборе периода «Сутки»"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/07_kpi_24h.png" alt="KPI обновляются при выборе периода «Сутки»">
+  <figcaption>KPI обновляются при выборе периода «Сутки»</figcaption>
+</figure>
 
 <h5 id="abonent-card-tab-radius-live">Live-индикатор и auto-refresh</h5>
 <p>Справа в toolbar — индикатор «Авто • N с назад» с пульсирующей зелёной точкой. Каждые 30 секунд JS опрашивает <code>GET /admin/Abonents/&lt;ab_id&gt;/sessions/list/</code>, обновляет статус-бейджи и трафик в строках без перезагрузки страницы. При смене статуса (Online → Stale → Завершена или наоборот) — <strong>flash-анимация строки</strong> и toast-уведомление «🔌 Сессия 8142e97a завершена: User-Request».</p>
@@ -2007,30 +2094,48 @@ endpoints <code>finops_ajax</code>, <code>finops_crud_ajax</code>,
 
 <ol>
   <li><strong>Обзор</strong> — 9 ключевых полей в <code>&lt;dl&gt;</code>: Начало / Завершение / Длительность / MAC / IP / NAS / Port / VLAN / Причина.
-    <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/02_drawer_overview.png" alt="Drawer — Обзор" style="max-width:540px"></p>
+    <figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/02_drawer_overview.png" alt="Drawer — Обзор" style="max-width:540px">
+  <figcaption>Drawer — Обзор</figcaption>
+</figure>
   </li>
   <li><strong>RADIUS</strong> — 20 raw-атрибутов: Acct-Session-Id, User-Name, NAS-IP-Address, Calling-Station-Id, Framed-IP-Address, NAS-Port-Id, Tunnel-Private-Group-Id, Acct-Session-Time, Acct-Input/Output-Octets, Acct-Terminate-Cause, raw timestamps в UTC, CEIL_IN/OUT, RATE_IN/OUT.
-    <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/03_drawer_radius.png" alt="Drawer — RADIUS-атрибуты" style="max-width:540px"></p>
+    <figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/03_drawer_radius.png" alt="Drawer — RADIUS-атрибуты" style="max-width:540px">
+  <figcaption>Drawer — RADIUS-атрибуты</figcaption>
+</figure>
   </li>
   <li><strong>Трафик</strong> — крупные цифры ↓ загрузка / ↑ выгрузка (в МБ/ГБ + точные байты), средний rate в Kbps, длительность.
-    <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/04_drawer_traffic.png" alt="Drawer — Трафик" style="max-width:540px"></p>
+    <figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/04_drawer_traffic.png" alt="Drawer — Трафик" style="max-width:540px">
+  <figcaption>Drawer — Трафик</figcaption>
+</figure>
   </li>
   <li><strong>Действия</strong> — CoA Disconnect (disabled для закрытых) + 3 копировать-кнопки (MAC / IP / Session ID) + ссылка «Открыть NAS».
-    <p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/05_drawer_actions.png" alt="Drawer — Действия" style="max-width:540px"></p>
+    <figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/05_drawer_actions.png" alt="Drawer — Действия" style="max-width:540px">
+  <figcaption>Drawer — Действия</figcaption>
+</figure>
   </li>
 </ol>
 
 <h5 id="abonent-card-tab-radius-coa">CoA Disconnect — разрыв сессии оператором</h5>
 <p>Кнопка <code>⏻</code> в строке с активной сессией (или из drawer-модалки → вкладка «Действия»). Клик открывает <strong>confirm-модалку</strong> с превью последствий:</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/06_coa_confirm.png" alt="Confirm-модалка перед CoA Disconnect"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/06_coa_confirm.png" alt="Confirm-модалка перед CoA Disconnect">
+  <figcaption>Confirm-модалка перед CoA Disconnect</figcaption>
+</figure>
 
 <p>Подтверждение → <code>POST /admin/Abonents/&lt;ab_id&gt;/sessions/coa_disconnect/</code> → backend запускает <code>disconnect_user.delay(broadcast=True)</code> в Celery (CoA на все NAS клиента) + audit-запись (table=<code>RADIUS_SESSIONS</code>) + toast «CoA Disconnect отправлен на все NAS». Через 8 секунд страница перезагружается чтобы обновить статус сессии на «Завершена».</p>
 
 <h5 id="abonent-card-tab-radius-mobile">Mobile-вид (ниже 992px)</h5>
 <p>Таблица из 12 колонок не помещается на телефоне — вместо неё отдельный layout <code>d-block d-lg-none</code> с карточками:</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/08_mobile.png" alt="Mobile card-stack" style="max-width:430px"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/08_mobile.png" alt="Mobile card-stack" style="max-width:430px">
+  <figcaption>Mobile card-stack</figcaption>
+</figure>
 
 <p>Каждая сессия — карточка с зелёной полосой слева для Online, бейджем статуса/причины сверху, периодом + аптаймом, и 6 ключевыми полями (Логин / NAS / IP / MAC / Трафик / Порт+VLAN). Touch-targets ≥ 44px (a11y-touch-target-design).</p>
 
@@ -2102,7 +2207,10 @@ endpoints <code>finops_ajax</code>, <code>finops_crud_ajax</code>,
 <h4 id="abonent-card-tab-audit">Аудит</h4>
 <p>Журнал действий пользователей и системных событий по конкретному клиенту. Подвыборка из <code>AuditOperations</code> с фильтром по <code>abonent_id</code> + связанным <code>USERS</code>-записям через <code>object_id</code>.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/audit_v777/audit_v777_01_desktop_overview.png" alt="Вкладка Аудит карточки клиента — KPI-карточки сверху, под ними toolbar с фильтрами (даты, поиск, тип, CSV), таблица событий"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/audit_v777/audit_v777_01_desktop_overview.png" alt="Вкладка Аудит карточки клиента — KPI-карточки сверху, под ними toolbar с фильтрами (даты, поиск, тип, CSV), таблица событий">
+  <figcaption>Вкладка Аудит карточки клиента — KPI-карточки сверху, под ними toolbar с фильтрами (даты, поиск, тип, CSV), таблица событий</figcaption>
+</figure>
 
 <h5 id="abonent-card-tab-audit-layout">Композиция</h5>
 <p>Сверху вниз:</p>
@@ -2147,7 +2255,10 @@ endpoints <code>finops_ajax</code>, <code>finops_crud_ajax</code>,
 <a href="settings.html#bank-statements">банковских выписок</a> и выписанные ему счета с актами.
 Появляется в карточке при наличии хотя бы одного платежа по выпискам.</p>
 
-<p><img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/abonent_card_v2221/bank_tab.png" alt="Вкладка «Банк» в карточке клиента — сумма зачисленного, таблица платежей из выписок, блок счетов и актов" loading="lazy"></p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/abonent_card_v2221/bank_tab.png" alt="Вкладка «Банк» в карточке клиента — сумма зачисленного, таблица платежей из выписок, блок счетов и актов" loading="lazy">
+  <figcaption>Вкладка «Банк» в карточке клиента — сумма зачисленного, таблица платежей из выписок, блок счетов и актов</figcaption>
+</figure>
 
 <ul>
   <li><strong>Шапка вкладки</strong>: сумма, зачисленная клиенту по выпискам, и кнопка
