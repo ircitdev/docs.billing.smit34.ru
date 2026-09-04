@@ -1077,7 +1077,7 @@ pre code {
   height: auto;
   margin: 12px 0;
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 0;
   box-shadow: 0 2px 8px rgba(0,0,0,.08);
 }
 
@@ -1121,6 +1121,37 @@ pre code {
 @media (max-width: 768px) {
   .screenshot-pair { grid-template-columns: 1fr; }
 }
+
+/* Снимок с подписью — единый блок: рамка одна на картинку и подпись,
+   углы прямые. */
+.shot {
+  margin: 16px 0;
+  max-width: min(1100px, 100%);
+  border: 1px solid var(--border);
+  border-radius: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,.08);
+  background: var(--bg-card, #fff);
+  overflow: hidden;
+}
+.shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.shot figcaption {
+  padding: 8px 12px;
+  font-size: .85rem;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  background: var(--bg-subtle, rgba(0,0,0,.02));
+}
+.shot.is-narrow { max-width: min(720px, 100%); }
+.shot.is-mobile { max-width: 320px; }
+[data-theme="dark"] .shot img { opacity: .92; }
 
 /* Широкий снимок интерфейса: в 720 px полосы вкладок и таблицы
    настроек уже не читаются. */
