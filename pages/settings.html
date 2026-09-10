@@ -1050,6 +1050,25 @@
 интеграции, шаблоны печати, управление персоналом и обслуживание базы данных.</p>
 
 <h3 id="system-settings">6.1. Настройки системы</h3>
+
+<details class="section-toc">
+  <summary><strong>Содержание раздела</strong></summary>
+  <ul>
+    <li><a href="#system-settings-branding">Вкладка «Брендинг» — фирменное оформление</a></li>
+    <li><a href="#system-security-finops">Вкладка «Безопасность» — политика финансовых операций</a></li>
+    <li><a href="#system-security-auth-1171">Вкладка «Безопасность» — авторизация (FIDO2, reCAPTCHA, блокировка, сессии)</a></li>
+    <li><a href="#su-security">Доступ суперпользователя — 2FA, IP-ограничение, политики паролей</a></li>
+    <li><a href="#system-settings-blocks">Вкладка «Блокировки и финансы» — captive-portal + бизнес-правила</a></li>
+    <li><a href="#system-settings-proxy">Вкладка «Прокси» — пул прокси для Telegram и Нейросети</a></li>
+    <li><a href="#system-settings-messages">Вкладка «Сообщения клиентам» — политика уведомлений</a></li>
+    <li><a href="#system-settings-radius">Вкладка «RADIUS» — таймауты, retention, NAS auto-assign</a></li>
+    <li><a href="#system-settings-audit">Вкладка «Аудит» — журнал действий по клиентам</a></li>
+    <li><a href="#system-settings-logs">Вкладка «Логи» — хранение и уровень логирования</a></li>
+    <li><a href="#system-settings-performance">Вкладка «Скорость» — Gunicorn / Celery / БД / Throttling</a></li>
+    <li><a href="#system-settings-ebs">Вкладка «EBS-виджет» — синхронизация с EBS</a></li>
+  </ul>
+</details>
+
 <p>Единая страница системных параметров (<code>/admin/settings/system/</code>).
 Вкладки идут по частоте использования — первой открывается <strong>«Брендинг»</strong>,
 диагностические (<em>Аудит</em>, <em>Логи</em>, <em>Скорость</em>, <em>EBS-виджет</em>)
@@ -1219,23 +1238,6 @@ auto-block по отрицательному балансу — работают
 
 <p>Все настройки в категории <code>security</code>, по умолчанию выключены. Миграция <code>0230</code> добавляет модель <code>StaffWebAuthnCredential</code> (passkey сотрудников).</p>
 
-<h4 id="admin-header-adaptive-1180">Адаптивная шапка админки</h4>
-
-<p>Верхнее меню сжимается ступенями при нехватке ширины (только десктоп ≥768px), освобождая место без потери пунктов.</p>
-
-<figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/auth_overhaul_v1183/09_header_compact.png" alt="Адаптивная шапка в сжатом виде">
-  <figcaption>Адаптивная шапка в сжатом виде</figcaption>
-</figure>
-
-<ul>
-  <li>Пункт «Продажи» переименован в <strong>«CRM»</strong>.</li>
-  <li><strong>Ступень 0</strong> — сворачивается левый сайдбар (ручной выбор пользователя не трогается).</li>
-  <li><strong>Ступень 1</strong> — имя пользователя → фамилия, «Тарификация» → «Тарифы», «Справочники» → «Справ.».</li>
-  <li><strong>Ступень 2</strong> — пункты Видео / IPTV / IP-телефония группируются в выпадающее меню <strong>«Услуги»</strong> (сразу после «Тарифы»).</li>
-  <li>При расширении окна всё откатывается обратно.</li>
-</ul>
-
 <h4 id="system-settings-audit">Вкладка «Аудит» — настройки журнала действий по клиентам</h4>
 
 <p>Управление параметрами вкладки <a href="abonent-card.html#abonent-card-tab-audit">Аудит</a> в карточке клиента и общим поведением логирования. Доступна по адресу <code>/admin/settings/system/?tab=audit</code> только пользователям группы <code>root</code> или с <code>is_superuser=True</code>.</p>
@@ -1324,62 +1326,17 @@ auto-block по отрицательному балансу — работают
 
 <p>Справа на вкладке — таблица текущего размера всех файлов в <code>/var/log/django/</code> с подсветкой больших (≥100 МБ оранжевый, ≥1 ГБ красный). Клик по имени файла → переход в просмотр содержимого (<code>/admin/reports/dev/logs/</code>).</p>
 
-<h4 id="logs-viewer">Просмотр логов с подсветкой</h4>
-
-<p>Страница <code>/admin/reports/dev/logs/</code> (раздел «Отчёты → Разработка и логи», только root-доступ) показывает 12 каналов журналов слева с текущим размером, справа — содержимое выбранного файла.</p>
-
-<figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/backup_logs_v967/logs_colorized.png" alt="Просмотр логов с подсветкой по уровням">
-  <figcaption>Просмотр логов с подсветкой по уровням</figcaption>
-</figure>
-
-<ul>
-  <li><strong>Чтение с конца файла</strong> — функция <code>_tail_log()</code> читает последние
-  500 строк, двигаясь от конца файла чанками, не загружая его целиком в память. Поэтому даже
-  лог на десятки гигабайт открывается мгновенно (в шапке показано «Показано: 500 / N строк»).
-  Это защищает от переполнения памяти при открытии многогигабайтного
-  <code>freeradius.log</code>.</li>
-  <li><strong>Подсветка по уровням</strong> (<code>colorizeLog</code>) — каждая строка
-  раскрашивается по содержимому: <span style="color:#dc3545">красный</span> для
-  <code>error</code> / <code>traceback</code> / <code>exception</code>,
-  <span style="color:#e67e22">оранжевый</span> для <code>warning</code>,
-  серый для <code>debug</code>, обычный для <code>info</code>. Цвета адаптируются под тёмную тему.</li>
-  <li><strong>Кнопки</strong>: обновить, скачать файл, поделиться ссылкой (<code>?log=имя</code>),
-  очистить лог / очистить все логи (только суперадмин).</li>
-</ul>
-
-<h4 id="logs-rotation-host">Ротация логов на сервере</h4>
-
-<p>Часть логов пишет Django через <code>RotatingFileHandler</code> (<code>error.log</code>,
-<code>radius.log</code>, <code>payment.log</code>, <code>sorm.log</code>, <code>staff.log</code> —
-maxBytes 10 МБ, backupCount 5, в просмотрщике видны как <code>radius.log.1</code>…<code>.5</code>).
-Но <strong>нативный <code>freeradius.log</code></strong> пишет сам FreeRADIUS (C-side), и Django его
-не ротирует. Если FreeRADIUS запущен в trace-режиме (<code>-xx</code>), этот файл растёт на
-~5 ГБ/сутки — он однажды вырос до <strong>43 ГБ</strong>.</p>
-
-<p>Лечение:</p>
-<ul>
-  <li><strong>Уровень детализации FreeRADIUS</strong> задаётся переменной
-  <code>RADIUS_DEBUG_LEVEL</code> в <code>.env</code> (читается <code>docker/freeradius/entrypoint.sh</code>):
-  <code>info</code> (без флага, ~1 ГБ/сутки, только Accept/Reject и блокировки), <code>debug</code>
-  (<code>-x</code>), <code>trace</code> (<code>-xx</code>, не использовать в проде). Если переменная не задана вовсе, контейнер стартует именно с <code>trace</code> — на новой установке задайте <code>info</code> явно. После правки —
-  <code>docker compose up -d --force-recreate freeradius</code>.</li>
-  <li><strong><code>/etc/logrotate.d/smit-freeradius</code></strong> — ротация нативного лога
-  (daily, rotate 5, maxsize 100M, compress, <code>copytruncate</code> — обязателен, т.к. FreeRADIUS
-  держит файл открытым, <code>su root root</code> — т.к. каталог volume world-writable).
-  Файл больше не превышает ~600 МБ.</li>
-  <li><strong><code>/etc/cron.daily/smit-radacct-cleanup</code></strong> — удаляет accounting
-  detail-файлы <code>radacct/&lt;NAS&gt;/detail-YYYYMMDD</code> старше 14 дней (эти данные уже
-  продублированы в таблице <code>RADIUS_SESSIONS</code>).</li>
-</ul>
-
-<p>Текущий размер каждого файла виден в просмотрщике — после фикса <code>freeradius.log</code>
-держится в районе десятков мегабайт:</p>
-
 <figure class="shot">
   <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/settings_v2748/tabs/tab_logs.png" alt="Вкладка «Логи» — уровни логирования и текущий размер журналов">
-  <figcaption>Список лог-каналов с размерами</figcaption>
+  <figcaption>Вкладка «Логи»: срок хранения, уровни Django / FreeRADIUS, размеры файлов</figcaption>
 </figure>
+
+<div class="note">
+  Просмотрщик логов с подсветкой (<code>/admin/reports/dev/logs/</code>) и ротация журналов
+  на сервере (logrotate, нативный <code>freeradius.log</code>) — соседние с вкладкой темы, а не
+  её настройки; их описание перенесено в
+  <a href="reports.html#logs-viewer">Отчёты → Разработка и логи</a>.
+</div>
 
 <h4 id="system-settings-performance">Вкладка «Скорость» — Gunicorn / Celery / БД / Throttling (переименована)</h4>
 

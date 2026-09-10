@@ -2015,6 +2015,59 @@ count = 0 или count &gt; 500 (бейдж становится красным 
 <p>Показываются последние 500 строк, есть кнопка обновления. Файлы автоматически
 ротируются (10 МБ × 5 копий).</p>
 
+<h4 id="logs-viewer">Просмотр логов с подсветкой</h4>
+
+<p>Страница <code>/admin/reports/dev/logs/</code> (раздел «Отчёты → Разработка и логи», только root-доступ) показывает 12 каналов журналов слева с текущим размером, справа — содержимое выбранного файла.</p>
+
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/backup_logs_v967/logs_colorized.png" alt="Просмотр логов с подсветкой по уровням">
+  <figcaption>Просмотр логов с подсветкой по уровням</figcaption>
+</figure>
+
+<ul>
+  <li><strong>Чтение с конца файла</strong> — функция <code>_tail_log()</code> читает последние
+  500 строк, двигаясь от конца файла чанками, не загружая его целиком в память. Поэтому даже
+  лог на десятки гигабайт открывается мгновенно (в шапке показано «Показано: 500 / N строк»).
+  Это защищает от переполнения памяти при открытии многогигабайтного
+  <code>freeradius.log</code>.</li>
+  <li><strong>Подсветка по уровням</strong> (<code>colorizeLog</code>) — каждая строка
+  раскрашивается по содержимому: <span style="color:#dc3545">красный</span> для
+  <code>error</code> / <code>traceback</code> / <code>exception</code>,
+  <span style="color:#e67e22">оранжевый</span> для <code>warning</code>,
+  серый для <code>debug</code>, обычный для <code>info</code>. Цвета адаптируются под тёмную тему.</li>
+  <li><strong>Кнопки</strong>: обновить, скачать файл, поделиться ссылкой (<code>?log=имя</code>),
+  очистить лог / очистить все логи (только суперадмин).</li>
+</ul>
+
+<h4 id="logs-rotation-host">Ротация логов на сервере</h4>
+
+<p>Часть логов пишет Django через <code>RotatingFileHandler</code> (<code>error.log</code>,
+<code>radius.log</code>, <code>payment.log</code>, <code>sorm.log</code>, <code>staff.log</code> —
+maxBytes 10 МБ, backupCount 5, в просмотрщике видны как <code>radius.log.1</code>…<code>.5</code>).
+Но <strong>нативный <code>freeradius.log</code></strong> пишет сам FreeRADIUS (C-side), и Django его
+не ротирует. Если FreeRADIUS запущен в trace-режиме (<code>-xx</code>), этот файл растёт на
+~5 ГБ/сутки — он однажды вырос до <strong>43 ГБ</strong>.</p>
+
+<p>Лечение:</p>
+<ul>
+  <li><strong>Уровень детализации FreeRADIUS</strong> задаётся переменной
+  <code>RADIUS_DEBUG_LEVEL</code> в <code>.env</code> (читается <code>docker/freeradius/entrypoint.sh</code>):
+  <code>info</code> (без флага, ~1 ГБ/сутки, только Accept/Reject и блокировки), <code>debug</code>
+  (<code>-x</code>), <code>trace</code> (<code>-xx</code>, не использовать в проде). Если переменная не задана вовсе, контейнер стартует именно с <code>trace</code> — на новой установке задайте <code>info</code> явно. После правки —
+  <code>docker compose up -d --force-recreate freeradius</code>.</li>
+  <li><strong><code>/etc/logrotate.d/smit-freeradius</code></strong> — ротация нативного лога
+  (daily, rotate 5, maxsize 100M, compress, <code>copytruncate</code> — обязателен, т.к. FreeRADIUS
+  держит файл открытым, <code>su root root</code> — т.к. каталог volume world-writable).
+  Файл больше не превышает ~600 МБ.</li>
+  <li><strong><code>/etc/cron.daily/smit-radacct-cleanup</code></strong> — удаляет accounting
+  detail-файлы <code>radacct/&lt;NAS&gt;/detail-YYYYMMDD</code> старше 14 дней (эти данные уже
+  продублированы в таблице <code>RADIUS_SESSIONS</code>).</li>
+</ul>
+
+<p>Уровень логирования и текущий размер каждого файла задаются и видны на вкладке
+<a href="settings.html#system-settings-logs">«Настройки системы → Логи»</a>; после фикса
+<code>freeradius.log</code> держится в районе десятков мегабайт.</p>
+
 <h3 id="debtors">4.6. Должники</h3>
 <details class="section-toc">
   <summary><strong>Содержание раздела</strong></summary>
