@@ -1296,17 +1296,6 @@
         <p class="tv-links"><a href="https://docs.billing.smit34.ru/pages/settings-services.html#iptv-module" target="_blank" rel="noopener">раздел «Модуль IPTV»</a></p>
       </div>
       <div class="tv-item">
-        <div class="tv-head"><strong>Маркетплейс разработчиков</strong><span class="tv-meta">2:45 · с озвучкой</span></div>
-        <p class="tv-about">заявка автора, кабинет разработчика, проверка перед публикацией, установки и выплата доли</p>
-        <div class="tv-player">
-          <video controls preload="none" playsinline poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/marketplace-training.jpg">
-            <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/marketplace-training.mp4" type="video/mp4">
-            <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/marketplace-training.mp4">Скачать ролик (MP4)</a>
-          </video>
-        </div>
-        <p class="tv-links"><a href="https://license.billing.smit34.ru/developers/" target="_blank" rel="noopener">стать разработчиком</a></p>
-      </div>
-      <div class="tv-item">
         <div class="tv-head"><strong>Дашборд</strong><span class="tv-meta">2:35 · с озвучкой</span></div>
         <p class="tv-about">период и организация, ключевые показатели, сводки по модулям, деньги</p>
         <div class="tv-player">
@@ -1505,6 +1494,24 @@
         <p class="tv-links"><a href="pages/abonents.html#abonents">раздел документации</a></p>
       </div>
     </div>
+
+    <div class="tv-featured">
+      <div class="tv-featured-body">
+        <span class="tv-featured-kick"><i class="ti ti-puzzle" aria-hidden="true"></i> для авторов модулей</span>
+        <h3>Маркетплейс разработчиков</h3>
+        <p class="tv-featured-desc">Каталог биллинга пополняем не только мы: модули и виджеты пишут сторонние авторы. Ролик проходит весь путь продукта — заявка автора, кабинет разработчика, проверка перед публикацией, установки у клиентов и выплата доли.</p>
+        <p class="tv-featured-act">
+          <a class="tv-featured-btn" href="https://license.billing.smit34.ru/developers/" target="_blank" rel="noopener">Стать разработчиком <i class="ti ti-arrow-right" aria-hidden="true"></i></a>
+          <span class="tv-meta">2:45 · с озвучкой</span>
+        </p>
+      </div>
+      <div class="tv-featured-player">
+        <video controls preload="none" playsinline poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/marketplace-training.jpg">
+          <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/marketplace-training.mp4" type="video/mp4">
+          <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/marketplace-training.mp4">Скачать ролик (MP4)</a>
+        </video>
+      </div>
+    </div>
   </section>
 
   <style>
@@ -1523,6 +1530,65 @@
   .tv-player video { width: 100%; display: block; margin: .7rem 0 .2rem;
                      border-radius: 10px; background: #000; }
   .tv-links { margin: .5rem 0 0; font-size: .9rem; }
+
+  /* Приглашение писать модули — не ещё один ролик в ряду, а призыв: во всю
+     ширину, с акцентной рамкой и текстом слева от плеера. */
+  .tv-featured {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    gap: 1.4rem;
+    align-items: center;
+    margin-top: 1.1rem;
+    padding: 1.3rem 1.4rem;
+    border: 1px solid rgba(67, 183, 122, .45);
+    border-radius: 14px;
+    background:
+      linear-gradient(135deg, rgba(67, 183, 122, .10) 0%, rgba(67, 183, 122, .03) 60%),
+      var(--surface-card, #fff);
+    box-shadow: 0 6px 22px rgba(15, 23, 32, .06);
+  }
+  .tv-featured-kick {
+    display: inline-flex; align-items: center; gap: .4rem;
+    padding: .2rem .6rem;
+    border-radius: 999px;
+    background: rgba(67, 183, 122, .16);
+    color: #1d7a4e;
+    font-size: .74rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .03em;
+  }
+  .tv-featured h3 { margin: .6rem 0 .4rem; font-size: 1.45rem; line-height: 1.2; }
+  .tv-featured-desc { margin: 0 0 .9rem; font-size: .96rem; }
+  .tv-featured-act { display: flex; align-items: center; gap: .8rem; margin: 0;
+                     flex-wrap: wrap; }
+  .tv-featured-btn {
+    display: inline-flex; align-items: center; gap: .45rem;
+    padding: .55rem 1.05rem;
+    border-radius: 9px;
+    background: #2e9e63;
+    color: #fff !important;
+    font-weight: 600; text-decoration: none;
+    transition: background .15s ease;
+  }
+  .tv-featured-btn:hover { background: #268053; }
+  .tv-featured-player video { width: 100%; display: block; border-radius: 10px;
+                              background: #000; }
+
+  [data-theme="dark"] .tv-featured,
+  html.dark .tv-featured {
+    border-color: rgba(67, 183, 122, .38);
+    background:
+      linear-gradient(135deg, rgba(67, 183, 122, .14) 0%, rgba(67, 183, 122, .04) 60%),
+      var(--surface-card, #171b21);
+    box-shadow: none;
+  }
+  [data-theme="dark"] .tv-featured-kick,
+  html.dark .tv-featured-kick { color: #63d69b; background: rgba(67, 183, 122, .20); }
+
+  /* На узком экране призыв идёт над плеером — читать удобнее, чем сбоку. */
+  @media (max-width: 860px) {
+    .tv-featured { grid-template-columns: 1fr; gap: 1rem; padding: 1.1rem; }
+    .tv-featured h3 { font-size: 1.25rem; }
+  }
   </style>
 
   <div class="cards">
