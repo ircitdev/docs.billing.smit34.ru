@@ -477,7 +477,7 @@
           <li><a href="crm.html#crm-salesbot-broadcast"><i class="ti ti-point" aria-hidden="true"></i> Рассылка</a></li>
           <li><a href="crm.html#crm-salesbot-widget"><i class="ti ti-puzzle" aria-hidden="true"></i> Веб-виджет на сайт</a></li>
           <li class="sub-item"><a href="crm.html#widgets"><i class="ti ti-apps" aria-hidden="true"></i> 10. Виджеты-плагины</a></li>
-          <li><a href="crm.html#widgets-versioning"><i class="ti ti-history" aria-hidden="true"></i> Версия, «Подробнее» и автообновление</a></li>
+          <li><a href="crm.html#widgets-versioning"><i class="ti ti-history" aria-hidden="true"></i> Версия, окно виджета и автообновление</a></li>
           <li><a href="crm.html#widgets-mount"><i class="ti ti-puzzle" aria-hidden="true"></i> Точки монтирования и стандартные виджеты</a></li>
           <li><a href="crm.html#widgets-builtin"><i class="ti ti-network" aria-hidden="true"></i> Встроенные карточки «Быстрый доступ»</a></li>
           <li><a href="crm.html#widget-campaigns"><i class="ti ti-puzzle" aria-hidden="true"></i> Виджет «Рекламные кампании»</a></li>
@@ -1011,7 +1011,7 @@
     <li class="sub-item"><a href="#crm-salesbot-broadcast">Рассылка</a></li>
     <li class="sub-item"><a href="#crm-salesbot-widget">Веб-виджет на сайт</a></li>
     <li><a href="#widgets">Виджеты-плагины</a></li>
-    <li class="sub-item"><a href="#widgets-versioning">Версия, «Подробнее» и автообновление</a></li>
+    <li class="sub-item"><a href="#widgets-versioning">Версия, окно виджета и автообновление</a></li>
     <li class="sub-item"><a href="#widgets-mount">Точки монтирования и стандартные виджеты</a></li>
     <li class="sub-item"><a href="#widgets-builtin">Встроенные карточки «Быстрый доступ»</a></li>
     <li class="sub-item"><a href="#widget-campaigns">Виджет «Рекламные кампании»</a></li>
@@ -1969,12 +1969,15 @@ window.SmitWidget.register('funnel-summary', function (el, settings) {
 Установить / Обновить / Удалить и тумблер вкл/выкл. Первая точка монтирования —
 дашборд CRM (виджет «Сводка воронки»), далее — карточка сделки и карточка клиента.</p>
 
-<h3 id="widgets-versioning">Версия, «Подробнее» и автообновление</h3>
+<h3 id="widgets-versioning">Версия, окно виджета и автообновление</h3>
 <p>Плитка виджета показывает <strong>бейдж версии</strong> справа от названия (зелёный —
-установлен и включён, жёлтый — доступно обновление, серый — доступен в каталоге). Кнопка
-<strong>«Подробнее»</strong> открывает модалку с обложкой, полным описанием и вкладками
-«Возможности» / «Как это работает» / «Скриншоты» — так же, как у карточки модуля
-(данные приходят из расширенного каталога сервера лицензий).</p>
+установлен и включён, жёлтый — доступно обновление, серый — доступен в каталоге).
+<strong>Клик по названию или обложке</strong> открывает окно виджета — по структуре как у
+<a href="settings-services.html#modules-details">окна модуля</a>: сводка в две колонки
+(слева обложка и «Разработчик», справа категория и компактное описание), вкладки
+«Возможности» / «Как это работает» / «Скриншоты» / <strong>«История версий»</strong> и блок
+<strong>«Зависит от модуля»</strong> (данные — из расширенного каталога сервера лицензий).
+Отдельной кнопки «Подробнее» больше нет.</p>
 <p>Обновление по умолчанию <strong>ручное</strong>: у виджета с более новой версией в
 каталоге появляется кнопка <strong>«Обновить»</strong>. Тумблер
 <strong>«Автообновление виджетов»</strong> в тулбаре
