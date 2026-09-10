@@ -2270,7 +2270,7 @@ flowchart TD
 <figure class="doc-video">
   <div class="dv-head">
     <span class="dv-kind"><i class="ti ti-player-play-filled" aria-hidden="true"></i> Обучающее видео</span>
-    <span class="dv-time">3:03</span>
+    <span class="dv-time">3:02</span>
   </div>
   <div class="dv-media">
     <video controls preload="none" playsinline poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/backup-training-poster.jpg">
@@ -2280,7 +2280,7 @@ flowchart TD
       </video>
   </div>
   <figcaption>
-    <p class="dv-desc">Что показывает раздел, почему копия должна лежать не только на сервере, как снять копию вручную, чем опасно восстановление и почему тишина системы опаснее ошибки.</p>
+    <p class="dv-desc">Что показывает раздел, где хранить копию и зачем шифровать её паролем, как снять копию вручную и загрузить её файлом, как устроено восстановление по шагам на сервере и почему тишина системы опаснее ошибки.</p>
     <div class="dv-foot">
       <span class="dv-spec">1920×1080</span>
       <span class="dv-spec">с озвучкой</span>
@@ -2517,7 +2517,7 @@ sequenceDiagram
 телефоне то же меню открывается нижней шторкой.</p>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/backup_v2732/menu.png" alt="Меню действий политики: «Настройки» и «Удалить» рядом с кнопкой «Запустить»" loading="lazy">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/backup_v2750/menu.png" alt="Меню действий политики: «Настройки» и «Удалить» рядом с кнопкой «Запустить»" loading="lazy">
   <figcaption>«Запустить» — на карточке, настройки и удаление — в меню.</figcaption>
 </figure>
 
@@ -2559,11 +2559,11 @@ sequenceDiagram
 
 <div class="screenshot-pair">
   <figure>
-    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/backup_v2714/confirm_run.png" alt="Подтверждение запуска копии: что резервируем, сколько заняло в прошлый раз, уйдёт ли копия в облако" loading="lazy">
+    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/backup_v2750/confirm_run.png" alt="Подтверждение запуска копии: что резервируем, сколько заняло в прошлый раз, уйдёт ли копия в облако" loading="lazy">
     <figcaption>Запуск: видно, сколько заняло в прошлый раз и уйдёт ли копия в облако</figcaption>
   </figure>
   <figure>
-    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/backup_v2714/confirm_del.png" alt="Подтверждение удаления политики: копии останутся, новые сниматься перестанут" loading="lazy">
+    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/backup_v2750/confirm_del.png" alt="Подтверждение удаления политики: копии останутся, новые сниматься перестанут" loading="lazy">
     <figcaption>Удаление политики: снятые копии остаются, новые не появятся</figcaption>
   </figure>
 </div>
@@ -2638,20 +2638,21 @@ flowchart TD
     <figcaption>Сводка, политики и журнал на телефоне</figcaption>
   </figure>
   <figure>
-    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/backup_v2732/phone_filters.png" alt="Нижняя шторка фильтров журнала копий на телефоне" loading="lazy">
+    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/backup_v2750/phone_filters.png" alt="Нижняя шторка фильтров журнала копий на телефоне" loading="lazy">
     <figcaption>Фильтры журнала — в нижней шторке</figcaption>
   </figure>
 </div>
 
 <h4 id="backup-onboarding">Знакомство с разделом</h4>
 <p>При первом заходе раздел показывает короткое знакомство: обучающий ролик и четыре
-шага — зачем хранить копию в облаке, что говорит сводка, как устроены расписание и час
-запуска, чем опасно восстановление и что попадает в журнал действий. Повторно открыть
-его можно кнопкой «Знакомство» в шапке раздела.</p>
+шага — зачем хранить копию в облаке, зачем шифровать её паролем, как загрузить копию
+файлом и как устроено восстановление по шагам на сервере. Обновлённое знакомство
+показывается администраторам один раз; повторно открыть его можно кнопкой «Знакомство»
+в шапке раздела.</p>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/backup_v2732/onboarding.png" alt="Знакомство с разделом «Резервные копии»: первый шаг с обучающим роликом" loading="lazy">
-  <figcaption>Первый шаг знакомства — ролик на три минуты.</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/backup_v2750/onboarding.png" alt="Знакомство с разделом «Резервные копии»: шаг о шифровании копии паролем" loading="lazy">
+  <figcaption>Шаг знакомства о шифровании: пароль не восстановить, латиница и цифры, замок в журнале.</figcaption>
 </figure>
 
 <h4 id="backup-access">Кто видит раздел</h4>
@@ -3360,8 +3361,8 @@ flowchart LR
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2759)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">11.09.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2759)</span>&nbsp;|&nbsp;<span data-smit="updated">11.09.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2760)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">11.09.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2760)</span>&nbsp;|&nbsp;<span data-smit="updated">11.09.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2323"></script>
