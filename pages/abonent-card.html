@@ -1380,6 +1380,31 @@ flowchart LR
   </tbody>
 </table>
 
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2626/01_accounts_desktop.png" alt="Вкладка «Аккаунты» на общих компонентах">
+  <figcaption>Вкладка «Аккаунты»: общая таблица, кнопка колонок в шапке столбца действий, меню действий в строке</figcaption>
+</figure>
+
+<pre class="mermaid">
+flowchart LR
+    CARD["Карточка клиента"] --> T["Таблицы вкладок"]
+    CARD --> F["Фильтры и счётчики"]
+    CARD --> A["Действия"]
+
+    T --> T1["smit-tbl<br/>подписи ячеек"]
+    T1 --> T2["Десктоп: таблица"]
+    T1 --> T3["Телефон: карточка<br/>с подписью у поля"]
+    T --> T4["SmitTable<br/>набор колонок в профиле"]
+
+    F --> F1["SmitChipBar<br/>полоса фильтров"]
+    F --> F2["smit-kpi-pill<br/>счётчики"]
+    F --> F3["SmitStat<br/>сводка операций"]
+
+    A --> A1["SmitActions<br/>меню строки"]
+    A --> A2["SmitBulkBar<br/>выбранные строки"]
+    A --> A3["SmitConfirm<br/>подтверждение"]
+</pre>
+
 <h4 id="abonent-card-mobile-cards">Телефон: карточка вместо урезанной таблицы</h4>
 
 <p>Прятать данные на узком экране нельзя — оператор в поле открывает карточку
@@ -1392,6 +1417,21 @@ flowchart LR
 <code>data-label</code> у каждой ячейки: ниже 768&nbsp;px строка превращается в
 карточку, где подписано каждое поле, и ничего не исчезает.</p>
 
+
+<pre class="mermaid">
+flowchart TB
+    R["Строка таблицы<br/>15 ячеек с data-label"] --> W{"Ширина экрана"}
+    W -->|"768 px и шире"| D["Таблица<br/>колонки по настройке сотрудника"]
+    W -->|"уже 768 px"| M["Карточка<br/>каждое поле с подписью"]
+    D --> DK["Действия: меню в строке"]
+    M --> MK["Действия: то же меню<br/>палец попадает"]
+</pre>
+
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2626/06_accounts_mobile.png" alt="Та же строка на телефоне — карточка с подписями">
+  <figcaption>Та же строка на телефоне: карточка, где подписано каждое поле. Ничего не скрыто, выбор строк убран — массовые действия делают за столом</figcaption>
+</figure>
+
 <h4 id="abonent-card-columns">Набор колонок — в профиле сотрудника</h4>
 
 <p>Кнопка выбора колонок везде одинаковая: квадратная, с иконкой столбцов и
@@ -1403,6 +1443,11 @@ flowchart LR
 кнопкой. У «Аккаунтов» это коммутатор с портом (обход по подъезду), комментарий
 монтажника и дата создания учётной записи — раньше за ними приходилось
 открывать отдельную карточку.</p>
+
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2626/03_columns_picker.png" alt="Панель выбора колонок">
+  <figcaption>Панель выбора колонок: набор, порядок и ширины сохраняются в профиле сотрудника</figcaption>
+</figure>
 
 <h4 id="abonent-card-row-actions">Действия строки — одним меню</h4>
 
@@ -1419,6 +1464,21 @@ flowchart LR
 
 <pre><code>SmitActions.collapseRows('#usrTable', {label: 'Действия с учётной записью'});</code></pre>
 
+
+<pre class="mermaid">
+flowchart LR
+    B["Готовые кнопки строки<br/>правка · отключить · тест · удалить"] --> C["SmitActions.collapse"]
+    C --> READ["Читает из кнопки:<br/>подпись, иконку, опасность"]
+    READ --> MENU["Меню строки"]
+    MENU -->|"выбор пункта"| CLICK["Нажимает исходную кнопку"]
+    CLICK --> H["Прежний обработчик<br/>переписывать не нужно"]
+</pre>
+
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2626/02_row_actions_menu.png" alt="Меню действий в строке">
+  <figcaption>Шесть действий строки — одним меню с короткими подписями (было шесть цветных иконок подряд)</figcaption>
+</figure>
+
 <h4 id="abonent-card-search">Поиск по карточке</h4>
 
 <p>Вкладок пятнадцать, полей на них — под две сотни. «Где комментарий
@@ -1427,41 +1487,15 @@ flowchart LR
 открывает нужную вкладку, вызывается <kbd>Ctrl</kbd>+<kbd>K</kbd> из любого
 места страницы.</p>
 
-<h4 id="abonent-card-pitfalls">Что всплыло по дороге</h4>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2626/04_operations_stat_chips.png" alt="Вкладка «Операции»: сводка и полоса фильтров">
+  <figcaption>Вкладка «Операции»: сводка на общем компоненте показателей, фильтр по знаку — полосой чипов с подписями</figcaption>
+</figure>
 
-<div class="note note-warning">
-  <p><strong>Массовое включение могло стереть учётные записи.</strong> Обычное
-  сохранение учётной записи перезаписывает поля целиком: запрос с одним флагом
-  «включена» обнулил бы логин, пароль, MAC и адрес у всех выбранных. Для пакета
-  заведён отдельный адрес <code>users_bulk_enable</code> — он меняет только флаг,
-  уважает организацию сотрудника и пишет в журнал.</p>
-</div>
-
-<div class="note note-warning">
-  <p><strong>Демонтаж оборудования спрашивали двумя окнами подряд</strong>,
-  причём во втором «ОК» означало «брак», а «Отмена» — «исправное». Диалогом с
-  двумя кнопками отвечали на вопрос с двумя равноправными ответами, и техника
-  уезжала на склад с неверным состоянием. Теперь один выбор с подписями
-  «Исправное — на склад» и «Неисправное — брак».</p>
-</div>
-
-<div class="note note-warning">
-  <p><strong>Боковая панель уходила под размытие.</strong> Причина была не в
-  панели: подключаемый файл панели тикетов на карте поднимал подложку до
-  <code>z-index: 1190</code> правилом, которое било по всем
-  <code>.offcanvas-backdrop</code> на странице. Своя панель стояла на 1200 и
-  оставалась сверху, а любая другая — под подложкой: мутное окно, по которому не
-  нажать. Правило ограничено своей панелью через
-  <code>body:has(.abd-drawer.show)</code>.</p>
-</div>
-
-<div class="note note-warning">
-  <p><strong>Цвет как украшение.</strong> Секции формы были раскрашены в шесть
-  цветов, активная сессия заливалась зелёным на всю строку, входящее сообщение —
-  голубым. Заливка строки читается как «что-то не так», хотя означает «идёт
-  сейчас» или «направление». Осталась полоса слева; цвет теперь только у
-  состояний, где он что-то значит.</p>
-</div>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2626/05_services_chips.png" alt="Вкладка «Услуги»: счётчики и фильтры">
+  <figcaption>Вкладка «Услуги»: счётчики-пилюли, полоса чипов, общие бейджи состояния</figcaption>
+</figure>
 
 <h3 id="abonent-card-tabs">Вкладки</h3>
 <p>Вкладки с подробной информацией. Часть из них объединена в группы: «Учётные записи + RADIUS», «Точки подключения + Оборудование» — соседние вкладки навигируются стрелками. Некоторые вкладки условные: <a href="#abonent-card-tab-bank">«Банк»</a> (иконка <code>fa-university</code> 🏛) появляется, когда у клиента есть платежи по банковским выпискам.</p>
@@ -2397,8 +2431,8 @@ endpoints <code>finops_ajax</code>, <code>finops_crud_ajax</code>,
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2623)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">10.09.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2623)</span>&nbsp;|&nbsp;<span data-smit="updated">10.09.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2627)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">10.09.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2627)</span>&nbsp;|&nbsp;<span data-smit="updated">10.09.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2323"></script>
