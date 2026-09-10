@@ -1515,6 +1515,46 @@
         </div>
         <p class="tv-links"><a href="pages/abonents.html#abonents">раздел документации</a></p>
       </div>
+      <div class="tv-item">
+        <div class="tv-head"><strong>Настройки системы</strong><span class="tv-meta">2:54 · с озвучкой</span></div>
+        <p class="tv-about">12 вкладок в одном месте, поиск по параметрам, брендинг и безопасность, блокировки и RADIUS, диагностика, EBS-виджет; общесистемные настройки</p>
+        <div class="tv-player">
+          <video controls preload="none" playsinline poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/smit_system_settings_training_2026-09-11-poster.jpg">
+            <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/smit_system_settings_training_2026-09-11.mp4" type="video/mp4">
+            <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/smit_system_settings_training_2026-09-11.mp4">Скачать ролик (MP4)</a>
+          </video>
+        </div>
+        <p class="tv-links"><a href="pages/settings.html#system-settings">раздел «Настройки системы»</a></p>
+      </div>
+      <div class="tv-item">
+        <div class="tv-head"><strong>Карта сети</strong><span class="tv-meta">3:11 · с озвучкой</span></div>
+        <p class="tv-about">узлы и линии на карте, слои и поиск, импорт из KML, зоны покрытия и опоры</p>
+        <div class="tv-player">
+          <video controls preload="none" playsinline poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/smit_netmap_training_2026-08-26-poster.jpg">
+            <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/smit_netmap_training_2026-08-26.mp4" type="video/mp4">
+            <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/smit_netmap_training_2026-08-26.mp4">Скачать ролик (MP4)</a>
+          </video>
+        </div>
+        <p class="tv-links"><a href="pages/nas-equipment.html#netmap">раздел «Карта сети»</a></p>
+      </div>
+      <div class="tv-item">
+        <div class="tv-head"><strong>AI-помощник</strong><span class="tv-meta">1:42 · с озвучкой</span></div>
+        <p class="tv-about">как помощник объясняет разделы панели, отвечает по текущему экрану и подсказывает следующий шаг</p>
+        <div class="tv-player">
+          <video controls preload="none" playsinline poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/ai-assist-training-poster.jpg">
+            <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/ai-assist-training.mp4" type="video/mp4">
+            <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/ai-assist-training.mp4">Скачать ролик (MP4)</a>
+          </video>
+        </div>
+        <p class="tv-links"><a href="pages/extras.html#ai-assist">раздел «AI-помощник»</a></p>
+      </div>
+    </div>
+
+    <div class="tv-more" id="tvMore">
+      <button type="button" class="tv-more-btn" id="tvMoreBtn" aria-expanded="false">
+        <i class="ti ti-chevron-down" aria-hidden="true"></i>
+        Смотреть ещё (<span id="tvMoreN">0</span>)
+      </button>
     </div>
 
     <div class="tv-featured">
@@ -1534,6 +1574,25 @@
         </video>
       </div>
     </div>
+
+    <script>
+    (function () {
+      var grid = document.querySelector('#training-videos .tv-grid');
+      var wrap = document.getElementById('tvMore');
+      var btn = document.getElementById('tvMoreBtn');
+      var nEl = document.getElementById('tvMoreN');
+      if (!grid || !wrap || !btn) return;
+      var VISIBLE = 6;
+      var hidden = grid.querySelectorAll('.tv-item').length - VISIBLE;
+      if (hidden <= 0) { wrap.style.display = 'none'; return; }
+      if (nEl) nEl.textContent = hidden;
+      btn.addEventListener('click', function () {
+        grid.classList.add('tv-expanded');
+        btn.setAttribute('aria-expanded', 'true');
+        wrap.style.display = 'none';
+      });
+    })();
+    </script>
   </section>
 
   <style>
@@ -1552,6 +1611,21 @@
   .tv-player video { width: 100%; display: block; margin: .7rem 0 .2rem;
                      border-radius: 10px; background: #000; }
   .tv-links { margin: .5rem 0 0; font-size: .9rem; }
+
+  /* Свёрнутый список: показываем первые 6 роликов, остальные — по кнопке. */
+  .tv-grid:not(.tv-expanded) .tv-item:nth-child(n+7) { display: none; }
+  .tv-more { text-align: center; margin: 1.1rem 0 0; }
+  .tv-more-btn {
+    display: inline-flex; align-items: center; gap: .45rem;
+    padding: .6rem 1.5rem; font-size: .95rem; font-weight: 600;
+    color: #2f8f5b; background: transparent;
+    border: 1px solid rgba(67, 183, 122, .55); border-radius: 999px;
+    cursor: pointer; transition: background .15s, border-color .15s, color .15s;
+  }
+  .tv-more-btn:hover { background: rgba(67, 183, 122, .10); border-color: rgba(67, 183, 122, .85); }
+  .tv-more-btn i { font-size: 1.05rem; }
+  [data-theme="dark"] .tv-more-btn { color: #6fce9c; border-color: rgba(111, 206, 156, .5); }
+  [data-theme="dark"] .tv-more-btn:hover { background: rgba(111, 206, 156, .12); }
 
   /* Приглашение писать модули — не ещё один ролик в ряду, а призыв: во всю
      ширину, с акцентной рамкой и текстом слева от плеера. */
