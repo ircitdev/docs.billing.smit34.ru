@@ -1191,7 +1191,7 @@ auto-block по отрицательному балансу — работают
 <p>Ниже блока «Финансовые операции» на странице <code>/admin/settings/system/security/</code> расположены 4 блока управления безопасностью входа.</p>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/auth_overhaul_v1183/02_security_blocks.png" alt="Блоки безопасности: FIDO2, reCAPTCHA, блокировка, сессия">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/settings_v2748/tabs/tab_security.png" alt="Вкладка «Безопасность»: политики паролей, 2FA, блокировка входа, сессии">
   <figcaption>Блоки безопасности: FIDO2, reCAPTCHA, блокировка, сессия</figcaption>
 </figure>
 
@@ -1241,7 +1241,7 @@ auto-block по отрицательному балансу — работают
 <p>Управление параметрами вкладки <a href="abonent-card.html#abonent-card-tab-audit">Аудит</a> в карточке клиента и общим поведением логирования. Доступна по адресу <code>/admin/settings/system/?tab=audit</code> только пользователям группы <code>root</code> или с <code>is_superuser=True</code>.</p>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/audit_settings_v778/audit_settings_v778_01_form.png" alt="Настройки аудита — форма с 4 параметрами">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/settings_v2748/tabs/tab_audit.png" alt="Вкладка «Аудит» — параметры журнала действий по клиентам">
   <figcaption>Настройки аудита — форма с 4 параметрами</figcaption>
 </figure>
 
@@ -1377,13 +1377,18 @@ maxBytes 10 МБ, backupCount 5, в просмотрщике видны как <
 держится в районе десятков мегабайт:</p>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/backup_logs_v967/logs_list.png" alt="Список лог-каналов с размерами">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/settings_v2748/tabs/tab_logs.png" alt="Вкладка «Логи» — уровни логирования и текущий размер журналов">
   <figcaption>Список лог-каналов с размерами</figcaption>
 </figure>
 
 <h4 id="system-settings-performance">Вкладка «Скорость» — Gunicorn / Celery / БД / Throttling (переименована)</h4>
 
-<p>Параметры процессов и ресурсов. Изменения требуют перезапуска контейнеров (<code>web</code>, <code>celery</code>). 4 группы настроек 2×2 + статус-блок снизу.</p>
+<p>Параметры процессов и ресурсов. Изменения требуют перезапуска контейнеров (<code>web</code>, <code>celery</code>). 4 группы настроек раскладываются masonry + статус-блок снизу.</p>
+
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/settings_v2748/tabs/tab_performance.png" alt="Вкладка «Скорость» — Gunicorn, Celery, БД, лимиты Mobile API">
+  <figcaption>Вкладка «Скорость»: Gunicorn / Celery / БД / Mobile API — masonry-раскладка</figcaption>
+</figure>
 
 <table class="data-table">
   <thead><tr><th>Группа</th><th>Параметры</th></tr></thead>
@@ -1413,6 +1418,11 @@ maxBytes 10 МБ, backupCount 5, в просмотрщике видны как <
 
 <p>Параметры RADIUS-сессий, NAS-мониторинга и хранения истории. Применяются при следующей авторизации или ближайшем прогоне Celery beat (<code>cleanup-stale-sessions</code> — каждую минуту, <code>db-cleanup-daily</code> — раз в сутки по интервалу 86400 с от старта Celery beat, без привязки к фиксированному часу).</p>
 
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/settings_v2748/tabs/tab_radius.png" alt="Вкладка «RADIUS» — сессии, хранение истории, авто-замена NAS, CoA">
+  <figcaption>Вкладка «RADIUS»: активные сессии, хранение истории, авто-замена NAS, CoA — masonry-раскладка</figcaption>
+</figure>
+
 <table class="data-table">
   <thead><tr><th>Группа</th><th>Параметры</th></tr></thead>
   <tbody>
@@ -1439,7 +1449,12 @@ maxBytes 10 МБ, backupCount 5, в просмотрщике видны как <
 
 <h4 id="system-settings-messages">Вкладка «Сообщения клиентам» — политика уведомлений</h4>
 
-<p>Единая страница для управления всеми каналами доставки сообщений: Email, SMS, Push, Telegram, VK. Объединяет настройки из 4 разных мест в одну ментальную модель оператора («Сообщения»). 4 группы 2×2 + статистика снизу.</p>
+<p>Единая страница для управления всеми каналами доставки сообщений: Email, SMS, Push, Telegram, VK. Объединяет настройки из 4 разных мест в одну ментальную модель оператора («Сообщения»). 4 группы раскладываются masonry + статистика снизу.</p>
+
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/settings_v2748/tabs/tab_messages.png" alt="Вкладка «Сообщения» — тихий час, низкий баланс, каналы доставки">
+  <figcaption>Вкладка «Сообщения»: тихий час, пороги, каналы доставки (Email/SMS/Push/Telegram/VK) — masonry-раскладка</figcaption>
+</figure>
 
 <table class="data-table">
   <thead><tr><th>Группа</th><th>Параметры и эффект</th></tr></thead>
@@ -1538,7 +1553,7 @@ backup-коды 2FA; IP-список fail-open при пустоте; авари
 (2FA + смена пароля).</p>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/su_security/security_tab_full.png"
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/settings_v2748/tabs/tab_security.png"
      alt="Вкладка Безопасность: финансовые операции + доступ суперпользователя + Web-консоль"
      style="max-width:100%;border:1px solid #ddd;border-radius:6px">
   <figcaption>Вкладка Безопасность: финансовые операции + доступ суперпользователя + Web-консоль</figcaption>
@@ -1583,7 +1598,7 @@ backup-коды 2FA; IP-список fail-open при пустоте; авари
 </div>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/proxy_v1064/proxy_overview.png" alt="Вкладка Прокси — общий вид: переключатель, форма добавления, таблица прокси, журнал событий">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/settings_v2748/tabs/tab_proxy.png" alt="Вкладка «Прокси» — переключатель, форма добавления, таблица прокси, журнал событий">
   <figcaption>Вкладка Прокси — общий вид: переключатель, форма добавления, таблица прокси, журнал событий</figcaption>
 </figure>
 
