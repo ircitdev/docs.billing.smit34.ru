@@ -114,7 +114,7 @@
 
     loadMermaid().then(function () {
       if (!_initialized) initMermaid();
-      // mermaid.run читает textContent узла как исходник диаграммы
+      // mermaid.run читает innerHTML узла как исходник диаграммы (<br/> — перенос строки)
       window.mermaid.run({ nodes: nodes }).then(function () {
         for (var i = 0; i < nodes.length; i++) { roundMindmap(nodes[i]); wrapZoom(nodes[i]); }
       }).catch(function (e) {
@@ -141,7 +141,7 @@
       pre.removeAttribute('data-processed');
       pre.removeAttribute('data-mermaid-done');
       delete pre.dataset.zoomWrapped;
-      pre.textContent = src;
+      pre.innerHTML = src;
       if (wrap && wrap.parentNode) wrap.parentNode.replaceChild(pre, wrap);
     }
     _initialized = false; // переинициализировать с новой темой
@@ -266,7 +266,9 @@
   function stashSources() {
     var pres = document.querySelectorAll('pre.mermaid:not([data-mermaid-src])');
     for (var i = 0; i < pres.length; i++) {
-      pres[i].setAttribute('data-mermaid-src', pres[i].textContent);
+      // innerHTML, а не textContent: textContent выбрасывает теги <br/> из подписей,
+      // и после смены темы схема перерисовывалась со склеенными строками
+      pres[i].setAttribute('data-mermaid-src', pres[i].innerHTML);
     }
   }
 

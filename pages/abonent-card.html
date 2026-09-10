@@ -1001,10 +1001,18 @@
 <p>URL: <code>/admin/Abonents/&lt;id&gt;/</code>. Открывается кликом по строке клиента в любом списке (папка, глобальный поиск, модалка счёта) и сразу переходит на вкладку по умолчанию из настроек профиля — обычно это сводка <code>/admin/Abonents/&lt;id&gt;/overview/</code>. У каждой вкладки свой адрес (<code>/operations/</code>, <code>/calls/</code>, <code>/messages/</code>…): ссылку на нужную вкладку можно переслать коллеге.</p>
 
 <pre class="mermaid">
-flowchart LR
-    L["Список клиентов<br/>папка, поиск, счёт"] --> U["Карточка<br/>/Abonents/ID/"]
-    U -->|"вкладка по умолчанию<br/>из настроек профиля"| O["Сводка<br/>/overview/"]
-    O --> T["Вкладки<br/>/operations/ · /calls/ · /messages/"]
+flowchart TB
+    subgraph R1 [" "]
+        direction LR
+        L["Список клиентов<br/>папка, поиск, счёт"] --> U["Карточка<br/>/Abonents/ID/"]
+    end
+    subgraph R2 [" "]
+        direction LR
+        O["Сводка<br/>/overview/"] --> T["Вкладки<br/>/operations/ · /calls/ · /messages/"]
+    end
+    R1 -->|"вкладка по умолчанию<br/>из настроек профиля"| R2
+    style R1 fill:none,stroke:none
+    style R2 fill:none,stroke:none
 </pre>
 
 <figure class="doc-video" id="abonent-card-video">
@@ -1014,10 +1022,10 @@ flowchart LR
   </div>
   <div class="dv-media">
     <video controls preload="none" playsinline
-             poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/abonent-card-training-poster.jpg">
-        <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/abonent-card-training.mp4" type="video/mp4">
+             poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/abonent-card-training-poster.jpg?v=2761">
+        <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/abonent-card-training.mp4?v=2761" type="video/mp4">
         Ваш браузер не проигрывает видео —
-        <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/abonent-card-training.mp4">скачайте файл</a>.
+        <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/abonent-card-training.mp4?v=2761">скачайте файл</a>.
       </video>
   </div>
   <figcaption>
@@ -1025,7 +1033,7 @@ flowchart LR
     <div class="dv-foot">
       <span class="dv-spec">1920×1080</span>
       <span class="dv-spec">с озвучкой</span>
-      <a class="dv-download" href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/abonent-card-training.mp4" target="_blank" rel="noopener" aria-label="Скачать видеофайл"><i class="ti ti-download" aria-hidden="true"></i> Скачать</a>
+      <a class="dv-download" href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/abonent-card-training.mp4?v=2761" target="_blank" rel="noopener" aria-label="Скачать видеофайл"><i class="ti ti-download" aria-hidden="true"></i> Скачать</a>
     </div>
   </figcaption>
 </figure>
@@ -1038,14 +1046,14 @@ flowchart LR
 <h3 id="abonent-avatar-socials">Аватарка и соцсети клиента</h3>
 <p>Карточка показывает <strong>аватарку клиента</strong> (в шапке профиля, в
 сайдбаре-drawer, в виджете «Биллинг» тикета Поддержки, в тултипах карты CRM) и
-<strong>иконки-ссылки на профили</strong> в VK / Telegram / MAX — цветные брендовые
-иконки без круга, открываются в новом окне. Данные хранятся в реквизитах клиента
+<strong>иконки-ссылки на профили</strong> в VK / Telegram / MAX — на сводке это строка «Соцсети» в блоке
+«Контакты»: цветные брендовые иконки без круга, открываются в новом окне. Данные хранятся в реквизитах клиента
 (атрибуты «Аватарка VK», «Аватарка TG», «VK ID», «Telegram ID», «MAX ID»),
 файлы аватарок — в GCS.</p>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs_v1403/15_abonent_avatar_socials.png" alt="Карточка клиента — аватарка и соцсети">
-  <figcaption>Карточка клиента — аватарка и соцсети</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/73_contacts_socials.png" alt="Блок «Контакты» на сводке: строка «Соцсети» со ссылкой на профиль клиента во «ВКонтакте»" loading="lazy">
+  <figcaption>Блок «Контакты» на сводке: строка «Соцсети» со ссылкой на профиль клиента во «ВКонтакте»</figcaption>
 </figure>
 
 <pre class="mermaid">
@@ -1080,14 +1088,14 @@ flowchart LR
 <ul>
   <li><strong>Серая, приглушённая</strong> — несохранённых изменений нет, сохранять нечего.
     <figure class="shot">
-  <img src="../img/v830/title_bar_idle.png" alt="Шапка карточки клиента — кнопка Сохранить серая, изменений нет">
-  <figcaption>Шапка карточки клиента — кнопка Сохранить серая, изменений нет</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/40_header_idle.png" alt="Шапка карточки: кнопка «Сохранить» серая — изменений нет" loading="lazy">
+  <figcaption>Шапка карточки: кнопка «Сохранить» серая — изменений нет</figcaption>
 </figure>
   </li>
   <li><strong>Зелёная с мягкой пульсацией</strong> — в форме есть несохранённые правки. Пульсация привлекает внимание, но не раздражает; уважает системную настройку <code>prefers-reduced-motion</code> (при ней анимация отключается).
     <figure class="shot">
-  <img src="../img/v830/title_bar_active.png" alt="Шапка карточки клиента — кнопка Сохранить зелёная, есть несохранённые изменения">
-  <figcaption>Шапка карточки клиента — кнопка Сохранить зелёная, есть несохранённые изменения</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/42_header_active.png" alt="Шапка карточки: кнопка «Сохранить» зелёная — есть несохранённые изменения" loading="lazy">
+  <figcaption>Шапка карточки: кнопка «Сохранить» зелёная — есть несохранённые изменения</figcaption>
 </figure>
   </li>
 </ul>
@@ -1095,8 +1103,8 @@ flowchart LR
 
 <p><strong>Подсветка изменённых полей.</strong> Любое поле формы, значение которого отличается от исходного, подсвечивается жёлтой рамкой и фоном (класс <code>.ab-field-changed</code>). Работает и для обычных полей, и для Select2-виджетов; есть отдельный вариант для тёмной темы.</p>
 <figure class="shot">
-  <img src="../img/v830/field_changed.png" alt="Изменённое поле формы подсвечено жёлтой рамкой и фоном">
-  <figcaption>Изменённое поле формы подсвечено жёлтой рамкой и фоном</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/43_field_changed.png" alt="Изменённое поле подсвечено" loading="lazy">
+  <figcaption>Изменённое поле подсвечено</figcaption>
 </figure>
 
 <p><strong>Как это работает.</strong> При загрузке страницы JavaScript снимает «снимок» исходных значений всех полей формы <code>#changelist-form</code> (часть полей догружается через AJAX — снимок повторяется через короткие интервалы, чтобы захватить и их). На событиях <code>change</code>/<code>input</code> текущее значение сравнивается со снимком: поле получает/теряет подсветку, кнопка «Сохранить» — зелёный вид. Технические поля (CSRF-токен, management-формы formset'ов) из отслеживания исключены.</p>
@@ -1189,8 +1197,8 @@ flowchart LR
 <p><strong>С версии 2.1.0</strong> страница в 2-колоночном layout (на экранах ≥1280px). 9 секций укладываются masonry-style через CSS <code>column-count:2</code> + <code>break-inside:avoid</code> — без выравнивания по высоте, плотно. На узких экранах автоматически 1 колонка.</p>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/abonent_profile_v885/abonent_profile_v2.1.0.png" alt="Обзор вкладки «Профиль» — 2-колоночный layout, 9 свёрнутых секций">
-  <figcaption>Обзор вкладки «Профиль» — 2-колоночный layout, 9 свёрнутых секций</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/44_profile_overview.png" alt="Вкладка «Профиль»: секции настроек карточки" loading="lazy">
+  <figcaption>Вкладка «Профиль»: секции настроек карточки</figcaption>
 </figure>
 
 <p><strong>Также переименованы две соседние вкладки</strong> для краткости:</p>
@@ -1200,13 +1208,13 @@ flowchart LR
 </ul>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/abonent_profile_v885/system_tabs_renamed.png" alt="Вкладки «Скорость» и «RADIUS» в /admin/settings/system/ (переименованы)">
-  <figcaption>Вкладки «Скорость» и «RADIUS» в /admin/settings/system/ (переименованы)</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/45_system_tabs.png" alt="Вкладки настроек системы" loading="lazy">
+  <figcaption>Вкладки настроек системы</figcaption>
 </figure>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/abonent_profile_v885/abonent_profile_v2.1.0_expanded.png" alt="Вкладка «Профиль» с раскрытыми секциями — 2-колоночный layout">
-  <figcaption>Вкладка «Профиль» с раскрытыми секциями — 2-колоночный layout</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/46_profile_expanded.png" alt="Вкладка «Профиль» с раскрытыми секциями" loading="lazy">
+  <figcaption>Вкладка «Профиль» с раскрытыми секциями</figcaption>
 </figure>
 
 <h5 id="system-abonent-profile-quick">Секция 0 — Блоки сводки клиента</h5>
@@ -1219,10 +1227,18 @@ flowchart LR
 </figure>
 
 <pre class="mermaid">
-flowchart LR
-    P["Настройки → Профиль<br/>блоки сводки"] -->|"Сохранить"| DB["ABONENT_PROFILE_OVERVIEW_BLOCKS"]
-    DB --> CACHE["Кеш профиля<br/>60 секунд, сброс при сохранении"]
-    CACHE --> CARD["Сводка клиента<br/>видимость и порядок блоков"]
+flowchart TB
+    subgraph R1 [" "]
+        direction LR
+        P["Настройки → Профиль<br/>блоки сводки"] -->|"Сохранить"| DB["ABONENT_PROFILE_OVERVIEW_BLOCKS"]
+    end
+    subgraph R2 [" "]
+        direction LR
+        CACHE["Кеш профиля<br/>60 секунд, сброс при сохранении"] --> CARD["Сводка клиента<br/>видимость и порядок блоков"]
+    end
+    R1 --> R2
+    style R1 fill:none,stroke:none
+    style R2 fill:none,stroke:none
 </pre>
 
 <h5 id="system-abonent-profile-sections">Секция 1 — Видимость секций карточки</h5>
@@ -1236,7 +1252,7 @@ flowchart LR
 </ul>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/profile_v883/profile_section_sections.png" alt="Секция «Видимость секций карточки»">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/47_ps_sections.png" alt="Секция «Видимость секций карточки»" loading="lazy">
   <figcaption>Секция «Видимость секций карточки»</figcaption>
 </figure>
 
@@ -1252,8 +1268,8 @@ flowchart LR
 </ul>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/profile_v883/profile_section_list.png" alt="Секция «Колонки списка»">
-  <figcaption>Секция «Колонки списка»</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/48_ps_list.png" alt="Секция «Колонки списка клиентов»" loading="lazy">
+  <figcaption>Секция «Колонки списка клиентов»</figcaption>
 </figure>
 
 <h5 id="system-abonent-profile-ajax">Секция 3 — AJAX и автообновление</h5>
@@ -1266,7 +1282,7 @@ flowchart LR
 </ul>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/profile_v883/profile_section_ajax.png" alt="Секция «AJAX и автообновление»">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/49_ps_ajax.png" alt="Секция «AJAX и автообновление»" loading="lazy">
   <figcaption>Секция «AJAX и автообновление»</figcaption>
 </figure>
 
@@ -1281,7 +1297,7 @@ flowchart LR
 </ul>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/profile_v883/profile_section_defaults.png" alt="Секция «Дефолты карточки»">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/50_ps_defaults.png" alt="Секция «Дефолты карточки»" loading="lazy">
   <figcaption>Секция «Дефолты карточки»</figcaption>
 </figure>
 
@@ -1302,8 +1318,8 @@ flowchart LR
 <p><strong>Drag&amp;drop</strong>: каждую вкладку можно перетащить за иконку «☰» в любую позицию. Изменения сохраняются в <code>ABONENT_PROFILE_TABS_CONFIG</code> как JSON. Кнопка «Сбросить к дефолту» возвращает порядок и видимость из <code>build_abonent_card_tabs</code> в коде.</p>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/profile_v883/profile_section_tabs.png" alt="Секция «Управление вкладками карточки» — drag&drop + 4 стиля">
-  <figcaption>Секция «Управление вкладками карточки» — drag&drop + 4 стиля</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/51_ps_tabs.png" alt="Секция «Вкладки карточки клиента»" loading="lazy">
+  <figcaption>Секция «Вкладки карточки клиента»</figcaption>
 </figure>
 
 <h5 id="system-abonent-profile-style">Секция 5 — Стиль и плотность</h5>
@@ -1315,7 +1331,7 @@ flowchart LR
 </ul>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/profile_v883/profile_section_style.png" alt="Секция «Стиль и плотность»">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/52_ps_style.png" alt="Секция «Стиль и плотность»" loading="lazy">
   <figcaption>Секция «Стиль и плотность»</figcaption>
 </figure>
 
@@ -1331,8 +1347,8 @@ flowchart LR
 </ul>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/profile_v883/profile_section_banners.png" alt="Секция «Баннеры уведомлений»">
-  <figcaption>Секция «Баннеры уведомлений»</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/53_ps_banners.png" alt="Секция «Баннеры уведомлений оператору»" loading="lazy">
+  <figcaption>Секция «Баннеры уведомлений оператору»</figcaption>
 </figure>
 
 <h5 id="system-abonent-profile-misc">Секция 8 — Прочее</h5>
@@ -1344,7 +1360,7 @@ flowchart LR
 </ul>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/profile_v883/profile_section_misc.png" alt="Секция «Прочее»">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/54_ps_misc.png" alt="Секция «Прочее»" loading="lazy">
   <figcaption>Секция «Прочее»</figcaption>
 </figure>
 
@@ -1371,8 +1387,8 @@ flowchart LR
 <p>Свёрнутая плашка — компактный светофор + 5 чипов проверок. Каждый чип имеет свой цвет (зелёный/жёлтый/красный/серый) и tooltip с детальным summary.</p>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/diagnose_v782/diag_yellow_yudina_3083.png" alt="Жёлтая плашка диагностики — Lost-Carrier ×3 за сутки">
-  <figcaption>Жёлтая плашка диагностики — Lost-Carrier ×3 за сутки</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/74_diag_yellow.png" alt="Жёлтая плашка диагностики связи: возможны проблемы" loading="lazy">
+  <figcaption>Жёлтая плашка диагностики связи: возможны проблемы</figcaption>
 </figure>
 
 <h4 id="abonent-diagnose-checks">5 проверок диагностики</h4>
@@ -1395,8 +1411,8 @@ flowchart LR
 <p>Клик на кнопку «Подробнее» раскрывает 5 карточек с полным summary каждой проверки + блок «<strong>Готовый ответ для клиента</strong>» с кнопкой «Скопировать». Текст ответа автоматически подбирается по decision tree из 12 веток (нет тарифа → инструкция назначить тариф, 2+ Lost-Carrier → инструкция про кабель и роутер, активный трафик → «перезагрузите Wi-Fi», блок за неуплату → «внесите оплату», и т.д.).</p>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/diagnose_v782/diag_red_no_tarif_9318_expanded.png" alt="Развёрнутая плашка с 5 карточками + advice + кнопка Скопировать">
-  <figcaption>Развёрнутая плашка с 5 карточками + advice + кнопка Скопировать</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/75_diag_red_expanded.png" alt="Развёрнутая красная плашка: карточки проверок, совет и готовый ответ" loading="lazy">
+  <figcaption>Развёрнутая красная плашка: карточки проверок, совет и готовый ответ</figcaption>
 </figure>
 
 <h4 id="abonent-diagnose-sprint3">Sparkline 24ч и auto-actions</h4>
@@ -1413,8 +1429,8 @@ flowchart LR
 <p>Каждое действие защищено JS-confirm, показывает spinner во время выполнения, выводит toast «успех/ошибка», пишет запись в аудит.</p>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/sprint3_v789/sprint3_sparkline_and_actions.png" alt="Sparkline за 24 часа и три кнопки действий в развёрнутой плашке">
-  <figcaption>Sparkline за 24 часа и три кнопки действий в развёрнутой плашке</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/76_diag_sparkline_actions.png" alt="График за 24 часа и кнопки действий в развёрнутой плашке" loading="lazy">
+  <figcaption>График за 24 часа и кнопки действий в развёрнутой плашке</figcaption>
 </figure>
 
 <h4 id="abonent-diagnose-ux">UX-особенности</h4>
@@ -1483,8 +1499,8 @@ flowchart LR
 </table>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2626/01_accounts_desktop.png" alt="Вкладка «Аккаунты» на общих компонентах">
-  <figcaption>Вкладка «Аккаунты»: общая таблица, кнопка колонок в шапке столбца действий, меню действий в строке</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2758/12_accounts.png" alt="Вкладка «Аккаунты» на общих компонентах" loading="lazy">
+  <figcaption>Вкладка «Аккаунты» на общих компонентах</figcaption>
 </figure>
 
 <pre class="mermaid">
@@ -1530,8 +1546,8 @@ flowchart TB
 </pre>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2626/06_accounts_mobile.png" alt="Та же строка на телефоне — карточка с подписями">
-  <figcaption>Та же строка на телефоне: карточка, где подписано каждое поле. Ничего не скрыто, выбор строк убран — массовые действия делают за столом</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/57_accounts_mobile.png" alt="Та же вкладка на телефоне — строки карточками с подписями" loading="lazy">
+  <figcaption>Та же вкладка на телефоне — строки карточками с подписями</figcaption>
 </figure>
 
 <h4 id="abonent-card-columns">Набор колонок — в профиле сотрудника</h4>
@@ -1547,8 +1563,8 @@ flowchart TB
 открывать отдельную карточку.</p>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2626/03_columns_picker.png" alt="Панель выбора колонок">
-  <figcaption>Панель выбора колонок: набор, порядок и ширины сохраняются в профиле сотрудника</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/55_accounts_cols.png" alt="Панель выбора колонок" loading="lazy">
+  <figcaption>Панель выбора колонок</figcaption>
 </figure>
 
 <h4 id="abonent-card-row-actions">Действия строки — одним меню</h4>
@@ -1568,17 +1584,23 @@ flowchart TB
 
 
 <pre class="mermaid">
-flowchart LR
-    B["Готовые кнопки строки<br/>правка · отключить · тест · удалить"] --> C["SmitActions.collapse"]
-    C --> READ["Читает из кнопки:<br/>подпись, иконку, опасность"]
-    READ --> MENU["Меню строки"]
-    MENU -->|"выбор пункта"| CLICK["Нажимает исходную кнопку"]
-    CLICK --> H["Прежний обработчик<br/>переписывать не нужно"]
+flowchart TB
+    subgraph R1 [" "]
+        direction LR
+        B["Готовые кнопки строки<br/>правка · отключить · тест · удалить"] --> C["SmitActions.collapse"] --> READ["Читает из кнопки:<br/>подпись, иконку, опасность"]
+    end
+    subgraph R2 [" "]
+        direction LR
+        MENU["Меню строки"] -->|"выбор пункта"| CLICK["Нажимает исходную кнопку"] --> H["Прежний обработчик<br/>переписывать не нужно"]
+    end
+    R1 --> R2
+    style R1 fill:none,stroke:none
+    style R2 fill:none,stroke:none
 </pre>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2626/02_row_actions_menu.png" alt="Меню действий в строке">
-  <figcaption>Шесть действий строки — одним меню с короткими подписями (было шесть цветных иконок подряд)</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/56_accounts_row_menu.png" alt="Действия строки — одним меню" loading="lazy">
+  <figcaption>Действия строки — одним меню</figcaption>
 </figure>
 
 <h4 id="abonent-card-search">Поиск по карточке</h4>
@@ -1590,13 +1612,13 @@ flowchart LR
 места страницы.</p>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2626/04_operations_stat_chips.png" alt="Вкладка «Операции»: сводка и полоса фильтров">
-  <figcaption>Вкладка «Операции»: сводка на общем компоненте показателей, фильтр по знаку — полосой чипов с подписями</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/71_ops_top.png" alt="Вкладка «Операции»: сводка и полоса фильтров" loading="lazy">
+  <figcaption>Вкладка «Операции»: сводка и полоса фильтров</figcaption>
 </figure>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2626/05_services_chips.png" alt="Вкладка «Услуги»: счётчики и фильтры">
-  <figcaption>Вкладка «Услуги»: счётчики-пилюли, полоса чипов, общие бейджи состояния</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/72_services_top.png" alt="Вкладка «Услуги»: счётчики и фильтры" loading="lazy">
+  <figcaption>Вкладка «Услуги»: счётчики и фильтры</figcaption>
 </figure>
 
 <h3 id="abonent-card-tour">Обзор карточки: что где лежит</h3>
@@ -1906,8 +1928,8 @@ flowchart LR
 по табу <strong>«Операции»</strong>: <code>/admin/Abonents/&lt;id&gt;/operations/</code>.</p>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/operations_v767/operations_v767_01_desktop.png" alt="Вкладка Операции — общий вид">
-  <figcaption>Вкладка Операции — общий вид</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2758/11_operations.png" alt="Вкладка «Операции» — общий вид" loading="lazy">
+  <figcaption>Вкладка «Операции» — общий вид</figcaption>
 </figure>
 
 <details class="section-toc">
@@ -1975,13 +1997,13 @@ toolbar или из шапки на mobile. Цветной header (<span style="
 </ul>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/operations_v767/operations_v767_03_modal_income.png" alt="Модалка Приход (зелёный header)" style="max-width:540px">
-  <figcaption>Модалка Приход (зелёный header)</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/58_ops_modal_income.png" alt="Окно «Приход»" loading="lazy">
+  <figcaption>Окно «Приход»</figcaption>
 </figure>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/operations_v767/operations_v767_02_modal_expense.png" alt="Модалка Расход с раскрытой услугой" style="max-width:540px">
-  <figcaption>Модалка Расход с раскрытой услугой</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/59_ops_modal_expense.png" alt="Окно «Расход»" loading="lazy">
+  <figcaption>Окно «Расход»</figcaption>
 </figure>
 
 <h5 id="ops-usluga">Привязка услуги к расходу</h5>
@@ -2013,13 +2035,13 @@ toolbar или из шапки на mobile. Цветной header (<span style="
 </ul>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/operations_v767/operations_v767_06_mobile.png" alt="Вкладка Операции на mobile" style="max-width:390px">
-  <figcaption>Вкладка Операции на mobile</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/62_ops_mobile.png" alt="Вкладка «Операции» на телефоне" loading="lazy">
+  <figcaption>Вкладка «Операции» на телефоне</figcaption>
 </figure>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/operations_v767/operations_v767_07_mobile_modal.png" alt="Модалка Расход на mobile (fullscreen)" style="max-width:390px">
-  <figcaption>Модалка Расход на mobile (fullscreen)</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/63_ops_mobile_modal.png" alt="Окно «Расход» на телефоне" loading="lazy">
+  <figcaption>Окно «Расход» на телефоне</figcaption>
 </figure>
 
 <h5 id="ops-dark">Тёмная тема</h5>
@@ -2029,13 +2051,13 @@ toolbar или из шапки на mobile. Цветной header (<span style="
 labels <code>#c8d0d8</code>).</p>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/operations_v767/operations_v767_04_dark.png" alt="Вкладка Операции в тёмной теме">
-  <figcaption>Вкладка Операции в тёмной теме</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/60_ops_dark.png" alt="Вкладка «Операции» в тёмной теме" loading="lazy">
+  <figcaption>Вкладка «Операции» в тёмной теме</figcaption>
 </figure>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/operations_v767/operations_v767_05_modal_dark.png" alt="Модалка Расход в тёмной теме" style="max-width:540px">
-  <figcaption>Модалка Расход в тёмной теме</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/61_ops_modal_dark.png" alt="Окно «Расход» в тёмной теме" loading="lazy">
+  <figcaption>Окно «Расход» в тёмной теме</figcaption>
 </figure>
 
 <h5>Действия со строкой операции</h5>
@@ -2381,8 +2403,8 @@ endpoints <code>finops_ajax</code>, <code>finops_crud_ajax</code>,
 <p>URL: <code>/admin/Abonents/&lt;id&gt;/check/</code>. Live-инструмент мониторинга RADIUS-сессий клиента.</p>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/01_overview.png" alt="Монитор сессий — общий вид: контекст тарифа, toolbar с KPI, таблица сессий, live-индикатор">
-  <figcaption>Монитор сессий — общий вид: контекст тарифа, toolbar с KPI, таблица сессий, live-индикатор</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2758/13_sessions.png" alt="Вкладка «Сессии»: тариф, показатели, таблица сессий" loading="lazy">
+  <figcaption>Вкладка «Сессии»: тариф, показатели, таблица сессий</figcaption>
 </figure>
 
 <h5 id="abonent-card-tab-radius-context">Карточка контекста тарифа</h5>
@@ -2400,8 +2422,8 @@ endpoints <code>finops_ajax</code>, <code>finops_crud_ajax</code>,
 <p>Переключатель периода: <em>Сутки / Неделя / Месяц / Всё</em>. Клик → fetch <code>GET /admin/Abonents/&lt;ab_id&gt;/sessions/kpi/?period=...</code> → JSON → точечное обновление цифр.</p>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/07_kpi_24h.png" alt="KPI обновляются при выборе периода «Сутки»">
-  <figcaption>KPI обновляются при выборе периода «Сутки»</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/64_sessions_kpi24.png" alt="Показатели за сутки" loading="lazy">
+  <figcaption>Показатели за сутки</figcaption>
 </figure>
 
 <h5 id="abonent-card-tab-radius-live">Live-индикатор и auto-refresh</h5>
@@ -2505,26 +2527,26 @@ endpoints <code>finops_ajax</code>, <code>finops_crud_ajax</code>,
 <ol>
   <li><strong>Обзор</strong> — 9 ключевых полей в <code>&lt;dl&gt;</code>: Начало / Завершение / Длительность / MAC / IP / NAS / Port / VLAN / Причина.
     <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/02_drawer_overview.png" alt="Drawer — Обзор" style="max-width:540px">
-  <figcaption>Drawer — Обзор</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/65_sess_drawer_overview.png" alt="Панель сессии — «Обзор»" loading="lazy">
+  <figcaption>Панель сессии — «Обзор»</figcaption>
 </figure>
   </li>
   <li><strong>RADIUS</strong> — 20 raw-атрибутов: Acct-Session-Id, User-Name, NAS-IP-Address, Calling-Station-Id, Framed-IP-Address, NAS-Port-Id, Tunnel-Private-Group-Id, Acct-Session-Time, Acct-Input/Output-Octets, Acct-Terminate-Cause, raw timestamps в UTC, CEIL_IN/OUT, RATE_IN/OUT.
     <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/03_drawer_radius.png" alt="Drawer — RADIUS-атрибуты" style="max-width:540px">
-  <figcaption>Drawer — RADIUS-атрибуты</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/66_sess_drawer_radius.png" alt="Панель сессии — «RADIUS»" loading="lazy">
+  <figcaption>Панель сессии — «RADIUS»</figcaption>
 </figure>
   </li>
   <li><strong>Трафик</strong> — крупные цифры ↓ загрузка / ↑ выгрузка (в МБ/ГБ + точные байты), средний rate в Kbps, длительность.
     <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/04_drawer_traffic.png" alt="Drawer — Трафик" style="max-width:540px">
-  <figcaption>Drawer — Трафик</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/67_sess_drawer_traffic.png" alt="Панель сессии — «Трафик»" loading="lazy">
+  <figcaption>Панель сессии — «Трафик»</figcaption>
 </figure>
   </li>
   <li><strong>Действия</strong> — CoA Disconnect (disabled для закрытых) + 3 копировать-кнопки (MAC / IP / Session ID) + ссылка «Открыть NAS».
     <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/05_drawer_actions.png" alt="Drawer — Действия" style="max-width:540px">
-  <figcaption>Drawer — Действия</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/68_sess_drawer_actions.png" alt="Панель сессии — «Действия»" loading="lazy">
+  <figcaption>Панель сессии — «Действия»</figcaption>
 </figure>
   </li>
 </ol>
@@ -2533,8 +2555,8 @@ endpoints <code>finops_ajax</code>, <code>finops_crud_ajax</code>,
 <p>Кнопка <code>⏻</code> в строке с активной сессией (или из drawer-модалки → вкладка «Действия»). Клик открывает <strong>confirm-модалку</strong> с превью последствий:</p>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/06_coa_confirm.png" alt="Confirm-модалка перед CoA Disconnect">
-  <figcaption>Confirm-модалка перед CoA Disconnect</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/69_sess_coa_confirm.png" alt="Подтверждение перед разрывом сессии" loading="lazy">
+  <figcaption>Подтверждение перед разрывом сессии</figcaption>
 </figure>
 
 <p>Подтверждение → <code>POST /admin/Abonents/&lt;ab_id&gt;/sessions/coa_disconnect/</code> → backend запускает <code>disconnect_user.delay(broadcast=True)</code> в Celery (CoA на все NAS клиента) + audit-запись (table=<code>RADIUS_SESSIONS</code>) + toast «CoA Disconnect отправлен на все NAS». Через 8 секунд страница перезагружается чтобы обновить статус сессии на «Завершена».</p>
@@ -2543,8 +2565,8 @@ endpoints <code>finops_ajax</code>, <code>finops_crud_ajax</code>,
 <p>Таблица из 12 колонок не помещается на телефоне — вместо неё отдельный layout <code>d-block d-lg-none</code> с карточками:</p>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/session_monitor_v544_final/08_mobile.png" alt="Mobile card-stack" style="max-width:430px">
-  <figcaption>Mobile card-stack</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/70_sessions_mobile.png" alt="Вкладка «Сессии» на телефоне" loading="lazy">
+  <figcaption>Вкладка «Сессии» на телефоне</figcaption>
 </figure>
 
 <p>Каждая сессия — карточка с зелёной полосой слева для Online, бейджем статуса/причины сверху, периодом + аптаймом, и 6 ключевыми полями (Логин / NAS / IP / MAC / Трафик / Порт+VLAN). Touch-targets ≥ 44px (a11y-touch-target-design).</p>
@@ -2639,7 +2661,7 @@ flowchart LR
 </figure>
 
 <ul>
-  <li><strong>Первая строка</strong> — согласие клиента на голосовые звонки (152-ФЗ), тихий час, сценарий, «Звонок ботом» и «Автодозвон» (Mango соединяет оператора с клиентом). В тихий час не звонит автообзвон по расписанию; ручные «Звонок ботом» и «Автодозвон» запускают звонок сразу.</li>
+  <li><strong>Первая строка</strong> — согласие клиента на голосовые звонки (152-ФЗ), тихий час, сценарий, «Звонок ботом» и «Автодозвон» (Mango соединяет оператора с клиентом). В тихий час не звонит автообзвон по расписанию; ручные «Звонок ботом» и «Автодозвон» не запрещены, но в это окно карточка сначала предупреждает и спрашивает подтверждение.</li>
   <li><strong>Метрики за период</strong>: всего звонков, входящие, исходящие, без разговора, средняя длительность, расшифровано, эскалации. Считаются по всем звонкам периода, а не по показанной странице.</li>
   <li><strong>Фильтр</strong> — меню со счётчиками: входящие, исходящие, с разговором, без разговора, расшифрованные, эскалация. Пункты одной группы складываются через «или», разных — через «и». Рядом период (по умолчанию — текущий год), поиск по номеру и тексту разговора и настройка колонок.</li>
   <li><strong>Таблица</strong>: когда, направление, длительность, статус, суть звонка (AI-категория), о чём разговор, запись. Время — начало звонка. «Без разговора» — длительность ноль и записи нет. Колонка «Номер» скрыта по умолчанию: в карточке клиента номер почти всегда его собственный, её включают в настройке колонок.</li>
@@ -2759,7 +2781,7 @@ flowchart LR
 <script src="../js/main.js?v=2323"></script>
 <script src="../js/search.js?v=2257"></script>
 <script src="../js/version.js"></script>
-<script src="../js/mermaid-init.js?v=2193"></script>
+<script src="../js/mermaid-init.js?v=2761"></script>
 <script src="../js/markmap-init.js?v=2193"></script>
 </body>
 </html>
