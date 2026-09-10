@@ -333,6 +333,11 @@
           <li><a href="abonent-card.html#abonent-save-indicator"><i class="ti ti-point" aria-hidden="true"></i> Индикатор несохранённых изменений</a></li>
           <li><a href="abonent-card.html#abonent-card-quick"><i class="ti ti-network" aria-hidden="true"></i> Быстрый доступ (под шапкой)</a></li>
           <li><a href="abonent-card.html#abonent-diagnose"><i class="ti ti-point" aria-hidden="true"></i> Диагностика связи — плашка-светофор</a></li>
+          <li><a href="abonent-card.html#abonent-card-components"><i class="ti ti-components" aria-hidden="true"></i> Единые компоненты карточки</a></li>
+          <li class="sub-item"><a href="abonent-card.html#abonent-card-mobile-cards"><i class="ti ti-device-mobile" aria-hidden="true"></i> — Телефон: карточка вместо таблицы</a></li>
+          <li class="sub-item"><a href="abonent-card.html#abonent-card-columns"><i class="ti ti-columns" aria-hidden="true"></i> — Набор колонок в профиле</a></li>
+          <li class="sub-item"><a href="abonent-card.html#abonent-card-row-actions"><i class="ti ti-dots-vertical" aria-hidden="true"></i> — Действия строки одним меню</a></li>
+          <li class="sub-item"><a href="abonent-card.html#abonent-card-search"><i class="ti ti-search" aria-hidden="true"></i> — Поиск по карточке</a></li>
           <li><a href="abonent-card.html#abonent-card-tabs"><i class="ti ti-point" aria-hidden="true"></i> Вкладки</a></li>
           <li><a href="abonent-card.html#abonent-card-actions"><i class="ti ti-point" aria-hidden="true"></i> Дополнительные действия</a></li>
         </ul>
@@ -1354,6 +1359,110 @@ flowchart LR
   <li><strong>Интеграция с карточкой</strong>: <code>BlockStatusView</code> в <code>billing/views/abonents.py</code> — передаёт <code>diag</code> через try/except в контекст шаблона.</li>
 </ul>
 
+<h3 id="abonent-card-components">Единые компоненты карточки</h3>
+
+<p>Карточка складывалась годами, и каждая вкладка обзавелась своей вёрсткой:
+собственные таблицы, бейджи пяти оттенков, группы кнопок вместо чипов, окна
+браузера вместо диалогов. Внешне это читалось как разные разделы одной системы,
+а на телефоне часть вкладок просто прятала колонки.</p>
+
+<p>Проверка по всем шаблонам карточки нашла и заменила:</p>
+
+<table>
+  <thead><tr><th>Что было</th><th>Сколько</th><th>Чем заменено</th></tr></thead>
+  <tbody>
+    <tr><td>bootstrap-бейджи пяти подтонов</td><td>62</td><td><code>smit-badge</code> с сохранением тона</td></tr>
+    <tr><td>синие кнопки</td><td>12</td><td>фирменные зелёные</td></tr>
+    <tr><td>скрытие колонок на телефоне</td><td>32</td><td>снято: строка рисуется карточкой с подписями</td></tr>
+    <tr><td>нативные <code>alert()</code></td><td>23</td><td>уведомления <code>SmitToast</code></td></tr>
+    <tr><td>группы кнопок-фильтров</td><td>3</td><td><code>SmitChipBar</code></td></tr>
+    <tr><td>ряды кнопок в строке таблицы</td><td>до 6 иконок</td><td>одно меню <code>SmitActions</code></td></tr>
+  </tbody>
+</table>
+
+<h4 id="abonent-card-mobile-cards">Телефон: карточка вместо урезанной таблицы</h4>
+
+<p>Прятать данные на узком экране нельзя — оператор в поле открывает карточку
+именно ради того, что пряталось. У «Аккаунтов» скрывалось двенадцать колонок из
+пятнадцати: VLAN, трафик, дата последнего входа, NAS и MAC девайса. У
+«Операций» — баланс, услуга и исполнитель. У «Поддержки» — агент и время
+решения.</p>
+
+<p>Теперь таблицы карточки размечены классом <code>smit-tbl</code> и подписью
+<code>data-label</code> у каждой ячейки: ниже 768&nbsp;px строка превращается в
+карточку, где подписано каждое поле, и ничего не исчезает.</p>
+
+<h4 id="abonent-card-columns">Набор колонок — в профиле сотрудника</h4>
+
+<p>Кнопка выбора колонок везде одинаковая: квадратная, с иконкой столбцов и
+подписью в подсказке, на телефоне скрыта — там настраивать нечего. Набор,
+порядок и ширины хранятся в профиле сотрудника (<code>SmitTable</code>), а не в
+браузере, поэтому переезжают на другую машину.</p>
+
+<p>Колонки, которые нужны время от времени, по умолчанию скрыты и включаются
+кнопкой. У «Аккаунтов» это коммутатор с портом (обход по подъезду), комментарий
+монтажника и дата создания учётной записи — раньше за ними приходилось
+открывать отдельную карточку.</p>
+
+<h4 id="abonent-card-row-actions">Действия строки — одним меню</h4>
+
+<p>В строке учётной записи стояло шесть кнопок пятью цветами: правка синяя,
+отключение жёлтое, тест голубой, удаление красное. На широком экране это
+пестрило, на телефоне не помещалось.</p>
+
+<p>Компонент <code>SmitActions</code> получил метод <code>collapse</code>: он
+сворачивает <strong>готовые</strong> кнопки строки в одно меню, читая подпись,
+иконку и «опасность» из самой кнопки, а по выбору нажимает исходную. Обработчики
+переписывать не нужно — меняется только вид. Короткую подпись пункта можно
+задать атрибутом <code>data-act-label</code>, иначе берётся <code>title</code>
+без скобочного пояснения.</p>
+
+<pre><code>SmitActions.collapseRows('#usrTable', {label: 'Действия с учётной записью'});</code></pre>
+
+<h4 id="abonent-card-search">Поиск по карточке</h4>
+
+<p>Вкладок пятнадцать, полей на них — под две сотни. «Где комментарий
+монтажника», «на какой вкладке паспорт» оператор помнит не всегда. В строке
+вкладок стоит поиск (<code>SmitSectionSearch</code>): подсказывает поле и
+открывает нужную вкладку, вызывается <kbd>Ctrl</kbd>+<kbd>K</kbd> из любого
+места страницы.</p>
+
+<h4 id="abonent-card-pitfalls">Что всплыло по дороге</h4>
+
+<div class="note note-warning">
+  <p><strong>Массовое включение могло стереть учётные записи.</strong> Обычное
+  сохранение учётной записи перезаписывает поля целиком: запрос с одним флагом
+  «включена» обнулил бы логин, пароль, MAC и адрес у всех выбранных. Для пакета
+  заведён отдельный адрес <code>users_bulk_enable</code> — он меняет только флаг,
+  уважает организацию сотрудника и пишет в журнал.</p>
+</div>
+
+<div class="note note-warning">
+  <p><strong>Демонтаж оборудования спрашивали двумя окнами подряд</strong>,
+  причём во втором «ОК» означало «брак», а «Отмена» — «исправное». Диалогом с
+  двумя кнопками отвечали на вопрос с двумя равноправными ответами, и техника
+  уезжала на склад с неверным состоянием. Теперь один выбор с подписями
+  «Исправное — на склад» и «Неисправное — брак».</p>
+</div>
+
+<div class="note note-warning">
+  <p><strong>Боковая панель уходила под размытие.</strong> Причина была не в
+  панели: подключаемый файл панели тикетов на карте поднимал подложку до
+  <code>z-index: 1190</code> правилом, которое било по всем
+  <code>.offcanvas-backdrop</code> на странице. Своя панель стояла на 1200 и
+  оставалась сверху, а любая другая — под подложкой: мутное окно, по которому не
+  нажать. Правило ограничено своей панелью через
+  <code>body:has(.abd-drawer.show)</code>.</p>
+</div>
+
+<div class="note note-warning">
+  <p><strong>Цвет как украшение.</strong> Секции формы были раскрашены в шесть
+  цветов, активная сессия заливалась зелёным на всю строку, входящее сообщение —
+  голубым. Заливка строки читается как «что-то не так», хотя означает «идёт
+  сейчас» или «направление». Осталась полоса слева; цвет теперь только у
+  состояний, где он что-то значит.</p>
+</div>
+
 <h3 id="abonent-card-tabs">Вкладки</h3>
 <p>Вкладки с подробной информацией. Часть из них объединена в группы: «Учётные записи + RADIUS», «Точки подключения + Оборудование» — соседние вкладки навигируются стрелками. Некоторые вкладки условные: <a href="#abonent-card-tab-bank">«Банк»</a> (иконка <code>fa-university</code> 🏛) появляется, когда у клиента есть платежи по банковским выпискам.</p>
 
@@ -2288,8 +2397,8 @@ endpoints <code>finops_ajax</code>, <code>finops_crud_ajax</code>,
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2619)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">06.09.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2619)</span>&nbsp;|&nbsp;<span data-smit="updated">06.09.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2623)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">10.09.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2623)</span>&nbsp;|&nbsp;<span data-smit="updated">10.09.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2323"></script>
