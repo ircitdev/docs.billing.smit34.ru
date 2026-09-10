@@ -2086,6 +2086,29 @@ flowchart LR
   <figcaption>Открытый помощник предлагает вопросы, собранные под конкретный раздел, — начинать с пустого поля не нужно.</figcaption>
 </figure>
 
+<figure class="doc-video">
+  <div class="dv-head">
+    <span class="dv-kind"><i class="ti ti-player-play-filled" aria-hidden="true"></i> Обучающее видео</span>
+    <span class="dv-time">1:42</span>
+  </div>
+  <div class="dv-media">
+    <video controls preload="none" playsinline
+             poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/ai-assist-training-poster.jpg">
+        <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/ai-assist-training.mp4" type="video/mp4">
+        Ваш браузер не проигрывает видео —
+        <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/ai-assist-training.mp4">скачайте файл</a>.
+      </video>
+  </div>
+  <figcaption>
+    <p class="dv-desc">Как начать с готового вопроса, что означает полоса «смотрю данные объекта», чем «уточнить» отличается от «начать заново» и зачем смотреть историю страницы перед новым запросом.</p>
+    <div class="dv-foot">
+      <span class="dv-spec">1920×1080</span>
+      <span class="dv-spec">с озвучкой</span>
+      <a class="dv-download" href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/ai-assist-training.mp4" target="_blank" rel="noopener" aria-label="Скачать видеофайл"><i class="ti ti-download" aria-hidden="true"></i> Скачать</a>
+    </div>
+  </figcaption>
+</figure>
+
 <h4 id="ai-assist-widget">Отдельный блок в каталоге виджетов</h4>
 <p>Помощник заведён как встроенный виджет: карточка «AI-ассистент разделов» в каталоге <code>/admin/settings/widgets/</code> с тумблером. Выключение убирает его со всех страниц, не трогая остальной AI-модуль — например, на время настройки провайдера.</p>
 <p>Доступность решают <strong>две задвижки</strong>: модуль «AI-ассистент» и этот тумблер. Выключен модуль — помощника нет ни на одной странице, а карточка честно пишет об этом; при этом закрыты и серверные адреса, так что прямой запрос к API тоже ничего не даст.</p>
