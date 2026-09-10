@@ -334,6 +334,9 @@
           <li><a href="abonent-card.html#abonent-card-quick"><i class="ti ti-network" aria-hidden="true"></i> Быстрый доступ (под шапкой)</a></li>
           <li><a href="abonent-card.html#abonent-diagnose"><i class="ti ti-point" aria-hidden="true"></i> Диагностика связи — плашка-светофор</a></li>
           <li><a href="abonent-card.html#abonent-card-components"><i class="ti ti-components" aria-hidden="true"></i> Единые компоненты карточки</a></li>
+          <li><a href="abonent-card.html#abonent-card-tour"><i class="ti ti-map-2" aria-hidden="true"></i> Обзор карточки: что где лежит</a></li>
+          <li><a href="abonent-card.html#abonent-card-tour-money"><i class="ti ti-coins" aria-hidden="true"></i> Деньги: путь платежа</a></li>
+          <li><a href="abonent-card.html#abonent-card-tour-ai"><i class="ti ti-sparkles" aria-hidden="true"></i> Помощник в карточке</a></li>
           <li class="sub-item"><a href="abonent-card.html#abonent-card-mobile-cards"><i class="ti ti-device-mobile" aria-hidden="true"></i> — Телефон: карточка вместо таблицы</a></li>
           <li class="sub-item"><a href="abonent-card.html#abonent-card-columns"><i class="ti ti-columns" aria-hidden="true"></i> — Набор колонок в профиле</a></li>
           <li class="sub-item"><a href="abonent-card.html#abonent-card-row-actions"><i class="ti ti-dots-vertical" aria-hidden="true"></i> — Действия строки одним меню</a></li>
@@ -1497,6 +1500,161 @@ flowchart LR
   <figcaption>Вкладка «Услуги»: счётчики-пилюли, полоса чипов, общие бейджи состояния</figcaption>
 </figure>
 
+<h3 id="abonent-card-tour">Обзор карточки: что где лежит</h3>
+
+<p>Вкладок пятнадцать, и по названию не всегда понятно, что внутри. Ниже —
+карта карточки и снимки каждой группы вкладок. Все они сняты с
+демонстрационного клиента, у которого наполнены и деньги, и связь, и
+переписка.</p>
+
+<pre class="mermaid">
+flowchart TB
+    H["Шапка: имя, договор, тариф, баланс, действия"]
+    N["Полоса вкладок + поиск по карточке (Ctrl+K)"]
+    H --> N
+
+    N --> G1["Кто клиент"]
+    N --> G2["Деньги"]
+    N --> G3["Связь"]
+    N --> G4["История"]
+
+    G1 --> I["Информация<br/>договор, контакты, адрес"]
+    G1 --> S["СОРМ<br/>паспорт и адрес для отчётности"]
+    G1 --> R["Реквизиты<br/>только у юр.лиц"]
+
+    G2 --> O["Операции<br/>начисления и платежи"]
+    G2 --> U["Услуги"]
+    G2 --> B["Бонусы<br/>скидки и компенсации"]
+    G2 --> L["Лояльность"]
+    G2 --> BK["Банк<br/>платежи из выписок"]
+
+    G3 --> A["Аккаунты<br/>логин, IP, точка подключения"]
+    G3 --> SE["Сессии"]
+    G3 --> E["Оборудование"]
+
+    G4 --> AU["Аудит<br/>кто и что менял"]
+    G4 --> M["Сообщения"]
+    G4 --> C["Звонки"]
+    G4 --> SU["Поддержка"]
+    G4 --> F["Файлы"]
+</pre>
+
+<p>У каждой вкладки слева вверху стоит её название и значок <code>i</code> с
+короткой подсказкой: что здесь делают и на что смотреть. Текст подсказок живёт
+во вьюхе (<code>_TAB_HINTS</code> в <code>abonents.py</code>), а не в шаблонах
+вкладок — они собраны по-разному, единого места для значка в них нет.</p>
+
+<h4 id="abonent-card-tour-who">Кто клиент</h4>
+
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_tabs_v2650/01_info.png" alt="Вкладка «Информация»">
+  <figcaption>Вкладка «Информация»: тариф и комментарии слева, договор и контакты справа</figcaption>
+</figure>
+
+
+<p>Слева — тариф с ценой и кнопкой смены, справа — договор и контакты. Пустые
+обязательные поля подсвечены: оператор сразу видит, что дозаполнить.</p>
+
+<h4 id="abonent-card-tour-money">Деньги: от платежа до снятия блокировки</h4>
+
+<p>Вкладка «Операции» отвечает на два вопроса: сколько клиент должен и почему.
+Карточка «Всего операций» показывает график за 30 дней — по нему видно, когда
+у клиента что-то происходило, без чтения таблицы. Список догружается
+прокруткой, колонки настраиваются под себя, отмеченные строки суммируются.</p>
+
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_tabs_v2650/02_operations.png" alt="Вкладка «Операции»">
+  <figcaption>Сводка с графиком за 30 дней, фильтры по знаку операции, настройка колонок и выбор строк</figcaption>
+</figure>
+
+
+<pre class="mermaid">
+flowchart LR
+    P1["Платёж<br/>касса, банк, ЛК"] --> FO["Финансовая операция"]
+    P2["Абонплата<br/>ежемесячно"] --> FO
+    P3["Обещанный платёж"] --> FO
+    FO --> BAL["Баланс клиента"]
+    BAL -->|"стал положительным"| UNB["Снятие финблокировки"]
+    BAL -->|"ушёл в минус"| BL["Автоблокировка"]
+    UNB --> MSG["Уведомление клиенту"]
+    BL --> MSG
+    FO --> AUD["Запись в аудит"]
+</pre>
+
+<p>Сторно не удаляет операцию, а добавляет обратную и связывает её с исходной:
+история остаётся целой, а строка получает свой бейдж.</p>
+
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_tabs_v2650/04_services.png" alt="Вкладка «Услуги»">
+  <figcaption>Услуги клиента: цена, дата следующего списания и источник суммы</figcaption>
+</figure>
+
+
+<p>«Услуги» и «Бонусы» — одна таблица с разным отбором. В «Бонусы» попадает то,
+что уменьшает счёт: нулевая или отрицательная цена, скидки и компенсации.
+Пустая индивидуальная сумма означает, что берётся цена из шаблона услуги —
+источник подписан прямо в окне правки.</p>
+
+<h4 id="abonent-card-tour-net">Связь</h4>
+
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_tabs_v2650/03_accounts.png" alt="Вкладка «Аккаунты»">
+  <figcaption>Учётные записи: логин, IP, статус, меню действий в строке</figcaption>
+</figure>
+
+
+<p>Учётные записи — то, по чему работает авторизация в сети: логин, пароль, IP,
+точка подключения. Колонки прячутся не на телефоне, а по выбору сотрудника:
+на узком экране строка превращается в карточку с подписями у полей.</p>
+
+<h4 id="abonent-card-tour-history">История: аудит, сообщения, обращения</h4>
+
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_tabs_v2650/08_audit.png" alt="Вкладка «Аудит»">
+  <figcaption>Аудит: карточки категорий сверху фильтруют журнал</figcaption>
+</figure>
+
+
+<p>Сводка вкладки «Аудит» — те же карточки метрики, что и в операциях: клик по
+категории оставляет в журнале только её события.</p>
+
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_tabs_v2650/09_messages.png" alt="Вкладка «Сообщения»">
+  <figcaption>История сообщений: каналы полосой чипов, статус доставки в значке канала</figcaption>
+</figure>
+
+
+<p>В «Сообщениях» видно не только что отправили, но и чем закончилось: значок
+канала несёт статус доставки, а входящие ответы клиента отмечены полосой
+слева. Каналы переключаются полосой чипов, период — единым компонентом.</p>
+
+<h4 id="abonent-card-tour-ai">Помощник знает, где вы стоите</h4>
+
+<p>AI-помощник в карточке получает три вещи: выжимку по клиенту, открытую
+вкладку и отмеченные галочками строки. Вопрос «а что тут?» на вкладке операций
+и на вкладке услуг — разные вопросы, и отмеченные строки почти всегда и есть
+предмет вопроса. Полная выжимка по клиенту остаётся всегда: разбирать операцию,
+не зная баланса и блокировок, бессмысленно.</p>
+
+<pre class="mermaid">
+flowchart LR
+    UI["Карточка клиента"] -->|"вкладка + отмеченные строки"| ASK["Запрос помощника"]
+    DB["Данные клиента<br/>баланс, блокировки, услуги, обращения"] --> ASK
+    ASK --> ANS["Ответ по делу"]
+    ANS --> DRAFT["Черновик письма клиенту<br/>отправляет сотрудник"]
+</pre>
+
+<div class="note note-warning">
+  <p><strong>Пустая карточка ничему не учит.</strong> Если разворачиваете
+  систему с нуля и хотите посмотреть карточку на данных, есть команда
+  <code>manage.py seed_demo_abonent</code>: она заводит клиента с договором
+  <code>DEMO-0001</code> и наполняет вкладки — платежи и начисления за полгода,
+  услуги, бонус, истёкший обещанный платёж, сторно, переписка по каналам.
+  <code>--wipe</code> удаляет его вместе со всеми записями. Справочники команда
+  не трогает: тариф, услуги, адрес и программа лояльности берутся
+  существующие — свои попали бы в прайс и отчёты как настоящие.</p>
+</div>
+
 <h3 id="abonent-card-tabs">Вкладки</h3>
 <p>Вкладки с подробной информацией. Часть из них объединена в группы: «Учётные записи + RADIUS», «Точки подключения + Оборудование» — соседние вкладки навигируются стрелками. Некоторые вкладки условные: <a href="#abonent-card-tab-bank">«Банк»</a> (иконка <code>fa-university</code> 🏛) появляется, когда у клиента есть платежи по банковским выпискам.</p>
 
@@ -2431,8 +2589,8 @@ endpoints <code>finops_ajax</code>, <code>finops_crud_ajax</code>,
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2627)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">10.09.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2627)</span>&nbsp;|&nbsp;<span data-smit="updated">10.09.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2659)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">10.09.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2659)</span>&nbsp;|&nbsp;<span data-smit="updated">10.09.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2323"></script>
