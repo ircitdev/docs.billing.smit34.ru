@@ -1050,34 +1050,47 @@
 интеграции, шаблоны печати, управление персоналом и обслуживание базы данных.</p>
 
 <h3 id="system-settings">6.1. Настройки системы</h3>
-<p>Единая страница системных параметров. Сейчас на ней <strong>13 вкладок</strong>:
-<em>Параметры</em>, <em>Брендинг</em>, <em>Безопасность</em>, <em>Аудит</em>,
-<em>Логи</em>, <em>Производительность</em>, <em>Сессии и RADIUS</em>,
-<em>Сообщения</em>, <em>Блокировки</em>, <em>Профиль абонента</em>,
-<em>Маркетинг</em>, <em>Прокси</em>, <em>EBS</em>. Ниже подробно описаны
-основные из них; остальные (Производительность, Сессии и RADIUS, Сообщения,
-Блокировки) — в разделах <a href="#system-settings-performance">6.1.x</a>.</p>
+<p>Единая страница системных параметров. Вкладки идут по частоте использования —
+первой открывается <strong>«Брендинг»</strong>, диагностические (<em>Логи</em>,
+<em>Скорость</em>, <em>EBS-виджет</em>) уходят в конец. Всего <strong>13 вкладок</strong>:
+<em>Брендинг</em>, <em>Безопасность</em>, <em>Блокировки</em>, <em>Прокси</em>,
+<em>Сообщения</em>, <em>RADIUS</em>, <em>Профиль</em>, <em>Маркетинг</em>,
+<em>Параметры</em>, <em>Аудит</em>, <em>Логи</em>, <em>Скорость</em>,
+<em>EBS-виджет</em>. Вкладки за пределами экрана сворачиваются в пункт
+«Ещё N» (компонент SmitChipBar), справа — строка поиска настройки (<kbd>Ctrl</kbd>+<kbd>K</kbd>).</p>
+
+<div class="note">
+  <strong>Общесистемные настройки.</strong> Все параметры на этой странице —
+  <em>общие для всех организаций</em> (в мультиорг-режиме об этом сообщает бейдж
+  <span class="badge">🌐 Общесистемно</span> под панелью вкладок). Фирменный стиль
+  конкретной компании — логотип, цвета, название — задаётся отдельно, в её карточке
+  в разделе <a href="#">Справочники → Организации</a>. Справа от вкладок —
+  иконка-подсказка <strong>«О вкладке»</strong> (компонент SmitHelpIcon): наводите
+  курсор, чтобы прочитать, что настраивает открытая вкладка и с какими модулями
+  она связана.
+</div>
+
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/settings_sys_v2719/sys_settings_tab_help.png" alt="Настройки системы — вкладка «Брендинг» с подсказкой «О вкладке»">
+  <figcaption>Настройки системы: панель вкладок, бейдж «Общесистемно» и раскрытая подсказка «О вкладке» (SmitHelpIcon)</figcaption>
+</figure>
+
+<p><strong>Вкладка «Брендинг»</strong> (открывается по умолчанию) — фирменное
+оформление по умолчанию: название продукта, логотип, favicon, акцентный цвет,
+контактные данные. Применяется в админке, в личном кабинете, в шаблонах печати и
+для записей без привязки к организации. Модуль <em>«Свой бренд» (Whitelabel)</em>
+снимает ограничения на замену названия продукта. Тёмная тема оформлена полностью,
+включая поля ввода на всех вкладках.</p>
+
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/settings_sys_v2719/sys_settings_dark.png" alt="Настройки системы — брендинг, тёмная тема">
+  <figcaption>Вкладка «Брендинг» в тёмной теме</figcaption>
+</figure>
 
 <p><strong>Вкладка «Параметры»</strong> — общие настройки биллинга, сгруппированные
 по типам: RADIUS, валюта, ЛК, общие, сообщения, учёт, интерфейс. Каждая настройка
-имеет имя, значение и описание.</p>
-
-<figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_system_settings.png" alt="Настройки системы — параметры">
-  <figcaption>Настройки системы — параметры</figcaption>
-</figure>
-
-<p>Примеры параметров: лимит обещанного платежа в днях, частота auto-assign NAS,
-SLA-цели для NAS-мониторинга, частота автоматической очистки БД.</p>
-
-<p><strong>Вкладка «Брендинг»</strong> — фирменное оформление: название компании,
-логотип, цвет акцента, контактные данные. Эти данные показываются в админке,
-в личном кабинете и в шаблонах печати.</p>
-
-<figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_branding.png" alt="Настройки системы — брендинг">
-  <figcaption>Настройки системы — брендинг</figcaption>
-</figure>
+имеет имя, значение и описание. Примеры: лимит обещанного платежа в днях, частота
+auto-assign NAS, SLA-цели для NAS-мониторинга, частота автоматической очистки БД.</p>
 
 <h4 id="system-security-finops">Вкладка «Безопасность» — политика финансовых операций</h4>
 
@@ -3262,8 +3275,8 @@ flowchart LR
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2715)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">11.09.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2715)</span>&nbsp;|&nbsp;<span data-smit="updated">11.09.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2723)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">11.09.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2723)</span>&nbsp;|&nbsp;<span data-smit="updated">11.09.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2323"></script>
