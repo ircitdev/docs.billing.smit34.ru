@@ -2150,9 +2150,15 @@ docker compose exec web python manage.py geocode_homes_dadata --re-geocode
 
 <h5>Тайловый слой (фон карты)</h5>
 
-<p>Подложка карты выбирается на той же вкладке <em>«География → Карта»</em>:
-OpenStreetMap (бесплатно), 2ГИС (требует ключ), Yandex Maps. Дефолт —
-OSM. Стиль карточки в <a href="settings-services.html#integrations">/admin/settings/integrations/?tab=geo</a>
+<p>Подложка выбирается на той же вкладке <em>«География»</em> и применяется сразу ко
+всем картам панели: OpenStreetMap (по умолчанию, без ключа), CARTO (ключ выдаёт
+сервер лицензий), 2ГИС и Яндекс.Карты (свой ключ). В тёмной теме интерфейса карта
+тоже становится тёмной, а если провайдер перестал отдавать тайлы — подложка сама
+переключается на OpenStreetMap, чтобы карта не осталась пустой. Сотрудник может
+выбрать провайдера лично в <em>Профиле</em>. Подробнее —
+<a href="settings-services.html#map-provider">Подложка карт: провайдер, тёмная тема,
+ключ CARTO</a>. Стиль карточки в
+<a href="settings-services.html#integrations">/admin/settings/integrations/?tab=geo</a>
 показывает количество геокодированных адресов и точность (% домов
 с <code>qc_geo=0</code>).</p>
 
@@ -3288,8 +3294,8 @@ flowchart TB
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2767)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">11.09.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2767)</span>&nbsp;|&nbsp;<span data-smit="updated">11.09.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2788)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">11.09.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2788)</span>&nbsp;|&nbsp;<span data-smit="updated">11.09.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2323"></script>
