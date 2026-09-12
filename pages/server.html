@@ -1145,7 +1145,7 @@ docker compose up -d</code></pre>
     Копии по расписанию запускает Celery Beat, а снимает воркер <code>celery</code>. Убедитесь, что оба контейнера запущены: если копия не снимается дольше двух периодов расписания, в чат тревог придёт оповещение.
   </div>
 
-  <h4>Бекап через командную строку</h4>
+  <h4 id="bekap-cherez-komandnuyu-stroku">Бекап через командную строку</h4>
   <p>Для ручного создания бекапов через SSH:</p>
   <pre><code># Бэкап БД
 docker compose exec db pg_dump -U carbon carbon &gt; backup_$(date +%Y%m%d).sql
@@ -1282,8 +1282,8 @@ docker compose exec db psql -U carbon carbon</code></pre>
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full"></span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">11.09.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full"></span>&nbsp;|&nbsp;<span data-smit="updated">11.09.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full"></span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">12.09.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full"></span>&nbsp;|&nbsp;<span data-smit="updated">12.09.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2323"></script>

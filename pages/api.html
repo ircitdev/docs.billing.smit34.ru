@@ -1485,7 +1485,7 @@ curl -X POST "https://billing.example.com/mobile-api/v1/finance/pay" \
 
   <p>Используется, если <code>LK_YOOKASSA_SECRET_KEY</code> начинается с <code>live_</code> / <code>test_</code> или длиннее 30 символов. Документация: <a href="https://yookassa.ru/developers/api" target="_blank" rel="noopener">yookassa.ru/developers/api</a>.</p>
 
-  <h4>Создание платежа (сервер → ЮKassa)</h4>
+  <h4 id="sozdanie-platezha-server-yukassa">Создание платежа (сервер → ЮKassa)</h4>
   <pre><code>POST https://api.yookassa.ru/v3/payments
 Authorization: Basic base64(shopId:secretKey)
 Idempotence-Key: &lt;uuid4&gt;
@@ -1504,7 +1504,7 @@ Content-Type: application/json
 }</code></pre>
   <p>Ответ содержит <code>confirmation.confirmation_url</code>, куда нужно направить клиента.</p>
 
-  <h4>Webhook (ЮKassa → биллинг)</h4>
+  <h4 id="webhook-yukassa-billing">Webhook (ЮKassa → биллинг)</h4>
   <pre><code>POST /lk/payments/webhook/
 Content-Type: application/json
 
@@ -1528,7 +1528,7 @@ Content-Type: application/json
 
   <p>Используется, если настроен только <code>shopId</code> + <code>scid</code> + <code>shopPassword</code> (без API-ключа). Подробнее: <a href="https://yoomoney.ru/docs/payment-buttons/using-api/forms" target="_blank" rel="noopener">yoomoney.ru — HTTP-протокол</a>.</p>
 
-  <h4>Форма оплаты (браузер → ЮKassa)</h4>
+  <h4 id="forma-oplaty-brauzer-yukassa">Форма оплаты (браузер → ЮKassa)</h4>
   <pre><code>POST https://yoomoney.ru/eshop.xml
 Content-Type: application/x-www-form-urlencoded
 
@@ -1543,7 +1543,7 @@ shopId=267304
 &amp;cps_phone=+79991234567
 &amp;paymentType=</code></pre>
 
-  <h4>Webhook checkOrder (проверка заказа)</h4>
+  <h4 id="webhook-checkorder-proverka-zakaza">Webhook checkOrder (проверка заказа)</h4>
   <pre><code>POST /lk/payments/webhook/
 Content-Type: application/x-www-form-urlencoded
 
@@ -1573,7 +1573,7 @@ action=checkOrder
 &lt;checkOrderResponse performedDatetime="2026-04-12T10:00:00"
    code="0" invoiceId="2190485900123" shopId="267304"/&gt;</code></pre>
 
-  <h4>Webhook paymentAviso (подтверждение оплаты)</h4>
+  <h4 id="webhook-paymentaviso-podtverzhdenie-oplaty">Webhook paymentAviso (подтверждение оплаты)</h4>
   <p>Аналогичный запрос с <code>action=paymentAviso</code>. После проверки MD5 биллинг зачисляет <code>credit_amount = orderSumAmount / (1 + commission_rate)</code> на <code>customerNumber</code>. Ответ:</p>
   <pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;paymentAvisoResponse performedDatetime="2026-04-12T10:00:00"
@@ -1593,7 +1593,7 @@ action=checkOrder
 
   <p>Платёжная система <a href="https://www.walletone.com/" target="_blank" rel="noopener">walletone.com</a>. URL формы: <code>https://wl.walletone.com/checkout/checkout/Index</code>.</p>
 
-  <h4>Форма оплаты (браузер → W1)</h4>
+  <h4 id="forma-oplaty-brauzer-w1">Форма оплаты (браузер → W1)</h4>
   <pre><code>POST https://wl.walletone.com/checkout/checkout/Index
 Content-Type: application/x-www-form-urlencoded
 
@@ -1609,7 +1609,7 @@ WMI_MERCHANT_ID=123456
 
   <p><strong>Подпись W1:</strong> берутся все поля, начинающиеся с <code>WMI_</code> (кроме <code>WMI_SIGNATURE</code>), сортируются по ключу, значения конкатенируются (list-значения сортируются и склеиваются), в конец добавляется <code>secret_key</code>. Результат: <code>base64(md5_raw(values + secret_key))</code>.</p>
 
-  <h4>Webhook (W1 → биллинг)</h4>
+  <h4 id="webhook-w1-billing">Webhook (W1 → биллинг)</h4>
   <pre><code>POST /lk/payments/webhook/
 Content-Type: application/x-www-form-urlencoded
 
@@ -1873,12 +1873,12 @@ curl -s -b cookies.txt -X POST \
 
   <p><strong>Аутентификация:</strong> Django session cookie (<code>@login_required</code>). Любой залогиненный пользователь.</p>
 
-  <h4>Запрос</h4>
+  <h4 id="zapros">Запрос</h4>
   <pre><code>curl -s -b cookies.txt \
   "https://billing.example.com/admin/equipment/sorm_list/validate/" \
   -H "Accept: application/json"</code></pre>
 
-  <h4>Ответ (200 OK)</h4>
+  <h4 id="otvet-200-ok">Ответ (200 OK)</h4>
   <pre><code>{
   "ok": true,
   "has_problems": true,
@@ -1909,7 +1909,7 @@ curl -s -b cookies.txt -X POST \
   ]
 }</code></pre>
 
-  <h4>Поля meta_issues</h4>
+  <h4 id="polya-meta-issues">Поля meta_issues</h4>
   <table>
     <thead><tr><th>kind</th><th>Описание</th></tr></thead>
     <tbody>
@@ -1920,7 +1920,7 @@ curl -s -b cookies.txt -X POST \
     </tbody>
   </table>
 
-  <h4>Поля data_issues</h4>
+  <h4 id="polya-data-issues">Поля data_issues</h4>
   <table>
     <thead><tr><th>Поле</th><th>Тип</th><th>Описание</th></tr></thead>
     <tbody>
@@ -1936,7 +1936,7 @@ curl -s -b cookies.txt -X POST \
     Юр-поля (<code>ABONENT_LEGAL</code>) проверяются только у юр.лиц (<code>company=True</code>); физ-поля (<code>passport_series_number</code>, <code>birth_date</code>) — только у физических лиц. Это исключает ложные срабатывания.
   </div>
 
-  <h4>Использование в мониторинге</h4>
+  <h4 id="ispolzovanie-v-monitoringe">Использование в мониторинге</h4>
   <p>Endpoint удобен для интеграции с Zabbix / Grafana / собственными скриптами cron. Пример Bash-обёртки которая вернёт ненулевой exit code если есть проблемы:</p>
   <pre><code>#!/bin/bash
 # sorm_check.sh — алертит если есть проблемы метаданных или критические пропуски
@@ -1959,7 +1959,7 @@ exit 0</code></pre>
 
   <p>Endpoint <code>/admin/dictionary/user_attributes_crud/[id]/</code> поддерживает GET/POST/DELETE и принимает 4 поля СОРМ-метаданных. Используется UI <code>/admin/dictionary/UserAttributes/</code>.</p>
 
-  <h4>GET — получение метаданных одного атрибута</h4>
+  <h4 id="get-poluchenie-metadannyh-odnogo-atributa">GET — получение метаданных одного атрибута</h4>
   <pre><code>curl -s -b cookies.txt \
   "https://billing.example.com/admin/dictionary/user_attributes_crud/4/"
 
@@ -1978,7 +1978,7 @@ exit 0</code></pre>
   ...
 }</code></pre>
 
-  <h4>POST — создать или обновить атрибут</h4>
+  <h4 id="post-sozdat-ili-obnovit-atribut">POST — создать или обновить атрибут</h4>
   <pre><code>curl -s -b cookies.txt -X POST \
   "https://billing.example.com/admin/dictionary/user_attributes_crud/4/" \
   -H "Content-Type: application/json" \
@@ -1993,7 +1993,7 @@ exit 0</code></pre>
     "sorm_alt_names": ""
   }'</code></pre>
 
-  <h4>Защита от случайного переименования</h4>
+  <h4 id="zaschita-ot-sluchaynogo-pereimenovaniya">Защита от случайного переименования</h4>
   <p>Если попытаться переименовать СОРМ-атрибут (изменить <code>name</code>), сервер возвращает <strong>HTTP 400</strong> с флагом <code>sorm_rename_blocked: true</code>:</p>
   <pre><code>{
   "ok": false,
@@ -2002,7 +2002,7 @@ exit 0</code></pre>
 }</code></pre>
   <p>Чтобы всё-таки переименовать — повторить запрос с дополнительным полем <code>"force_sorm_rename": true</code> в JSON.</p>
 
-  <h4>Валидация sorm_field_code</h4>
+  <h4 id="validatsiya-sorm-field-code">Валидация sorm_field_code</h4>
   <ul>
     <li>Регэксп: <code>^[a-z][a-z0-9_]*$</code> — латинские буквы/цифры/<code>_</code>, первый символ — буква.</li>
     <li>Уникальность <code>(report_type, field_code)</code> — нельзя 2 атрибута с одинаковым <code>inn</code> в одном отчёте. Backend ищет конфликты по каждому типу из <code>sorm_report_types</code>.</li>
@@ -2338,8 +2338,8 @@ curl -s -X POST "https://billing.example.com/mobile-api/v1/push/register" \
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full"></span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">11.09.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full"></span>&nbsp;|&nbsp;<span data-smit="updated">11.09.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full"></span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">12.09.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full"></span>&nbsp;|&nbsp;<span data-smit="updated">12.09.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2323"></script>

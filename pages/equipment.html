@@ -1335,7 +1335,7 @@ docker compose restart freeradius</code></pre>
   <h3 id="switch-purpose">Зачем коммутатор хранится в БД</h3>
   <p>Запись <code>switch</code> в биллинге решает три задачи:</p>
 
-  <h4>1. Привязка клиента к точке физического подключения</h4>
+  <h4 id="1-privyazka-klienta-k-tochke-fizicheskogo-podklyucheniya">1. Привязка клиента к точке физического подключения</h4>
   <p>Поле <code>Users.SWITCH_ID</code> указывает «через какой коммутатор работает данная учётная запись». Эта информация используется в:</p>
   <ul>
     <li><strong>СОРМ-выгрузках</strong> — куда и через какое оборудование подключён клиент (<code>ABONENT_USER</code>, <code>GATEWAY</code>);</li>
@@ -1347,7 +1347,7 @@ docker compose restart freeradius</code></pre>
   <p>Таблица <code>SWITCH_PORTS</code> хранит список портов конкретного коммутатора и привязки к учёткам. При OPT82-авторизации (см. <a href="#opt82-auth">раздел ниже</a>) FreeRADIUS получает из DHCP Option 82 IP коммутатора + номер порта, парсит их по шаблонам из <a href="#switch-types"><strong>Типа коммутатора</strong></a> и находит клиента в <code>SWITCH_PORTS</code> без логина/пароля.</p>
   <p>Это самый «технологический» способ использования коммутатора в биллинге: реально влияет на авторизацию.</p>
 
-  <h4>3. Связь с IP-пулом (<code>ip_pull.SWITCH_ID</code>)</h4>
+  <h4 id="3-svyaz-s-ip-pulom-ip-pull-switch-id">3. Связь с IP-пулом (<code>ip_pull.SWITCH_ID</code>)</h4>
   <p>Можно привязать конкретный IP-пул к конкретному свитчу — тогда выдача IP-адресов клиентам этого свитча идёт только из назначенного пула. Используется в небольших сегментированных сетях, где хочется строго контролировать какой кусок адресации работает с какой железкой.</p>
 
   <h3 id="switch-fields-usage">Где это поле используется</h3>
@@ -1842,7 +1842,7 @@ flowchart TB
 
   <p><strong>LFStream</strong> («Смотрёшка») — OTT-платформа доставки ТВ-контента. Биллинг заводит аккаунты клиентов, подписывает и отписывает их на ТВ-пакеты. Настройка: <strong>Настройки &rarr; IPTV &rarr; LFStream</strong> (<code>/admin/iptv/settings/</code>).</p>
 
-  <h4>Два режима подключения</h4>
+  <h4 id="dva-rezhima-podklyucheniya">Два режима подключения</h4>
   <table>
     <thead><tr><th>Режим</th><th>Как работает</th></tr></thead>
     <tbody>
@@ -1983,8 +1983,8 @@ IptvApiLog.objects.filter(success=False).order_by('-created_at')[:10]</code></pr
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full"></span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">11.09.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full"></span>&nbsp;|&nbsp;<span data-smit="updated">11.09.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full"></span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">12.09.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full"></span>&nbsp;|&nbsp;<span data-smit="updated">12.09.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2323"></script>

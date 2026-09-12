@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
-"""Add missing id="..." to <h2>/<h3> headings + fix orphan headings.
+"""Add missing id="..." to <h2>/<h3>/<h4> headings + fix orphan headings.
 
 Стратегия:
   1. Транслитерация русского заголовка в slug (lowercase ascii a-z, 0-9, -)
   2. Если slug пустой или дубль — добавить -2/-3...
-  3. h4 НЕ трогаем (по решению пользователя)
+  3. h4 якорим наравне с остальными (решение 2026-09-12). Раньше их обходили,
+     но к тому моменту якоря уже стояли у 364 h4 из 435 — то есть правило
+     фактически не соблюдалось, а оставшиеся res выглядели недоделкой. Без
+     якоря заголовок не попадает в поиск по сайту, а среди пропущенных были
+     вебхуки платежей, секции формы тарифа и разделы по услугам.
   4. Орфан-заголовки (h1->h3, h2->h4) — точечные ручные правки
 
 Запуск:
@@ -58,10 +62,15 @@ def strip_html(s):
 
 
 HEADING_RE = re.compile(
-    r'<(h[23])(\s*[^>]*)>(.*?)</\1>',
+    r'<(h[234])(\s*[^>]*)>(.*?)</\1>',
     re.DOTALL,
 )
 ID_RE = re.compile(r'\bid="([^"]*)"')
+
+# Журнал версий не якорим: его подзаголовки («Управление», «Upload cfg») —
+# обрывки старых записей, в поиске они конкурировали бы с актуальными
+# разделами, ничего не добавляя.
+SKIP_PAGES = {'changelog.html'}
 
 
 def process_page(path, dry_run=False):
@@ -111,6 +120,9 @@ def main():
     print(f'{"DRY RUN" if dry else "APPLY"}\n')
     total = 0
     for f in sorted(DOCS.glob('*.html')):
+        if f.name in SKIP_PAGES:
+            print(f'{f.name:30s} пропущена (журнал версий)')
+            continue
         total += process_page(f, dry_run=dry)
     print(f'\nTotal new ids: {total}')
 
