@@ -1102,11 +1102,12 @@ flowchart TD
 </pre>
 
 <h4 id="support-inbox">Входящие: список тикетов, поиск</h4>
-<p>KPI-карточки (Активные/Ожидают/Закрыто/Спам), статусные папки, фильтры
-(приоритет/категория/период/ящик) и умный поиск.</p>
+<p>Срезы очереди («Все открытые · Без ответа · Клиент ответил»), сохранённые виды,
+фильтры (приоритет, категория, период, ящик) и умный поиск. Подробно —
+<a href="helpdesk.html#mailbox">Поддержка → Входящие</a>.</p>
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/smit/billing/support_v1402/01_inbox.png" alt="Поддержка — Входящие">
-  <figcaption>Поддержка — Входящие</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/support_v2943/01_inbox.png" alt="Поддержка — Входящие: срезы, фильтры, строки с телефоном, адресом, тегами и меткой SLA" loading="lazy">
+  <figcaption>Поддержка — Входящие: срезы, фильтры, строки с телефоном, адресом, тегами и меткой SLA</figcaption>
 </figure>
 
 <p><strong>Поиск по тексту переписки.</strong> Ищет по теме, <strong>тексту
@@ -1114,8 +1115,8 @@ flowchart TD
 Если совпадение не в теме — в строке тикета показывается сниппет-выдержка из тела
 сообщения с жёлтой подсветкой, чтобы оператор видел, почему тикет найден.</p>
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/smit/billing/support_v1402/02_search_snippet.png" alt="Поддержка — поиск по тексту, сниппет">
-  <figcaption>Поддержка — поиск по тексту, сниппет</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/support_v2943/19_search_snippet.png" alt="Поиск «роутер»: совпадение в переписке показано выдержкой с подсветкой найденного слова" loading="lazy">
+  <figcaption>Поиск «роутер»: совпадение в переписке показано выдержкой с подсветкой найденного слова</figcaption>
 </figure>
 
 <h4 id="support-ticket">Карточка тикета и сайдбар</h4>
@@ -1124,8 +1125,8 @@ flowchart TD
 (аватар/баланс/тариф/статус/соцсети), <strong>SLA-таймер «Ждёт ответа»</strong>,
 <strong>Прошлые обращения клиента</strong>, Теги, Доп. поля, Логи времени.</p>
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/smit/billing/support_v1402/03_ticket_sidebar.png" alt="Поддержка — карточка тикета, сайдбар">
-  <figcaption>Поддержка — карточка тикета, сайдбар</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/support_v2943/12_ticket_card.png" alt="Карточка тикета: запись звонка с плеером и сутью, переписка, справа — ответственный, приоритет, категория, SLA, AI-сводка и данные клиента" loading="lazy">
+  <figcaption>Карточка тикета: запись звонка с плеером и сутью, переписка, справа — ответственный, приоритет, категория, SLA, AI-сводка и данные клиента</figcaption>
 </figure>
 
 <ul>
@@ -1136,22 +1137,32 @@ flowchart TD
 </ul>
 
 <h4 id="support-panel">Выезжающая панель тикета</h4>
-<p>Клик по тикету из «Входящих» выдвигает панель быстрого просмотра без ухода со
-списка: мини-Биллинг (аватар/баланс/тариф/статус/соцсети), быстрая смена приоритета
-одним кликом, SLA-таймер, прошлые обращения, тред и блок ответа.</p>
+<p>Клик по тикету из «Входящих» выдвигает панель быстрого просмотра и ответа без ухода
+со списка. В панели: метки отдела, статуса и канала, клиент с балансом, запись звонка с
+кнопкой «Не тот звонок», приоритет одним нажатием, лента переписки со строками истории
+(кто назначил, кто сменил статус), переключатель <strong>«Ответ клиенту · Заметка»</strong>
+и подтверждение перед закрытием обращения. Подробно —
+<a href="helpdesk.html#panel">Поддержка → Выезжающая панель</a>.</p>
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/smit/billing/support_v1402/04_slideout_panel.png" alt="Поддержка — выезжающая панель">
-  <figcaption>Поддержка — выезжающая панель</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/support_v2943/04_ticket_panel.png" alt="Выезжающая панель тикета: детали обращения, лента с историей действий, ответственный и поле ответа" loading="lazy" style="max-width:640px">
+  <figcaption>Выезжающая панель тикета: детали обращения, лента с историей действий, ответственный и поле ответа</figcaption>
 </figure>
 
 <h4 id="support-mobile">Мобильная адаптация</h4>
-<p>На узком экране над тредом появляется свёрнутая <strong>sticky-шапка клиента</strong>
-(аватар/ФИО/баланс/статус); разворот показывает SLA, договор/тариф/телефон и кнопки
-«Карточка» / «Управление». Ключевой контекст всегда перед глазами.</p>
+<p>На узком экране в карточке тикета над записью звонка и перепиской — свёрнутая
+<strong>шапка клиента</strong> (имя, баланс, статус); разворот показывает SLA,
+договор, тариф, телефон и кнопки перехода. В выезжающей панели детали обращения свёрнуты
+в строку «Детали», а переписке и полю ответа достаётся весь экран.</p>
+<div class="shot-row" style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start">
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/smit/billing/support_v1402/05_mobile_summary.png" alt="Поддержка — мобильная шапка клиента">
-  <figcaption>Поддержка — мобильная шапка клиента</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/support_v2943/20_ticket_mobile.png" alt="Карточка тикета на телефоне: шапка клиента, плеер записи и суть звонка" loading="lazy" style="max-width:320px">
+  <figcaption>Карточка тикета на телефоне: шапка клиента, плеер записи и суть звонка</figcaption>
 </figure>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/support_v2943/11_panel_mobile.png" alt="Выезжающая панель на телефоне: «Детали» свёрнуты, лента с историей, «Ответ клиенту · Заметка»" loading="lazy" style="max-width:320px">
+  <figcaption>Выезжающая панель на телефоне: «Детали» свёрнуты, лента с историей, «Ответ клиенту · Заметка»</figcaption>
+</figure>
+</div>
 
 <h4 id="support-attachments">Вложения: политика, оптимизация, архив в GCS</h4>
 <ul>
@@ -1194,13 +1205,13 @@ flowchart TD
 </ul>
 
 <h4 id="support-settings">Настройки, база знаний, аналитика</h4>
-<p>Настройки Поддержки — вкладки (единый стиль): Общие, Авто-назначение
-ответственного/наблюдателя, Категории, Рейтинги, Учёт времени, IMAP+SMTP,
-Telegram/каналы (пер-ящик). Также: База знаний, Аналитика, Голосовая почта,
-Мессенджеры, Теги.</p>
+<p>Настройки Поддержки — вкладки: Общие, Внутренние, Авто-назначение ответственного и
+наблюдателя, Группы и права, Оповещения, Системный фильтр; почта и каналы настраиваются
+пер-ящик. Рядом в разделе: База знаний, Аналитика, Мессенджеры, Теги; журнал голосовой
+почты — в <a href="reports.html">Отчётах</a>.</p>
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/smit/billing/support_v1402/06_settings.png" alt="Поддержка — настройки">
-  <figcaption>Поддержка — настройки</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/support_v2943/21_settings.png" alt="Общие настройки Поддержки: СМС-идентификация, SLA-политики, открытие тикета панелью, авто-транскрибация звонков и политика вложений" loading="lazy">
+  <figcaption>Общие настройки Поддержки: СМС-идентификация, SLA-политики, открытие тикета панелью, авто-транскрибация звонков и политика вложений</figcaption>
 </figure>
 
 <h4 id="tab-ai-failover">Вкладка «Резервный AI-провайдер»</h4>
@@ -3432,8 +3443,8 @@ flowchart LR
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2941)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">16.09.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2941)</span>&nbsp;|&nbsp;<span data-smit="updated">16.09.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2945)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">16.09.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2945)</span>&nbsp;|&nbsp;<span data-smit="updated">16.09.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2323"></script>
