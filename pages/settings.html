@@ -2782,11 +2782,17 @@ flowchart LR
 </figure>
 
 <h3 id="mailserver">6.4.5. Почтовый сервер (SmitMailServ)</h3>
-<p><strong>URL:</strong> <code>/admin/settings/mailserver/</code> — управление собственным почтовым сервером <strong>SmitMailServ</strong>, развёрнутым на хосте <code>mail.вашдомен.ru</code>. Операции с ящиками и доменами доступны из биллинга через API <code>https://mail.вашдомен.ru/api/v1/</code>.</p>
+<p><strong>URL:</strong> <code>/admin/settings/mailserver/</code> — собственный почтовый сервер
+<strong>SmitMailServ</strong>: приём и отправка писем, антиспам, хранение и веб-почта. Ящики,
+домены и роли хранятся в базе биллинга — завели ящик в разделе, и почтовый сервер видит его
+сразу, без правки конфигов. Раздел открыт суперпользователю и группам администраторов.</p>
+
+<p>Пять вкладок: <strong>Обзор</strong>, <strong>Домены</strong>, <strong>Ящики</strong>,
+<strong>Страница входа</strong> и <strong>Настройки сервера</strong>.</p>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v960/mailserver_overview.png" alt="Почтовый сервер — Обзор" loading="lazy">
-  <figcaption>Почтовый сервер — Обзор</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2940/overview.jpg" alt="Почтовый сервер — вкладка «Обзор»" loading="lazy">
+  <figcaption>Вкладка «Обзор»: состояние сервера, разрез по организациям и готовность доменов к отправке.</figcaption>
 </figure>
 
 <figure class="doc-video">
@@ -2813,18 +2819,18 @@ flowchart LR
 </figure>
 
 <h4 id="mailserver-overview">Вкладка «Обзор»</h4>
-<p>Состояние сервера, настройки API, защищённые ящики, DKIM/SPF/DMARC.</p>
+<p>Сводка по всем организациям; если выбрать организацию в шапке, цифры сузятся до неё.</p>
 <ul>
-  <li><strong>Состояние сервера</strong> — Статус (Online/Offline) · Версия SmitMailServ · Ящиков (всего/лимит) · Использовано места. Кнопка «Проверить подключение» делает test-request к API.</li>
-  <li><strong>Настройки API</strong> — Endpoint API, API-ключ (rw) с переключателем видимости, <strong>Основной домен</strong> (<code>&lt;select&gt;</code>, подгружается через <code>GET /admin/settings/mailserver/api/domains/</code>), toggle «Проверять SSL-сертификат».</li>
-  <li><strong>Защищённые ящики</strong> — <code>bank@вашдомен.ru</code>, <code>noreply@вашдомен.ru</code>, <code>ask@вашдомен.ru</code> и др. Нельзя удалить через UI (server-side защита в <code>get_protected_mailboxes()</code>), чтобы не сломать банковские выписки/рассылку.</li>
-  <li><strong>DKIM / SPF / DMARC</strong> — статус DNS-записей по нажатию «Обновить».</li>
+  <li><strong>Плитки</strong> — состояние сервера (Online и версия), число доменов, ящиков
+      (активных из всех), ящиков с ролями и занятое место. Кнопка «Проверить подключение»
+      проверяет, что биллинг достаёт до почтового сервера.</li>
+  <li><strong>По организациям</strong> — домены, ящики и хранилище каждой компании.</li>
+  <li><strong>Домены и доставляемость</strong> — по строке на домен: записи MX, SPF, DKIM,
+      DMARC и итог «готов». Кнопка «Проверить DNS» перечитывает записи.</li>
+  <li><strong>Домен по умолчанию</strong> — подставляется при создании нового ящика.</li>
+  <li><strong>Быстрые действия</strong> — переходы в домены, ящики, страницу входа, DNS-записи
+      и гостевые порталы.</li>
 </ul>
-
-<figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v960/mailserver_domain_select.png" alt="Селект «Основной домен»" loading="lazy" style="max-width:760px">
-  <figcaption>Селект «Основной домен»</figcaption>
-</figure>
 
 <h4 id="mailserver-mailboxes">Вкладка «Ящики»</h4>
 
@@ -2832,8 +2838,8 @@ flowchart LR
 Строки подгружаются AJAX-ом, поиск идёт по адресу и имени.</p>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2130/mailboxes_desktop.jpg" alt="Список ящиков: тулбар, организации, роли" loading="lazy">
-  <figcaption><em>Одна строка тулбара: домен, тип ящика, поиск, колонки, добавление. Ниже — таблица с организацией, счётчиком писем и ролями.</em></figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2940/mailboxes.jpg" alt="Список ящиков: тулбар, организации, роли" loading="lazy">
+  <figcaption><em>Одна строка тулбара: домен, «Персонал» и «Системные», поиск, колонки, добавление. На снимке оставлены только системные ящики — щит у адреса значит, что ящик нельзя удалить.</em></figcaption>
 </figure>
 
 <h5 id="mailserver-mailboxes-list">Что показывает таблица</h5>
@@ -2861,12 +2867,12 @@ flowchart LR
 
 <div class="screenshot-pair">
   <figure>
-    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2130/columns_picker.jpg" alt="Выбор колонок списка ящиков" loading="lazy">
-    <figcaption>Выбор колонок: служебные — без флажка, их не отключить.</figcaption>
+    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2940/columns_picker.jpg" alt="Выбор колонок списка ящиков" loading="lazy">
+    <figcaption>Выбор колонок: подсвечены показанные, служебные (выбор строк, активность, меню) не отключаются.</figcaption>
   </figure>
   <figure>
-    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2130/row_actions.jpg" alt="Меню действий над ящиком" loading="lazy">
-    <figcaption>Меню строки: вход в ящик, пароль, включение и выключение, удаление.</figcaption>
+    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2940/row_actions.jpg" alt="Меню действий над ящиком" loading="lazy">
+    <figcaption>Меню строки: вход в ящик, редактирование, пароль, выключение. У системного ящика удаление недоступно.</figcaption>
   </figure>
 </div>
 
@@ -2901,11 +2907,11 @@ flowchart LR
 
 <div class="screenshot-pair">
   <figure>
-    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2130/mailboxes_mobile.jpg" alt="Список ящиков на телефоне" loading="lazy">
+    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2940/mailboxes_mobile.jpg" alt="Список ящиков на телефоне" loading="lazy">
     <figcaption>Телефон: домен и «Добавить», под ними поиск с «Фильтрами».</figcaption>
   </figure>
   <figure>
-    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2130/filters_sheet_mobile.jpg" alt="Шторка фильтров списка ящиков" loading="lazy">
+    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2940/filters_sheet_mobile.jpg" alt="Шторка фильтров списка ящиков" loading="lazy">
     <figcaption>Шторка «Фильтры»: персонал и системные ящики.</figcaption>
   </figure>
 </div>
@@ -2929,25 +2935,44 @@ flowchart TB
 </pre>
 
 
-<p><strong>Добавление ящика</strong> (кнопка «Добавить ящик»):</p>
+<h5 id="mailserver-mailbox-add">Добавление ящика</h5>
+<p>Кнопка «Добавить ящик» открывает окно:</p>
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v960/mailserver_mailbox_add_modal.png" alt="Модалка «Добавить ящик»" loading="lazy" style="max-width:820px">
-  <figcaption>Модалка «Добавить ящик»</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2940/mailbox_add.jpg" alt="Окно «Добавить ящик»" loading="lazy" style="max-width:820px">
+  <figcaption>Окно «Добавить ящик»: адрес, доставка, квота, пароль и роль.</figcaption>
 </figure>
 <ul>
-  <li><strong>Домен</strong> — <code>&lt;select&gt;</code> с подгрузкой реального списка из SmitMailServ: опечататься нельзя.</li>
-  <li><strong>Логин (до @)</strong> — локальная часть адреса.</li>
-  <li><strong>Пароль</strong> + <strong>Подтверждение</strong> — обязательны. Генератор пароля рядом (фиолетовая иконка <code>fa-magic</code>).</li>
-  <li><strong>Квота (МБ)</strong> — default 1024. <strong>Активен</strong> — toggle.</li>
-  <li>При создании <strong>системных ящиков</strong> (bank@/noreply@/ask@…) пароль автоматически синхронизируется в SystemSettings (<code>_sync_password_to_settings()</code>), чтобы IMAP-парсер банковских выписок и SMTP-рассылка биллинга получили актуальный пароль одним нажатием.</li>
+  <li><strong>Логин (до @)</strong> и <strong>Домен</strong> — домен выбирается списком, рядом
+      число ящиков в нём: опечататься в адресе нельзя.</li>
+  <li><strong>Полное имя</strong> — уходит в подпись и в адресную книгу.</li>
+  <li><strong>Доставка почты</strong> — «Хранить в ящике» или «Пересылка» на другой адрес.</li>
+  <li><strong>Квота (МБ)</strong> — по умолчанию 1024. <strong>Пароль</strong> и
+      <strong>Подтверждение</strong> обязательны, <strong>Активен</strong> — выключатель.</li>
+  <li><strong>Роль ящика</strong> (необязательно) — приём обращений, голосовая почта, отправка
+      рассылок, банковские выписки. Ящику с ролью выдаётся служебный пароль и защита от
+      удаления: на нём держится работа биллинга.</li>
 </ul>
 
-<h4 id="mailserver-admins">Вкладка «Админы доменов»</h4>
+<h4 id="mailserver-domains">Вкладка «Домены»</h4>
+<p>Почтовые домены сервера и организация, которой принадлежит каждый. Организация домена
+определяет, чьи реквизиты и фирменный стиль получат ящики этого домена: подпись письма,
+цвета веб-почты, страницу входа.</p>
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v960/mailserver_admins.png" alt="Админы доменов" loading="lazy">
-  <figcaption>Админы доменов</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2940/domains.jpg" alt="Вкладка «Домены»" loading="lazy">
+  <figcaption>Домены сервера по организациям; «Добавить домен» заводит новый.</figcaption>
 </figure>
-<p>Управление доменными админами SmitMailServ. У админа можно назначить набор доменов, которыми он управляет (<code>&lt;select multiple&gt;</code> с тем же AJAX-источником). Полезно если на сервере несколько обслуживаемых доменов — каждому даём отдельного админа.</p>
+<p>При добавлении домена DNS-записи почты (MX, SPF, DKIM, DMARC) можно прописать одной
+кнопкой, если для организации настроен Cloudflare — см.
+<a href="#dns">«Домены и DNS»</a>.</p>
+
+<h4 id="mailserver-login-branding">Вкладка «Страница входа»</h4>
+<p>Как выглядит вход в веб-почту на адресе <code>mail.&lt;домен&gt;</code>: фон, картинка,
+заголовок и значок вкладки. Слева — домены входа, справа — настройки выбранного и предпросмотр.
+Страница входа не требует авторизации, поэтому оформление отдаётся публично и кэшируется.</p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2940/login_branding.jpg" alt="Вкладка «Страница входа»" loading="lazy">
+  <figcaption>Домены входа и настройки оформления выбранного домена.</figcaption>
+</figure>
 
 <h4 id="mailserver-api">REST API внутри биллинга</h4>
 <table style="font-size:.92em">
@@ -2961,12 +2986,15 @@ flowchart TB
 <tr><td><code>POST /admin/settings/mailserver/api/mailbox/&lt;email&gt;/edit/</code></td><td>Редактирование (имя/квота/active)</td></tr>
 <tr><td><code>POST /admin/settings/mailserver/api/mailbox/&lt;email&gt;/password/</code></td><td>Смена пароля (с авто-sync в SystemSettings для системных)</td></tr>
 <tr><td><code>DELETE /admin/settings/mailserver/api/mailbox/&lt;email&gt;/</code></td><td>Удаление (server-side защита системных)</td></tr>
-<tr><td><code>GET/POST/DELETE …/api/domain-admin/…</code></td><td>CRUD доменных админов</td></tr>
+<tr><td><code>POST /admin/settings/mailserver/api/archive/save/</code></td><td>Срок хранения писем на диске (дни)</td></tr>
+<tr><td><code>POST /admin/settings/mailserver/api/archive/run/</code></td><td>Архивировать сейчас — все ящики или один (<code>email</code>)</td></tr>
 </table>
 
 <p>Все endpoint'ы за <code>@user_passes_test(_is_superadmin)</code> — только суперадмин. Каждая CRUD-операция пишет в <code>AuditOperations</code> с <code>table_name='MAILSERVER'</code>.</p>
 
-<p><strong>Как это работает:</strong> биллинг обращается к почтовому серверу по API — адрес сервера и ключ доступа задаются в этом же разделе настроек. Запросы повторяются при сетевых сбоях, ошибки API видны в журнале.</p>
+<p><strong>Как это работает:</strong> ящики, домены и роли лежат в базе биллинга, а почтовый
+сервер читает их оттуда напрямую. Действия, которым нужен сам сервер (перезапуск части почты,
+проверка DNS, архив писем), биллинг выполняет на хосте почты по SSH.</p>
 
 
 <h4 id="mailserver-webmail">Веб-почта: календарь, контакты, брендинг</h4>
@@ -3073,8 +3101,8 @@ flowchart TD
 </pre>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2100/profile_mail.jpg" alt="Блок «Почта» в профиле сотрудника" loading="lazy">
-  <figcaption><em>Блок «Почта» в профиле: ящики сотрудника, переключатели уведомлений, адрес пересылки и подсказка про пароль.</em></figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2940/profile_mail.jpg" alt="Блок «Почта» в профиле сотрудника" loading="lazy">
+  <figcaption><em>Блок «Почта» в профиле: ящики сотрудника с организацией и входом в почту, переключатели уведомлений, создание ящика в доступном домене и адрес пересылки.</em></figcaption>
 </figure>
 
 <div class="note">
@@ -3160,8 +3188,8 @@ flowchart TD
 
 <h4 id="mailserver-health">Здоровье сервера и доставляемость</h4>
 
-<p>Вкладка «Сервер» отвечает на два вопроса: работает ли почта прямо сейчас и дойдут ли письма
-до получателя, а не в спам.</p>
+<p>Вкладка «Настройки сервера» отвечает на два вопроса: работает ли почта прямо сейчас и дойдут
+ли письма до получателя, а не в спам.</p>
 
 <p><strong>Здоровье сервера</strong> — по строке на каждую часть почты. Все строки зелёные —
 почта принимается и отправляется. Очередь показывает, сколько писем ждёт отправки; норма — ноль.
@@ -3196,13 +3224,106 @@ flowchart LR
 
 <div class="screenshot-pair">
   <figure>
-    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2130/server_health_mobile.jpg" alt="Здоровье почтового сервера" loading="lazy">
+    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2940/server_health.jpg" alt="Здоровье почтового сервера" loading="lazy">
     <figcaption>Состояние частей почты и очередь отправки.</figcaption>
   </figure>
   <figure>
-    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2130/server_deliv_mobile.jpg" alt="Проверки доставляемости по домену" loading="lazy">
+    <img class="screenshot" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2940/server_deliv.jpg" alt="Проверки доставляемости по домену" loading="lazy">
     <figcaption>Четыре проверки на домен: подпись, разрешение, защита, приём.</figcaption>
   </figure>
+</div>
+
+<h4 id="mailserver-archive">Резервный архив писем</h4>
+
+<p>Каждую ночь (02:30) ящики копируются в облако GCS зашифрованными архивами. Бакет публичный
+на чтение, поэтому архив шифруется ключом, который хранится только в настройках биллинга: по
+ссылке отдаётся нечитаемый набор байт. Отключить архив нельзя — это политика безопасности.</p>
+
+<p>Поле <strong>«Переносить в архив письма старше N дней»</strong> задаёт, сколько писем держать на
+диске сервера. Старшие письма уходят в облако и удаляются с диска; <code>0</code> — ничего не
+удалять, только копировать.</p>
+
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2940/server_archive.jpg" alt="Блок «Резервный архив писем»" loading="lazy" style="max-width:760px">
+  <figcaption>Срок хранения на диске и ручной запуск архивации.</figcaption>
+</figure>
+
+<p>В облаке у каждого ящика своя папка <code>mail-archive/&lt;домен&gt;/&lt;ящик&gt;/</code>:</p>
+<table>
+  <thead><tr><th>Файл</th><th>Что в нём</th><th>Сколько хранится</th></tr></thead>
+  <tbody>
+    <tr><td><code>ГГГГ-ММ-ДД.tar.gz.enc</code></td><td>Ночной снимок всего ящика</td><td>Последние 7</td></tr>
+    <tr><td><code>deleted-ГГГГ-ММ-ДД_ЧЧММСС.tar.gz.enc</code></td><td>Письма, удалённые в эту ночь с диска по сроку</td><td>Всегда — других копий этих писем нет</td></tr>
+  </tbody>
+</table>
+
+<pre class="mermaid">
+flowchart TB
+  subgraph R1 [" "]
+    direction LR
+    BOX["Ящик на диске"] --> SNAP["Снимок ящика<br/>дата.tar.gz.enc"]
+    SNAP --> KEEP["В облаке хранятся<br/>7 последних снимков"]
+  end
+  subgraph R2 [" "]
+    direction LR
+    OLD["Письма старше<br/>N дней"] --> PACK["Архив удаляемых<br/>deleted-….tar.gz.enc"]
+    PACK --> CHECK{"Выгружен и<br/>число писем сошлось?"}
+    CHECK -->|да| DEL["Удалить с диска<br/>ровно эти письма"]
+    CHECK -->|нет| STAY["Письма остаются<br/>на диске до след. ночи"]
+  end
+  R1 --> R2
+  style R1 fill:none,stroke:none
+  style R2 fill:none,stroke:none
+</pre>
+
+<div class="note">
+  <strong>С диска удаляется только то, что уже лежит в облаке.</strong> Список старых писем
+  фиксируется до выгрузки; письмо удаляется, только если архив выгружен и число файлов в нём
+  совпало с найденным. Если облако недоступно, удаление в эту ночь пропускается целиком.
+  Восстановление: скачать нужный <code>.enc</code>, расшифровать ключом архива и распаковать
+  в каталог ящика.
+</div>
+
+<h4 id="mailserver-inbound-check">Письма не приходят: что проверить</h4>
+
+<p>Если в ящик перестали приходить письма извне, а отправка и веб-почта работают, идите по
+цепочке снаружи внутрь — каждое звено можно проверить отдельно.</p>
+
+<pre class="mermaid">
+flowchart TB
+  subgraph R1 [" "]
+    direction LR
+    S["Сервер<br/>отправителя"] --> DNS["DNS: MX домена<br/>→ mail.домен"]
+    DNS --> NET["Сеть: порт 25<br/>открыт снаружи"]
+  end
+  subgraph R2 [" "]
+    direction LR
+    PF["Приём<br/>postfix"] --> RS["Антиспам<br/>rspamd"]
+    RS --> DV["Доставка в ящик<br/>dovecot"]
+  end
+  R1 --> R2
+  style R1 fill:none,stroke:none
+  style R2 fill:none,stroke:none
+</pre>
+
+<ol>
+  <li><strong>DNS.</strong> MX домена указывает на <code>mail.&lt;домен&gt;</code>, а тот — на
+      адрес почтового сервера. Проверка — «Проверить DNS» на вкладке «Обзор».</li>
+  <li><strong>Порт 25 снаружи.</strong> Проверяйте внешним сервисом проверки портов, а не со своего
+      компьютера: домашние провайдеры часто перехватывают исходящий порт 25, и проверка
+      «проходит», хотя до сервера пакеты не доходят. Если снаружи 25 закрыт, а 587 и 993
+      открыты, порт режет сетевое оборудование перед сервером — сам сервер тут ни при чём.</li>
+  <li><strong>Здоровье сервера.</strong> Строки «Приём и отправка», «Антиспам» и «Хранение и
+      чтение» в «Настройках сервера» должны быть зелёными, очередь — около нуля.</li>
+  <li><strong>Сам ящик.</strong> Ящик активен, а у ящиков с ролью проверьте и выключатель в
+      Поддержке — это разные флаги: один выключает разбор писем, другой — сам ящик.</li>
+</ol>
+
+<div class="note">
+  <strong>Отправители не теряют письма сразу.</strong> Если сервер недоступен, почтовые серверы
+  отправителей повторяют доставку несколько дней, так что после восстановления приёма большая
+  часть писем придёт сама. Коды подтверждения к тому времени обычно истекают — их нужно
+  запросить заново.
 </div>
 
 <h4 id="mailserver-mailbox-counters">Колонка «Писем» в списке ящиков</h4>
@@ -3212,8 +3333,8 @@ flowchart LR
 самое, что «писем нет».</p>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2100/mailboxes_list.jpg" alt="Список ящиков с колонками «Квота» и «Писем»" loading="lazy">
-  <figcaption><em>Список ящиков: роли, владелец, занятое место и счётчик писем.</em></figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2940/mailboxes.jpg" alt="Список ящиков с колонками «Квота» и «Писем»" loading="lazy">
+  <figcaption><em>Колонка «Писем» в списке ящиков: прочерк — сбор ещё не отработал.</em></figcaption>
 </figure>
 
 <div class="note">
@@ -3283,7 +3404,29 @@ flowchart LR
 </table>
 
 <h4 id="mail-provisioning-staff">Ящик сотрудника и пересылка</h4>
-<p>В профиле (<code>/admin/settings/profile/</code>) сотрудник создаёт себе ящик, если включена настройка «Разрешить персоналу создавать email». Логин подставляется из имени пользователя, пароль генерируется автоматически — достаточно нажать «Создать». Опционально указывается <strong>адрес пересылки</strong>: копии входящих уходят на внешний адрес, оригинал остаётся в ящике.</p>
+<p>В профиле (<code>/admin/settings/profile/</code>) сотрудник создаёт себе ящик, если включена настройка «Разрешить персоналу создавать email». Логин подставляется из имени пользователя, пароль генерируется автоматически — достаточно нажать «Создать ящик». Опционально указывается <strong>адрес пересылки</strong>: копии входящих уходят на внешний адрес, оригинал остаётся в ящике.</p>
+
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/mailserver_v2940/profile_mail.jpg" alt="Блок «Почта» в профиле сотрудника" loading="lazy">
+  <figcaption><em>Ваши ящики, уведомления по каждому и создание нового ящика в доступном домене.</em></figcaption>
+</figure>
+
+<pre class="mermaid">
+flowchart TB
+  subgraph R1 [" "]
+    direction LR
+    PR["Профиль сотрудника<br/>«Создать ящик»"] --> CH{"Настройка<br/>«Разрешить персоналу<br/>создавать email»"}
+    CH -->|включена| NEW["Ящик логин@домен<br/>1 на домен"]
+  end
+  subgraph R2 [" "]
+    direction LR
+    PW["Пароль = пароль<br/>входа в биллинг"] --> BELL["Письма во вкладке<br/>«Почта» уведомлений"]
+    BELL --> FW["Пересылка копий<br/>на внешний адрес"]
+  end
+  R1 --> R2
+  style R1 fill:none,stroke:none
+  style R2 fill:none,stroke:none
+</pre>
 
 <div class="info-box">
 <strong>Служебные имена защищены.</strong> Сотруднику нельзя занять <code>admin</code>, <code>info</code>, <code>postmaster</code> и другие зарезервированные логины; лимит — один ящик на домен.
@@ -3293,8 +3436,8 @@ flowchart LR
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2940)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">15.09.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2940)</span>&nbsp;|&nbsp;<span data-smit="updated">15.09.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2941)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">16.09.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2941)</span>&nbsp;|&nbsp;<span data-smit="updated">16.09.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2323"></script>
