@@ -1739,14 +1739,16 @@ flowchart LR
 категории оставляет в журнале только её события.</p>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2758/22_messages.png" alt="Вкладка «Сообщения»" loading="lazy">
-  <figcaption>Сообщения: форма слева, история справа</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_contact_v2938/messages_tab.jpg" alt="Вкладка «Сообщения»" loading="lazy">
+  <figcaption>Сообщения: форма со строкой стоп-листа слева, история с пропущенными SMS справа</figcaption>
 </figure>
 
 
 <p>В «Сообщениях» видно не только что отправили, но и чем закончилось: значок
 канала несёт статус доставки, а входящие ответы клиента отмечены полосой
-слева. Каналы переключаются полосой чипов, период — единым компонентом.</p>
+слева. Каналы переключаются полосой чипов, период — единым компонентом. Если клиент в
+стоп-листе или отписался от рассылок в мессенджере, над формой видна строка запрета, а
+неотправленное SMS помечено «SMS пропущено» с причиной.</p>
 
 <h4 id="abonent-card-tour-ai">Помощник знает, где вы стоите</h4>
 
@@ -2633,22 +2635,33 @@ endpoints <code>finops_ajax</code>, <code>finops_crud_ajax</code>,
 <h4 id="abonent-card-tab-messages">Сообщения</h4>
 <p>Слева — форма «Отправить сообщение»: треть ширины, при прокрутке остаётся на экране. Справа — история на две трети.</p>
 <ul>
-  <li><strong>Каналы</strong> — только те, по которым сообщение дойдёт: личный кабинет всегда, SMS — если указан телефон, e-mail — если указан адрес, Telegram, push и VK — если клиент их привязал.</li>
+  <li><strong>Каналы</strong> — только те, по которым сообщение дойдёт: личный кабинет всегда, SMS — если указан телефон, e-mail — если указан адрес, Telegram и push — если клиент их привязал, VK — если клиент входил в личный кабинет через VK или прошёл проверку в чате с ботом. Сообщение в VK уходит от сообщества организации клиента.</li>
   <li><strong>Тихий час</strong> — строка под заголовком формы с окном из «Настройки → Сообщения»; пока окно действует, строка оранжевая. SMS и push в это время не отправляются: сообщение получает статус «пропущено».</li>
+  <li><strong>Стоп-лист</strong> — строка под тихим часом, если клиенту нельзя присылать рекламу или ничего вовсе, и отписки от рассылок в мессенджерах. «Изменить» открывает выбор области, строка обновляется сразу. <a href="extras.html#contact-stoplist">Подробнее о стоп-листе</a>.</li>
   <li><strong>Шаблон, заголовок и текст</strong>; кнопки «Отправить» и «Очистить».</li>
-  <li><strong>История</strong>: каналы — полосой чипов, рядом «Найдено: N · стр.»; дата и время в две строки; значок канала показывает, дошло ли сообщение; время отправки — со значком часов; ответы клиента отмечены полосой слева.</li>
+  <li><strong>История</strong>: каналы — полосой чипов, рядом «Найдено: N · стр.»; дата и время в две строки; значок канала показывает, дошло ли сообщение; время отправки — со значком часов; ответы клиента отмечены полосой слева. Неотправленное SMS помечено «SMS пропущено», причина — словами в подсказке: тихий час, клиент отказался от рекламы, то же сообщение ушло недавно.</li>
+  <li><strong>Рассылки бота</strong> — таблица под историей: рассылки Salesbot по чатам клиента из журнала отправок — дата, канал, текст и статус («Доставлено», «Бот заблокирован», «Ошибка» с числом попыток). В общую историю они не попадают: рассылка идёт в чат, а не клиенту.</li>
 </ul>
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2758/34_messages_form.png" alt="Форма «Отправить сообщение» с тихим часом" loading="lazy">
-  <figcaption>Форма «Отправить сообщение» с тихим часом</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_contact_v2938/msg_form.png" alt="Форма «Отправить сообщение»: тихий час и стоп-лист клиента" loading="lazy">
+  <figcaption>Форма «Отправить сообщение»: тихий час и стоп-лист клиента</figcaption>
+</figure>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_contact_v2938/msg_history.png" alt="История: ответ клиента и пропущенные SMS" loading="lazy">
+  <figcaption>История: ответ клиента и пропущенные SMS</figcaption>
+</figure>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_contact_v2938/msg_broadcasts.png" alt="Рассылки бота по чатам клиента" loading="lazy">
+  <figcaption>Рассылки бота по чатам клиента</figcaption>
 </figure>
 
 <pre class="mermaid">
-flowchart LR
+flowchart TB
     F["Форма<br/>шаблон, текст, каналы"] --> Q["Очередь сообщений"]
     Q --> P{"Правила отправки"}
-    P -->|"канал выключен<br/>тихий час для SMS и push<br/>повтор того же текста"| SK["Пропущено"]
-    P -->|"можно"| SEND["Отправка по каналам"]
+    P -->|"нельзя"| SK["Пропущено: стоп-лист, канал выключен,<br/>тихий час для SMS и push, повтор текста"]
+    P -->|"можно"| J["Журнал отправок:<br/>уже ушло — не повторяем"]
+    J --> SEND["Отправка по каналам"]
     SEND --> H["История<br/>статус в значке канала"]
     SK --> H
 </pre>
@@ -2774,8 +2787,8 @@ flowchart LR
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2815)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">12.09.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2815)</span>&nbsp;|&nbsp;<span data-smit="updated">12.09.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2940)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">15.09.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2940)</span>&nbsp;|&nbsp;<span data-smit="updated">15.09.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2323"></script>

@@ -1437,13 +1437,17 @@ auto-block по отрицательному балансу — работают
       <td>5 toggle: <code>NOTIFY_EMAIL_ENABLED</code>, <code>NOTIFY_SMS_ENABLED</code>, <code>NOTIFY_PUSH_ENABLED</code>, <code>NOTIFY_TELEGRAM_ENABLED</code>, <code>NOTIFY_VK_ENABLED</code>. <strong>Внимание</strong>: выключение канала останавливает ВСЕ сообщения через него, включая восстановление пароля и OAuth.</td>
     </tr>
     <tr>
+      <td><strong>Стоп-лист</strong></td>
+      <td>Рекламное сообщение (флажок «Рекламная рассылка» в массовой рассылке раздела «Сообщения», поздравления) не уходит, если телефон или клиент в стоп-листе с областью «без рекламы» или «не связываться вовсе». Служебные — о долге, блокировке, аварии — режет только «не связываться вовсе». Список и области — <a href="extras.html#contact-stoplist">«Стоп-лист»</a>.</td>
+    </tr>
+    <tr>
       <td><strong>Антидубль / шаблоны</strong></td>
       <td><code>NOTIFY_DUPLICATE_WINDOW_MIN</code> (0–1440, default 60) — не слать одинаковое сообщение чаще раза в N минут (дедуп через Redis по md5 head_txt). <code>EMAIL_DEFAULT_SUBJECT</code> (строка до 200 симв.) — подставляется в письма без явного subject. <code>MSG_RETRY_COUNT</code> (1–10, default 4) — попыток отправки при ошибках шлюза.</td>
     </tr>
   </tbody>
 </table>
 
-<p>Подключение: <code>billing/services/notification_policy.py::should_send(channel, abonent_id, head_txt)</code> вызывается в <code>billing/tasks/messaging.py:_dispatch_message</code> для каждого канала. Пропущенные сообщения логируются в <code>MsgStack.sms_status='skipped'</code> с <code>sms_error=причина</code> — оператор видит почему сообщение не доставлено.</p>
+<p>Подключение: <code>billing/services/notification_policy.py::should_send(channel, abonent_id, head_txt, kind, phone)</code> вызывается в <code>billing/tasks/messaging.py:_dispatch_message</code> для каждого канала. Порядок проверок: общий выключатель → канал → стоп-лист → тихий час → антидубль (стоп-лист раньше антидубля, чтобы запрещённое сообщение не ставило отметку «уже отправлено»). SMS из очереди повторно не уходит: у каждого сообщения своя запись в журнале отправок, и перезапуск задачи после сбоя его пропускает. Пропущенные сообщения логируются в <code>MsgStack.sms_status='skipped'</code> с <code>sms_error=причина</code> — оператор видит почему сообщение не доставлено.</p>
 
 <p>Шлюзы каждого канала настраиваются в отдельных разделах: Email <code>/admin/settings/email/</code>, SMS <code>/admin/settings/sms/</code>, Push <code>/admin/settings/firebase/</code>. Здесь — общая политика на уровне всей системы.</p>
 
@@ -3289,8 +3293,8 @@ flowchart LR
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2815)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">12.09.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2815)</span>&nbsp;|&nbsp;<span data-smit="updated">12.09.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2940)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">15.09.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2940)</span>&nbsp;|&nbsp;<span data-smit="updated">15.09.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2323"></script>
