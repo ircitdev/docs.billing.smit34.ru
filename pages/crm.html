@@ -2266,8 +2266,8 @@ N».</p>
 
 <h2 id="crm-obzvon">Обзвон</h2>
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/field_plan_v3108/obzvon_head.jpg" alt="Обзвон: сводка дня и срезы очереди" loading="lazy">
-  <figcaption>Обзвон: сводка дня и срезы очереди</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/field_plan_v3124/obzvon.jpg" alt="Обзвон: сводка дня, срезы и очередь звонков" loading="lazy">
+  <figcaption>Обзвон: сводка дня, срезы и очередь — что сделать, попытки, ответственный и кнопки итога звонка (демо-данные)</figcaption>
 </figure>
 <p>CRM → «Обзвон» (<code>/admin/crm/obzvon/</code>) — очередь звонков по заявкам,
 которым пора назначить или подтвердить монтаж. Своей таблицы у очереди нет: она
@@ -2308,9 +2308,36 @@ N».</p>
 сколько едет в выбранный день. Выезды — сделки с датой монтажа на этот день; план
 раскладывает их по монтажникам и бригадам, строит маршрут по дорогам и после
 утверждения пишет время и монтажника в сделки.</p>
+<figure class="doc-video" id="crm-field-plan-video">
+  <div class="dv-head">
+    <span class="dv-kind"><i class="ti ti-player-play-filled" aria-hidden="true"></i> Обучающее видео</span>
+    <span class="dv-time">3:38</span>
+  </div>
+  <div class="dv-media">
+    <video controls preload="none" playsinline
+             poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/smit_fieldplan_training_2026-09-17-poster.jpg">
+        <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/smit_fieldplan_training_2026-09-17.mp4" type="video/mp4">
+        Ваш браузер не проигрывает видео —
+        <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/smit_fieldplan_training_2026-09-17.mp4">скачайте файл</a>.
+      </video>
+  </div>
+  <figcaption>
+    <p class="dv-desc">Девять шагов для диспетчера, оператора обзвона и главного инженера: обзвон и дата монтажа, чтение плана, ручная правка, свободные окна, утверждение, рассылка монтажникам, график и отчёты.</p>
+    <div class="dv-foot">
+      <span class="dv-spec">1920×1080</span>
+      <span class="dv-spec">с озвучкой</span>
+      <a class="dv-download" href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/smit_fieldplan_training_2026-09-17.mp4" target="_blank" rel="noopener" aria-label="Скачать видеофайл"><i class="ti ti-download" aria-hidden="true"></i> Скачать</a>
+    </div>
+  </figcaption>
+</figure>
+<p>При первом входе на страницу открывается <strong>знакомство с разделом</strong>: первым
+шагом этот ролик, дальше — короткие экраны о плане, ручной правке, свободных окнах,
+утверждении и графике. Открыть его снова — кнопка «Знакомство» в шапке страницы.</p>
+<p class="note">Снимки в этом разделе и в ролике сделаны на копии базы с выдуманными
+клиентами и телефонами; дома и монтажники — настоящие.</p>
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/field_plan_v3108/plan_head.jpg" alt="План выездов: сводка дня, выбор даты, «Распределить заново», «Утвердить» и «Отправить монтажникам»" loading="lazy">
-  <figcaption>План выездов: сводка дня, выбор даты, «Распределить заново», «Утвердить» и «Отправить монтажникам»</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/field_plan_v3124/plan.jpg" alt="План выездов на день: карточки монтажников и бригад, карта маршрутов" loading="lazy">
+  <figcaption>План выездов на день: сводка, выбор даты, «Не вошли в план», карточки монтажников и бригад, маршруты на карте (демо-данные)</figcaption>
 </figure>
 
 <pre class="mermaid">
@@ -2349,22 +2376,55 @@ flowchart LR
 время окончания и кнопка «Маршрут» со всеми точками дня в Яндекс Картах; у
 выезда — вид работ, длительность и сколько добавляет дорога. Справа — маршруты
 на карте цветом монтажника.</p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/field_plan_v3124/plan_brigade.jpg" alt="Карточка бригады в плане выездов" loading="lazy">
+  <figcaption>Карточка бригады: часы, выезд, километры и окончание дня; у выезда — время, окно клиента, вид работ, путь до точки и «Кто едет» (демо-данные)</figcaption>
+</figure>
 <div class="row">
   <div class="col-md-6"><figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/field_plan_v3108/plan_map.jpg" alt="Маршрут на карте плана — по дорогам" loading="lazy">
-  <figcaption>Маршрут на карте плана — по дорогам</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/field_plan_v3124/plan_map.jpg" alt="Маршруты монтажников на карте плана" loading="lazy">
+  <figcaption>Маршруты на карте — по дорогам, цветом монтажника (демо-данные)</figcaption>
 </figure>
 </div>
   <div class="col-md-6"><figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/field_plan_v3108/plan_day_line.jpg" alt="Итоги дня монтажника" loading="lazy">
-  <figcaption>Итоги дня монтажника</figcaption>
-</figure>
-<figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/field_plan_v3108/plan_tags.jpg" alt="У выезда: вид работ, длительность и сколько добавляет дорога" loading="lazy">
-  <figcaption>У выезда: вид работ, длительность и сколько добавляет дорога</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/field_plan_v3124/plan_left.jpg" alt="Карточка «Не вошли в план»" loading="lazy">
+  <figcaption>«Не вошли в план» — выезд с причиной и выбором, кто поедет (демо-данные)</figcaption>
 </figure>
 </div>
 </div>
+
+<h3 id="crm-field-move">Ручная правка: «Кто едет» и перетаскивание</h3>
+<p>Раскладку можно поправить до утверждения — план пересчитается сразу, а в сделки
+правка попадёт только после «Утвердить».</p>
+<ul>
+  <li><strong>«Кто едет»</strong> у выезда — выбрать человека. Сверху списка те, кто в этот
+  день работает: с выездами (сколько и до какого часа), потом свободные; ниже — кто не
+  поедет и кто выключен в графике. «Авто» оставляет выбор плану.</li>
+  <li><strong>Перетаскивание</strong> — за значок слева от клиента на карточку другого
+  монтажника или на имя в строке «Свободны». Пока выезд тянут, подходящие карточки
+  обведены, а на той, над которой он сейчас, написано «отпустите, выезд перейдёт сюда».</li>
+  <li>После переноса — уведомление с временем у нового монтажника и кнопкой
+  <strong>«Вернуть»</strong>; если выезд у него не помещается, уведомление назовёт причину.</li>
+  <li>На телефоне значка нет — там выезд переносят через «Кто едет».</li>
+  <li><strong>«Распределить заново»</strong> снимает все закрепления, и план раскладывает
+  выезды сам.</li>
+</ul>
+<div class="row">
+  <div class="col-md-6"><figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/field_plan_v3124/plan_who.jpg" alt="Список «Кто едет» у выезда" loading="lazy">
+  <figcaption>«Кто едет»: сверху работающие в этот день, у каждого — что у него уже есть (демо-данные)</figcaption>
+</figure>
+</div>
+  <div class="col-md-6"><figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/field_plan_v3124/plan_drag.jpg" alt="Перетаскивание выезда на карточку монтажника" loading="lazy">
+  <figcaption>Выезд тянут на другую карточку: она обведена и подсказывает «отпустите» (демо-данные)</figcaption>
+</figure>
+</div>
+</div>
+<figure class="shot is-narrow">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/field_plan_v3124/plan_drag_toast.jpg" alt="Уведомление о переносе выезда" loading="lazy">
+  <figcaption>Уведомление о переносе с кнопкой «Вернуть» (демо-данные)</figcaption>
+</figure>
 
 <h3 id="crm-field-roads">Время в пути: маршрутизатор по дорогам</h3>
 <p>Расстояние и время между точками дня план берёт у маршрутизатора OSRM, который
@@ -2394,6 +2454,19 @@ flowchart LR
 привязан в профиле. Кнопка активна, только когда план уже записан в сделки:
 черновик не уходит. После отправки видно, кому и куда дошло.</p>
 
+<div class="row">
+  <div class="col-md-6"><figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/field_plan_v3124/plan_approve.jpg" alt="Окно «Утвердить план»" loading="lazy">
+  <figcaption>Перед записью окно перечисляет, что изменится в сделках (демо-данные)</figcaption>
+</figure>
+</div>
+  <div class="col-md-6"><figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/field_plan_v3124/plan_send.jpg" alt="Окно «Отправить план монтажникам»" loading="lazy">
+  <figcaption>Кому уйдёт план: каждый участник бригады получает свой день (демо-данные)</figcaption>
+</figure>
+</div>
+</div>
+
 <h3 id="crm-field-slots">Свободные окна</h3>
 <p>Если заявка отказалась или перенеслась, у монтажника появляется «Свободно
 13:05–18:00» и до трёх ближайших заявок, которые ждут дату монтажа (этап «Тариф
@@ -2401,6 +2474,15 @@ flowchart LR
 кнопкой звонка. «Согласовано» записывает выбранное время тем же запросом, что
 обзвон, переводит заявку на «Назначен монтаж», и план пересчитывается сразу.
 Окна показываются на сегодня (не раньше чем через час) и будущие дни.</p>
+
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/field_plan_v3124/plan_slots.jpg" alt="Свободное окно и заявка рядом" loading="lazy">
+  <figcaption>Свободное окно в дне монтажника и ближайшая заявка без даты (демо-данные)</figcaption>
+</figure>
+<figure class="shot is-narrow">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/field_plan_v3124/plan_slots_dialog.jpg" alt="Окно «Клиент согласен»" loading="lazy">
+  <figcaption>«Согласовано»: время из свободного окна и комментарий (демо-данные)</figcaption>
+</figure>
 
 <h3 id="crm-field-orgs">Несколько организаций</h3>
 <p>Монтажники бывают общими у нескольких организаций. План показывает монтажников
@@ -2416,7 +2498,7 @@ flowchart LR
 ездит, в какие дни и часы, откуда выезжает, с кем и на какой машине. Своей
 таблицы нет: график — одна настройка <code>FIELD_PLAN_CREW</code>.</p>
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/field_plan_v3108/crew_params.jpg" alt="Как считать план: офис, нормы, бригада, поправка ко времени в пути, напоминание" loading="lazy">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/field_plan_v3124/crew_params.jpg" alt="Как считать план: офис, нормы, бригада, поправка ко времени в пути, напоминание" loading="lazy">
   <figcaption>Как считать план: офис, нормы, бригада, поправка ко времени в пути, напоминание</figcaption>
 </figure>
 <ul>
@@ -2428,18 +2510,11 @@ flowchart LR
   <li><strong>Бригада и машина</strong>: «Ездит с» — напарник; машина — модель или номер;
   «без машины».</li>
 </ul>
-<div class="row">
-  <div class="col-md-6"><figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/field_plan_v3108/crew_days.jpg" alt="Рабочие дни и часы" loading="lazy">
-  <figcaption>Рабочие дни и часы</figcaption>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/field_plan_v3124/crew_rows.jpg" alt="Строки графика монтажников" loading="lazy">
+  <figcaption>Строки графика: бригада с машиной, напарник «без машины», монтажник без водителя (в план не попадёт), отпуск датами</figcaption>
 </figure>
-</div>
-  <div class="col-md-6"><figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/field_plan_v3108/crew_team.jpg" alt="Бригада и машина: «Ездит с», машина, «без машины»" loading="lazy">
-  <figcaption>Бригада и машина: «Ездит с», машина, «без машины»</figcaption>
-</figure>
-</div>
-</div>
+
 <p><strong>Бригада</strong> — напарники, которые в этот день работают. У неё один
 маршрут от точки водителя, общие часы и общие навыки; на месте она работает
 быстрее на заданный процент. Если общих часов меньше двух, напарники едут по
