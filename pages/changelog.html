@@ -145,6 +145,10 @@
           <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#netmap-search"><i class="ti ti-search" aria-hidden="true"></i> — Поиск и ссылки на объект</a></li>
           <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#netmap-import"><i class="ti ti-plug" aria-hidden="true"></i> — Импорт из Google Earth</a></li>
           <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#netmap-rosseti"><i class="ti ti-building-broadcast-tower" aria-hidden="true"></i> — Подстанции и договорные опоры</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#netmap-deals"><i class="ti ti-user-plus" aria-hidden="true"></i> — Слои «Лиды» и «Клиенты»</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#netmap-poles-registry"><i class="ti ti-table" aria-hidden="true"></i> — Реестр и сверка опор</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#netmap-checklist"><i class="ti ti-checklist" aria-hidden="true"></i> — Что заполнить</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#netmap-tech"><i class="ti ti-plug-connected" aria-hidden="true"></i> — Техвозможность заявок</a></li>
         </ul>
       </li>
       <li class="has-children">
@@ -456,6 +460,10 @@
           <li><a href="crm.html#widget-org-summary"><i class="ti ti-puzzle" aria-hidden="true"></i> Виджет «Организации: сводка»</a></li>
           <li class="sub-item"><a href="crm.html#crm-setup"><i class="ti ti-settings" aria-hidden="true"></i> 11. Мастер настройки</a></li>
           <li class="sub-item"><a href="crm.html#crm-montazh"><i class="ti ti-tool" aria-hidden="true"></i> 12. Наряды монтажника</a></li>
+          <li><a href="crm.html#crm-obzvon"><i class="ti ti-point" aria-hidden="true"></i> Обзвон и первый звонок роботом</a></li>
+          <li><a href="crm.html#crm-field-plan"><i class="ti ti-point" aria-hidden="true"></i> План выездов</a></li>
+          <li><a href="crm.html#crm-field-crew"><i class="ti ti-point" aria-hidden="true"></i> График монтажников и бригады</a></li>
+          <li><a href="crm.html#crm-field-report"><i class="ti ti-point" aria-hidden="true"></i> Отчёты по выездам</a></li>
           <li class="sub-item"><a href="crm.html#crm-dashboard"><i class="ti ti-map-2" aria-hidden="true"></i> 13. Дашборд продаж</a></li>
           <li><a href="crm.html#crm-dashboard-pipeline"><i class="ti ti-point" aria-hidden="true"></i> Выбор воронки</a></li>
           <li><a href="crm.html#crm-insights"><i class="ti ti-point" aria-hidden="true"></i> Итоги периода</a></li>
@@ -1034,6 +1042,36 @@
   </ul>
 </details>
 </div>
+<!-- ═══════════ v3.0.0 — 17 сентября 2026 (единая карта: опоры, техвозможность, план выездов) ═══════════ -->
+  <h2 id="v3-b3108">v3.0.0 — 17 сентября 2026 (единая карта: опоры, техвозможность, обзвон, план выездов)</h2>
+
+  <h3 id="v3b3108-netmap">Карта сети</h3>
+  <ul>
+    <li>Слои «Лиды» (открытые сделки CRM с домом, цвет — этап) и «Клиенты» (клиенты биллинга по дому, цвет — статус) с полосами фильтров; панель слоёв — в одну строку, мониторинг — значком. <a href="nas-equipment.html#netmap-deals">Подробнее</a>.</li>
+    <li>Реестр договорных опор таблицей (1 697 опор, 155 598,22 ₽ в месяц с НДС — как в договоре), опоры поштучно с расстановкой на карте, сверка со списками «К оформлению» и «К исключению». <a href="nas-equipment.html#netmap-poles-registry">Подробнее</a>.</li>
+    <li>«Что заполнить» — чего не хватает карте и плану выездов, со ссылками. <a href="nas-equipment.html#netmap-checklist">Подробнее</a>.</li>
+  </ul>
+
+  <h3 id="v3b3108-tech">Техвозможность заявок</h3>
+  <ul>
+    <li>Вердикт по карте сети у каждой открытой заявки с домом — в доп. поле сделки, в попапе слоя «Лиды» и в обзвоне; срез «Где не хватает сети». <a href="nas-equipment.html#netmap-tech">Подробнее</a>.</li>
+    <li>Поиск домов по тексту заявок, пометка «далеко от нашей сети», разбор через AI по кнопке, задача «Уточнить адрес». <a href="nas-equipment.html#netmap-tech-addr">Подробнее</a>.</li>
+  </ul>
+
+  <h3 id="v3b3108-crm">CRM: обзвон, план выездов, отчёты</h3>
+  <ul>
+    <li>«Обзвон» — очередь согласования даты и подтверждения выезда; попытки — задачи CRM; первый звонок роботом. <a href="crm.html#crm-obzvon">Подробнее</a>.</li>
+    <li>«План выездов» — распределение по монтажникам и бригадам, маршрут и время в пути по дорогам (свой маршрутизатор на сервере), утверждение в сделки, рассылка монтажникам, свободные окна, выезды других организаций. <a href="crm.html#crm-field-plan">Подробнее</a>.</li>
+    <li>«График монтажников» — дни, часы, точка выезда, навыки, отпуска, бригады и машины; утверждает группа «Главный инженер», напоминание в 18:00, если план на завтра не утверждён. <a href="crm.html#crm-field-crew">Подробнее</a>.</li>
+    <li>«Отчёты по выездам» — подключения, отказы, обзвон, пробег, техвозможность по районам, опоры; причина «Не по подключению» — одним написанием и не считается отказом. <a href="crm.html#crm-field-report">Подробнее</a>.</li>
+  </ul>
+
+  <h3 id="v3b3108-reports">Свои отчёты</h3>
+  <ul>
+    <li>Параметр «Организация» — только доступные сотруднику организации, по умолчанию из навбара; рассылка в чат — по организациям автора расписания, блоками. <a href="reports.html#custom-reports-param-org">Подробнее</a>.</li>
+    <li>Исправлено: рассылка в чат не передавала отчётам даты периода. Новый отчёт «Где заявкам не хватает сети» — по всем организациям.</li>
+  </ul>
+
 <!-- ═══════════ v3.0.0 — 16 сентября 2026 (CRM: дашборд, карта, история стадий) ═══════════ -->
   <h2 id="v3-b3056">v3.0.0 — 16 сентября 2026 (CRM: дашборд продаж и карта лидов)</h2>
 

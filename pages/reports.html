@@ -182,6 +182,10 @@
           <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#netmap-search"><i class="ti ti-search" aria-hidden="true"></i> — Поиск и ссылки на объект</a></li>
           <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#netmap-import"><i class="ti ti-plug" aria-hidden="true"></i> — Импорт из Google Earth</a></li>
           <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#netmap-rosseti"><i class="ti ti-building-broadcast-tower" aria-hidden="true"></i> — Подстанции и договорные опоры</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#netmap-deals"><i class="ti ti-user-plus" aria-hidden="true"></i> — Слои «Лиды» и «Клиенты»</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#netmap-poles-registry"><i class="ti ti-table" aria-hidden="true"></i> — Реестр и сверка опор</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#netmap-checklist"><i class="ti ti-checklist" aria-hidden="true"></i> — Что заполнить</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="nas-equipment.html#netmap-tech"><i class="ti ti-plug-connected" aria-hidden="true"></i> — Техвозможность заявок</a></li>
         </ul>
       </li>
       <li class="has-children">
@@ -493,6 +497,10 @@
           <li><a href="crm.html#widget-org-summary"><i class="ti ti-puzzle" aria-hidden="true"></i> Виджет «Организации: сводка»</a></li>
           <li class="sub-item"><a href="crm.html#crm-setup"><i class="ti ti-settings" aria-hidden="true"></i> 11. Мастер настройки</a></li>
           <li class="sub-item"><a href="crm.html#crm-montazh"><i class="ti ti-tool" aria-hidden="true"></i> 12. Наряды монтажника</a></li>
+          <li><a href="crm.html#crm-obzvon"><i class="ti ti-point" aria-hidden="true"></i> Обзвон и первый звонок роботом</a></li>
+          <li><a href="crm.html#crm-field-plan"><i class="ti ti-point" aria-hidden="true"></i> План выездов</a></li>
+          <li><a href="crm.html#crm-field-crew"><i class="ti ti-point" aria-hidden="true"></i> График монтажников и бригады</a></li>
+          <li><a href="crm.html#crm-field-report"><i class="ti ti-point" aria-hidden="true"></i> Отчёты по выездам</a></li>
           <li class="sub-item"><a href="crm.html#crm-dashboard"><i class="ti ti-map-2" aria-hidden="true"></i> 13. Дашборд продаж</a></li>
           <li><a href="crm.html#crm-dashboard-pipeline"><i class="ti ti-point" aria-hidden="true"></i> Выбор воронки</a></li>
           <li><a href="crm.html#crm-insights"><i class="ti ti-point" aria-hidden="true"></i> Итоги периода</a></li>
@@ -1449,8 +1457,31 @@ flowchart LR
       <td>Расширенный выпадающий с экранированными значениями</td>
       <td>String (code)</td>
     </tr>
+    <tr>
+      <td><strong>org</strong></td>
+      <td><code>:Организация|org$</code></td>
+      <td>Выбор организации (бейджи): «Все доступные» и каждая доступная сотруднику; по умолчанию — из навбара</td>
+      <td>String с id через запятую: <code>'1,3'</code></td>
+    </tr>
   </tbody>
 </table>
+
+<h4 id="custom-reports-param-org">Параметр «Организация» (build 3085)</h4>
+<p>В форму запуска попадают только организации, к которым привязан отчёт (не привязан — все активные)
+и которые доступны сотруднику. Список строится на сервере, поэтому подставить в запрос чужую
+организацию нельзя: форма отклонит такое значение. Ничего не доступно — в запрос уходит <code>0</code>,
+и отчёт пуст. В SQL значение разбирается так:</p>
+<pre><code>WHERE COALESCE(p."ORGANIZATION_ID", 1) = ANY(string_to_array(:Организация|org$, ',')::int[])</code></pre>
+<figure class="shot is-narrow">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/field_plan_v3108/report_org_param.jpg" alt="Запуск отчёта: выбор организации из доступных сотруднику" loading="lazy">
+  <figcaption>Запуск отчёта: выбор организации из доступных сотруднику</figcaption>
+</figure>
+<p>Если первая колонка результата называется <strong>«Организация»</strong>, рассылка в чат делит
+сообщение на блоки по организациям (до N строк в каждом) и показывает четыре следующие колонки.
+Пример — отчёт «Где заявкам не хватает сети (техвозможность)».</p>
+<p class="note"><i class="ti ti-alert-triangle"></i> Параметр ищется по шаблону <code>:Имя|тип$</code>.
+Незахватывающая группа регулярного выражения вида <code>(?:ул|пер)</code> в том же запросе похожа на
+начало параметра, если дальше в тексте есть <code>$</code>. Используйте обычную группу <code>(ул|пер)</code>.</p>
 
 <p><strong>Пример SQL с параметрами</strong>:</p>
 <pre><code>SELECT a.id, a.name, a.contract_number,
