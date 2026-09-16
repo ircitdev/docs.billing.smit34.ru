@@ -371,11 +371,13 @@
           <li><a href="extras.html#ui-components-list"><i class="ti ti-point" aria-hidden="true"></i> Состав библиотеки</a></li>
           <li><a href="extras.html#ui-drawer"><i class="ti ti-point" aria-hidden="true"></i> Боковые панели: одна механика на весь биллинг</a></li>
           <li><a href="extras.html#ui-components-arch"><i class="ti ti-point" aria-hidden="true"></i> Как это устроено</a></li>
-          <li><a href="extras.html#autodial-telephony"><i class="ti ti-phone" aria-hidden="true"></i> 13. Автообзвон и телефония</a></li>
-          <li class="sub-item"><a href="extras.html#autodial-providers"><i class="ti ti-category" aria-hidden="true"></i> 13.1. Мультипровайдер</a></li>
-          <li class="sub-item"><a href="extras.html#autodial-asterisk"><i class="ti ti-phone" aria-hidden="true"></i> 13.2. Своя телефония (Asterisk)</a></li>
-          <li class="sub-item"><a href="extras.html#autodial-consent"><i class="ti ti-writing-sign" aria-hidden="true"></i> 13.3. Согласие и ограничения</a></li>
-          <li class="sub-item"><a href="extras.html#autodial-card-tab"><i class="ti ti-map-2" aria-hidden="true"></i> 13.4. Вкладка «Звонки» в карточке</a></li>
+          <li><a href="extras.html#autodial-telephony"><i class="ti ti-phone" aria-hidden="true"></i> 13. Автообзвон</a></li>
+          <li class="sub-item"><a href="extras.html#autodial-providers"><i class="ti ti-list-details" aria-hidden="true"></i> 13.1. Сценарии и настройки</a></li>
+          <li class="sub-item"><a href="extras.html#autodial-voices"><i class="ti ti-microphone" aria-hidden="true"></i> 13.2. Голос робота</a></li>
+          <li class="sub-item"><a href="extras.html#autodial-journal"><i class="ti ti-list" aria-hidden="true"></i> 13.3. Журнал</a></li>
+          <li class="sub-item"><a href="extras.html#autodial-dashboard"><i class="ti ti-chart-bar" aria-hidden="true"></i> 13.4. Дашборд</a></li>
+          <li class="sub-item"><a href="extras.html#autodial-consent"><i class="ti ti-writing-sign" aria-hidden="true"></i> 13.5. Согласие и ограничения</a></li>
+          <li class="sub-item"><a href="extras.html#autodial-card-tab"><i class="ti ti-map-2" aria-hidden="true"></i> 13.6. Вкладка «Звонки» в карточке</a></li>
         </ul>
       </li>
       <li class="has-children">
@@ -1049,6 +1051,19 @@
     <li>«Кто едет»: сверху те, кто в этот день работает, список шире — имя и занятость не обрезаются.</li>
     <li>Знакомство с разделом и обучающий ролик «План выездов и график монтажников» (3:38, с озвучкой). <a href="crm.html#crm-field-plan-video">Смотреть</a>.</li>
     <li>Телефон: карточки выездов в плане и «Обзвоне» без горизонтальной прокрутки; длинная причина «Не вошли в план» переносится.</li>
+  </ul>
+
+<!-- ═══════════ v3.0.0 — 17 сентября 2026 (автообзвон: дашборд, журнал, голоса, ролик) ═══════════ -->
+  <h2 id="v3-b3123">v3.0.0 — 17 сентября 2026 (автообзвон: дашборд, журнал, голоса, ролик)</h2>
+
+  <h3 id="v3b3123-autodial">Автообзвон</h3>
+  <ul>
+    <li>Дашборд считает только звонки робота: раньше в «исходящие» попадали и звонки операторов. Период 7, 30 или 90 дней, звонки по дням с разбивкой по исходу, воронка задач, расход в этом месяце по тарифу, итоги по сценариям — отдельно коды для входа по звонку и тестовые звонки. <a href="extras.html#autodial-dashboard">Подробнее</a>.</li>
+    <li>Журнал на общем каркасе: срезы «Ждут звонка», «Разговор», «Не ответили», «Ошибки», «Пропущены»; поиск по клиенту, договору и телефону; сценарий и период под кнопкой «Фильтры»; причина словами; запись разговора; CSV. Звонки из очереди можно отменить и вернуть. <a href="extras.html#autodial-journal">Подробнее</a>.</li>
+    <li>Раньше «Ошибка» стояла у задач, где клиент просто не взял трубку, — теперь это срез «Не ответили».</li>
+    <li>Голос робота: основной и резервный, с прослушиванием. Резервный звучит, если основной недоступен. <a href="extras.html#autodial-voices">Подробнее</a>.</li>
+    <li>Телефонию и учёт расхода ведёт сервер лицензий — в настройках биллинга их больше нет.</li>
+    <li>Обучающий ролик «Автообзвон» (2:54, с озвучкой) — в разделе документации и в галерее роликов.</li>
   </ul>
 
 <!-- ═══════════ v3.0.0 — 17 сентября 2026 (Salesbot: настройки шага, знакомство, ролик) ═══════════ -->

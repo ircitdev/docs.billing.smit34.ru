@@ -408,11 +408,13 @@
           <li><a href="extras.html#ui-components-list"><i class="ti ti-point" aria-hidden="true"></i> Состав библиотеки</a></li>
           <li><a href="extras.html#ui-drawer"><i class="ti ti-point" aria-hidden="true"></i> Боковые панели: одна механика на весь биллинг</a></li>
           <li><a href="extras.html#ui-components-arch"><i class="ti ti-point" aria-hidden="true"></i> Как это устроено</a></li>
-          <li><a href="extras.html#autodial-telephony"><i class="ti ti-phone" aria-hidden="true"></i> 13. Автообзвон и телефония</a></li>
-          <li class="sub-item"><a href="extras.html#autodial-providers"><i class="ti ti-category" aria-hidden="true"></i> 13.1. Мультипровайдер</a></li>
-          <li class="sub-item"><a href="extras.html#autodial-asterisk"><i class="ti ti-phone" aria-hidden="true"></i> 13.2. Своя телефония (Asterisk)</a></li>
-          <li class="sub-item"><a href="extras.html#autodial-consent"><i class="ti ti-writing-sign" aria-hidden="true"></i> 13.3. Согласие и ограничения</a></li>
-          <li class="sub-item"><a href="extras.html#autodial-card-tab"><i class="ti ti-map-2" aria-hidden="true"></i> 13.4. Вкладка «Звонки» в карточке</a></li>
+          <li><a href="extras.html#autodial-telephony"><i class="ti ti-phone" aria-hidden="true"></i> 13. Автообзвон</a></li>
+          <li class="sub-item"><a href="extras.html#autodial-providers"><i class="ti ti-list-details" aria-hidden="true"></i> 13.1. Сценарии и настройки</a></li>
+          <li class="sub-item"><a href="extras.html#autodial-voices"><i class="ti ti-microphone" aria-hidden="true"></i> 13.2. Голос робота</a></li>
+          <li class="sub-item"><a href="extras.html#autodial-journal"><i class="ti ti-list" aria-hidden="true"></i> 13.3. Журнал</a></li>
+          <li class="sub-item"><a href="extras.html#autodial-dashboard"><i class="ti ti-chart-bar" aria-hidden="true"></i> 13.4. Дашборд</a></li>
+          <li class="sub-item"><a href="extras.html#autodial-consent"><i class="ti ti-writing-sign" aria-hidden="true"></i> 13.5. Согласие и ограничения</a></li>
+          <li class="sub-item"><a href="extras.html#autodial-card-tab"><i class="ti ti-map-2" aria-hidden="true"></i> 13.6. Вкладка «Звонки» в карточке</a></li>
         </ul>
       </li>
       <li class="has-children">
@@ -1047,9 +1049,11 @@
     <li class="sub-item"><a href="#ui-drawer">Боковые панели: одна механика на весь биллинг</a></li>
     <li class="sub-item"><a href="#ui-section-search">Поиск внутри раздела</a></li>
     <li class="sub-item"><a href="#ui-components-arch">Как это устроено</a></li>
-    <li><a href="#autodial-telephony">Автообзвон и своя телефония</a></li>
-    <li class="sub-item"><a href="#autodial-providers">Мультипровайдер</a></li>
-    <li class="sub-item"><a href="#autodial-asterisk">Своя телефония на Asterisk</a></li>
+    <li><a href="#autodial-telephony">Автообзвон</a></li>
+    <li class="sub-item"><a href="#autodial-providers">Сценарии и настройки</a></li>
+    <li class="sub-item"><a href="#autodial-voices">Голос робота</a></li>
+    <li class="sub-item"><a href="#autodial-journal">Журнал</a></li>
+    <li class="sub-item"><a href="#autodial-dashboard">Дашборд</a></li>
     <li class="sub-item"><a href="#autodial-consent">Согласие и ограничения</a></li>
     <li class="sub-item"><a href="#autodial-card-tab">Вкладка «Звонки» в карточке клиента</a></li>
   </ul>
@@ -2670,26 +2674,135 @@ flowchart LR
 </div>
 
 
-<h2 id="autodial-telephony"><i class="ti ti-phone-call h-ico" aria-hidden="true"></i>Автообзвон и своя телефония</h2>
-<p>Модуль «Автообзвон» — исходящий обзвон роботом: система сама звонит клиенту и проигрывает голосовое сообщение (низкий баланс, обещанный платёж, опрос NPS). Робот <strong>только доносит информацию</strong> — без запроса нажатий и распознавания голоса. Раздел управления — <code>/admin/ai/dialer/</code> (сценарии, журнал, тест-звонок, чёрный список, настройки).</p>
+<h2 id="autodial-telephony"><i class="ti ti-phone-call h-ico" aria-hidden="true"></i>Автообзвон</h2>
+<p>Робот сам звонит клиентам и говорит заданный текст: напоминает об оплате, предупреждает об окончании обещанного платежа, проводит опрос после подключения, диктует код для входа в личный кабинет. Раздел — <code>/admin/ai/dialer/</code>, в нём три страницы: <strong>сценарии и настройки</strong>, <strong>журнал</strong> и <strong>дашборд</strong>.</p>
+<figure class="doc-video">
+  <div class="dv-head">
+    <span class="dv-kind"><i class="ti ti-player-play-filled" aria-hidden="true"></i> Обучающее видео</span>
+    <span class="dv-time">2:54</span>
+  </div>
+  <div class="dv-media">
+    <video controls preload="none" playsinline
+             poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/smit_autodial_training_2026-09-17-poster.jpg">
+        <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/smit_autodial_training_2026-09-17.mp4" type="video/mp4">
+        Ваш браузер не проигрывает видео —
+        <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/smit_autodial_training_2026-09-17.mp4">скачайте файл</a>.
+      </video>
+  </div>
+  <figcaption>
+    <p class="dv-desc">Сценарии и тестовый звонок, текст сценария, основной и резервный голос, ограничения, журнал с отменой звонков и дашборд.</p>
+    <div class="dv-foot">
+      <span class="dv-spec">1920×1080</span>
+      <span class="dv-spec">с озвучкой</span>
+      <a class="dv-download" href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/smit_autodial_training_2026-09-17.mp4" target="_blank" rel="noopener" aria-label="Скачать видеофайл"><i class="ti ti-download" aria-hidden="true"></i> Скачать</a>
+    </div>
+  </figcaption>
+</figure>
+<pre class="mermaid">
+flowchart LR
+    S["Сценарий<br/>и расписание"] --> T["Задача<br/>на звонок"]
+    T --> P{"Можно звонить?"}
+    P -->|"стоп-лист, тихие часы,<br/>лимит, нет согласия"| K["Пропущен"]
+    P -->|"да"| C["Звонок<br/>основным голосом"]
+    C -->|"голос недоступен"| F["Резервный голос"]
+    C --> R{"Исход"}
+    F --> R
+    R --> J["Журнал<br/>и дашборд"]
+    R -->|"разговор"| M["Минуты<br/>в расход по тарифу"]
+</pre>
 
-<h3 id="autodial-providers">Мультипровайдер</h3>
-<p>Способ дозвона выбирается настройкой <code>AUTODIAL_PROVIDER</code>:</p>
-<table>
-  <thead><tr><th>Провайдер</th><th>Тип</th><th>Контроль</th><th>Статус</th></tr></thead>
+<h3 id="autodial-providers">Сценарии и настройки</h3>
+<p>Сценарий — это текст робота и условие, когда звонить. Срезы «Активные» и «Выключенные» показывают, по каким сценариям робот работает сейчас; в колонке «Задач за 30 дней» — сколько звонков сценарий создал. Меню строки открывает сценарий, включает или выключает его, а кнопка <strong>«Тестовый звонок»</strong> звонит роботом на ваш номер — так текст проверяют до запуска.</p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/autodial_v3123/01_scenarios.png" alt="Автообзвон: сценарии, срезы «Активные» и «Выключенные», меню строки" loading="lazy">
+  <figcaption>Сценарии: действия раздела в шапке, срезы, поиск и таблица</figcaption>
+</figure>
+<p>В окне сценария — название, код (по нему сценарий вызывают задачи и тестовый звонок), условие звонка, предельная длительность и скрипт разговора. В тексте можно подставлять данные клиента: <code>{{name}}</code> — имя, <code>{{balance}}</code> — баланс.</p>
+<figure class="shot is-narrow">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/autodial_v3123/03_scenario_modal.png" alt="Окно сценария: название, код, условие звонка, скрипт разговора" loading="lazy">
+  <figcaption>Окно сценария</figcaption>
+</figure>
+<p>Под сценариями — <strong>настройки автообзвона</strong>:</p>
+<ul>
+  <li><strong>«Автообзвон включён»</strong> — общий выключатель. Выключение останавливает все звонки робота и отключает модуль; система спросит подтверждение.</li>
+  <li><strong>«Звонки»</strong> — номер, который видит клиент, окно звонков (с какого по какой час), сколько звонков в сутки всего и одному клиенту, как часто можно повторять один и тот же сценарий одному клиенту.</li>
+</ul>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/autodial_v3123/02_settings.png" alt="Настройки автообзвона: выключатель, голос робота, окно и лимиты звонков" loading="lazy">
+  <figcaption>Настройки автообзвона. Сохранение показывает список изменений и пишется в журнал действий</figcaption>
+</figure>
+<p>Телефонию, по которой звонит робот, настраивать не нужно: подключение и учёт расхода ведёт сервер лицензий.</p>
+
+<h3 id="autodial-voices">Голос робота</h3>
+<p>Голос выбирается один на все сценарии, в разделе «Голос робота»:</p>
+<ul>
+  <li><strong>Основной голос</strong> — живой, естественный; им робот говорит во всех сценариях.</li>
+  <li><strong>Резервный голос</strong> — чёткий телефонный; звучит, если основной сейчас недоступен. Звонок не срывается, клиент слышит тот же текст другим голосом.</li>
+</ul>
+<p>Кнопка <strong>«Прослушать»</strong> проигрывает образец — так, как клиент услышит робота в трубке. Список голосов приходит с сервера лицензий и пополняется без обновления биллинга.</p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/autodial_v3123/02_voices.png" alt="Голос робота: основной и резервный, кнопки «Прослушать»" loading="lazy">
+  <figcaption>Основной и резервный голос с прослушиванием</figcaption>
+</figure>
+
+<h3 id="autodial-journal">Журнал автообзвона</h3>
+<p><code>/admin/ai/dialer/calls/</code> — все задачи робота. Срезы разбивают их по исходу, число в срезе — сколько задач подходит под остальные фильтры:</p>
+<table class="data-table">
+  <thead><tr><th>Срез</th><th>Что в нём</th></tr></thead>
   <tbody>
-    <tr><td><code>zvonok</code></td><td>облако, робот-обзвон</td><td>низкий (чужой движок)</td><td>живые звонки идут</td></tr>
-    <tr><td><code>asterisk</code></td><td>своя телефония</td><td><strong>полный</strong></td><td>стенд готов, E2E подтверждён</td></tr>
-    <tr><td><code>mango</code></td><td>callback оператор→клиент</td><td>средний</td><td>заготовка</td></tr>
+    <tr><td><strong>Ждут звонка</strong></td><td>задачи в очереди и звонки, которые идут сейчас</td></tr>
+    <tr><td><strong>Разговор</strong></td><td>клиент взял трубку; рядом длительность и кнопка ▶ записи</td></tr>
+    <tr><td><strong>Не ответили</strong></td><td>клиент не взял трубку или сбросил</td></tr>
+    <tr><td><strong>Ошибки</strong></td><td>звонок не удалось начать; причина — в колонке «Причина»</td></tr>
+    <tr><td><strong>Пропущены</strong></td><td>звонка не было: стоп-лист, тихие часы, лимит, нет согласия, отмена</td></tr>
   </tbody>
 </table>
+<p>Поиск — по имени клиента, договору или телефону. Кнопка <strong>«Фильтры»</strong> открывает под срезами выбор сценария и периода; выбранные фильтры видны пилюлями, крестик снимает фильтр. Список догружается при прокрутке, колонки настраиваются кнопкой справа, CSV выгружает журнал с текущими фильтрами.</p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/autodial_v3123/08_journal.png" alt="Журнал автообзвона: срезы по исходу, поиск, фильтры сценария и периода, панель действий над выбранным" loading="lazy">
+  <figcaption>Журнал тестового клиента: срезы по исходу, открытые фильтры и панель действий над двумя отмеченными строками</figcaption>
+</figure>
+<p>Имя клиента открывает его карточку в боковой панели. Меню строки — карточка клиента, копирование номера и переход к звонку в журнале звонков.</p>
+<figure class="shot is-narrow">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/autodial_v3123/10_journal_menu.png" alt="Меню строки журнала: карточка клиента, скопировать номер, звонок в журнале звонков" loading="lazy">
+  <figcaption>Меню строки журнала</figcaption>
+</figure>
+<p><strong>Отмена звонков.</strong> Звонки, которые ещё ждут в очереди, можно отменить — из меню строки или отметив несколько строк («Отменить звонки»). Перед отменой система покажет, кому робот не позвонит; в уведомлении после отмены есть кнопка «Вернуть». Вернуть в очередь можно только звонки, отменённые вручную. Отмена и возврат пишутся в журнал действий.</p>
 
-<h3 id="autodial-asterisk">Своя телефония на Asterisk</h3>
-<p>Отдельный Docker-стек <code>smit-dialer</code> рядом с биллингом (не трогает прод-compose): контейнер <strong>Asterisk 22.9.0</strong> (host-network, ARI на порту 8088) и постоянный контейнер <strong>ari-listener</strong> (обрабатывает Stasis-события звонка). Синтез речи — <strong>Yandex SpeechKit</strong> (облако): биллинг превращает текст сценария в WAV-файл, кладёт его в общий каталог, а Asterisk проигрывает его в звонок. Локальный синтез на сервере невозможен (у процессора нет инструкций AVX), поэтому используется облачный TTS.</p>
-<p>Поток робот-звонка: <code>текст сценария → Yandex SpeechKit (WAV) → общий каталог → Asterisk (ARI originate) → проигрывание клиенту → завершение вызова</code>. Цикл проверен вживую (StasisStart → play → playback finished → hangup).</p>
+<h3 id="autodial-dashboard">Дашборд автообзвона</h3>
+<p><code>/admin/ai/dialer/dashboard/</code> — итоги работы робота за 7, 30 или 90 дней. Считаются только звонки робота: звонки операторов сюда не попадают.</p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/autodial_v3123/05_dash_top.png" alt="Дашборд автообзвона: сводка, период и звонки по дням" loading="lazy">
+  <figcaption>Сводка и звонки по дням: зелёный — ответили, серый — не ответили, красный — ошибка связи</figcaption>
+</figure>
+<table class="data-table">
+  <thead><tr><th>Показатель</th><th>Как считается</th></tr></thead>
+  <tbody>
+    <tr><td>Звонков робота</td><td>все звонки робота за период: обзвон, коды для входа по звонку, тестовые</td></tr>
+    <tr><td>Ответили</td><td>клиент взял трубку; процент — от всех звонков</td></tr>
+    <tr><td>Не ответили · Ошибок связи</td><td>трубку не взяли · звонок не удалось начать</td></tr>
+    <tr><td>Минут разговора</td><td>начатая минута считается целой — так минуты считает тариф</td></tr>
+    <tr><td>Средний разговор</td><td>средняя длительность отвеченного звонка, мин:сек</td></tr>
+    <tr><td>Переданы в поддержку</td><td>робот передал разговор сотруднику</td></tr>
+  </tbody>
+</table>
+<p>За 90 дней столбики показывают недели, наведение на столбик — числа за день или неделю.</p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/autodial_v3123/06_dash_tasks.png" alt="Задачи обзвона и расход в этом месяце" loading="lazy">
+  <figcaption>Воронка задач и расход в этом месяце</figcaption>
+</figure>
+<p><strong>Задачи обзвона</strong> — воронка задач, созданных за период: сколько создано, по скольким робот позвонил, где клиент ответил и сколько выполнено. Ниже — остальные задачи: не ответили, ошибки, пропущенные по причинам. Каждая строка открывает журнал с тем же периодом и срезом.</p>
+<p><strong>Расход в этом месяце</strong> — минуты разговора и озвучка реплик по данным учёта лицензии: сколько израсходовано, сколько входит в тариф, цена сверх тарифа и сумма к оплате. Звонок попадает в учёт через два часа после окончания. Расход считается по всей системе, а не по выбранной организации.</p>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/autodial_v3123/07_dash_scenarios.png" alt="Дашборд: таблица по сценариям" loading="lazy">
+  <figcaption>Разбивка по сценариям</figcaption>
+</figure>
+<p><strong>По сценариям</strong> — звонки, доля ответивших, средний разговор, минуты и выполненные задачи для каждого сценария. Отдельными строками идут <strong>«Код для входа по звонку»</strong> (робот диктует код при входе в личный кабинет — минуты за эти звонки тоже входят в расход) и <strong>«Тестовые звонки»</strong>; звонки по удалённым сценариям собраны в одну строку. Название сценария открывает его задачи в журнале.</p>
+<div class="info-box"><strong>Организация.</strong> Сводка, журнал и таблицы учитывают организацию, выбранную в шапке. Тестовые звонки без клиента видны во всех организациях.</div>
 
+<span id="autodial-asterisk" aria-hidden="true"></span>
 <h3 id="autodial-consent">Согласие и ограничения</h3>
-<p>Звонок не уйдёт, если: клиент не дал согласие на голосовые уведомления (поле в ЛК и мобильном приложении), номер или клиент в <a href="#contact-stoplist">стоп-листе</a> с запретом звонков робота, сейчас «тихий час» или вне окна обзвона, исчерпан дневной лимит. С <strong>01.09.2026</strong> в РФ обязательна маркировка звонков от юрлиц — это учитывается при подключении телефонного транка.</p>
+<p>Звонок не уйдёт, если: клиент не дал согласие на голосовые уведомления (поле в ЛК и мобильном приложении), номер или клиент в <a href="#contact-stoplist">стоп-листе</a> с запретом звонков робота, сейчас «тихий час» или вне окна обзвона, исчерпан дневной лимит. Такая задача попадает в журнал, в срез «Пропущены», с причиной. Звонки от организаций в России маркируются: пока номер не промаркирован у операторов, звонки на мобильные могут приходить как СМС «вам звонил номер».</p>
 
 <h3 id="contact-stoplist">Стоп-лист: кому не звонить и не писать</h3>
 <p>Один список на все каналы: звонки робота, SMS, e-mail, push, Telegram, VK и рассылки Salesbot.
@@ -2732,7 +2845,7 @@ flowchart TB
 <ul>
   <li><strong>Согласие на голосовые звонки (152-ФЗ)</strong> — переключатель; без согласия исходящие не уходят.</li>
   <li><strong>Выбор сценария</strong> — какой текст проиграет робот (низкий баланс, обещанный платёж, опрос NPS и т.д.).</li>
-  <li><strong>«Звонок ботом»</strong> — робот звонит клиенту и проигрывает выбранный сценарий (через активного провайдера: Zvonok / своя телефония Asterisk).</li>
+  <li><strong>«Звонок ботом»</strong> — робот звонит клиенту и говорит выбранный сценарий голосом из настроек автообзвона.</li>
   <li><strong>«Автодозвон»</strong> — Mango набирает оператора и соединяет его с клиентом (живой разговор, не робот).</li>
 </ul>
 <p>Журнал звонков показывает: дату, направление (входящий/исходящий с иконкой), статус (цветной бейдж), AI-категорию обращения, краткое AI-резюме. Если по звонку создан тикет в Поддержке — рядом с резюме появляется ссылка <strong>«Создан тикет #N»</strong>, ведущая в Поддержку. Для звонков с записью кнопка ▶ открывает <strong>встроенный плеер в модальном окне</strong> (прослушать или скачать запись).</p>
@@ -2742,7 +2855,7 @@ flowchart TB
 </figure>
 
 <div class="note">
-  <p><strong>Статус:</strong> модуль и стенд своей телефонии готовы. Реальные звонки в телефонную сеть ждут подключения SIP-транка провайдера и маркировки звонков. До этого момента работает облачный провайдер Zvonok. Модуль по умолчанию выключен (kill-switch <code>AUTODIAL_ENABLED</code>).</p>
+  <p><strong>По умолчанию автообзвон выключен.</strong> Включается выключателем «Автообзвон включён» на странице сценариев; там же его можно остановить — все звонки робота прекращаются сразу.</p>
 </div>
 
 
@@ -2750,8 +2863,8 @@ flowchart TB
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 3123)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">17.09.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 3123)</span>&nbsp;|&nbsp;<span data-smit="updated">17.09.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 3125)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">17.09.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 3125)</span>&nbsp;|&nbsp;<span data-smit="updated">17.09.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2323"></script>
