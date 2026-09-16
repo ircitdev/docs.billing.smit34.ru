@@ -1154,7 +1154,28 @@ pre code {
    текста; мельче своего размера картинку не растягиваем. На телефоне — во
    всю ширину. */
 .shot.is-narrow { max-width: 50%; width: fit-content; }
-.shot.is-narrow img { width: auto; max-width: 100%; margin: 0 auto; }
+.shot.is-narrow img { width: auto; max-width: calc(100% - 28px); margin: 14px auto;
+  border-radius: 6px; box-shadow: 0 1px 4px rgba(0,0,0,.10); }
+/* Поля вокруг узкой картинки — той же «миллиметровкой», что у схем: пустота по
+   бокам выглядит задуманной, а не недоснятой. Подпись — на сплошном фоне. */
+.shot.is-narrow {
+  background-color: var(--bg-card, #fff);
+  background-image:
+    linear-gradient(rgba(67,183,122,.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(67,183,122,.06) 1px, transparent 1px),
+    linear-gradient(rgba(67,183,122,.10) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(67,183,122,.10) 1px, transparent 1px);
+  background-size: 16px 16px, 16px 16px, 80px 80px, 80px 80px;
+  background-position: -1px -1px;
+}
+.shot.is-narrow figcaption { background: var(--bg-card, #fff); }
+html[data-theme="dark"] .shot.is-narrow {
+  background-image:
+    linear-gradient(rgba(67,183,122,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(67,183,122,.05) 1px, transparent 1px),
+    linear-gradient(rgba(67,183,122,.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(67,183,122,.09) 1px, transparent 1px);
+}
 @media (max-width: 768px) { .shot.is-narrow { max-width: 100%; } }
 .shot.is-mobile { max-width: 320px; }
 [data-theme="dark"] .shot img { opacity: .92; }
