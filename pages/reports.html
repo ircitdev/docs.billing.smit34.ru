@@ -1784,209 +1784,371 @@ flowchart TB
 сама очередь — <a href="settings.html#fiscal-queue">там же</a>.</p>
 
 <h3 id="messages-journal">4.4. Журнал сообщений</h3>
-<p>Единый сводный журнал всех сообщений (<em>MsgStack</em>) по всем клиентам — SMS,
-Email, Telegram, Push, VK, ЛК. И точечные отправки из карточки клиента, и массовые
-рассылки попадают в один список. Доступен по адресу <code>/admin/reports/messages/</code>
-(пункт меню «Отчёты → Журнал сообщений»,, единый вид SmitUI и
-мульти-орг).</p>
+<p>Все сообщения клиентам в одном списке — SMS, почта, Telegram, push, VK и уведомления в
+личном кабинете: и отправленные из карточки клиента, и массовые рассылки, и служебные
+уведомления биллинга. Раздел: <strong>Отчёты → Журнал сообщений</strong>
+(<code>/admin/reports/messages/</code>). Отсюда же отправляют и планируют рассылки.</p>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v1770/01_journal_overview.png" alt="Журнал сообщений: KPI, фильтры, чипы каналов, таблица SmitUI с колонкой Орг.">
-  <figcaption>Журнал сообщений: KPI, фильтры, чипы каналов, таблица SmitUI с колонкой Орг.</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v3101/01_journal_top.png" alt="Журнал сообщений: шапка с кнопкой «Рассылка», сводка, запланированная рассылка, строка фильтров">
+  <figcaption>Шапка с кнопкой «Рассылка», сводка строкой, запланированные рассылки и строка фильтров</figcaption>
+</figure>
+
+<figure class="doc-video">
+  <div class="dv-head">
+    <span class="dv-kind"><i class="ti ti-player-play-filled" aria-hidden="true"></i> Обучающее видео</span>
+    <span class="dv-time">2:53</span>
+  </div>
+  <div class="dv-media">
+    <video controls preload="none" playsinline
+             poster="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/smit_messages_training_2026-09-17-poster.jpg">
+        <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/smit_messages_training_2026-09-17.mp4" type="video/mp4">
+        Ваш браузер не проигрывает видео —
+        <a href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/smit_messages_training_2026-09-17.mp4">скачайте файл</a>.
+      </video>
+  </div>
+  <figcaption>
+    <p class="dv-desc">Кому отправить, как составить текст и посчитать SMS, запланировать отправку, согласовать и изменить рассылку, черновик от AI-помощника.</p>
+    <div class="dv-foot">
+      <span class="dv-spec">1920×1080</span>
+      <span class="dv-spec">с озвучкой</span>
+      <a class="dv-download" href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video/smit_messages_training_2026-09-17.mp4" target="_blank" rel="noopener" aria-label="Скачать видеофайл"><i class="ti ti-download" aria-hidden="true"></i> Скачать</a>
+    </div>
+  </figcaption>
 </figure>
 
 <h4 id="messages-journal-map">Карта раздела</h4>
 <pre class="markmap">
 - Журнал сообщений
-  - Показатели
-    - Всего за период
-    - Доставлено SMS
-    - В очереди
-    - Ошибки SMS
+  - Сводка за период
+    - Сообщений
+    - SMS доставлено
+    - SMS ждут отчёта шлюза
+    - SMS с ошибкой
+  - Запланированные рассылки
+    - Карточка рассылки
+    - Изменить
+    - Согласовать
+    - Получатели сейчас
+    - Отменить
   - Фильтры
-    - Поиск текст договор
-    - Диапазон дат
-    - Чипы каналов
+    - Период
+    - Каналы
+    - Поиск
     - SMS-статус
     - Отправитель
-    - Организация
-  - Таблица SmitUI
-    - Колонка Орг
-    - Бейджи каналов
-    - Полоса ошибок SMS
-    - Карточки на телефоне
+    - Колонки и CSV
   - Рассылка
     - Категории
-    - Тарифы
-    - Папки MPTT
+    - Тарифы по линейкам
+    - Папки
+    - Услуги по типам
     - NAS
-    - Поиск
-    - Скоуп по орг
-  - Мульти-орг
-    - Фильтр по клиенту
-    - Записи без орг видны всем
-    - Рассылка своим клиентам
+    - Клиенты
+    - Сейчас или по расписанию
+  - AI-помощник
+    - Создать рассылку
+    - Доставка SMS
+  - Права
+    - Создают четыре роли
+    - Отправляют маркетолог и директор
 </pre>
 
-<h4 id="messages-journal-overview">Что внутри</h4>
+<h4 id="messages-journal-overview">Что на странице</h4>
+<span id="messages-journal-detail"></span><span id="messages-journal-mobile"></span>
 <ul>
-  <li><strong>4 KPI-карточки</strong> сверху: <em>Всего</em>, <em>Доставлено SMS</em>
-    (с процентом доставляемости), <em>В очереди</em>, <em>Ошибки SMS</em>. Период
-    переключается кнопками <em>Сегодня / Неделя / Месяц / Все</em>.</li>
-  <li><strong>Фильтры</strong>: текстовый поиск по сообщению/заголовку/клиенту/договору,
-    диапазон дат, кнопки быстрых периодов.</li>
-  <li><strong>Чипы каналов</strong>: <em>Все каналы / SMS / Email / Telegram / Push / VK / Только ЛК</em>.</li>
-  <li><strong>Фильтр SMS-статуса</strong> справа: только delivered / sent / pending / failed.</li>
-  <li><strong>Колонка «Отправитель»</strong> показывает кто отправил каждое
-    сообщение. <code>Aleksandr Uspeshnyy</code> для ручных отправок, <em>Система</em> —
-    для автоматических (биллинг, Celery, webhook). Рядом — фильтр <em>Отправитель — любой /
-    Мои / Системные</em> + список всех операторов с рассылками.</li>
-  <li><strong>Цветные бейджи каналов</strong> с tooltip'ами: ✓✓ delivered, ✓ sent,
-    ⏱ pending, ✕ failed (для SMS — на основе webhook-статуса <a href="settings-services.html#messaging-sms-webhook">sms-gate.app</a>).</li>
-  <li>Клик по строке открывает <strong>модалку с полным текстом</strong> и деталями
-    (на телефоне — полноэкранная слайд-панель, выезжает справа).</li>
-  <li><strong>Колонка «Орг.»</strong> — при включённых мульти-организациях
-    и режиме «Все организации» показывает организацию клиента цветным
-    бейджом <strong>OrgBadge</strong>. Записи без клиента (системные) — «—».</li>
-  <li><strong>Pagination</strong> 25/50/100/200, server-side.</li>
-  <li><strong>Экспорт CSV</strong> текущей выборки (UTF-8 BOM, разделитель <code>;</code>,
-    лимит 50 000 строк; в режиме «Все организации» — с колонкой «Орг.»).</li>
+  <li><strong>Шапка</strong> — название раздела и кнопка <em>«Рассылка»</em>. Кнопку видят только
+    сотрудники, которым разрешено создавать рассылки (см. <a href="#messages-journal-approval">права</a>).</li>
+  <li><strong>Сводка</strong> одной строкой: сколько сообщений за период, сколько SMS доставлено,
+    сколько ждут отчёта шлюза и сколько с ошибкой.</li>
+  <li><strong>Запланированные рассылки</strong> — карточки рассылок, которые ещё не отправлены,
+    и свёрнутый список завершённых и отменённых. Ссылка <code>?mailing=N</code> открывает страницу
+    с выделенной рассылкой — такие ссылки приходят в рабочий чат.</li>
+  <li><strong>Строка фильтров</strong>: период, каналы (<em>Все, SMS, Email, Telegram, Push, VK,
+    Только ЛК</em> — не поместившиеся уходят в «Ещё»), поиск по тексту, клиенту и договору
+    (ищет по мере ввода), SMS-статус, отправитель, выбор колонок и выгрузка CSV.</li>
+  <li><strong>Таблица</strong>: дата, организация (в режиме «Все организации»), клиент, договор,
+    заголовок и текст, отправитель, каналы с отметкой доставки. Строки выровнены по верхнему краю.
+    Клик по строке открывает сообщение целиком — с каналами доставки и переходом в карточку клиента.</li>
+  <li><strong>На телефоне</strong> строки становятся карточками, фильтры — в выезжающей панели,
+    окна — на весь экран.</li>
 </ul>
 
-<h4 id="messages-journal-multiorg">Разделение по организациям</h4>
-<p>Раздел учитывает <a href="extras.html#multi-org-model">мульти-организации</a>. Сообщение
-связано с клиентом (<code>MsgStack.abonent</code>), у клиента есть организация — журнал
-фильтруется по ней, а рассылка не может уйти клиентам чужой компании.</p>
+<figure class="shot is-narrow" style="max-width:366px">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v3101/16_mobile_top.png" alt="Журнал сообщений на телефоне">
+  <figcaption>На телефоне: кнопка «Рассылка» во всю ширину, карточка рассылки, кнопки в столбик</figcaption>
+</figure>
+
+<h4 id="messages-journal-broadcast">Рассылка: кому отправить</h4>
+<span id="messages-journal-folders"></span><span id="messages-journal-nas"></span>
+<p>Кнопка <em>«Рассылка»</em> открывает окно. Получателей выбирают одним из шести способов —
+вкладками вверху окна. Под вкладками всегда видно, сколько клиентов получится, первые имена и
+сколько из них можно достать каждым каналом.</p>
+<table class="docs-table">
+  <thead><tr><th>Вкладка</th><th>Кому уйдёт</th></tr></thead>
+  <tbody>
+    <tr><td>Категории</td><td>Готовые группы: должники, в минусе после изменения цены, сейчас онлайн,
+      заблокированные, с обещанным платежом, <strong>с активным IPTV</strong>, юрлица, без почты,
+      без телефона, без платежей 30 дней.</td></tr>
+    <tr><td>Тарифы</td><td>Сначала линейка (показаны только линейки, на тарифах которых есть клиенты,
+      и отдельно «Без линейки»), потом тарифы этой линейки с числом клиентов. Без отметок уйдёт всем
+      клиентам выбранных линеек, с отметками — только клиентам отмеченных тарифов.</td></tr>
+    <tr><td>Папки</td><td>Дерево папок клиентов открывается свёрнутым; папка выбирается вместе
+      с вложенными. Поиск по имени раскрывает ветки до найденной папки.</td></tr>
+    <tr><td>Услуги</td><td>Сначала тип услуги (Трафик, IPTV, ЧОП, Видео…) с числом клиентов, потом
+      услуги этого типа. Считаются только действующие услуги: включены, не удалены, срок начался и не
+      закончился.</td></tr>
+    <tr><td>NAS</td><td>Клиенты с учётками на выбранных NAS — с адресом NAS и числом клиентов.</td></tr>
+    <tr><td>Поиск</td><td>Конкретные клиенты: поле ищет по имени, договору, телефону и адресу,
+      выбранные показываются плашками.</td></tr>
+  </tbody>
+</table>
+
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v3101/03_broadcast_categories.png" alt="Окно рассылки: вкладки и категории">
+  <figcaption>Вкладки способов выбора и категории — выбрана «С активным IPTV»</figcaption>
+</figure>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v3101/04b_broadcast_tariffs.png" alt="Вкладка «Тарифы»: линейки и тарифы">
+  <figcaption>Тарифы: сначала линейка, потом её тарифы с числом клиентов</figcaption>
+</figure>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v3101/04_broadcast_services.png" alt="Вкладка «Услуги»: типы услуг и услуги">
+  <figcaption>Услуги: сначала тип, потом услуги этого типа; пометка IPTV — у услуг, связанных с ТВ-пакетом</figcaption>
+</figure>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v3101/05_broadcast_nas.png" alt="Вкладка NAS">
+  <figcaption>NAS: адрес узла и число клиентов на нём</figcaption>
+</figure>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v3101/06_broadcast_folders.png" alt="Вкладка «Папки»">
+  <figcaption>Папки: дерево открывается свёрнутым</figcaption>
+</figure>
+
+<h4 id="messages-journal-text">Текст, каналы и время</h4>
+<ul>
+  <li><strong>Текст</strong> набирается в редакторе. Над ним — счётчик: знаки, число SMS и алфавит.
+    Одна SMS кириллицей — до 70 знаков, в длинном сообщении — по 67 на часть (латиницей 160 и 153).
+    Когда включён канал SMS, счётчик оранжевый со второй части и красный с третьей: каждая часть
+    оплачивается.</li>
+  <li><strong>Подстановки</strong> подсвечиваются: <code>%(debt)s</code> — сколько не хватает до нуля,
+    в рублях; <code>%(balance)s</code> — баланс; <code>%(contract_number)s</code> — договор;
+    <code>%(abonent_name)s</code> — клиент. С <code>%(debt)s</code> сообщение уйдёт только тем, у кого
+    есть долг на момент отправки.</li>
+  <li><strong>Каналы</strong>: SMS, почта, Telegram, push. Без каналов сообщение появится только
+    в личном кабинете.</li>
+  <li><strong>Рекламная рассылка</strong> не уходит клиентам, отказавшимся от рекламы. Сообщения
+    о долге, блокировке и авариях оставляйте служебными.</li>
+  <li><strong>Когда отправить</strong>: «Сейчас» — сразу в очередь, не больше 500 получателей;
+    «Запланировать» — дата и время, темп (сообщений в минуту), название, номер обращения для отчёта,
+    чат для предупреждения и за сколько минут предупредить; до 1000 получателей.</li>
+</ul>
+
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v3101/07_broadcast_when.png" alt="Текст рассылки со счётчиком SMS и блок «Когда отправить»">
+  <figcaption>Редактор текста со счётчиком SMS и блок «Когда отправить» в режиме «Запланировать»</figcaption>
+</figure>
+
+<p>Перед отправкой и перед планированием открывается подтверждение: сколько получателей сейчас,
+каналы, число SMS на человека, текст, время старта и предупреждение. Отправленное сразу отменить
+нельзя — об этом сказано в окне.</p>
+
+<figure class="shot is-narrow" style="max-width:420px">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v3101/08_confirm_schedule.png" alt="Подтверждение перед планированием рассылки">
+  <figcaption>Подтверждение «Запланировать рассылку?»</figcaption>
+</figure>
+
+<h4 id="messages-journal-scheduled">Запланированные рассылки</h4>
+<p>Запланированная рассылка не отправляется сразу. Получатели считаются заново в момент старта,
+сообщения уходят в общую очередь порциями — не больше заданного темпа в минуту — с её тихим часом,
+стоп-листом и защитой от повторов.</p>
+<ul>
+  <li>За указанное число минут до старта в рабочий Telegram-чат уходит предупреждение: сколько
+    получателей и по каким каналам, пример сообщения, когда закончится, и ссылка на отмену.</li>
+  <li>Пришёл тихий час — рассылка ждёт его окончания и продолжается.</li>
+  <li>Не началась за два часа после назначенного времени — отмечается «Не состоялась», в чат уходит
+    причина.</li>
+  <li>После отправки итог (сколько поставлено, доставлено, пропущено и почему) приходит в чат и
+    ответом в указанное обращение.</li>
+</ul>
+
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v3101/02_scheduled_card.png" alt="Карточка запланированной рассылки">
+  <figcaption>Карточка: время и организация, кому, каналы, темп, предупреждение, обращение, автор и кто согласовал, текст и кнопки</figcaption>
+</figure>
+
+<pre class="mermaid">
+stateDiagram-v2
+    [*] --> Ждёт_согласования: создал сотрудник<br/>без права отправки
+    [*] --> Запланирована: создал маркетолог<br/>или директор
+    Ждёт_согласования --> Запланирована: «Согласовать»
+    Запланирована --> Ждёт_согласования: изменил сотрудник<br/>без права отправки
+    Запланирована --> Отправляется: наступило время
+    Отправляется --> Завершается: все поставлены в очередь
+    Завершается --> Отправлена: очередь отправила
+    Ждёт_согласования --> Не_состоялась: не согласована<br/>за 2 часа после старта
+    Запланирована --> Не_состоялась: не началась за 2 часа
+    Ждёт_согласования --> Отменена
+    Запланирована --> Отменена
+    Отправляется --> Отменена: «Отменить»
+    Отправлена --> [*]
+    Отменена --> [*]
+    Не_состоялась --> [*]
+</pre>
+
+<h4 id="messages-journal-approval">Права и согласование</h4>
+<table class="docs-table">
+  <thead><tr><th>Роль</th><th>Создать и изменить</th><th>Отправить сразу</th><th>Согласовать</th></tr></thead>
+  <tbody>
+    <tr><td>Старший сэйлс, старший менеджер</td><td>да</td><td>нет</td><td>нет</td></tr>
+    <tr><td>Маркетолог (группа «Маркетинг»), Директор</td><td>да</td><td>да</td><td>да</td></tr>
+    <tr><td>Суперпользователь</td><td>да</td><td>да</td><td>да</td></tr>
+    <tr><td>Остальные</td><td>нет — журнал только для просмотра</td><td>нет</td><td>нет</td></tr>
+  </tbody>
+</table>
+<p>Права проверяет сервер при каждом действии; отказ записывается в аудит. Рассылка, которую
+создал сотрудник без права отправки, получает статус <strong>«Ждёт согласования»</strong>: в
+рабочий чат уходит сообщение, а в момент предупреждения — напоминание. Маркетолог или директор
+нажимает <em>«Согласовать»</em>, проверив текст и получателей в подтверждении. Согласуется ровно та
+версия, которую он видел: если рассылку успели изменить, согласование не пройдёт.</p>
+
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v3101/14_pending_card.png" alt="Карточка рассылки, которая ждёт согласования">
+  <figcaption>Рассылка ждёт согласования — так её видит маркетолог или директор</figcaption>
+</figure>
+<figure class="shot is-narrow" style="max-width:420px">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v3101/15_confirm_approve.png" alt="Подтверждение согласования">
+  <figcaption>Подтверждение «Согласовать рассылку?»</figcaption>
+</figure>
 
 <pre class="mermaid">
 flowchart TD
-    REQ["Запрос журнала<br/>или рассылки"] --> MO{"Мульти-орг<br/>включён?"}
-    MO -->|"нет"| ALL["Без фильтра —<br/>все записи"]
-    MO -->|"да"| CUR{"Выбрана орг<br/>в шапке?"}
-    CUR -->|"да"| ONE["Только клиенты<br/>этой организации"]
-    CUR -->|"нет"| ISO{"Изоляция<br/>персонала?"}
-    ISO -->|"выключена"| ALLORG["Все организации<br/>+ колонка «Орг.»"]
-    ISO -->|"включена"| PERM["Только доступные<br/>оператору орг"]
-    ONE --> NULL["+ записи без клиента<br/>видны всем (NULL)"]
-    ALLORG --> NULL
-    PERM --> NULL
+    NEW["Рассылка → Запланировать"] --> RIGHT{"Может отправлять?<br/>маркетолог, директор"}
+    RIGHT -->|"да"| SCH["Запланирована"]
+    RIGHT -->|"нет"| PEND["Ждёт согласования<br/>сообщение в рабочий чат"]
+    PEND --> REM["В момент предупреждения —<br/>напоминание в чат"]
+    PEND --> APR{"«Согласовать»<br/>та же версия?"}
+    APR -->|"да"| SCH
+    APR -->|"изменили"| RELOAD["Обновить список<br/>и проверить заново"]
+    PEND --> LATE["Не согласована за 2 часа<br/>после старта → не состоялась"]
+    SCH --> WARN["Предупреждение в чат"] --> RUN["Старт: получатели<br/>считаются заново"]
 </pre>
 
-<p><strong>Журнал, KPI и CSV</strong> заскоуплены через <code>_apply_msg_org()</code> по
-<code>abonent__organization_id</code>. Контракт: <em>записи без определимой организации
-(системные, без клиента) видны всем</em> — иначе «ничьи» уведомления пропали бы у всех.</p>
-
-<p><strong>Рассылка — критично (P0).</strong> Набор получателей строится из единого
-<code>base</code>-queryset, который <em>заранее</em> ограничен доступными организациями
-оператора. Поэтому <strong>все</strong> режимы выбора (категории / тарифы / папки / NAS /
-поиск / выбор по ID) не могут захватить клиентов чужой компании — ни в предпросмотре,
-ни при отправке.</p>
-
-<h4 id="messages-journal-broadcast">Массовая рассылка</h4>
-<p>Кнопка <em>«Рассылка»</em> в правом верхнем углу открывает модальное окно для
-отправки одинакового текста группе клиентов через выбранные каналы (SMS / Email /
-Telegram / Push). Hard-limit — <strong>500 получателей</strong> на одну рассылку
-(защита от случайного спама).</p>
-
-<p>5 способов выбора получателей:</p>
-
-<ol>
-  <li><strong>Категории</strong> — 8 готовых chip-фильтров: <em>Должники, Сейчас онлайн,
-    Заблокированные, Об. платёж, Юр. лица, Без email, Без телефона, Не платил 30 дн.</em></li>
-  <li><strong>Тарифы</strong> — multi-select из ~78 тарифов. Отправит всем клиентам
-    на выбранных тарифах.</li>
-  <li><strong>Папки</strong> — древовидный picker с MPTT-обходом всех вложенных
-    подпапок автоматически. Поиск по имени, expand/collapse, кнопка очистки выбора.</li>
-  <li><strong>NAS</strong> — multi-select NAS-серверов. Отправит всем клиентам с
-    учётками на выбранных NAS (через <code>Users.nas_id</code>).</li>
-  <li><strong>Поиск</strong> — Select2 AJAX по имени/договору для точечного выбора.</li>
-</ol>
-
-<figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v1770/02_broadcast_modal.png" alt="Рассылка: 5 вкладок, категория Должники, предпросмотр 1620 получателей с разбивкой по каналам SMS/Email/TG/Push">
-  <figcaption>Рассылка: 5 вкладок, категория Должники, предпросмотр 1620 получателей с разбивкой по каналам SMS/Email/TG/Push</figcaption>
-</figure>
-
-<p><strong>Live-preview</strong> снизу всегда показывает: фактическое количество
-получателей, первые 10 имён + «…и ещё N», статистику доступности каналов
-(«SMS: 267 · Email: 13 · TG: 0 · Push: 1»). Кнопка «Отправить» дизаблится при
-count = 0 или count &gt; 500 (бейдж становится красным «макс 500!»).</p>
-
-<p><strong>Счётчик символов и SMS-сегментов</strong> справа от лейбла «Текст»
-обновляется на каждый ввод. Кириллица (UCS-2) → 70 символов на сегмент, латиница
-(GSM 7-bit) → 160. Цвет меняется на оранжевый при ≥2 сегментов и красный при ≥3.</p>
-
-<h4 id="messages-journal-folders">Дерево папок</h4>
-<p>Вкладка <em>«Папки»</em> отрисована как полноценное tree-list с иконками и
-счётчиками клиентов в каждой папке (включая подпапки). Поддерживается keyboard-навигация
-(Tab → Enter/Space), live-фильтр по имени с автоматическим раскрытием родителей,
-кнопки <em>Раскрыть всё / Свернуть всё / Очистить выбор</em>.</p>
-
-<figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v594/docs_v594_broadcast_folders_tree.png" alt="Tree папок: SMIT (5554), ртк-червленое (49), Дубовый (27, выбран)">
-  <figcaption>Tree папок: SMIT (5554), ртк-червленое (49), Дубовый (27, выбран)</figcaption>
-</figure>
-
-<h4 id="messages-journal-nas">Рассылка по NAS-серверам</h4>
-<p>Полезно когда нужно предупредить клиентов конкретного NAS (профилактические
-работы, замена оборудования, миграция). Каждый NAS показывается с IP, статусом
-(включён / выкл) и количеством клиентов.</p>
-
-<figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v594/docs_v594_broadcast_nas_tab.png" alt="Рассылка по NAS: 2 выбранных NAS, preview 408 клиентов">
-  <figcaption>Рассылка по NAS: 2 выбранных NAS, preview 408 клиентов</figcaption>
-</figure>
-
-<h4 id="messages-journal-audit">Аудит рассылок</h4>
-<p>Каждая отправка пишется в <em>AuditOperations</em> (категория «Сообщения», см.
-<a href="#audit">раздел 4.2 Аудит</a>):</p>
+<h4 id="messages-journal-edit">Изменить запланированную рассылку</h4>
+<p>Кнопка <em>«Изменить»</em> есть у рассылки, которая ещё не началась и до старта которой больше
+двух минут. Открывается то же окно с заполненными получателями, текстом, каналами, временем,
+темпом, чатом и обращением; «Сейчас» недоступно. По <em>«Сохранить»</em> окно показывает, что
+изменится — «было → стало», — и только после подтверждения записывает правку.</p>
 <ul>
-  <li><strong>Точечная отправка</strong> (карточка клиента → «Отправить»):
-    <code>«Сообщение #N → Иванов И.И. (SMS, Email): «текст…»»</code>
-    с указанием <code>owner</code> = текущий оператор.</li>
-  <li><strong>Массовая рассылка</strong> — одна summary-запись на всю операцию:
-    <code>«Рассылка: uspeshnyy → категория «business» (SMS, EMAIL), получателей: 270/270: «текст…»»</code>.</li>
-</ul>
-<p>Поле <code>MsgStack.owner_id</code> хранит pk оператора, поэтому в журнале можно
-отфильтровать «все мои отправки» или «всё что отправлял Петров».</p>
-
-<h4 id="messages-journal-detail">Модалка деталей</h4>
-<p>Клик по строке открывает полный текст сообщения, дату, клиента и статусы всех
-каналов доставки. Из неё — переход в карточку клиента.</p>
-
-<figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v1770/03_detail_modal.png" alt="Модалка деталей сообщения: дата, клиент, заголовок, полный текст, каналы доставки">
-  <figcaption>Модалка деталей сообщения: дата, клиент, заголовок, полный текст, каналы доставки</figcaption>
-</figure>
-
-<h4 id="messages-journal-mobile">Адаптивность и единый вид SmitUI</h4>
-<p>Раздел приведён к единому виду <a href="extras.html#ui-patterns">SmitUI</a>: чистая
-шапка таблицы без серого фона и sticky, бейджи-таблетки, единый источник тёмной темы.
-Красная полоса у строк с ошибкой SMS сохранена.</p>
-<ul>
-  <li><strong>Таблица → карточки на телефоне</strong> (≤767px): вместо скрытия колонок
-    каждая строка превращается в карточку с подписями полей (<code>data-label</code>) —
-    видна вся информация, а не урезанная. KPI перестраивается в 2×2 grid.</li>
-  <li><strong>Модалки → полноэкранные слайд-панели</strong>: на телефоне
-    и детальная модалка, и модалка рассылки разворачиваются на весь экран (100dvh) и
-    выезжают справа; шапка и футер прилипают (заголовок и кнопки действий всегда видны),
-    тело скроллится. <code>prefers-reduced-motion</code> отключает анимацию слайда.</li>
+  <li>Если предупреждение уже ушло, в тот же чат приходит «Рассылка изменена», а новое
+    предупреждение придёт заново — с новым временем и текстом.</li>
+  <li>Согласованную рассылку изменил сотрудник без права отправки — её нужно согласовать снова.</li>
+  <li>Если рассылку одновременно изменил кто-то другой или она уже началась, сохранение не пройдёт.</li>
 </ul>
 
-<h4 id="messages-journal-endpoints">Endpoint'ы</h4>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v3101/09_edit_when.png" alt="Изменение запланированной рассылки: блок «Когда отправить»">
+  <figcaption>Изменение: «Сейчас» недоступно, поля заполнены, кнопка «Сохранить»</figcaption>
+</figure>
+<figure class="shot is-narrow" style="max-width:420px">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v3101/10_confirm_edit.png" alt="Подтверждение изменений рассылки">
+  <figcaption>Подтверждение «Сохранить изменения?» со списком изменений</figcaption>
+</figure>
+
+<pre class="mermaid">
+sequenceDiagram
+    actor S as Сотрудник
+    participant W as Окно «Рассылка»
+    participant B as Биллинг
+    participant C as Рабочий чат
+    S->>W: Изменить
+    W->>B: поля рассылки
+    B-->>W: получатели, текст, время, каналы
+    S->>W: правит и нажимает «Сохранить»
+    W->>B: пробное сохранение
+    B-->>W: что изменится: было → стало
+    S->>W: подтверждает
+    W->>B: сохранить
+    B->>B: проверка: не началась, никто не менял
+    B->>B: аудит «изменена: …»
+    B-->>C: «Рассылка изменена», если предупреждение уже было
+</pre>
+
+<h4 id="messages-journal-ai">AI-помощник</h4>
+<p>Кнопка помощника в углу страницы знает группы получателей с числом клиентов, запланированные
+рассылки, недавние тексты, правила SMS и тихого часа. Заготовки: <em>«Создать рассылку»</em>,
+<em>«Доставка SMS»</em>, <em>«Запланированные»</em>.</p>
+<p>На «Создать рассылку» помощник уточняет, о чём и кому писать, предлагает группу, каналы и время
+и возвращает черновик. Кнопка <em>«Открыть в окне рассылки»</em> открывает окно с текстом,
+названием, группой, каналами и временем — дальше решает сотрудник. Сам помощник ничего не
+отправляет.</p>
+<figure class="shot is-narrow" style="max-width:400px">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v3101/11_ai_presets.png" alt="AI-помощник журнала: заготовки">
+  <figcaption>Заготовки помощника</figcaption>
+</figure>
+<figure class="shot is-narrow" style="max-width:400px">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v3101/12_ai_draft.png" alt="AI-помощник: черновик рассылки">
+  <figcaption>Черновик: кому, когда, сколько SMS и кнопка «Открыть в окне рассылки»</figcaption>
+</figure>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/messages_journal_v3101/13_ai_modal.png" alt="Окно рассылки, открытое из черновика помощника">
+  <figcaption>Окно, открытое из черновика: выбрана группа «С активным IPTV»</figcaption>
+</figure>
+
+<h4 id="messages-journal-multiorg">Разделение по организациям</h4>
+<p>Раздел учитывает <a href="extras.html#multi-org-model">мульти-организации</a>. Журнал, сводка,
+CSV и списки для выбора получателей ограничены организациями сотрудника; сообщения без клиента
+(системные) видны всем. Рассылка не может уйти клиентам чужой компании — ни при отправке сразу, ни
+при старте запланированной.</p>
+<ul>
+  <li>Запланированная рассылка помнит организации автора и при старте не выходит за них.</li>
+  <li>Автор с одной организацией — рассылка записывается на неё. Рассылку «по всем организациям»
+    видят и меняют только сотрудники без ограничения по компаниям.</li>
+  <li>В режиме «Все организации» на карточке рассылки показано, чья она.</li>
+</ul>
+
+<pre class="mermaid">
+flowchart TD
+    REQ["Журнал, выбор получателей<br/>или рассылка"] --> MO{"Мульти-орг<br/>включён?"}
+    MO -->|"нет"| ALL["Без ограничений"]
+    MO -->|"да"| CUR{"Выбрана организация<br/>в шапке?"}
+    CUR -->|"да"| ONE["Только клиенты<br/>этой организации"]
+    CUR -->|"нет"| LIM{"Сотрудник ограничен<br/>компаниями?"}
+    LIM -->|"нет"| ALLORG["Все организации<br/>+ колонка «Орг.»"]
+    LIM -->|"да"| PERM["Только доступные<br/>организации"]
+    PERM --> SH["Рассылки «по всем<br/>организациям» не видны"]
+    ALLORG --> SYS["Системные сообщения<br/>без клиента видны всем"]
+    ONE --> SYS
+    PERM --> SYS
+</pre>
+
+<h4 id="messages-journal-audit">Аудит</h4>
+<p>Всё пишется в <a href="#audit">аудит</a>:</p>
+<ul>
+  <li>отправка сразу — одна запись на рассылку: кто, кому, какими каналами, сколько поставлено, текст;</li>
+  <li>запланированная (<code>SCHEDULED_MAILING</code>): создана или ждёт согласования, согласована,
+    изменена (что было и что стало), предупреждение и напоминание в чат (отправлено или нет),
+    ожидание конца тихого часа, начата, завершена с итогом, не состоялась с причиной, отменена;</li>
+  <li>отказ по правам — кто и что пытался сделать.</li>
+</ul>
+
+<h4 id="messages-journal-endpoints">Адреса</h4>
 <table class="docs-table">
   <thead><tr><th>URL</th><th>Назначение</th></tr></thead>
   <tbody>
-    <tr><td><code>GET /admin/reports/messages/</code></td><td>Главная страница</td></tr>
-    <tr><td><code>GET /admin/reports/messages_json/</code></td><td>Server-side список (фильтры + pagination)</td></tr>
-    <tr><td><code>GET /admin/reports/messages_kpi/</code></td><td>JSON для KPI-карточек</td></tr>
-    <tr><td><code>GET /admin/reports/messages/export/</code></td><td>CSV экспорт текущей выборки</td></tr>
-    <tr><td><code>POST /admin/reports/messages/broadcast/</code></td><td>Массовая отправка</td></tr>
-    <tr><td><code>GET /admin/reports/messages/recipients_preview/</code></td><td>Preview получателей перед рассылкой</td></tr>
-    <tr><td><code>GET /admin/reports/messages/tariffs_list/</code></td><td>Список тарифов (для multi-select)</td></tr>
-    <tr><td><code>GET /admin/reports/messages/folders_list/</code></td><td>Дерево папок (для tree-picker)</td></tr>
-    <tr><td><code>GET /admin/reports/messages/nas_list/</code></td><td>Список NAS-серверов</td></tr>
-    <tr><td><code>GET /admin/reports/messages/senders_list/</code></td><td>Список операторов с рассылками (для select-фильтра)</td></tr>
+    <tr><td><code>GET /admin/reports/messages/</code></td><td>Страница; <code>?mailing=N</code> — выделить рассылку</td></tr>
+    <tr><td><code>GET /admin/reports/messages_json/</code></td><td>Таблица: фильтры и страницы</td></tr>
+    <tr><td><code>GET /admin/reports/messages_kpi/</code></td><td>Сводка</td></tr>
+    <tr><td><code>GET /admin/reports/messages/export/</code></td><td>CSV текущей выборки</td></tr>
+    <tr><td><code>POST /admin/reports/messages/broadcast/</code></td><td>Отправить сразу или запланировать (<code>when=later</code>)</td></tr>
+    <tr><td><code>GET /admin/reports/messages/recipients_preview/</code></td><td>Сколько получателей и кто</td></tr>
+    <tr><td><code>GET /admin/reports/messages/tariffs_list/</code></td><td>Тарифы с числом клиентов и линейки</td></tr>
+    <tr><td><code>GET /admin/reports/messages/services_list/</code></td><td>Действующие услуги с числом клиентов и типы услуг</td></tr>
+    <tr><td><code>GET /admin/reports/messages/folders_list/</code></td><td>Дерево папок</td></tr>
+    <tr><td><code>GET /admin/reports/messages/nas_list/</code></td><td>NAS</td></tr>
+    <tr><td><code>GET /admin/reports/messages/senders_list/</code></td><td>Отправители для фильтра</td></tr>
+    <tr><td><code>GET /admin/reports/messages/scheduled/</code></td><td>Запланированные и недавние рассылки, права сотрудника</td></tr>
+    <tr><td><code>POST /admin/reports/messages/scheduled/&lt;id&gt;/</code></td><td><code>action=</code> <code>get</code> · <code>update</code> (<code>dry=1</code> — только сравнить) · <code>approve</code> · <code>preview</code> · <code>cancel</code></td></tr>
   </tbody>
 </table>
 
@@ -2508,8 +2670,8 @@ GAMES_OF_MONTH_YANDEX_URL / GAMES_OF_MONTH_2GIS_URL</code></pre>
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 3060)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">16.09.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 3060)</span>&nbsp;|&nbsp;<span data-smit="updated">16.09.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 3107)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">17.09.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 3107)</span>&nbsp;|&nbsp;<span data-smit="updated">17.09.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2323"></script>
