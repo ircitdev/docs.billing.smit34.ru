@@ -456,13 +456,20 @@
           <li><a href="crm.html#widget-org-summary"><i class="ti ti-puzzle" aria-hidden="true"></i> Виджет «Организации: сводка»</a></li>
           <li class="sub-item"><a href="crm.html#crm-setup"><i class="ti ti-settings" aria-hidden="true"></i> 11. Мастер настройки</a></li>
           <li class="sub-item"><a href="crm.html#crm-montazh"><i class="ti ti-tool" aria-hidden="true"></i> 12. Наряды монтажника</a></li>
-          <li class="sub-item"><a href="crm.html#crm-dashboard"><i class="ti ti-map-2" aria-hidden="true"></i> 13. Дашборд и карта</a></li>
-          <li><a href="crm.html#crm-insights"><i class="ti ti-point" aria-hidden="true"></i> Инсайты периода</a></li>
+          <li class="sub-item"><a href="crm.html#crm-dashboard"><i class="ti ti-map-2" aria-hidden="true"></i> 13. Дашборд продаж</a></li>
+          <li><a href="crm.html#crm-dashboard-pipeline"><i class="ti ti-point" aria-hidden="true"></i> Выбор воронки</a></li>
+          <li><a href="crm.html#crm-insights"><i class="ti ti-point" aria-hidden="true"></i> Итоги периода</a></li>
+          <li><a href="crm.html#crm-plan"><i class="ti ti-point" aria-hidden="true"></i> План на месяц</a></li>
+          <li><a href="crm.html#crm-reaction"><i class="ti ti-point" aria-hidden="true"></i> Реакция на лид</a></li>
+          <li><a href="crm.html#crm-losses"><i class="ti ti-point" aria-hidden="true"></i> Причины отказа</a></li>
+          <li><a href="crm.html#crm-export"><i class="ti ti-point" aria-hidden="true"></i> Выгрузка в Excel</a></li>
           <li><a href="crm.html#crm-ai-summary"><i class="ti ti-point" aria-hidden="true"></i> AI-сводка воронки</a></li>
           <li><a href="crm.html#crm-stage-flow"><i class="ti ti-point" aria-hidden="true"></i> Переток по стадиям — Sankey</a></li>
+          <li><a href="crm.html#crm-map"><i class="ti ti-point" aria-hidden="true"></i> Лиды на карте</a></li>
           <li class="sub-item"><a href="crm.html#crm-campaigns"><i class="ti ti-speakerphone" aria-hidden="true"></i> 14. Рекламные кампании</a></li>
           <li><a href="crm.html#crm-campaigns-charts"><i class="ti ti-point" aria-hidden="true"></i> Диаграммы</a></li>
           <li><a href="crm.html#crm-campaigns-table"><i class="ti ti-point" aria-hidden="true"></i> Таблица и итог</a></li>
+          <li><a href="crm.html#crm-campaign-dashboard"><i class="ti ti-point" aria-hidden="true"></i> Дашборд кампании</a></li>
           <li class="sub-item"><a href="crm.html#crm-campaign-wizard"><i class="ti ti-speakerphone" aria-hidden="true"></i> 15. AI-мастер кампании</a></li>
           <li><a href="crm.html#crm-campaign-wizard-dialog"><i class="ti ti-point" aria-hidden="true"></i> Что спрашивает помощник</a></li>
           <li><a href="crm.html#crm-campaign-wizard-build"><i class="ti ti-point" aria-hidden="true"></i> Что создаётся при сборке</a></li>
@@ -1027,6 +1034,42 @@
   </ul>
 </details>
 </div>
+<!-- ═══════════ v3.0.0 — 16 сентября 2026 (CRM: дашборд, карта, история стадий) ═══════════ -->
+  <h2 id="v3-b3056">v3.0.0 — 16 сентября 2026 (CRM: дашборд продаж и карта лидов)</h2>
+
+  <h3 id="v3b3056-dashboard">Дашборд CRM: воронка, план, реакция, отказы, выгрузка</h3>
+  <ul>
+    <li>Выбор воронки над показателями: итоги, плитки, воронка, переток, застрявшие сделки и разбивки считаются по ней; выбор общий с доской.</li>
+    <li>«План на месяц» по организациям из настроек CRM — факт, процент выполнения и отметка ровного темпа.</li>
+    <li>«Реакция на лид» — от заявки до первого действия сотрудника; «Причины отказа» за период.</li>
+    <li>«Выгрузить» — Excel со сделками периода и сводкой, каждая выгрузка пишется в журнал.</li>
+    <li>Источники и типы — кольцевые диаграммы; «Сегодня» — с фото сотрудников; стадия в «Последних сделках» — бейджем; «Застрявшие» — десять строк и общее число, закрытые стадии — по всем воронкам.</li>
+    <li>Блоки дашборда больше не слипаются: общее правило темы сдвигало шапку каждой карточки в зазор между блоками. <a href="crm.html#crm-dashboard">Подробнее</a>.</li>
+  </ul>
+
+  <h3 id="v3b3056-history">История стадий и переток</h3>
+  <ul>
+    <li>Каждая смена стадии записывается отдельной строкой при сохранении сделки — с доски, из панели, наряда, автоматизации или импорта. Переток строится по истории, а не по тексту журнала; прошлые переходы восстановлены из журнала. <a href="crm.html#crm-stage-flow">Подробнее</a>.</li>
+  </ul>
+
+  <h3 id="v3b3056-map">Карта лидов: выборка на сервере</h3>
+  <ul>
+    <li>Период, «Мои / Наблюдаю», скрытые этапы и воронка применяются на сервере — фильтры больше не упираются в первые 2000 сделок; счётчик «показано N из M».</li>
+    <li>Вид — как у слоя «Лиды» карты сети: полосы с числами, «Без дома N», метки со значком этапа, инструменты на карте. <a href="crm.html#crm-map">Подробнее</a>.</li>
+  </ul>
+
+  <h3 id="v3b3056-drawer">Панель лида: цвет и доступность стадий</h3>
+  <ul>
+    <li>Стадии — цветом своей воронки; недоступные по правилам — полупрозрачные с объяснением; перевод — через окно с последствиями, причина отказа — из списка. <a href="crm.html#crm-lead-drawer-stages">Подробнее</a>.</li>
+  </ul>
+
+  <h3 id="v3b3056-campaigns">Кампании и разделы-списки</h3>
+  <ul>
+    <li>Дашборд кампании: семь показателей, динамика, стадии, сделки с источником и ответственным, причины отказа, каналы. В списке — абонплата и разовые отдельно, бюджет периода, цена лида и подключения, окупаемость; выбранный период теперь действительно применяется. <a href="crm.html#crm-campaign-dashboard">Подробнее</a>.</li>
+    <li>Задачи, «Списки», кампании, наряды и Salesbot — на общем каркасе раздела: шапка с главной кнопкой, одна строка фильтров, «показано N из M». <a href="crm.html#crm-tasks">Подробнее</a>.</li>
+    <li>Редактор воронок снова открывается (падал с ошибкой 500); окна браузера в настройках CRM заменены уведомлениями и окнами подтверждения.</li>
+  </ul>
+
 <!-- ═══════════ v3.0.0 — 16 сентября 2026 (тест скорости) ═══════════ -->
   <h2 id="v3-b3043">v3.0.0 — 16 сентября 2026 (тест скорости, MAX)</h2>
 
