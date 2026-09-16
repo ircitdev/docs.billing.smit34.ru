@@ -1373,6 +1373,15 @@ flowchart TD
 </ul>
 <p>Подробнее про карту см. <a href="abonents.html#abonent-map">«Карта клиентов»</a>.</p>
 
+<h5 id="addresses-only-houses">Только дома: квартира — у клиента и сделки</h5>
+<p>Запись справочника — это <strong>здание</strong>, одна на всех жильцов. Квартира хранится у клиента («Квартира/Офис») и у сделки CRM («Квартира»). Поэтому:</p>
+<ul>
+  <li>при создании дома из подсказки ФИАС квартира отрезается — и в сводке клиента, и в окнах новой сделки и лида, и в быстром добавлении клиента; квартира из подсказки уходит в поле квартиры;</li>
+  <li>геокодер заявок CRM не переименовывает найденный дом, а дозаполняет только пустые поля (координаты, КЛАДР); по коду КЛАДР дом совпадает только вместе с номером дома;</li>
+  <li>в сводке клиента адрес правится тремя полями — улица, дом, квартира, дом проверяется в ФИАС (<a href="abonent-card.html#abonent-card-overview-address">подробнее</a>).</li>
+</ul>
+<div class="info-box"><strong>Чистка 16.09.2026.</strong> В справочнике было 224 «дома» с квартирой в названии (176 зданий). 151 запись превращена в дом, 73 слиты с настоящим домом и удалены; клиенты, точки подключения и сделки перепривязаны. Квартира перенесена 43 клиентам и 194 сделкам — сделкам из текста их заявки, из названия дома только там, где на записи одна сделка или один клиент. Все изменения — в аудите с пометкой «чистка справочника адресов».</div>
+
 <h5 id="addresses-cleanup">Что делать с адресами без жителей</h5>
 <p>В аудите БД часто видны адреса <strong>без привязанных клиентов и Users</strong> (на рабочем сервере 2026-05: 992 шт). Это <strong>не мусор</strong>, а <em>адресная база региона</em> — список потенциальных адресов для подключения.</p>
 <ul>
@@ -1605,8 +1614,8 @@ Push / Telegram) и RADIUS-параметров (если статус долж�
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2961)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">16.09.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2961)</span>&nbsp;|&nbsp;<span data-smit="updated">16.09.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 3018)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">16.09.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 3018)</span>&nbsp;|&nbsp;<span data-smit="updated">16.09.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2323"></script>

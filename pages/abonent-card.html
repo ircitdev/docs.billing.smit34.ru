@@ -1142,7 +1142,7 @@ flowchart LR
   <tr><td>Слева</td><td>Сообщения</td><td>уведомления клиенту и дошли ли они</td></tr>
   <tr><td>Справа</td><td>Контакты</td><td>почта, телефон, соцсети; правка на месте с проверкой дублей</td></tr>
   <tr><td>Справа</td><td>Заполненность СОРМ</td><td>полоса готовности данных к выгрузке</td></tr>
-  <tr><td>Справа</td><td>Адрес и подключение</td><td>адрес, учётные записи, IP; пароль открывается по «глазу», просмотр пишется в аудит</td></tr>
+  <tr><td>Справа</td><td>Адрес и подключение</td><td>адрес — улица, дом и квартира отдельно (<a href="#abonent-card-overview-address">подробнее</a>), учётные записи, IP; пароль открывается по «глазу», просмотр пишется в аудит</td></tr>
   <tr><td>Справа</td><td>Оборудование и сеть</td><td>техника со склада, точка подключения, порт</td></tr>
   <tr><td>Справа</td><td>Договор</td><td>номер и дата договора, тип клиента</td></tr>
   <tr><td>Справа</td><td>Услуги</td><td>активные услуги и сумма в месяц; по клику — список с ценами</td></tr>
@@ -1182,6 +1182,76 @@ flowchart LR
     C -->|"992 px и шире"| TWO["Две колонки"]
     C -->|"уже"| ONE["Одна колонка<br/>длинные блоки свёрнуты"]
 </pre>
+
+<h4 id="abonent-card-overview-address">Адрес и подключение: улица, дом и квартира</h4>
+<p>Адрес клиента состоит из двух частей, и хранятся они в разных местах. <strong>Дом</strong> — запись <a href="dictionaries.html#addresses-only-houses">справочника адресов</a>, одна на здание: по ней работают карта, проверка покрытия, выгрузка СОРМ и монтаж. <strong>Квартира</strong> — поле самого клиента. Поэтому адрес правится тремя полями.</p>
+<figure class="shot is-narrow" style="max-width:520px">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/address_v3016/addr_view.png" alt="Блок «Адрес и подключение»: длинный адрес в две строки" loading="lazy">
+  <figcaption>Блок «Адрес и подключение»: длинный адрес в две строки</figcaption>
+</figure>
+<table class="docs-table">
+<thead><tr><th>Поле</th><th>Как заполняется</th></tr></thead>
+<tbody>
+  <tr><td><strong>Улица</strong></td><td>Подсказки ФИАС от города до улицы — сюда же сёла и СНТ. Если выбрать город, он дописывается в поле, и подсказки продолжаются до улицы.</td></tr>
+  <tr><td><strong>Дом</strong></td><td>Подсказки только домов выбранной улицы. Номер можно вписать руками — сервер проверит его в ФИАС; номер, которого там нет, не принимается.</td></tr>
+  <tr><td><strong>Кв</strong></td><td>Обычное поле. В справочник адресов не попадает.</td></tr>
+</tbody>
+</table>
+<figure class="shot is-narrow" style="max-width:520px">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/address_v3016/addr_form.png" alt="Форма адреса: улица, дом и квартира" loading="lazy">
+  <figcaption>Форма адреса: улица, дом и квартира</figcaption>
+</figure>
+<figure class="shot is-narrow" style="max-width:520px">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/address_v3016/addr_houses.png" alt="Поле «Дом» подсказывает только дома выбранной улицы" loading="lazy">
+  <figcaption>Поле «Дом» подсказывает только дома выбранной улицы</figcaption>
+</figure>
+<p>По кнопке «Сохранить» сервер сам находит дом в ФИАС по улице и номеру, берёт запись справочника или заводит новую и привязывает к ней клиента. Если поменяли только квартиру, запись дома не трогается. У записанного адреса дома той же улицы подсказываются сразу, без повторного выбора улицы — по коду КЛАДР дома. Старый адрес без кода КЛАДР попросит выбрать улицу из подсказок.</p>
+<p>Длинный адрес показывается в две строки; если не помещается и в две — обрывается многоточием, полный адрес виден во всплывающей подсказке. На телефоне подпись «Адрес» стоит над адресом, а карандаш — в строке подписи, чтобы адрес занимал всю ширину блока.</p>
+<figure class="shot is-mobile">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/address_v3016/addr_mobile.png" alt="Блок адреса на телефоне" loading="lazy">
+  <figcaption>Блок адреса на телефоне</figcaption>
+</figure>
+<p class="note">Подъезда в блоке нет: записанный подъезд при сохранении адреса из сводки не меняется.</p>
+
+<h5 id="abonent-card-overview-address-rights">Кто может менять адрес</h5>
+<p>Пустой адрес вписывает любой сотрудник с доступом к разделу «Клиенты». <strong>Заполненный</strong> меняют только Администратор, Директор, Старший сэйлс, Старший менеджер и суперпользователь — это право <a href="settings-services.html#section-rbac">«Клиенты · Смена заполненного адреса»</a> в блоке «Разделы админки», список ролей правится там же. У остальных вместо карандаша замок, а по нажатию окно объясняет, кто может изменить адрес.</p>
+<figure class="shot is-narrow" style="max-width:520px">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/address_v3016/addr_locked_view.png" alt="Без права вместо карандаша замок" loading="lazy">
+  <figcaption>Без права вместо карандаша замок</figcaption>
+</figure>
+<figure class="shot is-narrow" style="max-width:440px">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/address_v3016/addr_locked.png" alt="Окно объясняет, кто может изменить адрес" loading="lazy">
+  <figcaption>Окно объясняет, кто может изменить адрес</figcaption>
+</figure>
+<p>Запрет проверяет и сервер: сохранение из блока отклоняется, а если адрес попытаться поменять через форму карточки, остаётся прежний. Смена записанного адреса всегда подтверждается окном «Было / Станет» — по адресу едет монтажник и уходит выгрузка СОРМ.</p>
+<figure class="shot is-narrow" style="max-width:440px">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/address_v3016/addr_confirm.png" alt="Подтверждение смены адреса: было и станет" loading="lazy">
+  <figcaption>Подтверждение смены адреса: было и станет</figcaption>
+</figure>
+<pre class="mermaid">
+flowchart TB
+    E["Карандаш у адреса"] --> F{"Адрес уже записан?"}
+    F -- нет --> S["Улица · дом · кв"]
+    F -- да --> R{"Есть право на смену?"}
+    R -- нет --> L["Окно: кто может изменить"]
+    R -- да --> S
+    S --> C{"Меняется записанный адрес?"}
+    C -- да --> K["Подтверждение<br/>«Было / Станет»"]
+    C -- нет --> V
+    K --> V["Сервер: дом из ФИАС →<br/>запись справочника → аудит"]
+</pre>
+
+<h5 id="abonent-card-overview-address-audit">Что пишется в аудит</h5>
+<table class="docs-table">
+<thead><tr><th>Запись</th><th>Когда</th></tr></thead>
+<tbody>
+  <tr><td>«Адрес указан из сводки: …»</td><td>адрес вписан впервые</td></tr>
+  <tr><td>«Адрес изменён из сводки: было → стало»</td><td>смена записанного адреса или квартиры</td></tr>
+  <tr><td>«В справочник добавлен дом из ФИАС: …»</td><td>дома ещё не было в справочнике</td></tr>
+  <tr><td>«Смена адреса отклонена — нет права: было → попытка»</td><td>попытка без права из блока</td></tr>
+  <tr><td>«Смена адреса в форме карточки отклонена — нет права: …; адрес оставлен прежним»</td><td>попытка без права через форму карточки</td></tr>
+</tbody>
+</table>
 
 <h4 id="abonent-card-overview-mobile">На телефоне и в тёмной теме</h4>
 <p>На телефоне колонки складываются в одну. «Что происходило» уходит в самый низ, «Сессии» и «Аудит» — ниже «Поддержки»: сначала то, с чем работают, потом история. Длинные блоки сворачиваются по нажатию на заголовок, и какие блоки свёрнуты, браузер запоминает для сотрудника. В тёмной теме показатели сохраняют цвет состояния — долг и блокировка остаются красными.</p>
@@ -2787,8 +2857,8 @@ flowchart LR
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2961)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">16.09.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 2961)</span>&nbsp;|&nbsp;<span data-smit="updated">16.09.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 3018)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">16.09.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 3018)</span>&nbsp;|&nbsp;<span data-smit="updated">16.09.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2323"></script>
