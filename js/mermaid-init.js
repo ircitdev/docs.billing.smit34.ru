@@ -188,7 +188,8 @@
       '<button type="button" data-z="out" title="Уменьшить" aria-label="Уменьшить"><i class="ti ti-minus" aria-hidden="true"></i></button>' +
       '<span class="mmd-zoom-pct" aria-live="polite">100%</span>' +
       '<button type="button" data-z="in" title="Увеличить" aria-label="Увеличить"><i class="ti ti-plus" aria-hidden="true"></i></button>' +
-      '<button type="button" data-z="reset" title="Сбросить" aria-label="Сбросить масштаб"><i class="ti ti-rotate" aria-hidden="true"></i></button>';
+      '<button type="button" data-z="reset" title="Сбросить" aria-label="Сбросить масштаб"><i class="ti ti-rotate" aria-hidden="true"></i></button>' +
+      '<button type="button" data-z="full" class="mmd-zoom-full" title="На весь экран" aria-label="Развернуть схему на весь экран" aria-pressed="false"><i class="ti ti-maximize" aria-hidden="true"></i></button>';
 
     pre.parentNode.insertBefore(wrap, pre);
     stage.appendChild(pre);
@@ -234,6 +235,46 @@
       if (z === 'in') zoom(STEP);
       else if (z === 'out') zoom(-STEP);
       else if (z === 'reset') { scale = 1; apply(); viewport.scrollTo({ left: 0, top: 0 }); }
+      else if (z === 'full') toggleFull();
+    });
+
+    // На весь экран: штатный Fullscreen API, без него — фиксированный слой
+    var fullBtn = bar.querySelector('.mmd-zoom-full');
+    function isFull() {
+      return document.fullscreenElement === wrap || document.webkitFullscreenElement === wrap ||
+             wrap.classList.contains('is-fs');
+    }
+    function paintFull() {
+      var on = isFull();
+      fullBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      fullBtn.title = on ? 'Свернуть' : 'На весь экран';
+      fullBtn.setAttribute('aria-label', on ? 'Свернуть схему' : 'Развернуть схему на весь экран');
+      fullBtn.querySelector('i').className = 'ti ' + (on ? 'ti-minimize' : 'ti-maximize');
+    }
+    function toggleFull() {
+      if (isFull()) {
+        if (wrap.classList.contains('is-fs')) {
+          wrap.classList.remove('is-fs');
+          document.documentElement.classList.remove('mmd-fs-lock');
+        } else {
+          (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+        }
+      } else {
+        var req = wrap.requestFullscreen || wrap.webkitRequestFullscreen;
+        if (req) {
+          var p = req.call(wrap);
+          if (p && p.catch) p.catch(function () { wrap.classList.add('is-fs'); paintFull(); });
+        } else {
+          wrap.classList.add('is-fs');
+          document.documentElement.classList.add('mmd-fs-lock');
+        }
+      }
+      paintFull();
+    }
+    document.addEventListener('fullscreenchange', paintFull);
+    document.addEventListener('webkitfullscreenchange', paintFull);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && wrap.classList.contains('is-fs')) toggleFull();
     });
 
     // Ctrl/Cmd + колесо → зум; обычный скролл — прокрутка страницы
