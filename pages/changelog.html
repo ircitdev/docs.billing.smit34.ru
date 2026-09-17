@@ -223,12 +223,13 @@
           <li class="sub-item"><a href="settings-services.html#mass-actions"><i class="ti ti-device-tv" aria-hidden="true"></i> 6.14. Массовые действия</a></li>
           <li class="sub-item"><a href="settings-services.html#performance"><i class="ti ti-rocket" aria-hidden="true"></i> 6.15. Производительность и оптимизация</a></li>
           <li class="sub-item"><a href="settings-services.html#captive-portal"><i class="ti ti-layout-grid" aria-hidden="true"></i> 6.16. Captive Portal (финблокировка)</a></li>
-          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-readiness"><i class="ti ti-checkup-list" aria-hidden="true"></i> — Готовность и проверка</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-readiness"><i class="ti ti-checkup-list" aria-hidden="true"></i> — Сводка и готовность</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-save"><i class="ti ti-device-floppy" aria-hidden="true"></i> — Форма и сохранение</a></li>
           <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-emergency"><i class="ti ti-urgent" aria-hidden="true"></i> — Аварийный режим</a></li>
           <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-access"><i class="ti ti-lock" aria-hidden="true"></i> — Организации и права</a></li>
           <li class="sub-item"><a href="settings-services.html#guest-wifi-portal"><i class="ti ti-plug" aria-hidden="true"></i> 6.16.1. Гостевой Wi-Fi портал</a></li>
-          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-payments"><i class="ti ti-credit-card" aria-hidden="true"></i> — Платежи</a></li>
-          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-acl"><i class="ti ti-list-check" aria-hidden="true"></i> — Белые списки (ACL)</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-payments"><i class="ti ti-credit-card" aria-hidden="true"></i> — Платежи гостей</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-acl"><i class="ti ti-list-check" aria-hidden="true"></i> — Белые списки</a></li>
           <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-sorm"><i class="ti ti-shield-lock" aria-hidden="true"></i> — Гости в СОРМ и хранение</a></li>
           <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-mobile"><i class="ti ti-phone" aria-hidden="true"></i> — С телефона</a></li>
           <li class="sub-item"><a href="settings-services.html#support"><i class="ti ti-headset" aria-hidden="true"></i> — Поддержка: единое окно</a></li>
@@ -1044,6 +1045,30 @@
   </ul>
 </details>
 </div>
+<!-- ═══════════ v3.0.0 — 17 сентября 2026 (Captive Portal, белые списки, пулы VLAN) ═══════════ -->
+  <h2 id="v3-b3133">v3.0.0 — 17 сентября 2026 (Captive Portal, белые списки, пулы VLAN)</h2>
+
+  <h3 id="v3b3133-captive">Captive Portal</h3>
+  <ul>
+    <li>Красная плашка «Captive Portal не работает» висела зря: Filter-Id считался обязательным, хотя должник попадает на страницу оплаты по одному блок-пулу. Готовность теперь отвечает, попадают ли должники на оплату, и предупреждает о должниках с другой блокировкой — им RADIUS отвечает отказом. <a href="settings-services.html#captive-portal-readiness">Подробнее</a>.</li>
+    <li>Поле Filter-Id больше не подставляет <code>walled_garden</code>: раньше любое сохранение формы начинало слать атрибут на NAS.</li>
+    <li>Сводка блокировок по организациям сотрудника, в том числе сколько должников сейчас на странице оплаты.</li>
+    <li>Сохранение — с подтверждением списком изменений и записью в журнал словами. Выключенный профиль действительно выключает отправку на оплату. <a href="settings-services.html#captive-portal-save">Подробнее</a>.</li>
+    <li>Исправлено: аварийный режим «интернет всем» не включался, а RADIUS его бы не увидел; срок режима соблюдается. Та же ошибка роняла сохранение вкладки «Блокировки» в системных настройках. <a href="settings-services.html#captive-portal-emergency">Подробнее</a>.</li>
+    <li>Гостевые порталы, платежи гостей и белые списки — на общем каркасе: срезы, поиск, меню строки; окно портала с вкладками «Сеть», «Оборудование площадки», «Оплата», «Адрес и почта».</li>
+  </ul>
+
+  <h3 id="v3b3133-dict">Справочники</h3>
+  <ul>
+    <li>Пулы VLAN: сводка, срезы, занятость и NAS пула, окно пула, массовые действия. Исправлено: удаление пула падало с ошибкой. <a href="dictionaries.html#vlan-pull">Подробнее</a>.</li>
+    <li>Группы ACL: где используется, срезы; занятую группу удалить нельзя — раньше связь с порталом молча пропадала. Разрешённые сайты: срезы по группам, переключатель в строке с «Вернуть», проверка адреса и повторов. <a href="dictionaries.html#acl">Подробнее</a>.</li>
+  </ul>
+
+  <h3 id="v3b3133-mobile">Телефон</h3>
+  <ul>
+    <li>Кнопка знакомства с разделом на всех страницах стоит в верхней полосе, слева от значка справки.</li>
+  </ul>
+
 <!-- ═══════════ v3.0.0 — 17 сентября 2026 (Поддержка: новый обучающий ролик) ═══════════ -->
   <h2 id="v3-b3130">v3.0.0 — 17 сентября 2026 (Поддержка: новый обучающий ролик)</h2>
   <ul>

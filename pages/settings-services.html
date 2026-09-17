@@ -260,12 +260,13 @@
           <li class="sub-item"><a href="settings-services.html#mass-actions"><i class="ti ti-device-tv" aria-hidden="true"></i> 6.14. Массовые действия</a></li>
           <li class="sub-item"><a href="settings-services.html#performance"><i class="ti ti-rocket" aria-hidden="true"></i> 6.15. Производительность и оптимизация</a></li>
           <li class="sub-item"><a href="settings-services.html#captive-portal"><i class="ti ti-layout-grid" aria-hidden="true"></i> 6.16. Captive Portal (финблокировка)</a></li>
-          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-readiness"><i class="ti ti-checkup-list" aria-hidden="true"></i> — Готовность и проверка</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-readiness"><i class="ti ti-checkup-list" aria-hidden="true"></i> — Сводка и готовность</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-save"><i class="ti ti-device-floppy" aria-hidden="true"></i> — Форма и сохранение</a></li>
           <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-emergency"><i class="ti ti-urgent" aria-hidden="true"></i> — Аварийный режим</a></li>
           <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-access"><i class="ti ti-lock" aria-hidden="true"></i> — Организации и права</a></li>
           <li class="sub-item"><a href="settings-services.html#guest-wifi-portal"><i class="ti ti-plug" aria-hidden="true"></i> 6.16.1. Гостевой Wi-Fi портал</a></li>
-          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-payments"><i class="ti ti-credit-card" aria-hidden="true"></i> — Платежи</a></li>
-          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-acl"><i class="ti ti-list-check" aria-hidden="true"></i> — Белые списки (ACL)</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-payments"><i class="ti ti-credit-card" aria-hidden="true"></i> — Платежи гостей</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-acl"><i class="ti ti-list-check" aria-hidden="true"></i> — Белые списки</a></li>
           <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-sorm"><i class="ti ti-shield-lock" aria-hidden="true"></i> — Гости в СОРМ и хранение</a></li>
           <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-mobile"><i class="ti ti-phone" aria-hidden="true"></i> — С телефона</a></li>
           <li class="sub-item"><a href="settings-services.html#support"><i class="ti ti-headset" aria-hidden="true"></i> — Поддержка: единое окно</a></li>
@@ -3088,88 +3089,132 @@ flowchart TB
 </pre>
 
 <p>Раздел в админке: <strong>Настройки → Captive Portal</strong>
-(<code>/admin/settings/captive_portal/</code>). Четыре вкладки:</p>
+(<code>/admin/settings/captive_portal/</code>). Страница собрана на общем каркасе списков:
+шапка с действиями раздела, под ней четыре раздела-ссылки, у списков — срезы со
+счётчиками и поиск.</p>
 
 <ul>
-<li><strong>Финблокировка</strong> — профиль <em>financial</em>: блок-пул IP, RADIUS
-<code>Filter-Id</code>, белый список (ACL-группа), URL заглушки + правила (аварийный
-режим «разрешить всем», разрыв сессии при долге, жёсткий REJECT), блок
-<a href="#captive-portal-readiness">готовности профиля</a> и сводка блокировок.</li>
-<li><strong>Гостевые порталы</strong> — список гостевых порталов турбаз: организация,
-турбаза, ссылка, состояние сети, гостей / онлайн, готовность анкеты. Кнопка «Настроить
-сеть» открывает боковую панель: блок-пул, Filter-Id, ACL, гостевые NAS, адаптер B
-(чужой MikroTik), платный доступ, свой домен и ящик рассылок.</li>
-<li><strong>Платежи</strong> — продажи гостевого Wi-Fi: сегменты по статусам, период,
-конверсия и доля ошибок. Подробнее — <a href="#captive-portal-payments">ниже</a>.</li>
-<li><strong>Белые списки (ACL)</strong> — группы разрешённых хостов (банки, госуслуги,
-портал), доступных из walled-garden даже должнику; правила
-<a href="#captive-portal-acl">раскрываются прямо в списке</a>.</li>
+<li><strong>Финблокировка</strong> — куда попадает должник: блок-пул, <code>Filter-Id</code>,
+белый список, страница оплаты и правила блокировки. Вверху — сводка блокировок и блок
+<a href="#captive-portal-readiness">готовности</a>.</li>
+<li><strong>Гостевые порталы</strong> — Wi-Fi площадок: сеть, гости, состояние, карта.
+Настройки сети и оплаты открываются в окне из меню строки.</li>
+<li><strong>Платежи гостей</strong> — продажи гостевого Wi-Fi: итоги периода, срезы по
+статусам, поиск. Подробнее — <a href="#captive-portal-payments">ниже</a>.</li>
+<li><strong>Белые списки</strong> — группы сайтов, открытых клиенту без доступа, и где
+каждая группа используется. <a href="#captive-portal-acl">Подробнее</a>.</li>
 </ul>
 
-<h4 id="captive-portal-readiness">Готовность профиля и проверка конфигурации</h4>
+<h4 id="captive-portal-readiness">Сводка, готовность и проверка</h4>
 
-<p>Включённый профиль ещё не значит работающий портал. Резолвер RADIUS считает
-незаданными и пустое значение, и ноль: если не задан ни блок-пул, ни
-<code>Filter-Id</code>, должник получает <strong>отказ авторизации</strong> вместо
-страницы «пополните баланс». Вверху вкладки стоит список проверок, а если хоть одна
-не пройдена — красная плашка «Captive Portal не работает».</p>
+<p>Вверху вкладки — <strong>сводка</strong> в границах организаций сотрудника: сколько
+должников сейчас на странице оплаты (живые сессии с адресом блок-пула), сколько
+заблокировано за долг, за сегодня, администратором, добровольно, с обещанным платежом и
+сколько клиентов выключено. Два последних числа открывают список в поиске клиентов.</p>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/captive_portal_v2033/cp_financial.png" alt="Вкладка «Финблокировка»: список готовности и результат проверки конфигурации" style="max-width:100%;border-radius:8px;border:1px solid #e3e8ee">
-  <figcaption>Вкладка «Финблокировка»: список готовности и результат проверки конфигурации</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/captive_portal_v3131/cp_fin_status.png" alt="Финблокировка: сводка и готовность — должники попадают на страницу оплаты" loading="lazy">
+  <figcaption>Финблокировка: сводка и готовность — должники попадают на страницу оплаты</figcaption>
 </figure>
 
-<p>Проверяется пять вещей: профиль включён, задан блок-пул, осмысленный
-<code>Filter-Id</code>, у белого списка есть <em>активные</em> правила и режим жёсткого
-REJECT не перекрывает профиль. У каждой непройденной проверки — кнопка
-<strong>«Исправить»</strong>, она подсвечивает нужное поле формы.</p>
+<p>Под сводкой — ответ на главный вопрос: <strong>попадают ли должники на страницу
+оплаты</strong>. Каждая проверка отмечена зелёным (в порядке), жёлтым (обратите
+внимание) или красным (нужно исправить); у жёлтых и красных есть кнопка «К полю».</p>
 
-<p>Кнопка <strong>«Проверить конфигурацию»</strong> идёт дальше и повторяет решение
-резолвера на живых данных: существует ли пул и остались ли в нём адреса, сколько
-активных правил в белом списке, совпадают ли резервные значения служебных настроек с
-профилем, отвечает ли страница-заглушка. Результат сохраняется с отметкой времени и
-автором — видно, когда портал проверяли последний раз.</p>
+<ul>
+<li><strong>Профиль включён.</strong> Выключенный — должник получает отказ авторизации.</li>
+<li><strong>Блок-пул или Filter-Id.</strong> Хватает одного из двух: RADIUS отличает
+должника по адресу из блок-пула или по атрибуту <code>Filter-Id</code>. Если не задано
+ни то, ни другое — отказ.</li>
+<li><strong>Белый список</strong> с включёнными сайтами — иначе должнику не открыть ни
+кабинет, ни оплату.</li>
+<li><strong>Отказ при отрицательном балансе</strong> выключен — включённый отменяет
+страницу оплаты.</li>
+<li><strong>Должники с другой блокировкой</strong> (жёлтая) — страница оплаты
+показывается только при блокировке <em>за долг</em>. Если у клиента есть ещё блокировка
+администратором, добровольная или системная, RADIUS отвечает отказом.</li>
+</ul>
+
+<p>Кнопка <strong>«Проверить настройку»</strong> идёт дальше: сверяет занятость
+блок-пула по живым сессиям, резервные значения, открывает страницу оплаты. Итог
+сворачивается в строку «Последняя проверка»; если профиль меняли позже, рядом стоит
+метка <strong>«устарела»</strong>.</p>
+
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/captive_portal_v3131/cp_fin_check.png" alt="Готовность и результат последней проверки" loading="lazy">
+  <figcaption>Готовность и результат последней проверки</figcaption>
+</figure>
 
 <pre class="mermaid">
 flowchart LR
-  A["Долг<br/>b_negbal"] --> F{"Пул или<br/>Filter-Id задан?"}
-  F -->|"нет"| REJ["Отказ<br/>авторизации"]
-  F -->|"да"| WG["IP блок-пула<br/>+ Filter-Id"]
-  WG --> PAGE["«Пополните баланс»<br/>+ белый список"]
-  PAGE --> PAY["Оплата"]
-  PAY --> OK["Снятие блока,<br/>CoA, интернет"]
+  A["Долг"] --> O{"Есть другая<br/>блокировка?"}
+  O -->|"да"| REJ["Отказ<br/>авторизации"]
+  O -->|"нет"| F{"Блок-пул или<br/>Filter-Id?"}
+  F -->|"нет"| REJ
+  F -->|"да"| WG["Адрес блок-пула<br/>и белый список"]
+  WG --> PAY["Страница оплаты"]
+  PAY --> OK["Оплата — блок снят,<br/>интернет вернулся"]
 </pre>
 
 <div class="warning-box">
-<strong>Белый список решает не меньше пула.</strong> Если у выбранной ACL-группы нет
-<em>активных</em> правил, должник в walled-garden не откроет ни личный кабинет, ни
-страницу оплаты — то есть не сможет заплатить и разблокироваться. Число активных
-правил видно и в списке готовности, и на вкладке «Белые списки».
+<strong>Filter-Id указывайте, только если правило с этим именем есть на NAS.</strong>
+Пустое поле значит «не отправлять»: должника узнают по адресу блок-пула. Раньше форма
+подставляла <code>walled_garden</code> в пустое поле, и любое сохранение начинало слать
+атрибут на оборудование.
 </div>
 
-<h4 id="captive-portal-emergency">Аварийный режим «Разрешить интернет всем»</h4>
+<h4 id="captive-portal-save">Форма и сохранение</h4>
 
-<p>Переключатель на вкладке «Финблокировка» отключает <strong>все</strong> блокировки на
-уровне RADIUS — на случай аварии биллинга, когда клиентов нельзя оставить без связи.
-Это самая опасная настройка раздела: пока она включена, должники пользуются интернетом
+<p>Форма разделена на два блока: <strong>«Куда попадает должник»</strong> (профиль,
+блок-пул, Filter-Id, белый список со ссылкой на его сайты, страница оплаты) и
+<strong>«Правила блокировки»</strong> (разрыв сессии при долге, отказ должникам,
+аварийный режим в отдельной красной зоне).</p>
+
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/captive_portal_v3131/cp_fin_form.png" alt="Форма финблокировки: куда попадает должник и правила блокировки" loading="lazy">
+  <figcaption>Форма финблокировки: куда попадает должник и правила блокировки</figcaption>
+</figure>
+
+<ul>
+<li><strong>Подтверждение со списком изменений</strong> — «Блок-пул: … → …». Для
+аварийного режима, отказа должникам и выключения профиля окно красное и объясняет
+последствия.</li>
+<li><strong>Журнал действий</strong> — запись словами, тем же списком. Сохранение без
+изменений ничего не пишет.</li>
+<li><strong>Выключенный профиль</strong> обнуляет и резервные значения, которые RADIUS
+читает без профиля. Раньше там оставался тот же пул, и выключатель на деле ничего не
+выключал.</li>
+</ul>
+
+<h4 id="captive-portal-emergency">Аварийный режим «интернет всем»</h4>
+
+<p>Переключатель отключает <strong>все</strong> блокировки — на случай сбоя биллинга,
+когда клиентов нельзя оставить без связи. Пока он включён, должники пользуются интернетом
 бесплатно.</p>
 
 <pre class="mermaid">
 flowchart LR
-  ON["Включение<br/>с подтверждением"] --> LOG["Записаны автор,<br/>время и срок"]
-  LOG --> WORK["Блокировки<br/>не применяются"]
-  WORK --> OFF["Выключение:<br/>по сроку или кнопкой"]
+  ON["Включение<br/>с подтверждением"] --> LOG["Автор, время<br/>и срок записаны"]
+  LOG --> WORK["Блокировки<br/>не действуют"]
+  WORK --> OFF["Выключение: кнопкой<br/>или по сроку"]
 </pre>
 
 <ul>
-<li>Включение требует <strong>подтверждения</strong>, в котором сразу написано, через
-сколько режим погаснет.</li>
-<li>Запоминается, <strong>кто и когда</strong> включил — плашка наверху страницы
-показывает это вместе со временем автоматического выключения и обратным отсчётом.</li>
-<li><strong>Срок</strong> задаётся настройкой <code>BLOCK_ALLOW_ALL_AUTO_OFF_HOURS</code>
-(по умолчанию 4 часа; <code>0</code> — не выключать автоматически). Гашение происходит на
-первом же запросе RADIUS после истечения, отдельная фоновая задача не нужна.</li>
+<li>Пока режим включён, вверху страницы висит красная плашка: кто и когда включил,
+когда выключится. Кнопка <strong>«Выключить»</strong> в плашке меняет только режим —
+несохранённые правки формы не трогает.</li>
+<li><strong>Срок</strong> — настройка <code>BLOCK_ALLOW_ALL_AUTO_OFF_HOURS</code> (по
+умолчанию 4 часа, <code>0</code> — не выключать). Срок проверяет фоновая задача раз в
+пять минут.</li>
+<li>Каждое включение и выключение — в журнале действий.</li>
 </ul>
+
+<div class="info-box">
+<strong>Исправлено в сборке 3131:</strong> режим не включался вовсе (запись настройки
+падала с ошибкой), а RADIUS читал настройку под прежним именем и включения бы не увидел.
+Теперь режим записывается под обоими именами. Та же ошибка роняла сохранение вкладки
+«Блокировки» в системных настройках.
+</div>
 
 <h4 id="captive-portal-arch">Как устроено</h4>
 
@@ -3180,12 +3225,14 @@ flowchart LR
 
 <ul>
 <li><strong>RADIUS-резолвер</strong> (<code>radius_python/internet.py</code>): при
-блокировке только за долг (<code>b_negbal</code>) возвращает не REJECT, а
-<code>Access-Accept</code> с атрибутами <code>Framed-IP-Address</code> (из блок-пула) +
-<code>Filter-Id</code> — NAS заворачивает такого клиента в walled-garden.</li>
-<li><strong>Источник правды — профиль</strong>: при сохранении на странице параметры
-дублируются в служебные настройки (<code>BLOCK_POOL_ID</code> / <code>BLOCK_FILTER_ID</code>
-/ <code>BLOCK_PORTAL_URL</code>), поэтому RADIUS и правила блокировок остаются согласованы.</li>
+блокировке только за долг (<code>b_negbal</code>) возвращает не отказ, а
+<code>Access-Accept</code> с адресом из блок-пула и — если задан — <code>Filter-Id</code>.
+Оборудование отправляет такого клиента на страницу оплаты.</li>
+<li><strong>Источник правды — профиль</strong>: при сохранении параметры дублируются в
+резервные настройки (<code>BLOCK_POOL_ID</code> / <code>BLOCK_FILTER_ID</code> /
+<code>BLOCK_PORTAL_URL</code>). «Не отправлять Filter-Id» хранится нулём: пустое значение
+RADIUS заменил бы на <code>walled_garden</code>. У выключенного профиля резервные значения
+обнуляются.</li>
 <li><strong>Выход из блока</strong>: оплата → снятие блокировки + CoA Disconnect → при
 переавторизации клиент получает обычный интернет.</li>
 </ul>
@@ -3226,20 +3273,38 @@ Wi-Fi портал</strong> — инструмент для турбаз, каф
 на рекламу и автоматически рассылает SMS-поздравления с днём рождения.</p>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/captive_portal_v2033/cp_guest.png" alt="Вкладка «Гостевые порталы»: организация, состояние сети, готовность анкеты" style="max-width:100%;border-radius:8px;border:1px solid #e3e8ee">
-  <figcaption>Вкладка «Гостевые порталы»: организация, состояние сети, готовность анкеты</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/captive_portal_v3131/cp_guest.png" alt="Гостевые порталы: срезы, сеть, гости, состояние" loading="lazy">
+  <figcaption>Гостевые порталы: срезы, сеть, гости, состояние</figcaption>
 </figure>
 
-<p>В таблице разведены два состояния: <strong>«Сеть»</strong> — привязан ли NAS (или работает адаптер B), и
-<strong>«Анкета»</strong> — готовы ли форма и текст согласия. Портал может собирать
-анкеты и при этом не открывать интернет — это видно сразу. Чип
-<strong>«Сеть не привязана»</strong> со счётчиком отбирает такие порталы, поиск ищет по
-турбазе, названию портала и имени NAS.</p>
+<p>Срезы со счётчиками: <strong>Сеть не привязана</strong> (гость заполнит анкету, но
+интернет не получит), <strong>Платные</strong>, <strong>Не принимают гостей</strong>
+(портал включён, но площадка не утвердила текст согласия), <strong>Выключены</strong>.
+Поиск — по площадке, клиенту и NAS; набор колонок сохраняется в профиле. Под таблицей —
+площадки на карте: зелёная точка — сеть привязана, красная — нет.</p>
 
-<figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/captive_portal_v2033/cp_net_drawer.png" alt="Панель «Сеть портала»: пул, Filter-Id, ACL, гостевые NAS с числом учётных записей" style="max-width:100%;border-radius:8px;border:1px solid #e3e8ee">
-  <figcaption>Панель «Сеть портала»: пул, Filter-Id, ACL, гостевые NAS с числом учётных записей</figcaption>
+<p>Название площадки и пункт меню «Настроить сеть и оплату» открывают окно портала с
+четырьмя вкладками: <strong>Сеть</strong> (NAS площадки, пул адресов гостей, Filter-Id,
+белый список), <strong>Оборудование площадки</strong> (hotspot на её MikroTik),
+<strong>Оплата</strong> и <strong>Адрес и почта</strong> (свой домен страницы входа,
+ящик для писем гостям). В меню строки также наклейка с QR-кодом, страница входа и
+карточка площадки.</p>
+
+<div style="display:flex;gap:12px;flex-wrap:wrap">
+<figure class="shot is-narrow">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/captive_portal_v3131/cp_guest_net.png" alt="Окно портала, вкладка «Сеть»: у каждого NAS — число учётных записей" loading="lazy">
+  <figcaption>Окно портала, вкладка «Сеть»: у каждого NAS — число учётных записей</figcaption>
 </figure>
+<figure class="shot is-narrow">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/captive_portal_v3131/cp_guest_net_paid.png" alt="Вкладка «Оплата»: тарифы площадки и бесплатные минуты" loading="lazy">
+  <figcaption>Вкладка «Оплата»: тарифы площадки и бесплатные минуты</figcaption>
+</figure>
+</div>
+
+<p>Сохранение показывает список изменений; если среди добавленных NAS есть учётные записи
+клиентов, окно подтверждения красное и называет их число. В журнал изменения пишутся
+словами. Свой домен и ящик меняются только при реальной смене — раньше каждое сохранение
+заново обращалось к DNS.</p>
 
 <p><strong>Подключение:</strong> услуга «Гостевой Wi-Fi портал» (<code>system_type=12</code>)
 клиенту-турбазе (юр.лицо). При подключении автоматически создаётся портал с дефолтной анкетой
@@ -3254,7 +3319,7 @@ Wi-Fi портал</strong> — инструмент для турбаз, каф
 задаёт, какие поля собирать (имя, авто, тип отдыха и т.д.), брендинг, текст согласия и рассылки.</li>
 <li><strong>Два адаптера сети:</strong> <em>A</em> — наше оборудование (RADIUS guest-ветка +
 CoA-разблокировка по MAC); <em>B</em> — чужой MikroTik турбазы (hotspot login, разблокировку
-делает MikroTik сам — работает без нашего RADIUS). Адаптер выбирается в модалке «Настроить сеть».</li>
+делает MikroTik сам — работает без нашего RADIUS). Адаптер выбирается в окне портала, вкладка «Оборудование площадки».</li>
 <li><strong>ДР-рассылки</strong> — Celery beat раз в сутки шлёт SMS гостям, у кого день
 рождения через N дней. <strong>Только гостям с согласием на рекламу</strong> (152-ФЗ),
 с защитой от повторной отправки.</li>
@@ -3282,7 +3347,7 @@ CoA-разблокировка по MAC); <em>B</em> — чужой MikroTik т�
 (<code>system_type=12</code>) в разделе <a href="tariffs.html#usluga-overview">Тарификация → Услуги</a>:
 <strong>цена</strong> = «Сумма», <strong>длительность</strong> = поле «Длительность доступа»
 (часы/минуты). Новой тарифной сущности не вводится. К порталу тарифы привязываются галочками
-в модалке «Настроить сеть» (блок «Платный доступ»).</li>
+в окне портала, вкладка «Оплата».</li>
 <li><strong>Чек 54-ФЗ</strong> — формируется ЮKassa по e-mail гостя (онлайн-касса ЮKassa);
 отдельная фискализация не нужна.</li>
 <li><strong>Выручка</strong> — приходная финоперация на организацию-провайдера (по умолчанию
@@ -3290,65 +3355,65 @@ CoA-разблокировка по MAC); <em>B</em> — чужой MikroTik т�
 <li><strong>Отсечка по времени</strong> — два механизма: NAS сам разрывает сессию по
 <code>Session-Timeout</code> (остаток оплаченного времени) + страховочная задача раз в 5 минут.
 По истечении гость попадает обратно на портал оплаты.</li>
-<li><strong>Статистика</strong> — вкладка <a href="#captive-portal-payments">«Платежи»</a>
-в разделе Captive Portal: сегменты по статусам, выручка и средний чек за выбранный период,
-конверсия, доля неудачных платежей, экспорт CSV.</li>
+<li><strong>Статистика</strong> — раздел <a href="#captive-portal-payments">«Платежи гостей»</a>:
+итоги периода, срезы по статусам, экспорт CSV.</li>
 </ul>
 
 <div class="info-box">
-<strong>QR-наклейка.</strong> На вкладке «Гостевые порталы» кнопка <i class="ti ti-qrcode"></i>
+<strong>QR-наклейка.</strong> Пункт «Наклейка с QR-кодом» в меню строки гостевого портала
 открывает готовую брендированную A6-наклейку (PDF) прямо в окне — её печатают и размещают на
 ресепшене. Гость сканирует камерой и попадает на портал.
 </div>
 
-<h4 id="captive-portal-payments">Вкладка «Платежи»</h4>
+<h4 id="captive-portal-payments">Платежи гостей</h4>
 
-<p>Вкладка отвечает на вопрос «принимаются ли деньги прямо сейчас», а не просто
-показывает список. Сегменты вверху — счётчики по статусам: <strong>Все · Оплачены ·
-Ожидают · Ошибки · Истекли · Возвраты</strong>; клик по сегменту фильтрует таблицу.
-Рядом период (30 дней / 90 дней / год / всё время), выбор портала и поиск по e-mail,
-телефону или MAC.</p>
+<p>Раздел отвечает на вопрос «принимаются ли деньги прямо сейчас». Сверху — итоги
+выбранного периода: доступов действует сейчас, выручка, средний платёж, доля оплаченных
+попыток и доля попыток с ошибкой. Ниже срезы по статусам — <strong>Все · Действуют ·
+Ошибки · Истекли · Ожидают · Возвраты</strong>, — период (30 дней, 90 дней, год, всё
+время), площадка и поиск по почте, телефону или MAC.</p>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/captive_portal_v2033/cp_paid.png" alt="Вкладка «Платежи»: сегменты по статусам, конверсия и доля ошибок" style="max-width:100%;border-radius:8px;border:1px solid #e3e8ee">
-  <figcaption>Вкладка «Платежи»: сегменты по статусам, конверсия и доля ошибок</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/captive_portal_v3131/cp_paid.png" alt="Платежи гостей: итоги периода, срезы по статусам, предупреждение об ошибках" loading="lazy">
+  <figcaption>Платежи гостей: итоги периода, срезы по статусам, предупреждение об ошибках</figcaption>
 </figure>
 
-<p>Показатели считаются по всей выборке периода, а не по видимой странице:</p>
-
 <ul>
-<li><strong>Активных сейчас</strong> — гостей с непросроченным оплаченным доступом.</li>
-<li><strong>Выручка за период</strong> и средний чек.</li>
-<li><strong>Конверсия</strong> — доля оплаченных из всех попыток (оплаченные + ошибки +
-ожидающие).</li>
-<li><strong>Доля ошибок</strong>: если она достигает 20 %, над таблицей появляется
-предупреждение с числом неудачных платежей — обычно это повод проверить ключ ЮKassa и
-тарифы портала.</li>
+<li>Итоги считаются по всей выборке периода, а не по видимой странице.</li>
+<li>Доля оплаченных — оплаченные из всех попыток (оплаченные, ошибки, ожидающие).</li>
+<li>Если попыток с ошибкой 20 % и больше, над таблицей появляется предупреждение — обычно
+это повод проверить ключ платёжной системы и тарифы площадок.</li>
+<li>Если платный доступ выключен в настройках, раздел говорит об этом: новых оплат не
+будет, в таблице — прежние.</li>
 </ul>
 
 <div class="info-box">
-<strong>Контакты гостей скрыты.</strong> E-mail и телефон выводятся масками
-(<code>p****@example.ru</code>, <code>79177***96</code>) и раскрываются по клику —
-персональные данные не «светятся» на экране, когда рядом кто-то есть. Экспорт CSV
-выгружает ровно то, что отобрано фильтрами, и только по доступным организациям.
+<strong>Контакты гостей скрыты.</strong> Почта и телефон выводятся масками
+(<code>p****@example.ru</code>, <code>79177***96</code>) и раскрываются по клику. Колонка
+MAC по умолчанию скрыта, её можно включить в наборе колонок. Экспорт CSV выгружает ровно
+то, что отобрано, и только по доступным организациям.
 </div>
 
-<h4 id="captive-portal-acl">Вкладка «Белые списки (ACL)»</h4>
+<h4 id="captive-portal-acl">Белые списки</h4>
 
-<p>Белый список — набор хостов, которые остаются доступны из walled-garden: личный
-кабинет, платёжные системы, банки, госуслуги. Правила раскрываются прямо в строке
-группы, рядом видно, в каком профиле группа используется, а группа без активных правил
-помечена красным.</p>
+<p>Белый список — сайты, которые открываются клиенту без доступа: банки и платёжные
+страницы для должника, условия и оплата для гостя. Раздел показывает группы, сколько в
+них сайтов и сколько включено, и <strong>где группа используется</strong>: в финблокировке,
+в гостевом портале, в правилах тарифов.</p>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/captive_portal_v2033/cp_acl.png" alt="Вкладка «Белые списки»: правила внутри группы и пометка «нет активных правил»" style="max-width:100%;border-radius:8px;border:1px solid #e3e8ee">
-  <figcaption>Вкладка «Белые списки»: правила внутри группы и пометка «нет активных правил»</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/captive_portal_v3131/cp_acl.png" alt="Белые списки: группы, включённые сайты, где используется; сайты группы раскрыты" loading="lazy">
+  <figcaption>Белые списки: группы, включённые сайты, где используется; сайты группы раскрыты</figcaption>
 </figure>
 
-<p>Строка правила показывает адрес, комментарий и состояние. Выключенное правило не
-работает, даже если группа выбрана в профиле — именно так портал и оказывается
-«настроенным, но бесполезным». Полное редактирование — в
-<a href="dictionaries.html#acl">справочнике ACL</a>, карандаш ведёт сразу к нужной группе.</p>
+<ul>
+<li>Срезы: <strong>Используются</strong> и <strong>Всё выключено</strong> — группа, где
+не включено ни одного сайта; если она ещё и используется, строка подсвечена.</li>
+<li>«Сайты» раскрывают список адресов прямо в строке, выключенные зачёркнуты. Поиск
+находит и группу, и адрес сайта — группа с найденным адресом раскрывается сама.</li>
+<li>Меню строки: сайты группы (справочник с фильтром по группе), список для NAS. В шапке —
+переход к группам и к разрешённым сайтам в <a href="dictionaries.html#acl">справочнике</a>.</li>
+</ul>
 
 <h4 id="captive-portal-sorm">Гости в СОРМ и срок хранения данных</h4>
 
@@ -3432,26 +3497,23 @@ flowchart LR
 
 <h4 id="captive-portal-mobile">С телефона</h4>
 
-<p>Раздел рассчитан на работу с телефона: таблицы превращаются в карточки с подписями,
-фильтры сворачиваются в строку «поиск + Фильтры» с нижним листом, кнопки действий
-подписаны и помещаются в строку, а панель настроек сети открывается боковой панелью.</p>
+<p>Таблицы становятся карточками с подписями полей, окно портала открывается на весь
+экран, форма финблокировки идёт одной колонкой. Кнопка знакомства с разделом — в верхней
+полосе, слева от значка справки.</p>
 
 <div style="display:flex;gap:12px;flex-wrap:wrap">
-  <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/captive_portal_v2033/cp_mobile_guest.png" alt="Гостевые порталы на телефоне"
-       style="max-width:290px;border-radius:8px;border:1px solid #e3e8ee">
-  <figcaption>Гостевые порталы на телефоне</figcaption>
+<figure class="shot is-narrow">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/captive_portal_v3131/cp_mobile_financial.png" alt="Финблокировка на телефоне" loading="lazy">
+  <figcaption>Финблокировка на телефоне</figcaption>
 </figure>
-  <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/captive_portal_v2033/cp_mobile_paid.png" alt="Платежи на телефоне"
-       style="max-width:290px;border-radius:8px;border:1px solid #e3e8ee">
-  <figcaption>Платежи на телефоне</figcaption>
+<figure class="shot is-narrow">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/captive_portal_v3131/cp_mobile_guest.png" alt="Гостевые порталы на телефоне" loading="lazy">
+  <figcaption>Гостевые порталы на телефоне</figcaption>
 </figure>
 </div>
 
 <div class="warning-box">
-<strong>Для запуска платного режима</strong> нужно: включить выключатель «Платный доступ
-через ЮKassa» в настройках, ввести <strong>REST-ключ ЮKassa</strong> (формат <code>live_…</code>)
+<strong>Для запуска платного режима</strong> нужно: включить платный доступ в настройках гостевого Wi-Fi, ввести <strong>REST-ключ ЮKassa</strong> (формат <code>live_…</code>)
 в <a href="settings.html#payment-systems">Настройки → Платёжные системы</a> и добавить домены ЮKassa
 (<code>yoomoney.ru</code>, <code>api.yookassa.ru</code>) в белый список гостевого NAS — иначе
 неоплаченный гость не сможет открыть страницу оплаты из walled-garden.
@@ -3463,8 +3525,8 @@ flowchart LR
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 3130)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">17.09.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 3130)</span>&nbsp;|&nbsp;<span data-smit="updated">17.09.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 3133)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">17.09.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 3133)</span>&nbsp;|&nbsp;<span data-smit="updated">17.09.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2323"></script>

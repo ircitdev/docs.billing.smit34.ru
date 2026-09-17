@@ -260,12 +260,13 @@
           <li class="sub-item"><a href="settings-services.html#mass-actions"><i class="ti ti-device-tv" aria-hidden="true"></i> 6.14. Массовые действия</a></li>
           <li class="sub-item"><a href="settings-services.html#performance"><i class="ti ti-rocket" aria-hidden="true"></i> 6.15. Производительность и оптимизация</a></li>
           <li class="sub-item"><a href="settings-services.html#captive-portal"><i class="ti ti-layout-grid" aria-hidden="true"></i> 6.16. Captive Portal (финблокировка)</a></li>
-          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-readiness"><i class="ti ti-checkup-list" aria-hidden="true"></i> — Готовность и проверка</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-readiness"><i class="ti ti-checkup-list" aria-hidden="true"></i> — Сводка и готовность</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-save"><i class="ti ti-device-floppy" aria-hidden="true"></i> — Форма и сохранение</a></li>
           <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-emergency"><i class="ti ti-urgent" aria-hidden="true"></i> — Аварийный режим</a></li>
           <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-access"><i class="ti ti-lock" aria-hidden="true"></i> — Организации и права</a></li>
           <li class="sub-item"><a href="settings-services.html#guest-wifi-portal"><i class="ti ti-plug" aria-hidden="true"></i> 6.16.1. Гостевой Wi-Fi портал</a></li>
-          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-payments"><i class="ti ti-credit-card" aria-hidden="true"></i> — Платежи</a></li>
-          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-acl"><i class="ti ti-list-check" aria-hidden="true"></i> — Белые списки (ACL)</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-payments"><i class="ti ti-credit-card" aria-hidden="true"></i> — Платежи гостей</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-acl"><i class="ti ti-list-check" aria-hidden="true"></i> — Белые списки</a></li>
           <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-sorm"><i class="ti ti-shield-lock" aria-hidden="true"></i> — Гости в СОРМ и хранение</a></li>
           <li class="sub-item" style="padding-left:32px"><a href="settings-services.html#captive-portal-mobile"><i class="ti ti-phone" aria-hidden="true"></i> — С телефона</a></li>
           <li class="sub-item"><a href="settings-services.html#support"><i class="ti ti-headset" aria-hidden="true"></i> — Поддержка: единое окно</a></li>
@@ -1226,12 +1227,12 @@ flowchart TD
   </ul>
 </details>
 
-<p><strong>Пул VLAN</strong> — это диапазон номеров VLAN <code>[start_vlan…end_vlan]</code>, закреплённых за конкретным оператором связи или сегментом сети. Хранится в <code>vlan_pull</code>, редактируется на <code>/admin/dictionary/VlanPull/</code>.</p>
+<p><strong>Пул VLAN</strong> — диапазон тегов <code>[start_vlan…end_vlan]</code>, закреплённый за оператором связи или сегментом сети. Пул указывают в карточке NAS, и учётные записи этого NAS получают теги из диапазона. Хранится в <code>vlan_pull</code>, редактируется на <code>/admin/dictionary/VlanPull/</code>.</p>
 
 <h5 id="vlan-pull-purpose">Зачем нужен пул VLAN</h5>
 <p>Пул VLAN решает две задачи:</p>
 <ol>
-  <li><strong>Сегментация L2-сети</strong>. Каждой точке подключения (<code>CONNECTION_POINTS</code>) можно присвоить отдельный VLAN из пула — изолировать трафик клиентов друг от друга на коммутаторах. Биллинг подсказывает свободный VLAN из пула при создании точки.</li>
+  <li><strong>Сегментация L2-сети</strong>. Учётная запись получает свой тег VLAN из пула своего NAS — трафик клиентов изолирован друг от друга на коммутаторах.</li>
   <li><strong>Учёт использования номеров VLAN</strong>. На корпоративных сетях (или нескольких операторов в одной инфраструктуре) выделение VLAN строгое: например, оператор А получил 100–200, оператор Б — 201–300. Пул не даёт случайно занять чужой номер.</li>
 </ol>
 
@@ -1243,7 +1244,8 @@ flowchart TD
   <tbody>
     <tr><td><code>vlan_pull</code></td><td><code>start_vlan</code>, <code>end_vlan</code></td><td>Диапазон номеров (1–4094 в стандарте 802.1Q)</td></tr>
     <tr><td><code>vlan_pull</code></td><td><code>operator</code> (FK на Abonents)</td><td>За каким провайдером закреплён пул (если несколько ISP в одной инфре)</td></tr>
-    <tr><td><code>CONNECTION_POINTS</code></td><td>VLAN-номер (через UI выбора)</td><td>Присвоенный точке VLAN. Из пула выбирается свободный номер при создании точки</td></tr>
+    <tr><td><code>nas</code></td><td><code>vlan_pull_id</code></td><td>Из какого пула NAS выдаёт теги своим учётным записям</td></tr>
+    <tr><td><code>users</code></td><td><code>router_vlan</code></td><td>Тег учётной записи; по нему считается занятость пула</td></tr>
   </tbody>
 </table>
 
@@ -1256,54 +1258,41 @@ flowchart TD
 
 <h5 id="vlan-pull-cleanup">Что делать со старыми пулами</h5>
 <ul>
-  <li><strong>Тестовые пулы</strong> с 0 точек подключения — удаляются через UI кнопкой 🗑.</li>
-  <li><strong>Декомиссированные пулы</strong> — сначала перевести все точки подключения на другой VLAN-пул, затем удалить. У VLAN-пула нет флага активности, поэтому «мягкого выключения» нет — только удаление после освобождения.</li>
-  <li><strong>Защита удаления</strong>: UI блокирует удаление пула, у которого counter «Использовано» &gt; 0. Чтобы удалить — сначала переведите все точки подключения на другие пулы.</li>
+  <li><strong>Пул, не указанный ни у одного NAS</strong>, теги не выдаёт — его видно в срезе «Не используются», удаляется из меню строки.</li>
+  <li><strong>Пул, указанный у NAS</strong>, удалить нельзя: сначала отвяжите его в карточке NAS. Окно подтверждения назовёт такие NAS; при массовом удалении они пропускаются, остальные удаляются.</li>
 </ul>
 
-<div class="info-box">
-  <strong>Single-operator hide-fix:</strong> если в системе только один оператор связи, в модалке создания пула колонка «Оператор» автоматически скрывается через CSS-класс <code>.vp-op-col-hidden</code> (бьёт Bootstrap-сетку с <code>!important</code>). Это упрощает UI для маленьких ISP.
-</div>
-
 <h4 id="vlan-pull">Пулы VLAN</h4>
-<p>URL: <code>/admin/dictionary/VlanPull/</code></p>
-<p><strong>Пул VLAN</strong> — диапазон номеров VLAN, выделенных оператору связи. Используется при настройке точек подключения (одна точка = одна VLAN из пула) и в шаблонах конфигурации коммутаторов.</p>
+<p>URL: <code>/admin/dictionary/VlanPull/</code>. Страница на общем каркасе списков (сборка 3128).</p>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v510/v510_vlan_pool_list.png" alt="Список VLAN-пулов">
-  <figcaption>Список VLAN-пулов</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/captive_portal_v3131/vlan_list.png" alt="Пулы VLAN: сводка, срезы, занятость и NAS каждого пула" loading="lazy">
+  <figcaption>Пулы VLAN: сводка, срезы, занятость и NAS каждого пула</figcaption>
 </figure>
 
 <h5 id="vlan-pull-features">Возможности списка</h5>
 <ul>
-  <li>Список с поиском по названию и оператору.</li>
-  <li>Колонка <em>«Использовано»</em> — счётчик точек подключения, занявших VLAN из пула.</li>
-  <li>Скрытие «оператора», если у системы единственный оператор: колонка убирается через <code>.vp-op-col-hidden</code>, чтобы не путать админа.</li>
+  <li><strong>Сводка</strong>: свободных тегов во всех пулах, общая занятость; если пулы принадлежат одному оператору — его название.</li>
+  <li><strong>Срезы</strong>: «Почти исчерпаны» (занято 90 % и больше), «Заняты на 75–90 %», «Не используются» (пул не указан ни у одного NAS).</li>
+  <li><strong>Колонки</strong>: диапазон, размер, свободно, занято (полоса и «N из M»), NAS пула — ссылка открывает окно NAS. Колонку оператора можно скрыть в наборе колонок, при одном операторе она скрыта сразу.</li>
+  <li>Поиск по названию, оператору и тегу: число находит пул, в диапазон которого оно входит.</li>
+  <li>Сортировка по любой колонке, при равенстве — по номеру пула; срез и сортировка запоминаются.</li>
+  <li>Массовые действия: CSV выбранных, удаление. CSV всего списка — кнопка у поиска.</li>
 </ul>
 
 <h5 id="vlan-pull-add">Добавление и редактирование</h5>
-<p>Кнопка <strong>«+ Новый VLAN-пул»</strong> открывает модалку:</p>
-<figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v510/v510_vlan_pool_modal_add.png" alt="Модалка добавления VLAN-пула">
-  <figcaption>Модалка добавления VLAN-пула</figcaption>
+<p>Кнопка <strong>«+ VLAN-пул»</strong> или название пула открывает окно:</p>
+<figure class="shot is-narrow">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/captive_portal_v3131/vlan_modal.png" alt="Окно VLAN-пула" loading="lazy">
+  <figcaption>Окно VLAN-пула</figcaption>
 </figure>
 
-<p><strong>Поля</strong>:</p>
 <ul>
-  <li><strong>Название</strong> (<code>name</code>) — отображается в селектах и списке.</li>
-  <li><strong>Начальный VLAN</strong> (<code>start_vlan</code>, 1–4094) — первый номер диапазона.</li>
-  <li><strong>Конечный VLAN</strong> (<code>end_vlan</code>, 1–4094) — последний номер. Сервер проверяет <code>start ≤ end</code> и непересечение с другими активными пулами того же оператора.</li>
-  <li><strong>Оператор</strong> (<code>operator_id</code>) — Select из клиентов в папке Операторы (9002). Для одно-операторских систем поле скрыто.</li>
+  <li><strong>Название</strong> — обязательно.</li>
+  <li><strong>Начальный и конечный тег</strong> — от 1 до 4094; оба или ни одного. Окно сразу считает размер пула и предупреждает, если диапазон пересекается с другим пулом (это допустимо, если пулы указаны у разных NAS).</li>
+  <li><strong>Оператор связи</strong> — если оператор один, он подставляется сам.</li>
 </ul>
-
-<figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pools_v510/v510_vlan_pool_modal_edit.png" alt="Модалка редактирования VLAN-пула">
-  <figcaption>Модалка редактирования VLAN-пула</figcaption>
-</figure>
-
-<p>На скриншоте edit-режим: модалка идентична add, но с заполненными значениями + кнопкой «Удалить» снизу слева.</p>
-
-<p><strong>Защита удаления</strong>: VLAN-пул нельзя удалить, если он использован хотя бы в одной точке подключения. Сервер вернёт ошибку «Пул используется в N точках. Удаление запрещено для сохранения связей.»</p>
+<p>При правке окно подтверждения перечисляет изменения; если пул указан у NAS и меняется диапазон — предупреждает, что уже выданные теги не меняются. Изменения попадают в журнал действий, сохранение без изменений — нет.</p>
 
 <h5 id="pools-monitoring">Мониторинг и алерты</h5>
 <p>Beat-задача <code>ip-pool-monitor</code> (раз в час) обходит все enabled IP-пулы:</p>
@@ -1315,30 +1304,47 @@ flowchart TD
 <p>На дашборде <code>/admin/welcome/</code> — компактный виджет «IP-пулы» с топ-3 опасными и сводкой использования.</p>
 
 <h3 id="acl">7.2. Контроль доступа (ACL)</h3>
-<p>Подменю с двумя справочниками для управления сетевыми правилами доступа.</p>
+<p>Два справочника белых списков — сайтов, которые открываются клиенту без доступа:
+должнику на странице оплаты и гостю до входа в Wi-Fi. Группу выбирают в
+<a href="settings-services.html#captive-portal">Captive Portal</a> (финблокировка, гостевые
+порталы) и в правилах тарифов. Страницы на общем каркасе списков (сборка 3129).</p>
 
-<h4 id="podrazdel-acl-gruppy">Подраздел «ACL группы»</h4>
-<p>Именованные списки правил для firewall: «Домашние пользователи», «Корпоративные»,
-«VIP», «Социальный тариф» и т.п. Каждой группе соответствует набор правил —
-разрешения и запреты по портам, протоколам и адресам. Группа назначается клиенту
-в его карточке (на вкладке «Точки подключения») и попадает в RADIUS-ответ
-как Filter-Id.</p>
-
+<h4 id="podrazdel-acl-gruppy">Группы ACL</h4>
+<p>URL: <code>/admin/dictionary/AclGroups/</code>.</p>
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_acl_groups.png" alt="ACL группы">
-  <figcaption>ACL группы</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/captive_portal_v3131/acl_groups.png" alt="Группы ACL: сайты в группе и где она используется" loading="lazy">
+  <figcaption>Группы ACL: сайты в группе и где она используется</figcaption>
 </figure>
 
-<h4 id="podrazdel-spiski-razreshennyh-saytov">Подраздел «Списки разрешённых сайтов»</h4>
-<p>Белые списки доменов для клиентов в финансовой блокировке (captive portal):
-сайт оператора, страница оплаты, личный кабинет. Когда клиент в долге, NAS
-ограничивает его трафик до этих доменов — чтобы он мог пополнить счёт, но не мог
-пользоваться интернетом для развлечений.</p>
+<ul>
+  <li><strong>Срезы</strong>: «Используются», «Не используются», «Всё выключено» (ни одного включённого сайта), «Пустые».</li>
+  <li><strong>Где используется</strong> — порталы и число правил тарифов; у группы «Отрицат. баланс» ещё отметка «выгрузка для NAS по умолчанию».</li>
+  <li>Меню строки: переименовать, сайты группы, список для NAS, команды для MikroTik, удалить.</li>
+  <li><strong>Удаление занятой группы запрещено</strong>: если в группе есть сайты или её выбрали в портале либо в правиле тарифа, сервер отказывает и называет причины. Раньше связь молча пропадала, и финблокировка оставалась без белого списка.</li>
+  <li>Переименование группы «Отрицат. баланс» предупреждает: выгрузка для NAS без номера группы ищет её по названию.</li>
+</ul>
 
+<h4 id="podrazdel-spiski-razreshennyh-saytov">Разрешённые сайты</h4>
+<p>URL: <code>/admin/dictionary/Acl/?tab=1</code>, ссылка с <code>?group_id=N</code> сразу выбирает группу.</p>
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/06_acl_whitelist.png" alt="ACL — белые списки">
-  <figcaption>ACL — белые списки</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/captive_portal_v3131/acl_sites.png" alt="Разрешённые сайты: срезы по группам, фильтр включённых, отметка повтора" loading="lazy">
+  <figcaption>Разрешённые сайты: срезы по группам, фильтр включённых, отметка повтора</figcaption>
 </figure>
+
+<ul>
+  <li><strong>Срезы по группам</strong> со счётчиками и фильтр «включённые / выключенные»; выбор запоминается.</li>
+  <li><strong>Переключатель в строке</strong> включает и выключает сайт сразу, с кнопкой «Вернуть» в уведомлении. Массовые действия — включить, выключить, перенести в группу, удалить — с подтверждением списком.</li>
+  <li><strong>Повтор</strong> — адрес, записанный в группе дважды, отмечен бейджем.</li>
+</ul>
+<figure class="shot is-narrow">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/captive_portal_v3131/acl_site_modal.png" alt="Окно сайта: адрес, группа и где она используется" loading="lazy">
+  <figcaption>Окно сайта: адрес, группа и где она используется</figcaption>
+</figure>
+
+<p>Адрес можно вставить ссылкой целиком — сервер оставит только домен. Допустимы домен
+(<code>example.ru</code>), все поддомены (<code>*.example.ru</code>), IP-адрес и подсеть;
+неверный формат и повтор в той же группе отклоняются. В журнал действий пишется список
+изменений, в массовых действиях — адреса.</p>
 
 <h3 id="addresses">7.3. Все адреса</h3>
 <p>Подменю с тремя справочниками для адресной системы оператора.</p>
@@ -1631,8 +1637,8 @@ Push / Telegram) и RADIUS-параметров (если статус долж�
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 3130)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">17.09.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 3130)</span>&nbsp;|&nbsp;<span data-smit="updated">17.09.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 3133)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">17.09.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 3133)</span>&nbsp;|&nbsp;<span data-smit="updated">17.09.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2323"></script>
