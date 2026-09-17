@@ -185,6 +185,9 @@
           <li class="sub-item" style="padding-left:32px"><a href="settings.html#print-forms-ai"><i class="ti ti-sparkles" aria-hidden="true"></i> — AI-помощник шаблонов</a></li>
           <li class="sub-item"><a href="settings.html#atol-config"><i class="ti ti-receipt-tax" aria-hidden="true"></i> 6.3. Фискализация</a></li>
           <li class="sub-item"><a href="settings.html#fiscal"><i class="ti ti-receipt-tax" aria-hidden="true"></i> 6.3.1. Модуль фискализации 54-ФЗ</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings.html#fiscal-status"><i class="ti ti-checkup-list" aria-hidden="true"></i> — Состояние и боевой режим</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings.html#fiscal-params"><i class="ti ti-receipt" aria-hidden="true"></i> — Что попадает в чек</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings.html#fiscal-kassa-window"><i class="ti ti-cash-register" aria-hidden="true"></i> — Окно кассы</a></li>
           <li class="sub-item"><a href="settings.html#payment-systems"><i class="ti ti-credit-card" aria-hidden="true"></i> 6.4. Платёжные системы</a></li>
           <li class="sub-item"><a href="settings.html#bank-statements"><i class="ti ti-building-bank" aria-hidden="true"></i> 6.4.1. Банковские выписки</a></li>
           <li class="sub-item"><a href="settings.html#bank-parsers"><i class="ti ti-building-bank" aria-hidden="true"></i> 6.4.2. Банки и парсеры</a></li>
@@ -1046,6 +1049,16 @@
   </ul>
 </details>
 </div>
+<!-- ═══════════ v3.0.0 — 17 сентября 2026 (фискализация) ═══════════ -->
+  <h2 id="v3-b3136">v3.0.0 — 17 сентября 2026 (фискализация)</h2>
+  <ul>
+    <li>Страница фискализации начинается с ответа, пробиваются ли чеки и что мешает: касса, связь с ОФД, чеки с исчерпанными попытками, старая очередь, организации без кассы — у каждой проблемы своя кнопка. <a href="settings.html#fiscal-status">Подробнее</a>.</li>
+    <li>Боевой режим включается и выключается кнопкой с подтверждением; для включения нужна свежая проверка связи.</li>
+    <li>«Что попадает в чек»: отметки типов операций, пример названия позиции, срок досылки очереди и отчёт за день в Telegram. Убраны поля, которые ни на что не влияли, — «Провайдер ОФД» и «Опрос ОФД». Перед сохранением — список изменений. <a href="settings.html#fiscal-params">Подробнее</a>.</li>
+    <li>Окно кассы из трёх разделов: ИНН организации подставляется кнопкой, источники кассы — отметками, проверка связи прямо из окна. <a href="settings.html#fiscal-kassa-window">Подробнее</a>.</li>
+    <li>Исправлено: удаление кассы с чеками заканчивалось ошибкой сервера — теперь окно объясняет, почему нельзя, и предлагает выключить боевой режим кассы; причина ошибки чека не сохранялась (48 чеков 15.09 висели с пустой); токен доступа АТОЛ попадал в текст сетевой ошибки.</li>
+  </ul>
+
 <!-- ═══════════ v3.0.0 — 17 сентября 2026 (шаблоны печати и AI-помощник) ═══════════ -->
   <h2 id="v3-b3134">v3.0.0 — 17 сентября 2026 (шаблоны печати и AI-помощник)</h2>
   <ul>
