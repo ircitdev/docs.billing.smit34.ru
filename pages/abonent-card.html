@@ -2843,14 +2843,10 @@ flowchart LR
 
 <h5 id="abonent-card-tab-audit-text">Текст записей</h5>
 <p>Журнал пишут разные модули, и в запись попадала внутренняя кухня: имя таблицы, код сценария робота, название платформы телефонии. Перед показом текст переводится на язык оператора — одинаково в сводке, на вкладке «Аудит» и в боковой карточке клиента. Сами записи в базе не меняются.</p>
-<table class="lk-table">
-  <thead><tr><th>Было в записи</th><th>Показывается</th></tr></thead>
-  <tbody>
-    <tr><td><code>users_usluga</code></td><td>Услуги</td></tr>
-    <tr><td>Автообзвон (…): робот-звонок … по сценарию «low_balance» → инициирован</td><td>Робот-звонок …, сценарий «Напоминание об оплате»: начат</td></tr>
-    <tr><td>… → ошибка</td><td>…: не удался</td></tr>
-  </tbody>
-</table>
+<ul>
+  <li><code>users_usluga</code> → «Услуги».</li>
+  <li>«Автообзвон (…): робот-звонок … по сценарию «low_balance» → инициирован» → «Робот-звонок …, сценарий «Напоминание об оплате»: начат»; если звонок не получился — «не удался».</li>
+</ul>
 <p>Название сценария берётся из справочника сценариев автообзвона; неизвестный код показывается как есть. Новые записи о робот-звонках пишутся сразу в таком виде.</p>
 
 <h5 id="abonent-card-tab-audit-categories">Разделы событий</h5>
@@ -2859,14 +2855,26 @@ flowchart LR
   <thead><tr><th>Раздел</th><th>Цвет</th><th>Таблицы</th></tr></thead>
   <tbody>
     <tr><td>Услуги</td><td>зелёный</td><td><code>USERS_USLUGA</code></td></tr>
-    <tr><td>Операции, Лицевые счета</td><td>тёмно-зелёный</td><td><code>FINANCE_OPERATIONS</code>, <code>ADMIN_ACCOUNTS</code></td></tr>
-    <tr><td>Оплата, Банк</td><td>бирюзовый</td><td><code>PAY_LOG</code>, <code>BANK_*</code></td></tr>
+    <tr><td>Операции</td><td>тёмно-зелёный</td><td><code>FINANCE_OPERATIONS</code></td></tr>
+    <tr><td>Лицевые счета</td><td>тёмно-зелёный</td><td><code>ADMIN_ACCOUNTS</code></td></tr>
+    <tr><td>Оплата</td><td>бирюзовый</td><td><code>PAY_LOG</code></td></tr>
+    <tr><td>Банк</td><td>бирюзовый</td><td><code>BANK_*</code></td></tr>
     <tr><td>Блокировки</td><td>оранжевый</td><td><code>ABONENTS_BLOCK</code></td></tr>
     <tr><td>Статусы</td><td>янтарный</td><td><code>STATUS</code>, <code>OBJECTS_STATUS</code></td></tr>
-    <tr><td>Карточка клиента, Лояльность, Адрес</td><td>графитовый</td><td><code>ABONENTS</code>, <code>ATTRIBUTE_VALUES</code>, <code>ABONENTS_LOYALTY</code>, <code>HOMES</code></td></tr>
-    <tr><td>Сообщения, Звонки, Обращения</td><td>серо-синий</td><td><code>MSG_STACK</code>, <code>VOICE_CALL</code>, <code>SUPPORT_CONVERSATION</code></td></tr>
+    <tr><td>Карточка клиента</td><td>графитовый</td><td><code>ABONENTS</code>, <code>ATTRIBUTE_VALUES</code></td></tr>
+    <tr><td>Лояльность</td><td>графитовый</td><td><code>ABONENTS_LOYALTY</code></td></tr>
+    <tr><td>Адрес</td><td>графитовый</td><td><code>HOMES</code></td></tr>
+    <tr><td>Сообщения</td><td>серо-синий</td><td><code>MSG_STACK</code></td></tr>
+    <tr><td>Звонки</td><td>серо-синий</td><td><code>VOICE_CALL</code></td></tr>
+    <tr><td>Обращения</td><td>серо-синий</td><td><code>SUPPORT_CONVERSATION</code></td></tr>
     <tr><td>СОРМ</td><td>серый</td><td><code>SORM*</code></td></tr>
-    <tr><td>Личный кабинет, Учётные записи, Сессии, Видеонаблюдение, Оборудование, Телевидение, Документы</td><td>светло-серый</td><td><code>LK_*</code>, <code>USERS</code>, <code>RADIUS_SESSIONS</code>, <code>VIDEO_*</code>, <code>STOCK_MOVEMENT</code>, <code>IPTV_ACCOUNT_MAPPING</code>, <code>DOCUMENT</code></td></tr>
+    <tr><td>Личный кабинет</td><td>светло-серый</td><td><code>LK_*</code></td></tr>
+    <tr><td>Учётные записи</td><td>светло-серый</td><td><code>USERS</code></td></tr>
+    <tr><td>Сессии</td><td>светло-серый</td><td><code>RADIUS_SESSIONS</code></td></tr>
+    <tr><td>Видеонаблюдение</td><td>светло-серый</td><td><code>VIDEO_*</code></td></tr>
+    <tr><td>Оборудование</td><td>светло-серый</td><td><code>STOCK_MOVEMENT</code></td></tr>
+    <tr><td>Телевидение</td><td>светло-серый</td><td><code>IPTV_ACCOUNT_MAPPING</code></td></tr>
+    <tr><td>Документы</td><td>светло-серый</td><td><code>DOCUMENT</code></td></tr>
     <tr><td>Прочее</td><td>светло-серый</td><td>остальные таблицы</td></tr>
   </tbody>
 </table>
