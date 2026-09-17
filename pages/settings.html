@@ -219,6 +219,7 @@
           <li><a href="settings.html#settings"><i class="ti ti-settings" aria-hidden="true"></i> 6. Настройки</a></li>
           <li class="sub-item"><a href="settings.html#system-settings"><i class="ti ti-settings" aria-hidden="true"></i> 6.1. Настройки системы</a></li>
           <li class="sub-item"><a href="settings.html#print-forms"><i class="ti ti-messages" aria-hidden="true"></i> 6.2. Шаблоны печати</a></li>
+          <li class="sub-item" style="padding-left:32px"><a href="settings.html#print-forms-ai"><i class="ti ti-sparkles" aria-hidden="true"></i> — AI-помощник шаблонов</a></li>
           <li class="sub-item"><a href="settings.html#atol-config"><i class="ti ti-receipt-tax" aria-hidden="true"></i> 6.3. Фискализация</a></li>
           <li class="sub-item"><a href="settings.html#fiscal"><i class="ti ti-receipt-tax" aria-hidden="true"></i> 6.3.1. Модуль фискализации 54-ФЗ</a></li>
           <li class="sub-item"><a href="settings.html#payment-systems"><i class="ti ti-credit-card" aria-hidden="true"></i> 6.4. Платёжные системы</a></li>
@@ -1632,15 +1633,105 @@ backup-коды 2FA; IP-список fail-open при пустоте; авари
 <p class="note">Тёмная тема и работа с телефона поддержаны. Потребители прокси (Telegram-рассылки, AI-чаты ЛК/мобильного, геокодер и др., ~18 точек) используют пул автоматически через <code>get_api_proxies()</code>.</p>
 
 <h3 id="print-forms">6.2. Шаблоны печати</h3>
-<p>Шаблоны документов — договоры, акты, квитанции. Шаблон — это HTML или Word-файл
-с подстановочными переменными вида <code>{{ contract_number }}</code>,
-<code>{{ abonent.name }}</code>, <code>{{ tariff }}</code>. Готовый документ
-генерируется при печати из карточки клиента.</p>
+<p>Документы, которые сотрудник печатает из карточки клиента, финансовой операции или
+заявки: договор, счёт, акт, кассовый ордер, счёт-фактура. Шаблон — HTML с подстановками
+языка шаблонов Django (<code>{{ org.legal_name }}</code>, <code>{{ abonent.name }}</code>,
+<code>{{ summa_due|floatformat:2 }}</code>, <code>{% if … %}</code>). Реквизиты, логотип,
+печать и цвет берутся из брендинга организации записи. Раздел:
+<strong>Настройки → Шаблоны печати</strong> (<code>/admin/settings/print_forms/</code>).</p>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_print_forms.png" alt="Шаблоны печати">
-  <figcaption>Шаблоны печати</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/print_forms_v3134/pf_list.png" alt="Шаблоны печати: где печатается документ, для какой операции, формат и лист" loading="lazy">
+  <figcaption>Шаблоны печати: где печатается документ, для какой операции, формат и лист</figcaption>
 </figure>
+
+<ul>
+<li><strong>Сводка</strong> — сколько шаблонов и чей фирменный стиль подставляется: организация
+из шапки, цвет, есть ли логотип. Если реквизиты организации заполнены не все, рядом ссылка на
+брендинг.</li>
+<li><strong>Срезы</strong> по разделу, где печатается документ, и поиск по названию и файлу.</li>
+<li><strong>Для операции</strong> — у какого типа финансовой операции появится кнопка печати:
+акт — 1, оплата — 2, счёт — 5, договор — 6, счёт на предоплату — 9, счёт-фактура — 14,
+расторжение — 15.</li>
+<li>Меню строки: открыть, предпросмотр, сделать копию, удалить.</li>
+</ul>
+
+<h4 id="print-forms-window">Окно шаблона</h4>
+<p>Три вкладки: <strong>Шаблон</strong>, <strong>Предпросмотр</strong> и
+<strong>Параметры</strong>.</p>
+
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/print_forms_v3134/pf_code.png" alt="Вкладка «Шаблон»: редактор с подсветкой тегов и подстановки справа" loading="lazy">
+  <figcaption>Вкладка «Шаблон»: редактор с подсветкой тегов и подстановки справа</figcaption>
+</figure>
+
+<ul>
+<li><strong>Шаблон</strong> — редактор кода с подсветкой подстановок и тегов. Справа —
+подстановки по группам (организация, документ, клиент, суммы): нажатие вставляет её в место
+курсора, «Логотип» и «Печать» вставляются сразу с условием, чтобы при пустом брендинге не было
+битой картинки.</li>
+<li><strong>Предпросмотр</strong> — шаблон на последней подходящей записи. Если операций
+нужного типа ещё нет (так бывает со счетами и договорами), берётся последняя операция любого
+типа. Предпросмотр ничего не сохраняет и не создаёт.</li>
+<li><strong>Параметры</strong> — название, где печатается, для какой операции, формат (HTML или
+DOCX), размер и ориентация листа, файл шаблона.</li>
+</ul>
+
+<figure class="shot is-narrow">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/print_forms_v3134/pf_params.png" alt="Вкладка «Параметры»" loading="lazy">
+  <figcaption>Вкладка «Параметры»</figcaption>
+</figure>
+
+<ul>
+<li>Сохранение <strong>проверяет, что шаблон разбирается</strong>: незакрытый
+<code>{% if %}</code> или <code>{% for %}</code> останавливает сохранение с номером строки.
+Раньше такая ошибка всплывала только при печати документа клиенту.</li>
+<li>Перед сохранением — окно со списком изменений, в журнал действий (<code>PRINT_FORMS</code>)
+пишется то же словами; сохранение без изменений ничего не пишет.</li>
+<li>Создавать, менять и удалять шаблоны может сотрудник с правом
+<strong>«Настройки · Финансы»</strong>; остальные видят шаблоны только на чтение.</li>
+</ul>
+
+<div class="warning-box">
+<strong>Визуального редактора больше нет.</strong> Он разбирал HTML браузером и переставлял
+теги <code>{% for %}</code> между строками таблицы — сохранение из него могло молча сломать
+шаблон. Результат смотрите на вкладке «Предпросмотр».
+</div>
+
+<h4 id="print-forms-ai">AI-помощник: создать шаблон в фирменном стиле</h4>
+<p>Помощник раздела (кнопка в правом нижнем углу или «AI» в редакторе) знает фирменный стиль
+организации — цвет, шрифт, логотип, печать, реквизиты — и все подстановки шаблонов.</p>
+
+<pre class="mermaid">
+flowchart LR
+  A["Создать новый шаблон"] --> Q["До трёх вопросов:<br/>какой документ,<br/>где печатать, что в нём"]
+  Q --> D["Шаблон в фирменном<br/>стиле организации"]
+  D --> OK{"Открыть в окне?"}
+  OK -->|"да"| W["Окно «Новый шаблон»:<br/>поля заполнены,<br/>открыт предпросмотр"]
+  W --> S["Сотрудник проверяет<br/>и сохраняет"]
+</pre>
+
+<div style="display:flex;gap:12px;flex-wrap:wrap">
+<figure class="shot is-narrow">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/print_forms_v3134/pf_ai_presets.png" alt="Заготовки помощника" loading="lazy">
+  <figcaption>Заготовки помощника</figcaption>
+</figure>
+<figure class="shot is-narrow">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/print_forms_v3134/pf_ai_draft.png" alt="Черновик шаблона — открыть в окне" loading="lazy">
+  <figcaption>Черновик шаблона — открыть в окне</figcaption>
+</figure>
+</div>
+
+<ul>
+<li><strong>Создать новый шаблон</strong> — помощник задаёт уточняющие вопросы с готовыми
+вариантами ответа (можно ответить своими словами), собирает шаблон и открывает окно «Новый
+шаблон» с заполненными названием, разделом, типом операции и листом.</li>
+<li><strong>Оформить в фирменном стиле</strong> и <strong>Проверить шаблон</strong> — для
+открытого шаблона. Помощник видит и несохранённый текст из редактора; исправленный шаблон
+заменяет текст в окне только после подтверждения.</li>
+<li>Помощник ничего не сохраняет: сохраняет сотрудник, как при ручной правке. Разговор и расход
+попадают в общий журнал AI.</li>
+</ul>
 
 <h3 id="atol-config">6.3. Фискализация (54-ФЗ)</h3>
 <p>Автоматическая отправка кассовых чеков в ОФД: <a href="#fiscal">модуль фискализации</a>,
@@ -3456,8 +3547,8 @@ flowchart TB
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 3133)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">17.09.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 3133)</span>&nbsp;|&nbsp;<span data-smit="updated">17.09.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 3134)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">17.09.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 3134)</span>&nbsp;|&nbsp;<span data-smit="updated">17.09.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2323"></script>
