@@ -79,7 +79,10 @@
       cScale4: '#262b26', cScale5: '#1f2b2b', cScale6: '#2a2a24', cScale7: '#1d2731',
       cScaleLabel0: '#e6edea', cScaleLabel1: '#e6edea', cScaleLabel2: '#e6edea',
       cScaleLabel3: '#e6edea', cScaleLabel4: '#e6edea', cScaleLabel5: '#e6edea',
-      cScaleLabel6: '#e6edea', cScaleLabel7: '#e6edea'
+      cScaleLabel6: '#e6edea', cScaleLabel7: '#e6edea',
+      // строки атрибутов erDiagram: по умолчанию светлые, и светлый текст
+      // тёмной темы на них не читался
+      attributeBackgroundColorOdd: '#1c2420', attributeBackgroundColorEven: '#232d28'
     } : {
       fontFamily: 'inherit', fontSize: '13px',
       primaryColor: '#eef7f1', primaryBorderColor: brand, primaryTextColor: '#1c2b23',
@@ -90,7 +93,8 @@
       cScale4: '#eaf3ee', cScale5: '#e4f0f0', cScale6: '#f1efe6', cScale7: '#e6ebf2',
       cScaleLabel0: '#1c2b23', cScaleLabel1: '#1c2b23', cScaleLabel2: '#1c2b23',
       cScaleLabel3: '#1c2b23', cScaleLabel4: '#1c2b23', cScaleLabel5: '#1c2b23',
-      cScaleLabel6: '#1c2b23', cScaleLabel7: '#1c2b23'
+      cScaleLabel6: '#1c2b23', cScaleLabel7: '#1c2b23',
+      attributeBackgroundColorOdd: '#ffffff', attributeBackgroundColorEven: '#f3f8f5'
     };
     window.mermaid.initialize({
       startOnLoad: false,
