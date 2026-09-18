@@ -1651,8 +1651,8 @@ flowchart LR
     AI --> DRAFT["Черновик"]
     DRAFT --> CHECK["Оператор<br/>проверяет"]
     CHECK --> T[("Тариф")]
-    style PRICE fill:#e8f6ef,stroke:#43b77a
-    style CHECK fill:#fff3cd,stroke:#f0ad4e
+    style PRICE fill:#e8f6ef,stroke:#43b77a,color:#1b1b1b
+    style CHECK fill:#fff3cd,stroke:#f0ad4e,color:#1b1b1b
 </pre>
 
 <div class="warning-box">
@@ -1924,8 +1924,8 @@ flowchart LR
     C -->|"«Выгрузить в ACL»<br/>только «открыть»"| ACL[("ACL-группа")]
     ACL --> PP["Captive Portal"] --> USER["Клиент в минусе"]
     C -.->|"без выгрузки"| NONE["Не применяется"]
-    style NONE fill:#fff3cd,stroke:#f0ad4e
-    style ACL fill:#e8f6ef,stroke:#43b77a
+    style NONE fill:#fff3cd,stroke:#f0ad4e,color:#1b1b1b
+    style ACL fill:#e8f6ef,stroke:#43b77a,color:#1b1b1b
 </pre>
 
 <div class="warning-box">
@@ -2062,8 +2062,8 @@ flowchart LR
     CONF -->|"Да"| SRV["Сервер применяет"]
     SRV --> SKIP["Занятые<br/>пропущены"] --> TOAST["Сделано N,<br/>пропущено M"]
     SRV --> LOG[("Аудит")]
-    style CONF fill:#e8f6ef,stroke:#43b77a
-    style SKIP fill:#fff3cd,stroke:#f0ad4e
+    style CONF fill:#e8f6ef,stroke:#43b77a,color:#1b1b1b
+    style SKIP fill:#fff3cd,stroke:#f0ad4e,color:#1b1b1b
 </pre>
 
 <figure class="shot">
@@ -2219,8 +2219,8 @@ flowchart LR
     R -->|"пусто"| ALL["Все услуги"] --> AB["Клиент<br/>на программе"]
     AB --> BW["Списание<br/>1-го числа"] --> SUM["Сумма<br/>со скидкой"]
     ST(["Выключена"]) -.->|"скидка не применяется,<br/>клиенты остаются"| BW
-    style SUM fill:#e8f6ef,stroke:#43b77a
-    style ST fill:#f1f3f5,stroke:#adb5bd
+    style SUM fill:#e8f6ef,stroke:#43b77a,color:#1b1b1b
+    style ST fill:#f1f3f5,stroke:#adb5bd,color:#1b1b1b
 </pre>
 
 <table class="data-table">
@@ -2502,8 +2502,8 @@ flowchart LR
     Q -->|"своя"| OK["Видит и правит"]
     Q -->|"пусто"| OK
     Q -->|"чужая"| NO["404"]
-    style OK fill:#e8f6ef,stroke:#43b77a
-    style NO fill:#f8d7da,stroke:#dc3545
+    style OK fill:#e8f6ef,stroke:#43b77a,color:#1b1b1b
+    style NO fill:#f8d7da,stroke:#dc3545,color:#1b1b1b
 </pre>
 
 <table class="data-table">

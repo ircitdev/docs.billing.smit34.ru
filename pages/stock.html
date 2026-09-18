@@ -1074,9 +1074,9 @@ flowchart LR
     C -->|"демонтаж"| W
     W -->|"акт брака (defect)"| D["🗑 Брак"]
     S -->|"акт брака"| D
-    style W fill:#e8f5e9,stroke:#43b77a
-    style C fill:#e7f0fb,stroke:#0d6efd
-    style D fill:#fdecea,stroke:#dc3545
+    style W fill:#e8f5e9,stroke:#43b77a,color:#1b1b1b
+    style C fill:#e7f0fb,stroke:#0d6efd,color:#1b1b1b
+    style D fill:#fdecea,stroke:#dc3545,color:#1b1b1b
 </pre>
 
 <p>Два типа учёта в одной модели:</p>
@@ -1117,7 +1117,7 @@ flowchart TB
     UU --> BW
     ST --> TG
     ST --> AUD
-    style ST fill:#e8f5e9,stroke:#43b77a,stroke-width:2px
+    style ST fill:#e8f5e9,stroke:#43b77a,stroke-width:2px,color:#1b1b1b
 </pre>
 
 <h2 id="stock-quickstart">Быстрый старт</h2>
@@ -1650,9 +1650,9 @@ flowchart TB
     RE --> RE2["UsersUsluga «Аренда оборудования»<br>цена/мес · начисления с 1-го числа<br>следующего месяца (billing_worker)"]
     SA2 -.->|сторно| SA3["Деньги возвращаются на счёт,<br>операция помечается «сторно»"]
     RE2 -.->|"демонтаж / сторно"| RE3["Услуга аренды выключается,<br>новых начислений нет"]
-    style SA2 fill:#fdecea,stroke:#dc3545
-    style RE2 fill:#fff3cd,stroke:#fd7e14
-    style CU2 fill:#e8f5e9,stroke:#43b77a
+    style SA2 fill:#fdecea,stroke:#dc3545,color:#1b1b1b
+    style RE2 fill:#fff3cd,stroke:#fd7e14,color:#1b1b1b
+    style CU2 fill:#e8f5e9,stroke:#43b77a,color:#1b1b1b
 </pre>
 
 <div class="info-box"><strong>Целостность.</strong> Складское движение и его
