@@ -501,6 +501,7 @@
           <li><a href="stock.html#stock-quickstart"><i class="ti ti-run" aria-hidden="true"></i> 2. Быстрый старт</a></li>
           <li><a href="stock.html#stock-flow"><i class="ti ti-traffic-lights" aria-hidden="true"></i> 3. Движения и статусы</a></li>
           <li><a href="stock.html#stock-items"><i class="ti ti-list-details" aria-hidden="true"></i> 4. Номенклатура и остатки</a></li>
+          <li><a href="stock.html#stock-modes"><i class="ti ti-point" aria-hidden="true"></i> Режимы передачи, значки и цвета</a></li>
           <li><a href="stock.html#stock-balances"><i class="ti ti-point" aria-hidden="true"></i> Остатки: где лежит запас и сколько он стоит</a></li>
           <li><a href="stock.html#stock-deficit"><i class="ti ti-point" aria-hidden="true"></i> Дефицит и список к закупке</a></li>
           <li><a href="stock.html#stock-cards"><i class="ti ti-box" aria-hidden="true"></i> Карточка позиции и карточка единицы</a></li>
@@ -516,6 +517,7 @@
           <li><a href="stock.html#stock-move"><i class="ti ti-point" aria-hidden="true"></i> 6г. Перемещение</a></li>
           <li><a href="stock.html#stock-suppliers"><i class="ti ti-point" aria-hidden="true"></i> 6д. Поставщики</a></li>
           <li><a href="stock.html#stock-montazh"><i class="ti ti-clipboard-text" aria-hidden="true"></i> 7. Материалы в наряде</a></li>
+          <li><a href="stock.html#stock-work-order"><i class="ti ti-point" aria-hidden="true"></i> Бланк «Наряд-заказ»</a></li>
           <li><a href="stock.html#stock-abonent"><i class="ti ti-device-desktop" aria-hidden="true"></i> 8. Оборудование клиента</a></li>
           <li><a href="stock.html#stock-money"><i class="ti ti-coins" aria-hidden="true"></i> 9. Деньги: продажа и аренда</a></li>
           <li><a href="stock.html#stock-analytics"><i class="ti ti-chart-line" aria-hidden="true"></i> 9а. Аналитика</a></li>
@@ -1049,6 +1051,21 @@
   </ul>
 </details>
 </div>
+<!-- ═══════════ v3.0.0 — 18 сентября 2026 (склад) ═══════════ -->
+  <h2 id="v3-b3277">v3.0.0 — 18 сентября 2026 (склад)</h2>
+  <p>Все разделы склада на общем каркасе и общих компонентах; бланк наряда печатается из системы.</p>
+  <ul>
+    <li><strong>Бланк «Наряд-заказ»</strong>: печатается из наряда уже заполненным — клиент, договор, адрес, телефоны, монтажник, дата, тариф, коммутатор и порт, материалы со склада по наряду. Текст бланка правится в шаблонах документов. <a href="stock.html#stock-work-order">Подробнее</a>.</li>
+    <li><strong>Режимы передачи</strong> названы одинаково везде — «Наше у клиента», «Продано клиенту», «В аренде» — и получили значок и цвет; категория и режим выбираются из списка со значками, в таблицах показаны значком с подсказкой. <a href="stock.html#stock-modes">Подробнее</a>.</li>
+    <li><strong>Колонки</strong>: в журнале, номенклатуре и на «Остатках» набор и порядок колонок настраивается и хранится в профиле; на «Остатках» организация — своей колонкой. <a href="stock.html#stock-balances">Подробнее</a>.</li>
+    <li><strong>Журнал движений</strong>: записи отмечаются флажками, над отмеченными — копирование серийных номеров, выгрузка и сторно пачкой; записи догружаются при прокрутке. <a href="stock.html#stock-journal">Подробнее</a>.</li>
+    <li><strong>Материалы наряда</strong>: берутся под наряд в подотчёт до появления клиента, «Передать клиенту» переносит их на клиента после договора. <a href="stock.html#stock-montazh">Подробнее</a>.</li>
+    <li>У склада появился адрес; категории — карточками со значком и цветом.</li>
+    <li>Исправлено: после «Передать клиенту» переданное показывалось второй строкой «взято под наряд» и предлагалось к передаче снова.</li>
+    <li>Исправлено: в журнале колонка флажков раздувалась на треть таблицы, когда пустые колонки прятались, — названия позиций обрезались.</li>
+    <li>Исправлено: в списках со значками у варианта «Все…» рисовался чёрный кружок.</li>
+  </ul>
+
 <!-- ═══════════ v3.0.0 — 17 сентября 2026 (видеонаблюдение) ═══════════ -->
   <h2 id="v3-b3152">v3.0.0 — 17 сентября 2026 (видеонаблюдение)</h2>
   <p>Все страницы раздела переведены на общий каркас: срезы со счётчиками, сводка, настройка колонок, меню строки, окна поверх списка, подтверждения и журнал «было → стало».</p>

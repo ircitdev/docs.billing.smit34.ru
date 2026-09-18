@@ -538,6 +538,7 @@
           <li><a href="stock.html#stock-quickstart"><i class="ti ti-run" aria-hidden="true"></i> 2. Быстрый старт</a></li>
           <li><a href="stock.html#stock-flow"><i class="ti ti-traffic-lights" aria-hidden="true"></i> 3. Движения и статусы</a></li>
           <li><a href="stock.html#stock-items"><i class="ti ti-list-details" aria-hidden="true"></i> 4. Номенклатура и остатки</a></li>
+          <li><a href="stock.html#stock-modes"><i class="ti ti-point" aria-hidden="true"></i> Режимы передачи, значки и цвета</a></li>
           <li><a href="stock.html#stock-balances"><i class="ti ti-point" aria-hidden="true"></i> Остатки: где лежит запас и сколько он стоит</a></li>
           <li><a href="stock.html#stock-deficit"><i class="ti ti-point" aria-hidden="true"></i> Дефицит и список к закупке</a></li>
           <li><a href="stock.html#stock-cards"><i class="ti ti-box" aria-hidden="true"></i> Карточка позиции и карточка единицы</a></li>
@@ -553,6 +554,7 @@
           <li><a href="stock.html#stock-move"><i class="ti ti-point" aria-hidden="true"></i> 6г. Перемещение</a></li>
           <li><a href="stock.html#stock-suppliers"><i class="ti ti-point" aria-hidden="true"></i> 6д. Поставщики</a></li>
           <li><a href="stock.html#stock-montazh"><i class="ti ti-clipboard-text" aria-hidden="true"></i> 7. Материалы в наряде</a></li>
+          <li><a href="stock.html#stock-work-order"><i class="ti ti-point" aria-hidden="true"></i> Бланк «Наряд-заказ»</a></li>
           <li><a href="stock.html#stock-abonent"><i class="ti ti-device-desktop" aria-hidden="true"></i> 8. Оборудование клиента</a></li>
           <li><a href="stock.html#stock-money"><i class="ti ti-coins" aria-hidden="true"></i> 9. Деньги: продажа и аренда</a></li>
           <li><a href="stock.html#stock-analytics"><i class="ti ti-chart-line" aria-hidden="true"></i> 9а. Аналитика</a></li>
@@ -1901,17 +1903,40 @@ flowchart LR
 <h4 id="org-telegram-card">Карточки Telegram-бота и супергруппы</h4>
 <p>На вкладке <strong>Telegram</strong>, если задан токен бота, подтягиваются его аватар, имя и <code>@username</code> (ссылка открывает бота в Telegram). При указанном <code>chat_id</code> показывается аватар и название супергруппы. Данные читаются через Telegram Bot API (запросы идут через прокси); если бот не добавлен в группу — вместо карточки выводится предупреждение.</p>
 
-<h3 id="multi-org-telegram">Telegram-бот организации</h3>
-<p>У каждой компании может быть <strong>свой Telegram-бот</strong> для уведомлений в собственную супергруппу с топиками. Настройка — на вкладке <strong>«Telegram»</strong> в карточке организации:</p>
+<h3 id="multi-org-telegram">Боты и группы Telegram у организации</h3>
+<p>У компании может быть <strong>несколько ботов</strong>, и уведомления уходят в её собственную
+группу. Всё это — на вкладке <strong>«Telegram»</strong> в карточке организации.</p>
 <ul>
-  <li><strong>Токен бота</strong> — токен из <code>@BotFather</code> (хранится как секрет; при редактировании пустое поле = «не менять»). Бот должен быть администратором супергруппы.</li>
-  <li><strong>Ссылка на супергруппу</strong> — <code>https://t.me/…</code> на супергруппу с топиками для уведомлений.</li>
-  <li><strong>Chat ID супергруппы</strong> — числовой идентификатор (например <code>-1002910452601</code>) для отправки через Bot API.</li>
+  <li><strong>Боты организации</strong> — карточки с именем и картинкой бота. Новый подключается
+      ключом из <code>@BotFather</code>: биллинг спрашивает у Telegram, кто это, и сохраняет имя
+      и картинку. Крестик отключает бота, спросив подтверждение.</li>
+  <li><strong>Кто шлёт уведомления</strong> — появляется, когда ботов больше одного. При
+      единственном боте выбирать не из чего, и он подставляется сам.</li>
+  <li><strong>Группа</strong> — выбирается из списка, а не вводится номером. Рядом с названием
+      видно, если бот в группе <em>не администратор</em>: тогда он не сможет писать.</li>
 </ul>
-<p>Если поля пусты — используется глобальный бот системы (поведение СмИТ не меняется). Топики (<code>thread_id</code>) под конкретные типы уведомлений настраиваются отдельно; здесь задаётся бот и супергруппа организации.</p>
+<p>Тему (<code>thread_id</code>) здесь не спрашивают: её выбирают в том разделе, который шлёт
+уведомление, — например в карточке СОРМ.</p>
+
+<h4 id="multi-org-telegram-groups">Откуда берётся список групп</h4>
+<p>У Telegram нет способа спросить «в каких группах состоит бот» — такого метода в его
+интерфейсе не существует. Поэтому список копится у нас, тремя путями:</p>
+<ul>
+  <li><strong>Приём сообщений</strong> — бота добавили в группу или в ней написали, и группа
+      появилась в списке сама.</li>
+  <li><strong>«Обновить список»</strong> — разовый опрос Telegram. Работает, пока у бота не
+      зарегистрирован адрес приёма: сообщения отдаются либо туда, либо опросом.</li>
+  <li><strong>«Добавить группу»</strong> — по номеру или <code>@имени</code>. Нужно там, где приём
+      идёт мимо биллинга: у служебного бота адрес приёма указывает на сервер лицензий.</li>
+</ul>
+<p>Список тем супергруппы Telegram тоже не отдаёт: тема попадает в выбор, когда её создали при
+живом приёме или когда в ней написали. Тема «Общие» есть в любой супергруппе с темами.</p>
+<p>В разделе <strong>Настройки → Интеграции → Telegram</strong> остался только служебный бот
+системы: он шлёт тревоги о сети и отчёты разработки. Боты организаций настраиваются в их
+карточках.</p>
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/multiorg_v1155/03_telegram_tab_light.jpg" alt="Вкладка «Telegram» — токен бота, ссылка на супергруппу, Chat ID" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px">
-  <figcaption>Вкладка «Telegram» — токен бота, ссылка на супергруппу, Chat ID</figcaption>
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/org_tg_v3210/org_telegram_tab.png" alt="Вкладка «Telegram» — подключённые боты, выбор отправителя и группы" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px">
+  <figcaption>Вкладка «Telegram»: подключённые боты, кто шлёт уведомления, выбор группы</figcaption>
 </figure>
 
 <h3 id="api-proxy">API-прокси для внешних сервисов</h3>
@@ -2868,8 +2893,8 @@ flowchart TB
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 3152)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">17.09.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 3152)</span>&nbsp;|&nbsp;<span data-smit="updated">17.09.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 3277)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">18.09.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 3277)</span>&nbsp;|&nbsp;<span data-smit="updated">18.09.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2323"></script>
