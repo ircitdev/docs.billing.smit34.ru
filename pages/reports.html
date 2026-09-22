@@ -1068,6 +1068,39 @@
   <figcaption>Панель директора — общий вид</figcaption>
 </figure>
 
+<h4 id="director-v370">Выпуск 3.7.0: общий каркас и одно правило денег</h4>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dash_v3359/director.png" alt="Панель директора: название, период и фильтры в шапке, показатели карточками" loading="lazy">
+  <figcaption>Панель директора в 3.7.0: период и фильтры в шапке страницы</figcaption>
+</figure>
+
+<p>Шапка страницы — общий каркас: название со справкой, календарь периода и
+кнопка фильтров в одной строке. Блоки — карточками одного вида, звонки —
+отдельной строкой показателей. На телефоне период и фильтры стоят в одну линию,
+показатели идут в две колонки.</p>
+<p><strong>Что считается поступлением и списанием.</strong> Раньше в
+«поступления» попадали все положительные операции, в «списания» — все
+отрицательные. Туда же уезжали обещанный платёж (это кредит клиенту, а не
+деньги), сторнированные операции вместе с обратными и возвраты начислений. Теперь
+правило одно для всех сводок:</p>
+<pre class="mermaid">
+flowchart LR
+    OP["Финансовая операция"] --> ST{"Сторнирована?"}
+    ST -- да --> X["Не считается"]
+    ST -- нет --> SG{"Знак суммы<br>и тип операции"}
+    SG -- "сумма &gt; 0, тип «приход»,<br>не обещанный платёж" --> PAY["Поступление"]
+    SG -- "сумма &lt; 0, тип «расход»,<br>не списание обещанного" --> CH["Списание"]
+    SG -- иначе --> X
+</pre>
+<p><strong>ARPU</strong> — поступления за месяц, делённые на клиентскую базу этого
+месяца (не удалённые клиенты, созданные до конца месяца). <strong>Прошлый
+период</strong> для сравнения берётся той же длины, что выбранный.
+<strong>«Активных»</strong> — не удалённые клиенты без блокировки.</p>
+<figure class="shot is-narrow">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dash_v3359/director_mobile.png" alt="Панель директора на телефоне" loading="lazy">
+  <figcaption>На телефоне: период и фильтры в одну строку, показатели в две колонки</figcaption>
+</figure>
+
 <h4 id="director-map">Карта раздела</h4>
 
 <pre class="markmap">
@@ -2686,8 +2719,8 @@ GAMES_OF_MONTH_YANDEX_URL / GAMES_OF_MONTH_2GIS_URL</code></pre>
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 3345)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">22.09.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 3345)</span>&nbsp;|&nbsp;<span data-smit="updated">22.09.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.7.0 (build 3359)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">22.09.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.7.0 (build 3359)</span>&nbsp;|&nbsp;<span data-smit="updated">22.09.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2323"></script>

@@ -1098,6 +1098,26 @@
   <figcaption>Карта клиентов на дашборде (fix)</figcaption>
 </figure>
 
+<h3 id="dashboard-v370">Выпуск 3.7.0: главная на общих компонентах</h3>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dash_v3359/welcome.png" alt="Главная: показатели карточками, блоки на общем каркасе, период в шапке" loading="lazy">
+  <figcaption>Главная в 3.7.0: показатели карточками, долг — главной карточкой, блоки одного вида</figcaption>
+</figure>
+
+<p>Главная собрана из тех же деталей, что и остальные сводки: показатели —
+карточками (значение, изменение к прошлому периоду, пояснение), каждый блок —
+карточкой с заголовком и значком. Период выбирается одним календарём в шапке, как
+на Панели директора, дашбордах CRM и Поддержки.</p>
+<ul>
+  <li><strong>Долг</strong> — главная карточка: сумма, число должников и раскладка по давности.</li>
+  <li><strong>Последние обращения</strong> — 10 штук, <strong>последние операции</strong> — 9, каждая в одну строку; полное описание — в подсказке.</li>
+  <li><strong>Клиенты NAS</strong> — первые 6 и кнопка «Показать ещё»; <strong>обещанные платежи</strong> — 6 записей.</li>
+  <li>Тепловая карта платежей по дням и часам — во всю ширину.</li>
+  <li>Служебный блок (очереди, резервные копии, синхронизация) свёрнут и раскрывается по нажатию.</li>
+</ul>
+<p>Поступления и ARPU считаются так же, как на <a href="reports.html#director-v370">Панели директора</a>, —
+цифры на двух страницах совпадают.</p>
+
 <h3 id="dashboard-period">Период и организация — общие для всей страницы</h3>
 
 <p>Дашборд отвечает на два вопроса сразу: <strong>по какой компании</strong> смотрим и
@@ -1440,8 +1460,8 @@ GROUP BY 1, 2;</code></pre>
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 3345)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">22.09.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 3345)</span>&nbsp;|&nbsp;<span data-smit="updated">22.09.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.7.0 (build 3359)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">22.09.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.7.0 (build 3359)</span>&nbsp;|&nbsp;<span data-smit="updated">22.09.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2323"></script>
