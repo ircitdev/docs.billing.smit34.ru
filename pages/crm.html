@@ -1090,8 +1090,8 @@
     </div>
   </figcaption>
 </figure>
-  <div class="wf-links">
-    <div class="wf-links-head"><i class="ti ti-schema"></i><b>Интерактивная схема этого раздела</b></div>
+  <div class="wf-links" data-wf="crm-top">
+    <div class="wf-links-head"><i class="ti ti-schema"></i><b>Интерактивные схемы этого раздела</b></div>
     <p class="wf-links-sub">Тот же механизм, но нарисованный: узлы можно подсвечивать, связи — разбирать по шагам. Открывается в новой вкладке.</p>
     <div class="wf-links-grid">
       <a class="wf-link" href="https://docs.billing.smit34.ru/Workflow/smitbilling-deal.lifecycle.html" target="_blank" rel="noopener">
@@ -1102,6 +1102,28 @@
         <span class="tx">
           <span class="nm">Жизненный цикл сделки</span>
           <span class="kd"><i class="ti ti-circles-relation"></i>Состояния</span>
+        </span>
+        <span class="go"><i class="ti ti-external-link"></i></span>
+      </a>
+          <a class="wf-link" href="https://docs.billing.smit34.ru/Workflow/smitbilling-fieldwork.workflow.html" target="_blank" rel="noopener">
+        <span class="cover">
+          <img class="light" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/workflow/smitbilling-fieldwork.workflow.jpg" alt="" loading="lazy" decoding="async">
+          <img class="dark" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/workflow/smitbilling-fieldwork.workflow_dark.jpg?v=20260922" alt="" loading="lazy" decoding="async">
+        </span>
+        <span class="tx">
+          <span class="nm">Наряд монтажнику</span>
+          <span class="kd"><i class="ti ti-route"></i>Процесс</span>
+        </span>
+        <span class="go"><i class="ti ti-external-link"></i></span>
+      </a>
+      <a class="wf-link" href="https://docs.billing.smit34.ru/Workflow/smitbilling-esign.sequence.html" target="_blank" rel="noopener">
+        <span class="cover">
+          <img class="light" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/workflow/smitbilling-esign.sequence.jpg?v=20260922" alt="" loading="lazy" decoding="async">
+          <img class="dark" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/workflow/smitbilling-esign.sequence_dark.jpg" alt="" loading="lazy" decoding="async">
+        </span>
+        <span class="tx">
+          <span class="nm">Подпись договора на телефоне</span>
+          <span class="kd"><i class="ti ti-arrows-right-left"></i>Последовательность</span>
         </span>
         <span class="go"><i class="ti ti-external-link"></i></span>
       </a>
@@ -2265,6 +2287,22 @@ window.SmitWidget.register('funnel-summary', function (el, settings) {
   <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_v3056/montazh.png" alt="Наряды: срезы Сегодня, Завтра, Неделя, Все и выбор монтажника" loading="lazy">
   <figcaption>Наряды: переключатель «Календарь | Наряды», срезы периода с числами и выбор монтажника</figcaption>
 </figure>
+<div class="wf-links" data-wf="fieldwork@crm-montazh">
+  <div class="wf-links-head"><i class="ti ti-schema"></i><b>Интерактивная схема</b></div>
+  <div class="wf-links-grid">
+    <a class="wf-link" href="https://docs.billing.smit34.ru/Workflow/smitbilling-fieldwork.workflow.html" target="_blank" rel="noopener">
+      <span class="cover">
+        <img class="light" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/workflow/smitbilling-fieldwork.workflow.jpg" alt="" loading="lazy" decoding="async">
+        <img class="dark" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/workflow/smitbilling-fieldwork.workflow_dark.jpg?v=20260922" alt="" loading="lazy" decoding="async">
+      </span>
+      <span class="tx">
+        <span class="nm">Наряд монтажнику</span>
+        <span class="kd"><i class="ti ti-route"></i>Процесс</span>
+      </span>
+      <span class="go"><i class="ti ti-external-link"></i></span>
+    </a>
+  </div>
+</div>
 <p>Срезы «Сегодня / Завтра / Неделя / Все» показывают число нарядов, в шапке —
 сколько нарядов в выбранном срезе; если список длинный, видно «показано 200 из
 N».</p>
@@ -2281,6 +2319,22 @@ N».</p>
 бригады, которого нет в нарядах, получает свой день сообщением при рассылке плана.</p>
 
 <h2 id="contract-esign">Подписание договора на телефоне</h2>
+<div class="wf-links" data-wf="esign@contract-esign">
+  <div class="wf-links-head"><i class="ti ti-schema"></i><b>Интерактивная схема</b></div>
+  <div class="wf-links-grid">
+    <a class="wf-link" href="https://docs.billing.smit34.ru/Workflow/smitbilling-esign.sequence.html" target="_blank" rel="noopener">
+      <span class="cover">
+        <img class="light" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/workflow/smitbilling-esign.sequence.jpg?v=20260922" alt="" loading="lazy" decoding="async">
+        <img class="dark" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/workflow/smitbilling-esign.sequence_dark.jpg" alt="" loading="lazy" decoding="async">
+      </span>
+      <span class="tx">
+        <span class="nm">Подпись договора на телефоне</span>
+        <span class="kd"><i class="ti ti-arrows-right-left"></i>Последовательность</span>
+      </span>
+      <span class="go"><i class="ti ti-external-link"></i></span>
+    </a>
+  </div>
+</div>
 <p>Клиент подписывает договор прямо при подключении — на телефоне монтажника,
 пальцем на экране, с подтверждением одноразовым кодом из СМС. Это простая
 электронная подпись по 63-ФЗ: ключ — код, подписант определяется по номеру
@@ -2406,6 +2460,22 @@ sequenceDiagram
 оператора — сам по расписанию он не звонит.</p>
 
 <h2 id="crm-field-plan">План выездов</h2>
+<div class="wf-links" data-wf="fieldwork@crm-field-plan">
+  <div class="wf-links-head"><i class="ti ti-schema"></i><b>Интерактивная схема</b></div>
+  <div class="wf-links-grid">
+    <a class="wf-link" href="https://docs.billing.smit34.ru/Workflow/smitbilling-fieldwork.workflow.html" target="_blank" rel="noopener">
+      <span class="cover">
+        <img class="light" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/workflow/smitbilling-fieldwork.workflow.jpg" alt="" loading="lazy" decoding="async">
+        <img class="dark" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/workflow/smitbilling-fieldwork.workflow_dark.jpg?v=20260922" alt="" loading="lazy" decoding="async">
+      </span>
+      <span class="tx">
+        <span class="nm">Наряд монтажнику</span>
+        <span class="kd"><i class="ti ti-route"></i>Процесс</span>
+      </span>
+      <span class="go"><i class="ti ti-external-link"></i></span>
+    </a>
+  </div>
+</div>
 <p>CRM → «План выездов» (<code>/admin/crm/plan/</code>) — кто из монтажников, куда и во
 сколько едет в выбранный день. Выезды — сделки с датой монтажа на этот день; план
 раскладывает их по монтажникам и бригадам, строит маршрут по дорогам и после

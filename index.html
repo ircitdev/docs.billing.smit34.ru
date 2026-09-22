@@ -1274,7 +1274,7 @@
     <div class="wfx-top">
       <div>
         <h2>Как устроен биллинг внутри</h2>
-        <p class="wfx-lead">Шестнадцать интерактивных схем: архитектура боевого сервера,
+        <p class="wfx-lead">Восемнадцать интерактивных схем: архитектура боевого сервера,
         прогон абонплаты, приём платежей, работа с сетью и порядок выкатки. Каждая
         открывается в браузере — с поиском по узлам и разбором связей.</p>
       </div>
@@ -1908,7 +1908,7 @@
   (function () {
     var DOCS = 'https://docs.billing.smit34.ru/Workflow/';
     var COVERS = 'https://storage.googleapis.com/uspeshnyy-projects/smit/billing/workflow/';
-    var GROUPS = [{name:"Ядро",items:[{f:"smitbilling-runtime.architecture",t:"Runtime-архитектура",k:"Архитектура",v:1},{f:"smitbilling-charges.workflow",t:"Прогон абонплаты",k:"Процесс",v:1},{f:"smitbilling-payment.sequence",t:"Оплата через ЮKassa",k:"Последовательность",v:1},{f:"smitbilling-abonent.lifecycle",t:"Абонент по балансу",k:"Состояния",v:1},{f:"smitbilling-sorm.dataflow",t:"Выгрузка СОРМ",k:"Поток данных",v:1}]},{name:"Сеть",items:[{f:"smitbilling-radius.sequence",t:"Путь RADIUS-пакета",k:"Последовательность",v:1},{f:"smitbilling-block.sequence",t:"Блокировка и возврат доступа",k:"Последовательность",v:0},{f:"smitbilling-finblock.architecture",t:"Финблокировка и заглушка",k:"Архитектура",v:0}]},{name:"Клиенты",items:[{f:"smitbilling-support.workflow",t:"Путь обращения",k:"Процесс",v:1},{f:"smitbilling-ai.sequence",t:"Запрос к ассистенту",k:"Последовательность",v:0},{f:"smitbilling-deal.lifecycle",t:"Жизненный цикл сделки",k:"Состояния",v:0}]},{name:"Деньги",items:[{f:"smitbilling-bank.dataflow",t:"Банковская выписка",k:"Поток данных",v:1},{f:"smitbilling-fiscal.lifecycle",t:"Путь чека до ОФД",k:"Состояния",v:0}]},{name:"Инженерам",items:[{f:"smitbilling-deploy.workflow",t:"Безопасный деплой",k:"Процесс",v:1},{f:"smitbilling-queues.architecture",t:"Очереди и фоновые задачи",k:"Архитектура",v:0},{f:"smitbilling-org.dataflow",t:"Разделение по организациям",k:"Поток данных",v:0}]}];
+    var GROUPS = [{name:"Ядро",items:[{f:"smitbilling-runtime.architecture",t:"Runtime-архитектура",k:"Архитектура",v:1},{f:"smitbilling-charges.workflow",t:"Прогон абонплаты",k:"Процесс",v:1},{f:"smitbilling-payment.sequence",t:"Оплата через ЮKassa",k:"Последовательность",v:1},{f:"smitbilling-abonent.lifecycle",t:"Абонент по балансу",k:"Состояния",v:1},{f:"smitbilling-sorm.dataflow",t:"Выгрузка СОРМ",k:"Поток данных",v:1}]},{name:"Сеть",items:[{f:"smitbilling-radius.sequence",t:"Путь RADIUS-пакета",k:"Последовательность",v:1},{f:"smitbilling-block.sequence",t:"Блокировка и возврат доступа",k:"Последовательность",v:0},{f:"smitbilling-finblock.architecture",t:"Финблокировка и заглушка",k:"Архитектура",v:0}]},{name:"Клиенты",items:[{f:"smitbilling-support.workflow",t:"Путь обращения",k:"Процесс",v:1},{f:"smitbilling-ai.sequence",t:"Запрос к ассистенту",k:"Последовательность",v:0},{f:"smitbilling-deal.lifecycle",t:"Жизненный цикл сделки",k:"Состояния",v:0},{f:"smitbilling-fieldwork.workflow",t:"Наряд монтажнику",k:"Процесс",v:1,q:"?v=20260922"},{f:"smitbilling-esign.sequence",t:"Подпись договора на телефоне",k:"Последовательность",v:1,q:"?v=20260922"}]},{name:"Деньги",items:[{f:"smitbilling-bank.dataflow",t:"Банковская выписка",k:"Поток данных",v:1},{f:"smitbilling-fiscal.lifecycle",t:"Путь чека до ОФД",k:"Состояния",v:0}]},{name:"Инженерам",items:[{f:"smitbilling-deploy.workflow",t:"Безопасный деплой",k:"Процесс",v:1},{f:"smitbilling-queues.architecture",t:"Очереди и фоновые задачи",k:"Архитектура",v:0},{f:"smitbilling-org.dataflow",t:"Разделение по организациям",k:"Поток данных",v:0}]}];
     var ICONS = {
       'Архитектура': 'ti ti-sitemap', 'Процесс': 'ti ti-route',
       'Последовательность': 'ti ti-arrows-right-left',
@@ -1927,16 +1927,16 @@
     function render(index) {
       track.innerHTML = GROUPS[index].items.map(function (it) {
         var clips = it.v && !reduced
-          ? '<video class="clip light" data-src="' + COVERS + it.f + '.mp4" muted loop ' +
+          ? '<video class="clip light" data-src="' + COVERS + it.f + '.mp4' + (it.q || '') + '" muted loop ' +
             'playsinline preload="none" aria-hidden="true"></video>' +
-            '<video class="clip dark" data-src="' + COVERS + it.f + '_dark.mp4" muted loop ' +
+            '<video class="clip dark" data-src="' + COVERS + it.f + '_dark.mp4' + (it.q || '') + '" muted loop ' +
             'playsinline preload="none" aria-hidden="true"></video>'
           : '';
         return '<a class="wfx-card' + (it.v ? ' has-clip' : '') + '" href="' + DOCS + it.f +
           '.html" target="_blank" rel="noopener">' +
           '<span class="wfx-media">' +
-            '<img class="light" src="' + COVERS + it.f + '.jpg" alt="" loading="lazy">' +
-            '<img class="dark" src="' + COVERS + it.f + '_dark.jpg" alt="" loading="lazy">' +
+            '<img class="light" src="' + COVERS + it.f + '.jpg' + (it.q || '') + '" alt="" loading="lazy">' +
+            '<img class="dark" src="' + COVERS + it.f + '_dark.jpg' + (it.q || '') + '" alt="" loading="lazy">' +
             clips +
           '</span>' +
           '<span class="wfx-body">' +
