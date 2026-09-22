@@ -198,6 +198,13 @@
           <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#bank-queue-link-2171"><i class="ti ti-credit-card" aria-hidden="true"></i> — Привязка платежа и данные ФНС</a></li>
           <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#bank-org-2171"><i class="ti ti-credit-card" aria-hidden="true"></i> — Организация платежа</a></li>
           <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#bank-client-tab"><i class="ti ti-map-2" aria-hidden="true"></i> — Вкладка «Банк» в карточке</a></li>
+          <li class="sub-item"><a href="settings.html#onec"><i class="ti ti-arrows-exchange" aria-hidden="true"></i> 6.4.4А. Обмен с 1С:Предприятие</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#onec-how"><i class="ti ti-route" aria-hidden="true"></i> — Как это работает (схема)</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#onec-exchange"><i class="ti ti-file-export" aria-hidden="true"></i> — Выгрузка и журнал</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#onec-session"><i class="ti ti-checklist" aria-hidden="true"></i> — Сверка и предупреждения</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#onec-mapping"><i class="ti ti-link" aria-hidden="true"></i> — Сопоставление услуг</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#onec-settings"><i class="ti ti-adjustments" aria-hidden="true"></i> — Настройки и расписание</a></li>
+          <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#onec-errors"><i class="ti ti-alert-triangle" aria-hidden="true"></i> — Разбор ошибок</a></li>
           <li class="sub-item"><a href="settings.html#mailserver"><i class="ti ti-mail" aria-hidden="true"></i> 6.4.5. Почтовый сервер</a></li>
           <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#mailserver-webmail"><i class="ti ti-mail" aria-hidden="true"></i> — Веб-почта и календарь</a></li>
           <li class="sub-item" style="padding-left:1.8em"><a href="settings.html#mailserver-identity"><i class="ti ti-signature" aria-hidden="true"></i> — Имя, подпись, фото</a></li>
@@ -1051,6 +1058,19 @@
   </ul>
 </details>
 </div>
+<!-- ═══════════ v3.0.0 — 22 сентября 2026 (обмен с 1С) ═══════════ -->
+  <h2 id="v3-onec">v3.0.0 — 22 сентября 2026 (обмен с 1С:Предприятие)</h2>
+  <p>Новый модуль «Обмен с 1С:Предприятие»: файл для «1С:Бухгалтерии предприятия 3.0» в формате EnterpriseData, который загружается штатной синхронизацией без доработки конфигурации.</p>
+  <ul>
+    <li><strong>Что выгружается</strong>: организация, контрагенты-юрлица с реквизитами, договоры, номенклатура, реализации по услугам, выпущенные счета и поступления денег за период. Физлица — одной строкой «Розничные покупатели» или поимённо по выбору. <a href="settings.html#onec-what">Подробнее</a>.</li>
+    <li><strong>Без дублей</strong>: у каждого объекта постоянная ссылка, в файл идёт только новое и изменившееся; повторная выгрузка того же периода даёт пустой файл. <a href="settings.html#onec-idempotency">Подробнее</a>.</li>
+    <li><strong>Проверка и выгрузка</strong>: «Проверить» собирает файл для просмотра, ничего не отмечая отправленным; журнал сеансов с организацией, сотрудником, суммами, скачиванием файла и повтором. <a href="settings.html#onec-exchange">Подробнее</a>.</li>
+    <li><strong>Сверка и предупреждения</strong>: выручка и поступления в файле против начислений биллинга, предупреждения группами — юрлица без ИНН со ссылками на карточки, компенсации больше начислений, услуги без сопоставления. <a href="settings.html#onec-session">Подробнее</a>.</li>
+    <li><strong>Сопоставление услуг</strong> с номенклатурой 1С, ставкой НДС и счётом учёта — у каждой организации своё. <a href="settings.html#onec-mapping">Подробнее</a>.</li>
+    <li><strong>Доставка и расписание</strong>: папка на сервере, FTP, SFTP или почта бухгалтерии; автовыгрузка за день, неделю или месяц, повтор упавшего сеанса и оповещение в Telegram. Ошибки доставки написаны словами. <a href="settings.html#onec-settings">Подробнее</a>.</li>
+    <li>Модуль платный (Pro, Бизнес, Enterprise), по умолчанию выключен, права — «Настройки · Финансы», каждое действие пишется в журнал.</li>
+  </ul>
+
 <!-- ═══════════ v3.0.0 — 21 сентября 2026 (персонал и доступ) ═══════════ -->
   <h2 id="v3-b3313">v3.0.0 — 21 сентября 2026 (персонал и доступ)</h2>
   <p>Раздел «Персонал и доступ» переведён на общие компоненты: у групп появились значок и цвет, в списке — полезные колонки, на страницах прав — поиск и частичные отметки. Каждое изменение пишется в журнал.</p>
