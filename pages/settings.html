@@ -3109,7 +3109,7 @@ flowchart TD
 же, рядом ссылка «Реквизиты».</p>
 
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/onec_v1/onec_exchange.png" alt="Вкладка «Обмен»: состояние, выбор периода, кнопки «Проверить» и «Выгрузить», журнал сеансов" loading="lazy">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/onec_v2/onec_exchange.png" alt="Вкладка «Обмен»: состояние, выбор периода, кнопки «Проверить» и «Выгрузить», журнал сеансов" loading="lazy">
   <figcaption>Вкладка «Обмен»: состояние, период, две кнопки и журнал сеансов</figcaption>
 </figure>
 
@@ -3124,11 +3124,33 @@ flowchart TD
   узнает объекты по ссылкам и обновит их.</li>
 </ul>
 
-<p>В журнале — все сеансы доступных вам организаций: когда создан, организация, период,
-кто запустил (имя ведёт в карточку сотрудника), сколько документов ушло, выручка и
-поступления в файле, статус. Значок <i class="ti ti-alert-triangle"></i> — у сеанса есть
-предупреждения. Действия строки: подробности, скачать файл, повторить (у сеанса с
-ошибкой). Пока сеанс выполняется, строка обновляется сама.</p>
+<p>В журнале — все сеансы доступных вам организаций. Пока сеанс выполняется, строка
+обновляется сама.</p>
+
+<table class="data-table">
+  <thead><tr><th>Колонка</th><th>Что показывает</th></tr></thead>
+  <tbody>
+    <tr><td>Создан · Организация · Период</td><td>когда запущен сеанс, для какой организации (бейдж) и за какой период</td></tr>
+    <tr><td>Кто</td><td>сотрудник с фото — имя открывает его карточку в «Персонале»; у запусков по расписанию — «Система»</td></tr>
+    <tr><td>Запуск</td><td>вручную, по расписанию или повтор упавшего сеанса</td></tr>
+    <tr><td>Состав файла</td><td>что ушло в 1С: контрагенты, акты, счета, поступления; «без изменений» — если отправлять было нечего</td></tr>
+    <tr><td>Выручка / поступления</td><td>суммы реализаций и поступлений в файле</td></tr>
+    <tr><td>Доставка</td><td>куда доставлен файл: папка на сервере, FTP, SFTP, почта или «скачивание»; у проверки — «проверка», у сбоя — «не доставлен» красным</td></tr>
+    <tr><td>Предупреждения</td><td>сколько юрлиц без ИНН, строк с компенсациями и несопоставленных услуг; нажатие открывает сеанс с подробностями</td></tr>
+    <tr><td>Статус</td><td>ожидает, выполняется, готово, проверка или ошибка</td></tr>
+  </tbody>
+</table>
+
+<p>Кнопка <i class="ti ti-columns"></i> рядом с «Проверить» открывает выбор колонок. По
+желанию включаются «Документов» (общее число документов), «Длительность» и «Размер
+файла». Набор, порядок и ширина колонок сохраняются в профиле сотрудника и видны на
+любом компьютере. Действия строки: подробности, скачать файл, повторить (у сеанса с
+ошибкой).</p>
+
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/onec_v2/onec_columns.png" alt="Панель выбора колонок журнала обмена" loading="lazy">
+  <figcaption>Выбор колонок: включённые залиты, выключенные — бледные; «Сбросить» возвращает набор по умолчанию</figcaption>
+</figure>
 
 <figure class="shot is-narrow">
   <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/onec_v1/onec_orgswitch.png" alt="Выбор организации: бейдж текущей и меню остальных" loading="lazy">
@@ -3954,8 +3976,8 @@ flowchart TB
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 3341)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">22.09.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 3341)</span>&nbsp;|&nbsp;<span data-smit="updated">22.09.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.6.0 (build 3342)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">22.09.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.6.0 (build 3342)</span>&nbsp;|&nbsp;<span data-smit="updated">22.09.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2323"></script>
