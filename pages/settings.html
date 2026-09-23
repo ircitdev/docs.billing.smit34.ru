@@ -1640,11 +1640,6 @@ backup-коды 2FA; IP-список fail-open при пустоте; авари
 <h5 id="system-settings-proxy-log">Журнал событий</h5>
 <p>Правая колонка — последние 50 событий (проверки, переходы up/down, добавление/удаление) с авто-обновлением каждые 30с. Кнопка «Скачать» выгружает журнал в CSV (до 1000 записей).</p>
 
-<figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/proxy_v1064/proxy_dark_table.png" alt="Вкладка Прокси в тёмной теме">
-  <figcaption>Вкладка Прокси в тёмной теме</figcaption>
-</figure>
-
 <p class="note">Тёмная тема и работа с телефона поддержаны. Потребители прокси (Telegram-рассылки, AI-чаты ЛК/мобильного, геокодер и др., ~18 точек) используют пул автоматически через <code>get_api_proxies()</code>.</p>
 
 <h3 id="print-forms">6.2. Шаблоны печати</h3>
@@ -2049,11 +2044,6 @@ flowchart LR
   автоматически раз в сутки, если включён (настройка «Отчёт в Telegram», час — «Час
   отправки отчёта»; канал — «chat_id группы», по умолчанию общий админ-чат).</li>
 </ul>
-
-<figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/fiscal_v2191/fiscal_queue_dark.png" alt="Очередь чеков в тёмной теме" width="1100">
-  <figcaption>Очередь чеков в тёмной теме</figcaption>
-</figure>
 
 <h5>Как работает (поток чека)</h5>
 
@@ -2469,11 +2459,6 @@ flowchart TD
 </figure>
 
 
-<figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/payment_settings_v2243/01_global_dark.png" alt="Платёжные системы — общие настройки">
-  <figcaption>Платёжные системы — общие настройки</figcaption>
-</figure>
-
 <h4 id="payment-scopes">Наборы настроек: общие и кассы организаций</h4>
 
 <p>Страница правит <strong>два разных набора</strong>, между ними переключает полоса в шапке:</p>
@@ -2562,11 +2547,6 @@ flowchart TD
 пересчитывает пример при вводе.</p>
 
 <h4 id="payment-webhook-security">Безопасность webhook</h4>
-
-<figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/payment_settings_v2243/03_security_dark.png" alt="Безопасность webhook">
-  <figcaption>Безопасность webhook</figcaption>
-</figure>
 
 <ul>
   <li><strong>Белый список IP</strong> (CIDR через запятую) — запросы с других адресов получают 403.
@@ -2846,7 +2826,7 @@ flowchart LR
 
 <h4 id="bank-queue-2171">Разбор очереди, организации и аудит</h4>
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v2171/queue2.png" alt="Очередь модерации: чипы статусов со счётчиками, поиск, период, суммовой итог, колонка организации" loading="lazy">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v3361/queue2.png" alt="Очередь модерации: чипы статусов со счётчиками, поиск, период, суммовой итог, колонка организации" loading="lazy">
   <figcaption>Очередь модерации: чипы статусов со счётчиками, поиск, период, суммовой итог, колонка организации</figcaption>
 </figure>
 
@@ -2898,7 +2878,7 @@ flowchart LR
 
 <h4 id="bank-client-tab">Вкладка «Банк» в карточке клиента</h4>
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v2171/client_tab.png" alt="Вкладка «Банк» в карточке клиента" loading="lazy">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_v3361/client_tab.png" alt="Вкладка «Банк» в карточке клиента" loading="lazy">
   <figcaption>Вкладка «Банк» в карточке клиента</figcaption>
 </figure>
 
@@ -3009,7 +2989,7 @@ flowchart LR
   <li><strong>Привязка платежа — раскрытием строки (по образцу Xero).</strong> На широком экране кнопка «Привязать» не открывает модальное окно, а раскрывает строку-аккордеон прямо под операцией: там карточка платежа (сумма, дата, плательщик, ИНН, назначение), поле поиска клиента (ФИО / договор / телефон / e-mail / ИНН / ID) с подсказками-кнопками из назначения платежа и подтверждением перед зачислением. На телефоне (&lt; 768 px) — то же в виде модалки / слайд-панели.</li>
 </ul>
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_ux_v2240/bank_queue.png" alt="Банковские выписки — очередь модерации (единые компоненты)" loading="lazy">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/bank_ux_v3361/bank_queue.png" alt="Банковские выписки — очередь модерации (единые компоненты)" loading="lazy">
   <figcaption>Банковские выписки — очередь модерации (единые компоненты)</figcaption>
 </figure>
 <figure class="shot">
@@ -3994,8 +3974,8 @@ flowchart TB
 </main>
 
 <footer class="footer">
-  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.7.0 (build 3359)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">22.09.2026</span></span>
-  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.7.0 (build 3359)</span>&nbsp;|&nbsp;<span data-smit="updated">22.09.2026</span></span>
+  <span class="footer-full">&copy; <span data-smit="year">2026</span> <span data-smit="company">ООО «СмИТ»</span> — СмИТ Биллинг <span data-smit="full">v3.7.0 (build 3360)</span>&nbsp;|&nbsp;Обновлено: <span data-smit="updated">23.09.2026</span></span>
+  <span class="footer-short">&copy; <span data-smit="year">2026</span> СмИТ Биллинг <span data-smit="full">v3.7.0 (build 3360)</span>&nbsp;|&nbsp;<span data-smit="updated">23.09.2026</span></span>
 </footer>
 
 <script src="../js/main.js?v=2323"></script>

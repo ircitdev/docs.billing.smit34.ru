@@ -41,7 +41,9 @@ DESCRIPTIONS = {'smitbilling-runtime.architecture.html': 'Каналы, ядро
     'smitbilling-fiscal.lifecycle.html': 'Когда чек пробивается, когда нет и что происходит при сбое кассы.',
     'smitbilling-deploy.workflow.html': 'Порядок шагов на боевом сервере и места, где теряются чужие правки.',
     'smitbilling-queues.architecture.html': 'Три очереди с отдельными воркерами и что по какой идёт.',
-    'smitbilling-org.dataflow.html': 'Как право доступа и ключ кэша определяют, чьи данные видит сотрудник.'}
+    'smitbilling-org.dataflow.html': 'Как право доступа и ключ кэша определяют, чьи данные видит сотрудник.',
+    'smitbilling-fieldwork.workflow.html': 'От выигранной сделки до наряда, плана выезда с бригадой и отчёта по выездам.',
+    'smitbilling-esign.sequence.html': 'Подпись пальцем на телефоне монтажника, код из СМС, штамп в PDF и запись в журнал.'}
 
 PAGES = [
     # базовые
@@ -65,6 +67,9 @@ PAGES = [
     ('smitbilling-deploy.workflow.html', 'Безопасный деплой', 'Процесс'),
     ('smitbilling-queues.architecture.html', 'Очереди и фоновые задачи', 'Архитектура'),
     ('smitbilling-org.dataflow.html', 'Разделение по организациям', 'Поток данных'),
+    # монтаж и выезды
+    ('smitbilling-fieldwork.workflow.html', 'Наряд монтажнику', 'Процесс'),
+    ('smitbilling-esign.sequence.html', 'Подпись договора на телефоне', 'Последовательность'),
 ]
 
 TEMPLATE = """<!DOCTYPE html>

@@ -1,0 +1,306 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Наряд монтажнику: от сделки до отчёта",
+    "quality_profile": "showcase",
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "backend": {
+          "label": "шаг процесса"
+        },
+        "security": {
+          "label": "требует решения"
+        },
+        "external": {
+          "label": "на месте / вовне"
+        },
+        "messagebus": {
+          "label": "документ"
+        },
+        "database": {
+          "label": "итог"
+        }
+      }
+    },
+    "views": [
+      {
+        "id": "main",
+        "label": "Обычный путь",
+        "focus": [
+          "deal",
+          "order",
+          "plan",
+          "approve",
+          "work",
+          "report"
+        ],
+        "note": "От выигранной сделки до отчёта по выездам за период."
+      },
+      {
+        "id": "plan",
+        "label": "Планирование выезда",
+        "focus": [
+          "plan",
+          "route",
+          "notfit",
+          "approve"
+        ],
+        "note": "Бригаду и дату можно перетащить — план пересчитается заново."
+      },
+      {
+        "id": "onsite",
+        "label": "На месте у клиента",
+        "focus": [
+          "work",
+          "stock",
+          "sign"
+        ],
+        "note": "Материалы берутся под наряд, договор подписывается на телефоне."
+      }
+    ]
+  },
+  "lanes": [
+    {
+      "id": "flow",
+      "label": "Наряд и выезд"
+    },
+    {
+      "id": "exception",
+      "label": "Если не помещается",
+      "variant": "exception"
+    },
+    {
+      "id": "result",
+      "label": "Итог"
+    }
+  ],
+  "phases": [
+    {
+      "id": "intake",
+      "label": "Заявка на монтаж",
+      "fromCol": 0,
+      "toCol": 1
+    },
+    {
+      "id": "planning",
+      "label": "План выезда",
+      "fromCol": 2,
+      "toCol": 3,
+      "variant": "emphasis"
+    },
+    {
+      "id": "closing",
+      "label": "Выполнение и итог",
+      "fromCol": 4,
+      "toCol": 5
+    }
+  ],
+  "mainPath": [
+    "deal",
+    "order",
+    "plan",
+    "approve",
+    "work",
+    "report"
+  ],
+  "nodes": [
+    {
+      "id": "deal",
+      "lane": "flow",
+      "col": 0,
+      "type": "backend",
+      "label": "Сделка согласована",
+      "sublabel": "тариф и дата",
+      "width": 132
+    },
+    {
+      "id": "order",
+      "lane": "flow",
+      "col": 1,
+      "type": "messagebus",
+      "label": "Наряд создан",
+      "sublabel": "CRM → Наряды",
+      "width": 132
+    },
+    {
+      "id": "plan",
+      "lane": "flow",
+      "col": 2,
+      "type": "backend",
+      "label": "План выездов",
+      "sublabel": "дата и бригада",
+      "width": 132
+    },
+    {
+      "id": "route",
+      "lane": "result",
+      "col": 2,
+      "type": "external",
+      "label": "Маршрут по дорогам",
+      "sublabel": "OSRM, поправка",
+      "width": 132
+    },
+    {
+      "id": "approve",
+      "lane": "flow",
+      "col": 3,
+      "type": "security",
+      "label": "Утверждает инженер",
+      "sublabel": "план → в сделки",
+      "width": 132
+    },
+    {
+      "id": "work",
+      "lane": "flow",
+      "col": 4,
+      "type": "external",
+      "label": "Монтажник выполняет",
+      "sublabel": "бланк наряда PDF",
+      "width": 132
+    },
+    {
+      "id": "stock",
+      "lane": "result",
+      "col": 4,
+      "type": "database",
+      "label": "Материалы под отчёт",
+      "sublabel": "склад → клиенту",
+      "width": 132
+    },
+    {
+      "id": "sign",
+      "lane": "result",
+      "col": 5,
+      "type": "messagebus",
+      "label": "Договор подписан",
+      "sublabel": "на телефоне",
+      "width": 132
+    },
+    {
+      "id": "report",
+      "lane": "flow",
+      "col": 5,
+      "type": "backend",
+      "label": "Отчёт по выездам",
+      "sublabel": "подключения · пробег",
+      "width": 132
+    },
+    {
+      "id": "notfit",
+      "lane": "exception",
+      "col": 2,
+      "type": "security",
+      "label": "Не вошёл в план",
+      "sublabel": "нет бригады с машиной",
+      "tag": "перетащить карточку",
+      "width": 132
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "deal",
+      "to": "order",
+      "variant": "default"
+    },
+    {
+      "id": "e2",
+      "from": "order",
+      "to": "plan",
+      "variant": "default"
+    },
+    {
+      "id": "e3",
+      "from": "plan",
+      "to": "route",
+      "variant": "dashed"
+    },
+    {
+      "id": "e4",
+      "from": "plan",
+      "to": "approve",
+      "label": "распределено",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e5",
+      "from": "approve",
+      "to": "work",
+      "label": "в сделки",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e6",
+      "from": "work",
+      "to": "stock",
+      "variant": "dashed",
+      "route": "drop",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e7",
+      "from": "work",
+      "to": "report",
+      "label": "работы приняты",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e8",
+      "from": "work",
+      "to": "sign",
+      "variant": "dashed"
+    },
+    {
+      "id": "e9",
+      "from": "sign",
+      "to": "report",
+      "variant": "dashed",
+      "role": "branch"
+    },
+    {
+      "id": "e10",
+      "from": "plan",
+      "to": "notfit",
+      "label": "нет бригады",
+      "variant": "security",
+      "role": "error"
+    },
+    {
+      "id": "e12",
+      "from": "notfit",
+      "to": "approve",
+      "label": "пересчитан",
+      "variant": "dashed",
+      "role": "branch"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "От заявки до бригады",
+      "items": [
+        "Наряд рождается из выигранной сделки CRM, дата и тариф уже согласованы",
+        "Дни и бригады задаёт график монтажников: рабочие часы, машина, навыки, отпуска"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Что можно поправить руками",
+      "items": [
+        "Выезд перетаскивается между монтажниками — план пересчитается заново",
+        "В сделки план попадает только после «Утвердить», черновик ни на что не влияет"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "На месте у клиента",
+      "items": [
+        "Материалы берутся под наряд в подотчёт, затем передаются клиенту по договору",
+        "Отчёт по выездам считает подключения, отказы, пробег и долю без монтажника в сделке"
+      ]
+    }
+  ]
+}

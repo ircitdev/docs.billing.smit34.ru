@@ -1,0 +1,253 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Подписание договора на телефоне монтажника",
+    "quality_profile": "showcase",
+    "column_fit": "spread",
+    "viewBox": [
+      1080,
+      560
+    ],
+    "views": [
+      {
+        "id": "sign",
+        "label": "Подпись и код",
+        "focus": [
+          "monter",
+          "client",
+          "web"
+        ],
+        "note": "Подпись пальцем — простая электронная подпись по 63-ФЗ, соглашение сторон входит в текст договора."
+      },
+      {
+        "id": "code",
+        "label": "Проверка кодом из СМС",
+        "focus": [
+          "client",
+          "sms",
+          "web"
+        ],
+        "note": "Код действует 10 минут, не больше 5 попыток и не больше 5 кодов на подписание."
+      },
+      {
+        "id": "after",
+        "label": "После подписи",
+        "focus": [
+          "web",
+          "db",
+          "client"
+        ],
+        "note": "Контрольная сумма связывает подпись с текстом договора, всё пишется в журнал."
+      }
+    ],
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "default": {
+          "label": "действие"
+        },
+        "emphasis": {
+          "label": "основной путь"
+        },
+        "security": {
+          "label": "проверка"
+        },
+        "dashed": {
+          "label": "фоновое"
+        },
+        "return": {
+          "label": "ответ"
+        }
+      }
+    }
+  },
+  "participants": [
+    {
+      "id": "monter",
+      "type": "external",
+      "label": "Монтажник",
+      "sublabel": "телефон, наряд"
+    },
+    {
+      "id": "client",
+      "type": "external",
+      "label": "Клиент",
+      "sublabel": "свой телефон"
+    },
+    {
+      "id": "web",
+      "type": "backend",
+      "label": "CRM",
+      "sublabel": "наряд · договор"
+    },
+    {
+      "id": "sms",
+      "type": "external",
+      "label": "СМС-шлюз",
+      "sublabel": "код подтверждения"
+    },
+    {
+      "id": "db",
+      "type": "database",
+      "label": "Реестр подписей",
+      "sublabel": "PDF · журнал аудита"
+    }
+  ],
+  "segments": [
+    {
+      "from": 150,
+      "to": 234,
+      "label": "Договор и подпись"
+    },
+    {
+      "from": 242,
+      "to": 350,
+      "label": "Код из СМС"
+    },
+    {
+      "from": 358,
+      "to": 470,
+      "label": "Штамп и копии"
+    }
+  ],
+  "messages": [
+    {
+      "id": "open-order",
+      "from": "monter",
+      "to": "web",
+      "y": 160,
+      "label": "открыть наряд",
+      "variant": "default"
+    },
+    {
+      "id": "show-contract",
+      "from": "web",
+      "to": "monter",
+      "y": 190,
+      "label": "договор на экране",
+      "variant": "return",
+      "note": "Текст договора включает соглашение сторон об ЭП (63-ФЗ, ст.9)"
+    },
+    {
+      "id": "sign-finger",
+      "from": "client",
+      "to": "monter",
+      "y": 220,
+      "label": "подпись пальцем на экране",
+      "variant": "emphasis",
+      "note": "Простая электронная подпись по 63-ФЗ, ст.5 ч.2"
+    },
+    {
+      "id": "send-code",
+      "from": "web",
+      "to": "sms",
+      "y": 250,
+      "label": "запросить код",
+      "variant": "emphasis"
+    },
+    {
+      "id": "code-to-client",
+      "from": "sms",
+      "to": "client",
+      "y": 280,
+      "label": "код на телефон клиента",
+      "variant": "default"
+    },
+    {
+      "id": "enter-code",
+      "from": "client",
+      "to": "monter",
+      "y": 310,
+      "label": "называет код",
+      "variant": "default"
+    },
+    {
+      "id": "verify-code",
+      "from": "monter",
+      "to": "web",
+      "y": 340,
+      "label": "код введён",
+      "variant": "security",
+      "note": "10 минут срок · 5 попыток · 5 кодов на подписание"
+    },
+    {
+      "id": "checksum",
+      "from": "web",
+      "to": "db",
+      "y": 370,
+      "label": "контрольная сумма текста + подпись",
+      "variant": "emphasis"
+    },
+    {
+      "id": "stamp",
+      "from": "db",
+      "to": "web",
+      "y": 400,
+      "label": "PDF со штампом",
+      "variant": "return"
+    },
+    {
+      "id": "audit",
+      "from": "web",
+      "to": "db",
+      "y": 430,
+      "label": "запись в журнал аудита",
+      "variant": "dashed"
+    },
+    {
+      "id": "copy-client",
+      "from": "web",
+      "to": "client",
+      "y": 460,
+      "label": "копия: письмо и СМС",
+      "variant": "dashed"
+    }
+  ],
+  "activations": [
+    {
+      "participant": "web",
+      "from": 160,
+      "to": 466,
+      "type": "backend"
+    },
+    {
+      "participant": "sms",
+      "from": 250,
+      "to": 283,
+      "type": "external"
+    },
+    {
+      "participant": "db",
+      "from": 370,
+      "to": 433,
+      "type": "database"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Закон",
+      "items": [
+        "Простая электронная подпись по 63-ФЗ, ст.5 ч.2",
+        "Соглашение сторон об использовании ЭП входит в текст договора, ст.9"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Ограничения кода",
+      "items": [
+        "Код действует 10 минут, не больше 5 попыток ввода",
+        "Не больше 5 кодов на одно подписание"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "После подписи",
+      "items": [
+        "Контрольная сумма связывает подпись с текстом договора",
+        "Каждый шаг пишется в журнал аудита, копия уходит клиенту письмом и СМС"
+      ]
+    }
+  ]
+}

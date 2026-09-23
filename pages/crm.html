@@ -1050,6 +1050,7 @@
     <li class="sub-item"><a href="#widget-org-summary">Виджет «Организации: сводка»</a></li>
     <li><a href="#crm-setup">Мастер настройки</a></li>
     <li><a href="#crm-montazh">Наряды монтажника</a></li>
+    <li><a href="#crm-contract-data">Данные для договора</a></li>
     <li><a href="#crm-dashboard">Дашборд и карта</a></li>
     <li class="sub-item"><a href="#crm-insights">Инсайты периода</a></li>
     <li class="sub-item"><a href="#crm-ai-summary">AI-сводка воронки</a></li>
@@ -1252,7 +1253,7 @@ root); остальные видят эти разделы в режиме пр�
 показывает то, что настроено в «Виде карточки»: клиента и телефон, адрес, сумму,
 цветные теги, чипы источника/тарифа/монтажа, «дней в стадии», аватар ответственного.</p>
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_v3126/funnel.jpg" alt="Воронка сделок: колонки стадий и карточки" loading="lazy">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_v3361/funnel.jpg" alt="Воронка сделок: колонки стадий и карточки" loading="lazy">
   <figcaption>Воронка сделок: колонки стадий и карточки</figcaption>
 </figure>
 <p>Строка управления разделом — <strong>одна линия</strong>: выбор воронки,
@@ -1686,7 +1687,7 @@ flowchart TB
 
 <h2 id="crm-tasks">Задачи</h2>
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_v3126/tasks.jpg" alt="Задачи: шапка с кнопкой «+ Задача» и строка фильтров" loading="lazy">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_v3361/tasks.jpg" alt="Задачи: шапка с кнопкой «+ Задача» и строка фильтров" loading="lazy">
   <figcaption>Шапка раздела: название, справка и главная кнопка; ниже одна строка фильтров</figcaption>
 </figure>
 <p>Задачи, «Списки», кампании, наряды и Salesbot устроены одинаково: сверху
@@ -1747,7 +1748,7 @@ flowchart TB
 
 <h2 id="crm-lists">Списки (контакты)</h2>
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_v3126/lists.jpg" alt="Списки: счётчик показанных контактов, фильтры и поиск" loading="lazy">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_v3361/lists.jpg" alt="Списки: счётчик показанных контактов, фильтры и поиск" loading="lazy">
   <figcaption>Шапка «Списков»: «показано N из M», панель фильтров, ответственный и поиск</figcaption>
 </figure>
 <p>В шапке — сколько контактов показано из всех подходящих («показано 50 из
@@ -2318,6 +2319,97 @@ N».</p>
 <p>Выезды на день раскладывает <a href="#crm-field-plan">«План выездов»</a>; напарник
 бригады, которого нет в нарядах, получает свой день сообщением при рассылке плана.</p>
 
+
+<h2 id="crm-contract-data">Данные для договора: вносит монтажник у клиента</h2>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pdn_v3300/2_form.png" alt="Окно «Данные для договора» на телефоне монтажника" loading="lazy">
+  <figcaption>Окно «Данные для договора»: ввод с документа или съёмка разворота</figcaption>
+</figure>
+<p>Паспортные данные <strong>нельзя спрашивать по телефону</strong>: личность
+абонента устанавливают при предъявлении документа. Поэтому вносит их тот, кто
+приехал к клиенту, — прямо из своего наряда. До выезда этих данных в системе
+нет, и договор без них не подписывается: экран подписания сообщает
+«Не внесены паспортные данные клиента».</p>
+
+<p>В карточке наряда появляется строка <strong>«Данные для договора»</strong> —
+пока наряд не закрыт. Рядом со строкой видно, заполнены ли данные: если да,
+показываются последние цифры номера, а не сам паспорт.</p>
+
+<pre class="mermaid">
+flowchart LR
+    A["Монтажник<br>приехал к клиенту"] --> B["Открывает наряд<br>«Данные для договора»"]
+    B --> C{"Как вносить?"}
+    C -->|"с документа"| D["Заполняет поля<br>вручную"]
+    C -->|"съёмка"| E["Фотографирует<br>разворот"]
+    E --> F["Распознавание"]
+    F --> G["Поля заполнены<br>— сверить с паспортом"]
+    D --> H["Сохранить"]
+    G --> H
+    H --> I["Данные в карточке клиента"]
+    I --> J["Договор подписывается<br>росчерком и кодом из СМС"]
+    E -. "снимок не сохраняется" .-> X["удалён после<br>распознавания"]
+</pre>
+
+<h3 id="crm-contract-data-photo">Съёмка паспорта</h3>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pdn_v3300/3_camera.png" alt="Кнопка «Сфотографировать паспорт» в окне данных для договора" loading="lazy">
+  <figcaption>Кнопка открывает камеру телефона; распознанные поля нужно сверить с документом</figcaption>
+</figure>
+<p>Кнопка <strong>«Сфотографировать паспорт»</strong> открывает заднюю камеру
+телефона. Со снимка читаются серия и номер, кем и когда выдан, дата рождения и
+адрес регистрации; даты приводятся к нужному виду сами.</p>
+<div class="note note-warn">
+  <p><strong>Снимок нигде не сохраняется.</strong> Он живёт внутри одного
+  запроса: уходит на распознавание и удаляется. Ни в хранилище, ни в базе, ни в
+  журнале его нет — фотография паспорта самый чувствительный вид персональных
+  данных, и держать её нам незачем.</p>
+</div>
+<p>Распознавание экономит набор, но не отменяет проверку: поля нужно сверить с
+документом до сохранения. Отвечает за верность данных тот, кто держит паспорт
+в руках.</p>
+
+<h3 id="crm-contract-data-access">Кто что видит</h3>
+<figure class="shot">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/pdn_v3300/1_naryad.png" alt="Карточка наряда со строкой «Данные для договора»" loading="lazy">
+  <figcaption>Карточка наряда: строка «Данные для договора» доступна, пока наряд не закрыт</figcaption>
+</figure>
+<p>Доступ к персональным данным даётся под задачу, а не «на всякий случай».</p>
+<table class="tbl">
+  <thead><tr><th>Что</th><th>Как устроено</th></tr></thead>
+  <tbody>
+    <tr><td>Чей наряд</td><td>Только свой: чужой наряд монтажнику не открывается</td></tr>
+    <tr><td>Когда можно вносить</td><td>Пока наряд не закрыт; после закрытия данные уже в договоре</td></tr>
+    <tr><td>Что видно после сохранения</td><td>«Заполнено» и последние цифры номера, а не сами данные</td></tr>
+    <tr><td>Раздел «Клиенты»</td><td>Монтажнику закрыт: в карточках клиентов лежат паспорта, а для работы хватает наряда</td></tr>
+    <tr><td>Журнал</td><td>Пишется, кто открыл данные, кто их изменил и какие именно поля</td></tr>
+  </tbody>
+</table>
+<p>Требование 152-ФЗ вести учёт доступа к персональным данным закрывается
+журналом: фиксируются и правки, и просмотры. Просмотр одного клиента одним
+сотрудником записывается не чаще раза в полчаса — иначе журнал состоял бы из
+одних открытий карточки.</p>
+
+<pre class="mermaid">
+flowchart TB
+    subgraph M["Монтажник в поле"]
+        N["Свои наряды"]
+        F["Данные для договора<br>своего наряда"]
+    end
+    subgraph Z["Закрыто монтажнику"]
+        K["Раздел «Клиенты»"]
+        P["Паспорта других абонентов"]
+        D["Чужие наряды"]
+    end
+    N --> F
+    F --> L["Журнал:<br>кто открыл и что изменил"]
+    M -.->|"нет доступа"| Z
+</pre>
+
+<p>Состав данных совпадает с полями группы «Договор — физ. лицо» в карточке
+сделки: серия и номер, кем выдан, дата выдачи, дата рождения, адрес
+регистрации. После сохранения они переносятся в карточку клиента — оттуда их
+берут и договор, и выгрузка СОРМ.</p>
+
 <h2 id="contract-esign">Подписание договора на телефоне</h2>
 <div class="wf-links" data-wf="esign@contract-esign">
   <div class="wf-links-head"><i class="ti ti-schema"></i><b>Интерактивная схема</b></div>
@@ -2420,7 +2512,7 @@ sequenceDiagram
   <li>Претензии принимаются в течение шести месяцев, рассматриваются в течение 60 дней.</li>
   <li>Подписать можно на бумаге или
     <a href="#contract-esign">простой электронной подписью на телефоне</a>: росчерк клиента
-    встаёт на строку подписи абонента, рядом со подписью и печатью оператора.</li>
+    встаёт на строку подписи абонента, рядом с подписью и печатью оператора.</li>
 </ul>
 
 <h3 id="contract-texts-ur">Договор с юридическим лицом и ИП</h3>
@@ -2823,7 +2915,7 @@ CSV:</p>
 
 <h3 id="crm-dashboard-v370">Выпуск 3.7.0: воронка и период в шапке</h3>
 <figure class="shot">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dash_v3359/crm_dashboard.png" alt="Дашборд CRM: воронка, период и выгрузка в шапке, показатели карточками" loading="lazy">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/dash_v3361/crm_dashboard.png" alt="Дашборд CRM: воронка, период и выгрузка в шапке, показатели карточками" loading="lazy">
   <figcaption>Дашборд CRM в 3.7.0: выбор воронки и период в строке шапки</figcaption>
 </figure>
 
@@ -2957,7 +3049,7 @@ flowchart LR
   цвет стадии берутся из воронки самой сделки.</li>
 </ul>
 <figure class="shot is-narrow">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_v3056/dashboard_today.png" alt="Блок «Сегодня» с фото сотрудников" loading="lazy">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_v3361/dashboard_today.png" alt="Блок «Сегодня» с фото сотрудников" loading="lazy">
   <figcaption>«Сегодня»: звонки, заметки, созданные и выигранные сделки по сотрудникам</figcaption>
 </figure>
 
@@ -3310,7 +3402,7 @@ sequenceDiagram
 
 <h2 id="crm-drawer">Карточка сделки (полноэкранный дровер)</h2>
 <figure class="shot is-narrow">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_v3126/drawer_main.jpg" alt="Карточка сделки: источник заявки, последнее касание, лента событий" loading="lazy">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_v3361/drawer_main.jpg" alt="Карточка сделки: источник заявки, последнее касание, лента событий" loading="lazy">
   <figcaption>Карточка сделки: источник заявки, последнее касание и лента с историей</figcaption>
 </figure>
 <p>Под именем клиента — две служебные строки, по которым состояние сделки видно
@@ -3320,7 +3412,7 @@ sequenceDiagram
 было — так и написано: это данные, а не пропуск.</p>
 <h3 id="crm-drawer-feed">Лента: сообщения, звонки и история сделки</h3>
 <figure class="shot is-narrow">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_v2961/drawer_feed.png" alt="Лента сделки: примечания, звонки и системные события" loading="lazy">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_v3361/drawer_feed.png" alt="Лента сделки: примечания, звонки и системные события" loading="lazy">
   <figcaption>Лента сделки: примечания, звонки и системные события одной хронологией</figcaption>
 </figure>
 <p>В ленту сведены примечания, звонки с расшифровкой, задачи и
@@ -3335,7 +3427,7 @@ CRM, ключи стадий переводятся подписями воро�
 
 <h3 id="crm-drawer-conn">Вкладка «Подключение»</h3>
 <figure class="shot is-narrow">
-  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_v3126/drawer_conn.jpg" alt="Вкладка «Подключение»: монтаж, монтажник, роутер, тариф и суммы" loading="lazy">
+  <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/crm_v3361/drawer_conn.jpg" alt="Вкладка «Подключение»: монтаж, монтажник, роутер, тариф и суммы" loading="lazy">
   <figcaption>Вкладка «Подключение»: монтаж с временем, роутер из Склада, суммы</figcaption>
 </figure>
 <p><strong>«Монтаж назначен»</strong> — одно поле с датой <em>и</em> временем.
