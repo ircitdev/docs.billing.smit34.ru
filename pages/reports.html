@@ -972,7 +972,7 @@
           <li><a href="changelog.html#oss-shemy-44-sht"><i class="ti ti-point" aria-hidden="true"></i> OSS схемы (44 шт.)</a></li>
           <li><a href="changelog.html#struktura-katalogov-nas"><i class="ti ti-package" aria-hidden="true"></i> Структура каталогов NAS</a></li>
           <li><a href="changelog.html#docker-konfiguratsiya"><i class="ti ti-point" aria-hidden="true"></i> Docker конфигурация</a></li>
-          <li><a href="changelog.html#forms-audit"><i class="ti ti-code" aria-hidden="true"></i> Аудит форм — Select2 и AJAX</a></li>
+          <li><a href="changelog.html#forms-audit"><i class="ti ti-code" aria-hidden="true"></i> Аудит форм — поля и подсказки</a></li>
           <li><a href="changelog.html#fixes-25tasks"><i class="ti ti-message" aria-hidden="true"></i> Исправления из Telegram-чата (25 задач)</a></li>
         </ul>
       </li>
@@ -1313,7 +1313,7 @@ flowchart LR
   <tbody>
     <tr><td><code>date</code></td><td><code>WHERE op_date &gt;= :Начало|date$</code></td><td>Date-picker</td></tr>
     <tr><td><code>sum</code></td><td><code>WHERE op_summa &gt; :Минимум|sum$</code></td><td>Поле для рублей с конвертацией ×10^10</td></tr>
-    <tr><td><code>select[Model]</code></td><td><code>WHERE abonent_id = :Клиент|select[Abonents]$</code></td><td>Select2-AJAX по модели</td></tr>
+    <tr><td><code>select[Model]</code></td><td><code>WHERE abonent_id = :Клиент|select[Abonents]$</code></td><td>Список с поиском по модели</td></tr>
     <tr><td><code>choices[1^Янв|2^Фев|3^Мар]</code></td><td><code>WHERE month = :Месяц|choices[1^Январь|2^Февраль]$</code></td><td>Dropdown с фиксированными значениями</td></tr>
   </tbody>
 </table>
@@ -1402,7 +1402,7 @@ flowchart LR
   <li><strong>Звёздочка избранного</strong> — отмеченные отчёты попадают в виджет «Избранные отчёты» на дашборде директора и в профиле сотрудника.</li>
   <li>Бейдж <strong>«🤳 ЛК»</strong> у отчётов с <code>allow_in_cabinet=True</code> — они доступны клиенту в его ЛК (например, «История платежей»).</li>
   <li><strong>Sticky toolbar</strong> при скролле — поиск, фильтр избранного, кнопки <em>«+ Типы»</em>, <em>«+ Добавить отчёт»</em>, <em>«✨ AI»</em> остаются видны.</li>
-  <li>Кнопки в строке: <em>▶ Запустить</em>, <em>✏ Редактировать</em>, <em>🗑 Удалить</em> с подтверждением через Bootstrap-confirm.</li>
+  <li>Кнопки в строке: <em>▶ Запустить</em>, <em>✏ Редактировать</em>, <em>🗑 Удалить</em> с подтверждением с подтверждением.</li>
   <li><strong>Bulk-операции</strong>: чекбокс-колонка с master-чекбоксом, sticky-toolbar при выборе — Удалить / Сменить тип / Экспорт CSV выбранных.</li>
   <li>На <strong>мобильном</strong> (≤575px) — read-only режим: только имя + кнопка <em>▶ Запустить</em>, CRUD скрыт.</li>
 </ul>
@@ -1458,7 +1458,7 @@ flowchart LR
 <h4 id="custom-reports-modal">Модалка редактирования отчёта</h4>
 <p>Открывается кликом по имени отчёта или по карандашу. Делится на две колонки:</p>
 <ul>
-  <li><strong>Слева</strong>: название, описание, тип (select), Bootstrap-switch <em>«🤳 Доступен в ЛК»</em>, развёрнутая справка по 4 типам параметров (<code>:Имя|date$</code>, <code>:Имя|sum$</code>, <code>:Имя|select[Model]$</code>, <code>:Имя|choices[v1^Лейбл1|v2^Лейбл2]$</code>) с примером SQL-сниппета.</li>
+  <li><strong>Слева</strong>: название, описание, тип (select), переключатель <em>«🤳 Доступен в ЛК»</em>, развёрнутая справка по 4 типам параметров (<code>:Имя|date$</code>, <code>:Имя|sum$</code>, <code>:Имя|select[Model]$</code>, <code>:Имя|choices[v1^Лейбл1|v2^Лейбл2]$</code>) с примером SQL-сниппета.</li>
   <li><strong>Справа</strong>: SQL-редактор <strong>CodeMirror 5</strong> с подсветкой синтаксиса PostgreSQL, тёмная тема <code>material-darker</code>, номера строк, перенос длинных строк, soft-wrap. Hot keys: <kbd>Ctrl</kbd>+<kbd>/</kbd> toggle comment, <kbd>Ctrl</kbd>+<kbd>F</kbd> find. Параметры <code>:Имя|тип$</code> подсвечиваются жёлтым фоном через CodeMirror-overlay.</li>
 </ul>
 <p><strong>Live-counter</strong> под редактором обновляется на каждом change-event: «N строк · M парам.», справа от него — список найденных параметров с типами.</p>
@@ -1474,7 +1474,7 @@ flowchart LR
     <tr>
       <td><strong>date</strong></td>
       <td><code>:Дата с|date$</code></td>
-      <td>Календарь (jQuery datepicker)</td>
+      <td>Календарь</td>
       <td>String '2026-05-07' (ISO)</td>
     </tr>
     <tr>
@@ -1486,7 +1486,7 @@ flowchart LR
     <tr>
       <td><strong>select[Model]</strong></td>
       <td><code>:Клиент|select[Abonents]$</code></td>
-      <td>Select2 с AJAX-поиском</td>
+      <td>Список с поиском по мере ввода</td>
       <td>Integer (pk выбранной записи)</td>
     </tr>
     <tr>

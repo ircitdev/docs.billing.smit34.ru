@@ -964,7 +964,7 @@
           <li><a href="changelog.html#oss-shemy-44-sht"><i class="ti ti-point" aria-hidden="true"></i> OSS схемы (44 шт.)</a></li>
           <li><a href="changelog.html#struktura-katalogov-nas"><i class="ti ti-package" aria-hidden="true"></i> Структура каталогов NAS</a></li>
           <li><a href="changelog.html#docker-konfiguratsiya"><i class="ti ti-point" aria-hidden="true"></i> Docker конфигурация</a></li>
-          <li><a href="changelog.html#forms-audit"><i class="ti ti-code" aria-hidden="true"></i> Аудит форм — Select2 и AJAX</a></li>
+          <li><a href="changelog.html#forms-audit"><i class="ti ti-code" aria-hidden="true"></i> Аудит форм — поля и подсказки</a></li>
           <li><a href="changelog.html#fixes-25tasks"><i class="ti ti-message" aria-hidden="true"></i> Исправления из Telegram-чата (25 задач)</a></li>
         </ul>
       </li>
@@ -1238,7 +1238,7 @@ docker compose restart freeradius</code></pre>
 
   <p>Модальное окно содержит 6 вкладок:</p>
   <ul>
-    <li><strong>Основное</strong> — название, IP-адрес, маска, тип NAS, адрес установки (Адрес Select2), включён / производственный.</li>
+    <li><strong>Основное</strong> — название, IP-адрес, маска, тип NAS, адрес установки (с поиском), включён / производственный.</li>
     <li><strong>RADIUS</strong> — shared secret, CoA-пароль/порт, пароль пользователей, флаги NetFlow и поведения при блокировке.</li>
     <li><strong>Авторизация</strong> — 11 методов авторизации (логин, MAC, OPT82, IP, VLAN и др.).</li>
     <li><strong>Управление</strong> — параметры SSH/Telnet-подключения: тип, IP, порт, логин, пароль.</li>
@@ -1417,7 +1417,7 @@ docker compose restart freeradius</code></pre>
 
   <!-- ===== Switch модальное окно ===== -->
   <h3 id="switch-modal">Редактирование коммутаторов — модальное окно</h3>
-  <p>Коммутаторы (<code>/admin/equipment/Switch/</code>) редактируются в модальном окне с двухколоночным макетом: слева — название и IP, справа — адрес установки (Select2), этаж, помещение.</p>
+  <p>Коммутаторы (<code>/admin/equipment/Switch/</code>) редактируются в модальном окне с двухколоночным макетом: слева — название и IP, справа — адрес установки (с поиском), этаж, помещение.</p>
   <p>Начиная с, в таблице коммутаторов добавлена колонка <strong>Тип</strong> — отображает привязанный тип коммутатора (бейдж с названием). Тип определяет регулярные выражения для парсинга Option 82 и используется при OPT82-авторизации.</p>
 
   <figure class="shot">

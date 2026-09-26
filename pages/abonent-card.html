@@ -972,7 +972,7 @@
           <li><a href="changelog.html#oss-shemy-44-sht"><i class="ti ti-point" aria-hidden="true"></i> OSS схемы (44 шт.)</a></li>
           <li><a href="changelog.html#struktura-katalogov-nas"><i class="ti ti-package" aria-hidden="true"></i> Структура каталогов NAS</a></li>
           <li><a href="changelog.html#docker-konfiguratsiya"><i class="ti ti-point" aria-hidden="true"></i> Docker конфигурация</a></li>
-          <li><a href="changelog.html#forms-audit"><i class="ti ti-code" aria-hidden="true"></i> Аудит форм — Select2 и AJAX</a></li>
+          <li><a href="changelog.html#forms-audit"><i class="ti ti-code" aria-hidden="true"></i> Аудит форм — поля и подсказки</a></li>
           <li><a href="changelog.html#fixes-25tasks"><i class="ti ti-message" aria-hidden="true"></i> Исправления из Telegram-чата (25 задач)</a></li>
         </ul>
       </li>
@@ -1132,7 +1132,7 @@ flowchart LR
 </ul>
 <p>Кнопка <strong>всегда физически кликабельна</strong> — серый вид это лишь подсказка «нечего сохранять», а не блокировка. Если клиент в этот момент обрабатывается биллингом (фоновая операция), кнопка не пульсирует, а tooltip объясняет, почему сохранение временно недоступно.</p>
 
-<p><strong>Подсветка изменённых полей.</strong> Любое поле формы, значение которого отличается от исходного, подсвечивается жёлтой рамкой и фоном (класс <code>.ab-field-changed</code>). Работает и для обычных полей, и для Select2-виджетов; есть отдельный вариант для тёмной темы.</p>
+<p><strong>Подсветка изменённых полей.</strong> Любое поле формы, значение которого отличается от исходного, подсвечивается жёлтой рамкой и фоном (класс <code>.ab-field-changed</code>). Работает и для обычных полей, и для полей с выбором из списка; есть отдельный вариант для тёмной темы.</p>
 <figure class="shot">
   <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/card_v2759/43_field_changed.png" alt="Изменённое поле подсвечено" loading="lazy">
   <figcaption>Изменённое поле подсвечено</figcaption>
@@ -1416,7 +1416,7 @@ flowchart TB
 
 <p><strong>4 стиля отображения</strong> навигации вкладок (превью видно прямо в форме):</p>
 <ul>
-  <li><strong>Классический</strong> (default) — AdminLTE nav-tabs, как сейчас</li>
+  <li><strong>Классический</strong> (default) — как сейчас</li>
   <li><strong>Pills (таблетки)</strong> — скруглённые кнопки</li>
   <li><strong>Подчёркивание</strong> — Material-style underline</li>
   <li><strong>Компактный</strong> — узкие табы, на mobile только иконки</li>
@@ -1923,7 +1923,7 @@ flowchart LR
 <h5 id="abonent-card-email-phone-validation">Маски и валидация email/телефон</h5>
 <p>Оба контактных поля имеют клиентскую и серверную валидацию:</p>
 <ul>
-  <li><strong>Телефон</strong> (<code>sms</code>): jQuery MaskedInput с маской <code>+7 (999) 999-99-99</code>. Авто-нормализация существующего значения при загрузке (<code>79175551234</code>/<code>89175551234</code>/<code>+7..</code> → <code>+7 (917) 555-12-34</code>). На сервере: извлечение цифр, автоприведение <code>8XXX→7XXX</code> и 10-значного→<code>7+10</code>, проверка длины 11 + префикс 7, сохранение в каноне <code>+7XXXXXXXXXX</code>.</li>
+  <li><strong>Телефон</strong> (<code>sms</code>): ввод по маске <code>+7 (999) 999-99-99</code>. Авто-нормализация существующего значения при загрузке (<code>79175551234</code>/<code>89175551234</code>/<code>+7..</code> → <code>+7 (917) 555-12-34</code>). На сервере: извлечение цифр, автоприведение <code>8XXX→7XXX</code> и 10-значного→<code>7+10</code>, проверка длины 11 + префикс 7, сохранение в каноне <code>+7XXXXXXXXXX</code>.</li>
   <li><strong>Email</strong>: <code>type=email</code> + <code>inputmode=email</code> + EMAIL-regex проверка на blur (<code>.is-invalid</code>/<code>.is-valid</code> подсветка). Поддержка нескольких через <code>,</code>/<code>;</code> (legacy). Серверная валидация — <code>django.core.validators.EmailValidator</code> по каждому адресу.</li>
 </ul>
 <p>Все ошибки серверной валидации собираются в один <code>ValidationError(dict)</code>, чтобы оператор видел все проблемы сразу.</p>
@@ -2019,9 +2019,9 @@ flowchart LR
 <h4 id="abonent-card-tab-tariff">Тариф и услуги</h4>
 <p>Текущий тариф клиента + список индивидуальных услуг (<code>UsersUsluga</code>):</p>
 <ul>
-  <li><strong>Изменение тарифа</strong> — Select2 с предпросмотром стоимости. Можно задать «Тариф следующий» (<code>tarif_next</code>) для отложенной смены с начала следующего расчётного периода.</li>
+  <li><strong>Изменение тарифа</strong> — выбор из списка с предпросмотром стоимости. Можно задать «Тариф следующий» (<code>tarif_next</code>) для отложенной смены с начала следующего расчётного периода.</li>
   <li><strong>Список услуг</strong> с фильтрами enabled / disabled / deleted. Каскад отображения суммы: <code>UU.summ → Usluga.summa → Usluga.price</code>; источник указывается явно в плейсхолдере.</li>
-  <li><strong>Модалка редактирования</strong>: Услуга (Select2 AJAX), Индивидуальная сумма, Скидка, Кол-во, Дата начала, Дата следующего списания, Примечание, Включена.</li>
+  <li><strong>Модалка редактирования</strong>: Услуга (поиск по названию), Индивидуальная сумма, Скидка, Кол-во, Дата начала, Дата следующего списания, Примечание, Включена.</li>
   <li>Опция «Очистить сумму» возвращает каскадное вычисление (<code>summ=NULL</code>).</li>
 </ul>
 
@@ -2399,7 +2399,7 @@ endpoints <code>finops_ajax</code>, <code>finops_crud_ajax</code>,
 <h4 id="abonent-card-tab-users">Учётные записи</h4>
 <p>Логины клиента (<code>Users</code> — один клиент может иметь несколько учёток для Internet/IPTV/VoIP). На каждую строку — 6 действий:</p>
 <ul>
-  <li>✏ <strong>Редактировать</strong> — модалка с 4 вкладками: Основные (логин, пароль с генератором, MAC, вкл./комментарий), Сеть (IP-пул, IPv4 с random из пула, NAS, Switch, PORT, VLAN), Адрес (Дом Select2 AJAX, кв.), RADIUS (последние 20 сессий read-only).</li>
+  <li>✏ <strong>Редактировать</strong> — модалка с 4 вкладками: Основные (логин, пароль с генератором, MAC, вкл./комментарий), Сеть (IP-пул, IPv4 с random из пула, NAS, Switch, PORT, VLAN), Адрес (дом с поиском, квартира), RADIUS (последние 20 сессий read-only).</li>
   <li>🔌 <strong>Отсоединить</strong> (CoA Disconnect) — параллельно на все enabled NAS.</li>
   <li>🔄 <strong>Сбросить зависшую сессию</strong> — UPDATE LOGGED=0 + RADIUS_SESSIONS.END_TIME = now.</li>
   <li>🧪 <strong>Тест авторизации</strong> — radtest через pyrad напрямую к freeradius:1812. Модалка с цветовым результатом (Accept/Reject/Timeout) + таблица атрибутов RADIUS.</li>

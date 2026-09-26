@@ -972,7 +972,7 @@
           <li><a href="changelog.html#oss-shemy-44-sht"><i class="ti ti-point" aria-hidden="true"></i> OSS схемы (44 шт.)</a></li>
           <li><a href="changelog.html#struktura-katalogov-nas"><i class="ti ti-package" aria-hidden="true"></i> Структура каталогов NAS</a></li>
           <li><a href="changelog.html#docker-konfiguratsiya"><i class="ti ti-point" aria-hidden="true"></i> Docker конфигурация</a></li>
-          <li><a href="changelog.html#forms-audit"><i class="ti ti-code" aria-hidden="true"></i> Аудит форм — Select2 и AJAX</a></li>
+          <li><a href="changelog.html#forms-audit"><i class="ti ti-code" aria-hidden="true"></i> Аудит форм — поля и подсказки</a></li>
           <li><a href="changelog.html#fixes-25tasks"><i class="ti ti-message" aria-hidden="true"></i> Исправления из Telegram-чата (25 задач)</a></li>
         </ul>
       </li>
@@ -1069,7 +1069,7 @@
 <p>Сводка всех настроенных интеграций со статусами. Цветной бейдж справа от каждой
 интеграции показывает: ✓ настроена / ✗ ошибка / ⏸ выключена / ? не настроена.
 Кнопка <em>«Проверить все»</em> запускает последовательно тест каждой настроенной интеграции;
-результаты появляются как Bootstrap-toast в правом верхнем углу.</p>
+результаты появляются всплывающими сообщениями в правом верхнем углу.</p>
 
 <figure class="shot">
   <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/billing_v491/05_integrations_overview.png" alt="Интеграции — обзор">
@@ -1901,7 +1901,7 @@ X-Timestamp: 1715091045   # Unix epoch</code></pre>
   </tbody>
 </table>
 
-<p>JS-функция <code>_smsBadge(msg)</code> в <code>send_message_tab.html</code> строит бейдж динамически после AJAX-create. <code>MutationObserver</code> на <code>#msg-history-tbody</code> автоинициализирует Bootstrap-tooltips на новых строках. После отправки бейдж 🟡 <em>pending</em> → через несколько секунд webhook → 🔵 <em>sent</em> → 🟢 <em>delivered</em>. <strong>Авторефреша без F5 пока нет</strong> (планируется в одном из обновлений — JS-poll на <code>/sms_status/&lt;msg_id&gt;/</code>).</p>
+<p>JS-функция <code>_smsBadge(msg)</code> в <code>send_message_tab.html</code> строит бейдж динамически после AJAX-create. <code>MutationObserver</code> на <code>#msg-history-tbody</code> сразу показывает подсказки у новых строк. После отправки бейдж 🟡 <em>pending</em> → через несколько секунд webhook → 🔵 <em>sent</em> → 🟢 <em>delivered</em>. <strong>Авторефреша без F5 пока нет</strong> (планируется в одном из обновлений — JS-poll на <code>/sms_status/&lt;msg_id&gt;/</code>).</p>
 
 <h6 id="messaging-sms-webhook-troubleshooting">Решение проблем</h6>
 <dl>

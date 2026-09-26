@@ -972,7 +972,7 @@
           <li><a href="changelog.html#oss-shemy-44-sht"><i class="ti ti-point" aria-hidden="true"></i> OSS схемы (44 шт.)</a></li>
           <li><a href="changelog.html#struktura-katalogov-nas"><i class="ti ti-package" aria-hidden="true"></i> Структура каталогов NAS</a></li>
           <li><a href="changelog.html#docker-konfiguratsiya"><i class="ti ti-point" aria-hidden="true"></i> Docker конфигурация</a></li>
-          <li><a href="changelog.html#forms-audit"><i class="ti ti-code" aria-hidden="true"></i> Аудит форм — Select2 и AJAX</a></li>
+          <li><a href="changelog.html#forms-audit"><i class="ti ti-code" aria-hidden="true"></i> Аудит форм — поля и подсказки</a></li>
           <li><a href="changelog.html#fixes-25tasks"><i class="ti ti-message" aria-hidden="true"></i> Исправления из Telegram-чата (25 задач)</a></li>
         </ul>
       </li>
@@ -1519,16 +1519,16 @@ debounce 300&nbsp;мс. Шорткат <kbd>Ctrl</kbd>+<kbd>K</kbd> ставит
     <td>Soft-delete: <code>deleted=true</code>, все Users отключаются, CoA-Disconnect.</td>
     <td>✅</td></tr>
 <tr><td><strong>Изменить тариф</strong> (<code>change_tarif</code>)</td>
-    <td>Смена тарифа (Select2 в модалке). Срабатывает сразу, не «с 1-го числа».</td>
+    <td>Смена тарифа в окне выбора. Срабатывает сразу, не «с 1-го числа».</td>
     <td>✅</td></tr>
 <tr><td><strong>Изменить точку подключения</strong> (<code>change_cp</code>)</td>
     <td>Перевешивает клиента на другую ConnectionPoint.</td>
     <td>—</td></tr>
 <tr><td><strong>Перенести в папку</strong> (<code>move_folder</code>)</td>
-    <td>Меняет <code>parent_id</code> в MPTT-дереве (Select2 по папкам).</td>
+    <td>Меняет <code>parent_id</code> в MPTT-дереве (выбор папки из списка).</td>
     <td>✅</td></tr>
 <tr><td><strong>Добавить услугу</strong> (<code>add_service</code>)</td>
-    <td>Подключает разовую/периодическую услугу (Usluga из Select2).</td>
+    <td>Подключает разовую/периодическую услугу (услуга из списка).</td>
     <td>—</td></tr>
 <tr><td><strong>Добавить бонус</strong> (<code>add_bonus</code>)</td>
     <td>Подключает бонус (компенсация / скидка с отрицательной суммой).</td>
@@ -1863,7 +1863,7 @@ text, а полноценное письмо с шаблоном <a href="settin
 
 <p>Доступные действия:</p>
 <ul>
-  <li>Включить / Выключить / Удалить (с Bootstrap-confirm и превью имён).</li>
+  <li>Включить / Выключить / Удалить (с подтверждением и превью имён).</li>
   <li>Сменить тариф / точку подключения / папку.</li>
   <li>Подключить услугу / бонус / финоперацию / программу лояльности.</li>
   <li>Отправить сообщение (e-mail / SMS / Push / Telegram).</li>
@@ -3033,7 +3033,7 @@ flowchart LR
   <img loading="lazy" decoding="async" src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/abonents_v3361/fo_modal_edit.png" alt="Карточка операции — режим редактирования со связями">
   <figcaption>Карточка операции — режим редактирования со связями</figcaption>
 </figure>
-<p>Та же сетка: слева форма основных полей, справа — связи операции через Select2 с подгрузкой по AJAX.</p>
+<p>Та же сетка: слева форма основных полей, справа — связи операции через поля с поиском по мере ввода.</p>
 <ul>
   <li><strong>Клиент</strong> — поиск через <code>/rest_api/v2/Abonents/</code>. Выбранный клиент проверяется на стороне сервера: подставить чужую организацию crafted-запросом нельзя.</li>
   <li><strong>Тип операции</strong> — справочник <code>FinTypes</code>.</li>
