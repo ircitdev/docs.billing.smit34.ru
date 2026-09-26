@@ -500,7 +500,7 @@ document.addEventListener('DOMContentLoaded', function () {
       document.querySelectorAll('.content h2[id]')
     );
     var headings = Array.prototype.slice.call(
-      document.querySelectorAll('.content h2[id], .content h3[id]')
+      document.querySelectorAll('.content h2[id], .content h3[id], .content h4[id]')
     );
     if (headings.length < 3) return;  // слишком мало разделов — остров не нужен
 
@@ -509,11 +509,15 @@ document.addEventListener('DOMContentLoaded', function () {
     var flat = h2list.length < 3;
 
     // entries: { id, el, label, lvl } — пункты навигации (scrollspy/прогресс)
+    // Подразделы h4 — третий уровень: на страницах вроде карты сети их
+    // несколько десятков, и без них в содержании не найти нужное место.
+    // Раскрываются только внутри текущего раздела (см. setActive).
     var entries = headings.map(function (h) {
-      return {
-        id: h.id, el: h, label: headingText(h),
-        lvl: (flat || h.tagName === 'H2') ? 2 : 3
-      };
+      var lvl;
+      if (h.tagName === 'H4') lvl = 3;
+      else if (flat) lvl = (h.tagName === 'H2') ? 2 : 2;
+      else lvl = (h.tagName === 'H2') ? 2 : 3;
+      return { id: h.id, el: h, label: headingText(h), lvl: lvl };
     });
     var listHtml = entries.map(function (it) {
       return '<li class="di-l' + it.lvl + '">' +

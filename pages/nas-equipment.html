@@ -1230,13 +1230,13 @@ flowchart LR
 <p>Признак «конфигурация изменена» появляется в списке автоматически после сохранения или удаления NAS — чтобы перезапуск не забыли.</p>
 
 <h4 id="nas-mobile">Мобильная версия</h4>
-<figure class="shot">
+<figure class="shot is-narrow">
   <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/nas_v1730/10_mobile_list.png" alt="Список NAS на телефоне">
   <figcaption>Список NAS на телефоне</figcaption>
 </figure>
 <p>На телефоне остаются три колонки: название, состояние и онлайн — то, ради чего в список заходят с телефона во время аварии. IP, RADIUS, SSH, адрес и время последней авторизации скрыты, горизонтальной прокрутки нет.</p>
 
-<figure class="shot">
+<figure class="shot is-narrow">
   <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/nas_v1730/11_mobile_online.png" alt="Список сессий на телефоне">
   <figcaption>Список сессий на телефоне</figcaption>
 </figure>
@@ -1424,7 +1424,7 @@ python manage.py disable_abonents_without_tariff --apply
   и событие в истории при смене «в сети ↔ не отвечает». Опрос идёт напрямую из сети сервера,
   дополнительного ПО на коммутаторах не требуется — достаточно включённого SNMP с community
   на чтение.</p>
-</div>
+</pre>
 
 <h4 id="equip-monitoring-dashboard">Дашборд состояния</h4>
 <p>Над таблицей — счётчики <strong>Всего / В сети / Не отвечают / Неизвестно</strong>.
@@ -1598,7 +1598,7 @@ middleware и stream-серверы провайдера (TVIP Media, LFStream �
 экран» (вернуться к общему плану сети) и обновление данных без перезагрузки
 страницы. На телефоне те же кнопки остаются в мобильной панели.</p>
 
-<figure class="shot">
+<figure class="shot is-narrow">
   <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/netmap_v2195/nm_maptools.jpg" alt="Панель инструментов в правом верхнем углу карты">
   <figcaption>Панель инструментов в правом верхнем углу карты</figcaption>
 </figure>
@@ -1667,7 +1667,7 @@ middleware и stream-серверы провайдера (TVIP Media, LFStream �
 слои читают те же таблицы, что и разделы биллинга, поэтому расходиться им не с
 чем.</p>
 
-<div class="mermaid">
+<pre class="mermaid">
 flowchart LR
   KML["Выгрузка<br/>Google Earth"] --> NODES["Узлы и трассы<br/>NetworkNode, CableRoute"]
   ROSSETI["Договор ДС-14<br/>Россети Юг"] --> TP["ТП, линии ВЛ<br/>и опоры поштучно"]
@@ -2250,7 +2250,7 @@ erDiagram
 
 <div class="row">
   <div class="col-md-7"></div>
-  <div class="col-md-5"><figure class="shot">
+  <div class="col-md-5"><figure class="shot is-narrow">
   <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/netmap_v2183/nm_mobile.jpg" alt="Карта сети на телефоне">
   <figcaption>Карта сети на телефоне</figcaption>
 </figure></div>

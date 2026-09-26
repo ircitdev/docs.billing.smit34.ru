@@ -1192,7 +1192,7 @@ flowchart LR
 <p>Модуль продажи видеонаблюдения через биллинг: от заявки и обследования до монтажа, recurring-подписок и документов. Реализован как собственный сервисно-инсталляционный домен (объект → проект → камеры/оборудование → подписки), а не плоская интеграция. Использует существующее ядро биллинга: тарификацию <code>Usluga</code>/<code>UsersUsluga</code>, ежемесячное списание <code>billing_worker</code>, <code>FinanceOperations</code>, генерацию PDF (WeasyPrint), фискализацию.</p>
 
 <h3 id="video-revenue">3 слоя дохода — как продавать правильно</h3>
-<figure class="shot">
+<figure class="shot is-narrow">
   <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/video_module_v2026_06_06/video_revenue_layers.png" alt="3 слоя дохода видеонаблюдения" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px">
   <figcaption>3 слоя дохода видеонаблюдения</figcaption>
 </figure>
@@ -1630,7 +1630,7 @@ flowchart TB
 
 <h2 id="domofon-demo"><i class="ti ti-door h-ico" aria-hidden="true"></i>Домофонный домен</h2>
 <p>Домофония для новостроек реализована как <strong>рескин</strong> существующего биллинга, а не отдельный модуль: иерархия «оператор → ЖК → подъезд → квартира» укладывается на MPTT-дерево клиентов один-в-один, пакеты домофона — это тарифы, абонентская плата — recurring-услуги (списываются <code>billing_worker</code>). Все клиенты домофонных/видео-услуг привязаны к оператору домофонии (отдельная папка-юр.лицо).</p>
-<figure class="shot">
+<figure class="shot is-narrow">
   <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/demo_domofon_v1029/demo_domain_model.svg" alt="Доменная модель домофонного проекта" style="max-width:720px">
   <figcaption>Доменная модель домофонного проекта</figcaption>
 </figure>
@@ -1658,7 +1658,7 @@ flowchart TB
   <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/docs/covers/cover_multiorg.jpg" alt="Мульти-организации: один биллинг обслуживает несколько компаний — свои клиенты, реквизиты, кассы, брендинг и поддержка" loading="lazy">
 </div>
 <p>Один экземпляр СмИТ Биллинг может обслуживать несколько компаний-операторов как самостоятельные юрлица. В контуре может быть несколько организаций: основная — провайдер связи (она же по умолчанию), рядом с ней дочерние или партнёрские компании со своими доменами — например, ИТ-услуги или охранное абонентское обслуживание. У каждой компании — свои реквизиты, платёжные кассы, счёт приёма оплат, документы, брендинг, домен ЛК и маршрутизация поддержки. Сотрудники видят данные только своих компаний.</p>
-<figure class="shot">
+<figure class="shot is-narrow">
   <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/multiorg_ayti_v2026_06_08/multiorg.svg" alt="Multi-org: один биллинг — несколько компаний" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px">
   <figcaption>Multi-org: один биллинг — несколько компаний</figcaption>
 </figure>
@@ -1941,7 +1941,7 @@ flowchart LR
 <p>В разделе <strong>Настройки → Интеграции → Telegram</strong> остался только служебный бот
 системы: он шлёт тревоги о сети и отчёты разработки. Боты организаций настраиваются в их
 карточках.</p>
-<figure class="shot">
+<figure class="shot is-narrow">
   <img src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/org_tg_v3210/org_telegram_tab.png" alt="Вкладка «Telegram» — подключённые боты, выбор отправителя и группы" style="max-width:100%;border:1px solid #e2e8f0;border-radius:8px">
   <figcaption>Вкладка «Telegram»: подключённые боты, кто шлёт уведомления, выбор группы</figcaption>
 </figure>
